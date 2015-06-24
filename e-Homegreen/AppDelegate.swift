@@ -16,10 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        //        UISlider.appearance().setMaximumTrackImage(UIImage(named: "slider"), forState: UIControlState.Normal)
-        //        UISlider.appearance().setMinimumTrackImage(UIImage(named: "slider"), forState: UIControlState.Normal)
+        
+        
+        UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
+        UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Normal)
-        UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Highlighted)
+        UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), forState: UIControlState.Highlighted)
         // Override point for customization after application launch.
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         

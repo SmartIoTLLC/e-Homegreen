@@ -41,7 +41,8 @@ class ContainerViewController: UIViewController {
     }
     var leftViewController: SidePanelViewController?
     
-    let centerPanelExpandedOffset: CGFloat = 60
+//    let centerPanelExpandedOffset: CGFloat = UIScreen.mainScreen().bounds.width - 260
+    let centerPanelExpandedOffset: CGFloat = UIScreen.mainScreen().bounds.width - 240
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,10 +111,11 @@ extension ContainerViewController: CenterViewControllerDelegate {
     }
     
     func animateLeftPanel(#shouldExpand: Bool) {
+        var centerPanelExpandedOffset1 = centerPanelExpandedOffset
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
             
-            animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset)
+            animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset1)
         } else {
             animateCenterPanelXPosition(targetPosition: 0) { finished in
                 self.currentState = .LeftPanelCollapsed

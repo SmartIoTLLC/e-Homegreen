@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "seek_thumb_pressed-2.png"
+      "filename" : "seek_thumb_normal-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "seek_thumb_pressed.png"
+      "filename" : "seek_thumb_normal-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "seek_thumb_pressed-1.png"
+      "filename" : "seek_thumb_normal.png"
     }
   ],
   "info" : {

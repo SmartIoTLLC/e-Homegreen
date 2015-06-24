@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		736F17D01B3AE816003A6A02 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17CF1B3AE816003A6A02 /* DashboardViewController.swift */; };
+		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
+		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
+		736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D51B3AE85F003A6A02 /* TimersViewController.swift */; };
+		736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D71B3AE870003A6A02 /* FlagsViewController.swift */; };
+		736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D91B3AE87E003A6A02 /* ChatViewController.swift */; };
+		736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */; };
+		736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */; };
 		73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB849E1B30116D000DB4EB /* ScenesViewController.swift */; };
 		73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB84A01B301184000DB4EB /* NFCViewController.swift */; };
 		73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB84A21B301338000DB4EB /* SettingsViewController.swift */; };
@@ -27,6 +35,7 @@
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
+		E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */; };
 		E7E1A81C1B3804D0008D8713 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */; };
 		E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */; };
 		E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */; };
@@ -46,6 +55,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		736F17CF1B3AE816003A6A02 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DashboardViewController.swift; path = ../DashboardViewController.swift; sourceTree = "<group>"; };
+		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		736F17D31B3AE850003A6A02 /* SequencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesViewController.swift; sourceTree = "<group>"; };
+		736F17D51B3AE85F003A6A02 /* TimersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimersViewController.swift; sourceTree = "<group>"; };
+		736F17D71B3AE870003A6A02 /* FlagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagsViewController.swift; sourceTree = "<group>"; };
+		736F17D91B3AE87E003A6A02 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillenceViewController.swift; sourceTree = "<group>"; };
+		736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnergyViewController.swift; sourceTree = "<group>"; };
 		73DB849E1B30116D000DB4EB /* ScenesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenesViewController.swift; sourceTree = "<group>"; };
 		73DB84A01B301184000DB4EB /* NFCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFCViewController.swift; sourceTree = "<group>"; };
 		73DB84A21B301338000DB4EB /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +87,7 @@
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tahoma.ttf; sourceTree = "<group>"; };
 		E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -106,13 +124,21 @@
 			children = (
 				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
+				736F17CF1B3AE816003A6A02 /* DashboardViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
-				73DB84A01B301184000DB4EB /* NFCViewController.swift */,
+				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
+				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
+				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
+				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
+				736F17D91B3AE87E003A6A02 /* ChatViewController.swift */,
+				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
+				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
+				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
+				73DB84A01B301184000DB4EB /* NFCViewController.swift */,
 				73DB84A41B301399000DB4EB /* CameraViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
-				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -130,6 +156,7 @@
 		73E2069D1B2EEFFE0008B002 = {
 			isa = PBXGroup;
 			children = (
+				E7E149B91B3AAF55005FD41D /* Font */,
 				E7E1A81F1B3804F1008D8713 /* Framework */,
 				E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */,
 				E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */,
@@ -189,6 +216,14 @@
 				73E206C31B2EEFFE0008B002 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E7E149B91B3AAF55005FD41D /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */,
+			);
+			name = Font;
 			sourceTree = "<group>";
 		};
 		E7E1A81F1B3804F1008D8713 /* Framework */ = {
@@ -251,7 +286,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = E2X3LN769S;
+						DevelopmentTeam = 2JR589G8SK;
 					};
 					73E206BD1B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -283,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */,
@@ -307,20 +343,28 @@
 			files = (
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
+				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
+				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
+				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				73E206AF1B2EEFFE0008B002 /* e_Homegreen.xcdatamodeld in Sources */,
+				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
+				736F17D01B3AE816003A6A02 /* DashboardViewController.swift in Sources */,
+				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
+				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
+				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

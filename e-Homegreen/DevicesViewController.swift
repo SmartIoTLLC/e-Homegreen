@@ -11,10 +11,12 @@ import UIKit
 class DeviceImage:NSObject{
     var image:UIImage!
     var text:String!
+    var open:Bool!
     
     init(image:UIImage, text:String) {
         self.image = image
         self.text = text
+        self.open = false
     }
     
 }
@@ -28,12 +30,16 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
     
     var table:UITableView = UITableView()
     
-    var levelList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
-    var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
+    var locationList:[String] = ["All"]
+    var levelList:[String] = ["Level 1", "All"]
+    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
     var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
     
     var device:DeviceImage = DeviceImage(image: UIImage(named: "lightBulb")!, text: "Light")
+    var device1:DeviceImage = DeviceImage(image: UIImage(named: "curtain0")!, text: "Curtain")
+    var device2:DeviceImage = DeviceImage(image: UIImage(named: "applianceoff")!, text: "Coffee Machine")
+    var device3:DeviceImage = DeviceImage(image: UIImage(named: "doorclosed")!, text: "Garage door")
     
     var senderButton:UIButton?
     
@@ -56,7 +62,7 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
 
         
         
-        for i in 0...6 {
+        for i in 0...2 {
             var gradient:CAGradientLayer = CAGradientLayer()
             gradient.frame = CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height)
             gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
@@ -105,22 +111,40 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
-            var levelLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-            levelLabel.text = "LVL"
+            var locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+            locationLabel.text = "Location"
+            locationLabel.textColor = UIColor.whiteColor()
+            pullDown.addSubview(locationLabel)
+            
+            var levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+            levelLabel.text = "Level"
             levelLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(levelLabel)
             
-            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
             zoneLabel.text = "Zone"
             zoneLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(zoneLabel)
             
-            var categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
+            var categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
             categoryLabel.text = "Category"
             categoryLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(categoryLabel)
             
-            var levelButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            var locationButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            locationButton.backgroundColor = UIColor.grayColor()
+            locationButton.titleLabel?.tintColor = UIColor.whiteColor()
+            locationButton.setTitle("All", forState: UIControlState.Normal)
+            locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+            locationButton.layer.cornerRadius = 5
+            locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+            locationButton.layer.borderWidth = 0.5
+            locationButton.tag = 1
+            locationButton.addTarget(self, action: "menuLocation:", forControlEvents: UIControlEvents.TouchUpInside)
+            locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+            pullDown.addSubview(locationButton)
+            
+            var levelButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
             levelButton.backgroundColor = UIColor.grayColor()
             levelButton.titleLabel?.tintColor = UIColor.whiteColor()
             levelButton.setTitle("All", forState: UIControlState.Normal)
@@ -128,11 +152,12 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             levelButton.layer.cornerRadius = 5
             levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             levelButton.layer.borderWidth = 0.5
+            levelButton.tag = 1
             levelButton.addTarget(self, action: "menuLevel:", forControlEvents: UIControlEvents.TouchUpInside)
             levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(levelButton)
             
-            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
+            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
             zoneButton.backgroundColor = UIColor.grayColor()
             zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
             zoneButton.setTitle("All", forState: UIControlState.Normal)
@@ -140,11 +165,12 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             zoneButton.layer.cornerRadius = 5
             zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             zoneButton.layer.borderWidth = 0.5
+            zoneButton.tag = 1
             zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
             
-            var categoryButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
+            var categoryButton:UIButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
             categoryButton.backgroundColor = UIColor.grayColor()
             categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
             categoryButton.setTitle("All", forState: UIControlState.Normal)
@@ -152,6 +178,7 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             categoryButton.layer.cornerRadius = 5
             categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             categoryButton.layer.borderWidth = 0.5
+            categoryButton.tag = 1
             categoryButton.addTarget(self, action: "menuCategory:", forControlEvents: UIControlEvents.TouchUpInside)
             categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(categoryButton)
@@ -179,22 +206,40 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
-            var levelLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-            levelLabel.text = "LVL"
+            var locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+            locationLabel.text = "Location"
+            locationLabel.textColor = UIColor.whiteColor()
+            pullDown.addSubview(locationLabel)
+            
+            var levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+            levelLabel.text = "Level"
             levelLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(levelLabel)
             
-            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
             zoneLabel.text = "Zone"
             zoneLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(zoneLabel)
             
-            var categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
+            var categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
             categoryLabel.text = "Category"
             categoryLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(categoryLabel)
             
-            var levelButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            var locationButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            locationButton.backgroundColor = UIColor.grayColor()
+            locationButton.titleLabel?.tintColor = UIColor.whiteColor()
+            locationButton.setTitle("All", forState: UIControlState.Normal)
+            locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+            locationButton.layer.cornerRadius = 5
+            locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+            locationButton.layer.borderWidth = 0.5
+            locationButton.tag = 2
+            locationButton.addTarget(self, action: "menuLocation:", forControlEvents: UIControlEvents.TouchUpInside)
+            locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+            pullDown.addSubview(locationButton)
+            
+            var levelButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
             levelButton.backgroundColor = UIColor.grayColor()
             levelButton.titleLabel?.tintColor = UIColor.whiteColor()
             levelButton.setTitle("All", forState: UIControlState.Normal)
@@ -202,11 +247,12 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             levelButton.layer.cornerRadius = 5
             levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             levelButton.layer.borderWidth = 0.5
+            levelButton.tag = 2
             levelButton.addTarget(self, action: "menuLevel:", forControlEvents: UIControlEvents.TouchUpInside)
             levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(levelButton)
             
-            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
+            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
             zoneButton.backgroundColor = UIColor.grayColor()
             zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
             zoneButton.setTitle("All", forState: UIControlState.Normal)
@@ -214,11 +260,12 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             zoneButton.layer.cornerRadius = 5
             zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             zoneButton.layer.borderWidth = 0.5
+            zoneButton.tag = 2
             zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
             
-            var categoryButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
+            var categoryButton:UIButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
             categoryButton.backgroundColor = UIColor.grayColor()
             categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
             categoryButton.setTitle("All", forState: UIControlState.Normal)
@@ -226,6 +273,7 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
             categoryButton.layer.cornerRadius = 5
             categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             categoryButton.layer.borderWidth = 0.5
+            categoryButton.tag = 2
             categoryButton.addTarget(self, action: "menuCategory:", forControlEvents: UIControlEvents.TouchUpInside)
             categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(categoryButton)
@@ -259,32 +307,101 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
         table.hidden = true
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func menuLocation(sender : UIButton){
+        if table.hidden == true{
+            senderButton = sender
+            var height:CGFloat
+            if locationList.count * 40 < 160{
+                height = CGFloat(locationList.count * 40)
+            }else{
+                height = 160
+            }
+            if sender.tag == 1 {
+                table.frame = CGRectMake(260, 30, 150, height)
+            }else{
+                table.frame = CGRectMake(110, 70, 150, height)
+            }
+            table.hidden = false
+            tableList.removeAll(keepCapacity: false)
+            tableList = locationList
+            table.reloadData()
+        }else{
+            table.hidden = true
+        }
+    }
+    
     func menuLevel(sender : UIButton){
-        senderButton = sender
-        table.frame = CGRectMake(110, 70, 150, 160)
-        table.hidden = false
-        tableList.removeAll(keepCapacity: false)
-        tableList = levelList
-        table.reloadData()
+        if table.hidden == true{
+            senderButton = sender
+            var height:CGFloat
+            if levelList.count * 40 < 160{
+                height = CGFloat(levelList.count * 40)
+            }else{
+                height = 160
+            }
+            if sender.tag == 1 {
+                table.frame = CGRectMake(260, 30, 150, height)
+            }else{
+                table.frame = CGRectMake(110, 120, 150, height)
+            }
+            table.hidden = false
+            tableList.removeAll(keepCapacity: false)
+            tableList = levelList
+            table.reloadData()
+        }else{
+            table.hidden = true
+        }
     }
     
     func menuZone(sender : UIButton){
-        senderButton = sender
-        table.frame = CGRectMake(110, 120, 150, 160)
-        table.hidden = false
-        tableList.removeAll(keepCapacity: false)
-        tableList = zoneList
-        table.reloadData()
+        if table.hidden == true{
+            senderButton = sender
+            var height:CGFloat
+            if zoneList.count * 40 < 160{
+                height = CGFloat(zoneList.count * 40)
+            }else{
+                height = 160
+            }
+            if sender.tag == 1 {
+                table.frame = CGRectMake(260, 60, 150, height)
+            }else{
+                table.frame = CGRectMake(110, 170, 150, height)
+            }
+            table.hidden = false
+            tableList.removeAll(keepCapacity: false)
+            tableList = zoneList
+            table.reloadData()
+        }else{
+            table.hidden = true
+        }
         
     }
     
     func menuCategory(sender : UIButton){
-        senderButton = sender
-        table.frame = CGRectMake(110, 170, 150, 160)
-        table.hidden = false
-        tableList.removeAll(keepCapacity: false)
-        tableList = categoryList
-        table.reloadData()
+        if table.hidden == true{
+            senderButton = sender
+            var height:CGFloat
+            if categoryList.count * 40 < 160{
+                height = CGFloat(categoryList.count * 40)
+            }else{
+                height = 160
+            }
+            if sender.tag == 1 {
+                table.frame = CGRectMake(260, 60, 150, height)
+            }else{
+                table.frame = CGRectMake(110, 220, 150, height)
+            }
+            table.hidden = false
+            tableList.removeAll(keepCapacity: false)
+            tableList = categoryList
+            table.reloadData()
+        }else{
+            table.hidden = true
+        }
     }
     
     func handleTap (gesture:UIGestureRecognizer) {
@@ -304,7 +421,7 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
     }
     
     func changeSliderValue(sender: UISlider){
-        println(sender.value)
+//        println(sender.value)
         if sender.value >= 0 && sender.value < 0.1{
             device.image = UIImage(named: "lightBulb1")
 
@@ -341,6 +458,41 @@ class DevicesViewController: CommonViewController, UITableViewDelegate, UITableV
         
     }
     
+    func changeSliderValue1(sender: UISlider){
+//        println(sender.value)
+        if sender.value >= 0 && sender.value < 0.2{
+            device1.image = UIImage(named: "curtain0")
+            
+        }else if sender.value > 0.2 && sender.value < 0.4{
+            device1.image = UIImage(named: "curtain1")
+            
+        }else if sender.value > 0.4 && sender.value < 0.6 {
+            device1.image = UIImage(named: "curtain2")
+            
+        }else if sender.value > 0.6 && sender.value < 0.8 {
+            device1.image = UIImage(named: "curtain3")
+            
+        }else {
+            device1.image = UIImage(named: "curtain4")
+            
+        }
+        
+        deviceCollectionView.reloadData()
+        
+    }
+    
+    func buttonTapped(sender:UIButton){
+        if sender.tag == 2{
+            if device2.open == false {
+                device2.open = true
+                
+            }else{
+                device2.open = false
+            }
+            deviceCollectionView.reloadData()
+        }
+    }
+    
     
     
     
@@ -350,7 +502,15 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        println(" ")
+        if indexPath.row == 4{
+            if device3.open == false{
+                device3.open = true
+            }else{
+                device3.open = false
+            }
+            deviceCollectionView.reloadData()
+        }
+        
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -367,7 +527,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return 5
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -390,19 +550,76 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         }
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-        //2
-        //        let flickrPhoto = photoForIndexPath(indexPath)
-        cell.backgroundColor = UIColor.lightGrayColor()
-        //3
-        cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
-        cell.layer.borderWidth = 0.5
-        cell.name.text = "Coffee Machine"
-        //            cell.addSubview(myView[indexPath.row])
-        //            cell.addSubview(mySecondView[indexPath.row])
-//        println("Broj: \(indexPath.row)")
-        return cell
+        else if indexPath.row == 1 {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
+            //2
+            //        let flickrPhoto = photoForIndexPath(indexPath)
+            cell.backgroundColor = UIColor.lightGrayColor()
+            //3
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            cell.curtainName.text = device1.text
+            cell.curtainImage.image = device1.image
+            cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
+            cell.curtainSlider.tag = indexPath.row
+            //        cell.addSubview(myView[indexPath.row])
+            //        cell.addSubview(mySecondView[indexPath.row])
+            //            println("Broj: \(indexPath.row)")
+            return cell
+        }
+        
+
+       else if indexPath.row == 2 {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
+            cell.backgroundColor = UIColor.lightGrayColor()
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            cell.name.text = device2.text
+            if device2.open == false {
+                cell.image.image = UIImage(named: "applianceoff")
+                cell.button.setTitle("OFF", forState: UIControlState.Normal)
+            }else{
+                cell.image.image = UIImage(named: "applianceon")
+                cell.button.setTitle("ON", forState: UIControlState.Normal)
+            }
+            cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.button.tag = 2
+            //            cell.addSubview(myView[indexPath.row])
+            //            cell.addSubview(mySecondView[indexPath.row])
+            //        println("Broj: \(indexPath.row)")
+            return cell
+            
+        }else if indexPath.row == 3 {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
+
+            cell.backgroundColor = UIColor.lightGrayColor()
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+
+
+            return cell
+            
+        }
+        
+        else {
+            
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
+            cell.backgroundColor = UIColor.lightGrayColor()
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            cell.accessLabel.text = device3.text
+            if device3.open == false {
+                cell.accessImage.image = UIImage(named: "doorclosed")
+            }else{
+                cell.accessImage.image = UIImage(named: "dooropen")
+            }
+            return cell
+            
+        }
         
         
     }
@@ -419,6 +636,33 @@ class ApplianceCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var name: UILabel!    
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var button: UIButton!
+    
+}
 
+class CurtainCollectionCell: UICollectionViewCell {
+    
+    @IBOutlet weak var curtainName: UILabel!
+    @IBOutlet weak var curtainImage: UIImageView!
+    @IBOutlet weak var curtainSlider: UISlider!
+    
+}
+
+class AccessControllCell: UICollectionViewCell {
+    
+    @IBOutlet weak var accessLabel: UILabel!
+    @IBOutlet weak var accessImage: UIImageView!
+    
+}
+
+class ClimateCell: UICollectionViewCell {
+    
+    @IBOutlet weak var climateName: UILabel!
+    @IBOutlet weak var coolingSetPoint: UILabel!
+    @IBOutlet weak var heatingSetPoint: UILabel!
+    @IBOutlet weak var climateMode: UILabel!
+    @IBOutlet weak var modeImage: UIImageView!    
+    @IBOutlet weak var climateSpeed: UILabel!
+    @IBOutlet weak var fanSpeedImage: UIImageView!
     
 }
