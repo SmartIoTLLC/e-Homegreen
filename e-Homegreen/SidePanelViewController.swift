@@ -18,9 +18,9 @@ class SidePanelViewController: UIViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var menuCollectionView: UICollectionView!
 //  @IBOutlet weak var tableView: UITableView!
-  var delegate: SidePanelViewControllerDelegate?
-
-  var menuItems: Array<Menu>!
+    var delegate: SidePanelViewControllerDelegate?
+    private var sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    var menuItems: Array<Menu>!
   
 //  struct TableView {
 //    struct CellIdentifiers {
@@ -81,11 +81,13 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        println(" ")
+//        println(" ")
+        let selectedMenuItem = menuItems[indexPath.row]
+        delegate?.menuItemSelected(selectedMenuItem)
     }
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-//        return sectionInsets
-//    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return CGSize(width: 120, height: 120)
