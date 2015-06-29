@@ -17,7 +17,7 @@ class PullDownView: UIScrollView {
     //    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     //    var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
     
-    //    var senderButton:UIButton?
+        var senderButton:UIButton?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -36,6 +36,7 @@
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
+		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */; };
 		E7E1A81C1B3804D0008D8713 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */; };
 		E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */; };
@@ -91,6 +92,7 @@
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = "<group>"; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverViewController.swift; sourceTree = "<group>"; };
 		E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tahoma.ttf; sourceTree = "<group>"; };
 		E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -142,6 +144,7 @@
 				73DB84A01B301184000DB4EB /* NFCViewController.swift */,
 				73DB84A41B301399000DB4EB /* CameraViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
+				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
+				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
