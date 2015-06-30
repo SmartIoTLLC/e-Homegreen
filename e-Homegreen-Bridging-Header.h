@@ -10,5 +10,7 @@
 #define e_Homegreen_e_Homegreen_Bridging_Header_h
 
 #import "LXReorderableCollectionViewFlowLayout.h"
+#import "SPClockView.h"
+#import "FSCalendar.h"
 
 #endif

@@ -96,7 +96,6 @@ extension ContainerViewController: CenterViewControllerDelegate {
         if (leftViewController == nil) {
             leftViewController = UIStoryboard.leftViewController()
             leftViewController!.menuItems = Menu.allMenuItems()
-            
             addChildSidePanelController(leftViewController!)
         }
     }

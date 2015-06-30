@@ -8,12 +8,30 @@
 
 import UIKit
 
-class DashboardViewController: CommonViewController {
+class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCalendarDelegate {
+    
+    @IBOutlet weak var calendar: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         commonConstruct()
+        
+
+        
+        var clock:SPClockView = SPClockView(frame: CGRectMake(20, 20, 140, 140))
+        clock.timeZone = NSTimeZone.localTimeZone()
+        self.view.addSubview(clock)
+        
+        var panRecognizer = UIPanGestureRecognizer(target:self, action:"detectPan:")
+        clock.addGestureRecognizer(panRecognizer)
+        
+        var panRecognizer1 = UIPanGestureRecognizer(target:self, action:"detectPan1:")
+        calendar.addGestureRecognizer(panRecognizer1)
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -21,15 +39,21 @@ class DashboardViewController: CommonViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+    func detectPan(recognizer:UIPanGestureRecognizer) {
+        var translation  = recognizer.translationInView(self.view)
+        recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
+            recognizer.view!.center.y + translation.y)
+        recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
     }
-    */
+    
+    func detectPan1(recognizer:UIPanGestureRecognizer) {
+        var translation  = recognizer.translationInView(self.view)
+        recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
+            recognizer.view!.center.y + translation.y)
+        recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
+    }
+    
+
+
     
 }

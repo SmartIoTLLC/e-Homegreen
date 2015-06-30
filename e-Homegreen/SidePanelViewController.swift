@@ -20,6 +20,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     var delegate: SidePanelViewControllerDelegate?
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     var menuItems: Array<Menu>!
+    var menuList:[NSString] = []
   
     struct CollectionView {
         struct CellIdentifiers {
@@ -74,6 +75,29 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
         println("will end drag")
     }
+
+    
+    override func viewWillDisappear(animated: Bool) {
+        for items in menuItems{
+            menuList.append(items.title)
+        }
+        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
+        NSUserDefaults.standardUserDefaults().synchronize()
+//        let menuData = NSKeyedArchiver.archivedDataWithRootObject(menuList)
+//        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
+    }
+    
+//    override func viewWillAppear(animated: Bool) {
+//        let menuData = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? NSData
+//        if let menuData = menuData {
+//            let menuArray = NSKeyedUnarchiver.unarchiveObjectWithData(menuData) as? [Menu]
+//            
+//            if let placesArray = menuArray {
+//                menuCollectionView.reloadData()
+//            }
+//            
+//        }
+//    }
     
   
 }
@@ -109,6 +133,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
         gradient.colors = [UIColor.grayColor().colorWithAlphaComponent(0.95).CGColor, UIColor.grayColor().colorWithAlphaComponent(0.1).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
         cell.configureForMenu(menuItems[indexPath.row])
+//        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

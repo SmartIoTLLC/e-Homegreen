@@ -35,6 +35,13 @@
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
+		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
+		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
+		E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBA1B42FC0B00E48454 /* FSCalendarCell.m */; };
+		E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBC1B42FC0B00E48454 /* FSCalendarHeader.m */; };
+		E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBE1B42FC0B00E48454 /* NSCalendar+FSExtension.m */; };
+		E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */; };
+		E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
 		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */; };
@@ -89,6 +96,20 @@
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
+		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
+		E75B4FB71B42FC0B00E48454 /* FSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendar.h; sourceTree = "<group>"; };
+		E75B4FB81B42FC0B00E48454 /* FSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendar.m; sourceTree = "<group>"; };
+		E75B4FB91B42FC0B00E48454 /* FSCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarCell.h; sourceTree = "<group>"; };
+		E75B4FBA1B42FC0B00E48454 /* FSCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCell.m; sourceTree = "<group>"; };
+		E75B4FBB1B42FC0B00E48454 /* FSCalendarHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarHeader.h; sourceTree = "<group>"; };
+		E75B4FBC1B42FC0B00E48454 /* FSCalendarHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarHeader.m; sourceTree = "<group>"; };
+		E75B4FBD1B42FC0B00E48454 /* NSCalendar+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCalendar+FSExtension.h"; sourceTree = "<group>"; };
+		E75B4FBE1B42FC0B00E48454 /* NSCalendar+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCalendar+FSExtension.m"; sourceTree = "<group>"; };
+		E75B4FBF1B42FC0B00E48454 /* NSDate+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+FSExtension.h"; sourceTree = "<group>"; };
+		E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FSExtension.m"; sourceTree = "<group>"; };
+		E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
+		E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = "<group>"; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -162,6 +183,8 @@
 		73E2069D1B2EEFFE0008B002 = {
 			isa = PBXGroup;
 			children = (
+				E75B4FB61B42FA3900E48454 /* Calendar */,
+				E75B4F761B42B6D700E48454 /* Clock */,
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				E7E149B91B3AAF55005FD41D /* Font */,
@@ -223,6 +246,34 @@
 				73E206C31B2EEFFE0008B002 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E75B4F761B42B6D700E48454 /* Clock */ = {
+			isa = PBXGroup;
+			children = (
+				E75B4F7D1B42CB1100E48454 /* SPClockView.h */,
+				E75B4F7E1B42CB1100E48454 /* SPClockView.m */,
+			);
+			name = Clock;
+			sourceTree = "<group>";
+		};
+		E75B4FB61B42FA3900E48454 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E75B4FB71B42FC0B00E48454 /* FSCalendar.h */,
+				E75B4FB81B42FC0B00E48454 /* FSCalendar.m */,
+				E75B4FB91B42FC0B00E48454 /* FSCalendarCell.h */,
+				E75B4FBA1B42FC0B00E48454 /* FSCalendarCell.m */,
+				E75B4FBB1B42FC0B00E48454 /* FSCalendarHeader.h */,
+				E75B4FBC1B42FC0B00E48454 /* FSCalendarHeader.m */,
+				E75B4FBD1B42FC0B00E48454 /* NSCalendar+FSExtension.h */,
+				E75B4FBE1B42FC0B00E48454 /* NSCalendar+FSExtension.m */,
+				E75B4FBF1B42FC0B00E48454 /* NSDate+FSExtension.h */,
+				E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */,
+				E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */,
+				E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */,
+			);
+			name = Calendar;
 			sourceTree = "<group>";
 		};
 		E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */ = {
@@ -302,7 +353,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = E2X3LN769S;
+						DevelopmentTeam = 2JR589G8SK;
 					};
 					73E206BD1B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -360,16 +411,20 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
+				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
+				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
+				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
+				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
@@ -377,10 +432,13 @@
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
+				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
+				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
+				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 			);
