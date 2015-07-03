@@ -84,7 +84,7 @@
 
 - (void)initOutlook{
     self.backgroundColor = [UIColor clearColor];
-    _clockBackgroundColor = [UIColor blackColor];
+    _clockBackgroundColor = [UIColor whiteColor];
     _borderColor = [UIColor whiteColor];
     _digitColor = [UIColor whiteColor];
     double fontSize = 8+self.frame.size.width/50;

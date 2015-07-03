@@ -95,7 +95,8 @@ extension ContainerViewController: CenterViewControllerDelegate {
     func addLeftPanelViewController() {
         if (leftViewController == nil) {
             leftViewController = UIStoryboard.leftViewController()
-            leftViewController!.menuItems = Menu.allMenuItems()
+//            leftViewController!.menuItems = Menu.allMenuItems()
+            leftViewController!.menuItems = MenuViewControllers.sharedInstance.allMenuItems1()
             addChildSidePanelController(leftViewController!)
         }
     }
@@ -222,10 +223,10 @@ private extension UIStoryboard {
     }
 }
 extension ContainerViewController: SidePanelViewControllerDelegate {
-    func menuItemSelected(menuItem: Menu) {
+    func menuItemSelected(menuItem: MenuItem) {
         if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {
-            menuItem.viewController.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
-            centerViewControllerSecond.Container.addSubview(menuItem.viewController.view)
+            menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
+            centerViewControllerSecond.Container.addSubview(menuItem.viewController!.view)
             centerViewControllerSecond.titleOfViewController.text = menuItem.title
 //                    view.addSubview(centerNavigationController.view)
 //                    addChildViewController(centerNavigationController)

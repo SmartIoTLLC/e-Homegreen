@@ -49,5 +49,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Request permission to use location service when the apps is in background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>To find out your location</string>
 </dict>
 </plist>

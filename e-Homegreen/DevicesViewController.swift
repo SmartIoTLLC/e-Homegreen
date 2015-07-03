@@ -152,12 +152,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 self.device1.value = self.device1.value + 0.05
             }else{
                 self.device1.value = 1
+                self.device1.open = true
             }
         }else{
             if self.device1.value  > 0.05 {
                 self.device1.value = self.device1.value - 0.05
             }else{
                 self.device1.value = 0
+                self.device1.open = false
             }
         }
         println(self.device1.value)
@@ -167,16 +169,18 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func update(){
         
         if self.device.stateOpening == true{
-            if self.device.value < 1{
+            if self.device.value <= 1{
                 self.device.value = self.device.value + 0.05
             }else{
                 self.device.value = 1
+                self.device.open = true
             }
         }else{
             if self.device.value  > 0.05 {
                 self.device.value = self.device.value - 0.05
             }else{
                 self.device.value = 0
+                self.device.open = false
             }
         }
         
@@ -463,8 +467,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func changeSliderValue(sender: UISlider){
         if sender.value == 1 {
             self.device.stateOpening = false
+            self.device.open = true
+            self.device.stateOpening = false
         }
         if sender.value == 0 {
+            self.device.stateOpening = true
+            self.device.open = false
             self.device.stateOpening = true
         }
         device.value = sender.value
@@ -475,8 +483,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func changeSliderValue1(sender: UISlider){
         if sender.value == 1 {
             self.device1.stateOpening = false
+            self.device1.open = true
+            self.device1.stateOpening = false
         }
         if sender.value == 0 {
+            self.device1.stateOpening = true
+            self.device1.open = false
             self.device1.stateOpening = true
         }
         device1.value = sender.value
@@ -512,7 +524,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
                 device.stateOpening = true
             }else{
                 device.open = true
-                device.value = 99
+                device.value = 1
                 device.stateOpening = false
             }
         }
@@ -523,7 +535,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
                 device1.stateOpening = true
             }else{
                 device1.open = true
-                device1.value = 99
+                device1.value = 1
                 device1.stateOpening = false
             }
         }

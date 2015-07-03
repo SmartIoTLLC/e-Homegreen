@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 protocol SidePanelViewControllerDelegate {
-  func menuItemSelected(menuItem: Menu)
+  func menuItemSelected(menuItem: MenuItem)
 }
 
 class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
@@ -19,7 +19,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     @IBOutlet weak var menuCollectionView: UICollectionView!
     var delegate: SidePanelViewControllerDelegate?
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    var menuItems: Array<Menu>!
+    var menuItems: Array<MenuItem>!
     var menuList:[NSString] = []
   
     struct CollectionView {
@@ -31,6 +31,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        menuList.removeAll(keepCapacity: false)
     }
 
     
@@ -45,14 +49,14 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     func collectionView(collectionView: UICollectionView!, canMoveItemAtIndexPath indexPath: NSIndexPath!) -> Bool {
 //        var pom = menuItems[fromIndexPath.item]
-        if indexPath.item == 11{
+        if indexPath.item == (menuItems.count - 1) {
             return false
         }
         return true
     }
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, canMoveToIndexPath toIndexPath: NSIndexPath!) -> Bool {
-        if toIndexPath.item == 11 {
+        if toIndexPath.item == (menuItems.count - 1) {
             return false
         }
         return true
@@ -79,7 +83,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     override func viewWillDisappear(animated: Bool) {
         for items in menuItems{
-            menuList.append(items.title)
+            menuList.append(items.title!)
         }
         NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -105,6 +109,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+
         let selectedMenuItem = menuItems[indexPath.row]
         delegate?.menuItemSelected(selectedMenuItem)
     }
@@ -124,7 +129,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
 //    }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Menu.allMenuItems().count
+        return menuItems.count
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
@@ -145,7 +150,7 @@ class MenuItemCell: UICollectionViewCell {
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
     
-    func configureForMenu (menuItem:Menu) {
+    func configureForMenu (menuItem:MenuItem) {
         menuItemImageView.image = menuItem.image
         menuItemName.text = menuItem.title
     }

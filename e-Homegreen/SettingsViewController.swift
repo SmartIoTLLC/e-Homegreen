@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SettingsViewController: CommonViewController {
+class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
+//        commonConstruct()
         // Do any additional setup after loading the view.
     }
 
@@ -20,16 +20,40 @@ class SettingsViewController: CommonViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as? SettinsTableViewCell {
+            cell.tableCellTitle.text = "Menu settings"
+            return cell
+            
+        }
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        cell.textLabel?.text = "dads"
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 0{            
+            self.performSegueWithIdentifier("menuSettings", sender: self)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        var destinationVC = segue.destinationViewController as! UIViewController
+        destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+    }
+    
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
+
+}
+
+class SettinsTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var tableCellTitle: UILabel!
 }
