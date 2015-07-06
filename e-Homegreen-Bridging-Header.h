@@ -12,5 +12,9 @@
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SPClockView.h"
 #import "FSCalendar.h"
+#import "CocoaAsyncSocket/GCDAsyncUdpSocket.h"
+#import "CocoaAsyncSocket/AsyncSocket.h"
+#import "CocoaAsyncSocket/AsyncUdpSocket.h"
+#import "CocoaAsyncSocket/GCDAsyncSocket.h"
 
 #endif
