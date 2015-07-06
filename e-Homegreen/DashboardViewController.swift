@@ -42,7 +42,8 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
                                               "13n":"weather-snow",
                                               "50n":"weather-mist"]
     
-    @IBOutlet weak var calendar: FSCalendar!
+//    @IBOutlet weak var calendar: FSCalendar!
+    var calendar = FSCalendar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,10 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
         self.view.insertSubview(backgroundImageView, atIndex: 0)
         
+        calendar.frame = CGRectMake(50, 50, 200, 200)
+        self.view.addSubview(calendar)
+        calendar.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.55)
+        calendar.layer.cornerRadius = 10
         
         var clock:SPClockView = SPClockView(frame: CGRectMake(170, 220, 140, 140))
         clock.timeZone = NSTimeZone.localTimeZone()

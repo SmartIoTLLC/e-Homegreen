@@ -84,7 +84,7 @@
 
 - (void)initOutlook{
     self.backgroundColor = [UIColor clearColor];
-    _clockBackgroundColor = [UIColor whiteColor];
+    _clockBackgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6 ];
     _borderColor = [UIColor whiteColor];
     _digitColor = [UIColor whiteColor];
     double fontSize = 8+self.frame.size.width/50;
@@ -93,7 +93,7 @@
 }
 
 - (void)setAsDay:(BOOL)day{
-    _clockBackgroundColor = day? [UIColor whiteColor]:[UIColor blackColor];
+    _clockBackgroundColor = day? [UIColor colorWithWhite:1.0 alpha:0.5]:[UIColor colorWithWhite:1.0 alpha:0.5];
     _digitColor = day ? [UIColor blackColor] : [UIColor whiteColor];
     _borderColor = day ? [UIColor blackColor] : [UIColor whiteColor];
 }

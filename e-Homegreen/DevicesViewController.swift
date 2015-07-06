@@ -191,7 +191,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
 
-            sectionInsets = UIEdgeInsets(top: 10, left: 25, bottom: 5, right: 25)
+            sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 25, right: 5)
             
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
