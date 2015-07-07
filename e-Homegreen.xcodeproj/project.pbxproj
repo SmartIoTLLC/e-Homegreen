@@ -287,12 +287,9 @@
 		73E2069D1B2EEFFE0008B002 = {
 			isa = PBXGroup;
 			children = (
-				E7DC679B1B457C0E00EA6543 /* Weather Icons */,
-				E75B4FB61B42FA3900E48454 /* Calendar */,
-				E75B4F761B42B6D700E48454 /* Clock */,
+				E75163F01B4C089300457BED /* Widget */,
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
-				E7E149B91B3AAF55005FD41D /* Font */,
 				E7E1A81F1B3804F1008D8713 /* Framework */,
 				E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */,
 				E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */,
@@ -363,6 +360,17 @@
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		E75163F01B4C089300457BED /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				E7E149B91B3AAF55005FD41D /* Font */,
+				E75B4F761B42B6D700E48454 /* Clock */,
+				E75B4FB61B42FA3900E48454 /* Calendar */,
+				E7DC679B1B457C0E00EA6543 /* Weather Icons */,
+			);
+			name = Widget;
 			sourceTree = "<group>";
 		};
 		E75B4F761B42B6D700E48454 /* Clock */ = {

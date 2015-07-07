@@ -48,8 +48,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var senderButton:UIButton?
     
-    var gradient:CAGradientLayer = CAGradientLayer()
-    
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
     var myView:Array<UIView> = []
@@ -59,9 +57,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.viewDidLoad()
         commonConstruct()
         
-        
-        gradient.frame = CGRectMake(0, 0, 150, 180)
-        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.1).CGColor]
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -572,9 +567,14 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-//            cell.backgroundColor = UIColor.lightGrayColor()
-            
-            cell.layer.insertSublayer(gradient, atIndex: 0)
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -629,8 +629,14 @@ extension DevicesViewController: UICollectionViewDataSource {
         
         else if indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            cell.layer.insertSublayer(gradient, atIndex: 0)
-            cell.backgroundColor = UIColor.lightGrayColor()
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -671,7 +677,14 @@ extension DevicesViewController: UICollectionViewDataSource {
 
        else if indexPath.row == 2 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            cell.backgroundColor = UIColor.lightGrayColor()
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -692,12 +705,17 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         }else if indexPath.row == 3 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-            cell.backgroundColor = UIColor.lightGrayColor()
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
-
-
             return cell
             
         }
@@ -705,7 +723,14 @@ extension DevicesViewController: UICollectionViewDataSource {
         else {
             
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
-            cell.backgroundColor = UIColor.lightGrayColor()
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -727,6 +752,7 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var typeOfLight: UILabel!    
     @IBOutlet weak var picture: UIImageView!    
     @IBOutlet weak var lightSlider: UISlider!
+    var gradientLayer: CAGradientLayer?
     
 }
 
@@ -735,6 +761,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var name: UILabel!    
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var button: UIButton!
+    var gradientLayer: CAGradientLayer?
     
 }
 
@@ -743,6 +770,7 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
     @IBOutlet weak var curtainSlider: UISlider!
+    var gradientLayer: CAGradientLayer?
     
 }
 
@@ -750,6 +778,7 @@ class AccessControllCell: UICollectionViewCell {
     
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var accessImage: UIImageView!
+    var gradientLayer: CAGradientLayer?
     
 }
 
@@ -762,5 +791,6 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var modeImage: UIImageView!    
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
+    var gradientLayer: CAGradientLayer?
     
 }

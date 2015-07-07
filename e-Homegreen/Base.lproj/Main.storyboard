@@ -489,6 +489,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="6yc-Lk-PX4" firstAttribute="top" secondItem="tbk-5J-of7" secondAttribute="bottom" constant="8" id="1Ie-oG-InU"/>
                                             <constraint firstAttribute="trailing" secondItem="FPC-Qx-77a" secondAttribute="trailing" constant="10" id="4Im-qV-yhj"/>
@@ -539,7 +540,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="YOI-EX-BDa" secondAttribute="trailing" constant="20" id="151-7S-nhl"/>
                                             <constraint firstItem="VVv-XD-Fgf" firstAttribute="top" secondItem="ymB-1e-PPO" secondAttribute="top" constant="8" id="GQW-xa-Emq"/>
@@ -611,6 +612,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="AQJ-VB-Ob5" firstAttribute="leading" secondItem="JHH-bn-lg2" secondAttribute="leading" constant="8" id="0TL-Xw-UZY"/>
                                             <constraint firstItem="AQJ-VB-Ob5" firstAttribute="centerX" secondItem="PAf-lS-77v" secondAttribute="centerX" constant="-1" id="3PY-mt-Qzh"/>
@@ -657,6 +659,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="CIY-gR-XXG" secondAttribute="trailing" constant="10" id="95V-Q6-6iw"/>
                                             <constraint firstAttribute="trailing" secondItem="T2u-S3-FiQ" secondAttribute="trailing" id="AQu-Jl-Pnf"/>

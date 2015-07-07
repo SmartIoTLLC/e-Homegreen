@@ -87,7 +87,7 @@ extension AlertDialogViewController : UIViewControllerAnimatedTransitioning {
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.2, 1.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
