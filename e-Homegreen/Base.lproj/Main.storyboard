@@ -26,6 +26,8 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -49,9 +51,14 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qwv-jo-h6Z">
-                                <rect key="frame" x="183" y="265" width="71" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <rect key="frame" x="164" y="265" width="100" height="37"/>
+                                <color key="backgroundColor" red="0.82352941176470584" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Med-12-OSD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
                                 <state key="normal" title="Local IP">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -59,9 +66,15 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ion-lg-2bN">
-                                <rect key="frame" x="67" y="265" width="93" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Remote IP"/>
+                                <rect key="frame" x="56" y="265" width="100" height="37"/>
+                                <color key="backgroundColor" red="0.82352941176470584" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="6KI-Sk-zbK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                                <state key="normal" title="Remote IP">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="remote:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="OFL-Ip-4cE"/>
                                 </connections>
@@ -70,11 +83,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="UuF-WC-v1A" secondAttribute="centerX" constant="-0.5" id="3yc-dW-qaJ"/>
-                            <constraint firstItem="UuF-WC-v1A" firstAttribute="trailing" secondItem="Qwv-jo-h6Z" secondAttribute="trailing" id="B4w-T8-Fka"/>
-                            <constraint firstItem="Qwv-jo-h6Z" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="30" id="Xmw-hM-j9L"/>
-                            <constraint firstItem="Ion-lg-2bN" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="30" id="aGp-HD-0gz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Qwv-jo-h6Z" secondAttribute="trailing" constant="40" id="9kg-Yk-mhZ"/>
+                            <constraint firstItem="Qwv-jo-h6Z" firstAttribute="centerY" secondItem="Ion-lg-2bN" secondAttribute="centerY" id="Ega-9C-awM"/>
+                            <constraint firstItem="Ion-lg-2bN" firstAttribute="leading" secondItem="9wY-hv-cRy" secondAttribute="leadingMargin" constant="40" id="QYi-G5-dpp"/>
+                            <constraint firstItem="Ion-lg-2bN" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="30" id="e4P-4n-GUf"/>
                             <constraint firstItem="UuF-WC-v1A" firstAttribute="top" secondItem="Tyt-xI-wIH" secondAttribute="bottom" constant="30" id="nZC-fi-h0V"/>
-                            <constraint firstItem="Ion-lg-2bN" firstAttribute="leading" secondItem="UuF-WC-v1A" secondAttribute="leading" id="ugY-TO-uFm"/>
                         </constraints>
                     </view>
                     <connections>

@@ -48,6 +48,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var senderButton:UIButton?
     
+    var gradient:CAGradientLayer = CAGradientLayer()
+    
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
     var myView:Array<UIView> = []
@@ -57,10 +59,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.viewDidLoad()
         commonConstruct()
         
-//        var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-//        lpgr.minimumPressDuration = 0.5
-//        lpgr.delegate = self
-//        deviceCollectionView.addGestureRecognizer(lpgr)
+        
+        gradient.frame = CGRectMake(0, 0, 150, 180)
+        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.1).CGColor]
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -571,7 +572,9 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-            cell.backgroundColor = UIColor.lightGrayColor()
+//            cell.backgroundColor = UIColor.lightGrayColor()
+            
+            cell.layer.insertSublayer(gradient, atIndex: 0)
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -626,10 +629,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         
         else if indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            //2
-            //        let flickrPhoto = photoForIndexPath(indexPath)
+            cell.layer.insertSublayer(gradient, atIndex: 0)
             cell.backgroundColor = UIColor.lightGrayColor()
-            //3
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
@@ -691,7 +692,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         }else if indexPath.row == 3 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-
             cell.backgroundColor = UIColor.lightGrayColor()
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor

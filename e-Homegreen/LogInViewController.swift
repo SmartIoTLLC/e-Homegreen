@@ -18,11 +18,6 @@ class LogInViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        remote.layer.borderWidth = 0.5
-//        remote.layer.borderColor = UIColor.blackColor().CGColor
-//        
-//        local.layer.borderWidth = 0.5
-//        local.layer.borderColor = UIColor.blackColor().CGColor
         // Do any additional setup after loading the view.
     }
 
@@ -33,32 +28,11 @@ class LogInViewController: UIViewController {
     
 
     @IBAction func remote(sender: AnyObject) {
-        let alert = UIAlertController(title: "Remote IP", message: "Log in with remote IP", preferredStyle: .Alert)
-        
-        let dismissHandler = {
-            (action: UIAlertAction!) in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: dismissHandler))
-//        alert.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: dismissHandler))
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            println(self.ipadress?.text)
-            println(self.port?.text)
-
-        }))
-        alert.addTextFieldWithConfigurationHandler { textField in
-            self.ipadress = textField
-            textField.placeholder = "IP address"
-        }
-        alert.addTextFieldWithConfigurationHandler { textField in
-            self.port = textField
-            textField.placeholder = "Port"
-        }
-        presentViewController(alert, animated: true, completion: nil)
+        showAleartWithMessage("Remote Connection Settings")
     }
     
     @IBAction func local(sender: AnyObject) {
-        showAleartWithMessage("nesto")
+        showAleartWithMessage("Local Connection Settings")
     }
 
 
