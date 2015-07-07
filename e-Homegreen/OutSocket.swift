@@ -11,7 +11,7 @@ import UIKit
 class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
     let IP = "192.168.88.178"
-    let PORT:UInt16 = 5000
+    let PORT:UInt16 = 5001
     var socket:GCDAsyncUdpSocket!
     
     override init(){
