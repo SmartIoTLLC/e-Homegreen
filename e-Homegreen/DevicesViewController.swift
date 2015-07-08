@@ -33,14 +33,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     let collectionViewCellSize = CGSize(width: 150, height: 180)
     var pullDown = PullDownView()
     
-//    var table:UITableView = UITableView()
-    
-//    var locationList:[String] = ["All"]
-//    var levelList:[String] = ["Level 1", "All"]
-//    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
-//    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
-//    var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
-    
     var device:DeviceImage = DeviceImage(image: UIImage(named: "lightBulb")!, text: "Light")
     var device1:DeviceImage = DeviceImage(image: UIImage(named: "curtain0")!, text: "Curtain")
     var device2:DeviceImage = DeviceImage(image: UIImage(named: "applianceoff")!, text: "Coffee Machine")

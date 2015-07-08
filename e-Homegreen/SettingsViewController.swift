@@ -10,8 +10,11 @@ import UIKit
 
 class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource {
 
+    var settingArray:[String]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        settingArray = ["Menu settings", "Database"]
 //        commonConstruct()
         // Do any additional setup after loading the view.
     }
@@ -21,12 +24,12 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as? SettinsTableViewCell {
-            cell.tableCellTitle.text = "Menu settings"
+            cell.tableCellTitle.text = settingArray[indexPath.row]
             return cell
             
         }
@@ -36,8 +39,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 0{            
+        if indexPath.row == 0 {
             self.performSegueWithIdentifier("menuSettings", sender: self)
+        }
+        if indexPath.row == 1 {
+            self.performSegueWithIdentifier("databaseSettings", sender: self)
         }
     }
     
@@ -45,12 +51,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         var destinationVC = segue.destinationViewController as! UIViewController
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
-    
-    
-
-
-
-
 }
 
 class SettinsTableViewCell: UITableViewCell {

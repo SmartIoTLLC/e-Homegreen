@@ -9,14 +9,32 @@
 import UIKit
 
 class Device: NSObject {
-    var deviceId:UInt8?
-    var subId:UInt8?
-    var productDescription:String?
-    var category:UInt8?
-    var macOfDevice:[UInt8] = []
-    init (deviceId:UInt8, subId:UInt8, macOfDevice:[UInt8]) {
-        self.deviceId = deviceId
-        self.subId = subId
-        self.macOfDevice = macOfDevice
+    
+    var name:String
+    var value:String
+    var address:UInt8
+    var channel:UInt8
+    var gateway:Int
+    var level:Int
+//    var zone:Int
+    var no_of_dev:Int
+    var type:String
+    
+    init (name: String, value:String, address:UInt8, channel:UInt8, gateway:Int, level:Int, zone:Int, no_of_dev:Int, type:String) {
+        self.name = name
+        self.value = value
+        self.address = address
+        self.channel = channel
+        self.gateway = gateway
+        self.level = level
+//        self.zone = zone
+        self.no_of_dev = no_of_dev
+        self.type = type
     }
+    
+    //  DEVICE AKNOWLEDGMENTS (INFO)
+    var currentValue = 0
+    var runningTime = "00:00:00"
+    var current = "0.00"
+    var amp = "0.00"
 }

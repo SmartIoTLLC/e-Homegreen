@@ -10,7 +10,7 @@ import UIKit
 
 class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
-    let IP = "192.168.88.178"
+    let IP = "192.168.0.7"
     let PORT:UInt16 = 5001
     var socket:GCDAsyncUdpSocket!
     
@@ -34,11 +34,8 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
         socket.bindToPort(PORT, error: &error)
         socket.connectToHost(IP, onPort: PORT, error: &error)
-        socket.beginReceiving(&error)
+        //        socket.beginReceiving(&error)
         socket.enableBroadcast(true, error: &error)
-        send("ping")
-//        var nesto = socket.isIPv4Enabled()
-//        println(nesto)
     }
     
     func send(message:String){
