@@ -10,8 +10,7 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
-    @IBOutlet weak var remote: UIButton!
-    @IBOutlet weak var local: UIButton!
+
     
     var ipadress: UITextField?
     var port: UITextField?
@@ -30,14 +29,15 @@ class LogInViewController: UIViewController {
     
     var inSocket:InSocket!
     var outSocket:OutSocket!
-    @IBAction func remote(sender: AnyObject) {
-        showAleartWithMessage("Remote Connection Settings")
-    }
-    
-    @IBAction func local(sender: AnyObject) {
+
+
+    @IBAction func localIP(sender: AnyObject) {
         showAleartWithMessage("Local Connection Settings")
     }
 
-
+    @IBAction func remoteIP(sender: AnyObject) {
+        showAleartWithMessage("Remote Connection Settings")
+    }
+    
 
 }

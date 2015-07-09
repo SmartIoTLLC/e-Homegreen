@@ -14,6 +14,7 @@ class DeviceImage:NSObject{
     var open:Bool!
     var value:Float!
     var stateOpening:Bool!
+    var info:Bool!
     
     init(image:UIImage, text:String) {
         self.image = image
@@ -21,6 +22,7 @@ class DeviceImage:NSObject{
         self.open = false
         self.value = 0
         self.stateOpening = true
+        self.info = false
     }
     
 }
@@ -93,12 +95,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     var timer:NSTimer = NSTimer()
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
-        
 
-//            println(gestureRecognizer.view?.tag)
-
-        
-        
         if gestureRecognizer.view?.tag == 0 {
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
@@ -436,15 +433,33 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //        }
 //    }
     
+    func infoView() -> UIView {
+        var info:UIView = UIView(frame: CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height))
+        info.backgroundColor = UIColor.grayColor()
+        var idLabel:UILabel = UILabel(frame: CGRectMake(10, 10, 100, 30))
+        idLabel.textColor = UIColor.whiteColor()
+        idLabel.text = "hakhdakhdj"
+        info.addSubview(idLabel)
+        info.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.frame = info.bounds
+//        gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+//        gradientLayer.locations = [0.0, 1.0]
+//        info.layer.insertSublayer(gradientLayer, atIndex: 0)
+        return info
+    }
+    
     func handleTap (gesture:UIGestureRecognizer) {
-        println("!!! \(gesture.view!.tag)")
-        UIView.transitionFromView(myView[gesture.view!.tag], toView: mySecondView[gesture.view!.tag], duration: 1, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
+        println("nesto")
+        device.info = true
+        UIView.transitionFromView(gesture.view!, toView: infoView(), duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
         //        UIView.transitionWithView(mySecondView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: nil, completion: nil)
     }
     
     func handleTap2 (gesture:UIGestureRecognizer) {
-        println("!!! \(gesture.view!.tag)")
-        UIView.transitionFromView(mySecondView[gesture.view!.tag], toView: myView[gesture.view!.tag], duration: 1, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
+        println("drugo")
+//        device.info = false
+        UIView.transitionFromView(gesture.view!, toView: infoView(), duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -527,6 +542,9 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
                 device1.stateOpening = false
             }
         }
+        if indexPath.row == 3{
+            showClimaSettings("nesto")
+        }
         if indexPath.row == 4{
             if device3.open == false{
                 device3.open = true
@@ -558,7 +576,9 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
+            
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
+            if device.info == false{
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
@@ -571,6 +591,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.typeOfLight.text = device.text
+            cell.typeOfLight.userInteractionEnabled = true
+            cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
             cell.lightSlider.tag = 0
             
@@ -613,10 +635,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = 0
             cell.picture.addGestureRecognizer(lpgr)
-            //        cell.addSubview(myView[indexPath.row])
-            //        cell.addSubview(mySecondView[indexPath.row])
-//            println("Broj: \(indexPath.row)")
+            }else{
+                cell.addSubview(infoView())
+            }
             return cell
+            
         }
         
         else if indexPath.row == 1 {
@@ -739,6 +762,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         
     }
 }
+
+//Light
 class DeviceCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var typeOfLight: UILabel!    
@@ -747,7 +772,7 @@ class DeviceCollectionCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
 }
-
+//Appliance on/off
 class ApplianceCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var name: UILabel!    
@@ -756,7 +781,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
 }
-
+//curtain
 class CurtainCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var curtainName: UILabel!
@@ -765,7 +790,7 @@ class CurtainCollectionCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
 }
-
+//Door
 class AccessControllCell: UICollectionViewCell {
     
     @IBOutlet weak var accessLabel: UILabel!
@@ -773,7 +798,7 @@ class AccessControllCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
 }
-
+//Clima
 class ClimateCell: UICollectionViewCell {
     
     @IBOutlet weak var climateName: UILabel!

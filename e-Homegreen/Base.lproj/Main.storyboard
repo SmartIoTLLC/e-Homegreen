@@ -51,11 +51,26 @@
                                     <constraint firstAttribute="width" constant="187" id="JTA-fz-Jmd"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qwv-jo-h6Z">
-                                <rect key="frame" x="164" y="265" width="100" height="37"/>
-                                <color key="backgroundColor" red="0.82352941176470584" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O7K-2g-mHB">
+                                <rect key="frame" x="56" y="293" width="100" height="37"/>
+                                <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Med-12-OSD"/>
+                                    <constraint firstAttribute="width" constant="100" id="rM7-cj-YM4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                                <state key="normal" title="Remote IP">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="remoteIP:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="m1e-7Y-mXf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjE-02-CDy">
+                                <rect key="frame" x="164" y="293" width="100" height="37"/>
+                                <color key="backgroundColor" red="0.82745098039999998" green="0.83529411760000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="QKy-L3-tYf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
                                 <state key="normal" title="Local IP">
@@ -63,38 +78,20 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="local:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="pWC-6J-0Bt"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ion-lg-2bN">
-                                <rect key="frame" x="56" y="265" width="100" height="37"/>
-                                <color key="backgroundColor" red="0.82352941176470584" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="6KI-Sk-zbK"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <state key="normal" title="Remote IP">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="remote:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="OFL-Ip-4cE"/>
+                                    <action selector="localIP:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="WrY-hv-j5b"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="UuF-WC-v1A" secondAttribute="centerX" constant="-0.5" id="3yc-dW-qaJ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Qwv-jo-h6Z" secondAttribute="trailing" constant="40" id="9kg-Yk-mhZ"/>
-                            <constraint firstItem="Qwv-jo-h6Z" firstAttribute="centerY" secondItem="Ion-lg-2bN" secondAttribute="centerY" id="Ega-9C-awM"/>
-                            <constraint firstItem="Ion-lg-2bN" firstAttribute="leading" secondItem="9wY-hv-cRy" secondAttribute="leadingMargin" constant="40" id="QYi-G5-dpp"/>
-                            <constraint firstItem="Ion-lg-2bN" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="30" id="e4P-4n-GUf"/>
+                            <constraint firstItem="O7K-2g-mHB" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="58" id="BFH-cT-Ny7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="IjE-02-CDy" secondAttribute="trailing" constant="40" id="Dyy-He-mKz"/>
+                            <constraint firstItem="O7K-2g-mHB" firstAttribute="leading" secondItem="9wY-hv-cRy" secondAttribute="leadingMargin" constant="40" id="ZYt-vo-YaA"/>
+                            <constraint firstItem="IjE-02-CDy" firstAttribute="centerY" secondItem="O7K-2g-mHB" secondAttribute="centerY" id="exk-Pm-oso"/>
                             <constraint firstItem="UuF-WC-v1A" firstAttribute="top" secondItem="Tyt-xI-wIH" secondAttribute="bottom" constant="30" id="nZC-fi-h0V"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="local" destination="Qwv-jo-h6Z" id="p43-Hi-Yb4"/>
-                        <outlet property="remote" destination="Ion-lg-2bN" id="TJ8-Ka-bbo"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X0r-S9-PbV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

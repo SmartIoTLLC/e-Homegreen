@@ -33,6 +33,7 @@ class AlertDialogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clearColor()
+        
         var gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = CGRectMake(0, 0, 300, 220)
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
@@ -50,6 +51,8 @@ class AlertDialogViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

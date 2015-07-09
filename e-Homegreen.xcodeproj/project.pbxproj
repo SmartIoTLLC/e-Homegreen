@@ -79,6 +79,8 @@
 		E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC67B31B457C0E00EA6543 /* weather-tstorm@2x.png */; };
 		E7DC67CE1B457CD400EA6543 /* day.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC67CC1B457CD400EA6543 /* day.png */; };
 		E7DC67CF1B457CD400EA6543 /* night.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC67CD1B457CD400EA6543 /* night.png */; };
+		E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */; };
+		E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */; };
 		E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */; };
 		E7E1A81C1B3804D0008D8713 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */; };
 		E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */; };
@@ -188,6 +190,8 @@
 		E7DC67B31B457C0E00EA6543 /* weather-tstorm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather-tstorm@2x.png"; sourceTree = "<group>"; };
 		E7DC67CC1B457CD400EA6543 /* day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = day.png; sourceTree = "<group>"; };
 		E7DC67CD1B457CD400EA6543 /* night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = night.png; sourceTree = "<group>"; };
+		E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimaSettingsViewController.swift; sourceTree = "<group>"; };
+		E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClimaSettingsViewController.xib; sourceTree = "<group>"; };
 		E7E149BA1B3AAF7F005FD41D /* Tahoma.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tahoma.ttf; sourceTree = "<group>"; };
 		E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -267,11 +271,12 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E7E08E061B4E4DA700153E9A /* LogIn */,
+				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
 				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
-				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
 				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
 				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
@@ -284,9 +289,6 @@
 				73DB84A01B301184000DB4EB /* NFCViewController.swift */,
 				73DB84A41B301399000DB4EB /* CameraViewController.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
-				E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */,
-				E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */,
-				E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -460,6 +462,26 @@
 			path = "Weather Icons";
 			sourceTree = "<group>";
 		};
+		E7E08E011B4E4D5400153E9A /* Devices */ = {
+			isa = PBXGroup;
+			children = (
+				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
+				E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */,
+				E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */,
+			);
+			name = Devices;
+			sourceTree = "<group>";
+		};
+		E7E08E061B4E4DA700153E9A /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */,
+				E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */,
+				E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */,
+			);
+			name = LogIn;
+			sourceTree = "<group>";
+		};
 		E7E149B91B3AAF55005FD41D /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -597,6 +619,7 @@
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
+				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -652,6 +675,7 @@
 				73E427BA1B4D0B870083A747 /* UserDefaults.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
+				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
