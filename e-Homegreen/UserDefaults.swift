@@ -13,6 +13,7 @@ class UserDefaults: NSObject {
     let TWO_CHANEL = 2
     let FOUR_CHANEL = 4
     let EIGHT_CHANEL = 8
+    let TEN_CHANEL = 10
     
     let CURTAINRS485 = "curtainsRS485"
     let CURTAINS_RELAY = "curtainsRelay"
@@ -40,6 +41,18 @@ class UserDefaults: NSObject {
             13:CURTAINS_RELAY,
             14:SENSOR]
     }
+    func saveInterfaceType () {
+//        CPU Temp. = 15 C
+//        Dig. Input 1 = Triggered
+//        Dig Input 2 = Release
+//        Analog Input = 0%
+//        Temperature (Temperature probe) = 29 C
+//        Brt. Level (Brightness level) = 100
+//        Motion Senser = Idle
+//        IR Receiver = Unknown
+//        Tamper Sensor = Triggered
+//        Noise Sensor = Open
+    }
     func saveDeviceChannel () {
         
         deviceChannel = [0x03:DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway
@@ -63,7 +76,7 @@ class UserDefaults: NSObject {
             0x31:DeviceChannelType(channel:TWO_CHANEL, name:HVAC), //Climate Module, 2 Controllers
             0x34:DeviceChannelType(channel:FOUR_CHANEL, name:HVAC), //Climate Module, 4 Controllers
             0x04:DeviceChannelType(channel:FOUR_CHANEL, name:HVAC), //Climate Module, 4 Controllers
-            0x41:DeviceChannelType(channel:ONE_CHANEL, name:SENSOR), //10-in-1 Multisensor
+            0x41:DeviceChannelType(channel:TEN_CHANEL, name:SENSOR), //10-in-1 Multisensor
             0x45:DeviceChannelType(channel:ONE_CHANEL, name:SENSOR)] //6-in-1 Multisensor
     }
 }

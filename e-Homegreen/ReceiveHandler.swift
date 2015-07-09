@@ -49,8 +49,43 @@ class ReceiveHandler: NSObject {
                 
             }
             
+            //
+            if byteArray[5] == 0xF5 && byteArray[6] == 0x01 {
+                ackADICmdGetInterfaceStatus(byteArray)
+            }
+            
+            //
+            if byteArray[5] == 0xF5 && byteArray[6] == 0x04 {
+                ackADICmdGetInterfaceName(byteArray)
+            }
+            
         }
     }
+    //  informacije o imenima uredjaja na MULTISENSORU
+    func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
+        var string:String = ""
+        for var i = 9; i < byteArray.count-2; i++ {
+            string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+        }
+        println("ID: \(byteArray[7]) Name: \(string) Address: \(byteArray[2]) \(byteArray[3]) \(byteArray[4])")
+        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
+            if Model.sharedInstance.deviceArray[i].address == byteArray[4] && Model.sharedInstance.deviceArray[i].channel == byteArray[7] {
+                var channel = Int(Model.sharedInstance.deviceArray[i].channel)
+                Model.sharedInstance.deviceArray[i].name = string
+            }
+        }
+    }
+    //  informacije o parametrima (statusu) urdjaja na MULTISONSORU
+    func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
+        println("informacije o parametrima (statusu) urdjaja na MULTISONSORU: \(byteArray)")
+        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
+            if Model.sharedInstance.deviceArray[i].address == byteArray[4] {
+                var channel = Int(Model.sharedInstance.deviceArray[i].channel)
+                Model.sharedInstance.deviceArray[i].currentValue = Int(byteArray[7+channel])
+            }
+        }
+    }
+    //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
         var deviceExists = false
         if let channel = UserDefaults().deviceChannel[byteArray[7]]?.channel, let name = UserDefaults().deviceChannel[byteArray[7]]?.name {
@@ -70,6 +105,7 @@ class ReceiveHandler: NSObject {
             }
         }
     }
+    //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
         for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
             if byteArray[4] == Model.sharedInstance.deviceArray[i].address {
@@ -84,6 +120,7 @@ class ReceiveHandler: NSObject {
             }
         }
     }
+    //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
         for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
             if UInt8(Model.sharedInstance.deviceArray[i].no_of_dev) == byteArray[7] && Model.sharedInstance.deviceArray[i].address == byteArray[4] {

@@ -304,6 +304,25 @@
             </objects>
             <point key="canvasLocation" x="-822" y="1511"/>
         </scene>
+        <!--Connections View Controller-->
+        <scene sceneID="0sd-HN-ROl">
+            <objects>
+                <viewController id="rly-Zt-L69" customClass="ConnectionsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Xgq-Ye-QKG"/>
+                        <viewControllerLayoutGuide type="bottom" id="99h-dM-dJe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EY9-TV-Ro8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="c3c-e0-Zdg"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3ww-Jf-3wK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-484" y="801"/>
+        </scene>
         <!--Database View Controller-->
         <scene sceneID="18n-VT-qQT">
             <objects>
@@ -380,6 +399,15 @@
                                     <outlet property="delegate" destination="Rfu-9c-EhD" id="Ja8-zE-YtD"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAD-qm-17G">
+                                <rect key="frame" x="208" y="111" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnRefresTableView:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="gIZ-sx-HCY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -389,7 +417,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XA5-hK-WEz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-338" y="797"/>
+            <point key="canvasLocation" x="-450" y="1556"/>
         </scene>
         <!--Scenes View Controller-->
         <scene sceneID="bqd-Ev-0IK">
@@ -906,7 +934,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttP-cd-5JO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-821" y="765"/>
+            <point key="canvasLocation" x="-1099" y="769"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="c4M-x8-V1J">
@@ -973,11 +1001,12 @@
                     <connections>
                         <segue destination="cx0-di-cec" kind="modal" identifier="menuSettings" modalTransitionStyle="crossDissolve" id="mlJ-dh-LtD"/>
                         <segue destination="Rfu-9c-EhD" kind="modal" identifier="databaseSettings" modalTransitionStyle="crossDissolve" id="UtL-h7-BWt"/>
+                        <segue destination="rly-Zt-L69" kind="modal" identifier="connectionsSettings" modalTransitionStyle="crossDissolve" id="udR-PT-Jtb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OpW-oq-dSq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="81" y="789"/>
+            <point key="canvasLocation" x="131" y="759"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="lyA-hx-IpT">

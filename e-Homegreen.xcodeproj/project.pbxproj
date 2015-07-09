@@ -40,6 +40,7 @@
 		73E427B61B4D08CE0083A747 /* ReceiveHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B51B4D08CE0083A747 /* ReceiveHandler.swift */; };
 		73E427B81B4D0AF50083A747 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B71B4D0AF50083A747 /* Model.swift */; };
 		73E427BA1B4D0B870083A747 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B91B4D0B870083A747 /* UserDefaults.swift */; };
+		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
@@ -141,6 +142,7 @@
 		73E427B51B4D08CE0083A747 /* ReceiveHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiveHandler.swift; sourceTree = "<group>"; };
 		73E427B71B4D0AF50083A747 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		73E427B91B4D0B870083A747 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
+				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				73E427B81B4D0AF50083A747 /* Model.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
+				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				736265E31B4A483E0078C11D /* Functions.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,

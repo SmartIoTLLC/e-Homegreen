@@ -53,14 +53,14 @@ class Functions: NSObject {
     }
     // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
     func searchForDevices (id3:UInt8) -> [UInt8]{
-        messageInfo = []
+        messageInfo = [0x00]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
         message[2] = UInt8(id1Address)
         message[3] = UInt8(id2Address)
         message[4] = id3
-        message[5] = 0x03 // NIJE DOBRO
+        message[5] = 0x01 // NIJE DOBRO
         message[6] = 0x01
         var i = 0
         for byte in messageInfo {

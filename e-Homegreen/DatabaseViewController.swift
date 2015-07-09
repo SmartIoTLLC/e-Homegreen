@@ -22,13 +22,21 @@ class DatabaseViewController: CommonViewController {
         outSocket = OutSocket()
         
         for item in Model.sharedInstance.deviceArray {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type)")
+            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
         }
         
         // Do any additional setup after loading the view.
     }
     var deviceNumber = 0
     var touched = false
+    @IBAction func btnRefresTableView(sender: AnyObject) {
+        outSocket.sendByte(Functions().searchForDevices(0x05))
+        databaseArray = []
+        for item in Model.sharedInstance.deviceArray {
+            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
+        }
+        databaseTable.reloadData()
+    }
     @IBAction func findDevices(sender: AnyObject) {
         if !touched {
             deviceNumber = 0
@@ -39,12 +47,19 @@ class DatabaseViewController: CommonViewController {
             }
             touched = true
         } else {
-            databaseArray = []
-            for item in Model.sharedInstance.deviceArray {
-                databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type)")
-            }
-            databaseTable.reloadData()
+        outSocket.sendByte(Functions().getSensorState(0x05))
+        timerSensorNumber = 0
+        for i in 0...11 {
+            var number:NSTimeInterval = NSTimeInterval(i*2)
+            NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "getSensorName", userInfo: nil, repeats: false)
+//                outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
         }
+        }
+    }
+    var timerSensorNumber = 0
+    func getSensorName () {
+        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
+        timerSensorNumber = timerSensorNumber + 1
     }
     var databaseArray:[String] = []
     override func didReceiveMemoryWarning() {
@@ -56,27 +71,11 @@ class DatabaseViewController: CommonViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     func searchIds() {
-//        var info:[UInt8] = [0]
-//        var byte:[UInt8] = [UInt8](count: info.count+9, repeatedValue: 0)
-//        byte[0] = 0xAA
-//        byte[1] = UInt8(info.count)
-//        byte[2] = 1//adress
-//        byte[3] = 0//adress
-//        byte[4] = UInt8(deviceNumber)//adress
-//        //        byte[2] = 0xFF
-//        //        byte[3] = 0xFF
-//        //        byte[4] = 0xFF
-//        byte[5] = 1//CID1
-//        byte[6] = 1//CID2
-//        byte[7] = 0
-//        byte[8] = chkByte(byte)
-//        byte[9] = 16
-//        
-//        deviceNumber += 1
-//        if deviceNumber == 19 {
-//                touched = false
-//        }
         outSocket.sendByte(Functions().searchForDevices(UInt8(deviceNumber)))
+        deviceNumber += 1
+        if deviceNumber == 19 {
+            touched = false
+        }
         
     }
     

@@ -34,7 +34,7 @@ class Device: NSObject {
     
     //  DEVICE AKNOWLEDGMENTS (INFO)
     var currentValue = 0
-    var runningTime = "00:00:00"
-    var current = "0.00"
-    var amp = "0.00"
+    var runningTime:String = "00:00:00"
+    var current:String = "0.00"
+    var amp:String = "0.00"
 }

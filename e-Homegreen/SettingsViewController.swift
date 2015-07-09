@@ -14,7 +14,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        settingArray = ["Menu settings", "Database"]
+        settingArray = ["Menu settings", "Database", "Gatewary connections"]
 //        commonConstruct()
         // Do any additional setup after loading the view.
     }
@@ -24,7 +24,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return settingArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -44,6 +44,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         }
         if indexPath.row == 1 {
             self.performSegueWithIdentifier("databaseSettings", sender: self)
+        }
+        if indexPath.row == 2 {
+            self.performSegueWithIdentifier("connectionSettings", sender: self)
         }
     }
     
