@@ -56,27 +56,27 @@ class DatabaseViewController: CommonViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     func searchIds() {
-        var info:[UInt8] = [0]
-        var byte:[UInt8] = [UInt8](count: info.count+9, repeatedValue: 0)
-        byte[0] = 0xAA
-        byte[1] = UInt8(info.count)
-        byte[2] = 1//adress
-        byte[3] = 0//adress
-        byte[4] = UInt8(deviceNumber)//adress
-        //        byte[2] = 0xFF
-        //        byte[3] = 0xFF
-        //        byte[4] = 0xFF
-        byte[5] = 1//CID1
-        byte[6] = 1//CID2
-        byte[7] = 0
-        byte[8] = chkByte(byte)
-        byte[9] = 16
-        
-        deviceNumber += 1
-        if deviceNumber == 19 {
-                touched = false
-        }
-        outSocket.sendByte(byte)
+//        var info:[UInt8] = [0]
+//        var byte:[UInt8] = [UInt8](count: info.count+9, repeatedValue: 0)
+//        byte[0] = 0xAA
+//        byte[1] = UInt8(info.count)
+//        byte[2] = 1//adress
+//        byte[3] = 0//adress
+//        byte[4] = UInt8(deviceNumber)//adress
+//        //        byte[2] = 0xFF
+//        //        byte[3] = 0xFF
+//        //        byte[4] = 0xFF
+//        byte[5] = 1//CID1
+//        byte[6] = 1//CID2
+//        byte[7] = 0
+//        byte[8] = chkByte(byte)
+//        byte[9] = 16
+//        
+//        deviceNumber += 1
+//        if deviceNumber == 19 {
+//                touched = false
+//        }
+        outSocket.sendByte(Functions().searchForDevices(UInt8(deviceNumber)))
         
     }
     

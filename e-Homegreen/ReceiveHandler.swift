@@ -16,29 +16,13 @@ class ReceiveHandler: NSObject {
         self.byteArray = byteArrayToHandle
         // Check if byteArray is correct one (check byte also, which is missing)
         if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
-            var deviceExists = false
+            
             //  ACKNOWLEDGMENT ABOUT NEW DEVICES
             if byteArray[5] == 0xF1 && byteArray[6] == 0x01 {
-                if let channel = UserDefaults().deviceChannel[byteArray[7]]?.channel, let name = UserDefaults().deviceChannel[byteArray[7]]?.name {
-                    if Model.sharedInstance.deviceArray != [] {
-                        for device in Model.sharedInstance.deviceArray {
-                            if device.address == byteArray[4] {
-                                deviceExists = true
-                            }
-                        }
-                    } else {
-                        deviceExists = false
-                    }
-                    if !deviceExists {
-                        for var i=1 ; i<=channel ; i++ {
-                            Model.sharedInstance.deviceArray.append(Device(name: name, value: "", address: byteArray[4], channel: UInt8(i), gateway: 0, level: 0, zone: 0, no_of_dev: 0, type: ""))
-                        }
-                    }
-                }
+                acknowledgementAboutNewDevices(byteArray)
             }
             
             //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar)
-            println("E OVO JE ONO STO JE NESTO STO MENI TREBA: \(byteArray)")
             if byteArray[5] == 0xF3 && byteArray[6] == 0x01 {
                 acknowledgementAboutChannelParametar (byteArray)
                 
@@ -67,12 +51,28 @@ class ReceiveHandler: NSObject {
             
         }
     }
-    
+    func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
+        var deviceExists = false
+        if let channel = UserDefaults().deviceChannel[byteArray[7]]?.channel, let name = UserDefaults().deviceChannel[byteArray[7]]?.name {
+            if Model.sharedInstance.deviceArray != [] {
+                for device in Model.sharedInstance.deviceArray {
+                    if device.address == byteArray[4] {
+                        deviceExists = true
+                    }
+                }
+            } else {
+                deviceExists = false
+            }
+            if !deviceExists {
+                for var i=1 ; i<=channel ; i++ {
+                    Model.sharedInstance.deviceArray.append(Device(name: name, value: "", address: byteArray[4], channel: UInt8(i), gateway: 0, level: 0, zone: 0, no_of_dev: 0, type: ""))
+                }
+            }
+        }
+    }
     func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
-        println("AAAAAAAAAAAAAAAAA \(byteArray[4])")
         for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
             if byteArray[4] == Model.sharedInstance.deviceArray[i].address {
-                println("Molim te ispisi ovu poruku: \(byteArray)")
                 var channelNumber = Int(Model.sharedInstance.deviceArray[i].channel)
                 Model.sharedInstance.deviceArray[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) // lightning state
 //                Model.sharedInstance.deviceArray[i].current = byteArray[9] // current
@@ -84,14 +84,12 @@ class ReceiveHandler: NSObject {
             }
         }
     }
-    
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
         for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
             if UInt8(Model.sharedInstance.deviceArray[i].no_of_dev) == byteArray[7] && Model.sharedInstance.deviceArray[i].address == byteArray[4] {
-                println("ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) \(byteArray)")
                 var string:String = ""
                 for var i = 8+47; i < byteArray.count-2; i++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))"
+                    string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
                 Model.sharedInstance.deviceArray[i].name = string
             }

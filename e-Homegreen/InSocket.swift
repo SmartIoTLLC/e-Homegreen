@@ -40,6 +40,9 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,      withFilterContext filterContext: AnyObject!) {
         ReceiveHandler(byteArrayToHandle: data.convertToBytes())
         println("\(number) incoming message: \(data)")
+        println("\(number) incoming message: \(address.convertToBytes())")
+        println("\(number) incoming message: \(GCDAsyncUdpSocket.hostFromAddress(data))")
+        println("\(number) incoming message: \(GCDAsyncUdpSocket.portFromAddress(data))")
         number += 1
     }
     func chkByte (array:[UInt8]) -> UInt8 {

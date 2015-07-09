@@ -60,7 +60,7 @@ class Functions: NSObject {
         message[2] = UInt8(id1Address)
         message[3] = UInt8(id2Address)
         message[4] = id3
-        message[5] = 0x03
+        message[5] = 0x03 // NIJE DOBRO
         message[6] = 0x01
         var i = 0
         for byte in messageInfo {
