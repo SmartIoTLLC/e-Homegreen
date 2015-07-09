@@ -158,7 +158,7 @@
 		E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FSExtension.m"; sourceTree = "<group>"; };
 		E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
 		E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
-		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = "<group>"; };
+		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +255,15 @@
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
 		};
+		73BD1EBE1B4E655700AA5B28 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				E75163F01B4C089300457BED /* Widget */,
+				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,12 +304,6 @@
 		73E2069D1B2EEFFE0008B002 = {
 			isa = PBXGroup;
 			children = (
-				E75163F01B4C089300457BED /* Widget */,
-				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
-				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
-				E7E1A81F1B3804F1008D8713 /* Framework */,
-				E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */,
-				E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */,
 				73E206A81B2EEFFE0008B002 /* e-Homegreen */,
 				73E206C11B2EEFFE0008B002 /* e-HomegreenTests */,
 				73E206A71B2EEFFE0008B002 /* Products */,
@@ -321,6 +324,9 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
+				73BD1EBE1B4E655700AA5B28 /* Other */,
+				E7E1A81F1B3804F1008D8713 /* Framework */,
+				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
@@ -380,6 +386,7 @@
 				E7DC679B1B457C0E00EA6543 /* Weather Icons */,
 			);
 			name = Widget;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		E75B4F761B42B6D700E48454 /* Clock */ = {
@@ -416,7 +423,8 @@
 				E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */,
 				E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */,
 			);
-			path = LXReorderableCollectionViewFlowLayout;
+			name = LXReorderableCollectionViewFlowLayout;
+			path = ../LXReorderableCollectionViewFlowLayout;
 			sourceTree = "<group>";
 		};
 		E7DC679B1B457C0E00EA6543 /* Weather Icons */ = {
@@ -463,12 +471,15 @@
 		E7E1A81F1B3804F1008D8713 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */,
+				E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */,
 				E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */,
 				E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */,
 				E7E1A8221B3804F1008D8713 /* OpenEars.framework */,
 				E7E1A8231B3804F1008D8713 /* Slt.framework */,
 			);
-			path = Framework;
+			name = Framework;
+			path = ../Framework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
