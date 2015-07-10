@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class DatabaseViewController: CommonViewController {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
     var outSocket:OutSocket!
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +25,19 @@ class DatabaseViewController: CommonViewController {
         inSocket = InSocket()
         outSocket = OutSocket()
         
-        for item in Model.sharedInstance.deviceArray {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        println("")
+        for item in devices {
+            databaseArray.append("\(item.name)")
         }
         
         // Do any additional setup after loading the view.
@@ -30,10 +45,18 @@ class DatabaseViewController: CommonViewController {
     var deviceNumber = 0
     var touched = false
     @IBAction func btnRefresTableView(sender: AnyObject) {
-        outSocket.sendByte(Functions().searchForDevices(0x05))
+//        outSocket.sendByte(Functions().searchForDevices(0x05))
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        println("")
         databaseArray = []
-        for item in Model.sharedInstance.deviceArray {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
+        for item in devices {
+            databaseArray.append("\(item.name); \(item.address); \(item.channel)")
         }
         databaseTable.reloadData()
     }

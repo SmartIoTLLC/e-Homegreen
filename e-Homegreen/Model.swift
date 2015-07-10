@@ -16,5 +16,5 @@ class Model: NSObject {
         return Singleton.instance
     }
     
-    var deviceArray:[Device] = []
+    var deviceArray:[DeviceOld] = []
 }
