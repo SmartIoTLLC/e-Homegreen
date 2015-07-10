@@ -42,6 +42,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         btnModeSetUp()
         btnFanSetUp()
+        removeLayers()
+        btnModeSetUp()
         
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
@@ -185,10 +187,10 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     func removeLayers(){
-        btnCool.backgroundColor = UIColor.clearColor()
-        btnHeat.backgroundColor = UIColor.clearColor()
-        btnFan.backgroundColor = UIColor.clearColor()
-        btnAuto.backgroundColor = UIColor.clearColor()
+//        btnCool.backgroundColor = UIColor.clearColor()
+//        btnHeat.backgroundColor = UIColor.clearColor()
+//        btnFan.backgroundColor = UIColor.clearColor()
+//        btnAuto.backgroundColor = UIColor.clearColor()
         gradientLayerForButon.removeFromSuperlayer()
         gradientLayerForButon1.removeFromSuperlayer()
         gradientLayerForButon2.removeFromSuperlayer()
@@ -197,9 +199,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
 
     
     @IBAction func btnModePressed(sender: UIButton) {
-//        removeLayers()
-//        btnModeSetUp()
-//        sender.backgroundColor = UIColor.grayColor()
+        removeLayers()
+        btnModeSetUp()
+        sender.backgroundColor = UIColor.grayColor()
         
     }
     
@@ -309,6 +311,6 @@ extension UIViewController {
     func showClimaSettings(message: String) {
         var ad = ClimaSettingsViewController()
         ad.message = message
-        presentViewController(ad, animated: true, completion: nil)
+        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

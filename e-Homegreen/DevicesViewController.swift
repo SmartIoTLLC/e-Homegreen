@@ -130,6 +130,44 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
     }
     
+    func oneTap(gestureRecognizer:UITapGestureRecognizer){
+        println("tap")
+        if gestureRecognizer.view?.tag == 0{
+            if device.open == true{
+                device.open = false
+                device.value = 0
+                device.stateOpening = true
+            }else{
+                device.open = true
+                device.value = 1
+                device.stateOpening = false
+            }
+        }
+        if gestureRecognizer.view?.tag == 1{
+            if device1.open == true{
+                device1.open = false
+                device1.value = 0
+                device1.stateOpening = true
+            }else{
+                device1.open = true
+                device1.value = 1
+                device1.stateOpening = false
+            }
+        }
+        if gestureRecognizer.view?.tag == 3{
+            showClimaSettings("nesto")
+        }
+        if gestureRecognizer.view?.tag == 4{
+            if device3.open == false{
+                device3.open = true
+            }else{
+                device3.open = false
+            }
+            
+        }
+        deviceCollectionView.reloadData()
+    }
+    
     func update1(){
         
         if self.device1.stateOpening == true{
@@ -520,40 +558,40 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        if indexPath.row == 0{
-            if device.open == true{
-                device.open = false
-                device.value = 0
-                device.stateOpening = true
-            }else{
-                device.open = true
-                device.value = 1
-                device.stateOpening = false
-            }
-        }
-        if indexPath.row == 1{
-            if device1.open == true{
-                device1.open = false
-                device1.value = 0
-                device1.stateOpening = true
-            }else{
-                device1.open = true
-                device1.value = 1
-                device1.stateOpening = false
-            }
-        }
+//        if indexPath.row == 0{
+//            if device.open == true{
+//                device.open = false
+//                device.value = 0
+//                device.stateOpening = true
+//            }else{
+//                device.open = true
+//                device.value = 1
+//                device.stateOpening = false
+//            }
+//        }
+//        if indexPath.row == 1{
+//            if device1.open == true{
+//                device1.open = false
+//                device1.value = 0
+//                device1.stateOpening = true
+//            }else{
+//                device1.open = true
+//                device1.value = 1
+//                device1.stateOpening = false
+//            }
+//        }
         if indexPath.row == 3{
             showClimaSettings("nesto")
         }
-        if indexPath.row == 4{
-            if device3.open == false{
-                device3.open = true
-            }else{
-                device3.open = false
-            }
-            
-        }
-        deviceCollectionView.reloadData()
+//        if indexPath.row == 4{
+//            if device3.open == false{
+//                device3.open = true
+//            }else{
+//                device3.open = false
+//            }
+//            
+//        }
+//        deviceCollectionView.reloadData()
         
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -628,13 +666,14 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
             }
             cell.lightSlider.value = device.value
-            
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
             lpgr.minimumPressDuration = 0.5
             lpgr.delegate = self
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = 0
             cell.picture.addGestureRecognizer(lpgr)
+            cell.picture.addGestureRecognizer(tap)
             }else{
                 cell.addSubview(infoView())
             }
@@ -676,13 +715,14 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
             }
             cell.curtainSlider.value = device1.value
-            
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
             lpgr.minimumPressDuration = 0.5
             lpgr.delegate = self
             cell.curtainImage.userInteractionEnabled = true
             cell.curtainImage.tag = 1
             cell.curtainImage.addGestureRecognizer(lpgr)
+            cell.curtainImage.addGestureRecognizer(tap)
             //        cell.addSubview(myView[indexPath.row])
             //        cell.addSubview(mySecondView[indexPath.row])
             //            println("Broj: \(indexPath.row)")
@@ -703,6 +743,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.image.tag = 2
+            cell.image.userInteractionEnabled = true
+            cell.image.addGestureRecognizer(tap)
             cell.name.text = device2.text
             if device2.open == true{
                 cell.image.image = UIImage(named: "applianceon")
@@ -749,6 +793,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.accessImage.addGestureRecognizer(tap)
+            cell.accessImage.userInteractionEnabled = true
+            cell.accessImage.tag = 4
             cell.accessLabel.text = device3.text
             if device3.open == false {
                 cell.accessImage.image = UIImage(named: "doorclosed")

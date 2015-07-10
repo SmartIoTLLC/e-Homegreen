@@ -29,6 +29,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as? SettinsTableViewCell {
+//            cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.tableCellTitle.text = settingArray[indexPath.row]
             return cell
             
@@ -40,7 +41,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
-            self.performSegueWithIdentifier("menuSettings", sender: self)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.performSegueWithIdentifier("menuSettings", sender: self)
+            })
         }
         if indexPath.row == 1 {
             self.performSegueWithIdentifier("databaseSettings", sender: self)
@@ -53,6 +56,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         var destinationVC = segue.destinationViewController as! UIViewController
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+//        if segue.identifier == "menuSettings"{
+//            var destinationVC = segue.destinationViewController as! MenuSettingsViewController
+//            destinationVC.transitioningDelegate = se
+//            
+//        }
     }
 }
 

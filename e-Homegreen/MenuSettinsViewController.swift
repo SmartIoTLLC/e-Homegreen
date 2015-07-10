@@ -8,12 +8,20 @@
 
 import UIKit
 
-class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning  {
     
     @IBOutlet weak var topView: UIView!
     var menuItems: Array<MenuItem>!
     var menuList:[NSString] = []
     var listOfMenuItems: Array<MenuItem>!
+    
+    var isPresenting:Bool = true
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        transitioningDelegate = self
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +30,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
+        self.transitioningDelegate = self
         
         menuItems = MenuViewControllers.sharedInstance.allMenuItems()
         listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
@@ -38,7 +47,58 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
 
         // Do any additional setup after loading the view.
     }
-
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 0.5
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting == true{
+            isPresenting = false
+            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
+            presentedControllerView.alpha = 0
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            containerView.addSubview(presentedControllerView)
+            UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
+                presentedControllerView.alpha = 1
+                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }else{
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            // Animate the presented view off the bottom of the view
+            UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //                presentedControllerView.center.y += containerView.bounds.size.height
+                presentedControllerView.alpha = 0
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if dismissed == self {
+            return self
+        }
+        else {
+            return nil
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -50,6 +110,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         }else {
             menuItems[sender.tag].state = false
         }
+
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -60,12 +121,13 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             cell.menuSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             if menuItems[indexPath.row].state == true {
                 cell.menuSwitch.on = true
+                if indexPath.row == 11{
+                    cell.menuSwitch.enabled = false
+                }
             }else {
                 cell.menuSwitch.on = false
             }
-            if indexPath.row == 11{
-                cell.menuSwitch.enabled = false
-            }
+            
             return cell
             
         }
