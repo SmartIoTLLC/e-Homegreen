@@ -260,7 +260,47 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
     }
     
+<<<<<<< HEAD
     
+=======
+    func oneTap(gestureRecognizer:UITapGestureRecognizer){
+        println("tap")
+        if gestureRecognizer.view?.tag == 0{
+            if device.open == true{
+                device.open = false
+                device.value = 0
+                device.stateOpening = true
+            }else{
+                device.open = true
+                device.value = 1
+                device.stateOpening = false
+            }
+        }
+        if gestureRecognizer.view?.tag == 1{
+            if device1.open == true{
+                device1.open = false
+                device1.value = 0
+                device1.stateOpening = true
+            }else{
+                device1.open = true
+                device1.value = 1
+                device1.stateOpening = false
+            }
+        }
+        if gestureRecognizer.view?.tag == 3{
+            showClimaSettings("nesto")
+        }
+        if gestureRecognizer.view?.tag == 4{
+            if device3.open == false{
+                device3.open = true
+            }else{
+                device3.open = false
+            }
+            
+        }
+        deviceCollectionView.reloadData()
+    }
+>>>>>>> origin/master
     
     func update1(){
         
@@ -1041,6 +1081,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
+<<<<<<< HEAD
         
         if indexPath.row == 0{
             
@@ -1086,11 +1127,36 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
             
         }
         
+=======
+//        if indexPath.row == 0{
+//            if device.open == true{
+//                device.open = false
+//                device.value = 0
+//                device.stateOpening = true
+//            }else{
+//                device.open = true
+//                device.value = 1
+//                device.stateOpening = false
+//            }
+//        }
+//        if indexPath.row == 1{
+//            if device1.open == true{
+//                device1.open = false
+//                device1.value = 0
+//                device1.stateOpening = true
+//            }else{
+//                device1.open = true
+//                device1.value = 1
+//                device1.stateOpening = false
+//            }
+//        }
+>>>>>>> origin/master
         if indexPath.row == 3{
             
             showClimaSettings("nesto")
             
         }
+<<<<<<< HEAD
         
         if indexPath.row == 4{
             
@@ -1109,6 +1175,17 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         }
         
         deviceCollectionView.reloadData()
+=======
+//        if indexPath.row == 4{
+//            if device3.open == false{
+//                device3.open = true
+//            }else{
+//                device3.open = false
+//            }
+//            
+//        }
+//        deviceCollectionView.reloadData()
+>>>>>>> origin/master
         
         
         
@@ -1272,6 +1349,19 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 cell.picture.addGestureRecognizer(lpgr)
                 
+<<<<<<< HEAD
+=======
+            }
+            cell.lightSlider.value = device.value
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+            lpgr.minimumPressDuration = 0.5
+            lpgr.delegate = self
+            cell.picture.userInteractionEnabled = true
+            cell.picture.tag = 0
+            cell.picture.addGestureRecognizer(lpgr)
+            cell.picture.addGestureRecognizer(tap)
+>>>>>>> origin/master
             }else{
                 
                 cell.addSubview(infoView())
@@ -1353,9 +1443,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             cell.curtainSlider.value = device1.value
+<<<<<<< HEAD
             
             
             
+=======
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+>>>>>>> origin/master
             var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
             
             lpgr.minimumPressDuration = 0.5
@@ -1367,7 +1461,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.curtainImage.tag = 1
             
             cell.curtainImage.addGestureRecognizer(lpgr)
+<<<<<<< HEAD
             
+=======
+            cell.curtainImage.addGestureRecognizer(tap)
+>>>>>>> origin/master
             //        cell.addSubview(myView[indexPath.row])
             
             //        cell.addSubview(mySecondView[indexPath.row])
@@ -1407,7 +1505,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor.grayColor().CGColor
             
             cell.layer.borderWidth = 0.5
+<<<<<<< HEAD
             
+=======
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.image.tag = 2
+            cell.image.userInteractionEnabled = true
+            cell.image.addGestureRecognizer(tap)
+>>>>>>> origin/master
             cell.name.text = device2.text
             
             if device2.open == true{
@@ -1499,7 +1604,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor.grayColor().CGColor
             
             cell.layer.borderWidth = 0.5
+<<<<<<< HEAD
             
+=======
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.accessImage.addGestureRecognizer(tap)
+            cell.accessImage.userInteractionEnabled = true
+            cell.accessImage.tag = 4
+>>>>>>> origin/master
             cell.accessLabel.text = device3.text
             
             if device3.open == false {
