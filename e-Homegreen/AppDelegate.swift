@@ -27,15 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-//        let containerViewController = ContainerViewController()
-//        window!.rootViewController = containerViewController
+        let containerViewController = ContainerViewController()
+        window!.rootViewController = containerViewController
         
-        var storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var viewController:UIViewController
-        viewController = storyboard.instantiateViewControllerWithIdentifier("logInController") as! LogInViewController
-        window!.rootViewController = viewController
-        
-        window!.makeKeyAndVisible()
+//        var storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        var viewController:UIViewController
+//        viewController = storyboard.instantiateViewControllerWithIdentifier("logInController") as! LogInViewController
+//        window!.rootViewController = viewController
+//        
+//        window!.makeKeyAndVisible()
         
         return true
     }

@@ -273,6 +273,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				E7E08E061B4E4DA700153E9A /* LogIn */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
@@ -332,7 +333,6 @@
 				E7E1A81F1B3804F1008D8713 /* Framework */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
-				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
 				73ECD4A21B332A6F00767740 /* Common.swift */,
 				73DB8B901B2FF87600139E58 /* Menu.swift */,

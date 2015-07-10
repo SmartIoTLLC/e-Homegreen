@@ -37,7 +37,6 @@ class ContainerViewController: UIViewController {
     }
     @IBAction func hamburgerTapped(sender: AnyObject) {
 //        delegate?.toggleLeftPanel?()
-        println("Marko <3")
     }
     var leftViewController: SidePanelViewController?
     

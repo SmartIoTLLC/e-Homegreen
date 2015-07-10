@@ -12,6 +12,7 @@ class ConnectionsViewController: CommonViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        commonConstruct()
 
         // Do any additional setup after loading the view.
     }
@@ -21,6 +22,9 @@ class ConnectionsViewController: CommonViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func backButton(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation
