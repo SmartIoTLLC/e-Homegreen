@@ -20,5 +20,6 @@ class Device: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var numberOfDevices: NSNumber
     @NSManaged var runningTime: String
+    @NSManaged var type: String
 
 }

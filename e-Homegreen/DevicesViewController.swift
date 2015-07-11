@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DeviceImage:NSObject{
     var image:UIImage!
@@ -24,10 +25,7 @@ class DeviceImage:NSObject{
         self.stateOpening = true
         self.info = false
     }
-    
 }
-
-
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate{
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -50,6 +48,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         super.viewDidLoad()
         commonConstruct()
+        inSocket = InSocket()
+        outSocket = OutSocket()
         
         
         
@@ -59,39 +59,30 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
-        
-        
-        for i in 0...2 {
-            var gradient:CAGradientLayer = CAGradientLayer()
-            gradient.frame = CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height)
-            gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-            var gradientSecond:CAGradientLayer = CAGradientLayer()
-            gradientSecond.frame = CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height)
-            gradientSecond.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-            var myViewIterator = UIView()
-            myViewIterator.frame = CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height)
-            //            myViewIterator.backgroundColor = UIColor.yellowColor()
-            myViewIterator.tag = i
-            myViewIterator.layer.cornerRadius = 5
-            myViewIterator.layer.borderColor = UIColor.grayColor().CGColor
-            myViewIterator.layer.borderWidth = 0.5
-            myViewIterator.layer.insertSublayer(gradient, atIndex: 0)
-            myViewIterator.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-            myView.append(myViewIterator)
-            
-            var mySecondViewIterator = UIView()
-            mySecondViewIterator.frame = CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height)
-            //            mySecondViewIterator.backgroundColor = UIColor.greenColor()
-            mySecondViewIterator.tag = i
-            mySecondViewIterator.layer.cornerRadius = 5
-            mySecondViewIterator.layer.borderColor = UIColor.grayColor().CGColor
-            mySecondViewIterator.layer.borderWidth = 0.5
-            mySecondViewIterator.layer.insertSublayer(gradient, atIndex: 0)
-            mySecondViewIterator.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-            mySecondView.append(mySecondViewIterator)
-        }
-        
         // Do any additional setup after loading the view.
+    }
+    var inSocket:InSocket!
+    var outSocket:OutSocket!
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
+    func updateDeviceList () {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        println("")
+//        for item in devices {
+//            databaseArray.append("\(item.name)")
+//        }
+    }
+    override func viewWillAppear(animated: Bool) {
+        updateDeviceList()
     }
     var timer:NSTimer = NSTimer()
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
@@ -853,9 +844,13 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var coolingSetPoint: UILabel!
     @IBOutlet weak var heatingSetPoint: UILabel!
     @IBOutlet weak var climateMode: UILabel!
-    @IBOutlet weak var modeImage: UIImageView!    
+    @IBOutlet weak var modeImage: UIImageView!
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
     var gradientLayer: CAGradientLayer?
-    
 }
+//Multisensor 10 in 1 and 6 in 1
+//class MultiSensorCell: UICollectionViewCell {
+//    
+//    var gradientLayer: CAGradientLayer?
+//}

@@ -273,9 +273,17 @@
 			name = Other;
 			sourceTree = "<group>";
 		};
+		73D8B2821B51070E006B7101 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				73D8B2821B51070E006B7101 /* Other */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				E7E08E061B4E4DA700153E9A /* LogIn */,
 				E7E08E011B4E4D5400153E9A /* Devices */,

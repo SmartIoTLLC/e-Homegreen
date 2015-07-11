@@ -57,6 +57,17 @@ class DatabaseViewController: CommonViewController {
         databaseArray = []
         for item in devices {
             databaseArray.append("\(item.name); \(item.address); \(item.channel)")
+//            @NSManaged var address: NSNumber
+//            @NSManaged var amp: String
+//            @NSManaged var channel: NSNumber
+//            @NSManaged var current: String
+//            @NSManaged var currentValue: String
+//            @NSManaged var gateway: NSNumber
+//            @NSManaged var name: String
+//            @NSManaged var numberOfDevices: NSNumber
+//            @NSManaged var runningTime: String
+//            @NSManaged var type: String
+            println("name: \(item.name) address: \(item.address) channel: \(item.channel) type: \(item.type) current: \(item.current) currentValue: \(item.currentValue) gateway: \(item.gateway) amp: \(item.amp) numberOfDevices: \(item.numberOfDevices) runningTime: \(item.runningTime)")
         }
         databaseTable.reloadData()
     }

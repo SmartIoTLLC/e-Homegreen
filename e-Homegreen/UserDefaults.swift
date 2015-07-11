@@ -12,6 +12,7 @@ class UserDefaults: NSObject {
     let ONE_CHANEL = 1
     let TWO_CHANEL = 2
     let FOUR_CHANEL = 4
+    let SIX_CHANEL = 6
     let EIGHT_CHANEL = 8
     let TEN_CHANEL = 10
     
@@ -24,13 +25,28 @@ class UserDefaults: NSObject {
     let SENSOR = "sensor"
     let LIGHT = "light"
     
+    let temperatureProbe = "CPU.Temp"
+    let digitalInputDryContact = "Dig Input 1"
+    let digitalInputDryContact2 = "Dig. Input 2"
+    let analogInput = "Analog Input"
+    let temperatureProbe2 = "Temperature"
+    let brightnessSensorLUX = "Brt. Level"
+    let motionSensorPIR = "Motion Sensor"
+    let IRReceiver = "IR Receiver"
+    let digitalInput = "Tamper Sensor"
+    let digitalInput2 = "Noise Sensor"
+    
     var deviceCategory:[Int:String] = [:]
     var deviceChannel:[UInt8:DeviceChannelType] = [:]
+    var inputInterface10in1:[Int:String] = [:]
+    var inputInterface6in1:[Int:String] = [:]
     
     override init () {
         super.init()
         saveCategory()
         saveDeviceChannel()
+        saveInterfaceType10in1()
+        saveInterfaceType6in1()
     }
     func saveCategory() {
         deviceCategory = [2 : DIMER,
@@ -41,20 +57,27 @@ class UserDefaults: NSObject {
             13:CURTAINS_RELAY,
             14:SENSOR]
     }
-    func saveInterfaceType () {
-//        CPU Temp. = 15 C
-//        Dig. Input 1 = Triggered
-//        Dig Input 2 = Release
-//        Analog Input = 0%
-//        Temperature (Temperature probe) = 29 C
-//        Brt. Level (Brightness level) = 100
-//        Motion Senser = Idle
-//        IR Receiver = Unknown
-//        Tamper Sensor = Triggered
-//        Noise Sensor = Open
+    func saveInterfaceType10in1 () {
+        inputInterface10in1 = [1:temperatureProbe,
+            2:digitalInputDryContact,
+            3:digitalInputDryContact2,
+            4:analogInput,
+            5:temperatureProbe2,
+            6:brightnessSensorLUX,
+            7:motionSensorPIR,
+            8:IRReceiver,
+            9:digitalInput,
+            10:digitalInput2]
+    }
+    func saveInterfaceType6in1 () {
+        inputInterface6in1 = [1:temperatureProbe,
+            2:digitalInputDryContact,
+            3:digitalInputDryContact2,
+            4:temperatureProbe2,
+            5:motionSensorPIR,
+            6:digitalInput]
     }
     func saveDeviceChannel () {
-        
         deviceChannel = [0x03:DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway
             0x21:DeviceChannelType(channel:TWO_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay 
             0x25:DeviceChannelType(channel:FOUR_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay
@@ -77,7 +100,7 @@ class UserDefaults: NSObject {
             0x34:DeviceChannelType(channel:FOUR_CHANEL, name:HVAC), //Climate Module, 4 Controllers
             0x04:DeviceChannelType(channel:FOUR_CHANEL, name:HVAC), //Climate Module, 4 Controllers
             0x41:DeviceChannelType(channel:TEN_CHANEL, name:SENSOR), //10-in-1 Multisensor
-            0x45:DeviceChannelType(channel:ONE_CHANEL, name:SENSOR)] //6-in-1 Multisensor
+            0x45:DeviceChannelType(channel:SIX_CHANEL, name:SENSOR)] //6-in-1 Multisensor
     }
 }
 class DeviceChannelType {

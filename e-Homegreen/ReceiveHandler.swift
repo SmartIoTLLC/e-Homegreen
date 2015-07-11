@@ -116,22 +116,59 @@ class ReceiveHandler: NSObject {
             }
             if !deviceExists {
                 for var i=1 ; i<=channel ; i++ {
-//                    Model.sharedInstance.deviceArray.append(DeviceOld(name: name, value: "", address: byteArray[4], channel: UInt8(i), gateway: 0, level: 0, zone: 0, no_of_dev: 0, type: ""))
-//                    var device = NSEntityDescription.entityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! NSManagedObject
-                    var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                    device.name = name
-                    device.address = Int(byteArray[4])
-                    device.channel = i
-                    device.gateway = Int(byteArray[2])
-                    device.numberOfDevices = channel
-                    device.runningTime = ""
-                    device.currentValue = ""
-                    device.current = ""
-                    device.amp = ""
-                    device.runningTime = ""
-                    if !appDel.managedObjectContext!.save(&error) {
-                        println("Unresolved error \(error), \(error!.userInfo)")
-                        abort()
+                    if channel == 10 && name == "sensor" {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = UserDefaults().inputInterface10in1[i]!
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = ""
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
+                        
+                    } else if channel == 6 && name == "sensor" {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = UserDefaults().inputInterface6in1[i]!
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = ""
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
+                        
+                    } else {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = name
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = ""
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
                     }
 //                    @NSManaged var runningTime: String
                 }

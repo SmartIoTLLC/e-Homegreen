@@ -10,8 +10,9 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOfDevices" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="runningTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Device" positionX="-63" positionY="-18" width="128" height="178"/>
+        <element name="Device" positionX="-63" positionY="-18" width="128" height="195"/>
     </elements>
 </model>
