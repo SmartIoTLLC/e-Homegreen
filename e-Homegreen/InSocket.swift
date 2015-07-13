@@ -12,15 +12,20 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
 //    let IP = "255.255.255.255"
 //    let PORT:UInt16 = 5556
-    let IP = "192.168.0.7"
-    let PORT:UInt16 = 5001
+    var ip = "192.168.0.7"
+    var port:UInt16 = 5001
     var socket:GCDAsyncUdpSocket!
     
     override init(){
         super.init()
         setupConnection()
     }
-    
+    init (ip:String, port:UInt16) {
+        super.init()
+        self.setupConnection()
+        self.ip = ip
+        self.port = port
+    }
     func setupConnection(){
         var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
@@ -28,9 +33,9 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
-        socket.bindToPort(PORT, error: &error)
+        socket.bindToPort(port, error: &error)
         //        socket.enableBroadcast(true, error: &error)
-        socket.joinMulticastGroup(IP, error: &error)
+        socket.joinMulticastGroup(ip, error: &error)
         socket.beginReceiving(&error)
         //        socket.enableBroadcast(true, error: &error)
     }

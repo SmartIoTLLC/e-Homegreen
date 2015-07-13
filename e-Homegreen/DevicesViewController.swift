@@ -26,7 +26,7 @@ class DeviceImage:NSObject{
         self.info = false
     }
 }
-class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate{
+class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     private let reuseIdentifier = "deviceCell"
@@ -44,13 +44,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var myView:Array<UIView> = []
     var mySecondView:Array<UIView> = []
-    
+    var outSocketPing:OutSocket!
     override func viewDidLoad() {
         super.viewDidLoad()
         commonConstruct()
         inSocket = InSocket()
         outSocket = OutSocket()
-        NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("ping"), userInfo: nil, repeats: true)
+        outSocketPing = OutSocket(ip: "255.255.255.255", port: 5001)
+        NSTimer.scheduledTimerWithTimeInterval(1/100, target: self, selector: Selector("ping"), userInfo: nil, repeats: true)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -62,7 +63,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
     }
     func ping () {
-        outSocket.send("ping")
+        outSocketPing.send("ping")
     }
     var inSocket:InSocket!
     var outSocket:OutSocket!
@@ -83,6 +84,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     override func viewWillAppear(animated: Bool) {
         updateDeviceList()
+        self.deviceCollectionView.reloadData()
     }
     var timer:NSTimer = NSTimer()
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
@@ -135,8 +137,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func oneTap(gestureRecognizer:UITapGestureRecognizer){
-        // Light
         var tag = gestureRecognizer.view?.tag
+        // Light
         if devices[tag!].type == "Dimmer" {
             var setDeviceValue:UInt8 = 0
             if devices[tag!].currentValue == 100 {
@@ -146,6 +148,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             devices[tag!].currentValue = Int(setDeviceValue)
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00))
+        }
+        // Appliance?
+        if devices[tag!].type == "curtainsRelay" {
+            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
         println("tap")
         if gestureRecognizer.view?.tag == 0{
@@ -467,19 +473,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func buttonTapped(sender:UIButton){
-        if sender.tag == 2{
-            if device2.open == false {
-                device2.open = true
-                
-            }else{
-                device2.open = false
-            }
-            deviceCollectionView.reloadData()
+        var tag = sender.tag
+        println(devices[tag].type)
+        // Appliance?
+        if devices[tag].type == "curtainsRelay" {
+            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
+    }    
+    
+    func refreshDeviceList() {
+        self.deviceCollectionView.reloadData()
     }
-    
-    
-    
     
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -542,6 +546,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        println(devices[indexPath.row].type)
         if devices[indexPath.row].type == "Dimmer" {
 //        if indexPath.row == 0 {
         
@@ -661,55 +666,78 @@ extension DevicesViewController: UICollectionViewDataSource {
 //        }
 //            
 //            
-//        else if indexPath.row == 2 {
-//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-//            if cell.gradientLayer == nil {
-//                let gradientLayer = CAGradientLayer()
-//                gradientLayer.frame = cell.bounds
-//                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-//                gradientLayer.locations = [0.0, 1.0]
-//                cell.gradientLayer = gradientLayer
-//                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            }
-//            cell.layer.cornerRadius = 5
-//            cell.layer.borderColor = UIColor.grayColor().CGColor
-//            cell.layer.borderWidth = 0.5
-//            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-//            cell.image.tag = 2
-//            cell.image.userInteractionEnabled = true
-//            cell.image.addGestureRecognizer(tap)
-//            cell.name.text = device2.text
-//            if device2.open == true{
-//                cell.image.image = UIImage(named: "applianceon")
-//                cell.button.setTitle("ON", forState: .Normal)
-//            }else{
-//                cell.image.image = UIImage(named: "applianceoff")
-//                cell.button.setTitle("OFF", forState: .Normal)
-//            }
-//            cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-//            cell.button.tag = 2
-//            //            cell.addSubview(myView[indexPath.row])
-//            //            cell.addSubview(mySecondView[indexPath.row])
-//            //        println("Broj: \(indexPath.row)")
-//            return cell
-//            
-//        }else if indexPath.row == 3 {
-//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-//            if cell.gradientLayer == nil {
-//                let gradientLayer = CAGradientLayer()
-//                gradientLayer.frame = cell.bounds
-//                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-//                gradientLayer.locations = [0.0, 1.0]
-//                cell.gradientLayer = gradientLayer
-//                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            }
-//            cell.layer.cornerRadius = 5
-//            cell.layer.borderColor = UIColor.grayColor().CGColor
-//            cell.layer.borderWidth = 0.5
-//            return cell
-//            
-//        }
-//            
+        else if devices[indexPath.row].type == "curtainsRelay" {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.image.tag = indexPath.row
+            cell.image.userInteractionEnabled = true
+            cell.image.addGestureRecognizer(tap)
+            cell.name.text = device2.text
+            if device2.open == true{
+                cell.image.image = UIImage(named: "applianceon")
+                cell.button.setTitle("ON", forState: .Normal)
+            }else{
+                cell.image.image = UIImage(named: "applianceoff")
+                cell.button.setTitle("OFF", forState: .Normal)
+            }
+            cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.button.tag = indexPath.row
+            //            cell.addSubview(myView[indexPath.row])
+            //            cell.addSubview(mySecondView[indexPath.row])
+            //        println("Broj: \(indexPath.row)")
+            return cell
+            
+        }
+        else if devices[indexPath.row].type == "hvac" {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            return cell
+            
+        }
+         
+            
+        else if devices[indexPath.row].type == "sensor" {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            
+            cell.sensorTitle.text = devices[indexPath.row].name
+            cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+            
+            return cell
+            
+        }
+            
         else {
             
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
@@ -790,7 +818,11 @@ class ClimateCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
 }
 //Multisensor 10 in 1 and 6 in 1
-//class MultiSensorCell: UICollectionViewCell {
-//    
-//    var gradientLayer: CAGradientLayer?
-//}
+class MultiSensorCell: UICollectionViewCell {
+    
+    @IBOutlet weak var sensorImage: UIImageView!
+    @IBOutlet weak var sensorTitle: UILabel!
+    @IBOutlet weak var sensorState: UILabel!
+    
+    var gradientLayer: CAGradientLayer?
+}

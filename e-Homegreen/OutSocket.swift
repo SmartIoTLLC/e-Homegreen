@@ -10,8 +10,8 @@ import UIKit
 
 class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
-    let IP = "192.168.0.7"
-    let PORT:UInt16 = 5001
+    var ip = "192.168.0.7"
+    var port:UInt16 = 5001
     var socket:GCDAsyncUdpSocket!
     
     override init(){
@@ -19,6 +19,12 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         setupConnection()
     }
     
+    init (ip:String, port:UInt16) {
+        super.init()
+        self.setupConnection()
+        self.ip = ip
+        self.port = port
+    }
 //    func setupConnection(){
 //        var error : NSError?
 //        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
@@ -32,8 +38,8 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     func setupConnection(){
         var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        socket.bindToPort(PORT, error: &error)
-        socket.connectToHost(IP, onPort: PORT, error: &error)
+        socket.bindToPort(port, error: &error)
+        socket.connectToHost(ip, onPort: port, error: &error)
         //        socket.beginReceiving(&error)
         socket.enableBroadcast(true, error: &error)
     }

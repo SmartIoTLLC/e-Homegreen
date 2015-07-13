@@ -79,8 +79,8 @@ class UserDefaults: NSObject {
     }
     func saveDeviceChannel () {
         deviceChannel = [0x03:DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway
-            0x21:DeviceChannelType(channel:TWO_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay 
-            0x25:DeviceChannelType(channel:FOUR_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay
+            0x21:DeviceChannelType(channel:FOUR_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay
+            0x25:DeviceChannelType(channel:EIGHT_CHANEL, name:CURTAINS_RELAY), //ChangeOverRelay
             0x0C:DeviceChannelType(channel:ONE_CHANEL, name:PC), //PC
             0x13:DeviceChannelType(channel:FOUR_CHANEL, name:DIMER), //Dimmer Module 4CH, 1A
             0x16:DeviceChannelType(channel:EIGHT_CHANEL, name:DIMER), //Dimmer Module 8CH, 1A

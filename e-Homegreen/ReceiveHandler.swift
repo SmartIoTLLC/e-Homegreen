@@ -9,12 +9,21 @@
 import UIKit
 import CoreData
 
+@objc
+protocol ReceiveHandlerDelegate {
+    optional func refreshDeviceList()
+}
+
+//class CommonViewController: UIViewController {
+//
+
 //  Mozda incoming handler
 class ReceiveHandler: NSObject {
     var byteArray:[UInt8]!
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
+    var delegate:ReceiveHandlerDelegate?
     
     init (byteArrayToHandle: [UInt8]) {
         super.init()
