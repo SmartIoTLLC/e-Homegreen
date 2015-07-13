@@ -12,7 +12,7 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
 //    let IP = "255.255.255.255"
 //    let PORT:UInt16 = 5556
-    let IP = "255.255.255.255"
+    let IP = "192.168.0.7"
     let PORT:UInt16 = 5001
     var socket:GCDAsyncUdpSocket!
     

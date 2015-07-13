@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DatabaseViewController: CommonViewController {
+class DatabaseViewController: UIViewController {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
@@ -17,10 +17,11 @@ class DatabaseViewController: CommonViewController {
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
+    var backgroundImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
+        self.commonConstruct()
         
         inSocket = InSocket()
         outSocket = OutSocket()
@@ -42,6 +43,11 @@ class DatabaseViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
     }
+    func commonConstruct() {
+        backgroundImageView.image = UIImage(named: "Background")
+        backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
+        self.view.insertSubview(backgroundImageView, atIndex: 0)
+    }
     var deviceNumber = 0
     var touched = false
     @IBAction func btnRefresTableView(sender: AnyObject) {
@@ -57,16 +63,6 @@ class DatabaseViewController: CommonViewController {
         databaseArray = []
         for item in devices {
             databaseArray.append("\(item.name); \(item.address); \(item.channel)")
-//            @NSManaged var address: NSNumber
-//            @NSManaged var amp: String
-//            @NSManaged var channel: NSNumber
-//            @NSManaged var current: String
-//            @NSManaged var currentValue: String
-//            @NSManaged var gateway: NSNumber
-//            @NSManaged var name: String
-//            @NSManaged var numberOfDevices: NSNumber
-//            @NSManaged var runningTime: String
-//            @NSManaged var type: String
             println("name: \(item.name) address: \(item.address) channel: \(item.channel) type: \(item.type) current: \(item.current) currentValue: \(item.currentValue) gateway: \(item.gateway) amp: \(item.amp) numberOfDevices: \(item.numberOfDevices) runningTime: \(item.runningTime)")
         }
         databaseTable.reloadData()

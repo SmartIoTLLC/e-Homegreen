@@ -58,7 +58,7 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: Int) {
-        println("didSendDataWithTag")
+//        println("didSendDataWithTag")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: Int, dueToError error: NSError!) {

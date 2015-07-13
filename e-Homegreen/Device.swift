@@ -15,11 +15,13 @@ class Device: NSManagedObject {
     @NSManaged var amp: String
     @NSManaged var channel: NSNumber
     @NSManaged var current: String
-    @NSManaged var currentValue: String
+    @NSManaged var currentValue: NSNumber
     @NSManaged var gateway: NSNumber
     @NSManaged var name: String
     @NSManaged var numberOfDevices: NSNumber
     @NSManaged var runningTime: String
     @NSManaged var type: String
+    var opening: Bool = true
+    var on: Bool = false
 
 }

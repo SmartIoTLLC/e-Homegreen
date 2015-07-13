@@ -5,7 +5,7 @@
         <attribute name="amp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="current" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="currentValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentValue" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="gateway" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOfDevices" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

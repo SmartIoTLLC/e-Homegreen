@@ -1,4 +1,4 @@
-//
+
 //  ReceiveHandler.swift
 //  new
 //
@@ -124,7 +124,7 @@ class ReceiveHandler: NSObject {
                         device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
-                        device.currentValue = ""
+                        device.currentValue = 0
                         device.current = ""
                         device.amp = ""
                         device.runningTime = ""
@@ -142,7 +142,7 @@ class ReceiveHandler: NSObject {
                         device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
-                        device.currentValue = ""
+                        device.currentValue = 0
                         device.current = ""
                         device.amp = ""
                         device.runningTime = ""
@@ -160,7 +160,7 @@ class ReceiveHandler: NSObject {
                         device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
-                        device.currentValue = ""
+                        device.currentValue = 0
                         device.current = ""
                         device.amp = ""
                         device.runningTime = ""
