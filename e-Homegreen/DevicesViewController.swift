@@ -257,9 +257,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewWillLayoutSubviews() {
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            
-            sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 25, right: 5)
-            
+            if self.view.frame.size.width == 568{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }else if self.view.frame.size.width == 667{
+                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -276,8 +280,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             deviceCollectionView.reloadData()
             
         } else {
+            if self.view.frame.size.width == 320{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }else if self.view.frame.size.width == 375{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }
             
-            sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()

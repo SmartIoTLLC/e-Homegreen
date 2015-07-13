@@ -118,7 +118,7 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return CGSize(width: 120, height: 120)
+        return CGSize(width: 90, height: 90)
     }
 }
 
@@ -133,10 +133,14 @@ extension SidePanelViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
-        var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, 120, 120)
-        gradient.colors = [UIColor.grayColor().colorWithAlphaComponent(0.95).CGColor, UIColor.grayColor().colorWithAlphaComponent(0.1).CGColor]
-        cell.layer.insertSublayer(gradient, atIndex: 0)
+        if cell.gradientLayer == nil {
+            var gradient:CAGradientLayer = CAGradientLayer()
+            gradient.frame = cell.bounds
+            gradient.colors = [UIColor.grayColor().colorWithAlphaComponent(0.95).CGColor, UIColor.grayColor().colorWithAlphaComponent(0.1).CGColor]
+            gradient.locations = [0.0, 1.0]
+            cell.gradientLayer = gradient
+            cell.layer.insertSublayer(gradient, atIndex: 0)
+        }
         cell.configureForMenu(menuItems[indexPath.row])
 //        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
@@ -149,6 +153,7 @@ class MenuItemCell: UICollectionViewCell {
     
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
+    var gradientLayer: CAGradientLayer?
     
     func configureForMenu (menuItem:MenuItem) {
         menuItemImageView.image = menuItem.image
