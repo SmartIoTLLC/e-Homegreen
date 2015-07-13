@@ -26,7 +26,7 @@ class DeviceImage:NSObject{
         self.info = false
     }
 }
-class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
+class DevicesViewController: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     private let reuseIdentifier = "deviceCell"
@@ -39,6 +39,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var device3:DeviceImage = DeviceImage(image: UIImage(named: "doorclosed")!, text: "Garage door")
     
     var senderButton:UIButton?
+    var receiveHandler:ReceiveHandler = ReceiveHandler(byteArrayToHandle: [0xAA])
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
@@ -47,11 +48,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var outSocketPing:OutSocket!
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
-        inSocket = InSocket()
-        outSocket = OutSocket()
+//        commonConstruct()
+        receiveHandler.delegate = self
+        if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
+            inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
+            outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
+        }
         outSocketPing = OutSocket(ip: "255.255.255.255", port: 5001)
-        NSTimer.scheduledTimerWithTimeInterval(1/100, target: self, selector: Selector("ping"), userInfo: nil, repeats: true)
+//        NSTimer.scheduledTimerWithTimeInterval(1/100, target: self, selector: Selector("ping"), userInfo: nil, repeats: true)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -105,35 +109,35 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
         }
         
-        if gestureRecognizer.view?.tag == 0 {
-            if gestureRecognizer.state == UIGestureRecognizerState.Began {
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
-            }
-            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-                timer.invalidate()
-                if self.device.stateOpening == true {
-                    self.device.stateOpening = false
-                }else {
-                    self.device.stateOpening = true
-                }
-                return
-            }
-            
-        }
-        if gestureRecognizer.view?.tag == 1 {
-            if gestureRecognizer.state == UIGestureRecognizerState.Began {
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update1"), userInfo: nil, repeats: true)
-            }
-            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-                timer.invalidate()
-                if self.device1.stateOpening == true {
-                    self.device1.stateOpening = false
-                }else {
-                    self.device1.stateOpening = true
-                }
-                return
-            }
-        }
+//        if gestureRecognizer.view?.tag == 0 {
+//            if gestureRecognizer.state == UIGestureRecognizerState.Began {
+//                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+//            }
+//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+//                timer.invalidate()
+//                if self.device.stateOpening == true {
+//                    self.device.stateOpening = false
+//                }else {
+//                    self.device.stateOpening = true
+//                }
+//                return
+//            }
+//            
+//        }
+//        if gestureRecognizer.view?.tag == 1 {
+//            if gestureRecognizer.state == UIGestureRecognizerState.Began {
+//                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update1"), userInfo: nil, repeats: true)
+//            }
+//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+//                timer.invalidate()
+//                if self.device1.stateOpening == true {
+//                    self.device1.stateOpening = false
+//                }else {
+//                    self.device1.stateOpening = true
+//                }
+//                return
+//            }
+//        }
     }
     
     func oneTap(gestureRecognizer:UITapGestureRecognizer){
@@ -153,40 +157,40 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag!].type == "curtainsRelay" {
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
-        println("tap")
-        if gestureRecognizer.view?.tag == 0{
-            if device.open == true{
-                device.open = false
-                device.value = 0
-                device.stateOpening = true
-            }else{
-                device.open = true
-                device.value = 1
-                device.stateOpening = false
-            }
-        }
-        if gestureRecognizer.view?.tag == 1{
-            if device1.open == true{
-                device1.open = false
-                device1.value = 0
-                device1.stateOpening = true
-            }else{
-                device1.open = true
-                device1.value = 1
-                device1.stateOpening = false
-            }
-        }
-        if gestureRecognizer.view?.tag == 3{
-            showClimaSettings("nesto")
-        }
-        if gestureRecognizer.view?.tag == 4{
-            if device3.open == false{
-                device3.open = true
-            }else{
-                device3.open = false
-            }
-            
-        }
+        
+//        if gestureRecognizer.view?.tag == 0{
+//            if device.open == true{
+//                device.open = false
+//                device.value = 0
+//                device.stateOpening = true
+//            }else{
+//                device.open = true
+//                device.value = 1
+//                device.stateOpening = false
+//            }
+//        }
+//        if gestureRecognizer.view?.tag == 1{
+//            if device1.open == true{
+//                device1.open = false
+//                device1.value = 0
+//                device1.stateOpening = true
+//            }else{
+//                device1.open = true
+//                device1.value = 1
+//                device1.stateOpening = false
+//            }
+//        }
+//        if gestureRecognizer.view?.tag == 3{
+//            showClimaSettings("nesto")
+//        }
+//        if gestureRecognizer.view?.tag == 4{
+//            if device3.open == false{
+//                device3.open = true
+//            }else{
+//                device3.open = false
+//            }
+//            
+//        }
         deviceCollectionView.reloadData()
     }
     
@@ -213,7 +217,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func update(timer: NSTimer){
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)/100
-            print("1 ")
             println(UInt8(Int(deviceValue*100)))
             if devices[tag].opening {
                 if deviceValue < 1 {
@@ -228,11 +231,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     deviceValue = 0
                 }
             }
-            print("2 ")
             println(UInt8(Int(deviceValue*100)))
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
             devices[tag].currentValue = Int(deviceValue*100)
-            print("3 ")
             println(UInt8(Int(deviceValue*100)))
         }
 //        if self.device.stateOpening == true{
@@ -253,7 +254,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         self.deviceCollectionView.reloadData()
     }
-    
+    var backgroundImageView:UIImageView = UIImageView()
     override func viewWillLayoutSubviews() {
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -446,7 +447,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func changeSliderValue(sender: UISlider){
         // Light
         var tag = sender.tag
-        println("\(sender.tag)")
         if devices[tag].type == "Dimmer" {
             println("\(UInt8(Int(sender.value * 100)))")
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
@@ -489,9 +489,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "curtainsRelay" {
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
-    }    
+    }
     
     func refreshDeviceList() {
+        updateDeviceList()
         self.deviceCollectionView.reloadData()
     }
     
@@ -556,7 +557,6 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        println(devices[indexPath.row].type)
         if devices[indexPath.row].type == "Dimmer" {
 //        if indexPath.row == 0 {
         
@@ -627,55 +627,55 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
 //        }
 //            
-//        else if indexPath.row == 1 {
-//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-//            if cell.gradientLayer == nil {
-//                let gradientLayer = CAGradientLayer()
-//                gradientLayer.frame = cell.bounds
-//                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-//                gradientLayer.locations = [0.0, 1.0]
-//                cell.gradientLayer = gradientLayer
-//                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            }
-//            cell.layer.cornerRadius = 5
-//            cell.layer.borderColor = UIColor.grayColor().CGColor
-//            cell.layer.borderWidth = 0.5
-//            cell.curtainName.text = device1.text
-//            cell.curtainImage.image = device1.image
-//            cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
-//            cell.curtainSlider.tag = indexPath.row
-//            if device1.value >= 0 && device1.value < 0.2{
-//                cell.curtainImage.image = UIImage(named: "curtain0")
-//                
-//            }else if device1.value >= 0.2 && device1.value < 0.4{
-//                cell.curtainImage.image = UIImage(named: "curtain1")
-//                
-//            }else if device1.value >= 0.4 && device1.value < 0.6 {
-//                cell.curtainImage.image = UIImage(named: "curtain2")
-//                
-//            }else if device1.value >= 0.6 && device1.value < 0.8 {
-//                cell.curtainImage.image = UIImage(named: "curtain3")
-//                
-//            }else {
-//                cell.curtainImage.image = UIImage(named: "curtain4")
-//                
-//            }
-//            cell.curtainSlider.value = device1.value
-//            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-//            var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-//            lpgr.minimumPressDuration = 0.5
-//            lpgr.delegate = self
-//            cell.curtainImage.userInteractionEnabled = true
-//            cell.curtainImage.tag = 1
-//            cell.curtainImage.addGestureRecognizer(lpgr)
-//            cell.curtainImage.addGestureRecognizer(tap)
-//            //        cell.addSubview(myView[indexPath.row])
-//            //        cell.addSubview(mySecondView[indexPath.row])
-//            //            println("Broj: \(indexPath.row)")
-//            return cell
-//        }
-//            
-//            
+        else if devices[indexPath.row].type == "curtainsRS485 ILI TAKO NEKI VRAG" {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
+            if cell.gradientLayer == nil {
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.frame = cell.bounds
+                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.locations = [0.0, 1.0]
+                cell.gradientLayer = gradientLayer
+                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            }
+            cell.layer.cornerRadius = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderWidth = 0.5
+            cell.curtainName.text = device1.text
+            cell.curtainImage.image = device1.image
+            cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
+            cell.curtainSlider.tag = indexPath.row
+            if device1.value >= 0 && device1.value < 0.2{
+                cell.curtainImage.image = UIImage(named: "curtain0")
+                
+            }else if device1.value >= 0.2 && device1.value < 0.4{
+                cell.curtainImage.image = UIImage(named: "curtain1")
+                
+            }else if device1.value >= 0.4 && device1.value < 0.6 {
+                cell.curtainImage.image = UIImage(named: "curtain2")
+                
+            }else if device1.value >= 0.6 && device1.value < 0.8 {
+                cell.curtainImage.image = UIImage(named: "curtain3")
+                
+            }else {
+                cell.curtainImage.image = UIImage(named: "curtain4")
+                
+            }
+            cell.curtainSlider.value = device1.value
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+            lpgr.minimumPressDuration = 0.5
+            lpgr.delegate = self
+            cell.curtainImage.userInteractionEnabled = true
+            cell.curtainImage.tag = 1
+            cell.curtainImage.addGestureRecognizer(lpgr)
+            cell.curtainImage.addGestureRecognizer(tap)
+            //        cell.addSubview(myView[indexPath.row])
+            //        cell.addSubview(mySecondView[indexPath.row])
+            //            println("Broj: \(indexPath.row)")
+            return cell
+        }
+            
+            
         else if devices[indexPath.row].type == "curtainsRelay" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             if cell.gradientLayer == nil {

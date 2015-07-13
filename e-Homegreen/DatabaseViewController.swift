@@ -23,8 +23,10 @@ class DatabaseViewController: UIViewController {
         super.viewDidLoad()
         self.commonConstruct()
         
-        inSocket = InSocket()
-        outSocket = OutSocket()
+        if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
+                inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
+                outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
+        }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         

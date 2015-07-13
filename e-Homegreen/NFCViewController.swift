@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NFCViewController: DevicesViewController {
+class NFCViewController: CommonViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

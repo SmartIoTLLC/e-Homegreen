@@ -9,9 +9,9 @@
 import UIKit
 import CoreData
 
-@objc
+//@objc
 protocol ReceiveHandlerDelegate {
-    optional func refreshDeviceList()
+    func refreshDeviceList()
 }
 
 //class CommonViewController: UIViewController {
@@ -23,7 +23,7 @@ class ReceiveHandler: NSObject {
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
-    var delegate:ReceiveHandlerDelegate?
+    var delegate:ReceiveHandlerDelegate! = nil
     
     init (byteArrayToHandle: [UInt8]) {
         super.init()
@@ -141,8 +141,7 @@ class ReceiveHandler: NSObject {
                         if !appDel.managedObjectContext!.save(&error) {
                             println("Unresolved error \(error), \(error!.userInfo)")
                             abort()
-                        }
-                        
+                        }                        
                     } else if channel == 6 && name == "sensor" {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = UserDefaults().inputInterface6in1[i]!
@@ -160,7 +159,6 @@ class ReceiveHandler: NSObject {
                             println("Unresolved error \(error), \(error!.userInfo)")
                             abort()
                         }
-                        
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = name
@@ -179,6 +177,7 @@ class ReceiveHandler: NSObject {
                             abort()
                         }
                     }
+                    delegate?.refreshDeviceList()
 //                    @NSManaged var runningTime: String
                 }
             }

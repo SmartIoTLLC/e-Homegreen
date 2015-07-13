@@ -22,7 +22,9 @@ class CommonViewController: UIViewController {
     }
     
     var backgroundImageView = UIImageView()
-    
+    override func viewWillAppear(animated: Bool) {
+        println()
+    }
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
         backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)

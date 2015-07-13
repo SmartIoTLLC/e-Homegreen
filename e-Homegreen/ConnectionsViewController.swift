@@ -17,7 +17,10 @@ class ConnectionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
-
+        if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
+            ipHostTextField.text = "\(ip)"
+            portTextField.text = "\(port)"
+        }
         // Do any additional setup after loading the view.
     }
     func commonConstruct() {
@@ -26,6 +29,8 @@ class ConnectionsViewController: UIViewController {
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
     @IBAction func btnSaveConnection(sender: AnyObject) {
+        NSUserDefaults.standardUserDefaults().setValue("\(ipHostTextField.text)", forKeyPath: "ipHost")
+        NSUserDefaults.standardUserDefaults().setValue("\(portTextField.text)", forKeyPath: "port")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
