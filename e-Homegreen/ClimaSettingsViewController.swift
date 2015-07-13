@@ -42,8 +42,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         btnModeSetUp()
         btnFanSetUp()
-        removeLayers()
-        btnModeSetUp()
+//        removeLayers()
+//        btnModeSetUp()
         
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
@@ -82,6 +82,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnCool.imageEdgeInsets = UIEdgeInsetsMake(0, -1, 0, 1)
         btnCool.setTitle("COOL", forState: .Normal)
         btnCool.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnCool.bringSubviewToFront(btnCool.imageView!)
         
 //        var gradientLayerForButon1:CAGradientLayer = CAGradientLayer()
         gradientLayerForButon1.frame = btnCool.bounds
@@ -96,6 +97,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHeat.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnHeat.setTitle("HEAT", forState: .Normal)
         btnHeat.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnHeat.bringSubviewToFront(btnHeat.imageView!)
         
 //        var gradientLayerForButon2:CAGradientLayer = CAGradientLayer()
         gradientLayerForButon2.frame = btnCool.bounds
@@ -110,7 +112,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnFan.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnFan.setTitle("FAN", forState: .Normal)
         btnFan.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        
+        btnFan.bringSubviewToFront(btnFan.imageView!)
         
         gradientLayerForButon3.frame = btnCool.bounds
         gradientLayerForButon3.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
@@ -124,6 +126,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAuto.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnAuto.setTitle("AUTO", forState: .Normal)
         btnAuto.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnAuto.bringSubviewToFront(btnAuto.imageView!)
         
     }
     func btnFanSetUp(){
@@ -187,26 +190,49 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     func removeLayers(){
-//        btnCool.backgroundColor = UIColor.clearColor()
-//        btnHeat.backgroundColor = UIColor.clearColor()
-//        btnFan.backgroundColor = UIColor.clearColor()
-//        btnAuto.backgroundColor = UIColor.clearColor()
         gradientLayerForButon.removeFromSuperlayer()
         gradientLayerForButon1.removeFromSuperlayer()
         gradientLayerForButon2.removeFromSuperlayer()
         gradientLayerForButon3.removeFromSuperlayer()
+        btnCool.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnFan.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnAuto.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnHeat.backgroundColor = UIColor.groupTableViewBackgroundColor()
     }
 
     
     @IBAction func btnModePressed(sender: UIButton) {
         removeLayers()
-        btnModeSetUp()
-        sender.backgroundColor = UIColor.grayColor()
-        
+        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
+        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
+        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
+        btnCool.backgroundColor = UIColor.lightTextColor()
     }
     
+    @IBAction func test(sender: UIButton) {
+        removeLayers()
+        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
+        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
+        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
+        btnHeat.backgroundColor = UIColor.lightTextColor()
+    }
 
+    @IBAction func fan(sender: UIButton) {
+        removeLayers()
+        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
+        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
+        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
+        btnFan.backgroundColor = UIColor.lightTextColor()
+    }
     
+    @IBAction func auto(sender: UIButton) {
+        removeLayers()
+        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
+        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
+        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
+        btnAuto.backgroundColor = UIColor.lightTextColor()
+        
+    }
     override func viewWillAppear(animated: Bool) {
         
     }

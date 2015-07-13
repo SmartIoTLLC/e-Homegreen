@@ -98,7 +98,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 
         if gestureRecognizer.view?.tag == 0 {
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+            var arr = gestureRecognizer.view?.tag
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "update:", userInfo: arr, repeats: true)
         }
         if gestureRecognizer.state == UIGestureRecognizerState.Ended {
             timer.invalidate()
@@ -113,7 +114,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
         if gestureRecognizer.view?.tag == 1 {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update1"), userInfo: nil, repeats: true)
+                var arr = gestureRecognizer.view?.tag
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "update:", userInfo: arr, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 timer.invalidate()
@@ -189,8 +191,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         self.deviceCollectionView.reloadData()
     }
     
-    func update(){
-        
+    func update(timer: NSTimer){
+        println(timer.userInfo)
         if self.device.stateOpening == true{
             if self.device.value <= 1{
                 self.device.value = self.device.value + 0.05
@@ -506,22 +508,24 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func changeSliderValue(sender: UISlider){
-        if sender.value == 1 {
-            self.device.stateOpening = false
-            self.device.open = true
-            self.device.stateOpening = false
-        }
-        if sender.value == 0 {
-            self.device.stateOpening = true
-            self.device.open = false
-            self.device.stateOpening = true
-        }
-        device.value = sender.value
-        deviceCollectionView.reloadData()
+        println(sender.tag)
+//        if sender.value == 1 {
+//            self.device.stateOpening = false
+//            self.device.open = true
+//            self.device.stateOpening = false
+//        }
+//        if sender.value == 0 {
+//            self.device.stateOpening = true
+//            self.device.open = false
+//            self.device.stateOpening = true
+//        }
+//        device.value = sender.value
+//        deviceCollectionView.reloadData()
         
     }
     
     func changeSliderValue1(sender: UISlider){
+        println(sender.tag)
         if sender.value == 1 {
             self.device1.stateOpening = false
             self.device1.open = true
@@ -613,10 +617,10 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if indexPath.row == 0 {
+        if indexPath.row == 0 || indexPath.row == 1 {
             
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-            if device.info == false{
+
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
@@ -628,104 +632,164 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
-            cell.typeOfLight.text = device.text
+//            cell.typeOfLight.text = device.text
             cell.typeOfLight.userInteractionEnabled = true
             cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-            cell.lightSlider.tag = 0
+            cell.lightSlider.tag = indexPath.row
             
-            if device.value >= 0 && device.value < 0.1{
-                cell.picture.image = UIImage(named: "lightBulb1")
-                
-            }else if device.value >= 0.1 && device.value < 0.2{
-                cell.picture.image = UIImage(named: "lightBulb2")
-                
-            }else if device.value >= 0.2 && device.value < 0.3 {
-                cell.picture.image = UIImage(named: "lightBulb3")
-                
-            }else if device.value >= 0.3 && device.value < 0.4 {
-                cell.picture.image = UIImage(named: "lightBulb4")
-                
-            }else if device.value >= 0.4 && device.value < 0.5 {
-                cell.picture.image = UIImage(named: "lightBulb5")
-                
-            }else if device.value >= 0.5 && device.value < 0.6 {
-                cell.picture.image = UIImage(named: "lightBulb6")
-                
-            }else if device.value >= 0.6 && device.value < 0.7 {
-                cell.picture.image = UIImage(named: "lightBulb7")
-                
-            }else if device.value >= 0.7 && device.value < 0.8 {
-                cell.picture.image = UIImage(named: "lightBulb8")
-                
-            }else if device.value >= 0.8 && device.value < 0.9{
-                cell.picture.image = UIImage(named: "lightBulb9")
-                
-            }else{
-                cell.picture.image = UIImage(named: "lightBulb10")
-                
-            }
-            cell.lightSlider.value = device.value
+//            if device.value >= 0 && device.value < 0.1{
+//                cell.picture.image = UIImage(named: "lightBulb1")
+//                
+//            }else if device.value >= 0.1 && device.value < 0.2{
+//                cell.picture.image = UIImage(named: "lightBulb2")
+//                
+//            }else if device.value >= 0.2 && device.value < 0.3 {
+//                cell.picture.image = UIImage(named: "lightBulb3")
+//                
+//            }else if device.value >= 0.3 && device.value < 0.4 {
+//                cell.picture.image = UIImage(named: "lightBulb4")
+//                
+//            }else if device.value >= 0.4 && device.value < 0.5 {
+//                cell.picture.image = UIImage(named: "lightBulb5")
+//                
+//            }else if device.value >= 0.5 && device.value < 0.6 {
+//                cell.picture.image = UIImage(named: "lightBulb6")
+//                
+//            }else if device.value >= 0.6 && device.value < 0.7 {
+//                cell.picture.image = UIImage(named: "lightBulb7")
+//                
+//            }else if device.value >= 0.7 && device.value < 0.8 {
+//                cell.picture.image = UIImage(named: "lightBulb8")
+//                
+//            }else if device.value >= 0.8 && device.value < 0.9{
+//                cell.picture.image = UIImage(named: "lightBulb9")
+//                
+//            }else{
+//                cell.picture.image = UIImage(named: "lightBulb10")
+//                
+//            }
+//            cell.lightSlider.value = device.value
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
             lpgr.minimumPressDuration = 0.5
             lpgr.delegate = self
             cell.picture.userInteractionEnabled = true
-            cell.picture.tag = 0
+            cell.picture.tag = indexPath.row
             cell.picture.addGestureRecognizer(lpgr)
             cell.picture.addGestureRecognizer(tap)
-            }else{
-                cell.addSubview(infoView())
-            }
             return cell
             
         }
         
-        else if indexPath.row == 1 {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
-            cell.curtainName.text = device1.text
-            cell.curtainImage.image = device1.image
-            cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
-            cell.curtainSlider.tag = indexPath.row
-            if device1.value >= 0 && device1.value < 0.2{
-                cell.curtainImage.image = UIImage(named: "curtain0")
+        else if indexPath.row == 8 {
+//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
+//            if cell.gradientLayer == nil {
+//                let gradientLayer = CAGradientLayer()
+//                gradientLayer.frame = cell.bounds
+//                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+//                gradientLayer.locations = [0.0, 1.0]
+//                cell.gradientLayer = gradientLayer
+//                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+//            }
+//            cell.layer.cornerRadius = 5
+//            cell.layer.borderColor = UIColor.grayColor().CGColor
+//            cell.layer.borderWidth = 0.5
+//            cell.curtainName.text = device1.text
+//            cell.curtainImage.image = device1.image
+//            cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
+//            cell.curtainSlider.tag = indexPath.row
+//            if device1.value >= 0 && device1.value < 0.2{
+//                cell.curtainImage.image = UIImage(named: "curtain0")
+//                
+//            }else if device1.value >= 0.2 && device1.value < 0.4{
+//                cell.curtainImage.image = UIImage(named: "curtain1")
+//                
+//            }else if device1.value >= 0.4 && device1.value < 0.6 {
+//                cell.curtainImage.image = UIImage(named: "curtain2")
+//                
+//            }else if device1.value >= 0.6 && device1.value < 0.8 {
+//                cell.curtainImage.image = UIImage(named: "curtain3")
+//                
+//            }else {
+//                cell.curtainImage.image = UIImage(named: "curtain4")
+//                
+//            }
+//            cell.curtainSlider.value = device1.value
+//            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+//            var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+//            lpgr.minimumPressDuration = 0.5
+//            lpgr.delegate = self
+//            cell.curtainImage.userInteractionEnabled = true
+//            cell.curtainImage.tag = 1
+//            cell.curtainImage.addGestureRecognizer(lpgr)
+//            cell.curtainImage.addGestureRecognizer(tap)
+//            //        cell.addSubview(myView[indexPath.row])
+//            //        cell.addSubview(mySecondView[indexPath.row])
+//            //            println("Broj: \(indexPath.row)")
+//            return cell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
+//            if device.info == false{
+                if cell.gradientLayer == nil {
+                    let gradientLayer = CAGradientLayer()
+                    gradientLayer.frame = cell.bounds
+                    gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                    gradientLayer.locations = [0.0, 1.0]
+                    cell.gradientLayer = gradientLayer
+                    cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+                }
+                cell.layer.cornerRadius = 5
+                cell.layer.borderColor = UIColor.grayColor().CGColor
+                cell.layer.borderWidth = 0.5
+//                cell.typeOfLight.text = device.text
+                cell.typeOfLight.userInteractionEnabled = true
+                cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+                cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
+                cell.lightSlider.tag = 1
                 
-            }else if device1.value >= 0.2 && device1.value < 0.4{
-                cell.curtainImage.image = UIImage(named: "curtain1")
-                
-            }else if device1.value >= 0.4 && device1.value < 0.6 {
-                cell.curtainImage.image = UIImage(named: "curtain2")
-                
-            }else if device1.value >= 0.6 && device1.value < 0.8 {
-                cell.curtainImage.image = UIImage(named: "curtain3")
-                
-            }else {
-                cell.curtainImage.image = UIImage(named: "curtain4")
-                
-            }
-            cell.curtainSlider.value = device1.value
-            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-            var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-            lpgr.minimumPressDuration = 0.5
-            lpgr.delegate = self
-            cell.curtainImage.userInteractionEnabled = true
-            cell.curtainImage.tag = 1
-            cell.curtainImage.addGestureRecognizer(lpgr)
-            cell.curtainImage.addGestureRecognizer(tap)
-            //        cell.addSubview(myView[indexPath.row])
-            //        cell.addSubview(mySecondView[indexPath.row])
-            //            println("Broj: \(indexPath.row)")
+//                if device.value >= 0 && device.value < 0.1{
+//                    cell.picture.image = UIImage(named: "lightBulb1")
+//                    
+//                }else if device.value >= 0.1 && device.value < 0.2{
+//                    cell.picture.image = UIImage(named: "lightBulb2")
+//                    
+//                }else if device.value >= 0.2 && device.value < 0.3 {
+//                    cell.picture.image = UIImage(named: "lightBulb3")
+//                    
+//                }else if device.value >= 0.3 && device.value < 0.4 {
+//                    cell.picture.image = UIImage(named: "lightBulb4")
+//                    
+//                }else if device.value >= 0.4 && device.value < 0.5 {
+//                    cell.picture.image = UIImage(named: "lightBulb5")
+//                    
+//                }else if device.value >= 0.5 && device.value < 0.6 {
+//                    cell.picture.image = UIImage(named: "lightBulb6")
+//                    
+//                }else if device.value >= 0.6 && device.value < 0.7 {
+//                    cell.picture.image = UIImage(named: "lightBulb7")
+//                    
+//                }else if device.value >= 0.7 && device.value < 0.8 {
+//                    cell.picture.image = UIImage(named: "lightBulb8")
+//                    
+//                }else if device.value >= 0.8 && device.value < 0.9{
+//                    cell.picture.image = UIImage(named: "lightBulb9")
+//                    
+//                }else{
+//                    cell.picture.image = UIImage(named: "lightBulb10")
+//                    
+//                }
+//                cell.lightSlider.value = device.value
+                var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+                var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+                lpgr.minimumPressDuration = 0.5
+                lpgr.delegate = self
+                cell.picture.userInteractionEnabled = true
+                cell.picture.tag = 0
+                cell.picture.addGestureRecognizer(lpgr)
+                cell.picture.addGestureRecognizer(tap)
+//            }else{
+//                cell.addSubview(infoView())
+//            }
             return cell
         }
         
