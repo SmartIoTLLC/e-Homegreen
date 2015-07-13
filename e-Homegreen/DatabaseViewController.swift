@@ -7,33 +7,63 @@
 //
 
 import UIKit
+import CoreData
 
-class DatabaseViewController: CommonViewController {
+class DatabaseViewController: UIViewController {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
     var outSocket:OutSocket!
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
+    var backgroundImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
+        self.commonConstruct()
         
         inSocket = InSocket()
         outSocket = OutSocket()
         
-        for item in Model.sharedInstance.deviceArray {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        println("")
+        for item in devices {
+            databaseArray.append("\(item.name)")
         }
         
         // Do any additional setup after loading the view.
     }
+    func commonConstruct() {
+        backgroundImageView.image = UIImage(named: "Background")
+        backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
+        self.view.insertSubview(backgroundImageView, atIndex: 0)
+    }
     var deviceNumber = 0
     var touched = false
     @IBAction func btnRefresTableView(sender: AnyObject) {
-        outSocket.sendByte(Functions().searchForDevices(0x05))
+//        outSocket.sendByte(Functions().searchForDevices(0x05))
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        println("")
         databaseArray = []
-        for item in Model.sharedInstance.deviceArray {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel); \(item.type); \(item.currentValue)")
+        for item in devices {
+            databaseArray.append("\(item.name); \(item.address); \(item.channel)")
+            println("name: \(item.name) address: \(item.address) channel: \(item.channel) type: \(item.type) current: \(item.current) currentValue: \(item.currentValue) gateway: \(item.gateway) amp: \(item.amp) numberOfDevices: \(item.numberOfDevices) runningTime: \(item.runningTime)")
         }
         databaseTable.reloadData()
     }

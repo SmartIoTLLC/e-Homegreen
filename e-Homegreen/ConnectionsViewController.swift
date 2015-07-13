@@ -8,15 +8,25 @@
 
 import UIKit
 
-class ConnectionsViewController: CommonViewController {
-
+class ConnectionsViewController: UIViewController {
+    
+    @IBOutlet weak var ipHostTextField: UITextField!
+    @IBOutlet weak var portTextField: UITextField!
+    var backgroundImageView = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
+        self.commonConstruct()
 
         // Do any additional setup after loading the view.
     }
-
+    func commonConstruct() {
+        backgroundImageView.image = UIImage(named: "Background")
+        backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
+        self.view.insertSubview(backgroundImageView, atIndex: 0)
+    }
+    @IBAction func btnSaveConnection(sender: AnyObject) {
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

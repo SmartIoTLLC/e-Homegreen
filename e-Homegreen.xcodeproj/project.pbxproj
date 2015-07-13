@@ -11,7 +11,7 @@
 		736265DF1B4A48200078C11D /* InSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265DE1B4A48200078C11D /* InSocket.swift */; };
 		736265E11B4A48330078C11D /* OutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E01B4A48330078C11D /* OutSocket.swift */; };
 		736265E31B4A483E0078C11D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Functions.swift */; };
-		736265E51B4A48F90078C11D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E41B4A48F90078C11D /* Device.swift */; };
+		736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E41B4A48F90078C11D /* DeviceOld.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
 		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
 		736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D51B3AE85F003A6A02 /* TimersViewController.swift */; };
@@ -30,6 +30,7 @@
 		73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B921B2FF8A400139E58 /* ContainerViewController.swift */; };
 		73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B941B2FF98700139E58 /* CenterViewController.swift */; };
 		73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */; };
+		73DE76011B4FD2390042E6F2 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DE76001B4FD2390042E6F2 /* Device.swift */; };
 		73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */; };
 		73E206AF1B2EEFFE0008B002 /* e_Homegreen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73E206AD1B2EEFFE0008B002 /* e_Homegreen.xcdatamodeld */; };
 		73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73E206B21B2EEFFE0008B002 /* Main.storyboard */; };
@@ -109,7 +110,7 @@
 		736265DE1B4A48200078C11D /* InSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InSocket.swift; sourceTree = "<group>"; };
 		736265E01B4A48330078C11D /* OutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutSocket.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
-		736265E41B4A48F90078C11D /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		736265E41B4A48F90078C11D /* DeviceOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceOld.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		736F17D31B3AE850003A6A02 /* SequencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesViewController.swift; sourceTree = "<group>"; };
 		736F17D51B3AE85F003A6A02 /* TimersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimersViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +129,7 @@
 		73DB8B921B2FF8A400139E58 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		73DB8B941B2FF98700139E58 /* CenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterViewController.swift; sourceTree = "<group>"; };
 		73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePanelViewController.swift; sourceTree = "<group>"; };
+		73DE76001B4FD2390042E6F2 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73E206A61B2EEFFE0008B002 /* e-Homegreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "e-Homegreen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E206AA1B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -253,10 +255,11 @@
 				73E427B91B4D0B870083A747 /* UserDefaults.swift */,
 				73E427B71B4D0AF50083A747 /* Model.swift */,
 				73E427B51B4D08CE0083A747 /* ReceiveHandler.swift */,
-				736265E41B4A48F90078C11D /* Device.swift */,
+				736265E41B4A48F90078C11D /* DeviceOld.swift */,
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
 				736265E21B4A483E0078C11D /* Functions.swift */,
+				73DE76001B4FD2390042E6F2 /* Device.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -270,9 +273,17 @@
 			name = Other;
 			sourceTree = "<group>";
 		};
+		73D8B2821B51070E006B7101 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				73D8B2821B51070E006B7101 /* Other */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				E7E08E061B4E4DA700153E9A /* LogIn */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
@@ -692,9 +703,10 @@
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
-				736265E51B4A48F90078C11D /* Device.swift in Sources */,
+				736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
+				73DE76011B4FD2390042E6F2 /* Device.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				73E427B81B4D0AF50083A747 /* Model.swift in Sources */,

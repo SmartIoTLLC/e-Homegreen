@@ -1,4 +1,4 @@
-//
+
 //  ReceiveHandler.swift
 //  new
 //
@@ -7,12 +7,37 @@
 //
 
 import UIKit
+import CoreData
+
+@objc
+protocol ReceiveHandlerDelegate {
+    optional func refreshDeviceList()
+}
+
+//class CommonViewController: UIViewController {
+//
 
 //  Mozda incoming handler
 class ReceiveHandler: NSObject {
     var byteArray:[UInt8]!
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
+    var delegate:ReceiveHandlerDelegate?
+    
     init (byteArrayToHandle: [UInt8]) {
         super.init()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+        
         self.byteArray = byteArrayToHandle
         // Check if byteArray is correct one (check byte also, which is missing)
         if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
@@ -89,9 +114,9 @@ class ReceiveHandler: NSObject {
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
         var deviceExists = false
         if let channel = UserDefaults().deviceChannel[byteArray[7]]?.channel, let name = UserDefaults().deviceChannel[byteArray[7]]?.name {
-            if Model.sharedInstance.deviceArray != [] {
-                for device in Model.sharedInstance.deviceArray {
-                    if device.address == byteArray[4] {
+            if devices != [] {
+                for device in devices {
+                    if device.address == Int(byteArray[4]) {
                         deviceExists = true
                     }
                 }
@@ -100,7 +125,61 @@ class ReceiveHandler: NSObject {
             }
             if !deviceExists {
                 for var i=1 ; i<=channel ; i++ {
-                    Model.sharedInstance.deviceArray.append(Device(name: name, value: "", address: byteArray[4], channel: UInt8(i), gateway: 0, level: 0, zone: 0, no_of_dev: 0, type: ""))
+                    if channel == 10 && name == "sensor" {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = UserDefaults().inputInterface10in1[i]!
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = 0
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
+                        
+                    } else if channel == 6 && name == "sensor" {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = UserDefaults().inputInterface6in1[i]!
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = 0
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
+                        
+                    } else {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = name
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.gateway = Int(byteArray[2])
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.currentValue = 0
+                        device.current = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        if !appDel.managedObjectContext!.save(&error) {
+                            println("Unresolved error \(error), \(error!.userInfo)")
+                            abort()
+                        }
+                    }
+//                    @NSManaged var runningTime: String
                 }
             }
         }
