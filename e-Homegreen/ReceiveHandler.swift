@@ -177,7 +177,8 @@ class ReceiveHandler: NSObject {
                             abort()
                         }
                     }
-                    delegate?.refreshDeviceList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
+//                    delegate?.refreshDeviceList()
 //                    @NSManaged var runningTime: String
                 }
             }

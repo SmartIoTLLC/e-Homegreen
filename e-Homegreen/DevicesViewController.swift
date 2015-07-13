@@ -26,7 +26,7 @@ class DeviceImage:NSObject{
         self.info = false
     }
 }
-class DevicesViewController: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
+class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     private let reuseIdentifier = "deviceCell"
@@ -39,7 +39,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     var device3:DeviceImage = DeviceImage(image: UIImage(named: "doorclosed")!, text: "Garage door")
     
     var senderButton:UIButton?
-    var receiveHandler:ReceiveHandler = ReceiveHandler(byteArrayToHandle: [0xAA])
+//    var receiveHandler:ReceiveHandler = ReceiveHandler(byteArrayToHandle: [0xAA])
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
@@ -48,8 +48,9 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     var outSocketPing:OutSocket!
     override func viewDidLoad() {
         super.viewDidLoad()
-//        commonConstruct()
-        receiveHandler.delegate = self
+        commonConstruct()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
+//        receiveHandler.delegate = self
         if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
             inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
             outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
@@ -82,13 +83,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         if let results = fetResults {
             devices = results
         } else {
-            println("Nije htela...")
         }
-        println("")
-    }
-    override func viewWillAppear(animated: Bool) {
-        updateDeviceList()
-        self.deviceCollectionView.reloadData()
     }
     var timer:NSTimer = NSTimer()
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
@@ -254,7 +249,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         
         self.deviceCollectionView.reloadData()
     }
-    var backgroundImageView:UIImageView = UIImageView()
     override func viewWillLayoutSubviews() {
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {

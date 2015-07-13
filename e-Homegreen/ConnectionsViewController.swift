@@ -14,9 +14,14 @@ class ConnectionsViewController: UIViewController {
     @IBOutlet weak var portTextField: UITextField!
     var backgroundImageView = UIImageView()
     
+    @IBOutlet weak var topView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
+        var gradient:CAGradientLayer = CAGradientLayer()
+        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
+        topView.layer.insertSublayer(gradient, atIndex: 0)
         if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
             ipHostTextField.text = "\(ip)"
             portTextField.text = "\(port)"

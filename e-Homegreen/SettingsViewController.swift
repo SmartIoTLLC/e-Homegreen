@@ -14,7 +14,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        settingArray = ["Menu settings", "Database", "Gatewary connections"]
+        settingArray = ["Menu settings", "Database", "Connections"]
 //        commonConstruct()
         // Do any additional setup after loading the view.
     }
