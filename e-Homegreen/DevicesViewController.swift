@@ -84,19 +84,28 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var timer:NSTimer = NSTimer()
+    
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
         // Light
         var tag = gestureRecognizer.view?.tag
+        println(tag)
         if devices[tag!].type == "Dimmer" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
+//                println(tag)
                 timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 timer.invalidate()
+                println(devices[tag!].opening)
+                println(tag!)
+
                 if devices[tag!].opening == true {
                     devices[tag!].opening = false
+                    println(devices[tag!].opening)
                 }else {
+                    
                     devices[tag!].opening = true
+                    println(devices[tag!].opening)
                 }
                 return
             }
@@ -206,28 +215,33 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         println(self.device1.value)
         self.deviceCollectionView.reloadData()
     }
-    var opening = true
+//    var opening = true
     func update(timer: NSTimer){
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)/100
-            println(UInt8(Int(deviceValue*100)))
-            if devices[tag].opening {
+//            println(tag)
+            if devices[tag].opening == true{
+//                println("gore")
                 if deviceValue < 1 {
                     deviceValue += 0.05
-                } else {
-                    deviceValue = 1
+                }
+                else {
+//                    deviceValue = 1
                 }
             } else {
+//                println("dole")
                 if deviceValue > 0.05 {
                     deviceValue -= 0.05
                 } else {
-                    deviceValue = 0
+//                    deviceValue = 0
                 }
             }
-            println(UInt8(Int(deviceValue*100)))
-            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
-            devices[tag].currentValue = Int(deviceValue*100)
-            println(UInt8(Int(deviceValue*100)))
+//            println(UInt8(Int(deviceValue*100)))
+//            dispatch_async(dispatch_get_main_queue(),{
+                self.outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(self.devices[tag].address)), channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
+                self.devices[tag].currentValue = Int(deviceValue*100)
+//            })
+//            println(UInt8(Int(deviceValue*100)))
         }
 //        if self.device.stateOpening == true{
 //            if self.device.value <= 1{
