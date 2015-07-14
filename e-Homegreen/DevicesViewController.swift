@@ -39,7 +39,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var device3:DeviceImage = DeviceImage(image: UIImage(named: "doorclosed")!, text: "Garage door")
     
     var senderButton:UIButton?
-//    var receiveHandler:ReceiveHandler = ReceiveHandler(byteArrayToHandle: [0xAA])
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
@@ -50,7 +49,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.viewDidLoad()
         commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
-//        receiveHandler.delegate = self
         if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
             inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
             outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
@@ -66,6 +64,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
         // Do any additional setup after loading the view.
+        updateDeviceList()
     }
     func ping () {
         outSocketPing.send("ping")
@@ -77,7 +76,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var error:NSError? = nil
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
         var fetchRequest = NSFetchRequest(entityName: "Device")
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
@@ -442,7 +440,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Light
         var tag = sender.tag
         if devices[tag].type == "Dimmer" {
-            println("\(UInt8(Int(sender.value * 100)))")
+            println("111 \(UInt8(Int(sender.value * 100)))")
+            println("222 \(tag)")
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
             devices[tag].currentValue = Int(sender.value * 100)
         }
@@ -461,18 +460,18 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func changeSliderValue1(sender: UISlider){
-        if sender.value == 1 {
-            self.device1.stateOpening = false
-            self.device1.open = true
-            self.device1.stateOpening = false
-        }
-        if sender.value == 0 {
-            self.device1.stateOpening = true
-            self.device1.open = false
-            self.device1.stateOpening = true
-        }
-        device1.value = sender.value
-        deviceCollectionView.reloadData()
+//        if sender.value == 1 {
+//            self.device1.stateOpening = false
+//            self.device1.open = true
+//            self.device1.stateOpening = false
+//        }
+//        if sender.value == 0 {
+//            self.device1.stateOpening = true
+//            self.device1.open = false
+//            self.device1.stateOpening = true
+//        }
+//        device1.value = sender.value
+//        deviceCollectionView.reloadData()
         
     }
     
