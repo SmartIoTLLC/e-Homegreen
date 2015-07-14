@@ -9,10 +9,7 @@
 import UIKit
 import CoreData
 
-//@objc
-protocol ReceiveHandlerDelegate {
-    func refreshDeviceList()
-}
+
 
 //class CommonViewController: UIViewController {
 //
@@ -23,7 +20,6 @@ class ReceiveHandler: NSObject {
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
-    var delegate:ReceiveHandlerDelegate! = nil
     
     init (byteArrayToHandle: [UInt8]) {
         super.init()
@@ -86,29 +82,46 @@ class ReceiveHandler: NSObject {
             
         }
     }
+    func fetchDevices () {
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            
+        }
+    }
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
     //  informacije o imenima uredjaja na MULTISENSORU
     func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
+        fetchDevices()
         var string:String = ""
         for var i = 9; i < byteArray.count-2; i++ {
             string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
         }
-        println("ID: \(byteArray[7]) Name: \(string) Address: \(byteArray[2]) \(byteArray[3]) \(byteArray[4])")
         for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
-            if Model.sharedInstance.deviceArray[i].address == byteArray[4] && Model.sharedInstance.deviceArray[i].channel == byteArray[7] {
-                var channel = Int(Model.sharedInstance.deviceArray[i].channel)
-                Model.sharedInstance.deviceArray[i].name = string
+            if devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+                var channel = Int(devices[i].channel)
+                devices[i].name = string
             }
         }
+        saveChanges()
     }
-    //  informacije o parametrima (statusu) urdjaja na MULTISONSORU
+    //  informacije o parametrima (statusu) urdjaja na MULTISENSORU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
-        println("informacije o parametrima (statusu) urdjaja na MULTISONSORU: \(byteArray)")
-        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
-            if Model.sharedInstance.deviceArray[i].address == byteArray[4] {
-                var channel = Int(Model.sharedInstance.deviceArray[i].channel)
-                Model.sharedInstance.deviceArray[i].currentValue = Int(byteArray[7+channel])
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].address == Int(byteArray[4]) {
+                var channel = Int(devices[i].channel)
+                devices[i].currentValue = Int(byteArray[7+channel])
             }
         }
+        saveChanges()
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
@@ -138,10 +151,7 @@ class ReceiveHandler: NSObject {
                         device.amp = ""
                         device.runningTime = ""
                         device.type = name
-                        if !appDel.managedObjectContext!.save(&error) {
-                            println("Unresolved error \(error), \(error!.userInfo)")
-                            abort()
-                        }                        
+                        saveChanges()
                     } else if channel == 6 && name == "sensor" {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = UserDefaults().inputInterface6in1[i]!
@@ -155,10 +165,7 @@ class ReceiveHandler: NSObject {
                         device.amp = ""
                         device.runningTime = ""
                         device.type = name
-                        if !appDel.managedObjectContext!.save(&error) {
-                            println("Unresolved error \(error), \(error!.userInfo)")
-                            abort()
-                        }
+                        saveChanges()
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = name
@@ -172,44 +179,44 @@ class ReceiveHandler: NSObject {
                         device.amp = ""
                         device.runningTime = ""
                         device.type = name
-                        if !appDel.managedObjectContext!.save(&error) {
-                            println("Unresolved error \(error), \(error!.userInfo)")
-                            abort()
-                        }
+                        saveChanges()
                     }
                     NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
-//                    delegate?.refreshDeviceList()
-//                    @NSManaged var runningTime: String
                 }
             }
         }
     }
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
-        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
-            if byteArray[4] == Model.sharedInstance.deviceArray[i].address {
-                var channelNumber = Int(Model.sharedInstance.deviceArray[i].channel)
-                Model.sharedInstance.deviceArray[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) // lightning state
-//                Model.sharedInstance.deviceArray[i].current = byteArray[9] // current
-//                Model.sharedInstance.deviceArray[i].current = byteArray[10] // current
-//                Model.sharedInstance.deviceArray[i] = byteArray[11] // voltage
-//                Model.sharedInstance.deviceArray[i] = byteArray[12] // temperature
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].address == Int(byteArray[4]) {
+                var channelNumber = Int(devices[i].channel)
+                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //lightning state
+//                devices[i].current = byteArray[9] // current
+//                devices[i].voltage = byteArray[10] // current
+//                devices[i].temperature = byteArray[11] // voltage
+//                devices[i] = byteArray[12] // temperature
             } else {
                 
             }
         }
+//        NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
+        saveChanges()
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
-        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
-            if UInt8(Model.sharedInstance.deviceArray[i].no_of_dev) == byteArray[7] && Model.sharedInstance.deviceArray[i].address == byteArray[4] {
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].numberOfDevices == Int(byteArray[7]) && devices[i].address == Int(byteArray[4]) {
                 var string:String = ""
                 for var i = 8+47; i < byteArray.count-2; i++ {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
-                Model.sharedInstance.deviceArray[i].name = string
+                devices[i].name = string
             }
         }
+        saveChanges()
     }
     
 }

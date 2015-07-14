@@ -10,7 +10,7 @@ import UIKit
 
 class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    var message: String = ""
+    var message: Int = -1
     var isPresenting: Bool = true
     
 
@@ -331,10 +331,8 @@ extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
     }
     
 }
-
 extension UIViewController {
-    
-    func showClimaSettings(message: String) {
+    func showClimaSettings(message: Int) {
         var ad = ClimaSettingsViewController()
         ad.message = message
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)

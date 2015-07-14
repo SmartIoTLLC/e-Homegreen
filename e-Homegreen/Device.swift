@@ -25,3 +25,11 @@ class Device: NSManagedObject {
     var on: Bool = false
 
 }
+
+
+
+
+//var amp:String = "0.00"
+
+
+//var value:String

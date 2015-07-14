@@ -253,13 +253,13 @@
 			isa = PBXGroup;
 			children = (
 				73E427B91B4D0B870083A747 /* UserDefaults.swift */,
-				73E427B71B4D0AF50083A747 /* Model.swift */,
 				73E427B51B4D08CE0083A747 /* ReceiveHandler.swift */,
-				736265E41B4A48F90078C11D /* DeviceOld.swift */,
+				736265E21B4A483E0078C11D /* Functions.swift */,
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
-				736265E21B4A483E0078C11D /* Functions.swift */,
 				73DE76001B4FD2390042E6F2 /* Device.swift */,
+				73E427B71B4D0AF50083A747 /* Model.swift */,
+				736265E41B4A48F90078C11D /* DeviceOld.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";

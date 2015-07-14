@@ -26,7 +26,7 @@ class DeviceImage:NSObject{
         self.info = false
     }
 }
-class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate, ReceiveHandlerDelegate{
+class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate {
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     private let reuseIdentifier = "deviceCell"
@@ -445,18 +445,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
             devices[tag].currentValue = Int(sender.value * 100)
         }
-//        if sender.value == 1 {
-//            self.device.stateOpening = false
-//            self.device.open = true
-//            self.device.stateOpening = false
-//        }
-//        if sender.value == 0 {
-//            self.device.stateOpening = true
-//            self.device.open = false
-//            self.device.stateOpening = true
-//        }
-//        device.value = sender.value
-        deviceCollectionView.reloadData()
+//        var cell:DeviceCollectionCell =  deviceCollectionView.cellForItemAtIndexPath(Int(tag)) as! DeviceCollectionCell
+//        cell.picture.image = UIImage(named: "Home logo")
+        var indexPath = NSIndexPath(forItem: tag, inSection: 0)
+        deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//        self.deviceCollectionView.reloadData()
+//        self.deviceCollectionView.collectionViewLayout.invalidateLayout()
+        
     }
     
     func changeSliderValue1(sender: UISlider){
@@ -483,52 +478,18 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
-    
     func refreshDeviceList() {
         updateDeviceList()
         self.deviceCollectionView.reloadData()
     }
-    
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        //        if indexPath.row == 0{
-        //            if device.open == true{
-        //                device.open = false
-        //                device.value = 0
-        //                device.stateOpening = true
-        //            }else{
-        //                device.open = true
-        //                device.value = 1
-        //                device.stateOpening = false
-        //            }
-        //        }
-        //        if indexPath.row == 1{
-        //            if device1.open == true{
-        //                device1.open = false
-        //                device1.value = 0
-        //                device1.stateOpening = true
-        //            }else{
-        //                device1.open = true
-        //                device1.value = 1
-        //                device1.stateOpening = false
-        //            }
-        //        }
-//        if indexPath.row == 3{
-//            showClimaSettings("nesto")
-//        }
-        //        if indexPath.row == 4{
-        //            if device3.open == false{
-        //                device3.open = true
-        //            }else{
-        //                device3.open = false
-        //            }
-        //
-        //        }
-        //        deviceCollectionView.reloadData()
+        if devices[indexPath.row].type == "hvac" {
+            showClimaSettings(indexPath.row)
+        }
+//        deviceCollectionView.reloadData()
         
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -551,10 +512,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].type == "Dimmer" {
-//        if indexPath.row == 0 {
-        
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-//            if device.info == false{
                 if cell.gradientLayer == nil {
                     let gradientLayer = CAGradientLayer()
                     gradientLayer.frame = cell.bounds
@@ -575,7 +533,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 var deviceValue = Double(devices[indexPath.row].currentValue) / 100
                 if deviceValue >= 0 && deviceValue < 0.1 {
                     cell.picture.image = UIImage(named: "lightBulb1")
-                    
                 } else if deviceValue >= 0.1 && deviceValue < 0.2{
                     cell.picture.image = UIImage(named: "lightBulb2")
                     
@@ -599,10 +556,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                     
                 } else if deviceValue >= 0.8 && deviceValue < 0.9{
                     cell.picture.image = UIImage(named: "lightBulb9")
-                    
                 }else{
                     cell.picture.image = UIImage(named: "lightBulb10")
-                    
                 }
                 cell.lightSlider.value = Float(deviceValue)
                 var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
@@ -613,14 +568,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.tag = indexPath.row
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
-//            }else{
-//                cell.addSubview(infoView())
-//            }
             return cell
-        }
-//        }
-//            
-        else if devices[indexPath.row].type == "curtainsRS485 ILI TAKO NEKI VRAG" {
+        } else if devices[indexPath.row].type == "curtainsRS485 ILI TAKO NEKI VRAG" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -651,7 +600,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
             }else {
                 cell.curtainImage.image = UIImage(named: "curtain4")
-                
             }
             cell.curtainSlider.value = device1.value
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
@@ -666,10 +614,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             //        cell.addSubview(mySecondView[indexPath.row])
             //            println("Broj: \(indexPath.row)")
             return cell
-        }
-            
-            
-        else if devices[indexPath.row].type == "curtainsRelay" {
+        } else if devices[indexPath.row].type == "curtainsRelay" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -701,8 +646,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             //        println("Broj: \(indexPath.row)")
             return cell
             
-        }
-        else if devices[indexPath.row].type == "hvac" {
+        } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -716,11 +660,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
             return cell
-            
-        }
-         
-            
-        else if devices[indexPath.row].type == "sensor" {
+        } else if devices[indexPath.row].type == "sensor" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -766,10 +706,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.accessImage.image = UIImage(named: "dooropen")
             }
             return cell
-            
         }
-//
-        
     }
 }
 
