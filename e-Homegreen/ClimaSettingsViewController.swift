@@ -37,6 +37,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     
     @IBOutlet weak var lblCool: UILabel!
     @IBOutlet weak var lblHeat: UILabel!
+    var coolTemperature = 28
+    var heatTemperature = 18
     
     @IBOutlet weak var settingsView: UIView!
     
@@ -53,6 +55,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
 //        removeLayers()
 //        btnModeSetUp()
         
+        lblCool.text = "\(coolTemperature)"
+        lblHeat.text = "\(heatTemperature)"
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
         var gradient:CAGradientLayer = CAGradientLayer()
@@ -225,6 +229,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnCool.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00))
     }
     
     @IBAction func test(sender: UIButton) {
@@ -233,6 +238,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnHeat.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01))
     }
 
     @IBAction func fan(sender: UIButton) {
@@ -241,6 +247,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnFan.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02))
     }
     
     @IBAction func auto(sender: UIButton) {
@@ -249,6 +256,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03))
         
     }
     
@@ -269,6 +277,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnLow.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00))
     }
     
     @IBAction func med(sender: AnyObject) {
@@ -277,6 +286,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnMed.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01))
     }
  
     @IBAction func high(sender: AnyObject) {
@@ -285,6 +295,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnHigh.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02))
     }
     
     @IBAction func fanAuto(sender: AnyObject) {
@@ -293,6 +304,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.backgroundColor = UIColor.lightTextColor()
+        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03))
     }
     
     
@@ -338,15 +350,35 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     
     
     @IBAction func lowCool(sender: AnyObject) {
+        if coolTemperature >= 18 {
+            coolTemperature -= 1
+            lblCool.text = "\(coolTemperature)"
+            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
+        }
     }
     
     @IBAction func highCool(sender: AnyObject) {
+        if coolTemperature <= 36 {
+            coolTemperature += 1
+            lblCool.text = "\(coolTemperature)"
+            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
+        }
     }
     
     @IBAction func lowHeat(sender: AnyObject) {
+        if coolTemperature >= 18 {
+            heatTemperature -= 1
+            lblHeat.text = "\(heatTemperature)"
+            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
+        }
     }
     
     @IBAction func highHeat(sender: AnyObject) {
+        if coolTemperature <= 36 {
+            heatTemperature += 1
+            lblHeat.text = "\(heatTemperature)"
+            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
+        }
     }
     
     
