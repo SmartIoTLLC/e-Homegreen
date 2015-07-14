@@ -487,7 +487,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if devices[indexPath.row].type == "hvac" {
-            showClimaSettings(indexPath.row)
+            showClimaSettings(indexPath.row, socket: outSocket, devices: devices)
         }
 //        deviceCollectionView.reloadData()
         

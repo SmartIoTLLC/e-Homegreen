@@ -10,7 +10,9 @@ import UIKit
 
 class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    var message: Int = -1
+    var indexPathRow: Int = -1
+    var socket:OutSocket = OutSocket(ip: "255.255.255.255", port: 9000)
+    var devices:[Device] = []
     var isPresenting: Bool = true
     
     @IBOutlet weak var lblConsumption: UILabel!
@@ -33,7 +35,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     @IBOutlet weak var btnHigh: UIButton!
     @IBOutlet weak var btnAutoFan: UIButton!
     
-
+    @IBOutlet weak var lblCool: UILabel!
+    @IBOutlet weak var lblHeat: UILabel!
+    
     @IBOutlet weak var settingsView: UIView!
     
     override func viewDidLoad() {
@@ -304,11 +308,18 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
+    var checkOnOf = 0x00
     @IBAction func onOff(sender: AnyObject) {
-        
-    }
-    
+        if checkOnOf == 0x00 {
+            socket.sendByte(Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0xFF))
+            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
+            checkOnOf = 0xFF
+        } else {
+            socket.sendByte(Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0x00))
+            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
+            checkOnOf = 0x00
+        }
+    }    
     
     init(){
         super.init(nibName: "ClimaSettingsViewController", bundle: nil)
@@ -407,9 +418,11 @@ extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showClimaSettings(message: Int) {
+    func showClimaSettings(message: Int, socket:OutSocket, devices:[Device]) {
         var ad = ClimaSettingsViewController()
-        ad.message = message
+        ad.indexPathRow = message
+        ad.socket = socket
+        ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

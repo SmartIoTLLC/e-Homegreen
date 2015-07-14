@@ -30,7 +30,6 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
-            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -111,28 +110,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8d-eR-V4h">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d8d-eR-V4h">
                                 <rect key="frame" x="0.0" y="98" width="320" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="24X-Xh-4Mz"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e-Homegreen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZf-7q-Dcn">
-                                <rect key="frame" x="85" y="44" width="108" height="22"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Home logo" translatesAutoresizingMaskIntoConstraints="NO" id="EuX-Bf-eDd">
-                                <rect key="frame" x="10" y="20" width="70" height="70"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="c9y-m5-9G7"/>
-                                    <constraint firstAttribute="width" constant="70" id="pOo-0g-OiZ"/>
-                                </constraints>
-                            </imageView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
                                 <rect key="frame" x="0.0" y="99" width="200" height="469"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="NIM-6X-AKZ"/>
@@ -185,23 +170,20 @@
                                     <outlet property="delegate" destination="tid-St-yaC" id="f5f-e1-erA"/>
                                 </connections>
                             </collectionView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="e home logo" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
+                                <rect key="frame" x="0.0" y="20" width="200" height="56"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hZf-7q-Dcn" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" constant="85" id="APo-DY-QBe"/>
-                            <constraint firstItem="d8d-eR-V4h" firstAttribute="top" secondItem="EuX-Bf-eDd" secondAttribute="bottom" constant="8" id="JFe-cD-LCs"/>
-                            <constraint firstItem="EuX-Bf-eDd" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" constant="10" id="RwZ-mt-JKP"/>
                             <constraint firstItem="d8d-eR-V4h" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" id="WbM-KT-x0k"/>
                             <constraint firstItem="VwH-0j-wOZ" firstAttribute="top" secondItem="d8d-eR-V4h" secondAttribute="bottom" id="XkC-4J-rm6"/>
                             <constraint firstItem="5SW-tk-Re0" firstAttribute="top" secondItem="VwH-0j-wOZ" secondAttribute="bottom" id="YIu-nN-rWI"/>
                             <constraint firstItem="VwH-0j-wOZ" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" id="m4D-mb-KFg"/>
-                            <constraint firstItem="EuX-Bf-eDd" firstAttribute="top" secondItem="d8V-WK-jAD" secondAttribute="bottom" id="nYc-gj-gJ1"/>
-                            <constraint firstItem="EuX-Bf-eDd" firstAttribute="centerY" secondItem="hZf-7q-Dcn" secondAttribute="centerY" id="vIU-Xf-RAP"/>
                             <constraint firstAttribute="trailing" secondItem="d8d-eR-V4h" secondAttribute="trailing" id="yAV-4J-p63"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="logoImageView" destination="EuX-Bf-eDd" id="Rtr-Lm-vAU"/>
                         <outlet property="menuCollectionView" destination="VwH-0j-wOZ" id="VrP-O5-7rg"/>
                     </connections>
                 </viewController>
@@ -1540,6 +1522,7 @@
         <image name="cool" width="40" height="40"/>
         <image name="curtain0" width="200" height="200"/>
         <image name="doorclosed" width="200" height="200"/>
+        <image name="e home logo" width="1032" height="250"/>
         <image name="fanhigh" width="118" height="121"/>
         <image name="lightBulb" width="200" height="200"/>
     </resources>
