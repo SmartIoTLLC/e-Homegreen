@@ -60,14 +60,14 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            //        presentedControllerView.center.y -= containerView.bounds.size.height
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+                    presentedControllerView.center.x += containerView.bounds.size.width
+//            presentedControllerView.alpha = 0
+//            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //            presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                            presentedControllerView.center.x -= containerView.bounds.size.width
+//                presentedControllerView.alpha = 1
+//                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -76,10 +76,10 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //                presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                                presentedControllerView.center.x += containerView.bounds.size.width
+//                presentedControllerView.alpha = 0
+//                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })

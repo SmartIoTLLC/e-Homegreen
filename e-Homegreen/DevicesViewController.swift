@@ -187,32 +187,33 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         deviceCollectionView.reloadData()
     }
     
-    func update1(){
-        if self.device1.stateOpening == true{
-            if self.device1.value < 1{
-                self.device1.value = self.device1.value + 0.05
-            }else{
-                self.device1.value = 1
-                self.device1.open = true
-            }
-        }else{
-            if self.device1.value  > 0.05 {
-                self.device1.value = self.device1.value - 0.05
-            }else{
-                self.device1.value = 0
-                self.device1.open = false
-            }
-        }
-        println(self.device1.value)
-        self.deviceCollectionView.reloadData()
-    }
-    var opening = true
+//    func update1(){
+//        if self.device1.stateOpening == true{
+//            if self.device1.value < 1{
+//                self.device1.value = self.device1.value + 0.05
+//            }else{
+//                self.device1.value = 1
+//                self.device1.open = true
+//            }
+//        }else{
+//            if self.device1.value  > 0.05 {
+//                self.device1.value = self.device1.value - 0.05
+//            }else{
+//                self.device1.value = 0
+//                self.device1.open = false
+//            }
+//        }
+//        println(self.device1.value)
+//        self.deviceCollectionView.reloadData()
+//    }
+//    var opening = true
+    
     func update(timer: NSTimer){
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)/100
             println(UInt8(Int(deviceValue*100)))
-            if devices[tag].opening {
-                if deviceValue < 1 {
+            if devices[tag].opening == true {
+                if deviceValue <= 0.95 {
                     deviceValue += 0.05
                 } else {
                     deviceValue = 1
@@ -255,7 +256,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }else if self.view.frame.size.width == 667{
                 sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
             }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+                sectionInsets = UIEdgeInsets(top: 5, left: 27, bottom: 5, right: 27)
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
@@ -278,7 +279,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }else if self.view.frame.size.width == 375{
                 sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
             }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+                sectionInsets = UIEdgeInsets(top: 5, left: 37, bottom: 5, right: 37)
             }
             
             
@@ -465,8 +466,33 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            self.device1.open = false
 //            self.device1.stateOpening = true
 //        }
+
 //        device1.value = sender.value
 //        deviceCollectionView.reloadData()
+
+//        device.value = sender.value
+//        deviceCollectionView.reloadData()
+//        dispatch_async(dispatch_get_main_queue(),{
+//            self.deviceCollectionView.reloadData()
+            var indexPath = NSIndexPath(forRow: tag, inSection: 0)
+            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//        })
+    }
+    
+    func changeSliderValue1(sender: UISlider){
+        if sender.value == 1 {
+            self.device1.stateOpening = false
+            self.device1.open = true
+            self.device1.stateOpening = false
+        }
+        if sender.value == 0 {
+            self.device1.stateOpening = true
+            self.device1.open = false
+            self.device1.stateOpening = true
+        }
+        device1.value = sender.value
+        deviceCollectionView.reloadData()
+>>>>>>> Stashed changes
         
     }
     
@@ -491,6 +517,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         }
 //        deviceCollectionView.reloadData()
         
+        
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -511,6 +538,9 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+
+//        println(devices[indexPath.row].type)
+
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
                 if cell.gradientLayer == nil {
@@ -559,7 +589,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }else{
                     cell.picture.image = UIImage(named: "lightBulb10")
                 }
-                cell.lightSlider.value = Float(deviceValue)
+//                cell.lightSlider.value = Float(deviceValue)
                 var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
                 var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
                 lpgr.minimumPressDuration = 0.5

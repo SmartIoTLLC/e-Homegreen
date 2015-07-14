@@ -13,6 +13,10 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     var message: Int = -1
     var isPresenting: Bool = true
     
+    @IBOutlet weak var lblConsumption: UILabel!
+    @IBOutlet weak var lblHumadity: UILabel!
+    @IBOutlet weak var lblTemperature: UILabel!
+    
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var onOffButton: UIButton!
@@ -129,9 +133,15 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAuto.bringSubviewToFront(btnAuto.imageView!)
         
     }
+    
+    var gradientLayerForFan:CAGradientLayer = CAGradientLayer()
+    var gradientLayerForFan1:CAGradientLayer = CAGradientLayer()
+    var gradientLayerForFan2:CAGradientLayer = CAGradientLayer()
+    var gradientLayerForFan3:CAGradientLayer = CAGradientLayer()
+    
     func btnFanSetUp(){
         
-        var gradientLayerForFan:CAGradientLayer = CAGradientLayer()
+        
         gradientLayerForFan.frame = btnCool.bounds
         gradientLayerForFan.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         
@@ -144,8 +154,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnLow.imageEdgeInsets = UIEdgeInsetsMake(0, -1, 0, 1)
         btnLow.setTitle("LOW", forState: .Normal)
         btnLow.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnLow.bringSubviewToFront(btnLow.imageView!)
         
-        var gradientLayerForFan1:CAGradientLayer = CAGradientLayer()
+        
         gradientLayerForFan1.frame = btnCool.bounds
         gradientLayerForFan1.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         
@@ -158,8 +169,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnMed.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnMed.setTitle("MED", forState: .Normal)
         btnMed.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnMed.bringSubviewToFront(btnMed.imageView!)
         
-        var gradientLayerForFan2:CAGradientLayer = CAGradientLayer()
+        
         gradientLayerForFan2.frame = btnCool.bounds
         gradientLayerForFan2.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         
@@ -172,8 +184,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHigh.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnHigh.setTitle("FAN", forState: .Normal)
         btnHigh.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnHigh.bringSubviewToFront(btnHigh.imageView!)
         
-        var gradientLayerForFan3:CAGradientLayer = CAGradientLayer()
+        
         gradientLayerForFan3.frame = btnCool.bounds
         gradientLayerForFan3.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         
@@ -186,6 +199,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAutoFan.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
         btnAutoFan.setTitle("AUTO", forState: .Normal)
         btnAutoFan.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        btnAutoFan.bringSubviewToFront(btnAutoFan.imageView!)
         
     }
     
@@ -233,6 +247,51 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAuto.backgroundColor = UIColor.lightTextColor()
         
     }
+    
+    func removeFanLayers(){
+        gradientLayerForFan.removeFromSuperlayer()
+        gradientLayerForFan1.removeFromSuperlayer()
+        gradientLayerForFan2.removeFromSuperlayer()
+        gradientLayerForFan3.removeFromSuperlayer()
+        btnLow.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnMed.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnHigh.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        btnAutoFan.backgroundColor = UIColor.groupTableViewBackgroundColor()
+    }
+    
+    @IBAction func low(sender: AnyObject) {
+        removeFanLayers()
+        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
+        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
+        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
+        btnLow.backgroundColor = UIColor.lightTextColor()
+    }
+    
+    @IBAction func med(sender: AnyObject) {
+        removeFanLayers()
+        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
+        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
+        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
+        btnMed.backgroundColor = UIColor.lightTextColor()
+    }
+ 
+    @IBAction func high(sender: AnyObject) {
+        removeFanLayers()
+        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
+        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
+        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
+        btnHigh.backgroundColor = UIColor.lightTextColor()
+    }
+    
+    @IBAction func fanAuto(sender: AnyObject) {
+        removeFanLayers()
+        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
+        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
+        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
+        btnAutoFan.backgroundColor = UIColor.lightTextColor()
+    }
+    
+    
     override func viewWillAppear(animated: Bool) {
         
     }
@@ -247,6 +306,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @IBAction func onOff(sender: AnyObject) {
+        
     }
     
     
@@ -264,6 +324,21 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    @IBAction func lowCool(sender: AnyObject) {
+    }
+    
+    @IBAction func highCool(sender: AnyObject) {
+    }
+    
+    @IBAction func lowHeat(sender: AnyObject) {
+    }
+    
+    @IBAction func highHeat(sender: AnyObject) {
+    }
+    
+    
     
 
 

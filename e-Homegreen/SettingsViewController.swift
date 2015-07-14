@@ -8,13 +8,16 @@
 
 import UIKit
 
-class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
     var settingArray:[String]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        settingArray = ["Menu settings", "Database", "Connections"]
+
+        settingArray = ["Menu settings", "Database", "Gateway connections"]
+
+
 //        commonConstruct()
         // Do any additional setup after loading the view.
     }
@@ -46,10 +49,14 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             })
         }
         if indexPath.row == 1 {
-            self.performSegueWithIdentifier("databaseSettings", sender: self)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.performSegueWithIdentifier("databaseSettings", sender: self)
+            })
         }
         if indexPath.row == 2 {
-            self.performSegueWithIdentifier("connectionSettings", sender: self)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.performSegueWithIdentifier("connectionSettings", sender: self)
+            })
         }
     }
     

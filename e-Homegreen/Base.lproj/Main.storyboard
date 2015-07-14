@@ -1094,8 +1094,8 @@
                     <navigationItem key="navigationItem" id="hwE-QL-74p"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <segue destination="Rfu-9c-EhD" kind="modal" identifier="databaseSettings" modalTransitionStyle="crossDissolve" id="UtL-h7-BWt"/>
-                        <segue destination="rly-Zt-L69" kind="modal" identifier="connectionSettings" modalTransitionStyle="crossDissolve" id="udR-PT-Jtb"/>
+                        <segue destination="Rfu-9c-EhD" kind="custom" identifier="databaseSettings" id="UtL-h7-BWt"/>
+                        <segue destination="rly-Zt-L69" kind="custom" identifier="connectionSettings" id="udR-PT-Jtb"/>
                         <segue destination="cx0-di-cec" kind="custom" identifier="menuSettings" id="Z6T-NY-smd"/>
                     </connections>
                 </viewController>

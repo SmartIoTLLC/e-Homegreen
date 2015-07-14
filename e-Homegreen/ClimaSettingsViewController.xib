@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -32,6 +32,9 @@
                 <outlet property="btnHigh" destination="UDO-I8-vEE" id="e76-VD-kRt"/>
                 <outlet property="btnLow" destination="vSv-Q3-65i" id="dgj-2o-1m5"/>
                 <outlet property="btnMed" destination="41D-1M-c0S" id="UGk-rQ-JBC"/>
+                <outlet property="lblConsumption" destination="ojz-Er-zmH" id="U0G-gJ-D5H"/>
+                <outlet property="lblHumadity" destination="2Hf-xW-PM3" id="Jzi-oa-UrR"/>
+                <outlet property="lblTemperature" destination="pt6-9q-V2S" id="KDO-Hm-OZU"/>
                 <outlet property="onOffButton" destination="DFk-Up-nx9" id="eN8-V3-rvZ"/>
                 <outlet property="settingsView" destination="blw-xL-DCl" id="fpy-t5-eHL"/>
                 <outlet property="titleLabel" destination="NWb-de-Mc6" id="P6r-7D-fza"/>
@@ -146,7 +149,7 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSv-Q3-65i">
                             <rect key="frame" x="10" y="167" width="65" height="30"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="byj-P7-IwG"/>
                                 <constraint firstAttribute="width" constant="65" id="qvN-69-Tre"/>
@@ -156,10 +159,13 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="low:" destination="-1" eventType="touchUpInside" id="YOe-G8-zU4"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDO-I8-vEE">
                             <rect key="frame" x="160" y="167" width="65" height="30"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="I3m-Qy-IEA"/>
                                 <constraint firstAttribute="width" constant="65" id="i45-Tb-KxY"/>
@@ -169,10 +175,13 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="high:" destination="-1" eventType="touchUpInside" id="k0D-za-dF1"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="41D-1M-c0S">
                             <rect key="frame" x="85" y="167" width="65" height="30"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="XB7-hj-U5P"/>
                                 <constraint firstAttribute="width" constant="65" id="h0m-PX-yTS"/>
@@ -182,10 +191,13 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="med:" destination="-1" eventType="touchUpInside" id="2Ky-xH-xiZ"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fcp-Sg-PJO">
                             <rect key="frame" x="235" y="167" width="65" height="30"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="bOg-bb-sIe"/>
                                 <constraint firstAttribute="width" constant="65" id="oOi-bO-fdv"/>
@@ -195,6 +207,9 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="fanAuto:" destination="-1" eventType="touchUpInside" id="bcS-iJ-qud"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Threshold" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTX-aE-lAe">
                             <rect key="frame" x="10" y="214" width="70" height="20"/>
@@ -279,6 +294,9 @@
                             <state key="normal" image="left">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="lowCool:" destination="-1" eventType="touchUpInside" id="7aI-qM-tLJ"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnY-cy-sJM">
                             <rect key="frame" x="111" y="285" width="30" height="30"/>
@@ -289,6 +307,9 @@
                             <state key="normal" image="right">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="highCool:" destination="-1" eventType="touchUpInside" id="aNc-nP-WDS"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-Wx-cAt">
                             <rect key="frame" x="236" y="285" width="30" height="30"/>
@@ -299,6 +320,9 @@
                             <state key="normal" image="right">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="highHeat:" destination="-1" eventType="touchUpInside" id="Qtb-rw-ImN"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cW1-O4-UQk">
                             <rect key="frame" x="168" y="285" width="30" height="30"/>
@@ -309,6 +333,9 @@
                             <state key="normal" image="left">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="lowHeat:" destination="-1" eventType="touchUpInside" id="6XU-O5-AXc"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

@@ -8,13 +8,22 @@
 
 import UIKit
 
-class ConnectionsViewController: UIViewController {
+class ConnectionsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning  {
     
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
     var backgroundImageView = UIImageView()
     
     @IBOutlet weak var topView: UIView!
+
+    var isPresenting:Bool = true
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        transitioningDelegate = self
+    }
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
@@ -45,15 +54,61 @@ class ConnectionsViewController: UIViewController {
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 0.5
     }
-    */
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting == true{
+            isPresenting = false
+            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.center.x += containerView.bounds.size.width
+//            presentedControllerView.center.y += containerView.bounds.size.height
+            //            presentedControllerView.alpha = 0
+            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            containerView.addSubview(presentedControllerView)
+            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x -= containerView.bounds.size.width
+//                presentedControllerView.center.y -= containerView.bounds.size.height
+                //                presentedControllerView.alpha = 1
+                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }else{
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            // Animate the presented view off the bottom of the view
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x += containerView.bounds.size.width
+//                presentedControllerView.center.y += containerView.bounds.size.height
+                //                presentedControllerView.alpha = 0
+                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if dismissed == self {
+            return self
+        }
+        else {
+            return nil
+        }
+    }
+
+
 
 }

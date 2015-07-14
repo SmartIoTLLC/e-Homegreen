@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DatabaseViewController: UIViewController {
+class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
@@ -18,6 +18,13 @@ class DatabaseViewController: UIViewController {
     var devices:[Device] = []
     var error:NSError? = nil
     var backgroundImageView = UIImageView()
+    
+    var isPresenting:Bool = true
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        transitioningDelegate = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +127,60 @@ class DatabaseViewController: UIViewController {
         }
         chk = chk%256
         return UInt8(chk)
+    }
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 0.5
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting == true{
+            isPresenting = false
+            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.center.x += containerView.bounds.size.width
+            //            presentedControllerView.center.y += containerView.bounds.size.height
+            //            presentedControllerView.alpha = 0
+            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            containerView.addSubview(presentedControllerView)
+            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x -= containerView.bounds.size.width
+//                presentedControllerView.center.y -= containerView.bounds.size.height
+                //                presentedControllerView.alpha = 1
+                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }else{
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            // Animate the presented view off the bottom of the view
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x += containerView.bounds.size.width
+                //                presentedControllerView.center.y += containerView.bounds.size.height
+                //                presentedControllerView.alpha = 0
+                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if dismissed == self {
+            return self
+        }
+        else {
+            return nil
+        }
     }
     
 }
