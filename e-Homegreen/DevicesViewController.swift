@@ -221,7 +221,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             var deviceValue = Double(devices[tag].currentValue)/100
 //            println(tag)
             if devices[tag].opening == true{
-//                println("gore")
+                println("gore")
                 if deviceValue < 1 {
                     deviceValue += 0.05
                 }
@@ -229,7 +229,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //                    deviceValue = 1
                 }
             } else {
-//                println("dole")
+                println("dole")
                 if deviceValue > 0.05 {
                     deviceValue -= 0.05
                 } else {
@@ -240,6 +240,15 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            dispatch_async(dispatch_get_main_queue(),{
                 self.outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(self.devices[tag].address)), channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
                 self.devices[tag].currentValue = Int(deviceValue*100)
+            UIView.setAnimationsEnabled(false)
+            self.deviceCollectionView.performBatchUpdates({
+                var indexPath = NSIndexPath(forItem: tag, inSection: 0)
+                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+                }, completion:  {(completed: Bool) -> Void in
+                    UIView.setAnimationsEnabled(true)
+                })
+//            self.deviceCollectionView.performBatchUpdates(<#updates: (() -> Void)?##() -> Void#>, completion: <#((Bool) -> Void)?##(Bool) -> Void#>)
+            
 //            })
 //            println(UInt8(Int(deviceValue*100)))
         }
@@ -259,7 +268,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            }
 //        }
         
-        self.deviceCollectionView.reloadData()
+        
+//        self.deviceCollectionView.reloadData()
     }
     override func viewWillLayoutSubviews() {
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
