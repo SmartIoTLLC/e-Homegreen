@@ -90,6 +90,8 @@
 		E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */; };
 		E7E1A8261B3804F1008D8713 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8221B3804F1008D8713 /* OpenEars.framework */; };
 		E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8231B3804F1008D8713 /* Slt.framework */; };
+		E7E24F501B5649B600B25BF5 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */; };
+		E7E24F511B5649B600B25BF5 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */; };
 		E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */; };
 		E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */; };
 		E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */; };
@@ -203,6 +205,8 @@
 		E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
 		E7E1A8221B3804F1008D8713 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		E7E1A8231B3804F1008D8713 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
+		E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
+		E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDialogViewController.swift; sourceTree = "<group>"; };
 		E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDialogViewController.xib; sourceTree = "<group>"; };
@@ -389,6 +393,8 @@
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
+				E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */,
+				E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -607,6 +613,7 @@
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
 				E7DC67B81B457C0E00EA6543 /* weather-few-night.png in Resources */,
+				E7E24F511B5649B600B25BF5 /* ConnectionSettingsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
@@ -687,6 +694,7 @@
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* UserDefaults.swift in Sources */,
+				E7E24F501B5649B600B25BF5 /* ConnectionSettingsVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,

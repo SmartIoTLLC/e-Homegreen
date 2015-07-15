@@ -15,7 +15,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        settingArray = ["Menu settings", "Database", "Gateway connections"]
+        settingArray = ["Menu settings", "Database", "Gateway connections", "Connections Setting"]
 
 
 //        commonConstruct()
@@ -56,6 +56,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if indexPath.row == 2 {
             dispatch_async(dispatch_get_main_queue(),{
                 self.performSegueWithIdentifier("connectionSettings", sender: self)
+            })
+        }
+        if indexPath.row == 3 {
+            dispatch_async(dispatch_get_main_queue(),{
+                 self.showConnectionSettings("dadajlkl")
             })
         }
     }
