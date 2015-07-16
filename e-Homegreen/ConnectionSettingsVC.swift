@@ -7,6 +7,23 @@
 //
 
 import UIKit
+import SystemConfiguration.CaptiveNetwork
+
+extension UIDevice {
+    public var SSID: String? {
+        get {
+            if let interfaces = CNCopySupportedInterfaces() {
+                let interfacesArray = interfaces.takeRetainedValue() as! [String]
+                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo(interfacesArray[0] as String) {
+                    let interfaceData = unsafeInterfaceData.takeRetainedValue() as Dictionary!
+                    return interfaceData[kCNNetworkInfoKeySSID] as? String
+                }
+            }
+            return nil
+            
+        }
+    }
+}
 
 class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     
@@ -21,7 +38,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var localPort: UITextField!
     @IBOutlet weak var localSSID: UITextField!
     
- 
+    @IBOutlet weak var btnCancel: UIButton!
+    @IBOutlet weak var btnSave: UIButton!
+    
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
@@ -39,6 +58,38 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        println(UIDevice.currentDevice().SSID)
+        
+        ipHost.layer.borderWidth = 0.5
+        port.layer.borderWidth = 0.5
+        localIP.layer.borderWidth = 0.5
+        localPort.layer.borderWidth = 0.5
+        localSSID.layer.borderWidth = 0.5
+        ipHost.layer.cornerRadius = 2
+        port.layer.cornerRadius = 2
+        localIP.layer.cornerRadius = 2
+        localPort.layer.cornerRadius = 2
+        localSSID.layer.cornerRadius = 2
+        ipHost.layer.borderColor = UIColor.lightGrayColor().CGColor
+        port.layer.borderColor = UIColor.lightGrayColor().CGColor
+        localIP.layer.borderColor = UIColor.lightGrayColor().CGColor
+        localPort.layer.borderColor = UIColor.lightGrayColor().CGColor
+        localSSID.layer.borderColor = UIColor.lightGrayColor().CGColor
+        ipHost.attributedPlaceholder = NSAttributedString(string:"IP/Host",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        port.attributedPlaceholder = NSAttributedString(string:"Port",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        localIP.attributedPlaceholder = NSAttributedString(string:"IP/Host",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        localPort.attributedPlaceholder = NSAttributedString(string:"Port",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        localSSID.attributedPlaceholder = NSAttributedString(string:"SSID",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        
+        btnCancel.layer.cornerRadius = 2
+        btnSave.layer.cornerRadius = 2
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
@@ -111,11 +162,11 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
             }else if self.view.frame.size.height == 414{
                 backViewHeightConstraint.constant = 350
             }else{
-                backViewHeightConstraint.constant = 420
+                backViewHeightConstraint.constant = 400
             }
         }else{
             
-            backViewHeightConstraint.constant = 420
+            backViewHeightConstraint.constant = 400
             
         }
     }
@@ -178,6 +229,8 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
     
     
 }
+
+
 
 extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
     
