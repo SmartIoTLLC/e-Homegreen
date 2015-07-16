@@ -20,11 +20,16 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConnectionSettingsVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
+                <outlet property="addressFirst" destination="BC5-EX-Snd" id="89V-P4-sq5"/>
+                <outlet property="addressSecond" destination="avv-DG-9ck" id="Rrk-Ku-fnO"/>
                 <outlet property="backView" destination="2be-un-Lim" id="VHL-UI-mIS"/>
                 <outlet property="backViewHeightConstraint" destination="sOW-5E-pCX" id="29V-q3-H4Q"/>
                 <outlet property="btnCancel" destination="Rk6-TQ-Tc9" id="W98-L7-eXu"/>
@@ -33,6 +38,7 @@
                 <outlet property="localIP" destination="it7-V7-4LX" id="BAo-V8-XC1"/>
                 <outlet property="localPort" destination="3x2-H5-0zl" id="WXZ-e4-Qfj"/>
                 <outlet property="localSSID" destination="ADu-X9-des" id="C4e-P9-9XV"/>
+                <outlet property="name" destination="P4e-7w-oyg" id="Fpo-bg-dSR"/>
                 <outlet property="port" destination="LOs-KA-lDE" id="YsC-Pf-oDv"/>
                 <outlet property="topConstraint" destination="HLE-aa-wT4" id="yGw-9Q-k9V"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -44,48 +50,48 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2be-un-Lim">
-                    <rect key="frame" x="150" y="50" width="300" height="400"/>
+                    <rect key="frame" x="150" y="20" width="300" height="460"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-SA-jbj">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="460"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gCp-7R-Sth">
-                                    <rect key="frame" x="98" y="59" width="192" height="30"/>
+                                    <rect key="frame" x="95" y="164" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-KA-lDE">
-                                    <rect key="frame" x="98" y="107" width="192" height="30"/>
+                                    <rect key="frame" x="95" y="207" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="it7-V7-4LX">
-                                    <rect key="frame" x="98" y="198" width="192" height="30"/>
+                                    <rect key="frame" x="95" y="288" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3x2-H5-0zl">
-                                    <rect key="frame" x="98" y="247" width="192" height="30"/>
+                                    <rect key="frame" x="95" y="331" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SSID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ADu-X9-des">
-                                    <rect key="frame" x="98" y="296" width="192" height="30"/>
+                                    <rect key="frame" x="95" y="375" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39">
-                                    <rect key="frame" x="163" y="347" width="75" height="31"/>
+                                    <rect key="frame" x="163" y="415" width="75" height="31"/>
                                     <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="75" id="ygm-jL-FIn"/>
@@ -97,7 +103,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-TQ-Tc9">
-                                    <rect key="frame" x="63" y="347" width="75" height="31"/>
+                                    <rect key="frame" x="63" y="415" width="75" height="31"/>
                                     <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="75" id="xz4-Rt-Zb8"/>
@@ -112,84 +118,142 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remote Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewp-mr-Xce">
-                                    <rect key="frame" x="0.0" y="16" width="300" height="22"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                    <rect key="frame" x="0.0" y="127" width="300" height="21"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycg-Hi-70o">
-                                    <rect key="frame" x="10" y="63" width="53" height="20"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
+                                    <rect key="frame" x="10" y="168" width="50" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45b-HQ-Hfj">
-                                    <rect key="frame" x="10" y="112" width="29" height="20"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
+                                    <rect key="frame" x="10" y="212" width="27" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rxj-bw-XPQ">
-                                    <rect key="frame" x="10" y="203" width="53" height="20"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
+                                    <rect key="frame" x="10" y="293" width="50" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jI-NP-jdR">
-                                    <rect key="frame" x="10" y="252" width="29" height="20"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
+                                    <rect key="frame" x="10" y="337" width="27" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SSID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="96E-Bu-ruH">
-                                    <rect key="frame" x="10" y="301" width="35" height="20"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
+                                    <rect key="frame" x="10" y="381" width="33" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJY-nZ-Hdr">
-                                    <rect key="frame" x="0.0" y="157" width="300" height="22"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                    <rect key="frame" x="0.0" y="252" width="300" height="21"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Td-rD-SFp">
+                                    <rect key="frame" x="0.0" y="8" width="300" height="21"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="21" id="ohK-W3-eg3"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsh-u1-JBX">
+                                    <rect key="frame" x="10" y="49" width="53" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L04-Ng-IcQ">
+                                    <rect key="frame" x="10" y="93" width="39" height="19"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="avv-DG-9ck">
+                                    <rect key="frame" x="198" y="43" width="92" height="30"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P4e-7w-oyg">
+                                    <rect key="frame" x="95" y="87" width="195" height="30"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BC5-EX-Snd">
+                                    <rect key="frame" x="95" y="43" width="93" height="30"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="avv-DG-9ck" firstAttribute="leading" secondItem="BC5-EX-Snd" secondAttribute="trailing" constant="10" id="0lD-r4-UTu"/>
                                 <constraint firstItem="ewp-mr-Xce" firstAttribute="leading" secondItem="Eoz-SA-jbj" secondAttribute="leading" id="0x0-5b-qAF"/>
                                 <constraint firstAttribute="centerX" secondItem="Rk6-TQ-Tc9" secondAttribute="centerX" constant="50" id="1Ne-Cl-h6O"/>
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="centerY" secondItem="Ycg-Hi-70o" secondAttribute="centerY" constant="1" id="1or-G6-K4i"/>
+                                <constraint firstItem="5Td-rD-SFp" firstAttribute="top" secondItem="Eoz-SA-jbj" secondAttribute="top" constant="8" id="3s0-Uy-tRr"/>
+                                <constraint firstItem="avv-DG-9ck" firstAttribute="trailing" secondItem="gCp-7R-Sth" secondAttribute="trailing" id="4kH-bj-Kbi"/>
+                                <constraint firstItem="P4e-7w-oyg" firstAttribute="centerY" secondItem="L04-Ng-IcQ" secondAttribute="centerY" id="5yr-Rq-jPj"/>
                                 <constraint firstItem="5jI-NP-jdR" firstAttribute="centerY" secondItem="3x2-H5-0zl" secondAttribute="centerY" id="64G-SG-P15"/>
-                                <constraint firstAttribute="bottom" secondItem="ewp-mr-Xce" secondAttribute="bottom" constant="363" id="6Hy-LA-B0d"/>
                                 <constraint firstItem="it7-V7-4LX" firstAttribute="leading" secondItem="LOs-KA-lDE" secondAttribute="leading" id="6JF-7D-jtE"/>
-                                <constraint firstItem="96E-Bu-ruH" firstAttribute="top" secondItem="5jI-NP-jdR" secondAttribute="bottom" constant="29" id="8Sl-4T-MIt"/>
-                                <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="top" secondItem="ADu-X9-des" secondAttribute="bottom" constant="21" id="8zP-DY-TC0"/>
+                                <constraint firstItem="Ycg-Hi-70o" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="leading" id="7yY-PS-R98"/>
+                                <constraint firstItem="96E-Bu-ruH" firstAttribute="top" secondItem="5jI-NP-jdR" secondAttribute="bottom" constant="25" id="8Sl-4T-MIt"/>
+                                <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="top" secondItem="ADu-X9-des" secondAttribute="bottom" constant="10" id="8zP-DY-TC0"/>
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="leading" secondItem="LOs-KA-lDE" secondAttribute="leading" id="DSl-LT-f9J"/>
-                                <constraint firstItem="45b-HQ-Hfj" firstAttribute="top" secondItem="Ycg-Hi-70o" secondAttribute="bottom" constant="29" id="GMi-OY-kSC"/>
-                                <constraint firstItem="it7-V7-4LX" firstAttribute="centerY" secondItem="Rxj-bw-XPQ" secondAttribute="centerY" constant="0.5" id="HVk-Ed-woq"/>
-                                <constraint firstItem="Rxj-bw-XPQ" firstAttribute="top" secondItem="zJY-nZ-Hdr" secondAttribute="bottom" constant="24" id="IY5-Ib-6Iw"/>
+                                <constraint firstItem="45b-HQ-Hfj" firstAttribute="top" secondItem="Ycg-Hi-70o" secondAttribute="bottom" constant="25" id="GMi-OY-kSC"/>
+                                <constraint firstItem="it7-V7-4LX" firstAttribute="centerY" secondItem="Rxj-bw-XPQ" secondAttribute="centerY" id="HVk-Ed-woq"/>
+                                <constraint firstItem="L04-Ng-IcQ" firstAttribute="top" secondItem="wsh-u1-JBX" secondAttribute="bottom" constant="25" id="ISJ-ew-U3V"/>
+                                <constraint firstItem="Rxj-bw-XPQ" firstAttribute="top" secondItem="zJY-nZ-Hdr" secondAttribute="bottom" constant="20" id="IY5-Ib-6Iw"/>
                                 <constraint firstItem="ADu-X9-des" firstAttribute="centerY" secondItem="96E-Bu-ruH" secondAttribute="centerY" id="JX6-t2-VMf"/>
+                                <constraint firstItem="P4e-7w-oyg" firstAttribute="width" secondItem="gCp-7R-Sth" secondAttribute="width" id="KEc-yg-DuF"/>
                                 <constraint firstItem="45b-HQ-Hfj" firstAttribute="leading" secondItem="Rxj-bw-XPQ" secondAttribute="leading" id="LPL-RX-1IS"/>
+                                <constraint firstItem="wsh-u1-JBX" firstAttribute="centerY" secondItem="BC5-EX-Snd" secondAttribute="centerY" id="M7D-OR-uGL"/>
                                 <constraint firstItem="ADu-X9-des" firstAttribute="leading" secondItem="3x2-H5-0zl" secondAttribute="leading" id="Psb-Zr-y72"/>
                                 <constraint firstItem="45b-HQ-Hfj" firstAttribute="centerY" secondItem="LOs-KA-lDE" secondAttribute="centerY" id="QlU-aS-uRo"/>
-                                <constraint firstItem="ewp-mr-Xce" firstAttribute="top" secondItem="Eoz-SA-jbj" secondAttribute="top" constant="16" id="UoN-s8-3T6"/>
+                                <constraint firstItem="avv-DG-9ck" firstAttribute="width" secondItem="BC5-EX-Snd" secondAttribute="width" id="Woe-ov-eJW"/>
                                 <constraint firstItem="45b-HQ-Hfj" firstAttribute="leading" secondItem="Ycg-Hi-70o" secondAttribute="leading" id="XIz-DN-E6h"/>
                                 <constraint firstAttribute="trailing" secondItem="zJY-nZ-Hdr" secondAttribute="trailing" id="YPi-0J-G5v"/>
+                                <constraint firstAttribute="bottom" secondItem="Rk6-TQ-Tc9" secondAttribute="bottom" constant="18" id="Zqt-os-Gdc"/>
+                                <constraint firstItem="ewp-mr-Xce" firstAttribute="top" secondItem="P4e-7w-oyg" secondAttribute="bottom" constant="10" id="bfj-eK-bdW"/>
                                 <constraint firstAttribute="trailing" secondItem="ewp-mr-Xce" secondAttribute="trailing" id="brh-z7-nBc"/>
                                 <constraint firstItem="it7-V7-4LX" firstAttribute="leading" secondItem="3x2-H5-0zl" secondAttribute="leading" id="clm-3V-xSn"/>
-                                <constraint firstItem="5jI-NP-jdR" firstAttribute="top" secondItem="Rxj-bw-XPQ" secondAttribute="bottom" constant="29" id="dm4-uY-ffs"/>
+                                <constraint firstAttribute="trailing" secondItem="5Td-rD-SFp" secondAttribute="trailing" id="dXN-8a-vc8"/>
+                                <constraint firstItem="5jI-NP-jdR" firstAttribute="top" secondItem="Rxj-bw-XPQ" secondAttribute="bottom" constant="25" id="dm4-uY-ffs"/>
                                 <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="centerY" secondItem="cE7-zJ-c39" secondAttribute="centerY" id="duI-nB-bZP"/>
+                                <constraint firstItem="avv-DG-9ck" firstAttribute="centerY" secondItem="BC5-EX-Snd" secondAttribute="centerY" id="eLP-MO-1JF"/>
                                 <constraint firstItem="Rxj-bw-XPQ" firstAttribute="leading" secondItem="5jI-NP-jdR" secondAttribute="leading" id="fc2-fc-mg1"/>
-                                <constraint firstItem="Ycg-Hi-70o" firstAttribute="top" secondItem="ewp-mr-Xce" secondAttribute="bottom" constant="25" id="geq-YE-QOx"/>
+                                <constraint firstItem="Ycg-Hi-70o" firstAttribute="top" secondItem="ewp-mr-Xce" secondAttribute="bottom" constant="20" id="geq-YE-QOx"/>
                                 <constraint firstItem="ADu-X9-des" firstAttribute="width" secondItem="3x2-H5-0zl" secondAttribute="width" id="igK-xX-6jX"/>
                                 <constraint firstItem="ewp-mr-Xce" firstAttribute="centerX" secondItem="Eoz-SA-jbj" secondAttribute="centerX" id="jWn-cZ-lHy"/>
-                                <constraint firstItem="zJY-nZ-Hdr" firstAttribute="top" secondItem="LOs-KA-lDE" secondAttribute="bottom" constant="20" id="kBa-b6-4m7"/>
+                                <constraint firstItem="zJY-nZ-Hdr" firstAttribute="top" secondItem="LOs-KA-lDE" secondAttribute="bottom" constant="15" id="kBa-b6-4m7"/>
+                                <constraint firstItem="P4e-7w-oyg" firstAttribute="leading" secondItem="BC5-EX-Snd" secondAttribute="leading" id="kM5-xB-7dy"/>
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="width" secondItem="LOs-KA-lDE" secondAttribute="width" id="kOF-aY-Eil"/>
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="leading" secondItem="Ycg-Hi-70o" secondAttribute="trailing" constant="35" id="kXy-FF-HFR"/>
+                                <constraint firstItem="P4e-7w-oyg" firstAttribute="leading" secondItem="gCp-7R-Sth" secondAttribute="leading" id="lt3-O7-ozo"/>
                                 <constraint firstItem="it7-V7-4LX" firstAttribute="width" secondItem="LOs-KA-lDE" secondAttribute="width" id="lzz-h8-mpv"/>
                                 <constraint firstAttribute="centerX" secondItem="cE7-zJ-c39" secondAttribute="centerX" constant="-50" id="pil-Mp-Gl6"/>
                                 <constraint firstItem="it7-V7-4LX" firstAttribute="width" secondItem="3x2-H5-0zl" secondAttribute="width" id="qJW-dM-7bA"/>
                                 <constraint firstItem="Ycg-Hi-70o" firstAttribute="leading" secondItem="Eoz-SA-jbj" secondAttribute="leading" constant="10" id="rGC-bd-XSF"/>
+                                <constraint firstItem="wsh-u1-JBX" firstAttribute="top" secondItem="5Td-rD-SFp" secondAttribute="bottom" constant="20" id="wDk-gn-Ziw"/>
                                 <constraint firstAttribute="trailing" secondItem="gCp-7R-Sth" secondAttribute="trailing" constant="10" id="wKP-Je-JPq"/>
+                                <constraint firstItem="wsh-u1-JBX" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="leading" id="wsb-Xg-NhR"/>
+                                <constraint firstItem="5Td-rD-SFp" firstAttribute="leading" secondItem="Eoz-SA-jbj" secondAttribute="leading" id="xYq-UG-aW4"/>
                                 <constraint firstItem="96E-Bu-ruH" firstAttribute="leading" secondItem="5jI-NP-jdR" secondAttribute="leading" id="z5h-zW-q3j"/>
                                 <constraint firstItem="zJY-nZ-Hdr" firstAttribute="leading" secondItem="Eoz-SA-jbj" secondAttribute="leading" id="zd0-bj-6sw"/>
                             </constraints>
@@ -202,7 +266,7 @@
                         <constraint firstAttribute="width" constant="300" id="M4y-pb-YRh"/>
                         <constraint firstItem="Eoz-SA-jbj" firstAttribute="top" secondItem="2be-un-Lim" secondAttribute="top" id="NTZ-ud-MA7"/>
                         <constraint firstAttribute="trailing" secondItem="Eoz-SA-jbj" secondAttribute="trailing" id="Tc2-CC-ck2"/>
-                        <constraint firstAttribute="height" constant="400" id="sOW-5E-pCX"/>
+                        <constraint firstAttribute="height" constant="460" id="sOW-5E-pCX"/>
                     </constraints>
                     <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
                         <rect key="frame" x="50" y="50" width="300" height="400"/>
@@ -211,7 +275,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="2be-un-Lim" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="HLE-aa-wT4"/>
+                <constraint firstItem="2be-un-Lim" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="HLE-aa-wT4"/>
                 <constraint firstAttribute="centerX" secondItem="2be-un-Lim" secondAttribute="centerX" id="SbU-5I-7L9"/>
             </constraints>
         </view>

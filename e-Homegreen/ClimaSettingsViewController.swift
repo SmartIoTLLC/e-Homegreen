@@ -19,6 +19,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     @IBOutlet weak var lblHumadity: UILabel!
     @IBOutlet weak var lblTemperature: UILabel!
     
+    @IBOutlet weak var settingsViewConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var onOffButton: UIButton!
@@ -378,6 +379,25 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             heatTemperature += 1
             lblHeat.text = "\(heatTemperature)"
             socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
+        }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                settingsViewConstraint.constant = 250
+                
+            }else if self.view.frame.size.height == 375{
+                settingsViewConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                settingsViewConstraint.constant = 350
+            }else{
+                settingsViewConstraint.constant = 420
+            }
+        }else{
+            
+            settingsViewConstraint.constant = 420
+            
         }
     }
     
