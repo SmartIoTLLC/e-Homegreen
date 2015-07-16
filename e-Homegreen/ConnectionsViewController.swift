@@ -24,6 +24,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
 
+    @IBAction func btnAddNewConnection(sender: AnyObject) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()

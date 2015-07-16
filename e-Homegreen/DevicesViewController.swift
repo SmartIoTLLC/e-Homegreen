@@ -75,6 +75,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptor1 = NSSortDescriptor(key: "type", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             devices = results

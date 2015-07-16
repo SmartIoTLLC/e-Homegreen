@@ -143,7 +143,7 @@ class ReceiveHandler: NSObject {
                         device.name = UserDefaults().inputInterface10in1[i]!
                         device.address = Int(byteArray[4])
                         device.channel = i
-                        device.gateway = Int(byteArray[2])
+//                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -157,7 +157,7 @@ class ReceiveHandler: NSObject {
                         device.name = UserDefaults().inputInterface6in1[i]!
                         device.address = Int(byteArray[4])
                         device.channel = i
-                        device.gateway = Int(byteArray[2])
+//                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -171,7 +171,7 @@ class ReceiveHandler: NSObject {
                         device.name = name
                         device.address = Int(byteArray[4])
                         device.channel = i
-                        device.gateway = Int(byteArray[2])
+//                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0

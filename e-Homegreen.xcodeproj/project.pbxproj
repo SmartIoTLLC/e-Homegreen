@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
+		734D3DEA1B57D16F0052FD82 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734D3DE91B57D16F0052FD82 /* Gateway.swift */; };
+		734D3DEC1B57D1700052FD82 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734D3DEB1B57D1700052FD82 /* Device.swift */; };
 		736265DF1B4A48200078C11D /* InSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265DE1B4A48200078C11D /* InSocket.swift */; };
 		736265E11B4A48330078C11D /* OutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E01B4A48330078C11D /* OutSocket.swift */; };
 		736265E31B4A483E0078C11D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Functions.swift */; };
@@ -30,7 +32,6 @@
 		73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B921B2FF8A400139E58 /* ContainerViewController.swift */; };
 		73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B941B2FF98700139E58 /* CenterViewController.swift */; };
 		73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */; };
-		73DE76011B4FD2390042E6F2 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DE76001B4FD2390042E6F2 /* Device.swift */; };
 		73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */; };
 		73E206AF1B2EEFFE0008B002 /* e_Homegreen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73E206AD1B2EEFFE0008B002 /* e_Homegreen.xcdatamodeld */; };
 		73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73E206B21B2EEFFE0008B002 /* Main.storyboard */; };
@@ -45,6 +46,8 @@
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
+		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
+		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
@@ -90,8 +93,6 @@
 		E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */; };
 		E7E1A8261B3804F1008D8713 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8221B3804F1008D8713 /* OpenEars.framework */; };
 		E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8231B3804F1008D8713 /* Slt.framework */; };
-		E7E24F501B5649B600B25BF5 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */; };
-		E7E24F511B5649B600B25BF5 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */; };
 		E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */; };
 		E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */; };
 		E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */; };
@@ -110,6 +111,8 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		734D3DE91B57D16F0052FD82 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
+		734D3DEB1B57D1700052FD82 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		736265DE1B4A48200078C11D /* InSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InSocket.swift; sourceTree = "<group>"; };
 		736265E01B4A48330078C11D /* OutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutSocket.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
@@ -132,7 +135,6 @@
 		73DB8B921B2FF8A400139E58 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		73DB8B941B2FF98700139E58 /* CenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterViewController.swift; sourceTree = "<group>"; };
 		73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePanelViewController.swift; sourceTree = "<group>"; };
-		73DE76001B4FD2390042E6F2 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73E206A61B2EEFFE0008B002 /* e-Homegreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "e-Homegreen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E206AA1B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,8 @@
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
+		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
@@ -206,8 +210,6 @@
 		E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
 		E7E1A8221B3804F1008D8713 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		E7E1A8231B3804F1008D8713 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
-		E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
-		E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDialogViewController.swift; sourceTree = "<group>"; };
 		E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDialogViewController.xib; sourceTree = "<group>"; };
@@ -265,9 +267,10 @@
 				736265E21B4A483E0078C11D /* Functions.swift */,
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
-				73DE76001B4FD2390042E6F2 /* Device.swift */,
 				73E427B71B4D0AF50083A747 /* Model.swift */,
 				736265E41B4A48F90078C11D /* DeviceOld.swift */,
+				734D3DEB1B57D1700052FD82 /* Device.swift */,
+				734D3DE91B57D16F0052FD82 /* Gateway.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -397,8 +400,8 @@
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
-				E7E24F4E1B5649B600B25BF5 /* ConnectionSettingsVC.swift */,
-				E7E24F4F1B5649B600B25BF5 /* ConnectionSettingsVC.xib */,
+				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
+				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -617,7 +620,7 @@
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
 				E7DC67B81B457C0E00EA6543 /* weather-few-night.png in Resources */,
-				E7E24F511B5649B600B25BF5 /* ConnectionSettingsVC.xib in Resources */,
+				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
@@ -698,8 +701,8 @@
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* UserDefaults.swift in Sources */,
-				E7E24F501B5649B600B25BF5 /* ConnectionSettingsVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
+				734D3DEA1B57D16F0052FD82 /* Gateway.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */,
@@ -711,6 +714,7 @@
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* ReceiveHandler.swift in Sources */,
 				E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */,
+				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
@@ -718,7 +722,6 @@
 				736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
-				73DE76011B4FD2390042E6F2 /* Device.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				73E427B81B4D0AF50083A747 /* Model.swift in Sources */,
@@ -735,6 +738,7 @@
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
+				734D3DEC1B57D1700052FD82 /* Device.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,

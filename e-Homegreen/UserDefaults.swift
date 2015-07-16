@@ -102,6 +102,19 @@ class UserDefaults: NSObject {
             0x41:DeviceChannelType(channel:TEN_CHANEL, name:SENSOR), //10-in-1 Multisensor
             0x45:DeviceChannelType(channel:SIX_CHANEL, name:SENSOR)] //6-in-1 Multisensor
     }
+//    var tuplesA:(UInt8, UInt8)
+//    var deviceChannelTest:[tuplesA:DeviceChannelType]
+//    func saveDeviceChannel () {
+//        deviceChannelTest = [[0x01:0x02]:DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway
+//    }
+}
+class DeviceType {
+    var deviceId:UInt8?
+    var subId:UInt8?
+    init (deviceId:UInt8, subId:UInt8) {
+        self.deviceId = deviceId
+        self.subId = subId
+    }
 }
 class DeviceChannelType {
     var channel:Int?
