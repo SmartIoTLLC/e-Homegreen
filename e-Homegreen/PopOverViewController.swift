@@ -7,10 +7,10 @@
 //
 
 import UIKit
-
-protocol PopOverIndexDelegate
+@objc protocol PopOverIndexDelegate
 {
-    func saveText(var strText : String)
+    optional func saveText (strText : String)
+    optional func clickedOnGatewayWithIndex (index : Int)
 }
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -19,6 +19,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var levelList:[String] = ["Level 1", "All"]
     var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
     var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var tableList:[String] = []
     
     
@@ -37,11 +38,13 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewWillAppear(animated: Bool) {
         if indexTab == 1{
             tableList = locationList
-        }else if indexTab == 2{
+        } else if indexTab == 2 {
             tableList = levelList
-        }else if indexTab == 3{
+        } else if indexTab == 3 {
             tableList = zoneList
-        }else {
+        } else if indexTab == 4 {
+            tableList = gatewayList
+        } else {
             tableList = categoryList
         }
     }
@@ -63,7 +66,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.saveText(tableList[indexPath.row])
+        if indexTab != 4 {
+            delegate?.saveText!(tableList[indexPath.row])
+        } else {
+            delegate?.clickedOnGatewayWithIndex!(indexPath.row)
+        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

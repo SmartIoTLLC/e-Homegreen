@@ -11,14 +11,15 @@ import CoreData
 
 class Gateway: NSManagedObject {
 
+    @NSManaged var addressOne: NSNumber
+    @NSManaged var addressTwo: NSNumber
+    @NSManaged var localIp: String
+    @NSManaged var localPort: NSNumber
     @NSManaged var name: String
     @NSManaged var remoteIp: String
     @NSManaged var remotePort: NSNumber
-    @NSManaged var localIp: String
-    @NSManaged var localPort: NSNumber
     @NSManaged var ssid: String
-    @NSManaged var addressOne: NSNumber
-    @NSManaged var addressTwo: NSNumber
+    @NSManaged var turnedOn: NSNumber
     @NSManaged var device: NSSet
 
 }

@@ -9,22 +9,16 @@
 import UIKit
 
 class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
-    
-//    let IP = "255.255.255.255"
-//    let PORT:UInt16 = 5556
-    var ip = "192.168.0.7"
-    var port:UInt16 = 5001
+
+    var ip = ""
+    var port:UInt16 = 0
     var socket:GCDAsyncUdpSocket!
     
-    override init(){
-        super.init()
-        setupConnection()
-    }
     init (ip:String, port:UInt16) {
         super.init()
-        self.setupConnection()
         self.ip = ip
         self.port = port
+        self.setupConnection()
     }
     func setupConnection(){
         var error : NSError?
@@ -34,28 +28,33 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv6Enabled(false)
         
         socket.bindToPort(port, error: &error)
-        //        socket.enableBroadcast(true, error: &error)
+//                socket.enableBroadcast(true, error: &error)
         socket.joinMulticastGroup(ip, error: &error)
         socket.beginReceiving(&error)
         //        socket.enableBroadcast(true, error: &error)
+        
+        
+        
+//        socket.bindToPort(port, error: &error)
+//        socket.enableBroadcast(true, error: &error)
+//        socket.joinMulticastGroup(ip, error: &error)
+//        socket.beginReceiving(&error)
+        
     }
-    
-    var deviceArray:[DeviceOld] = []
-    var number = 0
-    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,      withFilterContext filterContext: AnyObject!) {
-        ReceiveHandler(byteArrayToHandle: data.convertToBytes())
-//        println("\(number) incoming message: \(data)")
-//        println("\(number) incoming message: \(address.convertToBytes())")
-        number += 1
+    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+        println("incoming message: \(data)")
+        println("incoming message: \(address.convertToBytes())")
+//        println("GCDAsyncUdpSocket, za poruke od servera, delegat je pozvan.")
+//        var host:NSString?
+//        var hostPort:UInt16 = 0
+//        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
+//        if let hostHost = host as? String {
+//            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+//            IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
+//        }
     }
-    func chkByte (array:[UInt8]) -> UInt8 {
-        var chk:Int = 0
-        for var i = 1; i <= array.count-3; i++ {
-            var number = "\(array[i])"
-            chk = chk + number.toInt()!
-        }
-        chk = chk%256
-        return UInt8(chk)
+    func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
+        println("Nemoj mi samo reci da je ovo problem!")
     }
 }
 extension NSData {

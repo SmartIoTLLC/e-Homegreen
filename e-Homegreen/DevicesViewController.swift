@@ -42,17 +42,39 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var outSocketPing:OutSocket!
     
     var timer:NSTimer = NSTimer()
-    
+//    var testSocketTwo:InSocket!
+//    var socket: GCDAsyncUdpSocket!
+//    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+//        println("Nesto je doslo \(data.convertToBytes()) \(address.convertToBytes())")
+//        var host:NSString?
+//        var hostPort:UInt16 = 0
+//        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
+//        if let hostHost = host as? String {
+//            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+//        }
+//    }
+    var receivingSocket:InSocket!
+//    var outSocketTwo:OutSocket!
+//    func joj () {
+//        outSocketTwo.sendByte([0xAA])
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
+//        outSocketTwo = OutSocket(ip: "192.168.0.23", port: 5001)
+        receivingSocket = InSocket(ip: "192.168.0.7", port: 5001)
+//        let timerOS = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("joj"), userInfo: nil, repeats: true)
         commonConstruct()
+//        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
+//        socket.bindToPort(5001, error: &error)
+//        //                socket.enableBroadcast(true, error: &error)
+//        //        socket.joinMulticastGroup(ip, error: &error)
+//        socket.beginReceiving(&error)
+//        //        socket.enableBroadcast(true, error: &error)
+        
+        
+//        testSocketTwo = InSocket(ip: "e-home.dyndns.org", port: 5001)
+//        testSocketTwo = InSocket(ip: "2.50.32.208", port: 5001)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
-        if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
-            inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
-            outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
-        }
-        outSocketPing = OutSocket(ip: "255.255.255.255", port: 5001)
-//        NSTimer.scheduledTimerWithTimeInterval(1/100, target: self, selector: Selector("ping"), userInfo: nil, repeats: true)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -115,11 +137,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 setDeviceValue = UInt8(100)
             }
             devices[tag!].currentValue = Int(setDeviceValue)
-            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00))
+            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00), ip: devices[tag!].gateway.localIp, port: Int(devices[tag!].gateway.localPort))
+//            outSocket.sendByte()
         }
         // Appliance?
         if devices[tag!].type == "curtainsRelay" {
-            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
+            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), ip: devices[tag!].gateway.localIp, port: Int(devices[tag!].gateway.localPort))
+//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
         
         deviceCollectionView.reloadData()
@@ -138,7 +162,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 }
             }
             println(deviceValue*100)
-            self.outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(self.devices[tag].address)), channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
+            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
+//            self.outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(self.devices[tag].address)), channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
             self.devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
@@ -340,7 +365,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Light
         var tag = sender.tag
         if devices[tag].type == "Dimmer" {
-            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
+            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
+//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
             devices[tag].currentValue = Int(sender.value * 100)
         }
         UIView.setAnimationsEnabled(false)
@@ -359,7 +385,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         println(devices[tag].type)
         // Appliance?
         if devices[tag].type == "curtainsRelay" {
-            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
+            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
+//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
     func refreshDeviceList() {
@@ -371,7 +398,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if devices[indexPath.row].type == "hvac" {
-            showClimaSettings(indexPath.row, socket: outSocket, devices: devices)
+            showClimaSettings(indexPath.row, devices: devices)
         }
 //        deviceCollectionView.reloadData()
         
@@ -655,3 +682,11 @@ class MultiSensorCell: UICollectionViewCell {
     
     var gradientLayer: CAGradientLayer?
 }
+//extension NSData {
+//    public func convertToBytes() -> [UInt8] {
+//        let count = self.length / sizeof(UInt8)
+//        var bytesArray = [UInt8](count: count, repeatedValue: 0)
+//        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
+//        return bytesArray
+//    }
+//}

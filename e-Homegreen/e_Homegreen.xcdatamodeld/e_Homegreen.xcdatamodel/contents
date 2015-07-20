@@ -12,7 +12,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="device" inverseEntity="Gateway" syncable="YES"/>
     </entity>
-    <entity name="Gateway" representedClassName="e_homegreen.Gateway" syncable="YES">
+    <entity name="Gateway" representedClassName="e_Homegreen.Gateway" syncable="YES">
         <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
@@ -21,10 +21,11 @@
         <attribute name="remoteIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remotePort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="device" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="195"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="180"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="195"/>
     </elements>
 </model>

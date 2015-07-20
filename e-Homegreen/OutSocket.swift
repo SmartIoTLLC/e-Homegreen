@@ -10,38 +10,24 @@ import UIKit
 
 class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
-    var ip = "192.168.0.7"
-    var port:UInt16 = 5001
+    var ip = ""
+    var port:UInt16 = 0
     var socket:GCDAsyncUdpSocket!
-    
-    override init(){
-        super.init()
-        setupConnection()
-    }
     
     init (ip:String, port:UInt16) {
         super.init()
-        self.setupConnection()
         self.ip = ip
         self.port = port
+        self.setupConnection()
     }
-//    func setupConnection(){
-//        var error : NSError?
-//        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-//        socket.connectToHost(IP, onPort: PORT, error: &error)
-//    }
     
-//    func send(message:String){
-//        let data = message.dataUsingEncoding(NSUTF8StringEncoding)
-//        socket.sendData(data, withTimeout: 2, tag: 0)
-//    }
     func setupConnection(){
         var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
         socket.bindToPort(port, error: &error)
         socket.connectToHost(ip, onPort: port, error: &error)
-        //        socket.beginReceiving(&error)
         socket.enableBroadcast(true, error: &error)
+        send("ping")
     }
     
     func send(message:String){
@@ -51,12 +37,10 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     func sendByte(arrayByte: [UInt8]) {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
         socket.sendData(data, withTimeout: 2, tag: 0)
-//        println("Ajde \(data)")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
         println("didConnectToAddress")
-//        println(address)
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotConnect error: NSError!) {

@@ -9,33 +9,85 @@
 import UIKit
 import CoreData
 
-class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
+class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
     var outSocket:OutSocket!
     var appDel:AppDelegate!
     var devices:[Device] = []
+    var gateways:[Gateway] = []
+    var gatewaysNames:[String] = []
     var error:NSError? = nil
     var backgroundImageView = UIImageView()
     
+    @IBOutlet weak var btnChooseGateway: UIButton!
     var isPresenting:Bool = true
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         transitioningDelegate = self
     }
+    @IBAction func btnDeleteAll(sender: AnyObject) {
+        
+    }
     
+    var testSocketOne:OutSocket?
+    var testSocketTwo:InSocket?
+    @IBAction func btnFindNames(sender: AnyObject) {
+        testSocketOne?.sendByte([0xAA, 0x0D, 0x01, 0x00, 0x01, 0x03, 0x07, 0xFF, 0xFF, 0xFF, 0x01, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x0A, 0x10])
+//        testSocketOne?.sendByte([0xAA, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x05, 0x10])
+    }
+    var popoverVC:PopOverViewController = PopOverViewController()
+    var choosedGatewayIndex:Int = -1
+    func clickedOnGatewayWithIndex(index: Int) {
+        println(index)
+        btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
+        choosedGatewayIndex = index
+    }
+    @IBAction func btnChooseGateway(sender: UIButton) {
+        gatewaysNames = []
+        for item in gateways {
+            gatewaysNames.append("\(item.name)")
+        }
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.gatewayList = gatewaysNames
+        popoverVC.indexTab = 4
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as UIView
+            popoverController.sourceRect = sender.bounds
+            self.presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    override func viewWillDisappear(animated: Bool) {
+//        testSocketOne?.socket.close()
+//        testSocketTwo?.socket.close()
+    }
+    @IBOutlet weak var idRangeFrom: UITextField!
+    @IBOutlet weak var idRangeTo: UITextField!
+    var receivingSocket:InSocket?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
+//        testSocketTwo = InSocket(ip: "192.168.0.7", port: 5001)
+//        testSocketOne = OutSocket(ip: "192.168.0.7", port: 5001)
+//        testSocketTwo = InSocket(ip: "e-home.dyndns.org", port: 5001)
+//        testSocketOne = OutSocket(ip: "e-home.dyndns.org", port: 5001)
+//        testSocketTwo = InSocket(ip: "2.50.32.208", port: 5001)
+//        testSocketOne = OutSocket(ip: "255.255.255.255", port: 5001)
         
-        if let ip = NSUserDefaults.standardUserDefaults().valueForKey("ipHost") as? String, let port = NSUserDefaults.standardUserDefaults().valueForKey("port") as? String {
-                inSocket = InSocket(ip: ip, port: UInt16(port.toInt()!))
-                outSocket = OutSocket(ip: ip, port: UInt16(port.toInt()!))
-        }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
         
         
         var fetchRequest = NSFetchRequest(entityName: "Device")
@@ -45,12 +97,41 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         } else {
             println("Nije htela...")
         }
-        println("")
         for item in devices {
             databaseArray.append("\(item.name)")
+            println(item.name)
         }
+        fetchAllGateways()
         
         // Do any additional setup after loading the view.
+    }
+    func updateDeviceList () {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptor1 = NSSortDescriptor(key: "type", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+        }
+    }
+    func refreshDeviceList () {
+        updateDeviceList()
+        databaseTable.reloadData()
+    }
+    func fetchAllGateways () {
+        var fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicate = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        let sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
+        if let results = fetResults {
+            gateways = results
+        } else {
+            println("Nije htela...")
+        }
     }
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
@@ -77,23 +158,24 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         databaseTable.reloadData()
     }
     @IBAction func findDevices(sender: AnyObject) {
-        if !touched {
-            deviceNumber = 0
-            for var i:Int = 0; i < 20; i++ {
-                var number:NSTimeInterval = NSTimeInterval(i*2)
-                deviceNumber = 0
-                NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds", userInfo: nil, repeats: false)
+        if choosedGatewayIndex != -1 {
+            var number:Int = 1
+//            var numberOne:Int = idRangeFrom.text.toInt()!
+//            var numberTwo:Int = idRangeTo.text.toInt()!
+            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+                for var i = numberOne; i <= numberTwo; ++i {
+                    var number:NSTimeInterval = NSTimeInterval(i)
+                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: i, repeats: false)
+                }
             }
-            touched = true
-        } else {
-        outSocket.sendByte(Functions().getSensorState(0x05))
-        timerSensorNumber = 0
-        for i in 0...11 {
-            var number:NSTimeInterval = NSTimeInterval(i*2)
-            NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "getSensorName", userInfo: nil, repeats: false)
-//                outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
         }
-        }
+//        outSocket.sendByte(Functions().getSensorState(0x05))
+//        timerSensorNumber = 0
+//        for i in 0...11 {
+//            var number:NSTimeInterval = NSTimeInterval(i*2)
+//            NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "getSensorName", userInfo: nil, repeats: false)
+////                outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
+//        }
     }
     var timerSensorNumber = 0
     func getSensorName () {
@@ -109,24 +191,12 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    func searchIds() {
-        outSocket.sendByte(Functions().searchForDevices(UInt8(deviceNumber)))
-        deviceNumber += 1
-        if deviceNumber == 19 {
-            touched = false
+    func searchIds(timer:NSTimer) {
+//        var sendSocket = OutSocket(ip: gateways[in], port: <#UInt16#>)
+//        outSocket.sendByte(Functions().searchForDevices(UInt8(deviceNumber)))
+        if let deviceNumber = timer.userInfo as? Int {
+            SendingHandler(byteArray: Functions().searchForDevices(UInt8(deviceNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
         }
-        
-    }
-    
-    func chkByte (array:[UInt8]) -> UInt8 {
-        var chk:Int = 0
-        for var i = 1; i <= array.count-3; i++ {
-            var number = "\(array[i])"
-            
-            chk = chk + number.toInt()!
-        }
-        chk = chk%256
-        return UInt8(chk)
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
