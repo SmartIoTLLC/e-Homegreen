@@ -30,6 +30,9 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.bindToPort(port, error: &error)
 //                socket.enableBroadcast(true, error: &error)
         socket.joinMulticastGroup(ip, error: &error)
+        if error != nil{
+            println("ERROR GROUP")
+        }
         socket.beginReceiving(&error)
         //        socket.enableBroadcast(true, error: &error)
         
@@ -42,16 +45,16 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        println("incoming message: \(data)")
-        println("incoming message: \(address.convertToBytes())")
+//        println("incoming message: \(data)")
+//        println("incoming message: \(address.convertToBytes())")
 //        println("GCDAsyncUdpSocket, za poruke od servera, delegat je pozvan.")
-//        var host:NSString?
-//        var hostPort:UInt16 = 0
-//        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
-//        if let hostHost = host as? String {
-//            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+        var host:NSString?
+        var hostPort:UInt16 = 0
+        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
+        if let hostHost = host as? String {
+            println("incoming message: \(hostHost) \(hostPort) \(data.convertToBytes())")
 //            IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
-//        }
+        }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
         println("Nemoj mi samo reci da je ovo problem!")
