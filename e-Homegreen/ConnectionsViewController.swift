@@ -178,7 +178,10 @@ extension ConnectionsViewController: UITableViewDataSource {
 extension ConnectionsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
-        self.showConnectionSettings(indexPath.row)
+        
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showConnectionSettings(indexPath.row)
+        })
     }
     
     func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
