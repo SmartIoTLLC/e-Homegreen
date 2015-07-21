@@ -55,22 +55,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     var socket:InSocket?
     func findLocalConnectionToConnect () {
-        var error:NSError?
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
-        let predicateOne = NSPredicate(format: "turnedOn == %@ AND ssid == %@", NSNumber(bool: true), UIDevice.currentDevice().SSID!)
-        fetchRequest.predicate = predicateOne
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            println("\(UIDevice.currentDevice().SSID!)")
-            if results.count != 0 {
-                createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
-                println("\(UIDevice.currentDevice().SSID!)")
+        if let ssid = UIDevice.currentDevice().SSID {
+            var error:NSError?
+            var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+            let predicateOne = NSPredicate(format: "turnedOn == %@ AND ssid == %@", NSNumber(bool: true), ssid)
+            fetchRequest.predicate = predicateOne
+            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
+            if let results = fetResults {
+                println("\(ssid)")
+                if results.count != 0 {
+                    createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
+                    println("\(ssid)")
+                }
+                println("\(ssid)")
+            } else {
+                println("Nije htela...")
             }
-            println("\(UIDevice.currentDevice().SSID!)")
-        } else {
-            println("Nije htela...")
         }
     }
     func createSocket (ip:String, port:UInt16) {
