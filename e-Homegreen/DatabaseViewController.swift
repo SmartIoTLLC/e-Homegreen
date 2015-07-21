@@ -29,44 +29,62 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         transitioningDelegate = self
     }
     @IBAction func btnDeleteAll(sender: AnyObject) {
-        for var i = 0; i < gateways.count; ++i {
-            println("\(gateways[i].ipInUse) \(gateways[i].portInUse)")
-            gateways[i].ipInUse = "a"
-            gateways[i].portInUse = NSNumber(int: 123)
+        if choosedGatewayIndex != -1 {
+            for item in devices {
+                if item.gateway.objectID == gateways[choosedGatewayIndex].objectID {
+                    appDel.managedObjectContext!.deleteObject(item)
+                }
+            }
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
-//        SendingHandler(byteArray: [0xAA, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x05, 0x10], ip: "2.50.32.208", port: 5001)
     }
-    
-    var testSocketOne:OutSocket?
-    var testSocketTwo:InSocket?
     @IBAction func btnFindNames(sender: AnyObject) {
-//        if choosedGatewayIndex != -1 {
-//            var number:Int = 1
-//            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
-//                for var i = numberOne; i <= numberTwo; ++i {
-//                    var number:NSTimeInterval = NSTimeInterval(i)
-//                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchNames:", userInfo: i, repeats: false)
-//                }
-//            }
-//        }
+        //        if choosedGatewayIndex != -1 {
+        //            var number:Int = 1
+        //            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+        //                for var i = numberOne; i <= numberTwo; ++i {
+        //                    var number:NSTimeInterval = NSTimeInterval(i)
+        //                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchNames:", userInfo: i, repeats: false)
+        //                }
+        //            }
+        //        }
+        if choosedGatewayIndex != -1 {
+            for item in devices {
+                if item.type == "dimmer" {
+//                    for var i:Int in 1...Int(item.numberOfDevices) {
+////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
+//                    }
+                    
+                }
+                if item.type == "sensor" {
+                    
+                }
+                if item.type == "sensor" {
+                    
+                }
+                if item.type == "sensor" {
+                    
+                }
+            }
+        }
     }
-    func searchNames (timer:NSTimer) {
-        // treba svaki posebno proveriti
-//        if let deviceNumber = timer.userInfo as? Int {
-//            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
-//        }
-    }
+//    func searchNames (timer:NSTimer) {
+//        // treba svaki posebno proveriti
+////        if let deviceNumber = timer.userInfo as? Int {
+////            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
+////        }
+//    }
     var popoverVC:PopOverViewController = PopOverViewController()
     var choosedGatewayIndex:Int = -1
     func clickedOnGatewayWithIndex(index: Int) {
-        println(index)
         btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
         choosedGatewayIndex = index
     }
     @IBAction func btnChooseGateway(sender: UIButton) {
         gatewaysNames = []
         for item in gateways {
-            gatewaysNames.append("\(item.name) \(item.device.count)")
+            gatewaysNames.append("\(item.name)")
         }
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
@@ -86,8 +104,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         return .None
     }
     override func viewWillDisappear(animated: Bool) {
-//        testSocketOne?.socket.close()
-//        testSocketTwo?.socket.close()
+        
     }
     @IBOutlet weak var idRangeFrom: UITextField!
     @IBOutlet weak var idRangeTo: UITextField!
@@ -95,30 +112,13 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
-//        testSocketTwo = InSocket(ip: "192.168.0.7", port: 5001)
-//        testSocketOne = OutSocket(ip: "192.168.0.7", port: 5001)
-//        testSocketTwo = InSocket(ip: "e-home.dyndns.org", port: 5001)
-//        testSocketOne = OutSocket(ip: "e-home.dyndns.org", port: 5001)
-//        testSocketTwo = InSocket(ip: "2.50.32.208", port: 5001)
-//        testSocketOne = OutSocket(ip: "255.255.255.255", port: 5001)
         
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
-        
-        var fetchRequest = NSFetchRequest(entityName: "Device")
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
-        }
-        for item in devices {
-            databaseArray.append("\(item.name)")
-            println(item.name)
-        }
+        updateDeviceList()
         fetchAllGateways()
         
         // Do any additional setup after loading the view.
@@ -132,6 +132,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         if let results = fetResults {
             devices = results
         } else {
+            println("Nije htela...")
         }
     }
     func refreshDeviceList () {
@@ -156,25 +157,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
-    var deviceNumber = 0
-    var touched = false
-    @IBAction func btnRefresTableView(sender: AnyObject) {
-//        outSocket.sendByte(Functions().searchForDevices(0x05))
-        var fetchRequest = NSFetchRequest(entityName: "Device")
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
-        }
-        println("")
-        databaseArray = []
-        for item in devices {
-            databaseArray.append("\(item.name); \(item.address); \(item.channel)")
-            println("name: \(item.name) address: \(item.address) channel: \(item.channel) type: \(item.type) current: \(item.current) currentValue: \(item.currentValue) gateway: \(item.gateway) amp: \(item.amp) numberOfDevices: \(item.numberOfDevices) runningTime: \(item.runningTime)")
-        }
-        databaseTable.reloadData()
-    }
     var loader : ViewControllerUtils = ViewControllerUtils()
     var quitLoader:Int = 0
     @IBAction func findDevices(sender: AnyObject) {
@@ -198,7 +180,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
 //        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
 //        timerSensorNumber = timerSensorNumber + 1
 //    }
-    var databaseArray:[String] = []
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -208,10 +189,15 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     func searchIds(timer:NSTimer) {
-//        var sendSocket = OutSocket(ip: gateways[in], port: <#UInt16#>)
-//        outSocket.sendByte(Functions().searchForDevices(UInt8(deviceNumber)))
         if let deviceNumber = timer.userInfo as? Int {
             SendingHandler(byteArray: Functions().searchForDevices(UInt8(deviceNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
+        }
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
     }
     
@@ -275,11 +261,11 @@ extension DatabaseViewController: UITableViewDataSource {
 //        return 44
 //    }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return databaseArray.count
+        return devices.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("databaseCell") as? DatabaseTableViewCell {
-            cell.foundItem.text = databaseArray[indexPath.row]
+            cell.foundItem.text = "{GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address) Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
             return cell
             
         }

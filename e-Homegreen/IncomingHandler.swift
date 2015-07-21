@@ -24,72 +24,68 @@ class IncomingHandler: NSObject {
         self.host = host
         self.port = port
         fetchGateways(host, port: port)
-        fetchDevices()
-//        for item in gateways {
-//            println("Gateway found: \(item.name) \(item.localIp) \(item.localPort) \(item.remoteIp) \(item.remotePort) \(item.addressOne) \(item.addressTwo)")
-//        }
-        self.byteArray = byteArrayToHandle
-        // Check if byteArray is correct one (check byte also, which is missing)
-        if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
-            
-            //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-            if byteArray[5] == 0xF1 && byteArray[6] == 0x01 {
-                acknowledgementAboutNewDevices(byteArray)
-            }
-            
-            //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar)
-            if byteArray[5] == 0xF3 && byteArray[6] == 0x01 {
-                acknowledgementAboutChannelParametar (byteArray)
+        
+        //  Checks if there are any gateways
+        if gateways != [] {
+            fetchDevices()
+            self.byteArray = byteArrayToHandle
+            // Check if byteArray is correct one (check byte also, which is missing)
+            if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
+                
+                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
+                if byteArray[5] == 0xF1 && byteArray[6] == 0x01 {
+                    acknowledgementAboutNewDevices(byteArray)
+                }
+                
+                //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar)
+                if byteArray[5] == 0xF3 && byteArray[6] == 0x01 {
+                    acknowledgementAboutChannelParametar (byteArray)
+                    
+                }
+                
+                //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
+                if byteArray[5] == 0xF3 && byteArray[6] == 0x06 {
+                    ackonowledgementAboutChannelState(byteArray)
+                }
+                
+                //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
+                //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
+                //
+                //            }
+                
+                //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
+                if byteArray[5] == 0xF3 && byteArray[6] == 0x0C {
+                    
+                }
+                
+                //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
+                if byteArray[5] == 0xF3 && byteArray[6] == 0x10 {
+                    
+                }
+                
+                //
+                if byteArray[5] == 0xF5 && byteArray[6] == 0x01 {
+                    ackADICmdGetInterfaceStatus(byteArray)
+                }
+                
+                //
+                if byteArray[5] == 0xF5 && byteArray[6] == 0x04 {
+                    ackADICmdGetInterfaceName(byteArray)
+                }
                 
             }
-            
-            //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
-            if byteArray[5] == 0xF3 && byteArray[6] == 0x06 {
-                ackonowledgementAboutChannelState(byteArray)
-            }
-            
-//            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
-//            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
-//                
-//            }
-            
-            //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
-            if byteArray[5] == 0xF3 && byteArray[6] == 0x0C {
-                
-            }
-            
-            //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
-            if byteArray[5] == 0xF3 && byteArray[6] == 0x10 {
-                
-            }
-            
-            //
-            if byteArray[5] == 0xF5 && byteArray[6] == 0x01 {
-                ackADICmdGetInterfaceStatus(byteArray)
-            }
-            
-            //
-            if byteArray[5] == 0xF5 && byteArray[6] == 0x04 {
-                ackADICmdGetInterfaceName(byteArray)
-            }
-            
         }
     }
     func fetchDevices () {
         // OVDE ISKACE BUD NA ANY
-        if gateways != [] {
-            var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
-            let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
-            fetchRequest.predicate = predicate
-            let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-            if let results = fetResults {
-                devices = results
-            } else {
-                println("Nije htela...")
-            }
-//            for item in devices {
-//                println("Device: \(item.name); Devices gateway:\(item.gateway.name)")
-//            }
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
         }
     }
     func fetchGateways (host:String, port:UInt16) {
@@ -160,7 +156,7 @@ class IncomingHandler: NSObject {
                         device.name = DeviceInfo().inputInterface10in1[i]!
                         device.address = Int(byteArray[4])
                         device.channel = i
-//                        device.gateway = Int(byteArray[2])
+                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -175,7 +171,7 @@ class IncomingHandler: NSObject {
                         device.name = DeviceInfo().inputInterface6in1[i]!
                         device.address = Int(byteArray[4])
                         device.channel = i
-//                        device.gateway = Int(byteArray[2])
+                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -187,10 +183,10 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = name + "\(i)"
+                        device.name = name + " \(i)"
                         device.address = Int(byteArray[4])
                         device.channel = i
-//                        device.gateway = Int(byteArray[2])
+                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -213,15 +209,15 @@ class IncomingHandler: NSObject {
             if devices[i].address == Int(byteArray[4]) {
                 var channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //lightning state
-//                devices[i].current = byteArray[9] // current
-//                devices[i].voltage = byteArray[10] // current
-//                devices[i].temperature = byteArray[11] // voltage
-//                devices[i] = byteArray[12] // temperature
+                //                devices[i].current = byteArray[9] // current
+                //                devices[i].voltage = byteArray[10] // current
+                //                devices[i].temperature = byteArray[11] // voltage
+                //                devices[i] = byteArray[12] // temperature
             } else {
                 
             }
         }
-//        NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
+        //        NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
         saveChanges()
     }
     //  informacije o parametrima kanala
