@@ -9,13 +9,9 @@
 import UIKit
 import CoreData
 
-<<<<<<< HEAD
-class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
-    
-=======
-class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UITextFieldDelegate {
 
->>>>>>> origin/master
+class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UITextFieldDelegate {
+    
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
     var outSocket:OutSocket!
@@ -140,14 +136,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
-<<<<<<< HEAD
         //        updateDeviceList()
-=======
         idRangeFrom.delegate = self
         idRangeTo.delegate = self
-        
-        updateDeviceList()
->>>>>>> origin/master
         fetchAllGateways()
         
         // Do any additional setup after loading the view.
