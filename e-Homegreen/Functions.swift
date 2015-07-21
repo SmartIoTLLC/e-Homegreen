@@ -149,6 +149,7 @@ class Functions: NSObject {
         message[message.count-1] = 0x10
         return message
     }
+    // AC
     func getACStatus (id3:UInt8) -> [UInt8]{
         messageInfo = [0xFF]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)

@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let containerViewController = ContainerViewController()
         window!.rootViewController = containerViewController
         
+//        findLocalConnectionToConnect()
+        
 //        var storyboard = UIStoryboard(name: "Main", bundle: nil)
 //        var viewController:UIViewController
 //        viewController = storyboard.instantiateViewControllerWithIdentifier("logInController") as! LogInViewController
@@ -49,13 +51,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        println("Ovo je SSID: \(UIDevice.currentDevice().SSID!) applicationWillEnterForeground")
-        
+//        findLocalConnectionToConnect()
     }
-    var socket:InSocket!
+    var socket:InSocket?
+    func findLocalConnectionToConnect () {
+        var error:NSError?
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicateOne = NSPredicate(format: "turnedOn == %@ AND ssid == %@", NSNumber(bool: true), UIDevice.currentDevice().SSID!)
+        fetchRequest.predicate = predicateOne
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
+        if let results = fetResults {
+            println("\(UIDevice.currentDevice().SSID!)")
+            if results.count != 0 {
+                createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
+                println("\(UIDevice.currentDevice().SSID!)")
+            }
+            println("\(UIDevice.currentDevice().SSID!)")
+        } else {
+            println("Nije htela...")
+        }
+    }
+    func createSocket (ip:String, port:UInt16) {
+        if let socket = socket {
+            self.socket?.socket.close()
+            self.socket = InSocket(ip: ip, port: port)
+        } else {
+            self.socket = InSocket(ip: ip, port: port)
+        }
+    }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        socket = InSocket(ip: "192.168.0.7", port: 5001)
+        findLocalConnectionToConnect()
     }
 
     func applicationWillTerminate(application: UIApplication) {

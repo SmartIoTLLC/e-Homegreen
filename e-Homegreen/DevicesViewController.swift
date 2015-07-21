@@ -41,12 +41,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var mySecondView:Array<UIView> = []
     
     var timer:NSTimer = NSTimer()
-    var receivingSocket:InSocket!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        println(UIDevice.currentDevice().SSID)
-        receivingSocket = InSocket(ip: "192.168.0.7", port: 5001)
         
         commonConstruct()
         
@@ -62,8 +58,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
         updateDeviceList()
     }
-    var inSocket:InSocket!
-    var outSocket:OutSocket!
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
@@ -97,6 +91,21 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
         }
+        if devices[tag!].type == "curtainsRS485" {
+            if gestureRecognizer.state == UIGestureRecognizerState.Began {
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("updateCurtain:"), userInfo: tag, repeats: true)
+            }
+            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+                timer.invalidate()
+                
+                if devices[tag!].opening == true {
+                    devices[tag!].opening = false
+                }else {
+                    devices[tag!].opening = true
+                }
+                return
+            }
+        }
     }
     
     func oneTap(gestureRecognizer:UITapGestureRecognizer){
@@ -118,6 +127,16 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), ip: devices[tag!].gateway.localIp, port: Int(devices[tag!].gateway.localPort))
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
+        // Curtain?
+        if devices[tag!].type == "curtainsRS485" {
+            var setDeviceValue:UInt8 = 0
+            if devices[tag!].currentValue == 100 {
+                setDeviceValue = UInt8(0)
+            } else {
+                setDeviceValue = UInt8(100)
+            }
+            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag!].address)), channel:  UInt8(Int(devices[tag!].channel)), value: setDeviceValue), ip: devices[tag!].gateway.localIp, port: Int(devices[tag!].gateway.localPort))
+        }
         
         deviceCollectionView.reloadData()
     }
@@ -136,7 +155,29 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             println(deviceValue*100)
             SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
-//            self.outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(self.devices[tag].address)), channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00))
+            self.devices[tag].currentValue = Int(deviceValue*100)
+            UIView.setAnimationsEnabled(false)
+            self.deviceCollectionView.performBatchUpdates({
+                var indexPath = NSIndexPath(forItem: tag, inSection: 0)
+                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+                }, completion:  {(completed: Bool) -> Void in
+                    UIView.setAnimationsEnabled(true)
+            })
+        }
+    }
+    func updateCurtain(timer: NSTimer){
+        if let tag = timer.userInfo as? Int {
+            var deviceValue = Double(devices[tag].currentValue)/100
+            if devices[tag].opening == true{
+                if deviceValue < 1 {
+                    deviceValue += 0.20
+                }
+            } else {
+                if deviceValue >= 0.20 {
+                    deviceValue -= 0.20
+                }
+            }
+            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag].address)), channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100))), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
             self.devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
@@ -339,7 +380,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         var tag = sender.tag
         if devices[tag].type == "Dimmer" {
             SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
-//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00))
+            devices[tag].currentValue = Int(sender.value * 100)
+            if sender.value == 1{
+                devices[tag].opening = false
+            }
+            if sender.value == 0{
+                devices[tag].opening = true
+            }
+            
+        }
+        if devices[tag].type == "curtainsRS485" {
+            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag].address)), channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), ip: devices[tag].gateway.localIp, port: Int(devices[tag].gateway.localPort))
             devices[tag].currentValue = Int(sender.value * 100)
             if sender.value == 1{
                 devices[tag].opening = false
@@ -457,7 +508,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
             return cell
-        } else if devices[indexPath.row].type == "curtainsRS485 ILI TAKO NEKI VRAG" {
+        } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -474,22 +525,23 @@ extension DevicesViewController: UICollectionViewDataSource {
 //            cell.curtainImage.image = device1.image
             cell.curtainSlider.addTarget(self, action: "changeSliderValue1:", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
-//            if device1.value >= 0 && device1.value < 0.2{
-//                cell.curtainImage.image = UIImage(named: "curtain0")
-//                
-//            }else if device1.value >= 0.2 && device1.value < 0.4{
-//                cell.curtainImage.image = UIImage(named: "curtain1")
-//                
-//            }else if device1.value >= 0.4 && device1.value < 0.6 {
-//                cell.curtainImage.image = UIImage(named: "curtain2")
-//                
-//            }else if device1.value >= 0.6 && device1.value < 0.8 {
-//                cell.curtainImage.image = UIImage(named: "curtain3")
-//                
-//            }else {
-//                cell.curtainImage.image = UIImage(named: "curtain4")
-//            }
-//            cell.curtainSlider.value = device1.value
+            var deviceValue = Double(devices[indexPath.row].currentValue) / 100
+            if deviceValue >= 0 && deviceValue < 0.2{
+                cell.curtainImage.image = UIImage(named: "curtain0")
+                
+            }else if deviceValue >= 0.2 && deviceValue < 0.4{
+                cell.curtainImage.image = UIImage(named: "curtain1")
+                
+            }else if deviceValue >= 0.4 && deviceValue < 0.6 {
+                cell.curtainImage.image = UIImage(named: "curtain2")
+                
+            }else if deviceValue >= 0.6 && deviceValue < 0.8 {
+                cell.curtainImage.image = UIImage(named: "curtain3")
+                
+            }else {
+                cell.curtainImage.image = UIImage(named: "curtain4")
+            }
+            cell.curtainSlider.value = Float(deviceValue)
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
             lpgr.minimumPressDuration = 0.5

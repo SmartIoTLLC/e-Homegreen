@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
-
+    
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
     var outSocket:OutSocket!
@@ -55,9 +55,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         if choosedGatewayIndex != -1 {
             for item in devices {
                 if item.type == "dimmer" {
-//                    for var i:Int in 1...Int(item.numberOfDevices) {
-////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
-//                    }
+                    //                    for var i:Int in 1...Int(item.numberOfDevices) {
+                    ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
+                    //                    }
                     
                 }
                 if item.type == "sensor" {
@@ -72,17 +72,18 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             }
         }
     }
-//    func searchNames (timer:NSTimer) {
-//        // treba svaki posebno proveriti
-////        if let deviceNumber = timer.userInfo as? Int {
-////            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
-////        }
-//    }
+    //    func searchNames (timer:NSTimer) {
+    //        // treba svaki posebno proveriti
+    ////        if let deviceNumber = timer.userInfo as? Int {
+    ////            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
+    ////        }
+    //    }
     var popoverVC:PopOverViewController = PopOverViewController()
     var choosedGatewayIndex:Int = -1
     func clickedOnGatewayWithIndex(index: Int) {
         btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
         choosedGatewayIndex = index
+        refreshDeviceList()
     }
     @IBAction func btnChooseGateway(sender: UIButton) {
         gatewaysNames = []
@@ -102,6 +103,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             popoverController.sourceRect = sender.bounds
             self.presentViewController(popoverVC, animated: true, completion: nil)
         }
+        refreshDeviceList()
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -125,7 +127,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
-        updateDeviceList()
+        //        updateDeviceList()
         fetchAllGateways()
         
         // Do any additional setup after loading the view.
@@ -133,6 +135,8 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
+        let predicate = NSPredicate(format: "gateway == %@", gateways[choosedGatewayIndex].objectID)
+        fetchRequest.predicate = predicate
         var sortDescriptor1 = NSSortDescriptor(key: "type", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor1]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
@@ -143,8 +147,10 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
     }
     func refreshDeviceList () {
-        updateDeviceList()
-        databaseTable.reloadData()
+        if gateways != [] {
+            updateDeviceList()
+            databaseTable.reloadData()
+        }
     }
     func fetchAllGateways () {
         var fetchRequest = NSFetchRequest(entityName: "Gateway")
@@ -169,13 +175,15 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     @IBAction func findDevices(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
             var number:Int = 1
-            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
-                loader.showActivityIndicator(self.view)
-                for var i = numberOne; i <= numberTwo; ++i {
-                    var number:NSTimeInterval = NSTimeInterval((numberOne-numberTwo+i))
-                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: i, repeats: false)
+            if idRangeFrom.text != "" && idRangeFrom.text != "" {
+                if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+                    loader.showActivityIndicator(self.view)
+                    for var i = numberOne; i <= numberTwo; ++i {
+                        var number:NSTimeInterval = NSTimeInterval((numberOne-numberTwo+i))
+                        NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: i, repeats: false)
+                    }
+                    NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
                 }
-                NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
             }
         }
     }
@@ -183,10 +191,10 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         loader.hideActivityIndicator()
     }
     var timerSensorNumber = 0
-//    func getSensorName () {
-//        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
-//        timerSensorNumber = timerSensorNumber + 1
-//    }
+    //    func getSensorName () {
+    //        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
+    //        timerSensorNumber = timerSensorNumber + 1
+    //    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -227,7 +235,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.center.x -= containerView.bounds.size.width
-//                presentedControllerView.center.y -= containerView.bounds.size.height
+                //                presentedControllerView.center.y -= containerView.bounds.size.height
                 //                presentedControllerView.alpha = 1
                 //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -264,15 +272,15 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
 }
 extension DatabaseViewController: UITableViewDataSource {
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 44
-//    }
+    //    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    //        return 44
+    //    }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return devices.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("databaseCell") as? DatabaseTableViewCell {
-            cell.foundItem.text = "{GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address) Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
+            cell.foundItem.text = "{GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address), Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
             return cell
             
         }
@@ -289,5 +297,5 @@ extension DatabaseViewController: UITableViewDelegate {
 class DatabaseTableViewCell: UITableViewCell {
     
     @IBOutlet weak var foundItem: UILabel!
-//    @IBOutlet weak var tableCellTitle: UILabel!
+    //    @IBOutlet weak var tableCellTitle: UILabel!
 }
