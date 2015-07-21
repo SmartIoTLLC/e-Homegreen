@@ -21,6 +21,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     var error:NSError? = nil
     var backgroundImageView = UIImageView()
     
+    
+    @IBOutlet weak var topView: UIView!
+    
     @IBOutlet weak var btnChooseGateway: UIButton!
     var isPresenting:Bool = true
     
@@ -112,7 +115,21 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
+<<<<<<< HEAD
         
+=======
+//        testSocketTwo = InSocket(ip: "192.168.0.7", port: 5001)
+//        testSocketOne = OutSocket(ip: "192.168.0.7", port: 5001)
+//        testSocketTwo = InSocket(ip: "e-home.dyndns.org", port: 5001)
+//        testSocketOne = OutSocket(ip: "e-home.dyndns.org", port: 5001)
+//        testSocketTwo = InSocket(ip: "2.50.32.208", port: 5001)
+//        testSocketOne = OutSocket(ip: "255.255.255.255", port: 5001)
+       
+        var gradient:CAGradientLayer = CAGradientLayer()
+        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
+        topView.layer.insertSublayer(gradient, atIndex: 0)
+>>>>>>> origin/master
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         

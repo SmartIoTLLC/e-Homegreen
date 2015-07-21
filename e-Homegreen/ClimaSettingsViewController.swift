@@ -399,12 +399,12 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{
-                settingsViewConstraint.constant = 250
+                settingsViewConstraint.constant = 300
                 
             }else if self.view.frame.size.height == 375{
-                settingsViewConstraint.constant = 300
+                settingsViewConstraint.constant = 340
             }else if self.view.frame.size.height == 414{
-                settingsViewConstraint.constant = 350
+                settingsViewConstraint.constant = 390
             }else{
                 settingsViewConstraint.constant = 420
             }
