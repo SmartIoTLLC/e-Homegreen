@@ -54,6 +54,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        findLocalConnectionToConnect()
     }
     var socket:InSocket?
+    var sockets:[InSocket] = []
+    var gateways:[Gateway] = []
+    func fetchGateways () {
+        var error:NSError?
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicateOne
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
+        if let results = fetResults {
+            gateways = results
+        } else {
+            println("Nije htela...")
+        }
+    }
     func findLocalConnectionToConnect () {
         if let ssid = UIDevice.currentDevice().SSID {
             var error:NSError?
@@ -83,9 +99,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.socket = InSocket(ip: ip, port: port)
         }
     }
+    func disconnectAllConnections () {
+        if sockets != [] {
+            for socket in sockets {
+                socket.socket.close()
+            }
+            sockets = []
+        }
+    }
+    func establishAllConnections () {
+        disconnectAllConnections()
+        fetchGateways()
+        for gateway in gateways {
+            sockets.append(InSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
+            sockets.append(InSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
+        }
+    }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        findLocalConnectionToConnect()
+//        findLocalConnectionToConnect()
+        establishAllConnections()
     }
 
     func applicationWillTerminate(application: UIApplication) {

@@ -90,6 +90,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
         choosedGatewayIndex = index
         refreshDeviceList()
+        // hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
     }
     @IBAction func btnChooseGateway(sender: UIButton) {
         gatewaysNames = []
@@ -139,6 +140,8 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         idRangeFrom.delegate = self
         idRangeTo.delegate = self
         fetchAllGateways()
+        idRangeFrom.text = "\(1)"
+        idRangeTo.text = "\(1)"
         
         // Do any additional setup after loading the view.
     }
@@ -221,7 +224,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     func searchIds(timer:NSTimer) {
         if let deviceNumber = timer.userInfo as? Int {
-            SendingHandler(byteArray: Functions().searchForDevices(UInt8(deviceNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
+            SendingHandler(byteArray: Functions().searchForDevices(UInt8(deviceNumber)), gateway: gateways[choosedGatewayIndex])
         }
     }
     

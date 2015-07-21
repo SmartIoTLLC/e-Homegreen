@@ -12,11 +12,23 @@ class SendingHandler: NSObject {
    
     var outSocket:OutSocket
     
-    init (byteArray:[UInt8], ip:String, port: Int) {
-        outSocket = OutSocket(ip: ip, port: UInt16(port))
-        outSocket.sendByte(byteArray)
-//        outSocket.socket.close()
-        outSocket.socket.closeAfterSending()
+    init (byteArray:[UInt8], gateway:Gateway) {
+        if let ssid = UIDevice.currentDevice().SSID {
+            if gateway.ssid == ssid {
+                //  Send via local ip
+                outSocket = OutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort)))
+            } else {
+                //  Send via remote ip
+                outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
+            }
+            outSocket.sendByte(byteArray)
+            outSocket.socket.closeAfterSending()
+        } else {
+            //  Send vie remote ip
+            outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
+            outSocket.sendByte(byteArray)
+            outSocket.socket.closeAfterSending()
+        }
     }
     
 }

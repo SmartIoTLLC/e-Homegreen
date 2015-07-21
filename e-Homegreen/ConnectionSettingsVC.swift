@@ -223,37 +223,36 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func save(sender: AnyObject) {
-//        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || name.text == "" {
-//            
-//        } else {
-//            if let remotePortNumber = port.text.toInt(), let localPortNumber = localPort.text.toInt() {
-//                // Save gateway to database
-//            }
-//        }
-        if gatewayIndex == -1 {
-            var gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
-            gateway.name = name.text
-            gateway.remoteIp = ipHost.text
-            gateway.remotePort = port.text.toInt()!
-            gateway.localIp = localIP.text
-            gateway.localPort = localPort.text.toInt()!
-            gateway.ssid = localSSID.text
-            gateway.addressOne = addressFirst.text.toInt()!
-            gateway.addressTwo = addressSecond.text.toInt()!
-            gateway.turnedOn = true
-            saveChanges()
-            self.dismissViewControllerAnimated(true, completion: nil)
+        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || name.text == "" {
+            
         } else {
-            gateways[gatewayIndex].remoteIp = ipHost.text
-            gateways[gatewayIndex].remotePort = port.text.toInt()!
-            gateways[gatewayIndex].localIp = localIP.text
-            gateways[gatewayIndex].localPort = localPort.text.toInt()!
-            gateways[gatewayIndex].ssid = localSSID.text
-            gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
-            gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
-            gateways[gatewayIndex].name = name.text
-            saveChanges()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            if let remoPort = port.text.toInt(), let locaPort = localPort.text.toInt(), let adrFirst = addressFirst.text.toInt(), let adrSecond = addressSecond.text.toInt() {
+                if gatewayIndex == -1 {
+                    var gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
+                    gateway.name = name.text
+                    gateway.remoteIp = ipHost.text
+                    gateway.remotePort = port.text.toInt()!
+                    gateway.localIp = localIP.text
+                    gateway.localPort = localPort.text.toInt()!
+                    gateway.ssid = localSSID.text
+                    gateway.addressOne = addressFirst.text.toInt()!
+                    gateway.addressTwo = addressSecond.text.toInt()!
+                    gateway.turnedOn = true
+                    saveChanges()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    gateways[gatewayIndex].remoteIp = ipHost.text
+                    gateways[gatewayIndex].remotePort = port.text.toInt()!
+                    gateways[gatewayIndex].localIp = localIP.text
+                    gateways[gatewayIndex].localPort = localPort.text.toInt()!
+                    gateways[gatewayIndex].ssid = localSSID.text
+                    gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
+                    gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
+                    gateways[gatewayIndex].name = name.text
+                    saveChanges()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            }
         }
     }
     var appDel:AppDelegate!
@@ -276,6 +275,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
             abort()
         }
         NSNotificationCenter.defaultCenter().postNotificationName("updateGatewayListNotification", object: self, userInfo: nil)
+        appDel.establishAllConnections()
     }
     @IBOutlet weak var scrollViewConnection: UIScrollView!
     func keyboardWillShow(notification: NSNotification) {
