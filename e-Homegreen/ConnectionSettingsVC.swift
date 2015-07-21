@@ -48,7 +48,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var centarY: NSLayoutConstraint!
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
@@ -163,7 +164,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.topConstraint.constant = 20
+            self.centarY.constant = 0
         })
         return true
     }
@@ -283,42 +284,42 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         if name.isFirstResponder(){
             if backView.frame.origin.y + name.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if ipHost.isFirstResponder(){
             if backView.frame.origin.y + ipHost.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if port.isFirstResponder(){
             if backView.frame.origin.y + port.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localIP.isFirstResponder(){
             if backView.frame.origin.y + localIP.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localPort.isFirstResponder(){
             if backView.frame.origin.y + localPort.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localSSID.isFirstResponder(){
             if backView.frame.origin.y + localSSID.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
