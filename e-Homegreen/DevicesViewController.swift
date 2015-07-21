@@ -356,10 +356,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }, completion:  {(completed: Bool) -> Void in
                 UIView.setAnimationsEnabled(true)
         })
-        
     }
-    
-    
     func buttonTapped(sender:UIButton){
         var tag = sender.tag
         println(devices[tag].type)
@@ -522,6 +519,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.image.tag = indexPath.row
             cell.image.userInteractionEnabled = true
             cell.image.addGestureRecognizer(tap)
+            cell.name.text = devices[indexPath.row].name
 //            cell.name.text = device2.text
 //            if device2.open == true{
 //                cell.image.image = UIImage(named: "applianceon")
@@ -574,9 +572,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
             
             return cell
-            
         }
-            
         else {
             
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell

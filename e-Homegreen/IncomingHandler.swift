@@ -25,9 +25,9 @@ class IncomingHandler: NSObject {
         self.port = port
         fetchGateways(host, port: port)
         fetchDevices()
-        for item in gateways {
-            println("Gateway found: \(item.name) \(item.localIp) \(item.localPort) \(item.remoteIp) \(item.remotePort) \(item.addressOne) \(item.addressTwo)")
-        }
+//        for item in gateways {
+//            println("Gateway found: \(item.name) \(item.localIp) \(item.localPort) \(item.remoteIp) \(item.remotePort) \(item.addressOne) \(item.addressTwo)")
+//        }
         self.byteArray = byteArrayToHandle
         // Check if byteArray is correct one (check byte also, which is missing)
         if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
@@ -87,9 +87,9 @@ class IncomingHandler: NSObject {
             } else {
                 println("Nije htela...")
             }
-            for item in devices {
-                println("Device: \(item.name); Devices gateway:\(item.gateway.name)")
-            }
+//            for item in devices {
+//                println("Device: \(item.name); Devices gateway:\(item.gateway.name)")
+//            }
         }
     }
     func fetchGateways (host:String, port:UInt16) {

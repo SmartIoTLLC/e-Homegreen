@@ -30,9 +30,9 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         if !socket.bindToPort(port, error: &error) {
             println("1 \(error)")
         }
-        //        if !socket.enableBroadcast(true, error: &error) {
-        //            println("2 \(error)")
-        //        }
+//        if !socket.enableBroadcast(true, error: &error) {
+//            println("2 \(error)")
+//        }
         if !socket.joinMulticastGroup(ip, error: &error) {
             println("3 \(error)")
         }
@@ -42,9 +42,7 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        //        println("incoming message: \(data)")
         println("incoming message: \(address.convertToBytes())")
-        //        println("GCDAsyncUdpSocket, za poruke od servera, delegat je pozvan.")
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
