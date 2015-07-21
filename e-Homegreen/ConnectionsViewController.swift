@@ -37,7 +37,11 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         super.viewDidLoad()
         self.commonConstruct()
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        if self.view.frame.size.height > self.view.frame.size.width{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        }else{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
+        }
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
@@ -67,6 +71,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
         backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
+        
+        
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
     @IBAction func btnSaveConnection(sender: AnyObject) {

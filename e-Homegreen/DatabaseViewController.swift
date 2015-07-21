@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
+class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var databaseTable: UITableView!
     var inSocket:InSocket!
@@ -20,6 +20,11 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     var gatewaysNames:[String] = []
     var error:NSError? = nil
     var backgroundImageView = UIImageView()
+    
+    
+    @IBOutlet weak var idRangeFrom: UITextField!
+    @IBOutlet weak var idRangeTo: UITextField!
+    var receivingSocket:InSocket?
     
     
     @IBOutlet weak var topView: UIView!
@@ -109,15 +114,17 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewWillDisappear(animated: Bool) {
         
     }
-    @IBOutlet weak var idRangeFrom: UITextField!
-    @IBOutlet weak var idRangeTo: UITextField!
-    var receivingSocket:InSocket?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.commonConstruct()
+//        self.commonConstruct()
         
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        if self.view.frame.size.height > self.view.frame.size.width{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        }else{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
+        }
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
@@ -125,11 +132,20 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
+        idRangeFrom.delegate = self
+        idRangeTo.delegate = self
+        
         updateDeviceList()
         fetchAllGateways()
         
         // Do any additional setup after loading the view.
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")

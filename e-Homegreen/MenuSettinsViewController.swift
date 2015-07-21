@@ -26,7 +26,11 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        if self.view.frame.size.height > self.view.frame.size.width{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        }else{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
+        }
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
