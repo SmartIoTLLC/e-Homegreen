@@ -329,6 +329,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             popoverController.permittedArrowDirections = .Any
             popoverController.sourceView = sender as UIView
             popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.whiteColor()
             presentViewController(popoverVC, animated: true, completion: nil)
             
         }
