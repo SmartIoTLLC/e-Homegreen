@@ -110,7 +110,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             popoverController.backgroundColor = UIColor.whiteColor()
             self.presentViewController(popoverVC, animated: true, completion: nil)
         }
-        refreshDeviceList()
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
