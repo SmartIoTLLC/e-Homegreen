@@ -175,18 +175,23 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
         databaseTable.reloadData()
     }
+    var loader : ViewControllerUtils = ViewControllerUtils()
+    var quitLoader:Int = 0
     @IBAction func findDevices(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
             var number:Int = 1
-//            var numberOne:Int = idRangeFrom.text.toInt()!
-//            var numberTwo:Int = idRangeTo.text.toInt()!
             if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+                loader.showActivityIndicator(self.view)
                 for var i = numberOne; i <= numberTwo; ++i {
-                    var number:NSTimeInterval = NSTimeInterval(i)
+                    var number:NSTimeInterval = NSTimeInterval((numberOne-numberTwo+i))
                     NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: i, repeats: false)
                 }
+                NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
             }
         }
+    }
+    func hideActivitIndicator () {
+        loader.hideActivityIndicator()
     }
     var timerSensorNumber = 0
 //    func getSensorName () {
