@@ -32,11 +32,11 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
     func send(message:String){
         let data = message.dataUsingEncoding(NSUTF8StringEncoding)
-        socket.sendData(data, withTimeout: 2, tag: 0)
+        socket.sendData(data, withTimeout: -1, tag: 0)
     }
     func sendByte(arrayByte: [UInt8]) {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
-        socket.sendData(data, withTimeout: 2, tag: 0)
+        socket.sendData(data, withTimeout: -1, tag: 0)
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {

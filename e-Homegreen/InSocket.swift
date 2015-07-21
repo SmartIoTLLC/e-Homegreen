@@ -27,31 +27,31 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
-        socket.bindToPort(port, error: &error)
-//                socket.enableBroadcast(true, error: &error)
-        socket.joinMulticastGroup(ip, error: &error)
-        socket.beginReceiving(&error)
-        //        socket.enableBroadcast(true, error: &error)
-        
-        
-        
-//        socket.bindToPort(port, error: &error)
-//        socket.enableBroadcast(true, error: &error)
-//        socket.joinMulticastGroup(ip, error: &error)
-//        socket.beginReceiving(&error)
+        if !socket.bindToPort(port, error: &error) {
+            println("1 \(error)")
+        }
+//        if !socket.enableBroadcast(true, error: &error) {
+//            println("2 \(error)")
+//        }
+        if !socket.joinMulticastGroup(ip, error: &error) {
+            println("3 \(error)")
+        }
+        if !socket.beginReceiving(&error) {
+            println("4 \(error)")
+        }
         
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        println("incoming message: \(data)")
+//        println("incoming message: \(data)")
         println("incoming message: \(address.convertToBytes())")
 //        println("GCDAsyncUdpSocket, za poruke od servera, delegat je pozvan.")
-//        var host:NSString?
-//        var hostPort:UInt16 = 0
-//        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
-//        if let hostHost = host as? String {
-//            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
-//            IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
-//        }
+        var host:NSString?
+        var hostPort:UInt16 = 0
+        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
+        if let hostHost = host as? String {
+            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+            IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
+        }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
         println("Nemoj mi samo reci da je ovo problem!")

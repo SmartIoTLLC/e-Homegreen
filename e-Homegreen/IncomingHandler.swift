@@ -76,9 +76,10 @@ class IncomingHandler: NSObject {
         }
     }
     func fetchDevices () {
+        // OVDE ISKACE BUD NA ANY
         if gateways != [] {
             var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
-            let predicate = NSPredicate(format: "ANY gateway == %@", gateways[0].objectID)
+            let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
             fetchRequest.predicate = predicate
             let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
             if let results = fetResults {
@@ -186,7 +187,7 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = name
+                        device.name = name + "\(i)"
                         device.address = Int(byteArray[4])
                         device.channel = i
 //                        device.gateway = Int(byteArray[2])
@@ -200,7 +201,7 @@ class IncomingHandler: NSObject {
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         saveChanges()
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
                 }
             }
         }

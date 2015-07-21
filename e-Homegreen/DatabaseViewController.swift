@@ -29,14 +29,32 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         transitioningDelegate = self
     }
     @IBAction func btnDeleteAll(sender: AnyObject) {
-        
+        for var i = 0; i < gateways.count; ++i {
+            println("\(gateways[i].ipInUse) \(gateways[i].portInUse)")
+            gateways[i].ipInUse = "a"
+            gateways[i].portInUse = NSNumber(int: 123)
+        }
+//        SendingHandler(byteArray: [0xAA, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x05, 0x10], ip: "2.50.32.208", port: 5001)
     }
     
     var testSocketOne:OutSocket?
     var testSocketTwo:InSocket?
     @IBAction func btnFindNames(sender: AnyObject) {
-        testSocketOne?.sendByte([0xAA, 0x0D, 0x01, 0x00, 0x01, 0x03, 0x07, 0xFF, 0xFF, 0xFF, 0x01, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x0A, 0x10])
-//        testSocketOne?.sendByte([0xAA, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x05, 0x10])
+//        if choosedGatewayIndex != -1 {
+//            var number:Int = 1
+//            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+//                for var i = numberOne; i <= numberTwo; ++i {
+//                    var number:NSTimeInterval = NSTimeInterval(i)
+//                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchNames:", userInfo: i, repeats: false)
+//                }
+//            }
+//        }
+    }
+    func searchNames (timer:NSTimer) {
+        // treba svaki posebno proveriti
+//        if let deviceNumber = timer.userInfo as? Int {
+//            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
+//        }
     }
     var popoverVC:PopOverViewController = PopOverViewController()
     var choosedGatewayIndex:Int = -1
@@ -48,7 +66,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     @IBAction func btnChooseGateway(sender: UIButton) {
         gatewaysNames = []
         for item in gateways {
-            gatewaysNames.append("\(item.name)")
+            gatewaysNames.append("\(item.name) \(item.device.count)")
         }
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
@@ -87,7 +105,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
         
         var fetchRequest = NSFetchRequest(entityName: "Device")
@@ -169,19 +187,12 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
                 }
             }
         }
-//        outSocket.sendByte(Functions().getSensorState(0x05))
-//        timerSensorNumber = 0
-//        for i in 0...11 {
-//            var number:NSTimeInterval = NSTimeInterval(i*2)
-//            NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "getSensorName", userInfo: nil, repeats: false)
-////                outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
-//        }
     }
     var timerSensorNumber = 0
-    func getSensorName () {
-        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
-        timerSensorNumber = timerSensorNumber + 1
-    }
+//    func getSensorName () {
+//        outSocket.sendByte(Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)))
+//        timerSensorNumber = timerSensorNumber + 1
+//    }
     var databaseArray:[String] = []
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

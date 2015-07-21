@@ -21,5 +21,25 @@ class Gateway: NSManagedObject {
     @NSManaged var ssid: String
     @NSManaged var turnedOn: NSNumber
     @NSManaged var device: NSSet
+    
+    // Computed properties
+//    var ipInUse:String {
+//        get {
+//            return ""
+//        }
+//        set (value) {
+//            self.ipInUse = value
+//        }
+//    }
+//    var portInUse:NSNumber {
+//        get {
+//            return NSNumber(int: 0)
+//        }
+//        set (value) {
+//            self.portInUse = value
+//        }
+//    }
+    var ipInUse:String = "o"
+    var portInUse:NSNumber = NSNumber(int: 0)
 
 }

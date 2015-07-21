@@ -39,42 +39,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var myView:Array<UIView> = []
     var mySecondView:Array<UIView> = []
-    var outSocketPing:OutSocket!
     
     var timer:NSTimer = NSTimer()
-//    var testSocketTwo:InSocket!
-//    var socket: GCDAsyncUdpSocket!
-//    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-//        println("Nesto je doslo \(data.convertToBytes()) \(address.convertToBytes())")
-//        var host:NSString?
-//        var hostPort:UInt16 = 0
-//        GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
-//        if let hostHost = host as? String {
-//            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
-//        }
-//    }
     var receivingSocket:InSocket!
-//    var outSocketTwo:OutSocket!
-//    func joj () {
-//        outSocketTwo.sendByte([0xAA])
-//    }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        outSocketTwo = OutSocket(ip: "192.168.0.23", port: 5001)
+        println(UIDevice.currentDevice().SSID)
         receivingSocket = InSocket(ip: "192.168.0.7", port: 5001)
-//        let timerOS = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("joj"), userInfo: nil, repeats: true)
+        
         commonConstruct()
-//        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-//        socket.bindToPort(5001, error: &error)
-//        //                socket.enableBroadcast(true, error: &error)
-//        //        socket.joinMulticastGroup(ip, error: &error)
-//        socket.beginReceiving(&error)
-//        //        socket.enableBroadcast(true, error: &error)
         
-        
-//        testSocketTwo = InSocket(ip: "e-home.dyndns.org", port: 5001)
-//        testSocketTwo = InSocket(ip: "2.50.32.208", port: 5001)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "testNotificationCenter", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -85,9 +60,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         // Do any additional setup after loading the view.
         updateDeviceList()
-    }
-    func ping () {
-        outSocketPing.send("ping")
     }
     var inSocket:InSocket!
     var outSocket:OutSocket!

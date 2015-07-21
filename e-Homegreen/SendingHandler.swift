@@ -16,6 +16,7 @@ class SendingHandler: NSObject {
         outSocket = OutSocket(ip: ip, port: UInt16(port))
         outSocket.sendByte(byteArray)
 //        outSocket.socket.close()
+        outSocket.socket.closeAfterSending()
     }
     
 }

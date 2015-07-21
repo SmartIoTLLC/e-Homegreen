@@ -260,6 +260,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     var error:NSError? = nil
     func fetchGateways() {
         var fetchRequest = NSFetchRequest(entityName: "Gateway")
+        var sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
         if let results = fetResults {
             gateways = results
@@ -272,6 +274,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
             println("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+        NSNotificationCenter.defaultCenter().postNotificationName("updateGatewayListNotification", object: self, userInfo: nil)
     }
     @IBOutlet weak var scrollViewConnection: UIScrollView!
     func keyboardWillShow(notification: NSNotification) {

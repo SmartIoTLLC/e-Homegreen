@@ -28,9 +28,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         transitioningDelegate = self
     }
     
-    
     @IBAction func btnAddNewConnection(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
         self.showConnectionSettings(-1)
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +45,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         fetchGateways()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayList", name: "testNotificationCenter", object: nil)
-        
+    }
+    func updateNewGatewayList () {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "updateGatewayListNotification", object: nil)
+        fetchGateways()
     }
     func fetchGateways () {
         var fetchRequest = NSFetchRequest(entityName: "Gateway")
@@ -54,11 +57,11 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
         if let results = fetResults {
             gateways = results
+            refreshGatewayList()
         } else {
         }
     }
     func refreshGatewayList () {
-        fetchGateways()
         gatewayTableView.reloadData()
     }
     func commonConstruct() {
@@ -168,6 +171,7 @@ extension ConnectionsViewController: UITableViewDataSource {
 
 extension ConnectionsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
         self.showConnectionSettings(indexPath.row)
     }
     
@@ -197,7 +201,7 @@ extension ConnectionsViewController: UITableViewDelegate {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(gateways[indexPath.row])
             saveChanges()
-            refreshGatewayList()
+            fetchGateways()
         }
         
     }
