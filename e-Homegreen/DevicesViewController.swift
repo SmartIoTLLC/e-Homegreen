@@ -44,21 +44,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var receivingSocket:InSocket!
     override func viewDidLoad() {
         super.viewDidLoad()
-<<<<<<< HEAD
+        
         println(UIDevice.currentDevice().SSID)
         receivingSocket = InSocket(ip: "192.168.0.7", port: 5001)
-=======
-//        outSocketTwo = OutSocket(ip: "192.168.0.23", port: 5001)
-        receivingSocket = InSocket(ip: "e-home.dyndns.org", port: 5001)
-//        let timerOS = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("joj"), userInfo: nil, repeats: true)
-        commonConstruct()
-//        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-//        socket.bindToPort(5001, error: &error)
-//        //                socket.enableBroadcast(true, error: &error)
-//        //        socket.joinMulticastGroup(ip, error: &error)
-//        socket.beginReceiving(&error)
-//        //        socket.enableBroadcast(true, error: &error)
->>>>>>> origin/master
         
         commonConstruct()
         
