@@ -38,6 +38,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         transitioningDelegate = self
     }
     @IBAction func btnDeleteAll(sender: AnyObject) {
+//        socketOutTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             for item in devices {
                 if item.gateway.objectID == gateways[choosedGatewayIndex].objectID {
@@ -48,6 +49,11 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
     }
+    var socketIn:[InSocket]?
+    var socketOut:TestSocket?
+    var socketOneTest:InOutSocket?
+    var socketTwoTest:InOutSocket?
+    var socketThreeTest:InOutSocket?
     @IBAction func btnFindNames(sender: AnyObject) {
         //        if choosedGatewayIndex != -1 {
         //            var number:Int = 1
@@ -58,13 +64,16 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         //                }
         //            }
         //        }
+        socketOut?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
+        socketOneTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
+        socketTwoTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
+        socketThreeTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             for item in devices {
                 if item.type == "dimmer" {
                     //                    for var i:Int in 1...Int(item.numberOfDevices) {
                     ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
                     //                    }
-                    
                 }
                 if item.type == "sensor" {
                     
@@ -118,11 +127,48 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewWillDisappear(animated: Bool) {
         
     }
-    
+    func returnIpAddress (url:String) -> String {
+        let host = CFHostCreateWithName(nil,url).takeRetainedValue();
+        CFHostStartInfoResolution(host, .Addresses, nil);
+        var success: Boolean = 0;
+        if let test = CFHostGetAddressing(host, &success) {
+            let addresses = test.takeUnretainedValue() as NSArray
+            if (addresses.count > 0){
+                let theAddress = addresses[0] as! NSData;
+                var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
+                if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
+                    &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
+                        if let numAddress = String.fromCString(hostname) {
+                            println(numAddress)
+                            return numAddress
+                        }
+                }
+            }
+        }
+        return ""
+    }
+    var socketOutTest:OutSocket?
+    var socketInTest:InSocket?
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.commonConstruct()
-        
+//        var validUrl = NSURL().URLW
+        var i:Int
+//        for i in 5001...5001 {
+//            socketIn?.append(InSocket(ip: "2.50.32.208", port: UInt16(i)))
+//        }
+        returnIpAddress("heeej")
+        returnIpAddress("e-Home.dyndns.org")
+        returnIpAddress("2.50.32.208")
+        returnIpAddress("192.168.0.7")
+        returnIpAddress("khalifaaljaziri.dyndns.org")
+        returnIpAddress("31.215.238.180")
+//        returnIpAddress("heeej")
+//        socketOutTest = OutSocket(ip: "192.168.0.7", port: 5001)
+//        socketInTest = InSocket(ip: "192.168.0.7", port: 5001)
+        socketOneTest = InOutSocket(ip: "2.50.32.208", port: 5001)
+        socketTwoTest = InOutSocket(ip: "192.168.0.7", port: 5001)
+        socketThreeTest = InOutSocket(ip: "31.215.238.180", port: 5001)
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
@@ -224,7 +270,8 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     func searchIds(timer:NSTimer) {
         if let deviceNumber = timer.userInfo as? Int {
-            SendingHandler(byteArray: Functions().searchForDevices(UInt8(deviceNumber)), gateway: gateways[choosedGatewayIndex])
+            var address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
+            SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateways[choosedGatewayIndex])
         }
     }
     

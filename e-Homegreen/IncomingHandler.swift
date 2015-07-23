@@ -37,7 +37,7 @@ class IncomingHandler: NSObject {
                     acknowledgementAboutNewDevices(byteArray)
                 }
                 
-                //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar)
+                //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
                 if byteArray[5] == 0xF3 && byteArray[6] == 0x01 {
                     acknowledgementAboutChannelParametar (byteArray)
                     
@@ -63,12 +63,12 @@ class IncomingHandler: NSObject {
                     
                 }
                 
-                //
-                if byteArray[5] == 0xF5 && byteArray[6] == 0x01 {
+                // - Ovo je izgleda u redu
+                if byteArray[5] == 0xF5 && byteArray[6] == 0x01 && byteArray[7] == 0xFF {
                     ackADICmdGetInterfaceStatus(byteArray)
                 }
                 
-                //
+                // - Ovo je izgleda u redu
                 if byteArray[5] == 0xF5 && byteArray[6] == 0x04 {
                     ackADICmdGetInterfaceName(byteArray)
                 }
@@ -117,24 +117,26 @@ class IncomingHandler: NSObject {
         for var i = 9; i < byteArray.count-2; i++ {
             string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
         }
-        for var i = 0; i < Model.sharedInstance.deviceArray.count; i++ {
-            if devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var channel = Int(devices[i].channel)
                 devices[i].name = string
             }
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    //  informacije o parametrima (statusu) urdjaja na MULTISENSORU
+    //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
-            if devices[i].address == Int(byteArray[4]) {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 var channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[7+channel])
             }
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
@@ -206,7 +208,7 @@ class IncomingHandler: NSObject {
     func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
-            if devices[i].address == Int(byteArray[4]) {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //lightning state
                 //                devices[i].current = byteArray[9] // current
@@ -217,14 +219,14 @@ class IncomingHandler: NSObject {
                 
             }
         }
-        //        NSNotificationCenter.defaultCenter().postNotificationName("testNotificationCenter", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         saveChanges()
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
-            if devices[i].numberOfDevices == Int(byteArray[7]) && devices[i].address == Int(byteArray[4]) {
+            if  devices[i].gateway.addressOne == Int(byteArray[4]) && devices[i].address == Int(byteArray[4]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var string:String = ""
                 for var i = 8+47; i < byteArray.count-2; i++ {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
@@ -232,6 +234,7 @@ class IncomingHandler: NSObject {
                 devices[i].name = string
             }
         }
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         saveChanges()
     }
     

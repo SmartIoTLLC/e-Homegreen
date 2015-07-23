@@ -64,8 +64,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
-        var sortDescriptor1 = NSSortDescriptor(key: "type", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             devices = results
@@ -119,12 +122,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 setDeviceValue = UInt8(100)
             }
             devices[tag!].currentValue = Int(setDeviceValue)
-            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00), gateway: devices[tag!].gateway)
+            var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00), gateway: devices[tag!].gateway)
 //            outSocket.sendByte()
         }
         // Appliance?
         if devices[tag!].type == "curtainsRelay" {
-            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag!].gateway)
+            var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag!].gateway)
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
         // Curtain?
@@ -135,7 +140,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else {
                 setDeviceValue = UInt8(100)
             }
-            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag!].address)), channel:  UInt8(Int(devices[tag!].channel)), value: setDeviceValue), gateway: devices[tag!].gateway)
+            var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag!].channel)), value: setDeviceValue), gateway: devices[tag!].gateway)
             
         }
         
@@ -154,8 +160,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     deviceValue -= 0.05
                 }
             }
-            println(deviceValue*100)
-            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00), gateway: devices[tag].gateway)
+            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00), gateway: devices[tag].gateway)
             self.devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
@@ -178,7 +184,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     deviceValue -= 0.20
                 }
             }
-            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag].address)), channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100))), gateway: devices[tag].gateway)
+            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100))), gateway: devices[tag].gateway)
             self.devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
@@ -381,7 +388,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Light
         var tag = sender.tag
         if devices[tag].type == "Dimmer" {
-            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00), gateway: devices[tag].gateway)
+            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00), gateway: devices[tag].gateway)
             devices[tag].currentValue = Int(sender.value * 100)
             if sender.value == 1{
                 devices[tag].opening = false
@@ -392,7 +400,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             
         }
         if devices[tag].type == "curtainsRS485" {
-            SendingHandler(byteArray: Functions().setCurtainStatus(UInt8(Int(devices[tag].address)), channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), gateway: devices[tag].gateway)
+            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), gateway: devices[tag].gateway)
             devices[tag].currentValue = Int(sender.value * 100)
             if sender.value == 1{
                 devices[tag].opening = false
@@ -415,7 +424,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         println(devices[tag].type)
         // Appliance?
         if devices[tag].type == "curtainsRelay" {
-            SendingHandler(byteArray: Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
+            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
@@ -448,6 +458,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        println(devices.count)
         return devices.count
     }
     

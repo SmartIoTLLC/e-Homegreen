@@ -230,7 +230,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnCool.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00))
     }
     
@@ -240,7 +241,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnHeat.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01))
     }
 
@@ -250,7 +252,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
         btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
         btnFan.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02))
     }
     
@@ -260,7 +263,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
         btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
         btnAuto.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACmode(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03))
         
     }
@@ -282,7 +286,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnLow.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x00))
     }
     
@@ -292,7 +297,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnMed.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x01))
     }
  
@@ -302,7 +308,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
         btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
         btnHigh.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x02))
     }
     
@@ -312,7 +319,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
         btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
         btnAutoFan.backgroundColor = UIColor.lightTextColor()
-        SendingHandler(byteArray: Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03), gateway: devices[indexPathRow].gateway)
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+        SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03), gateway: devices[indexPathRow].gateway)
 //        socket.sendByte(Functions().setACSpeed(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), value: 0x03))
     }
     
@@ -332,12 +340,14 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     var checkOnOf = 0x00
     @IBAction func onOff(sender: AnyObject) {
         if checkOnOf == 0x00 {
-            SendingHandler(byteArray: Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0xFF), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(devices[indexPathRow].channel)), status: 0xFF), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0xFF))
             onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
             checkOnOf = 0xFF
         } else {
-            SendingHandler(byteArray: Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0x00), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(devices[indexPathRow].channel)), status: 0x00), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACStatus(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), status: 0x00))
             onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
             checkOnOf = 0x00
@@ -364,7 +374,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         if coolTemperature >= 18 {
             coolTemperature -= 1
             lblCool.text = "\(coolTemperature)"
-            SendingHandler(byteArray: Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
         }
     }
@@ -373,7 +384,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         if coolTemperature <= 36 {
             coolTemperature += 1
             lblCool.text = "\(coolTemperature)"
-            SendingHandler(byteArray: Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
         }
     }
@@ -382,7 +394,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         if coolTemperature >= 18 {
             heatTemperature -= 1
             lblHeat.text = "\(heatTemperature)"
-            SendingHandler(byteArray: Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
         }
     }
@@ -391,7 +404,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         if coolTemperature <= 36 {
             heatTemperature += 1
             lblHeat.text = "\(heatTemperature)"
-            SendingHandler(byteArray: Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
+            var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)),UInt8(Int(devices[indexPathRow].gateway.addressTwo)),UInt8(Int(devices[indexPathRow].address))]
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: devices[indexPathRow].gateway)
 //            socket.sendByte(Functions().setACSetPoint(UInt8(Int(devices[indexPathRow].address)), channel: UInt8(Int(devices[indexPathRow].channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)))
         }
     }

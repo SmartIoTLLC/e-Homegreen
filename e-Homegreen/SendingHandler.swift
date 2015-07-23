@@ -9,25 +9,52 @@
 import UIKit
 
 class SendingHandler: NSObject {
-   
-    var outSocket:OutSocket
+    
+    //    var outSocket:OutSocket
+    var appDel:AppDelegate!
     
     init (byteArray:[UInt8], gateway:Gateway) {
+        super.init()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         if let ssid = UIDevice.currentDevice().SSID {
             if gateway.ssid == ssid {
                 //  Send via local ip
-                outSocket = OutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort)))
+                if appDel.inOutSockets != [] {
+                    var i:Int
+                    for i in 0...appDel.inOutSockets.count-1 {
+                        if appDel.inOutSockets[i].ip == gateway.localIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.localPort)) {
+                            appDel.inOutSockets[i].sendByte(byteArray)
+                        }
+                    }
+                }
+//                outSocket = OutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort)))
             } else {
                 //  Send via remote ip
-                outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
+                if appDel.inOutSockets != [] {
+                    var i:Int
+                    for i in 0...appDel.inOutSockets.count-1 {
+                        if appDel.inOutSockets[i].ip == gateway.remoteIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
+                            appDel.inOutSockets[i].sendByte(byteArray)
+                        }
+                    }
+                }
+//                outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
             }
-            outSocket.sendByte(byteArray)
-            outSocket.socket.closeAfterSending()
+//            outSocket.sendByte(byteArray)
+//            outSocket.socket.closeAfterSending()
         } else {
             //  Send vie remote ip
-            outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
-            outSocket.sendByte(byteArray)
-            outSocket.socket.closeAfterSending()
+            if appDel.inOutSockets != [] {
+                var i:Int
+                for i in 0...appDel.inOutSockets.count-1 {
+                    if appDel.inOutSockets[i].ip == gateway.remoteIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
+                        appDel.inOutSockets[i].sendByte(byteArray)
+                    }
+                }
+            }
+//            outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
+//            outSocket.sendByte(byteArray)
+//            outSocket.socket.closeAfterSending()
         }
     }
     

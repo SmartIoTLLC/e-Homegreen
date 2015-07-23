@@ -1,14 +1,14 @@
 //
-//  InSocket.swift
-//  new
+//  TestSocket.swift
+//  e-Homegreen
 //
-//  Created by Teodor Stevic on 6/25/15.
+//  Created by Teodor Stevic on 7/22/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
+class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
     var ip = ""
     var port:UInt16 = 0
@@ -27,18 +27,24 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
+        
+        
         if !socket.bindToPort(port, error: &error) {
             println("1 \(error)")
         }
+//        if !socket.connectToHost(ip, onPort: port, error: &error) {
+//            println("1 \(error)")
+//        }
 //        if !socket.enableBroadcast(true, error: &error) {
 //            println("2 \(error)")
 //        }
-        if !socket.joinMulticastGroup(ip, error: &error) {
-            println("3 \(error)")
-        }
+//        if !socket.joinMulticastGroup(ip, error: &error) {
+//            println("3 \(error)")
+//        }
         if !socket.beginReceiving(&error) {
             println("4 \(error)")
         }
+        
         
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
@@ -68,8 +74,10 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.sendData(data, withTimeout: -1, tag: 0)
     }
     func sendByte(arrayByte: [UInt8]) {
+//        let data = NSData(bytes: arrayByte, length: arrayByte.count)
+//        socket.sendData(data, withTimeout: -1, tag: 0)
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
-        socket.sendData(data, withTimeout: -1, tag: 0)
+        socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 0)
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
@@ -88,11 +96,3 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         println("didNotSendDataWithTag")
     }
 }
-//extension NSData {
-//    public func convertToBytes() -> [UInt8] {
-//        let count = self.length / sizeof(UInt8)
-//        var bytesArray = [UInt8](count: count, repeatedValue: 0)
-//        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
-//        return bytesArray
-//    }
-//}

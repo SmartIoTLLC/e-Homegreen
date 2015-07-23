@@ -55,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     var socket:InSocket?
     var sockets:[InSocket] = []
+    var inOutSockets:[InOutSocket] = []
     var gateways:[Gateway] = []
     func fetchGateways () {
         var error:NSError?
@@ -100,19 +101,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     func disconnectAllConnections () {
-        if sockets != [] {
-            for socket in sockets {
-                socket.socket.close()
+//        if sockets != [] {
+//            for socket in sockets {
+//                socket.socket.close()
+//            }
+//            sockets = []
+//        }
+        if inOutSockets != [] {
+            for inOutSocket in inOutSockets {
+                inOutSocket.socket.close()
             }
-            sockets = []
+            inOutSockets = []
         }
     }
     func establishAllConnections () {
         disconnectAllConnections()
         fetchGateways()
         for gateway in gateways {
-            sockets.append(InSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
-            sockets.append(InSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
+//            sockets.append(InSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
+//            sockets.append(InSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
+            inOutSockets.append(InOutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
+            inOutSockets.append(InOutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
         }
     }
     func applicationDidBecomeActive(application: UIApplication) {
