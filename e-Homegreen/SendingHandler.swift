@@ -10,7 +10,6 @@ import UIKit
 
 class SendingHandler: NSObject {
     
-    //    var outSocket:OutSocket
     var appDel:AppDelegate!
     
     init (byteArray:[UInt8], gateway:Gateway) {
@@ -27,7 +26,6 @@ class SendingHandler: NSObject {
                         }
                     }
                 }
-//                outSocket = OutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort)))
             } else {
                 //  Send via remote ip
                 if appDel.inOutSockets != [] {
@@ -38,10 +36,7 @@ class SendingHandler: NSObject {
                         }
                     }
                 }
-//                outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
             }
-//            outSocket.sendByte(byteArray)
-//            outSocket.socket.closeAfterSending()
         } else {
             //  Send vie remote ip
             if appDel.inOutSockets != [] {
@@ -52,10 +47,6 @@ class SendingHandler: NSObject {
                     }
                 }
             }
-//            outSocket = OutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort)))
-//            outSocket.sendByte(byteArray)
-//            outSocket.socket.closeAfterSending()
         }
     }
-    
 }

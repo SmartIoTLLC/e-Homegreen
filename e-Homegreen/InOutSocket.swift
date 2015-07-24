@@ -30,10 +30,9 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
-        
-        
         if !socket.bindToPort(port, error: &error) {
             println("1 \(error)")
+            println("U pitanju je \(ip) \(port)")
         }
         //        if !socket.connectToHost(ip, onPort: port, error: &error) {
         //            println("1 \(error)")
@@ -46,12 +45,11 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         //        }
         if !socket.beginReceiving(&error) {
             println("4 \(error)")
+            println("U pitanju je \(ip) \(port)")
         }
-        
-        
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        println("incoming message: \(address.convertToBytes())")
+        println("INOUT SOCKET incoming message: \(address.convertToBytes())")
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)

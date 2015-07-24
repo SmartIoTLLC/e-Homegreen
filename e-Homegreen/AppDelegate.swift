@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let containerViewController = ContainerViewController()
         window!.rootViewController = containerViewController
         
-//        findLocalConnectionToConnect()
-        
 //        var storyboard = UIStoryboard(name: "Main", bundle: nil)
 //        var viewController:UIViewController
 //        viewController = storyboard.instantiateViewControllerWithIdentifier("logInController") as! LogInViewController
@@ -51,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-//        findLocalConnectionToConnect()
     }
     var socket:InSocket?
     var sockets:[InSocket] = []
@@ -101,12 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     func disconnectAllConnections () {
-//        if sockets != [] {
-//            for socket in sockets {
-//                socket.socket.close()
-//            }
-//            sockets = []
-//        }
         if inOutSockets != [] {
             for inOutSocket in inOutSockets {
                 inOutSocket.socket.close()
@@ -118,15 +109,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         disconnectAllConnections()
         fetchGateways()
         for gateway in gateways {
-//            sockets.append(InSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
-//            sockets.append(InSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
             inOutSockets.append(InOutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
             inOutSockets.append(InOutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
         }
     }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-//        findLocalConnectionToConnect()
         establishAllConnections()
     }
 

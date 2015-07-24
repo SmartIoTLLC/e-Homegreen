@@ -37,9 +37,10 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         super.init(coder: aDecoder)
         transitioningDelegate = self
     }
-    
+//    var ios:InOutSocket?
     override func viewDidLoad() {
         super.viewDidLoad()
+//        ios = InOutSocket(ip: "2.50.32.208", port: 5001)
         //        self.commonConstruct()
         //        var validUrl = NSURL().URLW
         //        returnIpAddress("heeej")
@@ -85,6 +86,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
     }
     @IBAction func btnFindNames(sender: AnyObject) {
+//        ios?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             var index:Int
             for index in 0...devices.count-1 {
@@ -110,7 +112,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             }
             if devices[index].type == "sensor" {
                 var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
         }
     }
@@ -235,6 +237,12 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             }
         }
     }
+    func searchIds(timer:NSTimer) {
+        if let deviceNumber = timer.userInfo as? Int {
+            var address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
+            SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateways[choosedGatewayIndex])
+        }
+    }
     func hideActivitIndicator () {
         loader.hideActivityIndicator()
     }
@@ -250,12 +258,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    func searchIds(timer:NSTimer) {
-        if let deviceNumber = timer.userInfo as? Int {
-            var address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
-            SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateways[choosedGatewayIndex])
-        }
     }
     
     func saveChanges() {
