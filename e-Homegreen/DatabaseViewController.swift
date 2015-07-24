@@ -86,38 +86,31 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     @IBAction func btnFindNames(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
-            for item in devices {
-                if item.type == "Dimmer" {
-                    //                    for var i:Int in 1...Int(item.numberOfDevices) {
-                    ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
-                    //                    }
-                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
-                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
-                }
-                if item.type == "curtainsRelay" {
-                    //                    for var i:Int in 1...Int(item.numberOfDevices) {
-                    ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
-                    //                    }
-                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
-                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
-                }
-
-                if item.type == "hvac" {
-                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
-                    SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
-//                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
-//                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
-
-                }
-                if item.type == "sensor" {
-                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
-                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
-
-                }
-//                if item.type == "sensor" {
-//                    SendingHandler(byteArray: Functions().getChannelName(item.address, channel: 0xFF), gateway: item.gateway)
-//
-//                }
+            var index:Int
+            for index in 0...devices.count-1 {
+                var number:NSTimeInterval = NSTimeInterval(index)
+                NSTimer.scheduledTimerWithTimeInterval(number*0.1, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
+            }
+        }
+    }
+    func getDevicesNames (timer:NSTimer) {
+        if let index = timer.userInfo as? Int {
+            if devices[index].type == "Dimmer" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            if devices[index].type == "curtainsRelay" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            
+            if devices[index].type == "hvac" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            if devices[index].type == "sensor" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
         }
     }
