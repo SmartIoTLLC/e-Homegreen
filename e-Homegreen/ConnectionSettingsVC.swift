@@ -20,8 +20,11 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var addressFirst: UITextField!
     @IBOutlet weak var addressSecond: UITextField!
+    @IBOutlet weak var addressThird: UITextField!
+    
     @IBOutlet weak var name: UITextField!
     
+    @IBOutlet weak var txtDescription: UITextView!
 
     @IBOutlet weak var ipHost: UITextField!
     @IBOutlet weak var port: UITextField!
@@ -56,6 +59,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         
         addressFirst.layer.borderWidth = 0.5
         addressSecond.layer.borderWidth = 0.5
+        addressThird.layer.borderWidth = 0.5
+        txtDescription.layer.borderWidth = 0.5
         name.layer.borderWidth = 0.5
         ipHost.layer.borderWidth = 0.5
         port.layer.borderWidth = 0.5
@@ -64,6 +69,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         localSSID.layer.borderWidth = 0.5
         addressFirst.layer.cornerRadius = 2
         addressSecond.layer.cornerRadius = 2
+        addressThird.layer.cornerRadius = 2
         name.layer.cornerRadius = 2
         ipHost.layer.cornerRadius = 2
         port.layer.cornerRadius = 2
@@ -71,7 +77,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         localPort.layer.cornerRadius = 2
         localSSID.layer.cornerRadius = 2
         addressFirst.layer.borderColor = UIColor.lightGrayColor().CGColor
+        txtDescription.layer.borderColor = UIColor.lightGrayColor().CGColor
         addressSecond.layer.borderColor = UIColor.lightGrayColor().CGColor
+        addressThird.layer.borderColor = UIColor.lightGrayColor().CGColor
         name.layer.borderColor = UIColor.lightGrayColor().CGColor
         ipHost.layer.borderColor = UIColor.lightGrayColor().CGColor
         port.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -116,6 +124,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         localSSID.delegate = self
         addressFirst.delegate = self
         addressSecond.delegate = self
+        addressThird.delegate = self
         name.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
@@ -193,11 +202,11 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
             }else if self.view.frame.size.height == 414{
                 backViewHeightConstraint.constant = 350
             }else{
-                backViewHeightConstraint.constant = 460
+                backViewHeightConstraint.constant = 480
             }
         }else{
             
-            backViewHeightConstraint.constant = 460
+            backViewHeightConstraint.constant = 480
             
         }
     }
