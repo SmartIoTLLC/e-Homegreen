@@ -37,8 +37,43 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         super.init(coder: aDecoder)
         transitioningDelegate = self
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //        self.commonConstruct()
+        //        var validUrl = NSURL().URLW
+        //        returnIpAddress("heeej")
+        //        returnIpAddress("e-Home.dyndns.org")
+        //        returnIpAddress("2.50.32.208")
+        //        returnIpAddress("192.168.0.7")
+        //        returnIpAddress("khalifaaljaziri.dyndns.org")
+        //        returnIpAddress("31.215.238.180")
+        btnChooseGateway.setTitle("Choose your connection", forState: UIControlState.Normal)
+        //        returnIpAddress("heeej")
+        var gradient:CAGradientLayer = CAGradientLayer()
+        if self.view.frame.size.height > self.view.frame.size.width{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        }else{
+            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
+        }
+        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
+        topView.layer.insertSublayer(gradient, atIndex: 0)
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList:", name: "refreshDeviceListNotification", object: nil)
+        
+        //        updateDeviceList()
+        idRangeFrom.delegate = self
+        idRangeTo.delegate = self
+        fetchAllGateways()
+        idRangeFrom.text = "\(1)"
+        idRangeTo.text = "\(1)"
+        
+        // Do any additional setup after loading the view.
+    }
+    
     @IBAction func btnDeleteAll(sender: AnyObject) {
-//        socketOutTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             for item in devices {
                 if item.gateway.objectID == gateways[choosedGatewayIndex].objectID {
@@ -49,56 +84,49 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
     }
-    var socketIn:[InSocket]?
-    var socketOut:TestSocket?
-    var socketOneTest:InOutSocket?
-    var socketTwoTest:InOutSocket?
-    var socketThreeTest:InOutSocket?
     @IBAction func btnFindNames(sender: AnyObject) {
-        //        if choosedGatewayIndex != -1 {
-        //            var number:Int = 1
-        //            if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
-        //                for var i = numberOne; i <= numberTwo; ++i {
-        //                    var number:NSTimeInterval = NSTimeInterval(i)
-        //                    NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchNames:", userInfo: i, repeats: false)
-        //                }
-        //            }
-        //        }
-        socketOut?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
-        socketOneTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
-        socketTwoTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
-        socketThreeTest?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             for item in devices {
-                if item.type == "dimmer" {
+                if item.type == "Dimmer" {
                     //                    for var i:Int in 1...Int(item.numberOfDevices) {
                     ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
                     //                    }
+                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
+                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
+                }
+                if item.type == "curtainsRelay" {
+                    //                    for var i:Int in 1...Int(item.numberOfDevices) {
+                    ////                        SendingHandler(byteArray: <#[UInt8]#>, ip: <#String#>, port: <#Int#>)
+                    //                    }
+                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
+                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
+                }
+
+                if item.type == "hvac" {
+                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
+                    SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
+//                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
+//                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
+
                 }
                 if item.type == "sensor" {
-                    
+                    var address = [UInt8(Int(item.gateway.addressOne)), UInt8(Int(item.gateway.addressTwo)), UInt8(Int(item.address))]
+                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(item.channel))), gateway: item.gateway)
+
                 }
-                if item.type == "sensor" {
-                    
-                }
-                if item.type == "sensor" {
-                    
-                }
+//                if item.type == "sensor" {
+//                    SendingHandler(byteArray: Functions().getChannelName(item.address, channel: 0xFF), gateway: item.gateway)
+//
+//                }
             }
         }
     }
-    //    func searchNames (timer:NSTimer) {
-    //        // treba svaki posebno proveriti
-    ////        if let deviceNumber = timer.userInfo as? Int {
-    ////            SendingHandler(byteArray: Functions().getSensorName(0x05, channel: UInt8(timerSensorNumber)), ip: gateways[choosedGatewayIndex].localIp, port: Int(gateways[choosedGatewayIndex].localPort))
-    ////        }
-    //    }
     var popoverVC:PopOverViewController = PopOverViewController()
     var choosedGatewayIndex:Int = -1
     func clickedOnGatewayWithIndex(index: Int) {
         btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
         choosedGatewayIndex = index
-        refreshDeviceList()
+        refreshDeviceListOnDatabasVC()
         // hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
     }
     @IBAction func btnChooseGateway(sender: UIButton) {
@@ -124,9 +152,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    override func viewWillDisappear(animated: Bool) {
-        
-    }
     func returnIpAddress (url:String) -> String {
         let host = CFHostCreateWithName(nil,url).takeRetainedValue();
         CFHostStartInfoResolution(host, .Addresses, nil);
@@ -147,50 +172,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
         return ""
     }
-    var socketOutTest:OutSocket?
-    var socketInTest:InSocket?
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        self.commonConstruct()
-//        var validUrl = NSURL().URLW
-        var i:Int
-//        for i in 5001...5001 {
-//            socketIn?.append(InSocket(ip: "2.50.32.208", port: UInt16(i)))
-//        }
-        returnIpAddress("heeej")
-        returnIpAddress("e-Home.dyndns.org")
-        returnIpAddress("2.50.32.208")
-        returnIpAddress("192.168.0.7")
-        returnIpAddress("khalifaaljaziri.dyndns.org")
-        returnIpAddress("31.215.238.180")
-//        returnIpAddress("heeej")
-//        socketOutTest = OutSocket(ip: "192.168.0.7", port: 5001)
-//        socketInTest = InSocket(ip: "192.168.0.7", port: 5001)
-        socketOneTest = InOutSocket(ip: "2.50.32.208", port: 5001)
-        socketTwoTest = InOutSocket(ip: "192.168.0.7", port: 5001)
-        socketThreeTest = InOutSocket(ip: "31.215.238.180", port: 5001)
-        var gradient:CAGradientLayer = CAGradientLayer()
-        if self.view.frame.size.height > self.view.frame.size.width{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
-        }else{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
-        }
-        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        topView.layer.insertSublayer(gradient, atIndex: 0)
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
-        
-        //        updateDeviceList()
-        idRangeFrom.delegate = self
-        idRangeTo.delegate = self
-        fetchAllGateways()
-        idRangeFrom.text = "\(1)"
-        idRangeTo.text = "\(1)"
-        
-        // Do any additional setup after loading the view.
-    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -200,10 +181,13 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         let predicate = NSPredicate(format: "gateway == %@", gateways[choosedGatewayIndex].objectID)
         fetchRequest.predicate = predicate
-        var sortDescriptor1 = NSSortDescriptor(key: "type", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             devices = results
@@ -211,7 +195,13 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             println("Nije htela...")
         }
     }
-    func refreshDeviceList () {
+    func refreshDeviceListOnDatabasVC () {
+        if gateways != [] {
+            updateDeviceList()
+            databaseTable.reloadData()
+        }
+    }
+    func refreshDeviceList (notification:NSNotification) {
         if gateways != [] {
             updateDeviceList()
             databaseTable.reloadData()

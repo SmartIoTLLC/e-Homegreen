@@ -10,22 +10,6 @@ import UIKit
 import SystemConfiguration.CaptiveNetwork
 import CoreData
 
-extension UIDevice {
-    public var SSID: String? {
-        get {
-            if let interfaces = CNCopySupportedInterfaces() {
-                let interfacesArray = interfaces.takeRetainedValue() as! [String]
-                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo(interfacesArray[0] as String) {
-                    let interfaceData = unsafeInterfaceData.takeRetainedValue() as Dictionary!
-                    return interfaceData[kCNNetworkInfoKeySSID] as? String
-                }
-            }
-            return nil
-            
-        }
-    }
-}
-
 class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     
     var gatewayIndex:Int = -1
@@ -387,6 +371,22 @@ extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
         }
     }
     
+}
+
+extension UIDevice {
+    public var SSID: String? {
+        get {
+            if let interfaces = CNCopySupportedInterfaces() {
+                let interfacesArray = interfaces.takeRetainedValue() as! [String]
+                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo(interfacesArray[0] as String) {
+                    let interfaceData = unsafeInterfaceData.takeRetainedValue() as Dictionary!
+                    return interfaceData[kCNNetworkInfoKeySSID] as? String
+                }
+            }
+            return nil
+            
+        }
+    }
 }
 
 extension UIViewController {

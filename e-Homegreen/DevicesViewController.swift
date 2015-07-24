@@ -29,8 +29,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.viewDidLoad()
         
         commonConstruct()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList:", name: "refreshDeviceListNotification", object: nil)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -430,9 +429,30 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
-    func refreshDeviceList() {
+    func refreshDeviceList(notification:NSNotification) {
+        println("uslo je ovde")
         updateDeviceList()
-        self.deviceCollectionView.reloadData()
+        if let item = notification.userInfo?["selection"] as? Int {
+            println("Ovo je dobijeno \(item)")
+            if item == -1 {
+                self.deviceCollectionView.reloadData()
+            } else {
+//                UIView.setAnimationsEnabled(false)
+//                self.deviceCollectionView.performBatchUpdates({
+//                    var indexPath = NSIndexPath(forItem: item, inSection: 0)
+//                    self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                    }, completion:  {(completed: Bool) -> Void in
+//                        UIView.setAnimationsEnabled(true)
+//                })
+//                UIView.setAnimationsEnabled(false)
+//                self.deviceCollectionView.performBatchUpdates({
+                    var indexPath = NSIndexPath(forItem: item, inSection: 0)
+                    self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                    }, completion:  {(completed: Bool) -> Void in
+//                        UIView.setAnimationsEnabled(true)
+//                })
+            }
+        }
     }
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
