@@ -18,6 +18,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     var appDel:AppDelegate!
     var error:NSError? = nil
     
+
+ 
+    
     @IBOutlet weak var gatewayTableView: UITableView!
     @IBOutlet weak var topView: UIView!
     
@@ -163,6 +166,18 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.switchGatewayState.on = gateways[indexPath.row].turnedOn.boolValue
             cell.switchGatewayState.tag = indexPath.row
             cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.add1.layer.cornerRadius = 3
+            cell.add2.layer.cornerRadius = 3
+            cell.add3.layer.cornerRadius = 3
+            cell.add1.clipsToBounds = true
+            cell.add2.clipsToBounds = true
+            cell.add3.clipsToBounds = true
+            cell.add1.layer.borderWidth = 0.5
+            cell.add2.layer.borderWidth = 0.5
+            cell.add3.layer.borderWidth = 0.5
+            cell.add1.layer.borderColor = UIColor.grayColor().CGColor
+            cell.add2.layer.borderColor = UIColor.grayColor().CGColor
+            cell.add3.layer.borderColor = UIColor.grayColor().CGColor
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -221,6 +236,10 @@ class GatewayCell: UITableViewCell {
     
     @IBOutlet weak var lblGatewayName: UILabel!
     @IBOutlet weak var switchGatewayState: UISwitch!
+    
+    @IBOutlet weak var add1: UILabel!
+    @IBOutlet weak var add2: UILabel!
+    @IBOutlet weak var add3: UILabel!
     
 }
 
