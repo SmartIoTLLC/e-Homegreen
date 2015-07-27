@@ -180,6 +180,8 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.add1.layer.borderColor = UIColor.grayColor().CGColor
             cell.add2.layer.borderColor = UIColor.grayColor().CGColor
             cell.add3.layer.borderColor = UIColor.grayColor().CGColor
+            cell.buttonGatewayScan.layer.cornerRadius = 5
+            
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -239,6 +241,9 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var lblGatewayName: UILabel!
     @IBOutlet weak var lblGatewayDeviceNumber: UILabel!
     @IBOutlet weak var lblGatewayDescription: UILabel!
+    
+    
+    @IBOutlet weak var buttonGatewayScan: UIButton!
     
     @IBOutlet weak var switchGatewayState: UISwitch!
     
