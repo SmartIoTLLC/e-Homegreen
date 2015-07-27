@@ -148,7 +148,7 @@
                                     </constraints>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqz-TY-rmJ">
                                     <rect key="frame" x="10" y="132" width="74" height="19"/>
@@ -189,21 +189,21 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cye-mf-HE1">
-                                    <rect key="frame" x="103" y="212" width="195" height="30"/>
+                                    <rect key="frame" x="95" y="212" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alB-wq-NFj">
-                                    <rect key="frame" x="103" y="251" width="195" height="30"/>
+                                    <rect key="frame" x="95" y="251" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SSID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SxY-xb-Y9M">
-                                    <rect key="frame" x="103" y="290" width="195" height="30"/>
+                                    <rect key="frame" x="95" y="290" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
@@ -284,7 +284,7 @@
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="width" secondItem="LOs-KA-lDE" secondAttribute="width" id="kOF-aY-Eil"/>
                                 <constraint firstItem="gCp-7R-Sth" firstAttribute="leading" secondItem="Ycg-Hi-70o" secondAttribute="trailing" constant="35" id="kXy-FF-HFR"/>
                                 <constraint firstItem="Cye-mf-HE1" firstAttribute="width" secondItem="zUV-b0-XSs" secondAttribute="width" id="krz-v2-a6d"/>
-                                <constraint firstItem="Cye-mf-HE1" firstAttribute="leading" secondItem="zUV-b0-XSs" secondAttribute="leading" constant="8" id="lbj-DU-MZX"/>
+                                <constraint firstItem="Cye-mf-HE1" firstAttribute="leading" secondItem="zUV-b0-XSs" secondAttribute="leading" id="lbj-DU-MZX"/>
                                 <constraint firstItem="P4e-7w-oyg" firstAttribute="leading" secondItem="gCp-7R-Sth" secondAttribute="leading" id="lt3-O7-ozo"/>
                                 <constraint firstAttribute="centerX" secondItem="cE7-zJ-c39" secondAttribute="centerX" constant="-50" id="pil-Mp-Gl6"/>
                                 <constraint firstItem="BC5-EX-Snd" firstAttribute="centerY" secondItem="avv-DG-9ck" secondAttribute="centerY" id="qEe-Me-Z4f"/>

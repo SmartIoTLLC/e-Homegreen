@@ -10,7 +10,7 @@ import UIKit
 import SystemConfiguration.CaptiveNetwork
 import CoreData
 
-class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
+class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     var gatewayIndex:Int = -1
     
@@ -50,7 +50,15 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,6 +134,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate {
         addressSecond.delegate = self
         addressThird.delegate = self
         name.delegate = self
+        txtDescription.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
 
