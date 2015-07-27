@@ -17,8 +17,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     var gateways:[Gateway] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
-
  
     
     @IBOutlet weak var gatewayTableView: UITableView!
@@ -162,6 +160,8 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             cell.lblGatewayName.text = gateways[indexPath.row].name
+            cell.lblGatewayDescription.text = gateways[indexPath.row].description
+            cell.lblGatewayDeviceNumber.text = "\(gateways.count) device(s)"
             println("Trurned on: \(gateways[indexPath.row].turnedOn.boolValue)")
             cell.switchGatewayState.on = gateways[indexPath.row].turnedOn.boolValue
             cell.switchGatewayState.tag = indexPath.row
@@ -235,6 +235,9 @@ extension ConnectionsViewController: UITableViewDelegate {
 class GatewayCell: UITableViewCell {
     
     @IBOutlet weak var lblGatewayName: UILabel!
+    @IBOutlet weak var lblGatewayDeviceNumber: UILabel!
+    @IBOutlet weak var lblGatewayDescription: UILabel!
+    
     @IBOutlet weak var switchGatewayState: UISwitch!
     
     @IBOutlet weak var add1: UILabel!
