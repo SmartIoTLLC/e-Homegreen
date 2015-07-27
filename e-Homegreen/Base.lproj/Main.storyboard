@@ -505,11 +505,13 @@
                         <outlet property="rangeFrom" destination="D5h-E6-Z7C" id="2hq-KG-d9R"/>
                         <outlet property="rangeTo" destination="lZG-Dt-XAD" id="NIZ-dL-4kl"/>
                         <outlet property="topView" destination="qX5-l3-CHR" id="ilp-lK-HCi"/>
+                        <segue destination="chS-B2-BED" kind="unwind" identifier="scanUnwind" unwindAction="returnFromSegueActions:" id="sYU-xz-tYr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XL4-K0-BGx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="chS-B2-BED" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-885" y="800"/>
+            <point key="canvasLocation" x="-939" y="808"/>
         </scene>
         <!--Connections View Controller-->
         <scene sceneID="0sd-HN-ROl">
@@ -706,7 +708,7 @@
                     <connections>
                         <outlet property="gatewayTableView" destination="TdL-Ns-BWb" id="VeO-9Z-fvD"/>
                         <outlet property="topView" destination="M4J-Io-dv3" id="b6g-rf-xQj"/>
-                        <segue destination="XzH-Hh-Erq" kind="custom" identifier="scan" id="OGd-aL-yr3"/>
+                        <segue destination="XzH-Hh-Erq" kind="custom" identifier="scan" customClass="CustomSegue" customModule="e_Homegreen" customModuleProvider="target" id="OGd-aL-yr3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ww-Jf-3wK" userLabel="First Responder" sceneMemberID="firstResponder"/>

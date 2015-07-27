@@ -34,6 +34,27 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         self.showConnectionSettings(-1)
         
     }
+    
+    @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
+        if sender.identifier == "scanUnwind" {
+            println("nesto adadad")
+        }
+    }
+    
+    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
+        if let id = identifier{
+            if id == "scanUnwind" {
+                let unwindSegue = SegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
+                    
+                })
+                return unwindSegue
+            }
+        }
+        
+        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
+    
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()

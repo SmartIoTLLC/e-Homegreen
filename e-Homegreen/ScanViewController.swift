@@ -4,11 +4,11 @@
 //
 //  Created by Vladimir on 7/27/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
-//
+// UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
 
 import UIKit
 
-class ScanViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UITableViewDelegate, UITableViewDataSource {
+class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var rangeFrom: UITextField!
@@ -16,13 +16,16 @@ class ScanViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     var isPresenting:Bool = true
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        transitioningDelegate = self
-    }
+//    required init(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        transitioningDelegate = self
+//    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
@@ -42,8 +45,10 @@ class ScanViewController: UIViewController, UIViewControllerTransitioningDelegat
     }
     
 
-    @IBAction func backButton(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+
+    @IBAction func backButton(sender: UIStoryboardSegue) {
+        
+        self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
     
     @IBAction func findDevice(sender: AnyObject) {
@@ -60,6 +65,7 @@ class ScanViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
+            cell.backgroundColor = UIColor.clearColor()
             cell.lblDesc.text = "4564"
             return cell
             
@@ -76,59 +82,59 @@ class ScanViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-        return 0.5
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView.bounds.size.width
-            //            presentedControllerView.center.y += containerView.bounds.size.height
-            //            presentedControllerView.alpha = 0
-            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView.bounds.size.width
-                //                presentedControllerView.center.y -= containerView.bounds.size.height
-                //                presentedControllerView.alpha = 1
-                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView.bounds.size.width
-                //                presentedControllerView.center.y += containerView.bounds.size.height
-                //                presentedControllerView.alpha = 0
-                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-    }
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
+//    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+//        return 0.5
+//    }
+//    
+//    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+//        if isPresenting == true{
+//            isPresenting = false
+//            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+//            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+//            let containerView = transitionContext.containerView()
+//            
+//            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+//            presentedControllerView.center.x += containerView.bounds.size.width
+//            //            presentedControllerView.center.y += containerView.bounds.size.height
+//            //            presentedControllerView.alpha = 0
+//            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+//            containerView.addSubview(presentedControllerView)
+//            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+//                presentedControllerView.center.x -= containerView.bounds.size.width
+//                //                presentedControllerView.center.y -= containerView.bounds.size.height
+//                //                presentedControllerView.alpha = 1
+//                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+//                }, completion: {(completed: Bool) -> Void in
+//                    transitionContext.completeTransition(completed)
+//            })
+//        }else{
+//            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+//            let containerView = transitionContext.containerView()
+//            
+//            // Animate the presented view off the bottom of the view
+//            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+//                presentedControllerView.center.x += containerView.bounds.size.width
+//                //                presentedControllerView.center.y += containerView.bounds.size.height
+//                //                presentedControllerView.alpha = 0
+//                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+//                }, completion: {(completed: Bool) -> Void in
+//                    transitionContext.completeTransition(completed)
+//            })
+//        }
+//    }
+//    
+//    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return self
+//    }
+//    
+//    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        if dismissed == self {
+//            return self
+//        }
+//        else {
+//            return nil
+//        }
+//    }
 
 
 

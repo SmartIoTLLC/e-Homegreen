@@ -62,6 +62,8 @@
 		E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */; };
 		E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */; };
 		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
+		E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41681B6641A6005080F1 /* CustomSegue.swift */; };
+		E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F416A1B664BC3005080F1 /* SegueUnwind.swift */; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
 		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC679C1B457C0E00EA6543 /* weather-broken.png */; };
@@ -183,6 +185,8 @@
 		E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
 		E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
 		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
+		E75F41681B6641A6005080F1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
+		E75F416A1B664BC3005080F1 /* SegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueUnwind.swift; sourceTree = "<group>"; };
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -428,6 +432,8 @@
 				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
 				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
+				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
+				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -738,6 +744,7 @@
 				736265E11B4A48330078C11D /* OutSocket.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
+				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
@@ -774,6 +781,7 @@
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
+				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
