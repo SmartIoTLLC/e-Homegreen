@@ -64,7 +64,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList:", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
         //        updateDeviceList()
         idRangeFrom.delegate = self
@@ -78,9 +78,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     @IBAction func btnDeleteAll(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
-            for item in devices {
-                if item.gateway.objectID == gateways[choosedGatewayIndex].objectID {
-                    appDel.managedObjectContext!.deleteObject(item)
+            for var item = 0; item < devices.count; item++ {
+                if devices[item].gateway.objectID == gateways[choosedGatewayIndex].objectID {
+                    appDel.managedObjectContext!.deleteObject(devices[item])
                 }
             }
             saveChanges()
@@ -93,7 +93,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             var index:Int
             for index in 0...devices.count-1 {
                 var number:NSTimeInterval = NSTimeInterval(index)
-                NSTimer.scheduledTimerWithTimeInterval(number*0.1, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
+                NSTimer.scheduledTimerWithTimeInterval(number*0.5, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
             }
         }
     }
@@ -198,7 +198,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             databaseTable.reloadData()
         }
     }
-    func refreshDeviceList (notification:NSNotification) {
+    func refreshDeviceList () {
         if gateways != [] {
             updateDeviceList()
             databaseTable.reloadData()

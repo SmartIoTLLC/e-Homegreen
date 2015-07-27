@@ -23,7 +23,7 @@ class Gateway: NSManagedObject {
     @NSManaged var turnedOn: NSNumber
     @NSManaged var addressThree: NSNumber
     @NSManaged var device: NSSet
-    var ipInUse:String = "o"
+    var remoteIpInUse:String = "255.255.255.255"
     var portInUse:NSNumber = NSNumber(int: 0)
 
 }

@@ -44,7 +44,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         super.viewDidLoad()
         commonConstruct()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList:", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -125,7 +125,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            outSocket.sendByte()
         }
         // Appliance?
-        if devices[tag!].type == "curtainsRelay" {
+        if devices[tag!].type == "curtainsRelay" || devices[tag!].type == "appliance" {
             var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag!].gateway)
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
@@ -422,37 +422,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         var tag = sender.tag
         println(devices[tag].type)
         // Appliance?
-        if devices[tag].type == "curtainsRelay" {
+        if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
             var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
 //            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
-    func refreshDeviceList(notification:NSNotification) {
+    func refreshDeviceList() {
         if !deviceInControlMode {
             println("uslo je ovde")
             updateDeviceList()
-            if let item = notification.userInfo?["selection"] as? Int {
-                println("Ovo je dobijeno \(item)")
-                if item == -1 {
-                    self.deviceCollectionView.reloadData()
-                } else {
-                    //                UIView.setAnimationsEnabled(false)
-                    //                self.deviceCollectionView.performBatchUpdates({
-                    //                    var indexPath = NSIndexPath(forItem: item, inSection: 0)
-                    //                    self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                    //                    }, completion:  {(completed: Bool) -> Void in
-                    //                        UIView.setAnimationsEnabled(true)
-                    //                })
-                    UIView.setAnimationsEnabled(false)
-                    self.deviceCollectionView.performBatchUpdates({
-                        var indexPath = NSIndexPath(forItem: item, inSection: 0)
-                        self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                        }, completion:  {(completed: Bool) -> Void in
-                            UIView.setAnimationsEnabled(true)
-                    })
-                }
-            }
+            self.deviceCollectionView.reloadData()
         }
     }
     var deviceInControlMode = false
@@ -595,7 +575,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             //        cell.addSubview(mySecondView[indexPath.row])
             //            println("Broj: \(indexPath.row)")
             return cell
-        } else if devices[indexPath.row].type == "curtainsRelay" {
+        } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()

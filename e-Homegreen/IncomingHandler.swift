@@ -138,16 +138,14 @@ class IncomingHandler: NSObject {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var channel = Int(devices[i].channel)
                 devices[i].name = string
-                let data = ["selection":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
             }
         }
         saveChanges()
-//        let data = ["selection":-1]
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
-    func ackACname (byteArray:[UInt8]) {        fetchDevices()
+    func ackACname (byteArray:[UInt8]) {
+        fetchDevices()
         var string:String = ""
         for var i = 9; i < byteArray.count-2; i++ {
             string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
@@ -155,15 +153,14 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var string:String = ""
-                for var i = 8; i < byteArray.count-2; i++ {
+                for var i = 42; i < byteArray.count-2; i++ {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
                 devices[i].name = string
-                let data = ["selection":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
             }
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
@@ -173,11 +170,10 @@ class IncomingHandler: NSObject {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[7+channel])
-                let data = ["selection":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
             }
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
@@ -246,8 +242,7 @@ class IncomingHandler: NSObject {
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         saveChanges()
                     }
-                    let data = ["selection":-1]
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
                 }
             }
         }
@@ -262,16 +257,12 @@ class IncomingHandler: NSObject {
                 devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
-                saveChanges()
-                let data = ["selection":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
             } else {
                 
             }
         }
-//        let data = ["selection":-1]
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
-//        saveChanges()
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
@@ -283,13 +274,30 @@ class IncomingHandler: NSObject {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
                 devices[i].name = string
-                let data = ["selection":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
             }
         }
-//        let data = ["selection":-1]
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: data)
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
+    func returnIpAddress (url:String) -> String {
+        let host = CFHostCreateWithName(nil,url).takeRetainedValue();
+        CFHostStartInfoResolution(host, .Addresses, nil);
+        var success: Boolean = 0;
+        if let test = CFHostGetAddressing(host, &success) {
+            let addresses = test.takeUnretainedValue() as NSArray
+            if (addresses.count > 0){
+                let theAddress = addresses[0] as! NSData;
+                var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
+                if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
+                    &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
+                        if let numAddress = String.fromCString(hostname) {
+                            println(numAddress)
+                            return numAddress
+                        }
+                }
+            }
+        }
+        return ""
+    }
 }
