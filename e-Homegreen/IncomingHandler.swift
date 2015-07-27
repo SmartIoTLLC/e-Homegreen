@@ -70,10 +70,10 @@ class IncomingHandler: NSObject {
                 if byteArray[5] == 0xF4 && byteArray[6] == 0x01 {
                     ackACname(byteArray)
                 }
-//                //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
-//                if byteArray[5] == 0xF4 && byteArray[6] == 0x03 {
-//                    
-//                }
+                //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
+                if byteArray[5] == 0xF4 && byteArray[6] == 0x03 && byteArray[7] == 0xFF  {
+                    ackACstatus(byteArray)
+                }
 //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
 //                    
 //                }
@@ -127,6 +127,34 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
+    func ackACstatus (byteArray:[UInt8]) {
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
+                var channel = Int(devices[i].channel)
+                devices[i].currentValue = Int(byteArray[8+2*(channel-1)])
+                if let mode = DeviceInfo().setMode[Int(byteArray[9+2*(channel-1)])], let modeState = DeviceInfo().modeState[Int(byteArray[10+2*(channel-1)])], let speed = DeviceInfo().setSpeed[Int(byteArray[11+2*(channel-1)])], let speedState = DeviceInfo().modeState[Int(byteArray[12+2*(channel-1)])] {
+                    devices[i].mode = DeviceInfo().setMode[Int(byteArray[9+2*(channel-1)])]!
+                    devices[i].modeState = DeviceInfo().modeState[Int(byteArray[10+2*(channel-1)])]!
+                    devices[i].speed = DeviceInfo().setSpeed[Int(byteArray[11+2*(channel-1)])]!
+                    devices[i].speedState = DeviceInfo().modeState[Int(byteArray[12+2*(channel-1)])]!
+                } else {
+                    devices[i].mode = "AUTO"
+                    devices[i].modeState = "Off"
+                    devices[i].speed = "AUTO"
+                    devices[i].speedState = "Off"
+                }
+                devices[i].coolTemperature = Int(byteArray[13+2*(channel-1)])
+                devices[i].heatTemperature = Int(byteArray[14+2*(channel-1)])
+                devices[i].roomTemperature = Int(byteArray[15+2*(channel-1)])
+                devices[i].humidity = Int(byteArray[16+2*(channel-1)])
+                devices[i].current = Int(byteArray[19+2*(channel-1)]) + Int(byteArray[20+2*(channel-1)])
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+    }
+
     //  informacije o imenima uredjaja na MULTISENSORU
     func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
         fetchDevices()
@@ -223,6 +251,29 @@ class IncomingHandler: NSObject {
                         device.voltage = 0
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                        saveChanges()
+                    } else if name == "hvac" {
+                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        device.name = name + " \(i)"
+                        device.address = Int(byteArray[4])
+                        device.channel = i
+                        device.numberOfDevices = channel
+                        device.runningTime = ""
+                        device.amp = ""
+                        device.runningTime = ""
+                        device.type = name
+                        device.voltage = 0
+                        device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                        device.currentValue = 0
+                        device.mode = "AUTO"
+                        device.modeState = "Off"
+                        device.speed = "AUTO"
+                        device.speedState = "Off"
+                        device.coolTemperature = 0
+                        device.heatTemperature = 0
+                        device.roomTemperature = 0
+                        device.humidity = 0
+                        device.current = 0
                         saveChanges()
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device

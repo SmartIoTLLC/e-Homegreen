@@ -453,7 +453,6 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
     }
 }
@@ -593,14 +592,15 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.image.userInteractionEnabled = true
             cell.image.addGestureRecognizer(tap)
             cell.name.text = devices[indexPath.row].name
-//            cell.name.text = device2.text
-//            if device2.open == true{
-//                cell.image.image = UIImage(named: "applianceon")
-//                cell.button.setTitle("ON", forState: .Normal)
-//            }else{
-//                cell.image.image = UIImage(named: "applianceoff")
-//                cell.button.setTitle("OFF", forState: .Normal)
-//            }
+            println("\(indexPath.row) - \(devices[indexPath.row].currentValue)")
+            if devices[indexPath.row].currentValue == 255 {
+                cell.image.image = UIImage(named: "applianceon")
+                cell.button.setTitle("ON", forState: .Normal)
+            }
+            if devices[indexPath.row].currentValue == 0{
+                cell.image.image = UIImage(named: "applianceoff")
+                cell.button.setTitle("OFF", forState: .Normal)
+            }
             cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.button.tag = indexPath.row
             //            cell.addSubview(myView[indexPath.row])
@@ -623,6 +623,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.modeImage.animationDuration = 1
             cell.modeImage.animationRepeatCount = 0
             cell.modeImage.startAnimating()
+
+//            @IBOutlet weak var modeImage: UIImageView!
+//            @IBOutlet weak var fanSpeedImage: UIImageView!
+            cell.climateName.text = devices[indexPath.row].name
+            cell.coolingSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+            cell.heatingSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+            cell.climateMode.text = devices[indexPath.row].modeState
+            cell.climateSpeed.text = devices[indexPath.row].speedState
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5

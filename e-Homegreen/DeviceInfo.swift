@@ -41,6 +41,11 @@ class DeviceInfo: NSObject {
     var inputInterface10in1:[Int:String] = [:]
     var inputInterface6in1:[Int:String] = [:]
     
+    var setMode:[Int:String] = [:]
+    var modeState:[Int:String] = [:]
+    var setSpeed:[Int:String] = [:]
+    var speedState:[Int:String] = [:]
+    
     override init () {
         super.init()
         saveCategory()
@@ -48,6 +53,22 @@ class DeviceInfo: NSObject {
         saveInterfaceType10in1()
         saveInterfaceType6in1()
         saveDeviceChannel1()
+        setMode = [0 : "AUTO",
+            1:"Cool",
+            2:"Heat",
+            3:"Fan"]
+        modeState = [0 : "Off",
+            1:"Cool",
+            2:"Heat",
+            3:"Fan"]
+        setSpeed = [0 : "AUTO",
+            1:"Low",
+            2:"Mid",
+            3:"High"]
+        speedState = [0 : "Off",
+            1:"Low",
+            2:"Mid",
+            3:"High"]
     }
     func saveCategory() {
         deviceCategory = [2 : DIMER,
