@@ -618,19 +618,53 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
-            let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-            cell.modeImage.animationImages = animationImages
-            cell.modeImage.animationDuration = 1
-            cell.modeImage.animationRepeatCount = 0
-            cell.modeImage.startAnimating()
-
-//            @IBOutlet weak var modeImage: UIImageView!
-//            @IBOutlet weak var fanSpeedImage: UIImageView!
+            
             cell.climateName.text = devices[indexPath.row].name
             cell.coolingSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
             cell.heatingSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
-            cell.climateMode.text = devices[indexPath.row].modeState
-            cell.climateSpeed.text = devices[indexPath.row].speedState
+            cell.climateMode.text = devices[indexPath.row].mode
+            cell.climateSpeed.text = devices[indexPath.row].speed
+            
+            var fanSpeed = 0
+            var speedState = devices[indexPath.row].speed
+            switch speedState {
+            case "Low":
+                cell.fanSpeedImage.image = UIImage(named: "fanlow")
+                fanSpeed = 3
+            case "Mid" :
+                cell.fanSpeedImage.image = UIImage(named: "fanmedium")
+                fanSpeed = 2
+            case "High":
+                cell.fanSpeedImage.image = UIImage(named: "fanhigh")
+                fanSpeed = 1
+            default:
+                cell.fanSpeedImage.image = UIImage(named: "fanoff")
+                fanSpeed = 0
+            }
+            
+            var modeState = devices[indexPath.row].mode
+            switch modeState {
+            case "Cool":
+                cell.modeImage.image = UIImage(named: "cool")
+                cell.modeImage.stopAnimating()
+            case "Heat":
+                cell.modeImage.image = UIImage(named: "heat")
+                cell.modeImage.stopAnimating()
+            case "Fan":
+                if fanSpeed == 0 {
+                    cell.modeImage.image = UIImage(named: "fanauto")
+                    cell.modeImage.stopAnimating()
+                } else {
+                    let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
+                    cell.modeImage.animationImages = animationImages
+                    cell.modeImage.animationDuration = NSTimeInterval(fanSpeed)
+                    cell.modeImage.animationRepeatCount = 0
+                    cell.modeImage.startAnimating()
+                }
+            default:
+                cell.modeImage.image = UIImage(named: "fanauto")
+                cell.modeImage.stopAnimating()
+            }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5

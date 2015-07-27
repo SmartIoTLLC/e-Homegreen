@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -32,6 +32,7 @@
                 <outlet property="btnHigh" destination="UDO-I8-vEE" id="e76-VD-kRt"/>
                 <outlet property="btnLow" destination="vSv-Q3-65i" id="dgj-2o-1m5"/>
                 <outlet property="btnMed" destination="41D-1M-c0S" id="UGk-rQ-JBC"/>
+                <outlet property="lblClimateName" destination="NWb-de-Mc6" id="4Se-uJ-m2K"/>
                 <outlet property="lblConsumption" destination="ojz-Er-zmH" id="U0G-gJ-D5H"/>
                 <outlet property="lblCool" destination="86q-FE-we1" id="9lA-Qd-Cad"/>
                 <outlet property="lblHeat" destination="zH1-nB-6s6" id="xLD-9f-ez8"/>
@@ -96,7 +97,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="btnModePressed:" destination="-1" eventType="touchUpInside" id="Zfk-qg-DGF"/>
+                                        <action selector="btnCoolPressed:" destination="-1" eventType="touchUpInside" id="Qiw-iD-79M"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAn-Ry-8Ap">
@@ -128,7 +129,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="test:" destination="-1" eventType="touchUpInside" id="mn8-ZY-fjw"/>
+                                        <action selector="btnHeatPressed:" destination="-1" eventType="touchUpInside" id="6ld-I1-iK7"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nmE-Xh-83l">

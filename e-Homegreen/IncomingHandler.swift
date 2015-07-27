@@ -132,26 +132,27 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 var channel = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[8+2*(channel-1)])
-                if let mode = DeviceInfo().setMode[Int(byteArray[9+2*(channel-1)])], let modeState = DeviceInfo().modeState[Int(byteArray[10+2*(channel-1)])], let speed = DeviceInfo().setSpeed[Int(byteArray[11+2*(channel-1)])], let speedState = DeviceInfo().modeState[Int(byteArray[12+2*(channel-1)])] {
-                    devices[i].mode = DeviceInfo().setMode[Int(byteArray[9+2*(channel-1)])]!
-                    devices[i].modeState = DeviceInfo().modeState[Int(byteArray[10+2*(channel-1)])]!
-                    devices[i].speed = DeviceInfo().setSpeed[Int(byteArray[11+2*(channel-1)])]!
-                    devices[i].speedState = DeviceInfo().modeState[Int(byteArray[12+2*(channel-1)])]!
+                devices[i].currentValue = Int(byteArray[8+13*(channel-1)])
+                if let mode = DeviceInfo().setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo().modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo().setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo().speedState[Int(byteArray[12+13*(channel-1)])] {
+                    devices[i].mode = mode
+                    devices[i].modeState = modeState
+                    devices[i].speed = speed
+                    devices[i].speedState = speedState
                 } else {
                     devices[i].mode = "AUTO"
                     devices[i].modeState = "Off"
                     devices[i].speed = "AUTO"
                     devices[i].speedState = "Off"
                 }
-                devices[i].coolTemperature = Int(byteArray[13+2*(channel-1)])
-                devices[i].heatTemperature = Int(byteArray[14+2*(channel-1)])
-                devices[i].roomTemperature = Int(byteArray[15+2*(channel-1)])
-                devices[i].humidity = Int(byteArray[16+2*(channel-1)])
-                devices[i].current = Int(byteArray[19+2*(channel-1)]) + Int(byteArray[20+2*(channel-1)])
+                devices[i].coolTemperature = Int(byteArray[13+13*(channel-1)])
+                devices[i].heatTemperature = Int(byteArray[14+13*(channel-1)])
+                devices[i].roomTemperature = Int(byteArray[15+13*(channel-1)])
+                devices[i].humidity = Int(byteArray[16+13*(channel-1)])
+                devices[i].current = Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])
             }
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
 
