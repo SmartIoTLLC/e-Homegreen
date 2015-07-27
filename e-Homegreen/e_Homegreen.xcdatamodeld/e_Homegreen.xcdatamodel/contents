@@ -16,6 +16,7 @@
     </entity>
     <entity name="Gateway" representedClassName="e_Homegreen.Gateway" syncable="YES">
         <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="addressThree" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="gatewayDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
@@ -32,7 +33,7 @@
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="225"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="210"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="225"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
     </elements>
 </model>

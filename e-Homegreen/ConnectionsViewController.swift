@@ -160,9 +160,11 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             cell.lblGatewayName.text = gateways[indexPath.row].name
-            cell.lblGatewayDescription.text = gateways[indexPath.row].description
-            cell.lblGatewayDeviceNumber.text = "\(gateways.count) device(s)"
-            println("Trurned on: \(gateways[indexPath.row].turnedOn.boolValue)")
+            cell.lblGatewayDescription.text = gateways[indexPath.row].gatewayDescription
+            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.row].device.count) device(s)"
+            cell.add1.text = "\(gateways[indexPath.row].addressOne)"
+            cell.add2.text = "\(gateways[indexPath.row].addressTwo)"
+            cell.add3.text = "\(gateways[indexPath.row].addressThree)"
             cell.switchGatewayState.on = gateways[indexPath.row].turnedOn.boolValue
             cell.switchGatewayState.tag = indexPath.row
             cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)

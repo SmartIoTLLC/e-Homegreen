@@ -145,6 +145,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         if gatewayIndex == -1 {
             addressFirst.text = "\(1)"
             addressSecond.text = "\(0)"
+            addressThird.text = "\(0)"
+            txtDescription.text = ""
         } else {
             fetchGateways()
             ipHost.text = "\(gateways[gatewayIndex].remoteIp)"
@@ -154,6 +156,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             localSSID.text = "\(gateways[gatewayIndex].ssid)"
             addressFirst.text = "\(gateways[gatewayIndex].addressOne)"
             addressSecond.text = "\(gateways[gatewayIndex].addressTwo)"
+            addressThird.text = "\(gateways[gatewayIndex].addressThree)"
+            txtDescription.text = "\(gateways[gatewayIndex].gatewayDescription)"
             name.text = "\(gateways[gatewayIndex].name)"
         }
         
@@ -239,10 +243,13 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                     gateway.ssid = localSSID.text
                     gateway.addressOne = addressFirst.text.toInt()!
                     gateway.addressTwo = addressSecond.text.toInt()!
+                    gateway.addressThree = addressThird.text.toInt()!
+                    gateway.gatewayDescription = txtDescription.text
                     gateway.turnedOn = true
                     saveChanges()
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
+                    gateways[gatewayIndex].name = name.text
                     gateways[gatewayIndex].remoteIp = ipHost.text
                     gateways[gatewayIndex].remotePort = port.text.toInt()!
                     gateways[gatewayIndex].localIp = localIP.text
@@ -250,7 +257,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                     gateways[gatewayIndex].ssid = localSSID.text
                     gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
                     gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
-                    gateways[gatewayIndex].name = name.text
+                    gateways[gatewayIndex].addressThree = addressThird.text.toInt()!
+                    gateways[gatewayIndex].gatewayDescription = txtDescription.text
                     saveChanges()
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
