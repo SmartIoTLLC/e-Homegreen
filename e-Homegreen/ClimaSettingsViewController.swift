@@ -129,7 +129,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         lblConsumption.text = "\(device.current) A"
         lblHumadity.text = "\(device.humidity) %"
-        lblTemperature.text = "\(device.temperature) C"
+        lblTemperature.text = "\(device.roomTemperature) C"
         
         lblClimateName.text = "\(device.name)"
     }
