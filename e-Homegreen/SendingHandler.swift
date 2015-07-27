@@ -21,8 +21,8 @@ class SendingHandler: NSObject {
                 if appDel.inOutSockets != [] {
                     var i:Int
                     for i in 0...appDel.inOutSockets.count-1 {
-                        if appDel.inOutSockets[i].ip == gateway.localIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.localPort)) {
-                            appDel.inOutSockets[i].sendByte(byteArray)
+                        if appDel.inOutSockets[i].port == UInt16(Int(gateway.localPort)) {
+                            appDel.inOutSockets[i].sendByte(gateway.localIp, arrayByte:byteArray)
                         }
                     }
                 }
@@ -31,8 +31,8 @@ class SendingHandler: NSObject {
                 if appDel.inOutSockets != [] {
                     var i:Int
                     for i in 0...appDel.inOutSockets.count-1 {
-                        if appDel.inOutSockets[i].ip == gateway.remoteIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-                            appDel.inOutSockets[i].sendByte(byteArray)
+                        if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
+                            appDel.inOutSockets[i].sendByte(gateway.remoteIp, arrayByte:byteArray)
                         }
                     }
                 }
@@ -42,8 +42,8 @@ class SendingHandler: NSObject {
             if appDel.inOutSockets != [] {
                 var i:Int
                 for i in 0...appDel.inOutSockets.count-1 {
-                    if appDel.inOutSockets[i].ip == gateway.remoteIp && appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-                        appDel.inOutSockets[i].sendByte(byteArray)
+                    if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
+                        appDel.inOutSockets[i].sendByte(gateway.remoteIp, arrayByte:byteArray)
                     }
                 }
             }

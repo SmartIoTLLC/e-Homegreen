@@ -10,18 +10,14 @@ import UIKit
 
 class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
-    var ip = ""
+    var ip = "255.255.255.255"
     var port:UInt16 = 0
     var socket:GCDAsyncUdpSocket!
     
-    init (ip:String, port:UInt16) {
+    init (port:UInt16) {
         super.init()
-//        setupIpAndPort(ip, port: port)
-        self.ip = ip
         self.port = port
         self.setupConnection()
-    }
-    func setupIpAndPort (ip:String, port:UInt16) {
     }
     func setupConnection(){
         var error : NSError?
@@ -74,9 +70,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         let data = message.dataUsingEncoding(NSUTF8StringEncoding)
         socket.sendData(data, withTimeout: -1, tag: 0)
     }
-    func sendByte(arrayByte: [UInt8]) {
-        //        let data = NSData(bytes: arrayByte, length: arrayByte.count)
-        //        socket.sendData(data, withTimeout: -1, tag: 0)
+    func sendByte(ip:String, arrayByte: [UInt8]) {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
         socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 0)
     }

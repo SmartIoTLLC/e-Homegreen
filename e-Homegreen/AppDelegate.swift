@@ -108,9 +108,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func establishAllConnections () {
         disconnectAllConnections()
         fetchGateways()
-        for gateway in gateways {
-            inOutSockets.append(InOutSocket(ip: gateway.localIp, port: UInt16(Int(gateway.localPort))))
-            inOutSockets.append(InOutSocket(ip: gateway.remoteIp, port: UInt16(Int(gateway.remotePort))))
+        if gateways != [] {
+            for var i = 0; i < gateways.count; i++ {
+                if inOutSockets != [] {
+                    var foundRemote:Bool = false
+                    var foundLocal:Bool = false
+                    for var j = 0; j < inOutSockets.count; j++ {
+                        if inOutSockets[j].port == UInt16(Int(gateways[i].localPort)) {
+                            foundLocal = true
+                        }
+                        if inOutSockets[j].port == UInt16(Int(gateways[i].remotePort)) {
+                            foundRemote = true
+                        }
+                    }
+                    if !foundLocal {
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
+                    }
+                    if !foundRemote {
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+                    }
+                } else {
+                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
+                    if inOutSockets[0].port != UInt16(Int(gateways[i].remotePort)) {
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+                    }
+                }
+            }
         }
     }
     func applicationDidBecomeActive(application: UIApplication) {
