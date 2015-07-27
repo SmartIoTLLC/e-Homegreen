@@ -61,6 +61,7 @@
 		E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBE1B42FC0B00E48454 /* NSCalendar+FSExtension.m */; };
 		E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */; };
 		E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */; };
+		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
 		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC679C1B457C0E00EA6543 /* weather-broken.png */; };
@@ -181,6 +182,7 @@
 		E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FSExtension.m"; sourceTree = "<group>"; };
 		E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
 		E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
+		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
 				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
+				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
+				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

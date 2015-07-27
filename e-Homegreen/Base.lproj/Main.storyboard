@@ -43,6 +43,13 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -312,6 +319,198 @@
             </objects>
             <point key="canvasLocation" x="-822" y="1511"/>
         </scene>
+        <!--Scan View Controller-->
+        <scene sceneID="o6F-QH-2aN">
+            <objects>
+                <viewController id="XzH-Hh-Erq" customClass="ScanViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ATk-0s-peT"/>
+                        <viewControllerLayoutGuide type="bottom" id="RJR-Cs-UTh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hwe-za-lWG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qX5-l3-CHR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpZ-cM-AgT">
+                                        <rect key="frame" x="8" y="25" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="35" id="ArT-bS-Jfi"/>
+                                            <constraint firstAttribute="height" constant="35" id="Hgi-sQ-tag"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="back">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backButton:" destination="rly-Zt-L69" eventType="touchUpInside" id="30B-aZ-OZk"/>
+                                            <action selector="backButton:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="R3s-2Z-3Vo"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5q-Xe-NCA">
+                                        <rect key="frame" x="140" y="31" width="40" height="23"/>
+                                        <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="c5q-Xe-NCA" secondAttribute="centerX" id="GeV-Do-HN8"/>
+                                    <constraint firstAttribute="bottom" secondItem="c5q-Xe-NCA" secondAttribute="bottom" constant="10" id="RLL-LY-eE8"/>
+                                    <constraint firstAttribute="height" constant="64" id="Vat-To-Vzi"/>
+                                    <constraint firstItem="c5q-Xe-NCA" firstAttribute="centerY" secondItem="zpZ-cM-AgT" secondAttribute="centerY" id="YQq-3m-dgE"/>
+                                    <constraint firstItem="zpZ-cM-AgT" firstAttribute="leading" secondItem="qX5-l3-CHR" secondAttribute="leading" constant="8" id="icM-kY-ich"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="3o8-aT-WUN">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JdT-oO-ph3">
+                                <rect key="frame" x="8" y="124" width="95" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="u0b-E2-Bb9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                <state key="normal" title="FIND DEVICES">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="findDevice:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="8nb-8t-LHv"/>
+                                    <action selector="findDevices:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="N7b-wq-Qv9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PSQ-08-Zdh">
+                                <rect key="frame" x="115" y="124" width="94" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                <state key="normal" title="FIND NAMES">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnFindNames:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="21M-q2-dxP"/>
+                                    <action selector="findNames:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="1rO-eL-ENH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uDp-ov-yzm">
+                                <rect key="frame" x="217" y="124" width="95" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                <state key="normal" title="DELETE ALL">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnDeleteAll:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="I38-Ko-odb"/>
+                                    <action selector="deleteAll:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="8cS-Qd-wL6"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Range:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wky-mW-8Rn">
+                                <rect key="frame" x="8" y="78" width="77" height="21"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bs-kZ-ILH">
+                                <rect key="frame" x="212" y="78" width="18" height="21"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D5h-E6-Z7C">
+                                <rect key="frame" x="127" y="74" width="75" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lZG-Dt-XAD">
+                                <rect key="frame" x="240" y="74" width="74" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hxT-en-wQY">
+                                <rect key="frame" x="0.0" y="164" width="320" height="404"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="scanCell" id="Kse-PG-vvA" customClass="ScanCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kse-PG-vvA" id="cHv-ZK-Pza">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iQn-4Z-32z">
+                                                    <rect key="frame" x="16" y="11" width="288" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="iQn-4Z-32z" secondAttribute="trailing" constant="8" id="BCf-M7-qcq"/>
+                                                <constraint firstAttribute="centerY" secondItem="iQn-4Z-32z" secondAttribute="centerY" id="Hrq-gQ-Wo0"/>
+                                                <constraint firstItem="iQn-4Z-32z" firstAttribute="leading" secondItem="cHv-ZK-Pza" secondAttribute="leadingMargin" constant="8" id="w1V-7a-gN3"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="lblDesc" destination="iQn-4Z-32z" id="Tms-dI-Dwr"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="XzH-Hh-Erq" id="KIp-wD-l9V"/>
+                                    <outlet property="delegate" destination="XzH-Hh-Erq" id="MJW-0K-sGw"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hxT-en-wQY" firstAttribute="top" secondItem="uDp-ov-yzm" secondAttribute="bottom" constant="10" id="56r-AB-FqZ"/>
+                            <constraint firstItem="3o8-aT-WUN" firstAttribute="top" secondItem="qX5-l3-CHR" secondAttribute="bottom" id="7BI-XH-Ic4"/>
+                            <constraint firstItem="hxT-en-wQY" firstAttribute="leading" secondItem="hwe-za-lWG" secondAttribute="leading" id="COZ-WX-5Df"/>
+                            <constraint firstItem="PSQ-08-Zdh" firstAttribute="height" secondItem="JdT-oO-ph3" secondAttribute="height" id="DQ1-OG-ggI"/>
+                            <constraint firstItem="PSQ-08-Zdh" firstAttribute="centerY" secondItem="JdT-oO-ph3" secondAttribute="centerY" id="DQF-rQ-3Xy"/>
+                            <constraint firstAttribute="trailing" secondItem="lZG-Dt-XAD" secondAttribute="trailing" constant="6" id="Dz1-gZ-X2O"/>
+                            <constraint firstItem="D5h-E6-Z7C" firstAttribute="leading" secondItem="Wky-mW-8Rn" secondAttribute="trailing" constant="42" id="FMK-8o-spn"/>
+                            <constraint firstItem="JdT-oO-ph3" firstAttribute="width" secondItem="PSQ-08-Zdh" secondAttribute="width" constant="1" id="Gq0-4d-NSL"/>
+                            <constraint firstItem="JdT-oO-ph3" firstAttribute="leading" secondItem="Wky-mW-8Rn" secondAttribute="leading" id="IC2-kY-3k9"/>
+                            <constraint firstItem="3o8-aT-WUN" firstAttribute="leading" secondItem="hwe-za-lWG" secondAttribute="leading" id="Iyu-EN-Mfr"/>
+                            <constraint firstItem="uDp-ov-yzm" firstAttribute="leading" secondItem="PSQ-08-Zdh" secondAttribute="trailing" constant="8" id="JCf-Xu-B3D"/>
+                            <constraint firstAttribute="trailing" secondItem="qX5-l3-CHR" secondAttribute="trailing" id="O8P-VE-SxM"/>
+                            <constraint firstAttribute="trailing" secondItem="3o8-aT-WUN" secondAttribute="trailing" id="P3G-p8-vfm"/>
+                            <constraint firstItem="RJR-Cs-UTh" firstAttribute="top" secondItem="hxT-en-wQY" secondAttribute="bottom" id="S01-89-1ci"/>
+                            <constraint firstItem="uDp-ov-yzm" firstAttribute="trailing" secondItem="lZG-Dt-XAD" secondAttribute="trailing" constant="-2" id="URT-o4-LUF"/>
+                            <constraint firstItem="JdT-oO-ph3" firstAttribute="top" secondItem="Wky-mW-8Rn" secondAttribute="bottom" constant="25" id="VQo-xn-xSS"/>
+                            <constraint firstItem="RJR-Cs-UTh" firstAttribute="top" secondItem="3o8-aT-WUN" secondAttribute="bottom" id="X4U-Fj-ohO"/>
+                            <constraint firstItem="0bs-kZ-ILH" firstAttribute="leading" secondItem="D5h-E6-Z7C" secondAttribute="trailing" constant="10" id="Zfm-pa-1wQ"/>
+                            <constraint firstItem="qX5-l3-CHR" firstAttribute="top" secondItem="ATk-0s-peT" secondAttribute="bottom" constant="-20" id="cEd-Y5-e3G"/>
+                            <constraint firstItem="uDp-ov-yzm" firstAttribute="height" secondItem="PSQ-08-Zdh" secondAttribute="height" id="cZL-PO-spl"/>
+                            <constraint firstItem="Wky-mW-8Rn" firstAttribute="leading" secondItem="hwe-za-lWG" secondAttribute="leading" constant="8" id="hkW-v7-bVf"/>
+                            <constraint firstItem="lZG-Dt-XAD" firstAttribute="centerY" secondItem="D5h-E6-Z7C" secondAttribute="centerY" id="i4M-te-dib"/>
+                            <constraint firstItem="qX5-l3-CHR" firstAttribute="leading" secondItem="hwe-za-lWG" secondAttribute="leading" id="lXS-oI-B4v"/>
+                            <constraint firstItem="PSQ-08-Zdh" firstAttribute="width" secondItem="uDp-ov-yzm" secondAttribute="width" constant="-1" id="lZj-kC-WdM"/>
+                            <constraint firstItem="lZG-Dt-XAD" firstAttribute="leading" secondItem="0bs-kZ-ILH" secondAttribute="trailing" constant="10" id="mMZ-Ht-5S7"/>
+                            <constraint firstAttribute="trailing" secondItem="hxT-en-wQY" secondAttribute="trailing" id="mPz-9o-v6V"/>
+                            <constraint firstItem="Wky-mW-8Rn" firstAttribute="centerY" secondItem="D5h-E6-Z7C" secondAttribute="centerY" id="n29-iA-f5m"/>
+                            <constraint firstItem="lZG-Dt-XAD" firstAttribute="width" secondItem="D5h-E6-Z7C" secondAttribute="width" constant="-1" id="nxD-9w-s1i"/>
+                            <constraint firstItem="PSQ-08-Zdh" firstAttribute="leading" secondItem="JdT-oO-ph3" secondAttribute="trailing" constant="12" id="qZa-oN-4GQ"/>
+                            <constraint firstItem="uDp-ov-yzm" firstAttribute="centerY" secondItem="PSQ-08-Zdh" secondAttribute="centerY" id="x6B-If-Uvn"/>
+                            <constraint firstItem="3o8-aT-WUN" firstAttribute="top" secondItem="Wky-mW-8Rn" secondAttribute="bottom" constant="-35" id="xhR-zC-dYb"/>
+                            <constraint firstItem="lZG-Dt-XAD" firstAttribute="centerY" secondItem="0bs-kZ-ILH" secondAttribute="centerY" id="zNE-Tn-gdq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="rangeFrom" destination="D5h-E6-Z7C" id="2hq-KG-d9R"/>
+                        <outlet property="rangeTo" destination="lZG-Dt-XAD" id="NIZ-dL-4kl"/>
+                        <outlet property="topView" destination="qX5-l3-CHR" id="ilp-lK-HCi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XL4-K0-BGx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-885" y="800"/>
+        </scene>
         <!--Connections View Controller-->
         <scene sceneID="0sd-HN-ROl">
             <objects>
@@ -507,11 +706,12 @@
                     <connections>
                         <outlet property="gatewayTableView" destination="TdL-Ns-BWb" id="VeO-9Z-fvD"/>
                         <outlet property="topView" destination="M4J-Io-dv3" id="b6g-rf-xQj"/>
+                        <segue destination="XzH-Hh-Erq" kind="custom" identifier="scan" id="OGd-aL-yr3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ww-Jf-3wK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-484" y="801"/>
+            <point key="canvasLocation" x="-522" y="800"/>
         </scene>
         <!--Database View Controller-->
         <scene sceneID="18n-VT-qQT">
@@ -663,23 +863,6 @@
                                     <action selector="btnChooseGateway:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="QPf-pY-H98"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Range:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWw-pp-yVt">
-                                <rect key="frame" x="8" y="166" width="77" height="21"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWZ-9U-BwS">
-                                <rect key="frame" x="210" y="166" width="18" height="21"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mfK-TC-gDr">
-                                <rect key="frame" x="125" y="162" width="75" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q4F-JN-DgT">
                                 <rect key="frame" x="125" y="80" width="187" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -700,6 +883,23 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KTa-hW-qJ5">
                                 <rect key="frame" x="238" y="162" width="74" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Range:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWw-pp-yVt">
+                                <rect key="frame" x="8" y="166" width="77" height="21"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWZ-9U-BwS">
+                                <rect key="frame" x="210" y="166" width="18" height="21"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mfK-TC-gDr">
+                                <rect key="frame" x="125" y="162" width="75" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
@@ -1292,24 +1492,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NxN-BS-3a7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3139" y="1479"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="COs-Ls-YEj">
-            <objects>
-                <viewController id="jVf-8S-Age" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jMf-2V-BDC"/>
-                        <viewControllerLayoutGuide type="bottom" id="UaI-1O-y7k"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="toc-ns-jO8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ttP-cd-5JO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1099" y="769"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="c4M-x8-V1J">

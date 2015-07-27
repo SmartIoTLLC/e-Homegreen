@@ -181,6 +181,7 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.add2.layer.borderColor = UIColor.grayColor().CGColor
             cell.add3.layer.borderColor = UIColor.grayColor().CGColor
             cell.buttonGatewayScan.layer.cornerRadius = 5
+            cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
             
             return cell
         }
@@ -192,6 +193,11 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gateways.count
     }
+    
+    func scanDevice(button:UIButton){
+        performSegueWithIdentifier("scan", sender: self)
+    }
+    
 }
 
 extension ConnectionsViewController: UITableViewDelegate {
