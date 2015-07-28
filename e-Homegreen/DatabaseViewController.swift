@@ -202,17 +202,28 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             var number:Int = 1
             if idRangeFrom.text != "" && idRangeFrom.text != "" {
                 if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
-                    loader.showActivityIndicator(self.view)
-                    for var i = numberOne; i <= numberTwo; ++i {
-                        var number:NSTimeInterval = NSTimeInterval((numberOne-numberTwo+i))
-                        NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: i, repeats: false)
+                    if numberTwo >= numberOne {
+                        loader.showActivityIndicator(self.view)
+                        var dictionary:[Int:Int] = [:]
+                        for i in 0...(numberTwo-numberOne) {
+                            dictionary[i] = numberOne + i
+                        }
+                        for i in 0...(numberTwo-numberOne) {
+                            var calculation:NSNumber = i
+                            var number:NSTimeInterval = NSTimeInterval(calculation.doubleValue)
+                            println("   \(number)    ")
+                            NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: dictionary[i]!, repeats: false)
+                        }
+                        for var i = numberOne; i <= numberTwo; ++i {
+                        }
+                        NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
                     }
-                    NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
                 }
             }
         }
     }
     func searchIds(timer:NSTimer) {
+        println("!!!   \(timer.userInfo)    !!!")
         if let deviceNumber = timer.userInfo as? Int {
             var address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
             SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateways[choosedGatewayIndex])

@@ -78,8 +78,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     func fetchGateways () {
         var fetchRequest = NSFetchRequest(entityName: "Gateway")
-        var sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
+        var sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
         if let results = fetResults {
             gateways = results
@@ -93,8 +93,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
         backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
-        
-        
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
     @IBAction func btnSaveConnection(sender: AnyObject) {
@@ -164,8 +162,12 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     func changeValue(sender:UISwitch){
         if sender.on == true {
             gateways[sender.tag].turnedOn = true
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }else {
             gateways[sender.tag].turnedOn = false
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
         
     }
@@ -179,6 +181,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
 }
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        println(indexPath.section)
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             
             let gradientLayer = CAGradientLayer()
@@ -189,15 +192,17 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.backgroundView = UIView()
             cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
             cell.layer.cornerRadius = 5
-            
-            cell.lblGatewayName.text = gateways[indexPath.row].name
-            cell.lblGatewayDescription.text = gateways[indexPath.row].gatewayDescription
-            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.row].device.count) device(s)"
-            cell.add1.text = "\(gateways[indexPath.row].addressOne)"
-            cell.add2.text = "\(gateways[indexPath.row].addressTwo)"
-            cell.add3.text = "\(gateways[indexPath.row].addressThree)"
-            cell.switchGatewayState.on = gateways[indexPath.row].turnedOn.boolValue
-            cell.switchGatewayState.tag = indexPath.row
+            println(indexPath.section)
+            println(gateways[indexPath.section].name)
+            cell.lblGatewayName.text = gateways[indexPath.section].name
+            cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
+            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].device.count) device(s)"
+            cell.add1.text = "\(gateways[indexPath.section].addressOne)"
+            cell.add2.text = "\(gateways[indexPath.section].addressTwo)"
+            cell.add3.text = "\(gateways[indexPath.section].addressThree)"
+            println("!\(gateways[indexPath.section].turnedOn.boolValue)!")
+            cell.switchGatewayState.on = gateways[indexPath.section].turnedOn.boolValue
+            cell.switchGatewayState.tag = indexPath.section
             cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             cell.add1.layer.cornerRadius = 3
             cell.add2.layer.cornerRadius = 3
@@ -246,7 +251,7 @@ extension ConnectionsViewController: UITableViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
         
         dispatch_async(dispatch_get_main_queue(),{
-            self.showConnectionSettings(indexPath.row)
+            self.showConnectionSettings(indexPath.section)
         })
     }
     
@@ -274,7 +279,7 @@ extension ConnectionsViewController: UITableViewDelegate {
         
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            appDel.managedObjectContext?.deleteObject(gateways[indexPath.row])
+            appDel.managedObjectContext?.deleteObject(gateways[indexPath.section])
             saveChanges()
             fetchGateways()
         }

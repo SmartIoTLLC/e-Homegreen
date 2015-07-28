@@ -67,9 +67,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
         var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             devices = results
+            for item in devices {
+                println("!\(item.gateway.turnedOn)!")
+            }
         } else {
         }
     }
@@ -425,16 +430,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
             var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
-//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag].address)), channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00))
         }
     }
     func refreshDeviceList() {
         if !deviceInControlMode {
             updateDeviceList()
-            for item in devices {
-                println("\(item.name)")
-            }
-            println("USLO JE OVDE: \(devices.count)")
             self.deviceCollectionView.reloadData()
         }
     }
@@ -462,17 +462,14 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
 extension DevicesViewController: UICollectionViewDataSource {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        println("BUA HA HA HA \(devices.count)")
         return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        println("BUA HA HA HA \(devices.count)")
         return devices.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        println("Usao je u: \(indexPath.row)")
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
                 if cell.gradientLayer == nil {
