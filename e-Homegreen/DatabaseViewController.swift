@@ -142,7 +142,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             popoverController.permittedArrowDirections = .Any
             popoverController.sourceView = sender as UIView
             popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.whiteColor()
+            popoverController.backgroundColor = UIColor.lightGrayColor()
             self.presentViewController(popoverVC, animated: true, completion: nil)
         }
     }

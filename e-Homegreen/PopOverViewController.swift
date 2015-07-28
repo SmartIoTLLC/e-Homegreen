@@ -31,6 +31,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        table.layer.cornerRadius = 8
+        
+        
         
         // Do any additional setup after loading the view.
     }

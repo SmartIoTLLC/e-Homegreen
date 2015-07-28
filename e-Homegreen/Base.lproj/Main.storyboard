@@ -1680,8 +1680,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NET-Zg-zsD">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <tableView clipsSubviews="YES" alpha="0.64999999999999969" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NET-Zg-zsD">
+                                <rect key="frame" x="5" y="5" width="310" height="558"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pullCell" id="mhe-qN-MGa" customClass="PullDownViewCell" customModule="e_Homegreen" customModuleProvider="target">
@@ -1690,7 +1690,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdr-T5-eYa">
-                                                    <rect key="frame" x="8" y="14" width="312" height="21"/>
+                                                    <rect key="frame" x="8" y="14" width="302" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1713,12 +1713,12 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="NET-Zg-zsD" firstAttribute="leading" secondItem="KvG-VU-eYB" secondAttribute="leading" id="2QF-q6-Om0"/>
-                            <constraint firstAttribute="trailing" secondItem="NET-Zg-zsD" secondAttribute="trailing" id="GlK-BN-lmh"/>
-                            <constraint firstItem="NET-Zg-zsD" firstAttribute="top" secondItem="TOo-w4-u7v" secondAttribute="bottom" id="S91-vD-CdL"/>
-                            <constraint firstItem="DfZ-LE-zkb" firstAttribute="top" secondItem="NET-Zg-zsD" secondAttribute="bottom" id="b73-ve-exw"/>
+                            <constraint firstItem="NET-Zg-zsD" firstAttribute="leading" secondItem="KvG-VU-eYB" secondAttribute="leading" constant="5" id="2QF-q6-Om0"/>
+                            <constraint firstAttribute="trailing" secondItem="NET-Zg-zsD" secondAttribute="trailing" constant="5" id="GlK-BN-lmh"/>
+                            <constraint firstItem="NET-Zg-zsD" firstAttribute="top" secondItem="TOo-w4-u7v" secondAttribute="bottom" constant="5" id="S91-vD-CdL"/>
+                            <constraint firstItem="DfZ-LE-zkb" firstAttribute="top" secondItem="NET-Zg-zsD" secondAttribute="bottom" constant="5" id="b73-ve-exw"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -1729,7 +1729,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-39-ETr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1167" y="700"/>
+            <point key="canvasLocation" x="1225" y="678"/>
         </scene>
         <!--Menu Settings View Controller-->
         <scene sceneID="W2z-Xi-ZB3">
