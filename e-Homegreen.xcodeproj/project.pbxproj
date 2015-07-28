@@ -13,6 +13,7 @@
 		736265E31B4A483E0078C11D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Functions.swift */; };
 		736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E41B4A48F90078C11D /* DeviceOld.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
+		736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA631B6759EA00FD7544 /* Gateway.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
 		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
 		736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D51B3AE85F003A6A02 /* TimersViewController.swift */; };
@@ -50,7 +51,6 @@
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
-		73F0F45D1B661C1C008C7055 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F0F45C1B661C1C008C7055 /* Gateway.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
@@ -124,6 +124,7 @@
 		736265E21B4A483E0078C11D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		736265E41B4A48F90078C11D /* DeviceOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceOld.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
+		736CBA631B6759EA00FD7544 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		736F17D31B3AE850003A6A02 /* SequencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesViewController.swift; sourceTree = "<group>"; };
 		736F17D51B3AE85F003A6A02 /* TimersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimersViewController.swift; sourceTree = "<group>"; };
@@ -165,7 +166,6 @@
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		73F0F45C1B661C1C008C7055 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,8 +297,8 @@
 				73E427B71B4D0AF50083A747 /* Model.swift */,
 				736265E41B4A48F90078C11D /* DeviceOld.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
-				73F0F45C1B661C1C008C7055 /* Gateway.swift */,
 				73E28EE21B666AE70016CD77 /* Device.swift */,
+				736CBA631B6759EA00FD7544 /* Gateway.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -733,6 +733,7 @@
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
+				736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73E28EE31B666AE70016CD77 /* Device.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
@@ -756,7 +757,6 @@
 				736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
-				73F0F45D1B661C1C008C7055 /* Gateway.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,

@@ -67,6 +67,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             println("Nije htela...")
         }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+            for item in self.gateways {
+                item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
+            }
+            self.saveContext()
+            dispatch_async(dispatch_get_main_queue(), {
+            })
+        })
+    }
+    func returnIpAddress (url:String) -> String {
+        let host = CFHostCreateWithName(nil,url).takeRetainedValue();
+        CFHostStartInfoResolution(host, .Addresses, nil);
+        var success: Boolean = 0;
+        if let test = CFHostGetAddressing(host, &success) {
+            let addresses = test.takeUnretainedValue() as NSArray
+            if (addresses.count > 0){
+                let theAddress = addresses[0] as! NSData;
+                var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
+                if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
+                    &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
+                        if let numAddress = String.fromCString(hostname) {
+                            println(numAddress)
+                            return numAddress
+                        }
+                }
+            }
+        }
+        return "255.255.255.255"
     }
     func findLocalConnectionToConnect () {
         if let ssid = UIDevice.currentDevice().SSID {

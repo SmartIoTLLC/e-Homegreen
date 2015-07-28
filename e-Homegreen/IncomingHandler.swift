@@ -108,7 +108,7 @@ class IncomingHandler: NSObject {
     func fetchGateways (host:String, port:UInt16) {
         var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "remoteIp == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
+        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
         let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo,predicateThree])
         fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])

@@ -31,6 +31,7 @@
         <attribute name="localPort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteIp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIpInUse" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remotePort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -41,7 +42,7 @@
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="345"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="225"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="240"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
     </elements>
 </model>
