@@ -310,22 +310,22 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAuto.backgroundColor = UIColor.lightTextColor()
     }
     @IBAction func btnCoolPressed(sender: UIButton) {
-        pressedCool()
+//        pressedCool()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
     @IBAction func btnHeatPressed(sender: UIButton) {
-        pressedHeat()
+//        pressedHeat()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
     @IBAction func fan(sender: UIButton) {
-        pressedFan()
+//        pressedFan()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
     @IBAction func auto(sender: UIButton) {
-        pressedAuto()
+//        pressedAuto()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         
@@ -369,22 +369,22 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnAutoFan.backgroundColor = UIColor.lightTextColor()
     }
     @IBAction func low(sender: AnyObject) {
-        pressedLow()
+//        pressedLow()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
     @IBAction func med(sender: AnyObject) {
-        pressedMed()
+//        pressedMed()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
     @IBAction func high(sender: AnyObject) {
-        pressedHigh()
+//        pressedHigh()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
     @IBAction func fanAuto(sender: AnyObject) {
-        pressedAutoSecond()
+//        pressedAutoSecond()
         var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Functions().setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
     }
@@ -396,20 +396,19 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    var checkOnOf = 0x00
+//    var checkOnOf = 0x00
     @IBAction func onOff(sender: AnyObject) {
-        if checkOnOf == 0x00 {
+        if device.currentValue == 0x00 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
-            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
-            checkOnOf = 0xFF
-        } else {
+//            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
+        }
+        if device.currentValue == 0xFF {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
-            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
-            checkOnOf = 0x00
+//            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
         }
-    }    
+    }
     
     init(){
         super.init(nibName: "ClimaSettingsViewController", bundle: nil)
@@ -428,38 +427,30 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     
     
     @IBAction func lowCool(sender: AnyObject) {
-        if coolTemperature >= 18 {
-            coolTemperature -= 1
-            lblCool.text = "\(coolTemperature)"
+        if Int(device.coolTemperature) >= 18 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: device.gateway)
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)-1), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
     
     @IBAction func highCool(sender: AnyObject) {
-        if coolTemperature <= 36 {
-            coolTemperature += 1
-            lblCool.text = "\(coolTemperature)"
+        if Int(device.coolTemperature) <= 36 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: device.gateway)
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+1), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
     
     @IBAction func lowHeat(sender: AnyObject) {
-        if coolTemperature >= 18 {
-            heatTemperature -= 1
-            lblHeat.text = "\(heatTemperature)"
+        if Int(device.heatTemperature) >= 18 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: device.gateway)
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)-1)), gateway: device.gateway)
         }
     }
     
     @IBAction func highHeat(sender: AnyObject) {
-        if coolTemperature <= 36 {
-            heatTemperature += 1
-            lblHeat.text = "\(heatTemperature)"
+        if Int(device.heatTemperature) <= 36 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(coolTemperature), heatingSetPoint: UInt8(heatTemperature)), gateway: device.gateway)
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+1)), gateway: device.gateway)
         }
     }
     
@@ -476,16 +467,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
                 settingsViewConstraint.constant = 420
             }
         }else{
-            
             settingsViewConstraint.constant = 420
-            
         }
     }
-    
-    
-    
-
-
 }
 
 extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {

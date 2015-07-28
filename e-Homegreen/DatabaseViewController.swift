@@ -37,22 +37,12 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         super.init(coder: aDecoder)
         transitioningDelegate = self
     }
-//    var ios:InOutSocket?
+    //    var ios:InOutSocket?
     override func viewDidLoad() {
         super.viewDidLoad()
-//        ios = InOutSocket(ip: "2.50.32.208", port: 5001)
-        //        self.commonConstruct()
-        //        var validUrl = NSURL().URLW
-        //        returnIpAddress("heeej")
-        //        returnIpAddress("e-Home.dyndns.org")
-        //        returnIpAddress("2.50.32.208")
-        //        returnIpAddress("192.168.0.7")
-        //        returnIpAddress("217.165.75.247")
-        //        returnIpAddress("khalifaaljaziri.dyndns.org")
-        //        returnIpAddress("31.215.238.180")
-        //        returnIpAddress("92.96.248.182")
+        println("DIVOVSKI 1")
         btnChooseGateway.setTitle("Choose your connection", forState: UIControlState.Normal)
-        //        returnIpAddress("heeej")
+        
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
@@ -66,13 +56,14 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
+        println("DIVOVSKI 2")
         //        updateDeviceList()
         idRangeFrom.delegate = self
         idRangeTo.delegate = self
         fetchAllGateways()
         idRangeFrom.text = "\(1)"
         idRangeTo.text = "\(1)"
-        
+        println("DIVOVSKI 3")
         // Do any additional setup after loading the view.
     }
     
@@ -88,7 +79,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
     }
     @IBAction func btnFindNames(sender: AnyObject) {
-//        ios?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
+        //        ios?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             var index:Int
             for index in 0...devices.count-1 {
@@ -123,7 +114,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     func clickedOnGatewayWithIndex(index: Int) {
         btnChooseGateway.setTitle("\(gateways[index].name)", forState: UIControlState.Normal)
         choosedGatewayIndex = index
-        refreshDeviceListOnDatabasVC()
+        refreshDeviceList()
         // hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
     }
     @IBAction func btnChooseGateway(sender: UIButton) {
@@ -148,26 +139,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
-    }
-    func returnIpAddress (url:String) -> String {
-        let host = CFHostCreateWithName(nil,url).takeRetainedValue();
-        CFHostStartInfoResolution(host, .Addresses, nil);
-        var success: Boolean = 0;
-        if let test = CFHostGetAddressing(host, &success) {
-            let addresses = test.takeUnretainedValue() as NSArray
-            if (addresses.count > 0){
-                let theAddress = addresses[0] as! NSData;
-                var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
-                if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
-                    &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
-                        if let numAddress = String.fromCString(hostname) {
-                            println(numAddress)
-                            return numAddress
-                        }
-                }
-            }
-        }
-        return ""
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -200,7 +171,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     func refreshDeviceList () {
         if gateways != [] {
-            updateDeviceList()
+            if choosedGatewayIndex != -1 {
+                updateDeviceList()
+            }
             databaseTable.reloadData()
         }
     }

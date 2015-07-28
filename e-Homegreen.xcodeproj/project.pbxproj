@@ -14,6 +14,7 @@
 		736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E41B4A48F90078C11D /* DeviceOld.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
 		736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA631B6759EA00FD7544 /* Gateway.swift */; };
+		736CBA6A1B67913100FD7544 /* TryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA691B67913100FD7544 /* TryCatch.m */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
 		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
 		736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D51B3AE85F003A6A02 /* TimersViewController.swift */; };
@@ -125,6 +126,8 @@
 		736265E41B4A48F90078C11D /* DeviceOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceOld.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
 		736CBA631B6759EA00FD7544 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
+		736CBA681B67913100FD7544 /* TryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TryCatch.h; sourceTree = "<group>"; };
+		736CBA691B67913100FD7544 /* TryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryCatch.m; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		736F17D31B3AE850003A6A02 /* SequencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesViewController.swift; sourceTree = "<group>"; };
 		736F17D51B3AE85F003A6A02 /* TimersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimersViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +302,8 @@
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				73E28EE21B666AE70016CD77 /* Device.swift */,
 				736CBA631B6759EA00FD7544 /* Gateway.swift */,
+				736CBA681B67913100FD7544 /* TryCatch.h */,
+				736CBA691B67913100FD7544 /* TryCatch.m */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -769,6 +774,7 @@
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
+				736CBA6A1B67913100FD7544 /* TryCatch.m in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				736265DF1B4A48200078C11D /* InSocket.swift in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,

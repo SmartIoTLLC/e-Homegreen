@@ -67,14 +67,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             println("Nije htela...")
         }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             for item in self.gateways {
                 item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
             }
-            self.saveContext()
-            dispatch_async(dispatch_get_main_queue(), {
-            })
-        })
+//            dispatch_async(dispatch_get_main_queue(), {
+                self.managedObjectContext!.save(&error)
+//            })
+//        })
     }
     func returnIpAddress (url:String) -> String {
         let host = CFHostCreateWithName(nil,url).takeRetainedValue();
@@ -88,7 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
                     &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
                         if let numAddress = String.fromCString(hostname) {
-                            println(numAddress)
                             return numAddress
                         }
                 }
@@ -106,12 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fetchRequest.sortDescriptors = [sortDescriptor]
             let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
             if let results = fetResults {
-                println("\(ssid)")
                 if results.count != 0 {
                     createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
-                    println("\(ssid)")
                 }
-                println("\(ssid)")
             } else {
                 println("Nije htela...")
             }

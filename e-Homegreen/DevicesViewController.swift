@@ -430,8 +430,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     func refreshDeviceList() {
         if !deviceInControlMode {
-            println("uslo je ovde")
             updateDeviceList()
+            for item in devices {
+                println("\(item.name)")
+            }
+            println("USLO JE OVDE: \(devices.count)")
             self.deviceCollectionView.reloadData()
         }
     }
@@ -446,7 +449,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         if devices[indexPath.row].type == "hvac" {
             showClimaSettings(indexPath.row, devices: devices)
         }
-//        deviceCollectionView.reloadData()
+        deviceCollectionView.reloadData()
         
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -459,15 +462,17 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
 extension DevicesViewController: UICollectionViewDataSource {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        println("BUA HA HA HA \(devices.count)")
         return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        println(devices.count)
+        println("BUA HA HA HA \(devices.count)")
         return devices.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        println("Usao je u: \(indexPath.row)")
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
                 if cell.gradientLayer == nil {
@@ -590,7 +595,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.image.userInteractionEnabled = true
             cell.image.addGestureRecognizer(tap)
             cell.name.text = devices[indexPath.row].name
-            println("\(indexPath.row) - \(devices[indexPath.row].currentValue)")
             if devices[indexPath.row].currentValue == 255 {
                 cell.image.image = UIImage(named: "applianceon")
                 cell.button.setTitle("ON", forState: .Normal)
@@ -601,9 +605,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.button.tag = indexPath.row
-            //            cell.addSubview(myView[indexPath.row])
-            //            cell.addSubview(mySecondView[indexPath.row])
-            //        println("Broj: \(indexPath.row)")
             return cell
             
         } else if devices[indexPath.row].type == "hvac" {
@@ -640,6 +641,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 fanSpeed = 0
             }
             
+            let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
             var modeState = devices[indexPath.row].mode
             switch modeState {
             case "Cool":
@@ -653,7 +655,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                     cell.modeImage.image = UIImage(named: "fanauto")
                     cell.modeImage.stopAnimating()
                 } else {
-                    let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
                     cell.modeImage.animationImages = animationImages
                     cell.modeImage.animationDuration = NSTimeInterval(fanSpeed)
                     cell.modeImage.animationRepeatCount = 0

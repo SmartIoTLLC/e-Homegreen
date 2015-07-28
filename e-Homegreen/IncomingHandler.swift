@@ -29,68 +29,74 @@ class IncomingHandler: NSObject {
         if gateways != [] {
             fetchDevices()
             self.byteArray = byteArrayToHandle
-            // Check if byteArray is correct one (check byte also, which is missing)
-            if byteArray[0] == 0xAA && byteArray[byteArray.count-1] == 0x10 {
-                println("Uslo je u incoming handler.")
-                
-                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                if byteArray[5] == 0xF1 && byteArray[6] == 0x01 {
-                    acknowledgementAboutNewDevices(byteArray)
-                }
-                
-                //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
-                if byteArray[5] == 0xF3 && byteArray[6] == 0x01 {
-                    acknowledgementAboutChannelParametar (byteArray)
+            TryCatch.try({
+                // Check if byteArray is correct one (check byte also, which is missing)
+                if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
+                    println("Uslo je u incoming handler.")
+                    
+                    //  ACKNOWLEDGMENT ABOUT NEW DEVICES
+                    if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
+                        self.acknowledgementAboutNewDevices(self.byteArray)
+                    }
+                    
+                    //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
+                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
+                        self.acknowledgementAboutChannelParametar (self.byteArray)
+                        
+                    }
+                    
+                    //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
+                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
+                        self.ackonowledgementAboutChannelState(self.byteArray)
+                    }
+                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
+                        
+                    }
+                    
+                    //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
+                    //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
+                    //
+                    //            }
+                    
+                    //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
+                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
+                        
+                    }
+                    
+                    //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
+                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
+                        
+                    }
+                    //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
+                    if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
+                        self.ackACname(self.byteArray)
+                    }
+                    //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
+                    if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
+                        self.ackACstatus(self.byteArray)
+                    }
+                    //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
+                    //
+                    //                }
+                    // - Ovo je izgleda u redu
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
+                        self.ackADICmdGetInterfaceStatus(self.byteArray)
+                    }
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+                        
+                    }
+                    
+                    // - Ovo je izgleda u redu
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
+                        self.ackADICmdGetInterfaceName(self.byteArray)
+                    }
                     
                 }
-                
-                //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
-                if byteArray[5] == 0xF3 && byteArray[6] == 0x06 && byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                    ackonowledgementAboutChannelState(byteArray)
-                                    }
-                if byteArray[5] == 0xF3 && byteArray[6] == 0x06 {
-                    
-                }
-                
-                //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
-                //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
-                //
-                //            }
-                
-                //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
-                if byteArray[5] == 0xF3 && byteArray[6] == 0x0C {
-                    
-                }
-                
-                //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
-                if byteArray[5] == 0xF3 && byteArray[6] == 0x10 {
-                    
-                }
-                //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
-                if byteArray[5] == 0xF4 && byteArray[6] == 0x01 {
-                    ackACname(byteArray)
-                }
-                //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
-                if byteArray[5] == 0xF4 && byteArray[6] == 0x03 && byteArray[7] == 0xFF  {
-                    ackACstatus(byteArray)
-                }
-//                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
-//                    
-//                }
-                // - Ovo je izgleda u redu
-                if byteArray[5] == 0xF5 && byteArray[6] == 0x01 && byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                    ackADICmdGetInterfaceStatus(byteArray)
-                }
-                if byteArray[5] == 0xF5 && byteArray[6] == 0x01 {
-                    
-                }
-                
-                // - Ovo je izgleda u redu
-                if byteArray[5] == 0xF5 && byteArray[6] == 0x04 {
-                    ackADICmdGetInterfaceName(byteArray)
-                }
-                
-            }
+                }, catch: {error in
+                    println("NEKI EROR COVECE MOJ, PA STA SE OVO DESAVA SADA, KAZE DA JE OVO: \(error)")
+                }, finally: {
+            
+            })
         }
     }
     func fetchDevices () {
@@ -127,6 +133,16 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
+//    enum AwfulError: ErrorType {
+//        case Bad
+//        case Worse
+//        case Terrible
+//    }
+//    func test () throws {
+//    guard let = gateway else {
+//    throw ""
+//    }
+//    }
     func ackACstatus (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
@@ -330,26 +346,5 @@ class IncomingHandler: NSObject {
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
-    }
-    
-    func returnIpAddress (url:String) -> String {
-        let host = CFHostCreateWithName(nil,url).takeRetainedValue();
-        CFHostStartInfoResolution(host, .Addresses, nil);
-        var success: Boolean = 0;
-        if let test = CFHostGetAddressing(host, &success) {
-            let addresses = test.takeUnretainedValue() as NSArray
-            if (addresses.count > 0){
-                let theAddress = addresses[0] as! NSData;
-                var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
-                if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
-                    &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
-                        if let numAddress = String.fromCString(hostname) {
-                            println(numAddress)
-                            return numAddress
-                        }
-                }
-            }
-        }
-        return ""
     }
 }
