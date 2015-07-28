@@ -180,6 +180,16 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
+            
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
+            gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+            gradientLayer.locations = [0.0, 1.0]
+//            cell.gradientLayer = gradientLayer
+            cell.backgroundView = UIView()
+            cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
+            cell.layer.cornerRadius = 5
+            
             cell.lblGatewayName.text = gateways[indexPath.row].name
             cell.lblGatewayDescription.text = gateways[indexPath.row].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.row].device.count) device(s)"
@@ -198,9 +208,11 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.add1.layer.borderWidth = 0.5
             cell.add2.layer.borderWidth = 0.5
             cell.add3.layer.borderWidth = 0.5
-            cell.add1.layer.borderColor = UIColor.grayColor().CGColor
-            cell.add2.layer.borderColor = UIColor.grayColor().CGColor
-            cell.add3.layer.borderColor = UIColor.grayColor().CGColor
+            cell.add1.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.add2.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.add3.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.buttonGatewayScan.layer.borderWidth = 0.5
+            cell.buttonGatewayScan.layer.borderColor = UIColor.whiteColor().CGColor
             cell.buttonGatewayScan.layer.cornerRadius = 5
             cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
             
