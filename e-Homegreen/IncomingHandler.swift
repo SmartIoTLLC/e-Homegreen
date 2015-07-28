@@ -196,7 +196,7 @@ class IncomingHandler: NSObject {
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 var channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[7+channel])
             }

@@ -540,8 +540,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
-//            cell.curtainName.text = device1.text
-            //            cell.curtainImage.image = device1.image
             cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
             cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
@@ -682,14 +680,95 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
-            
             cell.sensorTitle.text = devices[indexPath.row].name
-            cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+            if devices[indexPath.row].numberOfDevices == 10 {
+                switch devices[indexPath.row].channel {
+                case 1:
+                    cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
+                case 2:
+                    cell.sensorImage.image = UIImage(named: "sensor")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 3:
+                    cell.sensorImage.image = UIImage(named: "sensor")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 4:
+                    cell.sensorImage.image = UIImage(named: "sensor")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)%"
+                case 5:
+                    cell.sensorImage.image = UIImage(named: "sensor_temperature")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
+                case 6:
+                    cell.sensorImage.image = UIImage(named: "sensor_brightness")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue) LUX"
+                case 7:
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "sensor_motion")
+                        cell.sensorState.text = "Motion"
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_idle")
+                        cell.sensorState.text = "Idle"
+                    }
+                case 8:
+                    cell.sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 9:
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "tamper_on")
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "tamper_off")
+                    }
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 10:
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "sensor_noise")
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_no_noise")
+                    }
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                default:
+                    cell.sensorState.text = "..."
+                }
+            }
+            if devices[indexPath.row].numberOfDevices == 6 {
+                switch devices[indexPath.row].channel {
+                case 1:
+                    cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
+                case 2:
+                    cell.sensorImage.image = UIImage(named: "sensor")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 3:
+                    cell.sensorImage.image = UIImage(named: "sensor")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                case 4:
+                    cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
+                case 5:
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "sensor_motion")
+                        cell.sensorState.text = "Motion"
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_idle")
+                        cell.sensorState.text = "Idle"
+                    }
+                case 6:
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "tamper_on")
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "tamper_off")
+                    }
+                    cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
+                default:
+                    cell.sensorState.text = "..."
+                }
+            }
             
             return cell
         }
         else {
-            
+            // OVDE NESTO TREBA DA SE ODRADI ALI MI NIJE BAS NAJJASNIJE STA!!?!?!?!?!?!
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
@@ -706,12 +785,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.accessImage.addGestureRecognizer(tap)
             cell.accessImage.userInteractionEnabled = true
             cell.accessImage.tag = 4
-//            cell.accessLabel.text = device3.text
-//            if device3.open == false {
-//                cell.accessImage.image = UIImage(named: "doorclosed")
-//            }else{
-//                cell.accessImage.image = UIImage(named: "dooropen")
-//            }
+            if devices[indexPath.row].currentValue == 255 {
+                cell.accessImage.image = UIImage(named: "dooropen")
+            } else {
+                cell.accessImage.image = UIImage(named: "doorclosed")
+            }
             return cell
         }
     }

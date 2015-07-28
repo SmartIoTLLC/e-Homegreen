@@ -30,15 +30,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             println("1 \(error)")
             println("U pitanju je \(ip) \(port)")
         }
-        //        if !socket.connectToHost(ip, onPort: port, error: &error) {
-        //            println("1 \(error)")
-        //        }
-        //        if !socket.enableBroadcast(true, error: &error) {
-        //            println("2 \(error)")
-        //        }
-        //        if !socket.joinMulticastGroup(ip, error: &error) {
-        //            println("3 \(error)")
-        //        }
+        
         if !socket.beginReceiving(&error) {
             println("4 \(error)")
             println("U pitanju je \(ip) \(port)")
