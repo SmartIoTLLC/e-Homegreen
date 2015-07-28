@@ -54,6 +54,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n"{
             textView.resignFirstResponder()
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.centarY.constant = 0
+            })
             return false
         }
         return true
@@ -180,32 +183,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         // Dispose of any resources that can be recreated.
     }
     
-//    func keyboardWillShow(notification: NSNotification) {
-//        var info = notification.userInfo!
-//        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-//        if localIP.isFirstResponder(){
-//            if backView.frame.origin.y + localIP.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-//                UIView.animateWithDuration(0.8, animations: { () -> Void in
-//                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height))
-//                })
-//            }
-//        }
-//        if localPort.isFirstResponder(){
-//            if backView.frame.origin.y + localPort.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-//                UIView.animateWithDuration(0.8, animations: { () -> Void in
-//                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height))
-//                })
-//            }
-//        }
-//        if localSSID.isFirstResponder(){
-//            if backView.frame.origin.y + localSSID.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-//                UIView.animateWithDuration(0.8, animations: { () -> Void in
-//                    self.topConstraint.constant = 15 - (self.backView.frame.origin.y + self.localSSID.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height))
-//                })
-//            }
-//        }
-//    }
-    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{
@@ -287,47 +264,56 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         NSNotificationCenter.defaultCenter().postNotificationName("updateGatewayListNotification", object: self, userInfo: nil)
         appDel.establishAllConnections()
     }
+    
     @IBOutlet weak var scrollViewConnection: UIScrollView!
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if txtDescription.isFirstResponder(){
+            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                UIView.animateWithDuration(0.8, animations: { () -> Void in
+                    self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                })
+            }
+        }
         if name.isFirstResponder(){
-            if backView.frame.origin.y + name.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if ipHost.isFirstResponder(){
-            if backView.frame.origin.y + ipHost.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if port.isFirstResponder(){
-            if backView.frame.origin.y + port.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localIP.isFirstResponder(){
-            if backView.frame.origin.y + localIP.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localPort.isFirstResponder(){
-            if backView.frame.origin.y + localPort.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
             }
         }
         if localSSID.isFirstResponder(){
-            if backView.frame.origin.y + localSSID.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+            if backView.frame.origin.y + localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 UIView.animateWithDuration(0.8, animations: { () -> Void in
                     self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
                 })
