@@ -82,6 +82,9 @@ class IncomingHandler: NSObject {
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
                         self.ackADICmdGetInterfaceStatus(self.byteArray)
                     }
+//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 { // OVO NE MOZE OVAKO DA BUDE
+//                        self.ackADICmdGetInterfaceStatus(self.byteArray)
+//                    }
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
                         
                     }
@@ -210,15 +213,21 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
-        fetchDevices()
-        for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                var channel = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[7+channel])
+        TryCatch.try({
+            self.fetchDevices()
+            for var i = 0; i < self.devices.count; i++ {
+                if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
+                    var channel = Int(self.devices[i].channel)
+                    self.devices[i].currentValue = Int(byteArray[7+channel])
+                }
             }
-        }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            self.saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            }, catch: { error in
+                println("NEKI EROR COVECE MOJ, PA STA SE OVO DESAVA SADA, KAZE DA JE OVO: \(error)")
+            }, finally: {
+                
+        })
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
@@ -237,7 +246,8 @@ class IncomingHandler: NSObject {
                 for var i=1 ; i<=channel ; i++ {
                     if channel == 10 && name == "sensor" {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = DeviceInfo().inputInterface10in1[i]!
+//                        device.name = DeviceInfo().inputInterface10in1[i]!
+                        device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
                         //                        device.gateway = Int(byteArray[2])
@@ -254,7 +264,8 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else if channel == 6 && name == "sensor" {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = DeviceInfo().inputInterface6in1[i]!
+//                        device.name = DeviceInfo().inputInterface6in1[i]!
+                        device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
                         //                        device.gateway = Int(byteArray[2])
@@ -271,7 +282,8 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else if name == "hvac" {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = name + " \(i)"
+//                        device.name = name + " \(i)"
+                        device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
                         device.numberOfDevices = channel
@@ -294,7 +306,8 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else {
                         var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = name + " \(i)"
+//                        device.name = name + " \(i)"
+                        device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
                         //                        device.gateway = Int(byteArray[2])

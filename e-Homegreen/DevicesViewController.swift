@@ -72,9 +72,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             devices = results
-            for item in devices {
-                println("!\(item.gateway.turnedOn)!")
-            }
+//            for item in devices {
+//                println("!\(item.gateway.turnedOn)!")
+//            }
         } else {
         }
     }
@@ -94,11 +94,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         var tag = gestureRecognizer.view?.tag
         if devices[tag!].type == "Dimmer" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
+                deviceInControlMode = true
                 timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 timer.invalidate()
-
+                deviceInControlMode = false
                 if devices[tag!].opening == true {
                     devices[tag!].opening = false
                 }else {
@@ -109,11 +110,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
         if devices[tag!].type == "curtainsRS485" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
+                deviceInControlMode = true
                 timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("updateCurtain:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 timer.invalidate()
-                
+                deviceInControlMode = false
                 if devices[tag!].opening == true {
                     devices[tag!].opening = false
                 }else {
@@ -137,13 +139,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag!].currentValue = Int(setDeviceValue)
             var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag!].channel)), value: setDeviceValue, runningTime: 0x00), gateway: devices[tag!].gateway)
-//            outSocket.sendByte()
         }
         // Appliance?
         if devices[tag!].type == "curtainsRelay" || devices[tag!].type == "appliance" {
             var address = [UInt8(Int(devices[tag!].gateway.addressOne)),UInt8(Int(devices[tag!].gateway.addressTwo)),UInt8(Int(devices[tag!].address))]
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag!].gateway)
-//            outSocket.sendByte(Functions().setLightRelayStatus(UInt8(Int(devices[tag!].address)), channel: UInt8(Int(devices[tag!].channel)), value: 0xF1, runningTime: 0x00))
         }
         // Curtain?
         if devices[tag!].type == "curtainsRS485" {
@@ -443,6 +443,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     func refreshDeviceList() {
+        println(deviceInControlMode.boolValue)
         if !deviceInControlMode {
             updateDeviceList()
             self.deviceCollectionView.reloadData()
@@ -478,7 +479,31 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return devices.count
     }
-    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        println("TO 1\(2332)1 OT")
+        if let collectionView = scrollView as? UICollectionView {
+            if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+                for indexPath in indexPaths {
+                    var address = [UInt8(Int(devices[indexPath.row].gateway.addressOne)), UInt8(Int(devices[indexPath.row].gateway.addressTwo)), UInt8(Int(devices[indexPath.row].address))]
+                    if devices[indexPath.row].type == "Dimmer" {
+                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
+                    }
+                    if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
+                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
+                    }
+                    if devices[indexPath.row].type == "hvac" {
+                        SendingHandler(byteArray: Functions().getACStatus(address), gateway: devices[indexPath.row].gateway)
+                    }
+                    if devices[indexPath.row].type == "sensor" {
+                        SendingHandler(byteArray: Functions().getSensorState(address), gateway: devices[indexPath.row].gateway)
+                    }
+                    if devices[indexPath.row].type == "curtainsRS485" {
+                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
+                    }
+                }
+            }
+        }
+    }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
@@ -636,21 +661,21 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
             
-            var fanSpeed = 0
+            var fanSpeed = 0.0
             var speedState = devices[indexPath.row].speed
             switch speedState {
             case "Low":
                 cell.fanSpeedImage.image = UIImage(named: "fanlow")
-                fanSpeed = 3
+                fanSpeed = 1
             case "Mid" :
                 cell.fanSpeedImage.image = UIImage(named: "fanmedium")
-                fanSpeed = 2
+                fanSpeed = 0.5
             case "High":
                 cell.fanSpeedImage.image = UIImage(named: "fanhigh")
-                fanSpeed = 1
+                fanSpeed = 0.2
             default:
                 cell.fanSpeedImage.image = UIImage(named: "fanoff")
-                fanSpeed = 0
+                fanSpeed = 0.0
             }
             
             let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]

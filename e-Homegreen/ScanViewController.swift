@@ -15,6 +15,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     @IBOutlet weak var rangeTo: UITextField!
     
     var isPresenting:Bool = true
+    var gateway:Gateway?
     
 //    required init(coder aDecoder: NSCoder) {
 //        super.init(coder: aDecoder)
@@ -35,6 +36,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
+        
+        rangeFrom.text = "1"
+        rangeTo.text = "1"
 
         // Do any additional setup after loading the view.
     }
@@ -44,10 +48,31 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-
+//    func updateDeviceList () {
+//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+//        var fetchRequest = NSFetchRequest(entityName: "Device")
+//        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+//        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+//        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+//        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+//        let predicate = NSPredicate(format: "gateway == %@", gateways[choosedGatewayIndex].objectID)
+//        fetchRequest.predicate = predicate
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+//        if let results = fetResults {
+//            devices = results
+//        } else {
+//            println("Nije htela...")
+//        }
+//    }
+//    func refreshDeviceListOnDatabasVC () {
+//        if gateways != [] {
+//            updateDeviceList()
+//            databaseTable.reloadData()
+//        }
+//    }
 
     @IBAction func backButton(sender: UIStoryboardSegue) {
-        
         self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
     
@@ -66,7 +91,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblDesc.text = "4564"
+            cell.lblDesc.text = ""
             return cell
             
         }
@@ -77,7 +102,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return gateway!.device.count
     }
     
     

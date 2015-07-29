@@ -17,7 +17,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     var gateways:[Gateway] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
- 
     
     @IBOutlet weak var gatewayTableView: UITableView!
     @IBOutlet weak var topView: UIView!
@@ -220,6 +219,7 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.buttonGatewayScan.layer.borderColor = UIColor.whiteColor().CGColor
             cell.buttonGatewayScan.layer.cornerRadius = 5
             cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.buttonGatewayScan.tag = indexPath.section
             
             return cell
         }
@@ -239,9 +239,17 @@ extension ConnectionsViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return gateways.count
     }
-    
     func scanDevice(button:UIButton){
-        performSegueWithIdentifier("scan", sender: self)
+        performSegueWithIdentifier("scan", sender: button)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "scan" {
+            if let button = sender as? UIButton {
+                if let vc = segue.destinationViewController as? ScanViewController {
+                        vc.gateway = gateways[button.tag]
+                }
+            }
+        }
     }
     
 }
