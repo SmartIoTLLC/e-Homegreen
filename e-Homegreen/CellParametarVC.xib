@@ -17,11 +17,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nwd-Jw-NXY">
-                    <rect key="frame" x="160" y="150" width="280" height="300"/>
+                    <rect key="frame" x="200" y="175" width="200" height="250"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="280" id="MGY-Nj-60Z"/>
-                        <constraint firstAttribute="height" constant="300" id="Rqs-2S-YeX"/>
+                        <constraint firstAttribute="width" constant="200" id="MGY-Nj-60Z"/>
+                        <constraint firstAttribute="height" constant="250" id="Rqs-2S-YeX"/>
                     </constraints>
                 </view>
             </subviews>

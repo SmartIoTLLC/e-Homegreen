@@ -79,6 +79,16 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     
+    func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(deviceCollectionView)
+            if let index = deviceCollectionView.indexPathForItemAtPoint(location){
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
+                showCellParametar(cell.center)
+            }
+        }
+    }
+    
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
         // Light
         var tag = gestureRecognizer.view?.tag
@@ -485,6 +495,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.layer.borderWidth = 0.5
                 cell.typeOfLight.text = devices[indexPath.row].name
                 cell.typeOfLight.userInteractionEnabled = true
+            var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPress.minimumPressDuration = 0.5
+            longPress.delegate = self
+            cell.typeOfLight.tag = indexPath.row
+            cell.typeOfLight.addGestureRecognizer(longPress)
 //                cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)

@@ -13,12 +13,16 @@ class CellParametarVC: UIViewController {
     
     @IBOutlet weak var backView: UIView!
     
+    var point:CGPoint?
+    var oldPoint:CGPoint?
+    
     var isPresenting: Bool = true
     
-    init(){
+    init(point:CGPoint){
         super.init(nibName: "CellParametarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.point = point
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -33,7 +37,7 @@ class CellParametarVC: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+
         var gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
@@ -43,7 +47,7 @@ class CellParametarVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
     }
@@ -78,12 +82,16 @@ extension CellParametarVC : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            //        presentedControllerView.center.y -= containerView.bounds.size.height
+            self.oldPoint = presentedControllerView.center
+                    presentedControllerView.center = self.point!
+//                    presentedControllerView.center.y -= self.point!.y
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransformMakeScale(0.5, 0.5)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
+                presentedControllerView.center = self.oldPoint!
+//                presentedControllerView.center.y += self.point!.y
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -123,8 +131,8 @@ extension CellParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showCellParametar() {
-        var ad = CellParametarVC()
+    func showCellParametar(point:CGPoint) {
+        var ad = CellParametarVC(point: point)
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }
