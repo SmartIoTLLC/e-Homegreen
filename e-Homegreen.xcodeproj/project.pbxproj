@@ -102,6 +102,8 @@
 		E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */; };
 		E7E1A8261B3804F1008D8713 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8221B3804F1008D8713 /* OpenEars.framework */; };
 		E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8231B3804F1008D8713 /* Slt.framework */; };
+		E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E242111B68B35400CEAB9A /* CellParametarVC.swift */; };
+		E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E242121B68B35400CEAB9A /* CellParametarVC.xib */; };
 		E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */; };
 		E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */; };
 		E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */; };
@@ -229,6 +231,8 @@
 		E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
 		E7E1A8221B3804F1008D8713 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		E7E1A8231B3804F1008D8713 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
+		E7E242111B68B35400CEAB9A /* CellParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellParametarVC.swift; sourceTree = "<group>"; };
+		E7E242121B68B35400CEAB9A /* CellParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellParametarVC.xib; sourceTree = "<group>"; };
 		E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDialogViewController.swift; sourceTree = "<group>"; };
 		E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDialogViewController.xib; sourceTree = "<group>"; };
@@ -532,6 +536,8 @@
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */,
 				E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */,
+				E7E242111B68B35400CEAB9A /* CellParametarVC.swift */,
+				E7E242121B68B35400CEAB9A /* CellParametarVC.xib */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
 				E7DC67B81B457C0E00EA6543 /* weather-few-night.png in Resources */,
+				E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */,
 				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
@@ -755,6 +762,7 @@
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
+				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,

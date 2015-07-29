@@ -185,7 +185,7 @@ extension ConnectionsViewController: UITableViewDataSource {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             
             let gradientLayer = CAGradientLayer()
-            gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
+            gradientLayer.frame = CGRectMake(0, 0, 1024, 128)
             gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
             gradientLayer.locations = [0.0, 1.0]
 //            cell.gradientLayer = gradientLayer

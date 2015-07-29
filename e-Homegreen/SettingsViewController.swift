@@ -57,6 +57,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if indexPath.row == 2 {
             dispatch_async(dispatch_get_main_queue(),{
                 self.performSegueWithIdentifier("connectionSettings", sender: self)
+//                self.showCellParametar()
             })
         }
 //        if indexPath.row == 3 {
