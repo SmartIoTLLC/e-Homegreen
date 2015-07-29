@@ -161,14 +161,12 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     func changeValue(sender:UISwitch){
         if sender.on == true {
             gateways[sender.tag].turnedOn = true
-            saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }else {
             gateways[sender.tag].turnedOn = false
-            saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
-        
+        saveChanges()
+        gatewayTableView.reloadData()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
     func saveChanges() {
@@ -192,14 +190,12 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
             cell.layer.cornerRadius = 5
             println(indexPath.section)
-            println(gateways[indexPath.section].name)
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].device.count) device(s)"
             cell.add1.text = "\(gateways[indexPath.section].addressOne)"
             cell.add2.text = "\(gateways[indexPath.section].addressTwo)"
             cell.add3.text = "\(gateways[indexPath.section].addressThree)"
-            println("!\(gateways[indexPath.section].turnedOn.boolValue)!")
             cell.switchGatewayState.on = gateways[indexPath.section].turnedOn.boolValue
             cell.switchGatewayState.tag = indexPath.section
             cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
@@ -220,6 +216,12 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.buttonGatewayScan.layer.cornerRadius = 5
             cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.buttonGatewayScan.tag = indexPath.section
+            
+            if gateways[indexPath.section].turnedOn.boolValue {
+                cell.buttonGatewayScan.enabled = true
+            } else {
+                cell.buttonGatewayScan.enabled = false
+            }
             
             return cell
         }
