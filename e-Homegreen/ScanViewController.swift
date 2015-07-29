@@ -22,6 +22,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 //        transitioningDelegate = self
 //    }
     
+    @IBOutlet weak var deviceTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
