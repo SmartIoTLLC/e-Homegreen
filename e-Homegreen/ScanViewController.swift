@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
+class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var rangeFrom: UITextField!
@@ -44,6 +44,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         rangeFrom.text = "1"
         rangeTo.text = "1"
+        rangeFrom.delegate = self
+        rangeTo.delegate = self
         refreshDeviceList()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
@@ -53,6 +55,11 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     func updateDeviceList () {

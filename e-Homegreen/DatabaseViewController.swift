@@ -40,7 +40,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     //    var ios:InOutSocket?
     override func viewDidLoad() {
         super.viewDidLoad()
-        println("DIVOVSKI 1")
         btnChooseGateway.setTitle("Choose your connection", forState: UIControlState.Normal)
         
         var gradient:CAGradientLayer = CAGradientLayer()
@@ -56,14 +55,12 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
-        println("DIVOVSKI 2")
         //        updateDeviceList()
         idRangeFrom.delegate = self
         idRangeTo.delegate = self
         fetchAllGateways()
         idRangeFrom.text = "\(1)"
         idRangeTo.text = "\(1)"
-        println("DIVOVSKI 3")
         // Do any additional setup after loading the view.
     }
     
