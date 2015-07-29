@@ -19,9 +19,10 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     @IBOutlet weak var imageWeather: UIImageView!
     
     var locationManager = CLLocationManager()
-    var backgroundImage = UIImageView()
+//    var backgroundImage = UIImageView()
     
 
+    @IBOutlet weak var backgroundImage: UIImageView!
     
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
                                               "02d":"weather-few",
@@ -54,12 +55,12 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let hour = components.hour
         
         if hour < 20 && hour > 6{
-            backgroundImageView.image = UIImage(named: "day")
+            backgroundImage.image = UIImage(named: "day")
         }else{
-            backgroundImageView.image = UIImage(named: "night")
+            backgroundImage.image = UIImage(named: "night")
         }
-        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-        self.view.insertSubview(backgroundImageView, atIndex: 0)
+//        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+//        self.view.insertSubview(backgroundImageView, atIndex: 0)
         
         calendar.frame = CGRectMake(50, 50, 200, 200)
         self.view.addSubview(calendar)
@@ -136,12 +137,12 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let hour = components.hour
         
         if hour < 20 && hour > 6{
-            backgroundImageView.image = UIImage(named: "day")
+            backgroundImage.image = UIImage(named: "day")
         }else{
-            backgroundImageView.image = UIImage(named: "night")
+            backgroundImage.image = UIImage(named: "night")
         }
-        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-        self.view.insertSubview(backgroundImageView, atIndex: 0)
+//        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+//        self.view.insertSubview(backgroundImageView, atIndex: 0)
         var jsonError: NSError?
         let json = NSJSONSerialization.JSONObjectWithData(weatherData, options: nil, error: &jsonError) as! NSDictionary
         if jsonError == nil{

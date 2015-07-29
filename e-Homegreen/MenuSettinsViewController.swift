@@ -109,28 +109,33 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func changeValue(sender:UISwitch){
-        if sender.on == true {
-            menuItems[sender.tag].state = true
-        }else {
-            menuItems[sender.tag].state = false
+        if sender.tag == 11{
+            sender.on = true
+        }else{
+            if sender.on == true {
+                menuItems[sender.tag].state = true
+            }else {
+                menuItems[sender.tag].state = false
+            }
         }
-
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("menuSettingsCell") as? MenuSettingsCell {
+            
             cell.menuImage.image = menuItems[indexPath.row].image
             cell.menuLabel.text = menuItems[indexPath.row].title
             cell.menuSwitch.tag = indexPath.row
             cell.menuSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             if menuItems[indexPath.row].state == true {
                 cell.menuSwitch.on = true
-                if indexPath.row == 11{
-                    cell.menuSwitch.enabled = false
-                }
             }else {
                 cell.menuSwitch.on = false
             }
+//            if menuItems[indexPath.row].title == "Settings"{
+//                cell.menuSwitch.enabled = false
+//            }
             
             return cell
             
