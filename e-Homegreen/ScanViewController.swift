@@ -7,6 +7,7 @@
 // UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
 
 import UIKit
+import CoreData
 
 class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
@@ -14,8 +15,12 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     @IBOutlet weak var rangeFrom: UITextField!
     @IBOutlet weak var rangeTo: UITextField!
     
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     var isPresenting:Bool = true
     var gateway:Gateway?
+    var devices:[Device] = []
+    var loader : ViewControllerUtils = ViewControllerUtils()
     
 //    required init(coder aDecoder: NSCoder) {
 //        super.init(coder: aDecoder)
@@ -26,8 +31,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
@@ -40,7 +44,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         rangeFrom.text = "1"
         rangeTo.text = "1"
-
+        refreshDeviceList()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -49,52 +55,117 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-//    func updateDeviceList () {
-//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-//        var fetchRequest = NSFetchRequest(entityName: "Device")
-//        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-//        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-//        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-//        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-//        let predicate = NSPredicate(format: "gateway == %@", gateways[choosedGatewayIndex].objectID)
-//        fetchRequest.predicate = predicate
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-//        if let results = fetResults {
-//            devices = results
-//        } else {
-//            println("Nije htela...")
-//        }
-//    }
-//    func refreshDeviceListOnDatabasVC () {
-//        if gateways != [] {
-//            updateDeviceList()
-//            databaseTable.reloadData()
-//        }
-//    }
+    func updateDeviceList () {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+    }
+    
+    func refreshDeviceList() {
+            updateDeviceList()
+            deviceTableView.reloadData()
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
 
     @IBAction func backButton(sender: UIStoryboardSegue) {
         self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
     
     @IBAction func findDevice(sender: AnyObject) {
-        
+        var number:Int = 1
+        if rangeFrom.text != "" && rangeTo.text != "" {
+            if let numberOne = rangeFrom.text.toInt()! as? Int, let numberTwo = rangeTo.text.toInt()! as? Int {
+                if numberTwo >= numberOne {
+                    loader.showActivityIndicator(self.view)
+                    var dictionary:[Int:Int] = [:]
+                    for i in 0...(numberTwo-numberOne) {
+                        dictionary[i] = numberOne + i
+                    }
+                    for i in 0...(numberTwo-numberOne) {
+                        var calculation:NSNumber = i
+                        var number:NSTimeInterval = NSTimeInterval(calculation.doubleValue)
+                        println("   \(number)    ")
+                        NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: dictionary[i]!, repeats: false)
+                    }
+                    for var i = numberOne; i <= numberTwo; ++i {
+                    }
+                    NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
+                }
+            }
+        }
+    }
+    func searchIds(timer:NSTimer) {
+        if let deviceNumber = timer.userInfo as? Int {
+            var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(deviceNumber)]
+            SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+        }
+    }
+    
+    func hideActivitIndicator () {
+        loader.hideActivityIndicator()
     }
     
     @IBAction func findNames(sender: AnyObject) {
-        
+        var index:Int
+        for index in 0...devices.count-1 {
+            var number:NSTimeInterval = NSTimeInterval(index)
+            NSTimer.scheduledTimerWithTimeInterval(number*0.5, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
+        }
     }
-    
+    func getDevicesNames (timer:NSTimer) {
+        if let index = timer.userInfo as? Int {
+            if devices[index].type == "Dimmer" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            if devices[index].type == "curtainsRelay" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            
+            if devices[index].type == "hvac" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+            if devices[index].type == "sensor" {
+                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            }
+        }
+    }
     @IBAction func deleteAll(sender: AnyObject) {
-        
+        for var item = 0; item < devices.count; item++ {
+            if devices[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(devices[item])
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblDesc.text = ""
+            cell.lblDesc.text = "\(indexPath.row+1). {GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address), Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
             return cell
-            
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"

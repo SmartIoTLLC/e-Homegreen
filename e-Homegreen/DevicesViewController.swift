@@ -663,42 +663,48 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             var fanSpeed = 0.0
             var speedState = devices[indexPath.row].speed
-            switch speedState {
-            case "Low":
-                cell.fanSpeedImage.image = UIImage(named: "fanlow")
-                fanSpeed = 1
-            case "Mid" :
-                cell.fanSpeedImage.image = UIImage(named: "fanmedium")
-                fanSpeed = 0.5
-            case "High":
-                cell.fanSpeedImage.image = UIImage(named: "fanhigh")
-                fanSpeed = 0.2
-            default:
-                cell.fanSpeedImage.image = UIImage(named: "fanoff")
-                fanSpeed = 0.0
-            }
-            
-            let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-            var modeState = devices[indexPath.row].mode
-            switch modeState {
-            case "Cool":
-                cell.modeImage.image = UIImage(named: "cool")
-                cell.modeImage.stopAnimating()
-            case "Heat":
-                cell.modeImage.image = UIImage(named: "heat")
-                cell.modeImage.stopAnimating()
-            case "Fan":
-                if fanSpeed == 0 {
+            if devices[indexPath.row].currentValue == 255 {
+                switch speedState {
+                case "Low":
+                    cell.fanSpeedImage.image = UIImage(named: "fanlow")
+                    fanSpeed = 1
+                case "Mid" :
+                    cell.fanSpeedImage.image = UIImage(named: "fanmedium")
+                    fanSpeed = 0.5
+                case "High":
+                    cell.fanSpeedImage.image = UIImage(named: "fanhigh")
+                    fanSpeed = 0.2
+                default:
+                    cell.fanSpeedImage.image = UIImage(named: "fanoff")
+                    fanSpeed = 0.0
+                }
+                
+                let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
+                var modeState = devices[indexPath.row].mode
+                switch modeState {
+                case "Cool":
+                    cell.modeImage.image = UIImage(named: "cool")
+                    cell.modeImage.stopAnimating()
+                case "Heat":
+                    cell.modeImage.image = UIImage(named: "heat")
+                    cell.modeImage.stopAnimating()
+                case "Fan":
+                    if fanSpeed == 0 {
+                        cell.modeImage.image = UIImage(named: "fanauto")
+                        cell.modeImage.stopAnimating()
+                    } else {
+                        cell.modeImage.animationImages = animationImages
+                        cell.modeImage.animationDuration = NSTimeInterval(fanSpeed)
+                        cell.modeImage.animationRepeatCount = 0
+                        cell.modeImage.startAnimating()
+                    }
+                default:
                     cell.modeImage.image = UIImage(named: "fanauto")
                     cell.modeImage.stopAnimating()
-                } else {
-                    cell.modeImage.animationImages = animationImages
-                    cell.modeImage.animationDuration = NSTimeInterval(fanSpeed)
-                    cell.modeImage.animationRepeatCount = 0
-                    cell.modeImage.startAnimating()
                 }
-            default:
-                cell.modeImage.image = UIImage(named: "fanauto")
+            } else {
+                cell.fanSpeedImage.image = nil
+                cell.modeImage.image = nil
                 cell.modeImage.stopAnimating()
             }
             cell.layer.cornerRadius = 5

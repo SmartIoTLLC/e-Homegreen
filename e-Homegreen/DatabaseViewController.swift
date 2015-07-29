@@ -79,7 +79,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
     }
     @IBAction func btnFindNames(sender: AnyObject) {
-        //        ios?.sendByte([0xAA, 0x00, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0xFF, 0x10])
         if choosedGatewayIndex != -1 {
             var index:Int
             for index in 0...devices.count-1 {
@@ -317,7 +316,7 @@ extension DatabaseViewController: UITableViewDataSource {
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("databaseCell") as? DatabaseTableViewCell {
-            cell.foundItem.text = "{GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address), Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
+            cell.foundItem.text = "\(indexPath.row+1). {GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address), Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
             cell.backgroundColor = UIColor.clearColor()
             return cell
             
