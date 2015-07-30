@@ -83,8 +83,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
-                showCellParametar(cell.center)
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index)
+                showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
             }
         }
     }
@@ -522,8 +522,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.typeOfLight.userInteractionEnabled = true
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
-            longPress.delegate = self
-            cell.typeOfLight.tag = indexPath.row
+//            longPress.delegate = self
             cell.typeOfLight.addGestureRecognizer(longPress)
 //                cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
@@ -627,11 +626,15 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
+            cell.name.userInteractionEnabled = true
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.image.tag = indexPath.row
             cell.image.userInteractionEnabled = true
             cell.image.addGestureRecognizer(tap)
             cell.name.text = devices[indexPath.row].name
+            var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPress.minimumPressDuration = 0.5
+            cell.name.addGestureRecognizer(longPress)
             if devices[indexPath.row].currentValue == 255 {
                 cell.image.image = UIImage(named: "applianceon")
                 cell.button.setTitle("ON", forState: .Normal)
@@ -654,8 +657,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
-            
+            cell.climateName.userInteractionEnabled = true
             cell.climateName.text = devices[indexPath.row].name
+            var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPress.minimumPressDuration = 0.5
+            cell.climateName.addGestureRecognizer(longPress)
             cell.coolingSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
             cell.heatingSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
             cell.climateMode.text = devices[indexPath.row].mode
@@ -724,7 +730,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.borderWidth = 0.5
+            cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
+            var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPress.minimumPressDuration = 0.5
+            cell.sensorTitle.addGestureRecognizer(longPress)
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
                 case 1:

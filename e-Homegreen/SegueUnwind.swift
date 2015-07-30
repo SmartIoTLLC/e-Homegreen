@@ -10,7 +10,10 @@ import UIKit
 
 class SegueUnwind: UIStoryboardSegue {
     
+    
     override func perform() {
+    
+        
         
         var secondVCView = self.sourceViewController.view as UIView!
         var firstVCView = self.destinationViewController.view as UIView!
@@ -19,15 +22,18 @@ class SegueUnwind: UIStoryboardSegue {
         let screenWidth = UIScreen.mainScreen().bounds.size.width
         
         let window = UIApplication.sharedApplication().keyWindow
-        window?.insertSubview(firstVCView, aboveSubview: secondVCView)
+        secondVCView.superview?.insertSubview(firstVCView, atIndex: 0)
+
+//        window?.insertSubview(firstVCView, aboveSubview: secondVCView)
+        
+
         
         // Animate the transition.
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-            firstVCView.frame = CGRectOffset(firstVCView.frame, screenWidth, 0)
+//            firstVCView.frame = CGRectOffset(firstVCView.frame, screenWidth, 0)
             secondVCView.frame = CGRectOffset(secondVCView.frame, screenWidth, 0)
             
             }) { (Finished) -> Void in
-                
                 self.sourceViewController.dismissViewControllerAnimated(false, completion: nil)
         }
     }

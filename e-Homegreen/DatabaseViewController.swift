@@ -197,7 +197,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         if choosedGatewayIndex != -1 {
             var number:Int = 1
             if idRangeFrom.text != "" && idRangeFrom.text != "" {
-                if let numberOne = idRangeFrom.text.toInt()! as? Int, let numberTwo = idRangeTo.text.toInt()! as? Int {
+                if let numberOne = idRangeFrom.text.toInt(), let numberTwo = idRangeTo.text.toInt() {
                     if numberTwo >= numberOne {
                         loader.showActivityIndicator(self.view)
                         var dictionary:[Int:Int] = [:]

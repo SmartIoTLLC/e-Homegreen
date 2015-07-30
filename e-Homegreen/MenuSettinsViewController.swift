@@ -68,7 +68,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
 //            presentedControllerView.alpha = 0
 //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                             presentedControllerView.center.x -= containerView.bounds.size.width
 //                presentedControllerView.alpha = 1
 //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
@@ -80,7 +80,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                                 presentedControllerView.center.x += containerView.bounds.size.width
 //                presentedControllerView.alpha = 0
 //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)

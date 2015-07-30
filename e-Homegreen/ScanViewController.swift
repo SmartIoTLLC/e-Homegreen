@@ -99,7 +99,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     @IBAction func findDevice(sender: AnyObject) {
         var number:Int = 1
         if rangeFrom.text != "" && rangeTo.text != "" {
-            if let numberOne = rangeFrom.text.toInt()! as? Int, let numberTwo = rangeTo.text.toInt()! as? Int {
+            if let numberOne = rangeFrom.text.toInt(), let numberTwo = rangeTo.text.toInt() {
                 if numberTwo >= numberOne {
                     loader.showActivityIndicator(self.view)
                     var dictionary:[Int:Int] = [:]
