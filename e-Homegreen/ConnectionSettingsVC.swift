@@ -68,16 +68,29 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
         println(UIDevice.currentDevice().SSID)
         
-        addressFirst.layer.borderWidth = 0.5
-        addressSecond.layer.borderWidth = 0.5
-        addressThird.layer.borderWidth = 0.5
-        txtDescription.layer.borderWidth = 0.5
-        name.layer.borderWidth = 0.5
-        ipHost.layer.borderWidth = 0.5
-        port.layer.borderWidth = 0.5
-        localIP.layer.borderWidth = 0.5
-        localPort.layer.borderWidth = 0.5
-        localSSID.layer.borderWidth = 0.5
+        if UIScreen.mainScreen().scale > 2.5{
+            addressFirst.layer.borderWidth = 1
+            addressSecond.layer.borderWidth = 1
+            addressThird.layer.borderWidth = 1
+            txtDescription.layer.borderWidth = 1
+            name.layer.borderWidth = 1
+            ipHost.layer.borderWidth = 1
+            port.layer.borderWidth = 1
+            localIP.layer.borderWidth = 1
+            localPort.layer.borderWidth = 1
+            localSSID.layer.borderWidth = 1
+        }else{
+            addressFirst.layer.borderWidth = 0.5
+            addressSecond.layer.borderWidth = 0.5
+            addressThird.layer.borderWidth = 0.5
+            txtDescription.layer.borderWidth = 0.5
+            name.layer.borderWidth = 0.5
+            ipHost.layer.borderWidth = 0.5
+            port.layer.borderWidth = 0.5
+            localIP.layer.borderWidth = 0.5
+            localPort.layer.borderWidth = 0.5
+            localSSID.layer.borderWidth = 0.5
+        }
         addressFirst.layer.cornerRadius = 2
         addressSecond.layer.cornerRadius = 2
         addressThird.layer.cornerRadius = 2

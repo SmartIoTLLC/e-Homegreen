@@ -205,13 +205,20 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.add1.clipsToBounds = true
             cell.add2.clipsToBounds = true
             cell.add3.clipsToBounds = true
-            cell.add1.layer.borderWidth = 0.5
-            cell.add2.layer.borderWidth = 0.5
-            cell.add3.layer.borderWidth = 0.5
+            if UIScreen.mainScreen().scale > 2.5{
+                cell.add1.layer.borderWidth = 1
+                cell.add2.layer.borderWidth = 1
+                cell.add3.layer.borderWidth = 1
+                cell.buttonGatewayScan.layer.borderWidth = 1
+            }else{
+                cell.add1.layer.borderWidth = 0.5
+                cell.add2.layer.borderWidth = 0.5
+                cell.add3.layer.borderWidth = 0.5
+                cell.buttonGatewayScan.layer.borderWidth = 0.5
+            }
             cell.add1.layer.borderColor = UIColor.whiteColor().CGColor
             cell.add2.layer.borderColor = UIColor.whiteColor().CGColor
             cell.add3.layer.borderColor = UIColor.whiteColor().CGColor
-            cell.buttonGatewayScan.layer.borderWidth = 0.5
             cell.buttonGatewayScan.layer.borderColor = UIColor.whiteColor().CGColor
             cell.buttonGatewayScan.layer.cornerRadius = 5
             cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)

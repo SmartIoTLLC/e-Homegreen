@@ -145,7 +145,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
 //        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
-        cell.layer.borderWidth = 0.5
+        cell.layer.borderWidth = 1
         return cell
     }
 }

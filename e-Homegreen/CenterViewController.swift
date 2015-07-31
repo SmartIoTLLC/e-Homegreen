@@ -29,7 +29,7 @@ class CenterViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
+        gradient.frame = CGRectMake(0, 0, 1024, 64)
         gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         var backgroundImageView = UIImageView()

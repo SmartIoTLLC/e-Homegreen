@@ -26,11 +26,12 @@ class DeviceImage:NSObject{
         self.info = false
     }
 }
+
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate {
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     private let reuseIdentifier = "deviceCell"
-    let collectionViewCellSize = CGSize(width: 150, height: 180)
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
     var pullDown = PullDownView()
     
     var senderButton:UIButton?
@@ -41,11 +42,15 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var mySecondView:Array<UIView> = []
     
     var timer:NSTimer = NSTimer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         
+        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+            collectionViewCellSize = CGSize(width: 128, height: 156)
+        }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
@@ -56,9 +61,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
         updateDeviceList()
     }
+    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
+    
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
@@ -218,7 +225,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }else if self.view.frame.size.width == 667{
                 sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
             }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
@@ -241,7 +248,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }else if self.view.frame.size.width == 375{
                 sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
             }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
             
             
@@ -290,7 +297,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         locationButton.layer.cornerRadius = 5
         locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        locationButton.layer.borderWidth = 0.5
+        locationButton.layer.borderWidth = 1
         locationButton.tag = 1
         locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
@@ -303,7 +310,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         levelButton.layer.cornerRadius = 5
         levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        levelButton.layer.borderWidth = 0.5
+        levelButton.layer.borderWidth = 1
         levelButton.tag = 2
         levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
@@ -316,7 +323,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         zoneButton.layer.cornerRadius = 5
         zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        zoneButton.layer.borderWidth = 0.5
+        zoneButton.layer.borderWidth = 1
         zoneButton.tag = 3
         zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
@@ -329,7 +336,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         categoryButton.layer.cornerRadius = 5
         categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        categoryButton.layer.borderWidth = 0.5
+        categoryButton.layer.borderWidth = 1
         categoryButton.tag = 4
         categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
@@ -517,7 +524,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
                 cell.layer.cornerRadius = 5
                 cell.layer.borderColor = UIColor.grayColor().CGColor
-                cell.layer.borderWidth = 0.5
+                cell.layer.borderWidth = 1
                 cell.typeOfLight.text = devices[indexPath.row].name
                 cell.typeOfLight.userInteractionEnabled = true
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
@@ -580,7 +587,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
+            cell.layer.borderWidth = 1
             cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
             cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
@@ -625,7 +632,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
+            cell.layer.borderWidth = 1
             cell.name.userInteractionEnabled = true
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.image.tag = indexPath.row
@@ -715,7 +722,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
+            cell.layer.borderWidth = 1
             return cell
         } else if devices[indexPath.row].type == "sensor" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
@@ -729,7 +736,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
+            cell.layer.borderWidth = 1
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
@@ -834,7 +841,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.borderWidth = 0.5
+            cell.layer.borderWidth = 1
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.accessImage.addGestureRecognizer(tap)
             cell.accessImage.userInteractionEnabled = true
