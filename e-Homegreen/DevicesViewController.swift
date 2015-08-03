@@ -50,6 +50,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
+        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+            collectionViewCellSize = CGSize(width: 118, height: 144)
         }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -246,7 +248,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if self.view.frame.size.width == 320{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }else if self.view.frame.size.width == 375{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
