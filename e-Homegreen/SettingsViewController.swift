@@ -77,23 +77,13 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 self.performSegueWithIdentifier("menuSettings", sender: self)
             })
         }
-<<<<<<< HEAD
-//        if indexPath.row == 1 {
+//        if indexPath.section == 1 {
 //            dispatch_async(dispatch_get_main_queue(),{
 //                self.performSegueWithIdentifier("databaseSettings", sender: self)
 //            })
 //        }
-        if indexPath.row == 1 {
-            dispatch_async(dispatch_get_main_queue(),{
-=======
         if indexPath.section == 1 {
             dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("databaseSettings", sender: self)
-            })
-        }
-        if indexPath.section == 2 {
-            dispatch_async(dispatch_get_main_queue(),{
->>>>>>> origin/master
                 self.performSegueWithIdentifier("connectionSettings", sender: self)
 //                self.showCellParametar()
             })
