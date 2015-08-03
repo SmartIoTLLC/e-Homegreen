@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/CellParametarVC.swift"
-            timestampString = "459858247.758282"
+            timestampString = "460300405.062426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "showCellParametar(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/CellParametarVC.swift"
-            timestampString = "459858247.758282"
+            timestampString = "460300405.062426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "animateTransition(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/CellParametarVC.swift"
-            timestampString = "459858247.758282"
+            timestampString = "460300405.062426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "animationControllerForPresentedController(_:presentingController:sourceController:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/CellParametarVC.swift"
-            timestampString = "459858247.758282"
+            timestampString = "460300405.062426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "animationControllerForDismissedController(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/CellParametarVC.swift"
-            timestampString = "459858247.758282"
+            timestampString = "460300405.062426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "animateTransition(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -282,12 +282,12 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimir/Desktop/e-Homegreen/e-Homegreen/ConnectionsViewController.swift"
-                  timestampString = "460290584.687595"
+                  timestampString = "460300716.882331"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "48"
                   endingLineNumber = "48"
-                  offsetFromSymbolStart = "420">
+                  offsetFromSymbolStart = "536">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -297,7 +297,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimir/Desktop/e-Homegreen/e-Homegreen/ConnectionsViewController.swift"
-                  timestampString = "460290584.687791"
+                  timestampString = "460300716.88249"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "48"
@@ -352,6 +352,22 @@
             startingLineNumber = "253"
             endingLineNumber = "253"
             landmarkName = "viewWillLayoutSubviews()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/CellParametarVC.swift"
+            timestampString = "460300716.00913"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "handleTap(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

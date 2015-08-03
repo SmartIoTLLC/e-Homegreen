@@ -83,17 +83,17 @@ extension CellParametarVC : UIViewControllerAnimatedTransitioning {
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             self.oldPoint = presentedControllerView.center
-                    presentedControllerView.center = self.point!
-//                    presentedControllerView.center.y -= self.point!.y
+            presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
             containerView.addSubview(presentedControllerView)
+            
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //            presentedControllerView.center.y += containerView.bounds.size.height
+                
                 presentedControllerView.center = self.oldPoint!
-//                presentedControllerView.center.y += self.point!.y
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -103,9 +103,11 @@ extension CellParametarVC : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //                presentedControllerView.center.y += containerView.bounds.size.height
+                
+                presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
