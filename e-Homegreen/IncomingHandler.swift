@@ -42,16 +42,15 @@ class IncomingHandler: NSObject {
                     //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
                     if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
                         self.acknowledgementAboutChannelParametar (self.byteArray)
-                        
                     }
                     
                     //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
                     if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                        self.ackonowledgementAboutChannelState(self.byteArray)
+                        self.ackonowledgementAboutChannelsState(self.byteArray)
                     }
-                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
-                        
-                    }
+//                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
+//                        self.ackonowledgementAboutChannelState(self.byteArray)
+//                    }
                     
                     //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
                     //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
@@ -330,6 +329,23 @@ class IncomingHandler: NSObject {
     }
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
+                var channelNumber = Int(devices[i].channel)
+                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
+                devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
+                devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
+                devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
+            } else {
+                
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+    }
+    //  informacije o stanjima na uredjajima
+    func ackonowledgementAboutChannelsState (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {

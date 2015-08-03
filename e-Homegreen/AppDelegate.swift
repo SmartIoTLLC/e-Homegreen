@@ -77,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        })
     }
     func returnIpAddress (url:String) -> String {
+        println("123")
         let host = CFHostCreateWithName(nil,url).takeRetainedValue();
         CFHostStartInfoResolution(host, .Addresses, nil);
         var success: Boolean = 0;
@@ -88,11 +89,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
                     &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
                         if let numAddress = String.fromCString(hostname) {
+                            println("1234")
                             return numAddress
                         }
                 }
             }
         }
+        println("12345")
         return "255.255.255.255"
     }
     func findLocalConnectionToConnect () {

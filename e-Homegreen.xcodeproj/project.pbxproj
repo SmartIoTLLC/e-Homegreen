@@ -285,11 +285,11 @@
 		733C15701B5A825400554FD1 /* Device info and settings */ = {
 			isa = PBXGroup;
 			children = (
-				736CBA681B67913100FD7544 /* TryCatch.h */,
-				736CBA691B67913100FD7544 /* TryCatch.m */,
 				73E427B91B4D0B870083A747 /* DeviceInfo.swift */,
 				736A5B261B5A678F008FD745 /* HashTable.swift */,
 				73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */,
+				736CBA681B67913100FD7544 /* TryCatch.h */,
+				736CBA691B67913100FD7544 /* TryCatch.m */,
 			);
 			name = "Device info and settings";
 			sourceTree = "<group>";
