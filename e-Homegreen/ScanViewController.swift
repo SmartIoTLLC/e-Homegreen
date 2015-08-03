@@ -49,6 +49,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         refreshDeviceList()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -61,7 +62,12 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         textField.resignFirstResponder()
         return true
     }
-    
+    func nameReceivedFromPLC (notification:NSNotification) {
+        if let info = notification.userInfo! as? [String:Int] {
+            var deviceIndex = info["deviceIndexForFoundName"]
+            println("MAAA \(deviceIndex)")
+        }
+    }
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")

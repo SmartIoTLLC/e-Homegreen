@@ -355,9 +355,12 @@ class IncomingHandler: NSObject {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
                 devices[i].name = string
+                var data = ["deviceIndexForFoundName":i]
+                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        
     }
 }
