@@ -133,27 +133,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     @IBAction func findNames(sender: AnyObject) {
         var index:Int
         if devices.count != 0 {
-//        for index in 0...devices.count-1 {
-//            var number:NSTimeInterval = NSTimeInterval(index)
-//            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
+            index = 0
+            timesRepeatedCounter = 0
             deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
-            if devices[0].type == "Dimmer" {
-                var address = [UInt8(Int(devices[0].gateway.addressOne)), UInt8(Int(devices[0].gateway.addressTwo)), UInt8(Int(devices[0].address))]
-                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[0].channel))), gateway: devices[0].gateway)
-            }
-            if devices[0].type == "curtainsRelay" || devices[0].type == "appliance" {
-                var address = [UInt8(Int(devices[0].gateway.addressOne)), UInt8(Int(devices[0].gateway.addressTwo)), UInt8(Int(devices[0].address))]
-                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[0].channel))), gateway: devices[0].gateway)
-            }
-            if devices[0].type == "hvac" {
-                var address = [UInt8(Int(devices[0].gateway.addressOne)), UInt8(Int(devices[0].gateway.addressTwo)), UInt8(Int(devices[0].address))]
-                SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[0].channel))), gateway: devices[0].gateway)
-            }
-            if devices[0].type == "sensor" {
-                var address = [UInt8(Int(devices[0].gateway.addressOne)), UInt8(Int(devices[0].gateway.addressTwo)), UInt8(Int(devices[0].address))]
-                SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[0].channel))), gateway: devices[0].gateway)
-            }
-//        }
+            sendCommandForFindingName(index: 0)
         }
     }
     var index:Int = 0
@@ -164,26 +147,13 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 println(deviceIndex)
                 if deviceIndex == devices.count-1 {
                     index = 0
+                    timesRepeatedCounter = 0
                 } else {
                     index = deviceIndex + 1
+                    timesRepeatedCounter = 0
                     deviceNameTimer?.invalidate()
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
-                    if devices[index].type == "Dimmer" {
-                        var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                        SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                    }
-                    if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
-                        var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                        SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                    }
-                    if devices[index].type == "hvac" {
-                        var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                        SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                    }
-                    if devices[index].type == "sensor" {
-                        var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                        SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                    }
+                    sendCommandForFindingName(index: index)
                 }
             }
         }
@@ -191,46 +161,41 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
             if index != 0 || deviceIndex < index {
-                index = index + 1
-                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
-                if devices[index].type == "Dimmer" {
-                    var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                }
-                if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
-                    var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                    SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                }
-                if devices[index].type == "hvac" {
-                    var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                    SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-                }
-                if devices[index].type == "sensor" {
-                    var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                    SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                //                index = index + 1
+                timesRepeatedCounter += 1
+                if timesRepeatedCounter < 4 {
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
+                    sendCommandForFindingName(index: deviceIndex)
+                } else {
+                    var newIndex = deviceIndex + 1
+                    timesRepeatedCounter = 0
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
+                    sendCommandForFindingName(index: newIndex)
                 }
             }
         }
     }
+    func sendCommandForFindingName (#index:Int) {
+        if devices[index].type == "Dimmer" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "hvac" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "sensor" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+    }
     func getDevicesNames (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
-            if devices[index].type == "Dimmer" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            }
-            if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            }
-            
-            if devices[index].type == "hvac" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            }
-            if devices[index].type == "sensor" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            }
+            sendCommandForFindingName(index: index)
         }
     }
     @IBAction func deleteAll(sender: AnyObject) {
