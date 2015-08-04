@@ -39,9 +39,13 @@ class CenterViewController: UIViewController {
         
         
         //  Loading device view controller from singleton
-        titleOfViewController.text = "Device"
-        MenuViewControllers.sharedInstance.getViewController("Devices").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
-        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Devices").view)
+//        titleOfViewController.text = "Device"
+//        MenuViewControllers.sharedInstance.getViewController("Devices").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
+//        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Devices").view)
+        titleOfViewController.text = "Scene"
+        MenuViewControllers.sharedInstance.getViewController("Scenes").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
+        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Scenes").view)
+        
     }
     func imageFromLayer (layer:CALayer) -> UIImage {
         UIGraphicsBeginImageContext(layer.frame.size)

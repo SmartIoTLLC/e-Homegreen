@@ -69,7 +69,12 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         // Do any additional setup after loading the view.
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         fetchGateways()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: "refreshDeviceListNotification", object: nil)
         
+    }
+    func refreshGatewayListWithNewData () {
+        fetchGateways()
+        gatewayTableView.reloadData()
     }
     func updateNewGatewayList () {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "updateGatewayListNotification", object: nil)
