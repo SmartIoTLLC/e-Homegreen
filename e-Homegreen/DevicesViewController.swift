@@ -745,6 +745,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateSpeed.text = devices[indexPath.row].speed
             
             var fanSpeed = 0.0
+            if devices[indexPath.row].currentValue == 0 {
+                cell.onOffButton.image = UIImage(named: "")
+            }
             var speedState = devices[indexPath.row].speed
             if devices[indexPath.row].currentValue == 255 {
                 switch speedState {
