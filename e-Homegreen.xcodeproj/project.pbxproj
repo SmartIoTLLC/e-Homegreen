@@ -379,6 +379,7 @@
 		73DEA2201B32CE9F007836B4 /* Main ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				73DB8B901B2FF87600139E58 /* Menu.swift */,
 				73DB8B921B2FF8A400139E58 /* ContainerViewController.swift */,
 				73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */,
 				73DB8B941B2FF98700139E58 /* CenterViewController.swift */,
@@ -415,7 +416,6 @@
 				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
 				73ECD4A21B332A6F00767740 /* Common.swift */,
-				73DB8B901B2FF87600139E58 /* Menu.swift */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,

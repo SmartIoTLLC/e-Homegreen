@@ -42,6 +42,18 @@ class CenterViewController: UIViewController {
 //        titleOfViewController.text = "Device"
 //        MenuViewControllers.sharedInstance.getViewController("Devices").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
 //        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Devices").view)
+//        case "Dashboard": backNumber = 0
+//        case "Devices": backNumber = 1
+//        case "Scenes": backNumber = 2
+//        case "Events": backNumber = 3
+//        case "Sequences": backNumber = 4
+//        case "Timers": backNumber = 5
+//        case "Flags": backNumber = 6
+//        case "Chat": backNumber = 7
+//        case "Security": backNumber = 8
+//        case "Surveillance": backNumber = 9
+//        case "Energy": backNumber = 10
+//        case "Settings": backNumber = 11
         titleOfViewController.text = "Scene"
         MenuViewControllers.sharedInstance.getViewController("Scenes").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
         self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Scenes").view)

@@ -11,13 +11,14 @@ import UIKit
 class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
     var settingArray:[String]!
+    @IBOutlet weak var settingsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        settingArray = ["Main menu", "Scan device", "Connections"]
         
-        settingArray = ["Main menu", "Connections"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen"]
 
 
 //        commonConstruct()
@@ -56,19 +57,40 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         return footerView
     }
     
-    
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as? SettinsTableViewCell {
-//            cell.selectionStyle = UITableViewCellSelectionStyle.None
+        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" {
+            println("Index path row is: \(indexPath.section) and settingsArray for that index is: \(settingArray[indexPath.section])")
+            let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
+            //            cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.tableCellTitle.text = settingArray[indexPath.section]
             cell.layer.cornerRadius = 5
             return cell
-            
+        } else if settingArray[indexPath.section] == "Refresh status delay" {
+            let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
+            cell.layer.cornerRadius = 5
+            return cell
+        } else if settingArray[indexPath.section] == "Open last screen" {
+            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            cell.openLastScreen.on = NSUserDefaults.standardUserDefaults().valueForKey("openLastScreen")!.boolValue
+            cell.openLastScreen.tag = indexPath.section
+            cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.layer.cornerRadius = 5
+            return cell
+        } else {
+            let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+            cell.textLabel?.text = "dads"
+            return cell
         }
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
-        return cell
+    }
+    
+    func changeValue(sender:UISwitch){
+        if sender.on == true {
+            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: true), forKey: "openLastScreen")
+            settingsTableView.reloadData()
+        }else {
+            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: false), forKey: "openLastScreen")
+            settingsTableView.reloadData()
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -77,36 +99,30 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 self.performSegueWithIdentifier("menuSettings", sender: self)
             })
         }
-//        if indexPath.section == 1 {
-//            dispatch_async(dispatch_get_main_queue(),{
-//                self.performSegueWithIdentifier("databaseSettings", sender: self)
-//            })
-//        }
         if indexPath.section == 1 {
             dispatch_async(dispatch_get_main_queue(),{
                 self.performSegueWithIdentifier("connectionSettings", sender: self)
-//                self.showCellParametar()
             })
         }
-//        if indexPath.row == 3 {
-//            dispatch_async(dispatch_get_main_queue(),{
-//                 self.showConnectionSettings(-1)
-//            })
-//        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         var destinationVC = segue.destinationViewController as! UIViewController
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
-//        if segue.identifier == "menuSettings"{
-//            var destinationVC = segue.destinationViewController as! MenuSettingsViewController
-//            destinationVC.transitioningDelegate = se
-//            
-//        }
     }
 }
 
 class SettinsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var tableCellTitle: UILabel!
+}
+
+class SettingsRefreshDelayTableViewCell: UITableViewCell {
+    @IBOutlet weak var txtDelayResfreshStatus: UITextField!
+    
+}
+
+class SettingsLastScreenTableViewCell: UITableViewCell {
+    @IBOutlet weak var openLastScreen: UISwitch!
+    
 }
