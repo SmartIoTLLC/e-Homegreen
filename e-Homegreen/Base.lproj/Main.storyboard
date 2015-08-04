@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -8,7 +8,6 @@
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
-            <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
@@ -143,6 +142,7 @@
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
                                 <rect key="frame" x="0.0" y="86" width="200" height="482"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="NIM-6X-AKZ"/>
                                 </constraints>
@@ -1181,40 +1181,38 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="applianceoff" translatesAutoresizingMaskIntoConstraints="NO" id="YOI-EX-BDa">
-                                                    <rect key="frame" x="20" y="35" width="110" height="98"/>
+                                                    <rect key="frame" x="20" y="35" width="110" height="105"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eX-Ba-Aog">
-                                                    <rect key="frame" x="35" y="141" width="80" height="31"/>
-                                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ON" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2N7-Vo-Gjd">
+                                                    <rect key="frame" x="45" y="148" width="60" height="24"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="06a-mG-d7L"/>
+                                                        <constraint firstAttribute="width" constant="60" id="BZc-8x-ioL"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                    <state key="normal">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="YOI-EX-BDa" secondAttribute="trailing" constant="20" id="151-7S-nhl"/>
+                                            <constraint firstItem="2N7-Vo-Gjd" firstAttribute="top" secondItem="YOI-EX-BDa" secondAttribute="bottom" constant="8" id="5yZ-dy-yq8"/>
                                             <constraint firstItem="VVv-XD-Fgf" firstAttribute="top" secondItem="ymB-1e-PPO" secondAttribute="top" constant="8" id="GQW-xa-Emq"/>
-                                            <constraint firstItem="6eX-Ba-Aog" firstAttribute="top" secondItem="YOI-EX-BDa" secondAttribute="bottom" constant="8" id="SVU-bN-O1X"/>
+                                            <constraint firstAttribute="bottom" secondItem="2N7-Vo-Gjd" secondAttribute="bottom" constant="8" id="Qwu-iU-4Ee"/>
+                                            <constraint firstItem="YOI-EX-BDa" firstAttribute="centerX" secondItem="2N7-Vo-Gjd" secondAttribute="centerX" id="Rdv-QK-wIQ"/>
                                             <constraint firstAttribute="trailing" secondItem="VVv-XD-Fgf" secondAttribute="trailing" id="Wmo-S8-P9w"/>
                                             <constraint firstItem="YOI-EX-BDa" firstAttribute="leading" secondItem="ymB-1e-PPO" secondAttribute="leading" constant="20" id="Wvw-5J-zrq"/>
-                                            <constraint firstAttribute="bottom" secondItem="6eX-Ba-Aog" secondAttribute="bottom" constant="8" id="YgJ-RE-y9C"/>
-                                            <constraint firstAttribute="centerX" secondItem="6eX-Ba-Aog" secondAttribute="centerX" id="eaB-qk-Mps"/>
                                             <constraint firstItem="YOI-EX-BDa" firstAttribute="top" secondItem="VVv-XD-Fgf" secondAttribute="bottom" constant="8" id="l17-Bz-sJW"/>
                                             <constraint firstItem="VVv-XD-Fgf" firstAttribute="leading" secondItem="ymB-1e-PPO" secondAttribute="leading" id="o0Q-DA-szp"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="button" destination="6eX-Ba-Aog" id="sZB-Y1-YOo"/>
                                             <outlet property="image" destination="YOI-EX-BDa" id="u4D-dY-PFJ"/>
                                             <outlet property="name" destination="VVv-XD-Fgf" id="eIp-RU-zyo"/>
+                                            <outlet property="onOffLabel" destination="2N7-Vo-Gjd" id="oyq-Kk-Er4"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="climaCell" id="JHH-bn-lg2" customClass="ClimateCell" customModule="e_Homegreen" customModuleProvider="target">
@@ -1359,14 +1357,14 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SbN-yE-qXC">
-                                                    <rect key="frame" x="0.0" y="8" width="150" height="22"/>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SbN-yE-qXC">
+                                                    <rect key="frame" x="0.0" y="8" width="150" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="Home logo" translatesAutoresizingMaskIntoConstraints="NO" id="Qsw-H8-6Us">
-                                                    <rect key="frame" x="20" y="38" width="110" height="108"/>
+                                                    <rect key="frame" x="20" y="35" width="110" height="111"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1792,7 +1790,6 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaQ-xu-Til">
                                         <rect key="frame" x="0.0" y="63" width="320" height="1"/>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="9dl-lq-skY"/>
                                         </constraints>

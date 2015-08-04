@@ -707,21 +707,24 @@ extension DevicesViewController: UICollectionViewDataSource {
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.image.tag = indexPath.row
             cell.image.userInteractionEnabled = true
-            cell.image.addGestureRecognizer(tap)
+//            cell.image.addGestureRecognizer(tap)
+            cell.tag = indexPath.row
+            cell.addGestureRecognizer(tap)
             cell.name.text = devices[indexPath.row].name
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
             cell.name.addGestureRecognizer(longPress)
             if devices[indexPath.row].currentValue == 255 {
                 cell.image.image = UIImage(named: "applianceon")
-                cell.button.setTitle("ON", forState: .Normal)
+                cell.onOffLabel.text = "ON"
             }
             if devices[indexPath.row].currentValue == 0{
                 cell.image.image = UIImage(named: "applianceoff")
-                cell.button.setTitle("OFF", forState: .Normal)
+                cell.onOffLabel.text = "OFF"
             }
-            cell.button.addTarget(self, action: "buttonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.button.tag = indexPath.row
+//            cell.onOffLabel.userInteractionEnabled = true
+//            cell.onOffLabel.addGestureRecognizer(tap)
+//            cell.onOffLabel.tag = indexPath.row
             return cell
             
         } else if devices[indexPath.row].type == "hvac" {
@@ -948,7 +951,8 @@ class ApplianceCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var name: UILabel!    
     @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var onOffLabel: UILabel!
+
     var gradientLayer: CAGradientLayer?
     
 }

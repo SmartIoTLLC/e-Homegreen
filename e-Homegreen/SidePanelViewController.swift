@@ -30,6 +30,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        //(red: 47/255, green: 47/255, blue: 47/255, alpha: 1)
         view.backgroundColor = UIColor.blackColor()
     }
     
@@ -144,8 +145,8 @@ extension SidePanelViewController: UICollectionViewDataSource {
         cell.configureForMenu(menuItems[indexPath.row])
 //        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-        cell.layer.borderWidth = 1
+//        cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+//        cell.layer.borderWidth = 1
         return cell
     }
 }
