@@ -739,14 +739,19 @@ extension DevicesViewController: UICollectionViewDataSource {
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
             cell.climateName.addGestureRecognizer(longPress)
-            cell.coolingSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
-            cell.heatingSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+            cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
+            
+            //  Treba posebna logika
+            cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+            
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
             
             var fanSpeed = 0.0
             if devices[indexPath.row].currentValue == 0 {
-                cell.onOffButton.image = UIImage(named: "")
+                cell.imageOnOff.image = UIImage(named: "poweroff")
+            } else {
+                cell.imageOnOff.image = UIImage(named: "poweron")
             }
             var speedState = devices[indexPath.row].speed
             if devices[indexPath.row].currentValue == 255 {
@@ -969,8 +974,8 @@ class ClimateCell: UICollectionViewCell {
 
     @IBOutlet weak var imageOnOff: UIImageView!
     @IBOutlet weak var climateName: UILabel!
-    @IBOutlet weak var coolingSetPoint: UILabel!
-    @IBOutlet weak var heatingSetPoint: UILabel!
+    @IBOutlet weak var temperature: UILabel!
+    @IBOutlet weak var temperatureSetPoint: UILabel!
     @IBOutlet weak var climateMode: UILabel!
     @IBOutlet weak var modeImage: UIImageView!
     @IBOutlet weak var climateSpeed: UILabel!
