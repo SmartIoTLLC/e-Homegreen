@@ -148,7 +148,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
-        if recognizer.locationInView(self.view).x < 20 && state == false && gestureIsDraggingFromLeftToRight == true {
+        if recognizer.locationInView(self.view).x < 30 && state == false && gestureIsDraggingFromLeftToRight == true {
             state = true
         }
             switch(recognizer.state) {
@@ -157,7 +157,6 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
                     if (gestureIsDraggingFromLeftToRight) && state == true {
                         addLeftPanelViewController()
                     }
-                    
                     showShadowForCenterViewController(true)
                 }
             case .Changed:

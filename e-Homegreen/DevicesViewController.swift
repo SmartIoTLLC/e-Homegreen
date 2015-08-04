@@ -488,11 +488,21 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return devices.count
     }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         println("TO 1\(2332)1 OT")
         if let collectionView = scrollView as? UICollectionView {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {
+                    devices[indexPath.row].stateUpdatedAt = NSDate()
+                    saveChanges()
                     var address = [UInt8(Int(devices[indexPath.row].gateway.addressOne)), UInt8(Int(devices[indexPath.row].gateway.addressTwo)), UInt8(Int(devices[indexPath.row].address))]
                     if devices[indexPath.row].type == "Dimmer" {
                         SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
@@ -514,6 +524,9 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let date = devices[indexPath.row].stateUpdatedAt as? NSDate {
+            println("SLADJAN: \(date)")
+        }
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
                 if cell.gradientLayer == nil {

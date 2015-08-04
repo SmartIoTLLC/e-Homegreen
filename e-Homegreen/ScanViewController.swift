@@ -50,6 +50,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCdidFindDevice", object: nil)
         // Do any additional setup after loading the view.
     }
 

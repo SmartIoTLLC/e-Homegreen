@@ -135,16 +135,6 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
-//    enum AwfulError: ErrorType {
-//        case Bad
-//        case Worse
-//        case Terrible
-//    }
-//    func test () throws {
-//    guard let = gateway else {
-//    throw ""
-//    }
-//    }
     func ackACstatus (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
@@ -184,7 +174,11 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var channel = Int(devices[i].channel)
-                devices[i].name = string
+                if string != "" {
+                    devices[i].name = string
+                } else {
+                    devices[i].name = "Unknown"
+                }
             }
         }
         saveChanges()
@@ -203,7 +197,11 @@ class IncomingHandler: NSObject {
                 for var i = 42; i < byteArray.count-2; i++ {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
-                devices[i].name = string
+                if string != "" {
+                    devices[i].name = string
+                } else {
+                    devices[i].name = "Unknown"
+                }
             }
         }
         saveChanges()
@@ -370,7 +368,11 @@ class IncomingHandler: NSObject {
                 for var i = 8+47; i < byteArray.count-2; i++ {
                     string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 }
-                devices[i].name = string
+                if string != "" {
+                    devices[i].name = string
+                } else {
+                    devices[i].name = "Unknown"
+                }
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
