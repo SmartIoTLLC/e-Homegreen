@@ -587,13 +587,13 @@ extension DevicesViewController: UICollectionViewDataSource {
                 if cell.gradientLayer == nil {
                     let gradientLayer = CAGradientLayer()
                     gradientLayer.frame = cell.bounds
-                    gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                    gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                     gradientLayer.locations = [0.0, 1.0]
                     cell.gradientLayer = gradientLayer
                     cell.layer.insertSublayer(gradientLayer, atIndex: 0)
                 }
                 cell.layer.cornerRadius = 5
-                cell.layer.borderColor = UIColor.grayColor().CGColor
+                cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
                 cell.layer.borderWidth = 1
                 cell.typeOfLight.text = devices[indexPath.row].name
                 cell.typeOfLight.userInteractionEnabled = true
@@ -650,13 +650,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
             cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
             cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
@@ -695,13 +695,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
             cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             cell.name.userInteractionEnabled = true
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
@@ -729,7 +729,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
@@ -799,7 +799,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.modeImage.stopAnimating()
             }
             cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             return cell
         } else if devices[indexPath.row].type == "sensor" {
@@ -807,13 +807,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
             cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
@@ -912,13 +912,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             if cell.gradientLayer == nil {
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
                 cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
             cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.accessImage.addGestureRecognizer(tap)

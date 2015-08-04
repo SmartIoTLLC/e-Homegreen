@@ -136,7 +136,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
         if cell.gradientLayer == nil {
             var gradient:CAGradientLayer = CAGradientLayer()
             gradient.frame = cell.bounds
-            gradient.colors = [UIColor.grayColor().colorWithAlphaComponent(0.95).CGColor, UIColor.grayColor().colorWithAlphaComponent(0.1).CGColor]
+            gradient.colors = [UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor, UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor]
             gradient.locations = [0.0, 1.0]
             cell.gradientLayer = gradient
             cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -144,7 +144,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
         cell.configureForMenu(menuItems[indexPath.row])
 //        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
+        cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
         cell.layer.borderWidth = 1
         return cell
     }
