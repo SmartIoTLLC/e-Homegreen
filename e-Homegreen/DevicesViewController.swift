@@ -963,9 +963,8 @@ class AccessControllCell: UICollectionViewCell {
 }
 //Clima
 class ClimateCell: UICollectionViewCell {
-    
-    
-    @IBOutlet weak var onOffButton: UIButton!
+
+    @IBOutlet weak var imageOnOff: UIImageView!
     @IBOutlet weak var climateName: UILabel!
     @IBOutlet weak var coolingSetPoint: UILabel!
     @IBOutlet weak var heatingSetPoint: UILabel!
