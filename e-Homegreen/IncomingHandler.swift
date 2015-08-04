@@ -179,6 +179,8 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
+                var data = ["deviceIndexForFoundName":i]
+                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }
         saveChanges()
@@ -202,6 +204,8 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
+                var data = ["deviceIndexForFoundName":i]
+                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }
         saveChanges()
