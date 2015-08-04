@@ -707,9 +707,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.image.tag = indexPath.row
             cell.image.userInteractionEnabled = true
-//            cell.image.addGestureRecognizer(tap)
-            cell.tag = indexPath.row
-            cell.addGestureRecognizer(tap)
+            cell.image.addGestureRecognizer(tap)
+//            cell.tag = indexPath.row
+//            cell.addGestureRecognizer(tap)
             cell.name.text = devices[indexPath.row].name
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
@@ -722,9 +722,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.image.image = UIImage(named: "applianceoff")
                 cell.onOffLabel.text = "OFF"
             }
-//            cell.onOffLabel.userInteractionEnabled = true
-//            cell.onOffLabel.addGestureRecognizer(tap)
-//            cell.onOffLabel.tag = indexPath.row
+            var tap1:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+            cell.onOffLabel.userInteractionEnabled = true
+            cell.onOffLabel.addGestureRecognizer(tap1)
+            cell.onOffLabel.tag = indexPath.row
             return cell
             
         } else if devices[indexPath.row].type == "hvac" {
