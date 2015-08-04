@@ -147,9 +147,9 @@ class IncomingHandler: NSObject {
                     devices[i].speed = speed
                     devices[i].speedState = speedState
                 } else {
-                    devices[i].mode = "AUTO"
+                    devices[i].mode = "Auto"
                     devices[i].modeState = "Off"
-                    devices[i].speed = "AUTO"
+                    devices[i].speed = "Auto"
                     devices[i].speedState = "Off"
                 }
                 devices[i].coolTemperature = Int(byteArray[13+13*(channel-1)])
@@ -322,6 +322,7 @@ class IncomingHandler: NSObject {
                     }
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
                 }
+                NSNotificationCenter.defaultCenter().postNotificationName("PLCDidFindDevice", object: self, userInfo: nil)
             }
         }
     }

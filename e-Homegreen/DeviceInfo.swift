@@ -53,7 +53,7 @@ class DeviceInfo: NSObject {
         saveInterfaceType10in1()
         saveInterfaceType6in1()
         saveDeviceChannel1()
-        setMode = [0 : "AUTO",
+        setMode = [0 : "Auto",
             1:"Cool",
             2:"Heat",
             3:"Fan"]
@@ -61,7 +61,7 @@ class DeviceInfo: NSObject {
             1:"Cool",
             2:"Heat",
             3:"Fan"]
-        setSpeed = [0 : "AUTO",
+        setSpeed = [0 : "Auto",
             1:"Low",
             2:"Mid",
             3:"High"]

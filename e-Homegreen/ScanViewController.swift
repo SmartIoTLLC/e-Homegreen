@@ -22,11 +22,6 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var devices:[Device] = []
     var loader : ViewControllerUtils = ViewControllerUtils()
     
-//    required init(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        transitioningDelegate = self
-//    }
-    
     @IBOutlet weak var deviceTableView: UITableView!
 
     override func viewDidLoad() {
@@ -50,7 +45,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCdidFindDevice", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -63,6 +58,14 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         textField.resignFirstResponder()
         return true
     }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
@@ -86,51 +89,103 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         deviceTableView.reloadData()
     }
     
-    func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-
     @IBAction func backButton(sender: UIStoryboardSegue) {
         self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
     
+    // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
+    
+    var searchDeviceTimer:NSTimer?
+    var searchForDeviceWithId:Int?
+    var fromAddress:Int?
+    var toAddress:Int?
+
     @IBAction func findDevice(sender: AnyObject) {
-        var number:Int = 1
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = rangeFrom.text.toInt(), let numberTwo = rangeTo.text.toInt() {
                 if numberTwo >= numberOne {
+                    fromAddress = numberOne
+                    toAddress = numberTwo
+                    searchForDeviceWithId = numberOne
+                    timesRepeatedCounter = 0
                     loader.showActivityIndicator(self.view)
-                    var dictionary:[Int:Int] = [:]
-                    for i in 0...(numberTwo-numberOne) {
-                        dictionary[i] = numberOne + i
-                    }
-                    for i in 0...(numberTwo-numberOne) {
-                        var calculation:NSNumber = i
-                        var number:NSTimeInterval = NSTimeInterval(calculation.doubleValue)
-                        println("   \(number)    ")
-                        NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: dictionary[i]!, repeats: false)
-                    }
-                    for var i = numberOne; i <= numberTwo; ++i {
-                    }
-                    NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval((numberTwo-numberOne+1)), target: self, selector: "hideActivitIndicator", userInfo: nil, repeats: false)
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
                 }
             }
         }
     }
-    func searchIds(timer:NSTimer) {
-        if let deviceNumber = timer.userInfo as? Int {
-            var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(deviceNumber)]
-            SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+    func checkIfGatewayDidGetDevice (timer:NSTimer) {
+        if let index = timer.userInfo as? Int {
+            updateDeviceList()
+            if (timesRepeatedCounter + 1) != 4 {
+                timesRepeatedCounter = timesRepeatedCounter + 1
+                var deviceFound = false
+                for i in 0...devices.count-1 {
+                    if Int(devices[i].address) == index {
+                        deviceFound = true
+                        break
+                    }
+                }
+                if deviceFound {
+                    if toAddress >= (searchForDeviceWithId!+1) {
+                        timesRepeatedCounter = 0
+                        searchForDeviceWithId = searchForDeviceWithId! + 1
+                        searchDeviceTimer?.invalidate()
+                        searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                        var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                        SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                    } else {
+                        loader.hideActivityIndicator()
+                    }
+                } else {
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                }
+            } else {
+                if toAddress >= searchForDeviceWithId {
+                    timesRepeatedCounter = 0
+                    searchForDeviceWithId = searchForDeviceWithId! + 1
+                    searchDeviceTimer?.invalidate()
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                } else {
+                    loader.hideActivityIndicator()
+                }
+            }
         }
+    }
+    func deviceReceivedFromPLC (notification:NSNotification) {
+//        if let info = notification.userInfo! as? [String:Int] {
+//            if let deviceIndex = info["deviceIndexForFoundedDevice"] {
+                if toAddress >= (searchForDeviceWithId!+1) {
+                    timesRepeatedCounter = 0
+                    searchForDeviceWithId = searchForDeviceWithId! + 1
+                    searchDeviceTimer?.invalidate()
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                } else {
+                    searchForDeviceWithId = 0
+                    timesRepeatedCounter = 0
+                    searchDeviceTimer?.invalidate()
+                    loader.hideActivityIndicator()
+                }
+//            }
+//        }
     }
     
     func hideActivitIndicator () {
         loader.hideActivityIndicator()
     }
+    
+    // ======================= *** FINDING NAMES FOR DEVICE *** =======================
+    
     var deviceNameTimer:NSTimer?
+    
     @IBAction func findNames(sender: AnyObject) {
         var index:Int
         if devices.count != 0 {
@@ -145,7 +200,6 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func nameReceivedFromPLC (notification:NSNotification) {
         if let info = notification.userInfo! as? [String:Int] {
             if let deviceIndex = info["deviceIndexForFoundName"] {
-                println(deviceIndex)
                 if deviceIndex == devices.count-1 {
                     index = 0
                     timesRepeatedCounter = 0
@@ -199,6 +253,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             sendCommandForFindingName(index: index)
         }
     }
+    
+    // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
+    
     @IBAction func deleteAll(sender: AnyObject) {
         for var item = 0; item < devices.count; item++ {
             if devices[item].gateway.objectID == gateway!.objectID {
@@ -208,6 +265,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
+    
+    // ======================= *** TABLE VIEW *** =======================
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {

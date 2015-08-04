@@ -62,6 +62,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         // Do any additional setup after loading the view.
         updateDeviceList()
+        
     }
     
     var appDel:AppDelegate!
@@ -87,7 +88,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         } else {
         }
     }
-    
+    override func viewDidAppear(animated: Bool) {
+        if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+            for indexPath in indexPaths {
+                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+                    if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
+                        updateDeviceStatus (indexPathRow: indexPath.row)
+                    }
+                } else {
+                    updateDeviceStatus (indexPathRow: indexPath.row)
+                }
+            }
+        }
+    }
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(deviceCollectionView)
@@ -495,38 +508,57 @@ extension DevicesViewController: UICollectionViewDataSource {
             abort()
         }
     }
-    
+    func updateDeviceStatus (#indexPathRow: Int) {
+        devices[indexPathRow].stateUpdatedAt = NSDate()
+        saveChanges()
+        var address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
+        if devices[indexPathRow].type == "Dimmer" {
+            SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+        }
+        if devices[indexPathRow].type == "curtainsRelay" || devices[indexPathRow].type == "appliance" {
+            SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+        }
+        if devices[indexPathRow].type == "hvac" {
+            SendingHandler(byteArray: Functions().getACStatus(address), gateway: devices[indexPathRow].gateway)
+        }
+        if devices[indexPathRow].type == "sensor" {
+            SendingHandler(byteArray: Functions().getSensorState(address), gateway: devices[indexPathRow].gateway)
+        }
+        if devices[indexPathRow].type == "curtainsRS485" {
+            SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+        }
+    }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        println("TO 1\(2332)1 OT")
         if let collectionView = scrollView as? UICollectionView {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {
-                    devices[indexPath.row].stateUpdatedAt = NSDate()
-                    saveChanges()
-                    var address = [UInt8(Int(devices[indexPath.row].gateway.addressOne)), UInt8(Int(devices[indexPath.row].gateway.addressTwo)), UInt8(Int(devices[indexPath.row].address))]
-                    if devices[indexPath.row].type == "Dimmer" {
-                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
-                    }
-                    if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
-                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
-                    }
-                    if devices[indexPath.row].type == "hvac" {
-                        SendingHandler(byteArray: Functions().getACStatus(address), gateway: devices[indexPath.row].gateway)
-                    }
-                    if devices[indexPath.row].type == "sensor" {
-                        SendingHandler(byteArray: Functions().getSensorState(address), gateway: devices[indexPath.row].gateway)
-                    }
-                    if devices[indexPath.row].type == "curtainsRS485" {
-                        SendingHandler(byteArray: Functions().getLightRelayStatus(address), gateway: devices[indexPath.row].gateway)
+                    if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+                        if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
+                            updateDeviceStatus (indexPathRow: indexPath.row)
+                        }
+                    } else {
+                        updateDeviceStatus (indexPathRow: indexPath.row)
                     }
                 }
             }
         }
     }
+//    
+//    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+//        if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+//            for indexPath in indexPaths {
+//                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+//                    if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
+//                        updateDeviceStatus (indexPathRow: indexPath.row)
+//                    }
+//                } else {
+//                    updateDeviceStatus (indexPathRow: indexPath.row)
+//                }
+//            }
+//        }
+//    }
+//    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let date = devices[indexPath.row].stateUpdatedAt as? NSDate {
-            println("SLADJAN: \(date)")
-        }
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
                 if cell.gradientLayer == nil {
