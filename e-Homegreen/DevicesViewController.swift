@@ -102,11 +102,34 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
+        var tag = gestureRecognizer.view?.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
                 var cell = deviceCollectionView.cellForItemAtIndexPath(index)
-                showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                if devices[index.row].type == "Dimmer" {
+                    showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                }
+                if devices[index.row].type == "sensor" {
+                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                }
+                if devices[index.row].type == "hvac" {
+                    showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                }
+                if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+                    showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                }
+                if devices[index.row].type == "curtainsRS485" {
+                    showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                }
+                
+//                showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+
+//                showAccessParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+
+
+
+                println("nistaa")
             }
         }
     }
@@ -941,6 +964,8 @@ class AccessControllCell: UICollectionViewCell {
 //Clima
 class ClimateCell: UICollectionViewCell {
     
+    
+    @IBOutlet weak var onOffButton: UIButton!
     @IBOutlet weak var climateName: UILabel!
     @IBOutlet weak var coolingSetPoint: UILabel!
     @IBOutlet weak var heatingSetPoint: UILabel!

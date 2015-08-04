@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CellParametarVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
@@ -17,18 +26,61 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nwd-Jw-NXY">
-                    <rect key="frame" x="200" y="175" width="200" height="250"/>
+                    <rect key="frame" x="145" y="90" width="310" height="420"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Curtain parametar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngt-EC-78D">
+                            <rect key="frame" x="0.0" y="8" width="310" height="25"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5q-aN-eoT">
+                            <rect key="frame" x="15" y="63" width="53" height="22"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ip-we-emA">
+                            <rect key="frame" x="15" y="105" width="48" height="22"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9T-kH-EdV">
+                            <rect key="frame" x="15" y="147" width="46" height="22"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dha-wR-sPJ">
+                            <rect key="frame" x="15" y="189" width="78" height="22"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="200" id="MGY-Nj-60Z"/>
-                        <constraint firstAttribute="height" constant="250" id="Rqs-2S-YeX"/>
+                        <constraint firstAttribute="height" constant="420" id="4ht-3h-FI3"/>
+                        <constraint firstItem="Dha-wR-sPJ" firstAttribute="leading" secondItem="V9T-kH-EdV" secondAttribute="leading" id="51F-ij-WKg"/>
+                        <constraint firstItem="Ngt-EC-78D" firstAttribute="top" secondItem="nwd-Jw-NXY" secondAttribute="top" constant="8" id="8da-s1-Uh5"/>
+                        <constraint firstAttribute="width" constant="310" id="9Zb-7v-Eyb"/>
+                        <constraint firstItem="Ngt-EC-78D" firstAttribute="leading" secondItem="nwd-Jw-NXY" secondAttribute="leading" id="CBd-pC-cV2"/>
+                        <constraint firstItem="W5q-aN-eoT" firstAttribute="leading" secondItem="nwd-Jw-NXY" secondAttribute="leading" constant="15" id="EOk-zO-hWH"/>
+                        <constraint firstItem="5Ip-we-emA" firstAttribute="top" secondItem="W5q-aN-eoT" secondAttribute="bottom" constant="20" id="TeK-wt-a69"/>
+                        <constraint firstItem="W5q-aN-eoT" firstAttribute="leading" secondItem="5Ip-we-emA" secondAttribute="leading" id="dvN-33-J2z"/>
+                        <constraint firstItem="Dha-wR-sPJ" firstAttribute="top" secondItem="V9T-kH-EdV" secondAttribute="bottom" constant="20" id="keS-IU-F1a"/>
+                        <constraint firstItem="V9T-kH-EdV" firstAttribute="leading" secondItem="5Ip-we-emA" secondAttribute="leading" id="lFZ-OP-z2X"/>
+                        <constraint firstItem="W5q-aN-eoT" firstAttribute="top" secondItem="Ngt-EC-78D" secondAttribute="bottom" constant="30" id="uYG-Vb-t5A"/>
+                        <constraint firstItem="V9T-kH-EdV" firstAttribute="top" secondItem="5Ip-we-emA" secondAttribute="bottom" constant="20" id="vMw-P0-pbV"/>
+                        <constraint firstAttribute="trailing" secondItem="Ngt-EC-78D" secondAttribute="trailing" id="xkK-2W-gcn"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="nwd-Jw-NXY" secondAttribute="centerX" id="7aV-y9-ZbJ"/>
-                <constraint firstAttribute="centerY" secondItem="nwd-Jw-NXY" secondAttribute="centerY" id="rPs-jn-iwx"/>
+                <constraint firstAttribute="centerY" secondItem="nwd-Jw-NXY" secondAttribute="centerY" id="MCV-Fn-ith"/>
+                <constraint firstAttribute="centerX" secondItem="nwd-Jw-NXY" secondAttribute="centerX" id="xNL-Q5-gPP"/>
             </constraints>
         </view>
     </objects>
