@@ -100,7 +100,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         switch speedState {
         case "Low":
             pressedLow()
-        case "Mid" :
+        case "Med" :
             pressedMed()
         case "High":
             pressedHigh()
@@ -396,17 +396,15 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-//    var checkOnOf = 0x00
+    
     @IBAction func onOff(sender: AnyObject) {
         if device.currentValue == 0x00 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
-//            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
         }
         if device.currentValue == 0xFF {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Functions().setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
-//            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
         }
     }
     
@@ -425,11 +423,15 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         // Dispose of any resources that can be recreated.
     }
     
+    var timerForTemperatureSetPoint:NSTimer = NSTimer()
     
     @IBAction func lowCool(sender: AnyObject) {
         if Int(device.coolTemperature) >= 18 {
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)-1), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
+//            NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
+//            var temperatureInfo = ["upOrDown":-1]
+//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendTemperatureSetPointCommand:", userInfo: 1, repeats: false)
         }
     }
     
@@ -454,6 +456,12 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         }
     }
     
+//    func sendTemperatureSetPointCommand (timer:NSTimer) {
+//        if let temperatureInfo = timer.userInfo as? [String:Int] {
+//            
+//        }
+//    }
+//    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{

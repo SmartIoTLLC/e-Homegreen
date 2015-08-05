@@ -85,9 +85,13 @@ class CenterViewController: UIViewController {
   var delegate: CenterViewControllerDelegate?
   
   // MARK: Button actions
-  
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
         delegate?.toggleLeftPanel?()
+//        if UIApplication.sharedApplication().statusBarHidden {
+//            UIApplication.sharedApplication().statusBarHidden = false
+//        } else {
+//            UIApplication.sharedApplication().statusBarHidden = true
+//        }
     }
 //    func menuItemSelected(menuItem: Menu) {
 //        Container.addSubview(menuItem.viewController.view)

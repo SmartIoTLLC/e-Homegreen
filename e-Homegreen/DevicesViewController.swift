@@ -414,7 +414,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
     func infoView() -> UIView {
         var info:UIView = UIView(frame: CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height))
         info.backgroundColor = UIColor.grayColor()
@@ -760,13 +759,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             } else {
                 cell.imageOnOff.image = UIImage(named: "poweron")
             }
-            var speedState = devices[indexPath.row].speed
+            var speedState = devices[indexPath.row].speedState
             if devices[indexPath.row].currentValue == 255 {
                 switch speedState {
                 case "Low":
                     cell.fanSpeedImage.image = UIImage(named: "fanlow")
                     fanSpeed = 1
-                case "Mid" :
+                case "Med" :
                     cell.fanSpeedImage.image = UIImage(named: "fanmedium")
                     fanSpeed = 0.5
                 case "High":
@@ -778,7 +777,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
                 
                 let animationImages:[AnyObject] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-                var modeState = devices[indexPath.row].mode
+                var modeState = devices[indexPath.row].modeState
                 switch modeState {
                 case "Cool":
                     cell.modeImage.stopAnimating()
@@ -800,9 +799,32 @@ extension DevicesViewController: UICollectionViewDataSource {
                         cell.modeImage.startAnimating()
                     }
                 default:
+                    println("\(devices[indexPath.row].name)")
+                    println("\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)")
+                    println("\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)")
                     cell.modeImage.stopAnimating()
-                    cell.modeImage.image = UIImage(named: "fanauto")
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                    cell.modeImage.image = nil
+                    var mode = devices[indexPath.row].mode
+                    switch modeState {
+                    case "Cool":
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                    case "Heat":
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+                    case "Fan":
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                    default:
+                        cell.temperatureSetPoint.text = "\(modeState) C"
+                    }
+//                    if let coolTemperature = devices[indexPath.row].coolTemperature as? Int, let heatTemperature = devices[indexPath.row].heatTemperature as? Int, let temperature = devices[indexPath.row].temperature as? Int {
+//                        if coolTemperature >= temperature {
+//                            cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+//                            cell.modeImage.image = UIImage(named: "cool")
+//                        }
+//                        if heatTemperature < temperature {
+//                            cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+//                            cell.modeImage.image = UIImage(named: "heat")
+//                        }
+//                    }
                 }
             } else {
                 cell.fanSpeedImage.image = UIImage(named: "fanoff")
