@@ -358,12 +358,10 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -375,7 +373,6 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
@@ -425,7 +422,6 @@ extension UIViewController {
     func showConnectionSettings(gatewayIndex: Int) {
         var connSettVC = ConnectionSettingsVC()
         connSettVC.gatewayIndex = gatewayIndex
-//        self.view.window?.rootViewController?.presentViewController(connSettVC, animated: true, completion: nil)
         self.presentViewController(connSettVC, animated: true, completion: nil)
     }
 }

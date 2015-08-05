@@ -19,8 +19,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        settingArray = ["Main menu", "Scan device", "Connections"]
-        
         settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
@@ -31,19 +29,13 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             minRefresh = min
         }
 
-
-//        commonConstruct()
-        // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -99,7 +91,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
         NSUserDefaults.standardUserDefaults().synchronize()
         
-        
     }
     
     func btnDecHourPressed(sender:UIButton){
@@ -122,11 +113,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" {
-            println("Index path row is: \(indexPath.section) and settingsArray for that index is: \(settingArray[indexPath.section])")
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
-            //            cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.tableCellTitle.text = settingArray[indexPath.section]
+            
             cell.layer.cornerRadius = 5
+            
             return cell
         } else if settingArray[indexPath.section] == "Refresh status delay" {
             let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
@@ -143,7 +134,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.btnDecMinPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             
             cell.minLabel.text = "\(minRefresh)"
-            
             
             return cell
         } else if settingArray[indexPath.section] == "Open last screen" {
@@ -167,12 +157,10 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     func changeValue(sender:UISwitch){
         if sender.on == true {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstBool")
-//            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: true), forKey: "openLastScreen")
-//            settingsTableView.reloadData()
+
         }else {
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstBool")
-//            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: false), forKey: "openLastScreen")
-//            settingsTableView.reloadData()
+
         }
     }
     

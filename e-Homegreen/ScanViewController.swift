@@ -116,6 +116,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             }
         }
     }
+    
     func checkIfGatewayDidGetDevice (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
             updateDeviceList()
@@ -158,9 +159,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             }
         }
     }
+    
     func deviceReceivedFromPLC (notification:NSNotification) {
-//        if let info = notification.userInfo! as? [String:Int] {
-//            if let deviceIndex = info["deviceIndexForFoundedDevice"] {
                 if toAddress >= (searchForDeviceWithId!+1) {
                     timesRepeatedCounter = 0
                     searchForDeviceWithId = searchForDeviceWithId! + 1
@@ -174,8 +174,6 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     searchDeviceTimer?.invalidate()
                     loader.hideActivityIndicator()
                 }
-//            }
-//        }
     }
     
     func hideActivitIndicator () {
@@ -195,8 +193,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             sendCommandForFindingName(index: 0)
         }
     }
+    
     var index:Int = 0
     var timesRepeatedCounter:Int = 0
+    
     func nameReceivedFromPLC (notification:NSNotification) {
         if let info = notification.userInfo! as? [String:Int] {
             if let deviceIndex = info["deviceIndexForFoundName"] {
@@ -213,6 +213,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             }
         }
     }
+    
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
             if index != 0 || deviceIndex < index {
@@ -230,6 +231,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             }
         }
     }
+    
     func sendCommandForFindingName (#index:Int) {
         if devices[index].type == "Dimmer" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
@@ -248,6 +250,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
     }
+    
     func getDevicesNames (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
             sendCommandForFindingName(index: index)
@@ -283,65 +286,6 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gateway!.device.count
     }
-    
-    
-    
-//    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-//        return 0.5
-//    }
-//    
-//    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-//        if isPresenting == true{
-//            isPresenting = false
-//            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-//            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-//            let containerView = transitionContext.containerView()
-//            
-//            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-//            presentedControllerView.center.x += containerView.bounds.size.width
-//            //            presentedControllerView.center.y += containerView.bounds.size.height
-//            //            presentedControllerView.alpha = 0
-//            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-//            containerView.addSubview(presentedControllerView)
-//            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-//                presentedControllerView.center.x -= containerView.bounds.size.width
-//                //                presentedControllerView.center.y -= containerView.bounds.size.height
-//                //                presentedControllerView.alpha = 1
-//                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-//                }, completion: {(completed: Bool) -> Void in
-//                    transitionContext.completeTransition(completed)
-//            })
-//        }else{
-//            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
-//            
-//            // Animate the presented view off the bottom of the view
-//            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-//                presentedControllerView.center.x += containerView.bounds.size.width
-//                //                presentedControllerView.center.y += containerView.bounds.size.height
-//                //                presentedControllerView.alpha = 0
-//                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-//                }, completion: {(completed: Bool) -> Void in
-//                    transitionContext.completeTransition(completed)
-//            })
-//        }
-//    }
-//    
-//    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return self
-//    }
-//    
-//    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        if dismissed == self {
-//            return self
-//        }
-//        else {
-//            return nil
-//        }
-//    }
-
-
-
 
 }
 

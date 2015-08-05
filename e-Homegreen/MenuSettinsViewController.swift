@@ -64,14 +64,10 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-                    presentedControllerView.center.x += containerView.bounds.size.width
-//            presentedControllerView.alpha = 0
-//            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.center.x += containerView.bounds.size.width
             containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                            presentedControllerView.center.x -= containerView.bounds.size.width
-//                presentedControllerView.alpha = 1
-//                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.center.x -= containerView.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -81,9 +77,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                                presentedControllerView.center.x += containerView.bounds.size.width
-//                presentedControllerView.alpha = 0
-//                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.center.x += containerView.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -133,9 +127,6 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             }else {
                 cell.menuSwitch.on = false
             }
-//            if menuItems[indexPath.row].title == "Settings"{
-//                cell.menuSwitch.enabled = false
-//            }
             
             return cell
             

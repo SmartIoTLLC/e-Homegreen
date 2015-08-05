@@ -72,14 +72,17 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: "refreshDeviceListNotification", object: nil)
         
     }
+    
     func refreshGatewayListWithNewData () {
         fetchGateways()
         gatewayTableView.reloadData()
     }
+    
     func updateNewGatewayList () {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "updateGatewayListNotification", object: nil)
         fetchGateways()
     }
+    
     func fetchGateways () {
         var fetchRequest = NSFetchRequest(entityName: "Gateway")
         var sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
@@ -91,16 +94,21 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         } else {
         }
     }
+    
     func refreshGatewayList () {
         gatewayTableView.reloadData()
     }
+    
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
         backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
+    
     @IBAction func btnSaveConnection(sender: AnyObject) {
+        
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -123,15 +131,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             presentedControllerView.center.x += containerView.bounds.size.width
-            //            presentedControllerView.center.y += containerView.bounds.size.height
-            //            presentedControllerView.alpha = 0
-            //            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.center.x -= containerView.bounds.size.width
-                //                presentedControllerView.center.y -= containerView.bounds.size.height
-                //                presentedControllerView.alpha = 1
-                //                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -142,9 +144,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.center.x += containerView.bounds.size.width
-                //                presentedControllerView.center.y += containerView.bounds.size.height
-                //                presentedControllerView.alpha = 0
-                //                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -163,6 +162,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             return nil
         }
     }
+    
     func changeValue(sender:UISwitch){
         if sender.on == true {
             gateways[sender.tag].turnedOn = true
@@ -181,6 +181,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
 }
+
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         println(indexPath.section)
@@ -190,7 +191,6 @@ extension ConnectionsViewController: UITableViewDataSource {
             gradientLayer.frame = CGRectMake(0, 0, 1024, 128)
             gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
             gradientLayer.locations = [0.0, 1.0]
-//            cell.gradientLayer = gradientLayer
             cell.backgroundView = UIView()
             cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
             cell.layer.cornerRadius = 5
