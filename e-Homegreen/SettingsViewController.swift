@@ -148,7 +148,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             return cell
         } else if settingArray[indexPath.section] == "Open last screen" {
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
-            cell.openLastScreen.on = NSUserDefaults.standardUserDefaults().valueForKey("openLastScreen")!.boolValue
             cell.openLastScreen.tag = indexPath.section
             cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
