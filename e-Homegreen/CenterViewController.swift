@@ -54,9 +54,24 @@ class CenterViewController: UIViewController {
 //        case "Surveillance": backNumber = 9
 //        case "Energy": backNumber = 10
 //        case "Settings": backNumber = 11
-        titleOfViewController.text = "Scene"
-        MenuViewControllers.sharedInstance.getViewController("Scenes").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
-        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Scenes").view)
+        if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
+            if let savedValue:String = NSUserDefaults.standardUserDefaults().stringForKey("firstItem"){
+                titleOfViewController.text = savedValue
+            }else{
+                titleOfViewController.text = "Settings"
+            }
+        }else{
+            var returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
+            if let unwrappedTitlesForTip = returnValue {
+                titleOfViewController.text = unwrappedTitlesForTip[0] as String
+            }else{
+                titleOfViewController.text = "Settings"
+            }
+        }
+
+        
+        MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
+        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view)
         
     }
     func imageFromLayer (layer:CALayer) -> UIImage {

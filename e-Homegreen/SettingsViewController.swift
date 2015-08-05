@@ -24,6 +24,10 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
 //        commonConstruct()
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -74,6 +78,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.openLastScreen.on = NSUserDefaults.standardUserDefaults().valueForKey("openLastScreen")!.boolValue
             cell.openLastScreen.tag = indexPath.section
             cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
+                cell.openLastScreen.on = true
+            }else{
+                cell.openLastScreen.on = false
+            }
             cell.layer.cornerRadius = 5
             return cell
         } else {
@@ -85,11 +94,13 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func changeValue(sender:UISwitch){
         if sender.on == true {
-            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: true), forKey: "openLastScreen")
-            settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstBool")
+//            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: true), forKey: "openLastScreen")
+//            settingsTableView.reloadData()
         }else {
-            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: false), forKey: "openLastScreen")
-            settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstBool")
+//            NSUserDefaults.standardUserDefaults().setValue(NSNumber(bool: false), forKey: "openLastScreen")
+//            settingsTableView.reloadData()
         }
     }
     
