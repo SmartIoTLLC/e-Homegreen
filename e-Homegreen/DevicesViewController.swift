@@ -62,12 +62,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         // Do any additional setup after loading the view.
         updateDeviceList()
-        var byteArray = [12, 78, 111, 105, 115, 101, 32, 83, 101, 110, 115, 111, 114]
-        var string:String = ""
-        for var i = 0; i < byteArray.count; i++ {
-            string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
-        }
-        println("NEKI TEST: \(string)")
         
     }
     
@@ -562,7 +556,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 for indexPath in indexPaths {
                     if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
                         if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
-                            var minutes = hourValue * 60 + minuteValue
+                            var minutes = (hourValue * 60 + minuteValue) * 60
                             if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
                                 updateDeviceStatus (indexPathRow: indexPath.row)
                             }
@@ -798,7 +792,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                     case "Fan":
                         cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                     default:
-                        cell.temperatureSetPoint.text = "\(modeState) C"
+                        //  Hoce i tu da zezne
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                     }
                 }
             } else {
@@ -920,28 +915,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         }
         else {
-            // OVDE NESTO TREBA DA SE ODRADI ALI MI NIJE BAS NAJJASNIJE STA!!?!?!?!?!?!
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.layer.borderWidth = 1
-            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-            cell.accessImage.addGestureRecognizer(tap)
-            cell.accessImage.userInteractionEnabled = true
-            cell.accessImage.tag = 4
-            if devices[indexPath.row].currentValue == 255 {
-                cell.accessImage.image = UIImage(named: "dooropen")
-            } else {
-                cell.accessImage.image = UIImage(named: "doorclosed")
-            }
             return cell
         }
     }

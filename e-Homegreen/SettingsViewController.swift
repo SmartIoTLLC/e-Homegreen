@@ -77,6 +77,8 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 hourRefresh = 0
             }
             settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
+            NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh < 59 {
                 minRefresh++
@@ -84,12 +86,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 minRefresh = 0
             }
             settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
-        NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
-        NSUserDefaults.standardUserDefaults().synchronize()
-        
-        NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
-        NSUserDefaults.standardUserDefaults().synchronize()
         
     }
     
@@ -101,6 +100,8 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 hourRefresh = 23
             }
             settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
+            NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh > 0 {
                 minRefresh--
@@ -108,6 +109,8 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 minRefresh = 59
             }
             settingsTableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
