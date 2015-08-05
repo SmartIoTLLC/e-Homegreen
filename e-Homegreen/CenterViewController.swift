@@ -39,21 +39,6 @@ class CenterViewController: UIViewController {
         
         
         //  Loading device view controller from singleton
-//        titleOfViewController.text = "Device"
-//        MenuViewControllers.sharedInstance.getViewController("Devices").view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
-//        self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController("Devices").view)
-//        case "Dashboard": backNumber = 0
-//        case "Devices": backNumber = 1
-//        case "Scenes": backNumber = 2
-//        case "Events": backNumber = 3
-//        case "Sequences": backNumber = 4
-//        case "Timers": backNumber = 5
-//        case "Flags": backNumber = 6
-//        case "Chat": backNumber = 7
-//        case "Security": backNumber = 8
-//        case "Surveillance": backNumber = 9
-//        case "Energy": backNumber = 10
-//        case "Settings": backNumber = 11
         if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
             if let savedValue:String = NSUserDefaults.standardUserDefaults().stringForKey("firstItem"){
                 titleOfViewController.text = savedValue
@@ -83,15 +68,20 @@ class CenterViewController: UIViewController {
         
     }
   var delegate: CenterViewControllerDelegate?
+    @IBAction func btnScreenMode(sender: AnyObject) {
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            btnScreenMode.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
   
+    @IBOutlet weak var btnScreenMode: UIButton!
   // MARK: Button actions
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
         delegate?.toggleLeftPanel?()
-//        if UIApplication.sharedApplication().statusBarHidden {
-//            UIApplication.sharedApplication().statusBarHidden = false
-//        } else {
-//            UIApplication.sharedApplication().statusBarHidden = true
-//        }
     }
 //    func menuItemSelected(menuItem: Menu) {
 //        Container.addSubview(menuItem.viewController.view)
