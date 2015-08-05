@@ -193,8 +193,10 @@ extension ConnectionsViewController: UITableViewDataSource {
             gradientLayer.locations = [0.0, 1.0]
             cell.backgroundView = UIView()
             cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
-            cell.layer.cornerRadius = 5
             println(indexPath.section)
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.cornerRadius = 10
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].device.count) device(s)"
@@ -247,7 +249,7 @@ extension ConnectionsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
+        return 5
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
