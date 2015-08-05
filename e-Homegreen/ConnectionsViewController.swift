@@ -188,7 +188,7 @@ extension ConnectionsViewController: UITableViewDataSource {
             
             let gradientLayer = CAGradientLayer()
             gradientLayer.frame = CGRectMake(0, 0, 1024, 128)
-            gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
             gradientLayer.locations = [0.0, 1.0]
 //            cell.gradientLayer = gradientLayer
             cell.backgroundView = UIView()

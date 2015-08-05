@@ -12,7 +12,6 @@ class TimersViewController: CommonViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
         // Do any additional setup after loading the view.
     }
 

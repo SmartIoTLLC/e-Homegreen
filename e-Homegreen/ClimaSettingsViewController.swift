@@ -64,7 +64,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
         var gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = settingsView.bounds
-        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         settingsView.layer.insertSublayer(gradient, atIndex: 0)
         settingsView.layer.borderWidth = 1
         settingsView.layer.borderColor = UIColor.lightGrayColor().CGColor

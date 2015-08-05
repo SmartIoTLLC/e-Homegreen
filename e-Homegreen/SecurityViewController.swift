@@ -16,7 +16,6 @@ class SecurityViewController: CommonViewController {
     @IBOutlet weak var securityCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
 //        view.
         // Do any additional setup after loading the view.
     }

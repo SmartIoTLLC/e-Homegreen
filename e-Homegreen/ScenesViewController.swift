@@ -24,7 +24,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonConstruct()
+//        commonConstruct()
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false

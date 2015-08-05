@@ -13,12 +13,23 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     var settingArray:[String]!
     @IBOutlet weak var settingsTableView: UITableView!
     
+    var hourRefresh:Int = 0
+    var minRefresh:Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        settingArray = ["Main menu", "Scan device", "Connections"]
         
         settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen"]
+        
+        if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
+            hourRefresh = hour
+        }
+        
+        if let min = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+            minRefresh = min
+        }
 
 
 //        commonConstruct()
@@ -61,6 +72,54 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         return footerView
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 2 { return 90 }
+        return 44
+    }
+    
+    func btnAddHourPressed(sender:UIButton){
+        if sender.tag == 1{
+            if hourRefresh < 23 {
+                hourRefresh++
+            }else{
+                hourRefresh = 0
+            }
+            settingsTableView.reloadData()
+        }else{
+            if minRefresh < 59 {
+                minRefresh++
+            }else{
+                minRefresh = 0
+            }
+            settingsTableView.reloadData()
+        }
+        NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        
+    }
+    
+    func btnDecHourPressed(sender:UIButton){
+        if sender.tag == 1{
+            if hourRefresh > 0 {
+                hourRefresh--
+            }else{
+                hourRefresh = 23
+            }
+            settingsTableView.reloadData()
+        }else{
+            if minRefresh > 0 {
+                minRefresh--
+            }else{
+                minRefresh = 59
+            }
+            settingsTableView.reloadData()
+        }
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" {
             println("Index path row is: \(indexPath.section) and settingsArray for that index is: \(settingArray[indexPath.section])")
@@ -72,6 +131,20 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         } else if settingArray[indexPath.section] == "Refresh status delay" {
             let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
             cell.layer.cornerRadius = 5
+            
+            cell.btnAddHourPressed.addTarget(self, action: "btnAddHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddHourPressed.tag = 1
+            cell.btnDecHourPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecHourPressed.tag = 1
+            cell.hourLabel.text = "\(hourRefresh)"
+            
+            
+            cell.btnAddMinPressed.addTarget(self, action: "btnAddHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecMinPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            cell.minLabel.text = "\(minRefresh)"
+            
+            
             return cell
         } else if settingArray[indexPath.section] == "Open last screen" {
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
@@ -129,8 +202,17 @@ class SettinsTableViewCell: UITableViewCell {
 }
 
 class SettingsRefreshDelayTableViewCell: UITableViewCell {
-    @IBOutlet weak var txtDelayResfreshStatus: UITextField!
+//    @IBOutlet weak var txtDelayResfreshStatus: UITextField!
     
+    @IBOutlet weak var hourLabel: UILabel!
+    @IBOutlet weak var minLabel: UILabel!
+    
+    @IBOutlet weak var btnAddHourPressed: UIButton!
+    @IBOutlet weak var btnDecHourPressed: UIButton!
+    
+    @IBOutlet weak var btnAddMinPressed: UIButton!
+    @IBOutlet weak var btnDecMinPressed: UIButton!
+
 }
 
 class SettingsLastScreenTableViewCell: UITableViewCell {
