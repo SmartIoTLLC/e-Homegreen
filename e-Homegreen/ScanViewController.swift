@@ -123,11 +123,14 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             if (timesRepeatedCounter + 1) != 4 {
                 timesRepeatedCounter = timesRepeatedCounter + 1
                 var deviceFound = false
+                // OVDE JE PUKLO JEDNOM!!!
+                if devices.count > 0 {
                 for i in 0...devices.count-1 {
                     if Int(devices[i].address) == index {
                         deviceFound = true
                         break
                     }
+                }
                 }
                 if deviceFound {
                     if toAddress >= (searchForDeviceWithId!+1) {
