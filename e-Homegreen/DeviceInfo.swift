@@ -63,11 +63,11 @@ class DeviceInfo: NSObject {
             3:"Fan"]
         setSpeed = [0 : "Auto",
             1:"Low",
-            2:"Mid",
+            2:"Med",
             3:"High"]
         speedState = [0 : "Off",
             1:"Low",
-            2:"Mid",
+            2:"Med",
             3:"High"]
     }
     func saveCategory() {

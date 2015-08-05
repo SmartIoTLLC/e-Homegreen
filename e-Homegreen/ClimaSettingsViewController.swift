@@ -119,9 +119,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             pressedAuto()
         }
         if device.currentValue == 255 {
-            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
-        } else {
             onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
+        } else {
+            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
         }
         
         lblCool.text = "\(device.coolTemperature)"

@@ -186,7 +186,6 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    
     func ackACname (byteArray:[UInt8]) {
         fetchDevices()
         var string:String = ""

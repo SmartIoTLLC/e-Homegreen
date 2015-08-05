@@ -62,6 +62,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         // Do any additional setup after loading the view.
         updateDeviceList()
+        var byteArray = [12, 78, 111, 105, 115, 101, 32, 83, 101, 110, 115, 111, 114]
+        var string:String = ""
+        for var i = 0; i < byteArray.count; i++ {
+            string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+        }
+        println("NEKI TEST: \(string)")
         
     }
     
@@ -745,9 +751,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateName.addGestureRecognizer(longPress)
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
             
-            //  Treba posebna logika
-            cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
-            
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
             
@@ -778,12 +781,15 @@ extension DevicesViewController: UICollectionViewDataSource {
                 var modeState = devices[indexPath.row].mode
                 switch modeState {
                 case "Cool":
+                    cell.modeImage.stopAnimating()
                     cell.modeImage.image = UIImage(named: "cool")
-                    cell.modeImage.stopAnimating()
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                 case "Heat":
-                    cell.modeImage.image = UIImage(named: "heat")
                     cell.modeImage.stopAnimating()
+                    cell.modeImage.image = UIImage(named: "heat")
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
                 case "Fan":
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                     if fanSpeed == 0 {
                         cell.modeImage.image = UIImage(named: "fanauto")
                         cell.modeImage.stopAnimating()
@@ -794,12 +800,13 @@ extension DevicesViewController: UICollectionViewDataSource {
                         cell.modeImage.startAnimating()
                     }
                 default:
-                    cell.modeImage.image = UIImage(named: "fanauto")
                     cell.modeImage.stopAnimating()
+                    cell.modeImage.image = UIImage(named: "fanauto")
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                 }
             } else {
-                cell.fanSpeedImage.image = nil
-                cell.modeImage.image = nil
+                cell.fanSpeedImage.image = UIImage(named: "fanoff")
+//                cell.modeImage.image = nil
                 cell.modeImage.stopAnimating()
             }
             cell.layer.cornerRadius = 5
