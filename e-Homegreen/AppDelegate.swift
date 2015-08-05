@@ -16,6 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+            println("IMA")
+        } else {
+            println("NEMA")
+            NSUserDefaults.standardUserDefaults().setValue(0, forKey: "hourRefresh")
+            NSUserDefaults.standardUserDefaults().setValue(1, forKey: "minRefresh")
+        }
+        
         UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
 //        UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Normal)

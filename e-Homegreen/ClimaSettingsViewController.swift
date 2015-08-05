@@ -424,37 +424,56 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     var timerForTemperatureSetPoint:NSTimer = NSTimer()
-    
+    var temperatureNumber = 0
     @IBAction func lowCool(sender: AnyObject) {
-        if Int(device.coolTemperature) >= 18 {
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)-1), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
-//            NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
-//            var temperatureInfo = ["upOrDown":-1]
-//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendTemperatureSetPointCommand:", userInfo: 1, repeats: false)
+        if Int(device.coolTemperature) >= 1 {
+            temperatureNumber -= 1
+            timerForTemperatureSetPoint.invalidate()
+            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
         }
     }
     
     @IBAction func highCool(sender: AnyObject) {
         if Int(device.coolTemperature) <= 36 {
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+1), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
+            temperatureNumber += 1
+            timerForTemperatureSetPoint.invalidate()
+            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
         }
     }
-    
-    @IBAction func lowHeat(sender: AnyObject) {
-        if Int(device.heatTemperature) >= 18 {
+    func coolTemeperatureUpdate (timer:NSTimer) {
+        if let number = timer.userInfo as? Int {
+            temperatureNumber = 0
             var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)-1)), gateway: device.gateway)
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
+        }
+    }
+    @IBAction func lowHeat(sender: AnyObject) {
+        if Int(device.heatTemperature) >= 1 {
+            temperatureNumber -= 1
+            timerForTemperatureSetPoint.invalidate()
+            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
         }
     }
     
     @IBAction func highHeat(sender: AnyObject) {
         if Int(device.heatTemperature) <= 36 {
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+1)), gateway: device.gateway)
+            temperatureNumber += 1
+            timerForTemperatureSetPoint.invalidate()
+            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
         }
     }
+    func heatTemeperatureUpdate (timer:NSTimer) {
+        if let number = timer.userInfo as? Int {
+            temperatureNumber = 0
+            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            SendingHandler(byteArray: Functions().setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+number)), gateway: device.gateway)
+        }
+    }
+    
     
 //    func sendTemperatureSetPointCommand (timer:NSTimer) {
 //        if let temperatureInfo = timer.userInfo as? [String:Int] {

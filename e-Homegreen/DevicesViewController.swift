@@ -561,8 +561,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {
                     if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                        if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
-                            updateDeviceStatus (indexPathRow: indexPath.row)
+                        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+                            var minutes = hourValue * 60 + minuteValue
+                            if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
+                                updateDeviceStatus (indexPathRow: indexPath.row)
+                            }
                         }
                     } else {
                         updateDeviceStatus (indexPathRow: indexPath.row)
@@ -571,21 +574,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
         }
     }
-//    
-//    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-//        if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-//            for indexPath in indexPaths {
-//                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-//                    if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
-//                        updateDeviceStatus (indexPathRow: indexPath.row)
-//                    }
-//                } else {
-//                    updateDeviceStatus (indexPathRow: indexPath.row)
-//                }
-//            }
-//        }
-//    }
-//    
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
@@ -754,11 +743,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateSpeed.text = devices[indexPath.row].speed
             
             var fanSpeed = 0.0
-            if devices[indexPath.row].currentValue == 0 {
-                cell.imageOnOff.image = UIImage(named: "poweroff")
-            } else {
-                cell.imageOnOff.image = UIImage(named: "poweron")
-            }
             var speedState = devices[indexPath.row].speedState
             if devices[indexPath.row].currentValue == 255 {
                 switch speedState {
@@ -767,10 +751,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                     fanSpeed = 1
                 case "Med" :
                     cell.fanSpeedImage.image = UIImage(named: "fanmedium")
-                    fanSpeed = 0.5
+                    fanSpeed = 0.3
                 case "High":
                     cell.fanSpeedImage.image = UIImage(named: "fanhigh")
-                    fanSpeed = 0.2
+                    fanSpeed = 0.1
                 default:
                     cell.fanSpeedImage.image = UIImage(named: "fanoff")
                     fanSpeed = 0.0
@@ -800,12 +784,13 @@ extension DevicesViewController: UICollectionViewDataSource {
                     }
                 default:
                     println("\(devices[indexPath.row].name)")
+                    println("\(devices[indexPath.row].mode)")
                     println("\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)")
                     println("\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)")
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = nil
                     var mode = devices[indexPath.row].mode
-                    switch modeState {
+                    switch mode {
                     case "Cool":
                         cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
                     case "Heat":
@@ -815,21 +800,16 @@ extension DevicesViewController: UICollectionViewDataSource {
                     default:
                         cell.temperatureSetPoint.text = "\(modeState) C"
                     }
-//                    if let coolTemperature = devices[indexPath.row].coolTemperature as? Int, let heatTemperature = devices[indexPath.row].heatTemperature as? Int, let temperature = devices[indexPath.row].temperature as? Int {
-//                        if coolTemperature >= temperature {
-//                            cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
-//                            cell.modeImage.image = UIImage(named: "cool")
-//                        }
-//                        if heatTemperature < temperature {
-//                            cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
-//                            cell.modeImage.image = UIImage(named: "heat")
-//                        }
-//                    }
                 }
             } else {
                 cell.fanSpeedImage.image = UIImage(named: "fanoff")
-//                cell.modeImage.image = nil
                 cell.modeImage.stopAnimating()
+            }
+            if devices[indexPath.row].currentValue == 0 {
+                cell.imageOnOff.image = UIImage(named: "poweroff")
+                cell.modeImage.image = nil
+            } else {
+                cell.imageOnOff.image = UIImage(named: "poweron")
             }
             cell.layer.cornerRadius = 5
             cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
