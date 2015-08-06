@@ -200,12 +200,15 @@ extension ConnectionsViewController: UITableViewDataSource {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             
             let gradientLayer = CAGradientLayer()
-            gradientLayer.frame = CGRectMake(0, 0, 1024, 128)
+            gradientLayer.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width-6, 128)
             gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
             gradientLayer.locations = [0.0, 1.0]
-            cell.backgroundView = UIView()
-            cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
-            println(indexPath.section)
+            gradientLayer.borderWidth = 1
+            gradientLayer.borderColor = UIColor.grayColor().CGColor
+            gradientLayer.cornerRadius = 10
+            cell.contentView.layer.insertSublayer(gradientLayer, atIndex: 0)
+//            cell.contentView.backgroundView = UIView()
+//            cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
             cell.layer.borderWidth = 1
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.cornerRadius = 10
