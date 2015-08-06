@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "white-plus-md.png"
+      "filename" : "white-plus-md-1-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "white-plus-md-1.png"
+      "filename" : "white-plus-md-2-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "white-plus-md-2.png"
+      "filename" : "white-plus-md-3.png"
     }
   ],
   "info" : {
