@@ -36,9 +36,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
-        
-        rangeFrom.text = "1"
-        rangeTo.text = "1"
+        rangeFrom.text = "\(Int(gateway!.addressThree) + 1)"
+        rangeTo.text = "\(Int(gateway!.addressThree) + 1)"
         rangeFrom.delegate = self
         rangeTo.delegate = self
         refreshDeviceList()
@@ -273,6 +272,19 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     // ======================= *** TABLE VIEW *** =======================
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        var string = ""
+        var numberLength = "\(number)"
+        if count(numberLength) == 1 {
+            string = "00\(number)"
+        } else if count(numberLength) == 2 {
+            string = "0\(number)"
+        } else {
+            string = "\(number)"
+        }
+        return string
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {

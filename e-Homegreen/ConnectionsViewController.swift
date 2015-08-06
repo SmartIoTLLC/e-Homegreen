@@ -180,6 +180,18 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             abort()
         }
     }
+    func returnThreeCharactersForByte (number:Int) -> String {
+        var string = ""
+        var numberLength = "\(number)"
+        if count(numberLength) == 1 {
+            string = "00\(number)"
+        } else if count(numberLength) == 2 {
+            string = "0\(number)"
+        } else {
+            string = "\(number)"
+        }
+        return string
+    }
 }
 
 extension ConnectionsViewController: UITableViewDataSource {
@@ -200,9 +212,9 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].device.count) device(s)"
-            cell.add1.text = "\(gateways[indexPath.section].addressOne)"
-            cell.add2.text = "\(gateways[indexPath.section].addressTwo)"
-            cell.add3.text = "\(gateways[indexPath.section].addressThree)"
+            cell.add1.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressOne))
+            cell.add2.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressTwo))
+            cell.add3.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressThree))
             cell.switchGatewayState.on = gateways[indexPath.section].turnedOn.boolValue
             cell.switchGatewayState.tag = indexPath.section
             cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
