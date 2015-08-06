@@ -86,6 +86,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //                println("!\(item.gateway.turnedOn)!")
 //            }
         } else {
+            
         }
     }
     override func viewDidAppear(animated: Bool) {
