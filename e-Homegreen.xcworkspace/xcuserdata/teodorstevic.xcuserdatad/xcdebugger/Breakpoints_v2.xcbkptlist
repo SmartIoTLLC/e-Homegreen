@@ -6,32 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ClimaSettingsViewController.swift"
-            timestampString = "460470955.384126"
+            filePath = "e-Homegreen/DevicesViewController.swift"
+            timestampString = "460565184.184971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
-            landmarkName = "coolTemeperatureUpdate(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ClimaSettingsViewController.swift"
-            timestampString = "460471035.853641"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
-            landmarkName = "heatTemeperatureUpdate(_:)"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
+            landmarkName = "deviceDidEndControlMode(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

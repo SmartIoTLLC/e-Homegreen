@@ -86,6 +86,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //                println("!\(item.gateway.turnedOn)!")
 //            }
         } else {
+            
         }
     }
     
@@ -136,45 +137,50 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     
-    func longTouch(gestureRecognizer: UILongPressGestureRecognizer){
+    func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
-        var tag = gestureRecognizer.view?.tag
-        if devices[tag!].type == "Dimmer" {
+        var tag = gestureRecognizer.view!.tag
+        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        if devices[tag].type == "Dimmer" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 deviceInControlMode = true
                 timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+                SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
+
                 timer.invalidate()
                 deviceInControlMode = false
-                if devices[tag!].opening == true {
-                    devices[tag!].opening = false
+                if devices[tag].opening == true {
+                    devices[tag].opening = false
                 }else {
-                    devices[tag!].opening = true
+                    devices[tag].opening = true
                 }
                 return
             }
         }
         
-        if devices[tag!].type == "curtainsRS485" {
+        if devices[tag].type == "curtainsRS485" {
+
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 deviceInControlMode = true
                 timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("updateCurtain:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+                SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
                 timer.invalidate()
                 deviceInControlMode = false
-                if devices[tag!].opening == true {
-                    devices[tag!].opening = false
+                if devices[tag].opening == true {
+                    devices[tag].opening = false
                 }else {
-                    devices[tag!].opening = true
+                    devices[tag].opening = true
                 }
                 return
             }
         }
     }
     
-    func oneTap(gestureRecognizer:UITapGestureRecognizer){
+    func oneTap(gestureRecognizer:UITapGestureRecognizer) {
         var tag = gestureRecognizer.view?.tag
         // Light
         if devices[tag!].type == "Dimmer" {
@@ -221,9 +227,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     deviceValue -= 0.05
                 }
             }
-            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100)), runningTime: 0x00), gateway: devices[tag].gateway)
-            self.devices[tag].currentValue = Int(deviceValue*100)
+            devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
                 var indexPath = NSIndexPath(forItem: tag, inSection: 0)
@@ -246,9 +250,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     deviceValue -= 0.20
                 }
             }
-            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(deviceValue*100))), gateway: devices[tag].gateway)
-            self.devices[tag].currentValue = Int(deviceValue*100)
+            devices[tag].currentValue = Int(deviceValue*100)
             UIView.setAnimationsEnabled(false)
             self.deviceCollectionView.performBatchUpdates({
                 var indexPath = NSIndexPath(forItem: tag, inSection: 0)
@@ -480,32 +482,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func changeSliderValue(sender: UISlider){
-        // Light
         var tag = sender.tag
         deviceInControlMode = true
-        if devices[tag].type == "Dimmer" {
-            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100)), runningTime: 0x00), gateway: devices[tag].gateway)
-            devices[tag].currentValue = Int(sender.value * 100)
-            if sender.value == 1{
-                devices[tag].opening = false
-            }
-            if sender.value == 0{
-                devices[tag].opening = true
-            }
-            
+        devices[tag].currentValue = Int(sender.value * 100)
+        if sender.value == 1{
+            devices[tag].opening = false
         }
-        if devices[tag].type == "curtainsRS485" {
-            var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), gateway: devices[tag].gateway)
-            devices[tag].currentValue = Int(sender.value * 100)
-            if sender.value == 1{
-                devices[tag].opening = false
-            }
-            if sender.value == 0{
-                devices[tag].opening = true
-            }
-            
+        if sender.value == 0{
+            devices[tag].opening = true
         }
         UIView.setAnimationsEnabled(false)
         self.deviceCollectionView.performBatchUpdates({
@@ -532,8 +516,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var deviceInControlMode = false
-    func deviceDidEndControlMode () {
+    func deviceDidEndControlMode (sender: UISlider){
+        //  Light
+        var tag = sender.tag
         deviceInControlMode = false
+        //  Light (Dimmer)
+        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        if devices[tag].type == "Dimmer" {
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
+        }
+        //  Curtain
+        if devices[tag].type == "curtainsRS485" {
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), gateway: devices[tag].gateway)
+        }
     }
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -630,7 +625,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .TouchUpInside)
+            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: .TouchUpInside)
                 cell.lightSlider.tag = indexPath.row
                 var deviceValue = Double(devices[indexPath.row].currentValue) / 100
                 if deviceValue >= 0 && deviceValue < 0.1 {

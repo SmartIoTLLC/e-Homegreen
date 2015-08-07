@@ -170,15 +170,26 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             localIP.text = "\(gateways[gatewayIndex].localIp)"
             localPort.text = "\(gateways[gatewayIndex].localPort)"
             localSSID.text = "\(gateways[gatewayIndex].ssid)"
-            addressFirst.text = "\(gateways[gatewayIndex].addressOne)"
-            addressSecond.text = "\(gateways[gatewayIndex].addressTwo)"
-            addressThird.text = "\(gateways[gatewayIndex].addressThree)"
+            addressFirst.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressOne))
+            addressSecond.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressTwo))
+            addressThird.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressThree))
             txtDescription.text = "\(gateways[gatewayIndex].gatewayDescription)"
             name.text = "\(gateways[gatewayIndex].name)"
         }
         
     }
-    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        var string = ""
+        var numberLength = "\(number)"
+        if count(numberLength) == 1 {
+            string = "00\(number)"
+        } else if count(numberLength) == 2 {
+            string = "0\(number)"
+        } else {
+            string = "\(number)"
+        }
+        return string
+    }
     override func viewWillAppear(animated: Bool) {
         println()
     }
@@ -223,39 +234,41 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     }
 
     @IBAction func save(sender: AnyObject) {
-        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || name.text == "" {
+        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" {
             
         } else {
-            if let remoPort = port.text.toInt(), let locaPort = localPort.text.toInt(), let adrFirst = addressFirst.text.toInt(), let adrSecond = addressSecond.text.toInt() {
-                if gatewayIndex == -1 {
-                    var gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
-                    gateway.name = name.text
-                    gateway.remoteIp = ipHost.text
-                    gateway.remotePort = port.text.toInt()!
-                    gateway.localIp = localIP.text
-                    gateway.localPort = localPort.text.toInt()!
-                    gateway.ssid = localSSID.text
-                    gateway.addressOne = addressFirst.text.toInt()!
-                    gateway.addressTwo = addressSecond.text.toInt()!
-                    gateway.addressThree = addressThird.text.toInt()!
-                    gateway.gatewayDescription = txtDescription.text
-                    gateway.turnedOn = true
-                    saveChanges()
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    gateways[gatewayIndex].name = name.text
-                    gateways[gatewayIndex].remoteIp = ipHost.text
-                    gateways[gatewayIndex].remotePort = port.text.toInt()!
-                    gateways[gatewayIndex].localIp = localIP.text
-                    gateways[gatewayIndex].localPort = localPort.text.toInt()!
-                    gateways[gatewayIndex].ssid = localSSID.text
-                    gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
-                    gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
-                    gateways[gatewayIndex].addressThree = addressThird.text.toInt()!
-                    gateways[gatewayIndex].gatewayDescription = txtDescription.text
-                    saveChanges()
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
+            if let remoPort = port.text.toInt(), let locaPort = localPort.text.toInt(), let adrFirst = addressFirst.text.toInt(), let adrSecond = addressSecond.text.toInt(), let adrThird = addressThird.text.toInt() {
+                    if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
+                        if gatewayIndex == -1 {
+                            var gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
+                            gateway.name = name.text
+                            gateway.remoteIp = ipHost.text
+                            gateway.remotePort = port.text.toInt()!
+                            gateway.localIp = localIP.text
+                            gateway.localPort = localPort.text.toInt()!
+                            gateway.ssid = localSSID.text
+                            gateway.addressOne = addressFirst.text.toInt()!
+                            gateway.addressTwo = addressSecond.text.toInt()!
+                            gateway.addressThree = addressThird.text.toInt()!
+                            gateway.gatewayDescription = txtDescription.text
+                            gateway.turnedOn = true
+                            saveChanges()
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        } else {
+                            gateways[gatewayIndex].name = name.text
+                            gateways[gatewayIndex].remoteIp = ipHost.text
+                            gateways[gatewayIndex].remotePort = port.text.toInt()!
+                            gateways[gatewayIndex].localIp = localIP.text
+                            gateways[gatewayIndex].localPort = localPort.text.toInt()!
+                            gateways[gatewayIndex].ssid = localSSID.text
+                            gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
+                            gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
+                            gateways[gatewayIndex].addressThree = addressThird.text.toInt()!
+                            gateways[gatewayIndex].gatewayDescription = txtDescription.text
+                            saveChanges()
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                    }
             }
         }
     }
