@@ -489,6 +489,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if sender.value == 0{
             devices[tag].opening = true
         }
+        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        deviceInControlMode = false
+        if devices[tag].type == "Dimmer" {
+            println(devices[tag].currentValue)
+            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
+        }
+        //  Curtain
+        if devices[tag].type == "curtainsRS485" {
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
+        }
+
 //        UIView.setAnimationsEnabled(false)
 //        self.deviceCollectionView.performBatchUpdates({
 //            var indexPath = NSIndexPath(forItem: tag, inSection: 0)
@@ -515,18 +526,18 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     var deviceInControlMode = false
     func deviceDidEndControlMode (sender: UISlider){
-        var tag = sender.tag
-        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-        deviceInControlMode = false
-        println("hehehehe")
-        if devices[tag].type == "Dimmer" {
-            println(devices[tag].currentValue)
-            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
-        }
-        //  Curtain
-        if devices[tag].type == "curtainsRS485" {
-            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
-        }
+//        var tag = sender.tag
+//        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+//        deviceInControlMode = false
+//        println("hehehehe")
+//        if devices[tag].type == "Dimmer" {
+//            println(devices[tag].currentValue)
+//            SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
+//        }
+//        //  Curtain
+//        if devices[tag].type == "curtainsRS485" {
+//            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
+//        }
     }
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -622,8 +633,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.typeOfLight.addGestureRecognizer(longPress)
                 cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
+            cell.lightSlider.continuous = false
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: UIControlEvents.TouchDragExit)
+//            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: UIControlEvents.TouchUpInside)
 //            var didEndDragging = UIPanGestureRecognizer(target: self, action: "deviceDidEndControlMode:")
 //            cell.lightSlider.addGestureRecognizer(didEndDragging)
                 cell.lightSlider.tag = indexPath.row
@@ -696,7 +708,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-            cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
+//            cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
             var deviceValue = Double(devices[indexPath.row].currentValue) / 100
             if deviceValue >= 0 && deviceValue < 0.2 {

@@ -163,45 +163,79 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
         let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
-//        if let view = recognizer.view {
-//            if let view = view.su as? UICollectionView {
-//            println("POMILUJ NAS")
-//            }
-//        }
-//        println(gestureIsDraggingFromRigthToLeft)
-    
-            if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
-                state = true
-            }
-            switch(recognizer.state) {
-            case .Began:
-                if (currentState == .LeftPanelCollapsed) {
-                    if (gestureIsDraggingFromLeftToRight) && state == true {
-                        addLeftPanelViewController()
+        if let view = recognizer.view {
+            println(view.frame.origin.x)
+            println(gestureIsDraggingFromRigthToLeft)
+            if view.frame.origin.x >= 0 {
+                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
+                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
+                        state = true
                     }
-                    showShadowForCenterViewController(true)
+                    switch(recognizer.state) {
+                    case .Began:
+                        if (currentState == .LeftPanelCollapsed) {
+                            if (gestureIsDraggingFromLeftToRight) && state == true {
+                                addLeftPanelViewController()
+                            }
+                            showShadowForCenterViewController(true)
+                        }
+                    case .Changed:
+                        if !(currentState == .LeftPanelCollapsed) {
+                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                            recognizer.setTranslation(CGPointZero, inView: view)
+                        }
+                        if state == true {
+                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                            recognizer.setTranslation(CGPointZero, inView: view)
+                        }
+                    case .Ended:
+                        if (leftViewController != nil) {
+                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
+                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
+                        }
+                        state = false
+                    default:
+                        break
+                    }
                 }
-            case .Changed:
-                if !gestureIsDraggingFromRigthToLeft {
-                if !(currentState == .LeftPanelCollapsed) {
-                    recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                    recognizer.setTranslation(CGPointZero, inView: view)
+                if gestureIsDraggingFromRigthToLeft && view.frame.origin.x > 0 {
+                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
+                        state = true
+                    }
+                    switch(recognizer.state) {
+                    case .Began:
+                        if (currentState == .LeftPanelCollapsed) {
+                            if (gestureIsDraggingFromLeftToRight) && state == true {
+                                addLeftPanelViewController()
+                            }
+                            showShadowForCenterViewController(true)
+                        }
+                    case .Changed:
+                        if !(currentState == .LeftPanelCollapsed) {
+                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                            recognizer.setTranslation(CGPointZero, inView: view)
+                        }
+                        if state == true {
+                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                            recognizer.setTranslation(CGPointZero, inView: view)
+                        }
+                    case .Ended:
+                        if (leftViewController != nil) {
+                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
+                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
+                        }
+                        state = false
+                    default:
+                        break
+                    }
                 }
-                if state == true {
-                    recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                    recognizer.setTranslation(CGPointZero, inView: view)
-                }
-                }
-            case .Ended:
-                if (leftViewController != nil) {
-                    // animate the side panel open or closed based on whether the view has moved more or less than halfway
-                    let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
-                    animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
-                }
-                state = false
-            default:
-                break
+            } else {
+                let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
             }
+        }
         
     }
 }
