@@ -300,7 +300,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblDesc.text = "\(indexPath.row+1). {GW Adr: \(devices[indexPath.row].gateway.addressOne):\(devices[indexPath.row].gateway.addressTwo):\(devices[indexPath.row].address), Ch:\(devices[indexPath.row].channel)} \(devices[indexPath.row].name)"
+            cell.lblRow.text = "\(indexPath.row+1)."
+            cell.lblDesc.text = "\(devices[indexPath.row].name)"
+            cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
+            cell.lblType.text = "Type: \(devices[indexPath.row].type)"
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -317,6 +320,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
 class ScanCell:UITableViewCell{
     
+    @IBOutlet weak var lblRow: UILabel!
     @IBOutlet weak var lblDesc: UILabel!
+    @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var lblType: UILabel!
     
 }
