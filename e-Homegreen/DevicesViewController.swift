@@ -88,6 +88,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         } else {
         }
     }
+    
     override func viewDidAppear(animated: Bool) {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
             for indexPath in indexPaths {
@@ -101,6 +102,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
         }
     }
+    
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
         var tag = gestureRecognizer.view?.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
@@ -153,6 +155,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
         }
+        
         if devices[tag!].type == "curtainsRS485" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 deviceInControlMode = true
@@ -230,6 +233,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             })
         }
     }
+    
     func updateCurtain(timer: NSTimer){
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)/100
@@ -408,32 +412,66 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    func infoView() -> UIView {
-        var info:UIView = UIView(frame: CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height))
-        info.backgroundColor = UIColor.grayColor()
-        var idLabel:UILabel = UILabel(frame: CGRectMake(10, 10, 100, 30))
-        idLabel.textColor = UIColor.whiteColor()
-        idLabel.text = "hakhdakhdj"
-        info.addSubview(idLabel)
-        info.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-        //        let gradientLayer = CAGradientLayer()
-        //        gradientLayer.frame = info.bounds
-        //        gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-        //        gradientLayer.locations = [0.0, 1.0]
-        //        info.layer.insertSublayer(gradientLayer, atIndex: 0)
-        return info
-    }
+//    func infoView() -> UIView {
+//        var info:UIView = UIView(frame: CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height))
+//        info.backgroundColor = UIColor.grayColor()
+//        var idLabel:UILabel = UILabel(frame: CGRectMake(10, 10, 100, 30))
+//        idLabel.textColor = UIColor.whiteColor()
+//        idLabel.text = "hakhdakhdj"
+//        info.addSubview(idLabel)
+//        info.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+//        //        let gradientLayer = CAGradientLayer()
+//        //        gradientLayer.frame = info.bounds
+//        //        gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+//        //        gradientLayer.locations = [0.0, 1.0]
+//        //        info.layer.insertSublayer(gradientLayer, atIndex: 0)
+//        return info
+//    }
     
     func handleTap (gesture:UIGestureRecognizer) {
-        println("nesto")
-        UIView.transitionFromView(gesture.view!, toView: infoView(), duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
-        //        UIView.transitionWithView(mySecondView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: nil, completion: nil)
+        let location = gesture.locationInView(deviceCollectionView)
+        if let index = deviceCollectionView.indexPathForItemAtPoint(location){
+            if devices[index.row].type == "Dimmer" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
+                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews , completion: nil)
+            } else if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
+                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews , completion: nil)
+            } else if devices[index.row].type == "sensor" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
+                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews , completion: nil)
+            } else if devices[index.row].type == "hvac" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
+                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews , completion: nil)
+            }
+            
+            
+            
+            devices[index.row].info = true
+        }
     }
     
     func handleTap2 (gesture:UIGestureRecognizer) {
-        println("drugo")
-        //        device.info = false
-        UIView.transitionFromView(gesture.view!, toView: infoView(), duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom, completion: nil)
+        let location = gesture.locationInView(deviceCollectionView)
+        if let index = deviceCollectionView.indexPathForItemAtPoint(location){
+            if devices[index.row].type == "Dimmer" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
+                
+                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            } else if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
+                
+                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            }
+            else if devices[index.row].type == "sensor" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
+                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            }else if devices[index.row].type == "hvac" {
+                var cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
+                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            }
+            devices[index.row].info = false
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -578,18 +616,18 @@ extension DevicesViewController: UICollectionViewDataSource {
                     gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                     gradientLayer.locations = [0.0, 1.0]
                     cell.gradientLayer = gradientLayer
-                    cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+                    cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
                 }
-                cell.layer.cornerRadius = 5
-                cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-                cell.layer.borderWidth = 1
+                cell.backView.layer.cornerRadius = 5
+                cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+                cell.backView.layer.borderWidth = 1
                 cell.typeOfLight.text = devices[indexPath.row].name
                 cell.typeOfLight.userInteractionEnabled = true
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
 //            longPress.delegate = self
             cell.typeOfLight.addGestureRecognizer(longPress)
-//                cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+                cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
             cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .TouchUpInside)
@@ -632,6 +670,29 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.tag = indexPath.row
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
+            
+                cell.infoView.layer.cornerRadius = 5
+                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.infoView.layer.borderWidth = 1
+            
+            if cell.infoGradientLayer == nil {
+                let gradientLayerInfo = CAGradientLayer()
+                gradientLayerInfo.frame = cell.bounds
+                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+                gradientLayerInfo.locations = [0.0, 1.0]
+                cell.infoGradientLayer = gradientLayerInfo
+                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
+            }
+            
+            if devices[indexPath.row].info {
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
+            }else {
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
+            }
+            
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
@@ -686,11 +747,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                 gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.layer.borderWidth = 1
+            cell.backView.layer.cornerRadius = 5
+            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.backView.layer.borderWidth = 1
             cell.name.userInteractionEnabled = true
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
             cell.image.tag = indexPath.row
@@ -702,6 +763,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
             cell.name.addGestureRecognizer(longPress)
+            cell.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+            cell.name.tag = indexPath.row
             if devices[indexPath.row].currentValue == 255 {
                 cell.image.image = UIImage(named: "applianceon")
                 cell.onOffLabel.text = "ON"
@@ -714,6 +777,29 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.onOffLabel.userInteractionEnabled = true
             cell.onOffLabel.addGestureRecognizer(tap1)
             cell.onOffLabel.tag = indexPath.row
+            
+            cell.infoView.layer.cornerRadius = 5
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.infoView.layer.borderWidth = 1
+            
+            if cell.infoGradientLayer == nil {
+                let gradientLayerInfo = CAGradientLayer()
+                gradientLayerInfo.frame = cell.bounds
+                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+                gradientLayerInfo.locations = [0.0, 1.0]
+                cell.infoGradientLayer = gradientLayerInfo
+                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
+            }
+            
+            if devices[indexPath.row].info {
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
+            }else {
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
+            }
+            
             return cell
             
         } else if devices[indexPath.row].type == "hvac" {
@@ -724,9 +810,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                 gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
             cell.climateName.userInteractionEnabled = true
+            cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
             cell.climateName.text = devices[indexPath.row].name
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
@@ -806,10 +893,34 @@ extension DevicesViewController: UICollectionViewDataSource {
             } else {
                 cell.imageOnOff.image = UIImage(named: "poweron")
             }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.layer.borderWidth = 1
+            cell.backView.layer.cornerRadius = 5
+            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.backView.layer.borderWidth = 1
+            
+            cell.infoView.layer.cornerRadius = 5
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.infoView.layer.borderWidth = 1
+            
+            if cell.infoGradientLayer == nil {
+                let gradientLayerInfo = CAGradientLayer()
+                gradientLayerInfo.frame = cell.bounds
+                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+                gradientLayerInfo.locations = [0.0, 1.0]
+                cell.infoGradientLayer = gradientLayerInfo
+                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
+            }
+            
+            if devices[indexPath.row].info {
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
+            }else {
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
+            }
+            
             return cell
+            
         } else if devices[indexPath.row].type == "sensor" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             if cell.gradientLayer == nil {
@@ -818,16 +929,19 @@ extension DevicesViewController: UICollectionViewDataSource {
                 gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
                 gradientLayer.locations = [0.0, 1.0]
                 cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
             }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.layer.borderWidth = 1
+            cell.backView.layer.cornerRadius = 5
+            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.backView.layer.borderWidth = 1
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
+            cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+            cell.sensorTitle.tag = indexPath.row
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
             cell.sensorTitle.addGestureRecognizer(longPress)
+            
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
                 case 1:
@@ -912,6 +1026,29 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
             }
             
+            cell.infoView.layer.cornerRadius = 5
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
+            cell.infoView.layer.borderWidth = 1
+            
+            if cell.infoGradientLayer == nil {
+                let gradientLayerInfo = CAGradientLayer()
+                gradientLayerInfo.frame = cell.bounds
+                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+                gradientLayerInfo.locations = [0.0, 1.0]
+                cell.infoGradientLayer = gradientLayerInfo
+                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
+            }
+            
+            
+            if devices[indexPath.row].info {
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
+            }else {
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
+            }
+            
             return cell
         }
         else {
@@ -924,20 +1061,44 @@ extension DevicesViewController: UICollectionViewDataSource {
 //Light
 class DeviceCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var typeOfLight: UILabel!
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var lightSlider: UISlider!
     var gradientLayer: CAGradientLayer?
     
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var labelID: UILabel!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var labelCategory: UILabel!
+    @IBOutlet weak var labelLevel: UILabel!
+    @IBOutlet weak var labelZone: UILabel!
+    @IBOutlet weak var labelPowrUsege: UILabel!
+    @IBOutlet weak var labelRunningTime: UILabel!
+    @IBOutlet weak var labelWarningState: UILabel!
+    var infoGradientLayer: CAGradientLayer?
+    
+    
 }
 //Appliance on/off
 class ApplianceCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var name: UILabel!    
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var onOffLabel: UILabel!
-
     var gradientLayer: CAGradientLayer?
+    
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var labelID: UILabel!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var labelCategory: UILabel!
+    @IBOutlet weak var labelLevel: UILabel!
+    @IBOutlet weak var labelZone: UILabel!
+    @IBOutlet weak var labelPowrUsege: UILabel!
+    @IBOutlet weak var labelWarningState: UILabel!
+    var infoGradientLayer: CAGradientLayer?
+    
     
 }
 //curtain
@@ -960,6 +1121,7 @@ class AccessControllCell: UICollectionViewCell {
 //Clima
 class ClimateCell: UICollectionViewCell {
 
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var imageOnOff: UIImageView!
     @IBOutlet weak var climateName: UILabel!
     @IBOutlet weak var temperature: UILabel!
@@ -969,21 +1131,35 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
     var gradientLayer: CAGradientLayer?
+    
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var labelID: UILabel!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var labelCategory: UILabel!
+    @IBOutlet weak var labelLevel: UILabel!
+    @IBOutlet weak var labelZone: UILabel!
+    @IBOutlet weak var labelPowrUsege: UILabel!
+    var infoGradientLayer: CAGradientLayer?
+    
+    
 }
 //Multisensor 10 in 1 and 6 in 1
 class MultiSensorCell: UICollectionViewCell {
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!
     @IBOutlet weak var sensorState: UILabel!
-    
     var gradientLayer: CAGradientLayer?
+    
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var labelID: UILabel!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var labelCategory: UILabel!
+    @IBOutlet weak var labelLevel: UILabel!
+    @IBOutlet weak var labelZone: UILabel!
+    var infoGradientLayer: CAGradientLayer?
+    
+    
 }
-//extension NSData {
-//    public func convertToBytes() -> [UInt8] {
-//        let count = self.length / sizeof(UInt8)
-//        var bytesArray = [UInt8](count: count, repeatedValue: 0)
-//        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
-//        return bytesArray
-//    }
-//}
+
