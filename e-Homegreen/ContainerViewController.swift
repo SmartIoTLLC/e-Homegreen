@@ -35,6 +35,9 @@ class ContainerViewController: UIViewController {
             showShadowForCenterViewController(shouldShowShadow)
         }
     }
+    
+//    var panGestureRecognizer:UIPanGestureRecognizer!
+    
     @IBAction func hamburgerTapped(sender: AnyObject) {
 //        delegate?.toggleLeftPanel?()
     }
@@ -62,6 +65,7 @@ class ContainerViewController: UIViewController {
 //        centerViewController.view.addSubview(gestureView)
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
+        panGestureRecognizer.delegate = self
 //        gestureView.addGestureRecognizer(panGestureRecognizer)
         centerNavigationController.view.addGestureRecognizer(panGestureRecognizer)
     }
@@ -145,12 +149,30 @@ extension ContainerViewController: CenterViewControllerDelegate {
 
 extension ContainerViewController: UIGestureRecognizerDelegate {
     // MARK: Gesture recognizer
-    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touch = touch.view.superview as? UICollectionView {
+            println(touch)
+        }
+//        let gestureIsDraggingFromRigthToLeft = (gestureRecognizer.velocityInView(view).x < 0)
+//        println(gestureIsDraggingFromRigthToLeft)
+        if let slider = touch.view as? UISlider {
+            return false
+        }
+        return true
+    }
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
-        if recognizer.locationInView(self.view).x < 30 && state == false && gestureIsDraggingFromLeftToRight == true {
-            state = true
-        }
+        let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
+//        if let view = recognizer.view {
+//            if let view = view.su as? UICollectionView {
+//            println("POMILUJ NAS")
+//            }
+//        }
+//        println(gestureIsDraggingFromRigthToLeft)
+    
+            if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
+                state = true
+            }
             switch(recognizer.state) {
             case .Began:
                 if (currentState == .LeftPanelCollapsed) {
@@ -160,6 +182,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
                     showShadowForCenterViewController(true)
                 }
             case .Changed:
+                if !gestureIsDraggingFromRigthToLeft {
                 if !(currentState == .LeftPanelCollapsed) {
                     recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
                     recognizer.setTranslation(CGPointZero, inView: view)
@@ -167,6 +190,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
                 if state == true {
                     recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
                     recognizer.setTranslation(CGPointZero, inView: view)
+                }
                 }
             case .Ended:
                 if (leftViewController != nil) {
@@ -178,7 +202,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             default:
                 break
             }
-
+        
     }
 }
 private extension UIStoryboard {

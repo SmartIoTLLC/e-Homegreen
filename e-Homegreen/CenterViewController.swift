@@ -67,7 +67,7 @@ class CenterViewController: UIViewController {
         return img
         
     }
-  var delegate: CenterViewControllerDelegate?
+    var delegate: CenterViewControllerDelegate?
     @IBAction func btnScreenMode(sender: AnyObject) {
         if UIApplication.sharedApplication().statusBarHidden {
             UIApplication.sharedApplication().statusBarHidden = false

@@ -53,6 +53,17 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
+    @IBOutlet weak var btnScreenMode: UIButton!
+    @IBAction func btnScreenMode(sender: AnyObject) {
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            btnScreenMode.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

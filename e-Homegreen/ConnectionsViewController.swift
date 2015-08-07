@@ -40,6 +40,17 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
     
+    @IBOutlet weak var btnScreenMode: UIButton!
+    @IBAction func btnScreenMode(sender: AnyObject) {
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            btnScreenMode.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
     override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
         if let id = identifier{
             if id == "scanUnwind" {

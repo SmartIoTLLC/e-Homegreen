@@ -130,8 +130,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 
 //                showAccessParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
 
-
-
                 println("nistaa")
             }
         }
@@ -491,13 +489,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if sender.value == 0{
             devices[tag].opening = true
         }
-        UIView.setAnimationsEnabled(false)
-        self.deviceCollectionView.performBatchUpdates({
-            var indexPath = NSIndexPath(forItem: tag, inSection: 0)
-            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-            }, completion:  {(completed: Bool) -> Void in
-                UIView.setAnimationsEnabled(true)
-        })
+//        UIView.setAnimationsEnabled(false)
+//        self.deviceCollectionView.performBatchUpdates({
+//            var indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//            }, completion:  {(completed: Bool) -> Void in
+//                UIView.setAnimationsEnabled(true)
+//        })
     }
     func buttonTapped(sender:UIButton){
         var tag = sender.tag
@@ -517,17 +515,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     var deviceInControlMode = false
     func deviceDidEndControlMode (sender: UISlider){
-        //  Light
         var tag = sender.tag
-        deviceInControlMode = false
-        //  Light (Dimmer)
         var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        deviceInControlMode = false
+        println("hehehehe")
         if devices[tag].type == "Dimmer" {
+            println(devices[tag].currentValue)
             SendingHandler(byteArray: Functions().setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
         }
         //  Curtain
         if devices[tag].type == "curtainsRS485" {
-            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(sender.value * 100))), gateway: devices[tag].gateway)
+            SendingHandler(byteArray: Functions().setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
         }
     }
 }
@@ -625,35 +623,30 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.typeOfLight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: .TouchUpInside)
+            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: UIControlEvents.TouchDragExit)
+//            var didEndDragging = UIPanGestureRecognizer(target: self, action: "deviceDidEndControlMode:")
+//            cell.lightSlider.addGestureRecognizer(didEndDragging)
                 cell.lightSlider.tag = indexPath.row
                 var deviceValue = Double(devices[indexPath.row].currentValue) / 100
                 if deviceValue >= 0 && deviceValue < 0.1 {
                     cell.picture.image = UIImage(named: "lightBulb1")
-                } else if deviceValue >= 0.1 && deviceValue < 0.2{
+                } else if deviceValue >= 0.1 && deviceValue < 0.2 {
                     cell.picture.image = UIImage(named: "lightBulb2")
-                    
                 } else if deviceValue >= 0.2 && deviceValue < 0.3 {
                     cell.picture.image = UIImage(named: "lightBulb3")
-                    
                 } else if deviceValue >= 0.3 && deviceValue < 0.4 {
                     cell.picture.image = UIImage(named: "lightBulb4")
-                    
                 } else if deviceValue >= 0.4 && deviceValue < 0.5 {
                     cell.picture.image = UIImage(named: "lightBulb5")
-                    
                 } else if deviceValue >= 0.5 && deviceValue < 0.6 {
                     cell.picture.image = UIImage(named: "lightBulb6")
-                    
                 } else if deviceValue >= 0.6 && deviceValue < 0.7 {
                     cell.picture.image = UIImage(named: "lightBulb7")
-                    
                 } else if deviceValue >= 0.7 && deviceValue < 0.8 {
                     cell.picture.image = UIImage(named: "lightBulb8")
-                    
-                } else if deviceValue >= 0.8 && deviceValue < 0.9{
+                } else if deviceValue >= 0.8 && deviceValue < 0.9 {
                     cell.picture.image = UIImage(named: "lightBulb9")
-                }else{
+                } else {
                     cell.picture.image = UIImage(named: "lightBulb10")
                 }
                 cell.lightSlider.value = Float(deviceValue)
@@ -706,19 +699,16 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
             var deviceValue = Double(devices[indexPath.row].currentValue) / 100
-            if deviceValue >= 0 && deviceValue < 0.2{
+            if deviceValue >= 0 && deviceValue < 0.2 {
                 cell.curtainImage.image = UIImage(named: "curtain0")
                 
-            }else if deviceValue >= 0.2 && deviceValue < 0.4{
+            } else if deviceValue >= 0.2 && deviceValue < 0.4 {
                 cell.curtainImage.image = UIImage(named: "curtain1")
-                
-            }else if deviceValue >= 0.4 && deviceValue < 0.6 {
+            } else if deviceValue >= 0.4 && deviceValue < 0.6 {
                 cell.curtainImage.image = UIImage(named: "curtain2")
-                
-            }else if deviceValue >= 0.6 && deviceValue < 0.8 {
+            } else if deviceValue >= 0.6 && deviceValue < 0.8 {
                 cell.curtainImage.image = UIImage(named: "curtain3")
-                
-            }else {
+            } else {
                 cell.curtainImage.image = UIImage(named: "curtain4")
             }
             cell.curtainSlider.value = Float(deviceValue)
