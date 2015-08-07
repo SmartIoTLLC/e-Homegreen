@@ -671,6 +671,20 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
             
+//            @IBOutlet weak var labelID: UILabel!
+//            @IBOutlet weak var labelName: UILabel!
+//            @IBOutlet weak var labelCategory: UILabel!
+//            @IBOutlet weak var labelLevel: UILabel!
+//            @IBOutlet weak var labelZone: UILabel!
+//            @IBOutlet weak var labelPowrUsege: UILabel!
+//            @IBOutlet weak var labelRunningTime: UILabel!
+//            @IBOutlet weak var labelWarningState: UILabel!
+            cell.labelID.text = "\(indexPath.row+1)"
+            cell.labelName.text = "\(devices[indexPath.row].name)"
+            cell.labelPowrUsege.text = "\(devices[indexPath.row].current)"
+            cell.labelRunningTime.text = "00:00:00"
+            
+            
                 cell.infoView.layer.cornerRadius = 5
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
