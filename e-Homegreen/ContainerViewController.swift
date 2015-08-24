@@ -181,12 +181,16 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             }
         case .Changed:
             if !(currentState == .LeftPanelCollapsed) {
-                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                recognizer.setTranslation(CGPointZero, inView: view)
+                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 {
+                    recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                    recognizer.setTranslation(CGPointZero, inView: view)
+                }
             }
             if state == true {
-                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                recognizer.setTranslation(CGPointZero, inView: view)
+                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 {
+                    recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                    recognizer.setTranslation(CGPointZero, inView: view)
+                }
             }
         case .Ended:
             if (leftViewController != nil) {
