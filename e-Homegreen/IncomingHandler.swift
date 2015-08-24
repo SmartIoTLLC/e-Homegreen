@@ -192,10 +192,10 @@ class IncomingHandler: NSObject {
     func ackADICmdGetInterfaceParametar (byteArray:[UInt8]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
-            devices[i].zoneId = Int(byteArray[9])
-            devices[i].parentZoneId = Int(byteArray[10])
-            devices[i].categoryId = Int(byteArray[8])
-            devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
+//            devices[i].zoneId = Int(byteArray[9])
+//            devices[i].parentZoneId = Int(byteArray[10])
+//            devices[i].categoryId = Int(byteArray[8])
+//            devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
@@ -217,10 +217,10 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
-                devices[i].zoneId = Int(byteArray[71])
-                devices[i].parentZoneId = Int(byteArray[72])
-                devices[i].categoryId = Int(byteArray[70])
-                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[70])]!
+//                devices[i].zoneId = Int(byteArray[71])
+//                devices[i].parentZoneId = Int(byteArray[72])
+//                devices[i].categoryId = Int(byteArray[70])
+//                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[70])]!
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
@@ -395,10 +395,10 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
-                devices[i].zoneId = Int(byteArray[9])
-                devices[i].parentZoneId = Int(byteArray[10])
-                devices[i].categoryId = Int(byteArray[8])
-                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
+//                devices[i].zoneId = Int(byteArray[9])
+//                devices[i].parentZoneId = Int(byteArray[10])
+//                devices[i].categoryId = Int(byteArray[8])
+//                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }

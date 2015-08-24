@@ -102,24 +102,24 @@ class DeviceInfo: NSObject {
             6:digitalInput]
     }
     func getCategroyList () {
-        categoryList = [0x00:"",
-            0x01:"Gateway & Control",
-            0x02:"Dimming Control",
-            0x03:"Relay Control",
-            0x04:"Climate Control",
-            0x05:"Human Interface",
-            0x06:"I/O",
-            0x07:"Power Suply",
-            0x08:"Reserve (7\" Touch Screen Panel)",
-            0x09:"Reserve (Remote Control)",
-            0x10:"Reserve (Telphone Control)",
-            0x11:"Lighting",
-            0x12:"Appliance",
-            0x13:"Curtain",
-            0x14:"Security",
-            0x15:"Timer",
-            0x16:"Flag",
-            0x17:"Event"]
+        categoryList = [0:"",
+            1:"Gateway & Control",
+            2:"Dimming Control",
+            3:"Relay Control",
+            4:"Climate Control",
+            5:"Human Interface",
+            6:"I/O",
+            7:"Power Suply",
+            8:"Reserve (7\" Touch Screen Panel)",
+            9:"Reserve (Remote Control)",
+            10:"Reserve (Telphone Control)",
+            11:"Lighting",
+            12:"Appliance",
+            13:"Curtain",
+            14:"Security",
+            15:"Timer",
+            16:"Flag",
+            17:"Event"]
     }
     func saveDeviceChannel () {
         deviceChannel = [0x03 :DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway
