@@ -1886,6 +1886,94 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxX-CA-Y99">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tg0-Gf-im8">
+                                                            <rect key="frame" x="8" y="22" width="20" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZVL-4a-opT">
+                                                            <rect key="frame" x="109" y="22" width="33" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AVZ-UW-QHw">
+                                                            <rect key="frame" x="8" y="52" width="41" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-qx-20H">
+                                                            <rect key="frame" x="109" y="52" width="33" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zd4-lg-ZSD">
+                                                            <rect key="frame" x="8" y="82" width="61" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LM6-NS-sQf">
+                                                            <rect key="frame" x="109" y="82" width="33" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-3C-SYL">
+                                                            <rect key="frame" x="8" y="112" width="37" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SlD-Mo-QZ4">
+                                                            <rect key="frame" x="109" y="112" width="33" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-zN-Etu">
+                                                            <rect key="frame" x="8" y="142" width="36" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xIg-IG-nM9">
+                                                            <rect key="frame" x="109" y="142" width="33" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="Q9k-3C-SYL" firstAttribute="top" secondItem="zd4-lg-ZSD" secondAttribute="bottom" constant="13" id="0Lm-mf-XSH"/>
+                                                        <constraint firstAttribute="centerY" secondItem="zd4-lg-ZSD" secondAttribute="centerY" id="4kr-Ad-0bh"/>
+                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="trailing" secondItem="SlD-Mo-QZ4" secondAttribute="trailing" id="88q-Si-MsY"/>
+                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="centerY" secondItem="xIg-IG-nM9" secondAttribute="centerY" id="8MR-TS-aTm"/>
+                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="top" secondItem="Q9k-3C-SYL" secondAttribute="bottom" constant="13" id="Ffm-ps-L9b"/>
+                                                        <constraint firstItem="xIg-IG-nM9" firstAttribute="trailing" secondItem="SlD-Mo-QZ4" secondAttribute="trailing" id="HX0-6M-9Td"/>
+                                                        <constraint firstItem="FOu-qx-20H" firstAttribute="trailing" secondItem="ZVL-4a-opT" secondAttribute="trailing" id="N6t-oX-z0A"/>
+                                                        <constraint firstItem="AVZ-UW-QHw" firstAttribute="top" secondItem="tg0-Gf-im8" secondAttribute="bottom" constant="13" id="Nq9-Ci-leY"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ZVL-4a-opT" secondAttribute="trailing" constant="8" id="TPF-ym-q6p"/>
+                                                        <constraint firstItem="tg0-Gf-im8" firstAttribute="leading" secondItem="AVZ-UW-QHw" secondAttribute="leading" id="Uj8-gm-5yT"/>
+                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="leading" secondItem="Q9k-3C-SYL" secondAttribute="leading" id="Usr-Lg-rS9"/>
+                                                        <constraint firstItem="FOu-qx-20H" firstAttribute="centerY" secondItem="AVZ-UW-QHw" secondAttribute="centerY" id="bFq-Yp-gJ6"/>
+                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="centerY" secondItem="zd4-lg-ZSD" secondAttribute="centerY" id="cla-K2-y98"/>
+                                                        <constraint firstItem="SlD-Mo-QZ4" firstAttribute="centerY" secondItem="Q9k-3C-SYL" secondAttribute="centerY" id="dBc-n7-eeQ"/>
+                                                        <constraint firstItem="tg0-Gf-im8" firstAttribute="leading" secondItem="dxX-CA-Y99" secondAttribute="leading" constant="8" id="dCW-sV-0A8"/>
+                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="top" secondItem="AVZ-UW-QHw" secondAttribute="bottom" constant="13" id="dTq-mh-w2Q"/>
+                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="trailing" secondItem="FOu-qx-20H" secondAttribute="trailing" id="lJ5-m2-Idm"/>
+                                                        <constraint firstItem="ZVL-4a-opT" firstAttribute="centerY" secondItem="tg0-Gf-im8" secondAttribute="centerY" id="rAY-Rm-XtA"/>
+                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="leading" secondItem="AVZ-UW-QHw" secondAttribute="leading" id="vds-XM-F3j"/>
+                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="leading" secondItem="Q9k-3C-SYL" secondAttribute="leading" id="ywH-Qb-2OI"/>
+                                                    </constraints>
+                                                </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2k-G5-aeU">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
@@ -1917,94 +2005,6 @@
                                                         <constraint firstItem="Qsw-H8-6Us" firstAttribute="leading" secondItem="h2k-G5-aeU" secondAttribute="leading" constant="20" id="qOf-GG-Y0q"/>
                                                         <constraint firstAttribute="trailing" secondItem="SbN-yE-qXC" secondAttribute="trailing" id="uS9-hz-Hgc"/>
                                                         <constraint firstItem="Qsw-H8-6Us" firstAttribute="top" secondItem="SbN-yE-qXC" secondAttribute="bottom" constant="8" id="vPf-nR-JEJ"/>
-                                                    </constraints>
-                                                </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxX-CA-Y99">
-                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tg0-Gf-im8">
-                                                            <rect key="frame" x="8" y="22" width="20" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZVL-4a-opT">
-                                                            <rect key="frame" x="109" y="22" width="33" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AVZ-UW-QHw">
-                                                            <rect key="frame" x="8" y="52" width="41" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-qx-20H">
-                                                            <rect key="frame" x="109" y="52" width="33" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zd4-lg-ZSD">
-                                                            <rect key="frame" x="8" y="82" width="61" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LM6-NS-sQf">
-                                                            <rect key="frame" x="109" y="82" width="33" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-3C-SYL">
-                                                            <rect key="frame" x="8" y="112" width="37" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SlD-Mo-QZ4">
-                                                            <rect key="frame" x="109" y="112" width="33" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-zN-Etu">
-                                                            <rect key="frame" x="8" y="142" width="36" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xIg-IG-nM9">
-                                                            <rect key="frame" x="109" y="142" width="33" height="17"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="Q9k-3C-SYL" firstAttribute="top" secondItem="zd4-lg-ZSD" secondAttribute="bottom" constant="13" id="0Lm-mf-XSH"/>
-                                                        <constraint firstAttribute="centerY" secondItem="zd4-lg-ZSD" secondAttribute="centerY" id="4kr-Ad-0bh"/>
-                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="trailing" secondItem="SlD-Mo-QZ4" secondAttribute="trailing" id="88q-Si-MsY"/>
-                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="centerY" secondItem="xIg-IG-nM9" secondAttribute="centerY" id="8MR-TS-aTm"/>
-                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="top" secondItem="Q9k-3C-SYL" secondAttribute="bottom" constant="13" id="Ffm-ps-L9b"/>
-                                                        <constraint firstItem="xIg-IG-nM9" firstAttribute="trailing" secondItem="SlD-Mo-QZ4" secondAttribute="trailing" id="HX0-6M-9Td"/>
-                                                        <constraint firstItem="FOu-qx-20H" firstAttribute="trailing" secondItem="ZVL-4a-opT" secondAttribute="trailing" id="N6t-oX-z0A"/>
-                                                        <constraint firstItem="AVZ-UW-QHw" firstAttribute="top" secondItem="tg0-Gf-im8" secondAttribute="bottom" constant="13" id="Nq9-Ci-leY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="ZVL-4a-opT" secondAttribute="trailing" constant="8" id="TPF-ym-q6p"/>
-                                                        <constraint firstItem="tg0-Gf-im8" firstAttribute="leading" secondItem="AVZ-UW-QHw" secondAttribute="leading" id="Uj8-gm-5yT"/>
-                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="leading" secondItem="Q9k-3C-SYL" secondAttribute="leading" id="Usr-Lg-rS9"/>
-                                                        <constraint firstItem="FOu-qx-20H" firstAttribute="centerY" secondItem="AVZ-UW-QHw" secondAttribute="centerY" id="bFq-Yp-gJ6"/>
-                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="centerY" secondItem="zd4-lg-ZSD" secondAttribute="centerY" id="cla-K2-y98"/>
-                                                        <constraint firstItem="SlD-Mo-QZ4" firstAttribute="centerY" secondItem="Q9k-3C-SYL" secondAttribute="centerY" id="dBc-n7-eeQ"/>
-                                                        <constraint firstItem="tg0-Gf-im8" firstAttribute="leading" secondItem="dxX-CA-Y99" secondAttribute="leading" constant="8" id="dCW-sV-0A8"/>
-                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="top" secondItem="AVZ-UW-QHw" secondAttribute="bottom" constant="13" id="dTq-mh-w2Q"/>
-                                                        <constraint firstItem="LM6-NS-sQf" firstAttribute="trailing" secondItem="FOu-qx-20H" secondAttribute="trailing" id="lJ5-m2-Idm"/>
-                                                        <constraint firstItem="ZVL-4a-opT" firstAttribute="centerY" secondItem="tg0-Gf-im8" secondAttribute="centerY" id="rAY-Rm-XtA"/>
-                                                        <constraint firstItem="zd4-lg-ZSD" firstAttribute="leading" secondItem="AVZ-UW-QHw" secondAttribute="leading" id="vds-XM-F3j"/>
-                                                        <constraint firstItem="dmq-zN-Etu" firstAttribute="leading" secondItem="Q9k-3C-SYL" secondAttribute="leading" id="ywH-Qb-2OI"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
