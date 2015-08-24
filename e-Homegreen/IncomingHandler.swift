@@ -59,7 +59,7 @@ class IncomingHandler: NSObject {
                     
                     //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
                     if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
-                        
+                        self.ackDimmerGetRunningTime(self.byteArray)
                     }
                     
                     //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
@@ -166,7 +166,46 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-
+    func ackDimmerGetRunningTime (byteArray:[UInt8]) {
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
+                if byteArray[7] != 0xFF {
+                    devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
+                } else {
+                    var channelNumber = Int(devices[i].channel)
+                    devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
+                    println(devices[i].runningTime)
+                }
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+    }
+    func bytesToUInt(byteArray: [UInt8]) -> UInt {
+        assert(byteArray.count <= 4)
+        var result: UInt = 0
+        for idx in 0..<(byteArray.count) {
+            let shiftAmount = UInt((byteArray.count) - idx - 1) * 8
+            result += UInt(byteArray[idx]) << shiftAmount
+        }
+        return result
+    }
+    func returnRunningTime (runningTimeByteArray:[UInt8]) -> String {
+        println(runningTimeByteArray)
+        var x = Int(bytesToUInt(runningTimeByteArray))
+        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
+        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
+        var seconds = x / 10
+        var hours = seconds / 3600
+        var minutes = (seconds % 3600) / 60
+        seconds = seconds % 60
+        var secdiv = (x % 60) % 10
+        return "\(returnTwoPlaces(hours)):\(returnTwoPlaces(minutes)):\(returnTwoPlaces(seconds)),\(secdiv)s"
+    }
+    func returnTwoPlaces (number:Int) -> String {
+        return String(format: "%02d",number)
+    }
     //  informacije o imenima uredjaja na MULTISENSORU
     func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
         fetchDevices()
@@ -236,7 +275,9 @@ class IncomingHandler: NSObject {
             for var i = 0; i < self.devices.count; i++ {
                 if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
                     var channel = Int(self.devices[i].channel)
+                    println("osluskuj 1")
                     self.devices[i].currentValue = Int(byteArray[7+channel])
+                    println("osluskuj 2")
                 }
             }
             self.saveChanges()
@@ -371,7 +412,8 @@ class IncomingHandler: NSObject {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 var channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
-                devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
+                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
+                devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
             } else {

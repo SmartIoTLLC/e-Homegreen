@@ -285,16 +285,17 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     // ======================= *** TABLE VIEW *** =======================
     
     func returnThreeCharactersForByte (number:Int) -> String {
-        var string = ""
-        var numberLength = "\(number)"
-        if count(numberLength) == 1 {
-            string = "00\(number)"
-        } else if count(numberLength) == 2 {
-            string = "0\(number)"
-        } else {
-            string = "\(number)"
-        }
-        return string
+//        var string = ""
+//        var numberLength = "\(number)"
+//        if count(numberLength) == 1 {
+//            string = "00\(number)"
+//        } else if count(numberLength) == 2 {
+//            string = "0\(number)"
+//        } else {
+//            string = "\(number)"
+//        }
+//        return string
+        return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
