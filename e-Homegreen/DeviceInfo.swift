@@ -45,6 +45,7 @@ class DeviceInfo: NSObject {
     var modeState:[Int:String] = [:]
     var setSpeed:[Int:String] = [:]
     var speedState:[Int:String] = [:]
+    var categoryList:[Int:String] = [:]
     
     override init () {
         super.init()
@@ -53,6 +54,7 @@ class DeviceInfo: NSObject {
         saveInterfaceType10in1()
         saveInterfaceType6in1()
         saveDeviceChannel1()
+        getCategroyList()
         setMode = [0 : "Auto",
             1:"Cool",
             2:"Heat",
@@ -98,6 +100,26 @@ class DeviceInfo: NSObject {
             4:temperatureProbe2,
             5:motionSensorPIR,
             6:digitalInput]
+    }
+    func getCategroyList () {
+        categoryList = [0x00:"",
+            0x01:"Gateway & Control",
+            0x02:"Dimming Control",
+            0x03:"Relay Control",
+            0x04:"Climate Control",
+            0x05:"Human Interface",
+            0x06:"I/O",
+            0x07:"Power Suply",
+            0x08:"Reserve (7\" Touch Screen Panel)",
+            0x09:"Reserve (Remote Control)",
+            0x10:"Reserve (Telphone Control)",
+            0x11:"Lighting",
+            0x12:"Appliance",
+            0x13:"Curtain",
+            0x14:"Security",
+            0x15:"Timer",
+            0x16:"Flag",
+            0x17:"Event"]
     }
     func saveDeviceChannel () {
         deviceChannel = [0x03 :DeviceChannelType(channel:ONE_CHANEL, name:CURTAINRS485), //RS232/RS485 Gateway

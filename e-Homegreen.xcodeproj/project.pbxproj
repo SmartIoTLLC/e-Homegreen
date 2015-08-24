@@ -11,9 +11,8 @@
 		736265DF1B4A48200078C11D /* InSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265DE1B4A48200078C11D /* InSocket.swift */; };
 		736265E11B4A48330078C11D /* OutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E01B4A48330078C11D /* OutSocket.swift */; };
 		736265E31B4A483E0078C11D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Functions.swift */; };
-		736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E41B4A48F90078C11D /* DeviceOld.swift */; };
-		73691E581B6FAD9D006042BB /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73691E571B6FAD9D006042BB /* Device.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
+		736AE0C61B8AFF3300C0541C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AE0C51B8AFF3300C0541C /* Device.swift */; };
 		736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA631B6759EA00FD7544 /* Gateway.swift */; };
 		736CBA6A1B67913100FD7544 /* TryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA691B67913100FD7544 /* TryCatch.m */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
@@ -45,7 +44,6 @@
 		73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */; };
 		73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E2C9F81B5E25570048C072 /* ViewControllerUtils.swift */; };
 		73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B51B4D08CE0083A747 /* IncomingHandler.swift */; };
-		73E427B81B4D0AF50083A747 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B71B4D0AF50083A747 /* Model.swift */; };
 		73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B91B4D0B870083A747 /* DeviceInfo.swift */; };
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
@@ -135,9 +133,8 @@
 		736265DE1B4A48200078C11D /* InSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InSocket.swift; sourceTree = "<group>"; };
 		736265E01B4A48330078C11D /* OutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutSocket.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
-		736265E41B4A48F90078C11D /* DeviceOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceOld.swift; sourceTree = "<group>"; };
-		73691E571B6FAD9D006042BB /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
+		736AE0C51B8AFF3300C0541C /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		736CBA631B6759EA00FD7544 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		736CBA681B67913100FD7544 /* TryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TryCatch.h; sourceTree = "<group>"; };
 		736CBA691B67913100FD7544 /* TryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryCatch.m; sourceTree = "<group>"; };
@@ -174,7 +171,6 @@
 		73E28EDE1B6657A80016CD77 /* e_Homegreen.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = e_Homegreen.xcdatamodel; sourceTree = "<group>"; };
 		73E2C9F81B5E25570048C072 /* ViewControllerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerUtils.swift; sourceTree = "<group>"; };
 		73E427B51B4D08CE0083A747 /* IncomingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingHandler.swift; sourceTree = "<group>"; };
-		73E427B71B4D0AF50083A747 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		73E427B91B4D0B870083A747 /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
@@ -323,11 +319,9 @@
 				736265E21B4A483E0078C11D /* Functions.swift */,
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
-				73E427B71B4D0AF50083A747 /* Model.swift */,
-				736265E41B4A48F90078C11D /* DeviceOld.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				736CBA631B6759EA00FD7544 /* Gateway.swift */,
-				73691E571B6FAD9D006042BB /* Device.swift */,
+				736AE0C51B8AFF3300C0541C /* Device.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -786,6 +780,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				736AE0C61B8AFF3300C0541C /* Device.swift in Sources */,
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */,
@@ -811,14 +806,12 @@
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
-				736265E51B4A48F90078C11D /* DeviceOld.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
-				73E427B81B4D0AF50083A747 /* Model.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
@@ -828,7 +821,6 @@
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				736CBA6A1B67913100FD7544 /* TryCatch.m in Sources */,
-				73691E581B6FAD9D006042BB /* Device.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				736265DF1B4A48200078C11D /* InSocket.swift in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,

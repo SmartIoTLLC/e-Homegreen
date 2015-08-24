@@ -68,7 +68,7 @@ class IncomingHandler: NSObject {
                     }
                     //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
                     if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
-                        self.ackACname(self.byteArray)
+                        self.ackACParametar(self.byteArray)
                     }
                     //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
                     if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
@@ -77,6 +77,9 @@ class IncomingHandler: NSObject {
                     //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
                     //
                     //                }
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
+                        self.ackADICmdGetInterfaceParametar(self.byteArray)
+                    }
                     // - Ovo je izgleda u redu
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
                         self.ackADICmdGetInterfaceStatus(self.byteArray)
@@ -84,9 +87,9 @@ class IncomingHandler: NSObject {
 //                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 { // OVO NE MOZE OVAKO DA BUDE
 //                        self.ackADICmdGetInterfaceStatus(self.byteArray)
 //                    }
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
-                        
-                    }
+//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+//                        
+//                    }
                     
                     // - Ovo je izgleda u redu
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
@@ -186,7 +189,18 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    func ackACname (byteArray:[UInt8]) {
+    func ackADICmdGetInterfaceParametar (byteArray:[UInt8]) {
+        fetchDevices()
+        for var i = 0; i < devices.count; i++ {
+            devices[i].zoneId = Int(byteArray[9])
+            devices[i].parentZoneId = Int(byteArray[10])
+            devices[i].categoryId = Int(byteArray[8])
+            devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+    }
+    func ackACParametar (byteArray:[UInt8]) {
         fetchDevices()
         var string:String = ""
         for var i = 9; i < byteArray.count-2; i++ {
@@ -203,6 +217,10 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
+                devices[i].zoneId = Int(byteArray[71])
+                devices[i].parentZoneId = Int(byteArray[72])
+                devices[i].categoryId = Int(byteArray[70])
+                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[70])]!
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
@@ -377,6 +395,10 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
+                devices[i].zoneId = Int(byteArray[9])
+                devices[i].parentZoneId = Int(byteArray[10])
+                devices[i].categoryId = Int(byteArray[8])
+                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }

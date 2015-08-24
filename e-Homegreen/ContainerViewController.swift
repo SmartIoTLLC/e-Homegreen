@@ -163,81 +163,81 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
         let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
-        if let view = recognizer.view {
-            println(view.frame.origin.x)
-            println(gestureIsDraggingFromRigthToLeft)
-            if view.frame.origin.x >= 0 {
-                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
-                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
-                        state = true
-                    }
-                    switch(recognizer.state) {
-                    case .Began:
-                        if (currentState == .LeftPanelCollapsed) {
-                            if (gestureIsDraggingFromLeftToRight) && state == true {
-                                addLeftPanelViewController()
-                            }
-                            showShadowForCenterViewController(true)
-                        }
-                    case .Changed:
-                        if !(currentState == .LeftPanelCollapsed) {
-                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                            recognizer.setTranslation(CGPointZero, inView: view)
-                        }
-                        if state == true {
-                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                            recognizer.setTranslation(CGPointZero, inView: view)
-                        }
-                    case .Ended:
-                        if (leftViewController != nil) {
-                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
-                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
-                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
-                        }
-                        state = false
-                    default:
-                        break
-                    }
+//        if let view = recognizer.view {
+//            println(view.frame.origin.x)
+//            println(gestureIsDraggingFromRigthToLeft)
+//            if view.frame.origin.x >= 0 {
+//                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
+        if recognizer.locationInView(self.view).x < 50 && state == false && gestureIsDraggingFromLeftToRight == true {
+            state = true
+        }
+        switch(recognizer.state) {
+        case .Began:
+            if (currentState == .LeftPanelCollapsed) {
+                if (gestureIsDraggingFromLeftToRight) && state == true {
+                    addLeftPanelViewController()
                 }
-                if gestureIsDraggingFromRigthToLeft && view.frame.origin.x > 0 {
-                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
-                        state = true
-                    }
-                    switch(recognizer.state) {
-                    case .Began:
-                        if (currentState == .LeftPanelCollapsed) {
-                            if (gestureIsDraggingFromLeftToRight) && state == true {
-                                addLeftPanelViewController()
-                            }
-                            showShadowForCenterViewController(true)
-                        }
-                    case .Changed:
-                        if !(currentState == .LeftPanelCollapsed) {
-                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                            recognizer.setTranslation(CGPointZero, inView: view)
-                        }
-                        if state == true {
-                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-                            recognizer.setTranslation(CGPointZero, inView: view)
-                        }
-                    case .Ended:
-                        if (leftViewController != nil) {
-                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
-                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
-                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
-                        }
-                        state = false
-                    default:
-                        break
-                    }
-                }
-            } else {
+                showShadowForCenterViewController(true)
+            }
+        case .Changed:
+            if !(currentState == .LeftPanelCollapsed) {
+                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                recognizer.setTranslation(CGPointZero, inView: view)
+            }
+            if state == true {
+                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+                recognizer.setTranslation(CGPointZero, inView: view)
+            }
+        case .Ended:
+            if (leftViewController != nil) {
+                // animate the side panel open or closed based on whether the view has moved more or less than halfway
                 let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
                 animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
             }
+            state = false
+        default:
+            break
         }
-        
     }
+//                if gestureIsDraggingFromRigthToLeft && view.frame.origin.x > 0 {
+//                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
+//                        state = true
+//                    }
+//                    switch(recognizer.state) {
+//                    case .Began:
+//                        if (currentState == .LeftPanelCollapsed) {
+//                            if (gestureIsDraggingFromLeftToRight) && state == true {
+//                                addLeftPanelViewController()
+//                            }
+//                            showShadowForCenterViewController(true)
+//                        }
+//                    case .Changed:
+//                        if !(currentState == .LeftPanelCollapsed) {
+//                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+//                            recognizer.setTranslation(CGPointZero, inView: view)
+//                        }
+//                        if state == true {
+//                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
+//                            recognizer.setTranslation(CGPointZero, inView: view)
+//                        }
+//                    case .Ended:
+//                        if (leftViewController != nil) {
+//                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
+//                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+//                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
+//                        }
+//                        state = false
+//                    default:
+//                        break
+//                    }
+//                }
+//            } else {
+//                let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+//                animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
+//            }
+//        }
+//        
+//    }
 }
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()) }

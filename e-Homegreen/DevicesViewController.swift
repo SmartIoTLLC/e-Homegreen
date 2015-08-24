@@ -478,10 +478,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    func changeSliderValueStarted (sender: UISlider) {
+        deviceInControlMode = true
+    }
     func changeSliderValue(sender: UISlider){
         var tag = sender.tag
-        deviceInControlMode = true
+//        deviceInControlMode = true
         devices[tag].currentValue = Int(sender.value * 100)
         if sender.value == 1{
             devices[tag].opening = false
@@ -635,6 +637,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = false
             cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
+            cell.lightSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
 //            cell.lightSlider.addTarget(self, action: "deviceDidEndControlMode:", forControlEvents: UIControlEvents.TouchUpInside)
 //            var didEndDragging = UIPanGestureRecognizer(target: self, action: "deviceDidEndControlMode:")
 //            cell.lightSlider.addGestureRecognizer(didEndDragging)

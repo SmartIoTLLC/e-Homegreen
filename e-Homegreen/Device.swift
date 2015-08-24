@@ -2,7 +2,7 @@
 //  Device.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 8/3/15.
+//  Created by Teodor Stevic on 8/24/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
@@ -27,13 +27,19 @@ class Device: NSManagedObject {
     @NSManaged var runningTime: String
     @NSManaged var speed: String
     @NSManaged var speedState: String
+    @NSManaged var stateUpdatedAt: NSDate
     @NSManaged var temperature: NSNumber
     @NSManaged var type: String
     @NSManaged var voltage: NSNumber
-    @NSManaged var stateUpdatedAt: NSDate
+    @NSManaged var categoryId: NSNumber
+    @NSManaged var zoneId: NSNumber
+    @NSManaged var parentZoneId: NSNumber
+    @NSManaged var level: NSNumber
+    @NSManaged var categoryName: String
     @NSManaged var gateway: Gateway
     var opening:Bool = true
     var on:Bool = false
     var info:Bool = false
+
 
 }
