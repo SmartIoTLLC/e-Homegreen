@@ -445,7 +445,7 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
-                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
+//                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
                 var data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
