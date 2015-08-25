@@ -33,6 +33,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     private let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var pullDown = PullDownView()
+    var isScrolling:Bool = false
+    var shouldUpdate:Bool = false
     
     var senderButton:UIButton?
     
@@ -522,8 +524,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func refreshDeviceList() {
         println(deviceInControlMode.boolValue)
         if !deviceInControlMode {
-            updateDeviceList()
-            self.deviceCollectionView.reloadData()
+            if isScrolling {
+                shouldUpdate = true
+            } else {
+                updateDeviceList()
+                self.deviceCollectionView.reloadData()
+            }
         }
     }
     var deviceInControlMode = false
@@ -611,8 +617,24 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
             }
         }
+        if shouldUpdate {
+            updateDeviceList()
+            self.deviceCollectionView.reloadData()
+            shouldUpdate = false
+        }
+        isScrolling = false
     }
-    
+//    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+//        println("BBB")
+//        println("BBB")
+//        println("BBB")
+//    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        println("AAA")
+//        println("AAA")
+//        println("AAA")
+        isScrolling = true
+    }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
@@ -920,6 +942,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.infoView.layer.borderWidth = 1
             
+            cell.labelID.text = "\(indexPath.row + 1)"
+            cell.labelName.text = "\(devices[indexPath.row].name)"
+            cell.labelCategory.text = ""
+            cell.labelLevel.text = ""
+            cell.labelZone.text = ""
+            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+            
             if cell.infoGradientLayer == nil {
                 let gradientLayerInfo = CAGradientLayer()
                 gradientLayerInfo.frame = cell.bounds
@@ -1048,6 +1077,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.infoView.layer.borderWidth = 1
+            
+            cell.labelID.text = "\(indexPath.row + 1)"
+            cell.labelName.text = "\(devices[indexPath.row].name)"
+            cell.labelCategory.text = ""
+            cell.labelLevel.text = ""
+            cell.labelZone.text = ""
             
             if cell.infoGradientLayer == nil {
                 let gradientLayerInfo = CAGradientLayer()
