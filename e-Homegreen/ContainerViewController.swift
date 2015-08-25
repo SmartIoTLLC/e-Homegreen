@@ -168,7 +168,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
 //            println(gestureIsDraggingFromRigthToLeft)
 //            if view.frame.origin.x >= 0 {
 //                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
-        if recognizer.locationInView(self.view).x < 50 && state == false && gestureIsDraggingFromLeftToRight == true {
+        if recognizer.locationInView(self.view).x < 300 && state == false && gestureIsDraggingFromLeftToRight == true {
             state = true
         }
         switch(recognizer.state) {
@@ -181,13 +181,13 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             }
         case .Changed:
             if !(currentState == .LeftPanelCollapsed) {
-                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 {
+                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 - 2 {
                     recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
                     recognizer.setTranslation(CGPointZero, inView: view)
                 }
             }
             if state == true {
-                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 {
+                if recognizer.view!.center.x + recognizer.translationInView(view).x > view.bounds.size.width/2 - 2 {
                     recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
                     recognizer.setTranslation(CGPointZero, inView: view)
                 }

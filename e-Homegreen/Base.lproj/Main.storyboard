@@ -1174,38 +1174,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laW-Do-HeS">
-                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FIy-oF-Uap">
-                                                            <rect key="frame" x="0.0" y="8" width="150" height="19"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </label>
-                                                        <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="vxv-hU-1Az">
-                                                            <rect key="frame" x="8" y="145" width="134" height="31"/>
-                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </slider>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="Rhd-hg-84t">
-                                                            <rect key="frame" x="20" y="35" width="110" height="102"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        </imageView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="FIy-oF-Uap" firstAttribute="top" secondItem="laW-Do-HeS" secondAttribute="top" constant="8" id="501-op-yDM"/>
-                                                        <constraint firstItem="vxv-hU-1Az" firstAttribute="top" secondItem="Rhd-hg-84t" secondAttribute="bottom" constant="8" id="JdE-aJ-gby"/>
-                                                        <constraint firstItem="Rhd-hg-84t" firstAttribute="top" secondItem="FIy-oF-Uap" secondAttribute="bottom" constant="8" id="M7c-PK-PzQ"/>
-                                                        <constraint firstAttribute="bottom" secondItem="vxv-hU-1Az" secondAttribute="bottom" constant="5" id="MTz-Rd-8wN"/>
-                                                        <constraint firstAttribute="trailing" secondItem="FIy-oF-Uap" secondAttribute="trailing" id="iX4-hh-smg"/>
-                                                        <constraint firstItem="vxv-hU-1Az" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" constant="10" id="lwU-8X-jH3"/>
-                                                        <constraint firstAttribute="trailing" secondItem="vxv-hU-1Az" secondAttribute="trailing" constant="10" id="mTo-60-HmD"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Rhd-hg-84t" secondAttribute="trailing" constant="20" id="nOu-er-YAZ"/>
-                                                        <constraint firstItem="Rhd-hg-84t" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" constant="20" id="oyn-qv-vtR"/>
-                                                        <constraint firstItem="FIy-oF-Uap" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" id="u6W-Vz-7t2"/>
-                                                    </constraints>
-                                                </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grV-6d-2I7">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
@@ -1349,6 +1317,38 @@
                                                         <constraint firstItem="ook-c1-qOe" firstAttribute="trailing" secondItem="bCr-k1-qhc" secondAttribute="trailing" id="uuM-Tu-lhx"/>
                                                         <constraint firstAttribute="trailing" secondItem="S0X-XK-pNv" secondAttribute="trailing" constant="8" id="yuf-4e-C4a"/>
                                                         <constraint firstItem="NXp-wK-AsD" firstAttribute="top" secondItem="4x3-Np-LBY" secondAttribute="bottom" constant="4" id="zKm-Ia-0EV"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laW-Do-HeS">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FIy-oF-Uap">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </label>
+                                                        <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="vxv-hU-1Az">
+                                                            <rect key="frame" x="8" y="145" width="134" height="31"/>
+                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </slider>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="Rhd-hg-84t">
+                                                            <rect key="frame" x="20" y="35" width="110" height="102"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="FIy-oF-Uap" firstAttribute="top" secondItem="laW-Do-HeS" secondAttribute="top" constant="8" id="501-op-yDM"/>
+                                                        <constraint firstItem="vxv-hU-1Az" firstAttribute="top" secondItem="Rhd-hg-84t" secondAttribute="bottom" constant="8" id="JdE-aJ-gby"/>
+                                                        <constraint firstItem="Rhd-hg-84t" firstAttribute="top" secondItem="FIy-oF-Uap" secondAttribute="bottom" constant="8" id="M7c-PK-PzQ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="vxv-hU-1Az" secondAttribute="bottom" constant="5" id="MTz-Rd-8wN"/>
+                                                        <constraint firstAttribute="trailing" secondItem="FIy-oF-Uap" secondAttribute="trailing" id="iX4-hh-smg"/>
+                                                        <constraint firstItem="vxv-hU-1Az" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" constant="10" id="lwU-8X-jH3"/>
+                                                        <constraint firstAttribute="trailing" secondItem="vxv-hU-1Az" secondAttribute="trailing" constant="10" id="mTo-60-HmD"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Rhd-hg-84t" secondAttribute="trailing" constant="20" id="nOu-er-YAZ"/>
+                                                        <constraint firstItem="Rhd-hg-84t" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" constant="20" id="oyn-qv-vtR"/>
+                                                        <constraint firstItem="FIy-oF-Uap" firstAttribute="leading" secondItem="laW-Do-HeS" secondAttribute="leading" id="u6W-Vz-7t2"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
