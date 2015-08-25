@@ -86,9 +86,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if let results = fetResults {
             println("ovde je uslo 2")
             devices = results
-//            for item in devices {
-//                println("!\(item.gateway.turnedOn)!")
-//            }
         } else {
             println("ovde je uslo 3")
         }
