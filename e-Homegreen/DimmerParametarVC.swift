@@ -14,6 +14,8 @@ class DimmerParametarVC: UIViewController {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
+    var indexPathRow: Int = -1
+    var devices:[Device] = []
     
     var isPresenting: Bool = true
     
@@ -133,8 +135,10 @@ extension DimmerParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showDimmerParametar(point:CGPoint) {
+    func showDimmerParametar(point:CGPoint, indexPathRow: Int, devices:[Device]) {
         var ad = DimmerParametarVC(point: point)
+        ad.indexPathRow = indexPathRow
+        ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

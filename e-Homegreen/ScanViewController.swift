@@ -261,6 +261,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         if devices[index].type == "sensor" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Functions().getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
     }
     

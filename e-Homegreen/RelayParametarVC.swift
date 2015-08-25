@@ -14,6 +14,8 @@ class RelayParametarVC: UIViewController {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
+    var indexPathRow: Int = -1
+    var devices:[Device] = []
     
     var isPresenting: Bool = true
     
@@ -132,8 +134,10 @@ extension RelayParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showRelayParametar(point:CGPoint) {
+    func showRelayParametar(point:CGPoint, indexPathRow: Int, devices:[Device]) {
         var ad = RelayParametarVC(point: point)
+        ad.indexPathRow = indexPathRow
+        ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

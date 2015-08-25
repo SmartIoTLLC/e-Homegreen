@@ -72,6 +72,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var error:NSError? = nil
     
     func updateDeviceList () {
+        println("ovde je uslo")
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
         var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -83,13 +84,15 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         fetchRequest.predicate = predicate
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
+            println("ovde je uslo 2")
             devices = results
 //            for item in devices {
 //                println("!\(item.gateway.turnedOn)!")
 //            }
         } else {
-            
+            println("ovde je uslo 3")
         }
+        println("ovde je izaslo")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -107,22 +110,22 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
-        var tag = gestureRecognizer.view?.tag
+        var tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
                 var cell = deviceCollectionView.cellForItemAtIndexPath(index)
                 if devices[index.row].type == "Dimmer" {
-                    showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                    showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
                 if devices[index.row].type == "sensor" {
-                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
                 if devices[index.row].type == "hvac" {
-                    showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                    showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
                 if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
-                    showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
+                    showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
                 if devices[index.row].type == "curtainsRS485" {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
@@ -131,8 +134,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //                showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
 
 //                showAccessParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
-
-                println("nistaa")
             }
         }
     }
@@ -624,15 +625,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         isScrolling = false
     }
-//    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-//        println("BBB")
-//        println("BBB")
-//        println("BBB")
-//    }
     func scrollViewDidScroll(scrollView: UIScrollView) {
-//        println("AAA")
-//        println("AAA")
-//        println("AAA")
         isScrolling = true
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -697,10 +690,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(tap)
             
             cell.labelID.text = "\(indexPath.row+1)"
-            cell.labelName.text = ""
-            cell.labelCategory.text = ""
+            cell.labelName.text = "\(devices[indexPath.row].name)"
+            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
             cell.labelLevel.text = ""
-            cell.labelZone.text = ""
+            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
             cell.labelWarningState.text = ""
@@ -834,9 +827,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             cell.labelID.text = "\(indexPath.row+1)"
             cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = ""
+            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
             cell.labelLevel.text = ""
-            cell.labelZone.text = ""
+            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelWarningState.text = ""
             
@@ -944,9 +937,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             cell.labelID.text = "\(indexPath.row + 1)"
             cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = ""
+            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
             cell.labelLevel.text = ""
-            cell.labelZone.text = ""
+            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
             if cell.infoGradientLayer == nil {
@@ -1080,9 +1073,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             cell.labelID.text = "\(indexPath.row + 1)"
             cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = ""
+            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
             cell.labelLevel.text = ""
-            cell.labelZone.text = ""
+            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             
             if cell.infoGradientLayer == nil {
                 let gradientLayerInfo = CAGradientLayer()

@@ -12,7 +12,6 @@ import CoreData
 class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var indexPathRow: Int = -1
-    var socket:OutSocket = OutSocket(ip: "255.255.255.255", port: 9000)
     var devices:[Device] = []
     var isPresenting: Bool = true
     
