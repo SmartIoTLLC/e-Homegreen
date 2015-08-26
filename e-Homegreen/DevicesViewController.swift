@@ -115,9 +115,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 if devices[index.row].type == "Dimmer" {
                     showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == "sensor" {
-                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-                }
+//                if devices[index.row].type == "sensor" {
+//                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
+//                }
                 if devices[index.row].type == "hvac" {
                     showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }

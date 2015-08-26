@@ -48,6 +48,15 @@ class DimmerParametarVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
+//        devices[indexPathRow].zoneId
+//        devices[indexPathRow].categoryId
+//        devices[indexPathRow].delay
+//        devices[indexPathRow].runtime
+//        devices[indexPathRow].isEnabled
+//        devices[indexPathRow].name
+//        devices[indexPathRow].skipState
+//        devices[indexPathRow].level
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
