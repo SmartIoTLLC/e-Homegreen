@@ -32,8 +32,31 @@ class Functions: NSObject {
         message[message.count-1] = 0x10
         return message
     }
-    func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, runningTime:UInt8) -> [UInt8]{
-        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, 0x00, 0x00, 0x00, runningTime, 0x00, 0x00, 0x00, channel]
+//    func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, runningTime:UInt8) -> [UInt8]{
+//        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, 0x00, 0x00, 0x00, runningTime, 0x00, 0x00, 0x00, channel]
+//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = UInt8(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x03
+//        message[6] = 0x07
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
+    func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:UInt8) -> [UInt8]{
+        var delayOne = UInt8((delay / 0x100) % 0x100)
+        var delayTwo = UInt8(delay % 0x100)
+        var runtimeOne = UInt8((runningTime / 0x100) % 0x100)
+        var runtimeTwo = UInt8(runningTime % 0x100)
+        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
@@ -51,6 +74,29 @@ class Functions: NSObject {
         message[message.count-1] = 0x10
         return message
     }
+//    func setDelayRunningTimeSkip (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:Int) -> [UInt8]{
+//        var delayOne = UInt8((delay / 0x100) % 0x100)
+//        var delayTwo = UInt8(delay % 0x100)
+//        var runtimeOne = UInt8((runningTime / 0x100) % 0x100)
+//        var runtimeTwo = UInt8(runningTime % 0x100)
+//        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
+//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = UInt8(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x03
+//        message[6] = 0x07
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
     // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
     func searchForDevices (address:[UInt8]) -> [UInt8]{
         messageInfo = [0x00]

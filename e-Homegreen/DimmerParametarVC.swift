@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     
@@ -15,7 +16,10 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     var point:CGPoint?
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
+    
     var devices:[Device] = []
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     var isPresenting: Bool = true
     
@@ -52,6 +56,8 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         editDelay.delegate = self
         editRunTime.delegate = self
         editSkipState.delegate = self
@@ -80,13 +86,25 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
 //        devices[indexPathRow].level
 //        devices[indexPathRow].overrideControl1
 //        devices[indexPathRow].overrideControl2
-//        devices[indexPathRow].overrideControl3
+        //        devices[indexPathRow].overrideControl3@IBOutlet weak var lblName: UILabel!
+        editDelay.text = "\(devices[indexPathRow].delay)"
+        editRunTime.text = "\(devices[indexPathRow].runtime)"
+        editSkipState.text = "\(devices[indexPathRow].skipState)"
+        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
+        lblName.text = "\(devices[indexPathRow].name)"
+        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblZone.text = "\(devices[indexPathRow].zoneId)"
+        lblCategory.text = "\(devices[indexPathRow].categoryId)"
         
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
     }
-
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -125,11 +143,30 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     
 
     @IBAction func btnSave(sender: AnyObject) {
-        
+        if let numberOne = editDelay.text.toInt(), let numberTwo = editRunTime.text.toInt(), let numberThree = editSkipState.text.toInt() {
+            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
+                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
-    
-    
-
+    var device:Device?
+    func getDeviceAndSave (numberOne:Int, numberTwo:Int, numberThree:Int) {
+        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+            device = deviceObject
+            println(device)
+            device!.delay = numberOne
+            device!.runtime = numberTwo
+            device!.skipState = numberThree
+            saveChanges()
+        }
+    }
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
 }
 
 extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {

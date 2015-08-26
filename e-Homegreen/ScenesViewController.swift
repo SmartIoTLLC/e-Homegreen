@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ScenesViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -18,6 +19,9 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     
     var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
     var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
     
     var senderButton:UIButton?
     
@@ -25,6 +29,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
@@ -34,7 +39,31 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
         
         // Do any additional setup after loading the view.
     }
-    
+    func updateDeviceList () {
+        println("ovde je uslo")
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            println("ovde je uslo 2")
+            devices = results
+        } else {
+            println("ovde je uslo 3")
+        }
+        println("ovde je izaslo")
+    }
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             

@@ -320,7 +320,6 @@ class IncomingHandler: NSObject {
                         device.currentValue = 0
                         device.current = 0
                         device.amp = ""
-                        device.runningTime = ""
                         device.type = name
                         device.voltage = 0
                         device.temperature = 0
@@ -338,7 +337,6 @@ class IncomingHandler: NSObject {
                         device.currentValue = 0
                         device.current = 0
                         device.amp = ""
-                        device.runningTime = ""
                         device.type = name
                         device.voltage = 0
                         device.temperature = 0
@@ -353,7 +351,6 @@ class IncomingHandler: NSObject {
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.amp = ""
-                        device.runningTime = ""
                         device.type = name
                         device.voltage = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
@@ -385,6 +382,9 @@ class IncomingHandler: NSObject {
                         device.voltage = 0
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                        device.delay = 0
+                        device.runtime = 0
+                        device.skipState = 0
                         saveChanges()
                     }
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
@@ -442,6 +442,9 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
+                devices[i].overrideControl1 = Int(byteArray[23])
+                devices[i].overrideControl2 = Int(byteArray[24])
+                devices[i].overrideControl3 = Int(byteArray[25])
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])

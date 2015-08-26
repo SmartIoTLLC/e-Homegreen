@@ -200,7 +200,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         //            string = "0\(number)"
         //        } else {
         //            string = "\(number)"
-        //        }
+        //        }gateways
         //        return string
         return String(format: "%03d",number)
     }
