@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DimmerParametarVC: UIViewController {
+class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     
@@ -18,6 +18,20 @@ class DimmerParametarVC: UIViewController {
     var devices:[Device] = []
     
     var isPresenting: Bool = true
+    
+    
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var editDelay: UITextField!
+    @IBOutlet weak var editRunTime: UITextField!
+    @IBOutlet weak var editSkipState: UITextField!
+    @IBOutlet weak var enableSwitch: UISwitch!
+    @IBOutlet weak var overRideID: UILabel!
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblLevel: UILabel!
+    @IBOutlet weak var lblZone: UILabel!
+    @IBOutlet weak var lblCategory: UILabel!
+    
     
     init(point:CGPoint){
         super.init(nibName: "DimmerParametarVC", bundle: nil)
@@ -30,14 +44,22 @@ class DimmerParametarVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        editDelay.delegate = self
+        editRunTime.delegate = self
+        editSkipState.delegate = self
+        
+//        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         //        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
+//        self.view.addGestureRecognizer(tapGesture)
+//        self.view.tag = 1
         
         var gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
@@ -78,6 +100,34 @@ class DimmerParametarVC: UIViewController {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeightConstraint.constant = 250
+            }else if self.view.frame.size.height == 375{
+                backViewHeightConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                backViewHeightConstraint.constant = 350
+            }else{
+                backViewHeightConstraint.constant = 420
+            }
+        }else{
+            
+            backViewHeightConstraint.constant = 420
+            
+        }
+    }
+    
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+
+    @IBAction func btnSave(sender: AnyObject) {
+        
+    }
+    
+    
 
 }
 
