@@ -19,6 +19,15 @@ class ClimaParametarVC: UIViewController {
     
     var isPresenting: Bool = true
     
+    
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblLevel: UILabel!
+    @IBOutlet weak var lblZone: UILabel!
+    @IBOutlet weak var lblCategory: UILabel!
+    
+    
     init(point:CGPoint){
         super.init(nibName: "ClimaParametarVC", bundle: nil)
         transitioningDelegate = self
@@ -33,10 +42,10 @@ class ClimaParametarVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        //        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
+//        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+//        //        tapGesture.delegate = self
+//        self.view.addGestureRecognizer(tapGesture)
+//        self.view.tag = 1
         
         
         var gradient:CAGradientLayer = CAGradientLayer()
@@ -69,6 +78,32 @@ class ClimaParametarVC: UIViewController {
         if tappedView.tag == 1{
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeightConstraint.constant = 250
+            }else if self.view.frame.size.height == 375{
+                backViewHeightConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                backViewHeightConstraint.constant = 350
+            }else{
+                backViewHeightConstraint.constant = 460
+            }
+        }else{
+            
+            backViewHeightConstraint.constant = 460
+            
+        }
+    }
+    
+    @IBAction func btnSave(sender: AnyObject) {
+    }
+    
+    
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
 

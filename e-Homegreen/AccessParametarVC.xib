@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VJl-SC-dsm">
-                    <rect key="frame" x="145" y="90" width="310" height="420"/>
+                    <rect key="frame" x="145" y="75" width="310" height="450"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Acces control parametar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ev-gL-6HE">
                             <rect key="frame" x="0.0" y="8" width="310" height="25"/>
@@ -75,7 +75,7 @@
                         <constraint firstItem="MpA-6y-M5I" firstAttribute="leading" secondItem="XMV-jk-ZRY" secondAttribute="leading" id="Ahx-xC-rK9"/>
                         <constraint firstItem="I3L-PX-a6U" firstAttribute="leading" secondItem="f6z-70-wT1" secondAttribute="leading" id="Moq-fm-ZAZ"/>
                         <constraint firstItem="MpA-6y-M5I" firstAttribute="top" secondItem="XMV-jk-ZRY" secondAttribute="bottom" constant="20" id="O5M-tN-fLo"/>
-                        <constraint firstAttribute="height" constant="420" id="SAW-od-BRk"/>
+                        <constraint firstAttribute="height" constant="450" id="SAW-od-BRk"/>
                         <constraint firstItem="hRu-zS-Egg" firstAttribute="leading" secondItem="VJl-SC-dsm" secondAttribute="leading" constant="15" id="U8e-uJ-VbA"/>
                         <constraint firstItem="4Ev-gL-6HE" firstAttribute="leading" secondItem="VJl-SC-dsm" secondAttribute="leading" id="Yl1-ro-CfM"/>
                         <constraint firstAttribute="trailing" secondItem="4Ev-gL-6HE" secondAttribute="trailing" id="fZ4-N4-SHo"/>

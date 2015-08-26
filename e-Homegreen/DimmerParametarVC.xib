@@ -164,9 +164,6 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QQH-2z-wPU">
-                                    <rect key="frame" x="227" y="156" width="51" height="31"/>
-                                </switch>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvC-A8-XDA">
                                     <rect key="frame" x="168" y="378" width="75" height="30"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -191,6 +188,9 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QQH-2z-wPU">
+                                    <rect key="frame" x="251" y="156" width="51" height="31"/>
+                                </switch>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="3i4-jS-Fv7" firstAttribute="width" secondItem="Njt-bS-XcX" secondAttribute="width" id="08l-cV-NCq"/>
@@ -224,6 +224,7 @@
                                 <constraint firstItem="Vxm-Z8-2fY" firstAttribute="top" secondItem="adc-e2-Phf" secondAttribute="bottom" constant="15" id="c9o-WT-XK7"/>
                                 <constraint firstItem="gvP-qk-BrT" firstAttribute="width" secondItem="Eql-7e-tzj" secondAttribute="width" id="cPr-VY-15U"/>
                                 <constraint firstItem="xLm-2L-qp2" firstAttribute="leading" secondItem="jG2-v4-n51" secondAttribute="leading" constant="2" id="cTr-jP-OiQ"/>
+                                <constraint firstItem="QQH-2z-wPU" firstAttribute="trailing" secondItem="0fP-bf-0PB" secondAttribute="trailing" id="fR6-Kd-Lsg"/>
                                 <constraint firstAttribute="bottom" secondItem="cTT-DK-0Td" secondAttribute="bottom" constant="12" id="gdm-2D-Bqf"/>
                                 <constraint firstItem="kv6-Zm-I9c" firstAttribute="width" secondItem="gvP-qk-BrT" secondAttribute="width" id="hAA-fx-qH8"/>
                                 <constraint firstItem="4yB-gN-tXw" firstAttribute="top" secondItem="etx-jy-to2" secondAttribute="bottom" constant="17" id="i3X-J3-4Md"/>
@@ -232,7 +233,6 @@
                                 <constraint firstItem="LFv-Ip-4Bc" firstAttribute="leading" secondItem="BYW-zj-XV5" secondAttribute="leading" id="kBE-jp-oPP"/>
                                 <constraint firstItem="z6c-Yp-0zU" firstAttribute="trailing" secondItem="eaP-sb-DQg" secondAttribute="trailing" id="npI-3c-Ktf"/>
                                 <constraint firstItem="jG2-v4-n51" firstAttribute="top" secondItem="ee5-ly-j5s" secondAttribute="bottom" constant="15" id="om1-C0-Uid"/>
-                                <constraint firstItem="0fP-bf-0PB" firstAttribute="centerX" secondItem="QQH-2z-wPU" secondAttribute="centerX" id="p28-NY-Atc"/>
                                 <constraint firstItem="xLm-2L-qp2" firstAttribute="top" secondItem="jG2-v4-n51" secondAttribute="bottom" constant="15" id="t5n-Be-Ybj"/>
                                 <constraint firstItem="3i4-jS-Fv7" firstAttribute="trailing" secondItem="Njt-bS-XcX" secondAttribute="trailing" id="v8O-wj-iz5"/>
                                 <constraint firstAttribute="centerX" secondItem="EvC-A8-XDA" secondAttribute="centerX" constant="-50" id="vFf-x8-Oey"/>

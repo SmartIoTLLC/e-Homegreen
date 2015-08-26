@@ -100,6 +100,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
+    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{
