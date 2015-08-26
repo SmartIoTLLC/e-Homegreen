@@ -48,6 +48,11 @@ class ClimaParametarVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
+//        devices[indexPathRow].zoneId
+//        devices[indexPathRow].categoryId
+//        devices[indexPathRow].name
+//        devices[indexPathRow].level
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.

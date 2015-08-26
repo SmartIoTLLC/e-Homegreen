@@ -47,6 +47,16 @@ class RelayParametarVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
+//        devices[indexPathRow].zoneId
+//        devices[indexPathRow].categoryId
+//        devices[indexPathRow].delay
+//        devices[indexPathRow].isEnabled
+//        devices[indexPathRow].name
+//        devices[indexPathRow].level
+//        devices[indexPathRow].overrideControl1
+//        devices[indexPathRow].overrideControl2
+//        devices[indexPathRow].overrideControl3
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.

@@ -385,16 +385,16 @@ class Functions: NSObject {
         message[message.count-1] = 0x10
         return message
     }
-    func setScene (id:Int) -> [UInt8]{
+    func setScene (address:[UInt8], id:Int) -> [UInt8]{
         var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
         var numberTwo:UInt8 = UInt8(id % 0x100)
         messageInfo = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
-        message[2] = 0xFF
-        message[3] = 0xFF
-        message[4] = 0xFF
+        message[2] = address[0]
+        message[3] = address[0]
+        message[4] = address[0]
         message[5] = 0x03
         message[6] = 0x07
         var i = 0
@@ -406,6 +406,27 @@ class Functions: NSObject {
         message[message.count-1] = 0x10
         return message
     }
+//    func setDelayRuntimeSkipState (address:[UInt8], id:Int) -> [UInt8]{
+//        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
+//        var numberTwo:UInt8 = UInt8(id % 0x100)
+//        messageInfo = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
+//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = UInt8(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[0]
+//        message[4] = address[0]
+//        message[5] = 0x03
+//        message[6] = 0x07
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
     func getChannelName (address:[UInt8], channel:UInt8) -> [UInt8]{
         messageInfo = [channel]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)

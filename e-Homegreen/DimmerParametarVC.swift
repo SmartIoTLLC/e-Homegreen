@@ -56,6 +56,9 @@ class DimmerParametarVC: UIViewController {
 //        devices[indexPathRow].name
 //        devices[indexPathRow].skipState
 //        devices[indexPathRow].level
+//        devices[indexPathRow].overrideControl1
+//        devices[indexPathRow].overrideControl2
+//        devices[indexPathRow].overrideControl3
         
         self.view.backgroundColor = UIColor.clearColor()
 

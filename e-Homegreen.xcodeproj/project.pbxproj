@@ -12,7 +12,6 @@
 		736265E11B4A48330078C11D /* OutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E01B4A48330078C11D /* OutSocket.swift */; };
 		736265E31B4A483E0078C11D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Functions.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
-		736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA631B6759EA00FD7544 /* Gateway.swift */; };
 		736CBA6A1B67913100FD7544 /* TryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 736CBA691B67913100FD7544 /* TryCatch.m */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
 		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
@@ -47,6 +46,8 @@
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E972E31B8DAB7C00F0CB9D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E972E21B8DAB7C00F0CB9D /* Device.swift */; };
+		73E972E81B8DEB5B00F0CB9D /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E972E71B8DEB5B00F0CB9D /* Gateway.swift */; };
+		73E972EA1B8DED6E00F0CB9D /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E972E91B8DED6E00F0CB9D /* Scene.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
@@ -134,7 +135,6 @@
 		736265E01B4A48330078C11D /* OutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutSocket.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
-		736CBA631B6759EA00FD7544 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		736CBA681B67913100FD7544 /* TryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TryCatch.h; sourceTree = "<group>"; };
 		736CBA691B67913100FD7544 /* TryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryCatch.m; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +174,8 @@
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E972E21B8DAB7C00F0CB9D /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		73E972E71B8DEB5B00F0CB9D /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
+		73E972E91B8DED6E00F0CB9D /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -320,8 +322,9 @@
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
-				736CBA631B6759EA00FD7544 /* Gateway.swift */,
 				73E972E21B8DAB7C00F0CB9D /* Device.swift */,
+				73E972E71B8DEB5B00F0CB9D /* Gateway.swift */,
+				73E972E91B8DED6E00F0CB9D /* Scene.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -783,7 +786,6 @@
 				73E972E31B8DAB7C00F0CB9D /* Device.swift in Sources */,
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
-				736CBA641B6759EA00FD7544 /* Gateway.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
@@ -803,6 +805,7 @@
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
+				73E972E81B8DEB5B00F0CB9D /* Gateway.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
@@ -836,6 +839,7 @@
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
+				73E972EA1B8DED6E00F0CB9D /* Scene.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,

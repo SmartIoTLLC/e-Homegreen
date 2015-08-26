@@ -49,13 +49,21 @@
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="device" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
+        <relationship name="scene" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
+    </entity>
+    <entity name="Scene" representedClassName="PRODUCT_MODULE_NAME.Scene" syncable="YES">
+        <attribute name="sceneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sceneImage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="sceneName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="scene" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="SSID" syncable="YES">
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="240"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="255"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
+        <element name="Scene" positionX="-54" positionY="135" width="128" height="105"/>
     </elements>
 </model>
