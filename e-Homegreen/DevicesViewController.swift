@@ -733,6 +733,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.layer.borderWidth = 1
             cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
+            cell.curtainSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
 //            cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
             cell.curtainSlider.tag = indexPath.row
             var deviceValue = Double(devices[indexPath.row].currentValue) / 100

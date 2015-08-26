@@ -314,8 +314,8 @@
 			isa = PBXGroup;
 			children = (
 				733C15701B5A825400554FD1 /* Device info and settings */,
-				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
+				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
 				736265E21B4A483E0078C11D /* Functions.swift */,
 				736265DE1B4A48200078C11D /* InSocket.swift */,
 				736265E01B4A48330078C11D /* OutSocket.swift */,
@@ -351,7 +351,6 @@
 				E7E08E061B4E4DA700153E9A /* LogIn */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
-				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
 				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
@@ -365,7 +364,6 @@
 				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 				73DB84A01B301184000DB4EB /* NFCViewController.swift */,
 				73DB84A41B301399000DB4EB /* CameraViewController.swift */,
-				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -567,6 +565,8 @@
 			isa = PBXGroup;
 			children = (
 				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
+				73ECD4A01B33189800767740 /* PullDownView.swift */,
+				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */,
 				E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */,

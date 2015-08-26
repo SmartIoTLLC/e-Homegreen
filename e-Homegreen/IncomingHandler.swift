@@ -52,10 +52,10 @@ class IncomingHandler: NSObject {
 //                        self.ackonowledgementAboutChannelState(self.byteArray)
 //                    }
                     
-                    //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
-                    //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
-                    //
-                    //            }
+//            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
+//            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
+//
+//            }
                     
                     //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
                     if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {

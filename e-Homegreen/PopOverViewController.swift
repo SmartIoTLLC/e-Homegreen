@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+
 @objc protocol PopOverIndexDelegate
 {
     optional func saveText (strText : String)
@@ -16,12 +18,16 @@ import UIKit
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var locationList:[String] = ["All"]
-    var levelList:[String] = ["Level 1", "All"]
+    var levelList:[String] = ["All"]
     var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
     var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var tableList:[String] = []
     
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var gateways:[Gateway] = []
+    var error:NSError? = nil
     
     @IBOutlet weak var table: UITableView!
     
@@ -37,7 +43,26 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         // Do any additional setup after loading the view.
     }
-    
+    func updateDeviceList () {
+        println("ovde je uslo")
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            println("ovde je uslo 2")
+            devices = results
+        } else {
+            println("ovde je uslo 3")
+        }
+        println("ovde je izaslo")
+    }
     override func viewWillAppear(animated: Bool) {
         if indexTab == 1{
             tableList = locationList
@@ -45,8 +70,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList = levelList
         } else if indexTab == 3 {
             tableList = zoneList
-        } else if indexTab == 4 {
-            tableList = gatewayList
         } else {
             tableList = categoryList
         }

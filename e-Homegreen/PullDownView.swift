@@ -23,8 +23,6 @@ class PullDownView: UIScrollView {
         super.init(frame: frame)
         
         
-        
-        
         self.pagingEnabled = true
         self.bounces = false
         self.showsVerticalScrollIndicator = false
@@ -51,24 +49,11 @@ class PullDownView: UIScrollView {
         var grayBottomLine = UIView(frame:CGRectMake(0, frame.size.height-2, frame.size.width, 2))
         grayBottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         self.addSubview(grayBottomLine)
-        
-
-        
-        
     }
     
     func tap(){
        self.setContentOffset(CGPointMake(0, 0), animated: false)
     }
-    
-    
-    
-    
-    
-
-    
-    
-    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -89,12 +74,8 @@ class PullDownView: UIScrollView {
             
         }
         
-        
         return super.hitTest(point, withEvent: event)
     }
-    
-    
-    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
