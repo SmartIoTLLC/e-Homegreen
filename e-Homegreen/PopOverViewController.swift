@@ -17,11 +17,21 @@ import CoreData
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+<<<<<<< HEAD
     var locationList:[String] = []
     var levelList:[String] = []
     var zoneList:[String] = []
     var categoryList:[String] = []
     var gatewayList:[String] = []
+=======
+    var locationList:[String] = ["All"]
+    var levelList:[String] = ["All"]
+    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
+    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+    var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
+    var chooseList:[String] = ["Devices", "Scenes"]
+>>>>>>> origin/master
     var tableList:[String] = []
     
     var appDel:AppDelegate!
@@ -88,9 +98,17 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if indexTab == 3 {
             updateDeviceList("zoneId", array:"zoneList")
             tableList = zoneList
+<<<<<<< HEAD
         } else {
             updateDeviceList("categoryId", array:"categoryList")
+=======
+        } else if indexTab == 4 {
+>>>>>>> origin/master
             tableList = categoryList
+        } else if indexTab == 5 {
+            tableList = sceneList
+        } else {
+            tableList = chooseList
         }
         tableList.append("All")
     }
@@ -112,7 +130,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+<<<<<<< HEAD
 //        if indexTab != 4 {
+=======
+        if indexTab != 7 {
+>>>>>>> origin/master
             delegate?.saveText!(tableList[indexPath.row])
 //        } else {
 //            delegate?.clickedOnGatewayWithIndex!(indexPath.row)

@@ -9,13 +9,13 @@
 import UIKit
 import CoreData
 
-class ScenesViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource {
+class ScenesViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     private let sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     private let reuseIdentifier = "SceneCell"
     var pullDown = PullDownView()
     
-    var table:UITableView = UITableView()
+//    var table:UITableView = UITableView()
     
     var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
     var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
@@ -90,13 +90,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
-            
-            table.delegate = self
-            table.dataSource = self
-            table.frame = CGRectMake(0, 0, 150, 150)
-            table.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-            table.hidden = true
-            pullDown.addSubview(table)
+
             
         } else {
             
@@ -129,16 +123,14 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
-            
-            table.delegate = self
-            table.dataSource = self
-            table.frame = CGRectMake(0, 0, 150, 150)
-            table.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-            table.hidden = true
-            pullDown.addSubview(table)
+
             
             
         }
+    }
+    
+    func saveText(strText: String) {
+        senderButton?.setTitle(strText, forState: .Normal)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -156,18 +148,33 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         senderButton!.setTitle(tableList[indexPath.row], forState: UIControlState.Normal)
-        table.hidden = true
+//        table.hidden = true
     }
 
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     func menuZone(sender : UIButton){
         senderButton = sender
-        table.frame = CGRectMake(110, 70, 150, 160)
-        table.hidden = false
-        tableList.removeAll(keepCapacity: false)
-        tableList = zoneList
-        table.reloadData()
         
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 5
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
     }
 
     override func didReceiveMemoryWarning() {
