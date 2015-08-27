@@ -16,6 +16,8 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
     var devices:[Device] = []
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     var isPresenting: Bool = true
     
@@ -49,6 +51,8 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         editDelay.delegate = self
         
 //        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
@@ -75,6 +79,13 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
 //        devices[indexPathRow].overrideControl2
 //        devices[indexPathRow].overrideControl3
         
+        editDelay.text = "\(devices[indexPathRow].delay)"
+        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
+        lblName.text = "\(devices[indexPathRow].name)"
+        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblZone.text = "\(devices[indexPathRow].zoneId)"
+        lblCategory.text = "\(devices[indexPathRow].categoryId)"
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
@@ -85,6 +96,25 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
+    var device:Device?
+    func getDeviceAndSave (numberOne:Int) {
+        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+            device = deviceObject
+            println(device)
+            device!.delay = numberOne
+            saveChanges()
+        }
+    }
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
     func handleTap(gesture:UITapGestureRecognizer){
         var point:CGPoint = gesture.locationInView(self.view)
         var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
@@ -117,7 +147,12 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
-        
+        if let numberOne = editDelay.text.toInt() {
+            if numberOne <= 65534 {
+                getDeviceAndSave(numberOne)
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
     
     

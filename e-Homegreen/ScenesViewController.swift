@@ -20,7 +20,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
     var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
     var appDel:AppDelegate!
-    var devices:[Device] = []
+    var scenes:[Scene] = []
     var error:NSError? = nil
     
     var senderButton:UIButton?
@@ -36,27 +36,23 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        
+        updateSceneList()
         // Do any additional setup after loading the view.
     }
-    func updateDeviceList () {
-        println("ovde je uslo")
-        var fetchRequest = NSFetchRequest(entityName: "Device")
+    func updateSceneList () {
+        var fetchRequest = NSFetchRequest(entityName: "Scene")
         var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
         if let results = fetResults {
-            println("ovde je uslo 2")
-            devices = results
+            scenes = results
         } else {
-            println("ovde je uslo 3")
+            
         }
-        println("ovde je izaslo")
     }
     func saveChanges() {
         if !appDel.managedObjectContext!.save(&error) {
@@ -66,7 +62,6 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     }
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -204,7 +199,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return CGSize(width: 150, height: 150)
+        return CGSize(width: 100, height: 100)
     }
 }
 
@@ -215,7 +210,7 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 21
+        return scenes.count
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
@@ -227,6 +222,11 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.layer.insertSublayer(gradient, atIndex: 0)
 //        cell.backgroundColor = UIColor.lightGrayColor()
         //3
+        cell.sceneCellLabel.text = "\(scenes[indexPath.row].sceneName)"
+        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+            cell.sceneCellImageView.image = sceneImage
+        }
+//        cell.sceneCellLabel.image = "\()"
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

@@ -850,6 +850,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateName.userInteractionEnabled = true
             cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
             cell.climateName.text = devices[indexPath.row].name
+            cell.climateName.tag = indexPath.row
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
             cell.climateName.addGestureRecognizer(longPress)

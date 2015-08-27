@@ -62,11 +62,21 @@ class ClimaParametarVC: UIViewController {
 //        devices[indexPathRow].name
 //        devices[indexPathRow].level
         
+        lblName.text = "\(devices[indexPathRow].name)"
+        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblZone.text = "\(devices[indexPathRow].zoneId)"
+        lblCategory.text = "\(devices[indexPathRow].categoryId)"
+        println(devices[indexPathRow])
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
     }
-
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -99,6 +109,7 @@ class ClimaParametarVC: UIViewController {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
