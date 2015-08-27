@@ -192,6 +192,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
+        SendingHandler(byteArray: Functions().setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         println(" ")
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -199,7 +200,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return CGSize(width: 100, height: 100)
+        return CGSize(width: 110, height: 110)
     }
 }
 
