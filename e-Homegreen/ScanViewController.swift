@@ -9,11 +9,24 @@
 import UIKit
 import CoreData
 
-class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var rangeFrom: UITextField!
     @IBOutlet weak var rangeTo: UITextField!
+    
+    var senderButton:UIButton?
+    
+
+    
+    @IBOutlet weak var sceneView: UIView!
+    
+    @IBOutlet weak var sceneIDedit: UITextField!
+    @IBOutlet weak var sceneNameEdit: UITextField!
+    
+    
+    @IBOutlet weak var imageScene: UIImageView!
+    
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -23,10 +36,16 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var loader : ViewControllerUtils = ViewControllerUtils()
     
     @IBOutlet weak var deviceTableView: UITableView!
+    @IBOutlet weak var sceneTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        sceneView.hidden = true
+        
+        imageScene.userInteractionEnabled = true
+        imageScene.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap"))
         
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
@@ -42,10 +61,17 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         rangeTo.delegate = self
         refreshDeviceList()
         
+        sceneIDedit.delegate = self
+        sceneNameEdit.delegate = self
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
         // Do any additional setup after loading the view.
+    }
+    
+    func handleTap(){
+        showGallery()
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,6 +127,15 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     @IBAction func backButton(sender: UIStoryboardSegue) {
         self.performSegueWithIdentifier("scanUnwind", sender: self)
+    }
+    
+    
+    @IBAction func btnAdd(sender: AnyObject) {
+        
+    }
+    
+    @IBAction func btnRemove(sender: AnyObject) {
+        
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -271,6 +306,42 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
     }
     
+    var popoverVC:PopOverViewController = PopOverViewController()
+    
+    @IBAction func btnScenes(sender: AnyObject) {
+        
+            senderButton = sender as? UIButton
+            
+            popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+            popoverVC.modalPresentationStyle = .Popover
+            popoverVC.preferredContentSize = CGSizeMake(300, 200)
+            popoverVC.delegate = self
+            popoverVC.indexTab = 6
+            if let popoverController = popoverVC.popoverPresentationController {
+                popoverController.delegate = self
+                popoverController.permittedArrowDirections = .Any
+                popoverController.sourceView = sender as! UIView
+                popoverController.sourceRect = sender.bounds
+                popoverController.backgroundColor = UIColor.lightGrayColor()
+                presentViewController(popoverVC, animated: true, completion: nil)
+                
+            }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
+    func saveText(strText: String) {
+        senderButton?.setTitle(strText, forState: .Normal)
+        if strText == "Devices"{
+            sceneView.hidden = true
+        }else{
+            sceneView.hidden = false
+        }
+    }
+    
+    
     // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
     
     @IBAction func deleteAll(sender: AnyObject) {
@@ -300,6 +371,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if tableView == deviceTableView{
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.lblRow.text = "\(indexPath.row+1)."
@@ -308,6 +380,15 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             cell.lblType.text = "Type: \(devices[indexPath.row].type)"
             return cell
         }
+        }
+        if tableView == sceneTableView{
+            if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
+                cell.backgroundColor = UIColor.clearColor()
+                cell.labelID.text = "\(indexPath.row)"
+                cell.labelName.text = "dadad"
+                return cell
+            }
+        }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
@@ -315,6 +396,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == sceneTableView{
+            return 3
+        }
         return gateway!.device.count
     }
 
@@ -326,5 +410,14 @@ class ScanCell:UITableViewCell{
     @IBOutlet weak var lblDesc: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblType: UILabel!
+    
+}
+
+class SceneCell:UITableViewCell{
+    
+    @IBOutlet weak var labelID: UILabel!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var imageScene: UIImageView!
+
     
 }

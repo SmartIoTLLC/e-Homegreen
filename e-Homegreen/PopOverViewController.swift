@@ -22,6 +22,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
     var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+    var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
+    var chooseList:[String] = ["Devices", "Scenes"]
     var tableList:[String] = []
     
     var appDel:AppDelegate!
@@ -70,8 +72,12 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList = levelList
         } else if indexTab == 3 {
             tableList = zoneList
-        } else {
+        } else if indexTab == 4 {
             tableList = categoryList
+        } else if indexTab == 5 {
+            tableList = sceneList
+        } else {
+            tableList = chooseList
         }
     }
     
@@ -92,7 +98,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexTab != 4 {
+        if indexTab != 7 {
             delegate?.saveText!(tableList[indexPath.row])
         } else {
             delegate?.clickedOnGatewayWithIndex!(indexPath.row)

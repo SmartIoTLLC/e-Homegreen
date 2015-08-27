@@ -117,6 +117,8 @@
 		E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */; };
 		E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */; };
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
+		E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B021B8F27840025082D /* SceneGalleryVC.swift */; };
+		E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B031B8F27840025082D /* SceneGalleryVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -255,6 +257,8 @@
 		E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDialogViewController.swift; sourceTree = "<group>"; };
 		E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDialogViewController.xib; sourceTree = "<group>"; };
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E7F15B021B8F27840025082D /* SceneGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneGalleryVC.swift; sourceTree = "<group>"; };
+		E7F15B031B8F27840025082D /* SceneGalleryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SceneGalleryVC.xib; sourceTree = "<group>"; };
 		F11FF07D3FA9EC191F84026C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -449,13 +453,12 @@
 		E739739E1B43E62E0077E984 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E7F15B011B8F26970025082D /* SettingsXIB */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
-				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
-				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
 				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
 				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
 			);
@@ -609,6 +612,17 @@
 			path = ../Framework;
 			sourceTree = "<group>";
 		};
+		E7F15B011B8F26970025082D /* SettingsXIB */ = {
+			isa = PBXGroup;
+			children = (
+				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
+				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
+				E7F15B021B8F27840025082D /* SceneGalleryVC.swift */,
+				E7F15B031B8F27840025082D /* SceneGalleryVC.xib */,
+			);
+			name = SettingsXIB;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -716,6 +730,7 @@
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
 				E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */,
+				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
 				E7DC67BD1B457C0E00EA6543 /* weather-mist@2x.png in Resources */,
@@ -830,6 +845,7 @@
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
+				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
