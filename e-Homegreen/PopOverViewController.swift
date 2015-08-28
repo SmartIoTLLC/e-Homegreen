@@ -17,21 +17,21 @@ import CoreData
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-<<<<<<< HEAD
+//<<<<<<< HEAD
     var locationList:[String] = []
     var levelList:[String] = []
     var zoneList:[String] = []
     var categoryList:[String] = []
     var gatewayList:[String] = []
-=======
-    var locationList:[String] = ["All"]
-    var levelList:[String] = ["All"]
-    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
-    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
-    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+//=======
+//    var locationList:[String] = ["All"]
+//    var levelList:[String] = ["All"]
+//    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
+//    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+//    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
     var chooseList:[String] = ["Devices", "Scenes"]
->>>>>>> origin/master
+//>>>>>>> origin/master
     var tableList:[String] = []
     
     var appDel:AppDelegate!
@@ -92,25 +92,25 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if indexTab == 1{
             updateDeviceList("gateway.name", array:"gatewayList")
             tableList = gatewayList
+            tableList.append("All")
         } else if indexTab == 2 {
             updateDeviceList("level", array:"levelList")
             tableList = levelList
+            tableList.append("All")
         } else if indexTab == 3 {
             updateDeviceList("zoneId", array:"zoneList")
             tableList = zoneList
-<<<<<<< HEAD
-        } else {
-            updateDeviceList("categoryId", array:"categoryList")
-=======
+            tableList.append("All")
         } else if indexTab == 4 {
->>>>>>> origin/master
+            updateDeviceList("categoryId", array:"categoryList")
             tableList = categoryList
+            tableList.append("All")
         } else if indexTab == 5 {
             tableList = sceneList
+            tableList.append("All")
         } else {
             tableList = chooseList
         }
-        tableList.append("All")
     }
     
     override func didReceiveMemoryWarning() {
@@ -130,11 +130,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //        if indexTab != 4 {
-=======
-        if indexTab != 7 {
->>>>>>> origin/master
+//=======
+//        if indexTab != 7 {
+//>>>>>>> origin/master
             delegate?.saveText!(tableList[indexPath.row])
 //        } else {
 //            delegate?.clickedOnGatewayWithIndex!(indexPath.row)
