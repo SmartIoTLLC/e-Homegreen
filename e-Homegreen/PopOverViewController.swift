@@ -17,13 +17,21 @@ import CoreData
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var locationList:[String] = ["All"]
-    var levelList:[String] = ["All"]
-    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
-    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
-    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+//<<<<<<< HEAD
+    var locationList:[String] = []
+    var levelList:[String] = []
+    var zoneList:[String] = []
+    var categoryList:[String] = []
+    var gatewayList:[String] = []
+//=======
+//    var locationList:[String] = ["All"]
+//    var levelList:[String] = ["All"]
+//    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
+//    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
+//    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
     var chooseList:[String] = ["Devices", "Scenes"]
+//>>>>>>> origin/master
     var tableList:[String] = []
     
     var appDel:AppDelegate!
@@ -45,37 +53,61 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         // Do any additional setup after loading the view.
     }
-    func updateDeviceList () {
-        println("ovde je uslo")
+    func updateDeviceList (whatToFetch:String, array:String) {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            println("ovde je uslo 2")
-            devices = results
+        fetchRequest.propertiesToFetch = [whatToFetch]
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.returnsDistinctResults = true
+        fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
+        var sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        if let results = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) {
+            for device in results {
+                println(device[whatToFetch]!)
+//                var zoneIdString = device["zoneId"]
+                if let fetchedObject:Int = device[whatToFetch] as? Int {
+                    switch array {
+                    case "gatewayList":
+                        gatewayList.append("\(fetchedObject)")
+                    case "levelList" :
+                        levelList.append("\(fetchedObject)")
+                    case "zoneList":
+                        zoneList.append("\(fetchedObject)")
+                    case "categoryList":
+                        categoryList.append("\(fetchedObject)")
+                    default:
+                        println(zoneList)
+                    }
+                }
+                if let gatewayName = device[whatToFetch] as? String {
+                    gatewayList.append("\(gatewayName)")
+                }
+            }
         } else {
-            println("ovde je uslo 3")
+            
         }
-        println("ovde je izaslo")
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == 1{
-            tableList = locationList
+            updateDeviceList("gateway.name", array:"gatewayList")
+            tableList = gatewayList
+            tableList.append("All")
         } else if indexTab == 2 {
+            updateDeviceList("level", array:"levelList")
             tableList = levelList
+            tableList.append("All")
         } else if indexTab == 3 {
+            updateDeviceList("zoneId", array:"zoneList")
             tableList = zoneList
+            tableList.append("All")
         } else if indexTab == 4 {
+            updateDeviceList("categoryId", array:"categoryList")
             tableList = categoryList
+            tableList.append("All")
         } else if indexTab == 5 {
             tableList = sceneList
+            tableList.append("All")
         } else {
             tableList = chooseList
         }
@@ -98,11 +130,15 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexTab != 7 {
+//<<<<<<< HEAD
+//        if indexTab != 4 {
+//=======
+//        if indexTab != 7 {
+//>>>>>>> origin/master
             delegate?.saveText!(tableList[indexPath.row])
-        } else {
-            delegate?.clickedOnGatewayWithIndex!(indexPath.row)
-        }
+//        } else {
+//            delegate?.clickedOnGatewayWithIndex!(indexPath.row)
+//        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

@@ -80,8 +80,30 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
         var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        fetchRequest.predicate = predicate
+        var predicateArray:[NSPredicate] = [predicate]
+//        fetchRequest.predicate = predicate
+        
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
+        if levelSearch != "All" {
+            let levelPredicate = NSPredicate(format: "level == %@", NSNumber(integer: levelSearch.toInt()!))
+            predicateArray.append(levelPredicate)
+        }
+        if zoneSearch != "All" {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: zoneSearch.toInt()!))
+            predicateArray.append(zonePredicate)
+        }
+        if categorySearch != "All" {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: categorySearch.toInt()!))
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
         if let results = fetResults {
             println("ovde je uslo 2")
@@ -406,9 +428,28 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             
         }
     }
-    
+    var locationSearch:String = "All"
+    var levelSearch:String = "All"
+    var zoneSearch:String = "All"
+    var categorySearch:String = "All"
     func saveText(strText: String) {
-        senderButton?.setTitle(strText, forState: .Normal)
+        if let tag = senderButton!.tag as? Int {
+            switch tag {
+            case 1:
+                locationSearch = strText
+            case 2:
+                levelSearch = strText
+            case 3:
+                zoneSearch = strText
+            case 4:
+                categorySearch = strText
+            default:
+                println()
+            }
+            updateDeviceList()
+            deviceCollectionView.reloadData()
+            senderButton?.setTitle(strText, forState: .Normal)
+        }
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
