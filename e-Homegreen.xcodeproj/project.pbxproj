@@ -119,6 +119,8 @@
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
 		E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B021B8F27840025082D /* SceneGalleryVC.swift */; };
 		E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B031B8F27840025082D /* SceneGalleryVC.xib */; };
+		E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */; };
+		E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,6 +261,8 @@
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E7F15B021B8F27840025082D /* SceneGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneGalleryVC.swift; sourceTree = "<group>"; };
 		E7F15B031B8F27840025082D /* SceneGalleryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SceneGalleryVC.xib; sourceTree = "<group>"; };
+		E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
+		E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
 		F11FF07D3FA9EC191F84026C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -619,6 +623,8 @@
 				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
 				E7F15B021B8F27840025082D /* SceneGalleryVC.swift */,
 				E7F15B031B8F27840025082D /* SceneGalleryVC.xib */,
+				E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */,
+				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -748,6 +754,7 @@
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
+				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -847,6 +854,7 @@
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
+				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,

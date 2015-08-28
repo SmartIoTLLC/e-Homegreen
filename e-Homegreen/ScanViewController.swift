@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, SceneGalleryDelegate {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var rangeFrom: UITextField!
@@ -18,8 +18,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var senderButton:UIButton?
     
 
+    @IBOutlet weak var imageHeight: NSLayoutConstraint!
     
     @IBOutlet weak var sceneView: UIView!
+    @IBOutlet weak var deviceView: UIView!
     
     @IBOutlet weak var sceneIDedit: UITextField!
     @IBOutlet weak var sceneNameEdit: UITextField!
@@ -43,6 +45,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         sceneView.hidden = true
+        
+        
         
         imageScene.userInteractionEnabled = true
         imageScene.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap"))
@@ -70,8 +74,22 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            self.imageHeight.constant = 50
+        }else{
+            
+            self.imageHeight.constant = 120
+            
+        }
+    }
+    
     func handleTap(){
-        showGallery()
+        showGallery().delegate = self
+    }
+    
+    func backString(strText: String) {
+        self.imageScene.image = UIImage(named: strText)
     }
 
     override func didReceiveMemoryWarning() {
@@ -336,8 +354,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         senderButton?.setTitle(strText, forState: .Normal)
         if strText == "Devices"{
             sceneView.hidden = true
+            deviceView.hidden = false
         }else{
             sceneView.hidden = false
+            deviceView.hidden = true
         }
     }
     

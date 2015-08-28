@@ -8,9 +8,21 @@
 
 import UIKit
 
-class SceneGalleryVC: UIViewController {
+protocol SceneGalleryDelegate{
+    func backString(strText: String)
+}
+
+class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
+    
+    var delegate : SceneGalleryDelegate?
+    
+    var galleryList:[String] = ["allhigh", "alllow", "allmed", "alloff", "allon"]
+    
+    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
     
     var isPresenting: Bool = true
+    
+    @IBOutlet weak var gallery: UICollectionView!
     
     @IBOutlet weak var backview: UIView!
     
@@ -23,12 +35,19 @@ class SceneGalleryVC: UIViewController {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view.isDescendantOfView(gallery){
+            return false
+        }
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-//        tapGesture.delegate = self
+        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
         
@@ -42,17 +61,64 @@ class SceneGalleryVC: UIViewController {
         backview.clipsToBounds = true
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        
+        self.gallery.registerNib(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
 
         // Do any additional setup after loading the view.
     }
     
-    func handleTap(gesture:UITapGestureRecognizer){
-        var point:CGPoint = gesture.locationInView(self.view)
-        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        println(tappedView.tag)
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeight.constant = 300
+                
+            }else if self.view.frame.size.height == 375{
+                backViewHeight.constant = 340
+            }else if self.view.frame.size.height == 414{
+                backViewHeight.constant = 390
+            }else{
+                backViewHeight.constant = 420
+            }
+        }else{
+            
+            self.backViewHeight.constant = 400
+            
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return galleryList.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
+        
+        cell.cellImage.image = UIImage(named: galleryList[indexPath.row])
+        
+        cell.layer.borderColor = UIColor.lightGrayColor().CGColor
+        cell.layer.borderWidth = 1
+        cell.layer.cornerRadius = 5
+        
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        delegate?.backString(galleryList[indexPath.row])
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func handleTap(gesture:UITapGestureRecognizer){
+//        var point:CGPoint = gesture.locationInView(self.view)
+//        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
+//        println(tappedView.tag)
+//        if tappedView.tag == 1{
+            self.dismissViewControllerAnimated(true, completion: nil)
+        
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,8 +191,9 @@ extension SceneGalleryVC :  UIViewControllerTransitioningDelegate{
 
 
 extension UIViewController {
-    func showGallery() {
+    func showGallery() -> SceneGalleryVC {
         var galleryVC = SceneGalleryVC()
         self.presentViewController(galleryVC, animated: true, completion: nil)
+        return galleryVC
     }
 }

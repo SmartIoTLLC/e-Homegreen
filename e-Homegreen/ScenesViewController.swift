@@ -11,7 +11,11 @@ import CoreData
 
 class ScenesViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
-    private let sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+
+    
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
+    
+    private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     private let reuseIdentifier = "SceneCell"
     var pullDown = PullDownView()
     
@@ -26,14 +30,21 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     var senderButton:UIButton?
     
     @IBOutlet weak var scenesCollectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
+        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+            collectionViewCellSize = CGSize(width: 128, height: 156)
+        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+            collectionViewCellSize = CGSize(width: 118, height: 144)
+        }
+        
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
-        self.view.addSubview(pullDown)
+//        self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         updateSceneList()
@@ -62,6 +73,15 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     }
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            
+            if self.view.frame.size.width == 568{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }else if self.view.frame.size.width == 667{
+                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            }
+            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -94,7 +114,13 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             
         } else {
             
-            
+            if self.view.frame.size.width == 320{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }else if self.view.frame.size.width == 375{
+                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }
             
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
@@ -108,7 +134,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
             var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-            zoneLabel.text = "Zone"
+            zoneLabel.text = "Scene"
             zoneLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(zoneLabel)
             
@@ -206,7 +232,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return CGSize(width: 100, height: 100)
+        return collectionViewCellSize
     }
 }
 
