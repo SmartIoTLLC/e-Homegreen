@@ -351,6 +351,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func saveText(strText: String) {
+        println(reverse(strText))
         senderButton?.setTitle(strText, forState: .Normal)
         if strText == "Devices"{
             sceneView.hidden = true
