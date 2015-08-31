@@ -48,7 +48,12 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         updateSceneList()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: "refreshSceneListNotification", object: nil)
         // Do any additional setup after loading the view.
+    }
+    func refreshSceneList () {
+        updateSceneList()
+        scenesCollectionView.reloadData()
     }
     func updateSceneList () {
         var fetchRequest = NSFetchRequest(entityName: "Scene")

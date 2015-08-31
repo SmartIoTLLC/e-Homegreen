@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Function: NSObject {
+class Function {
 //    var id1Address = 1, id2Address = 0, id3Address = 0
     
     static func getLightRelayStatus (address:[UInt8]) -> [UInt8] {

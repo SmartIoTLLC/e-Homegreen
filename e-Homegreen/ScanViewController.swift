@@ -35,6 +35,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var isPresenting:Bool = true
     var gateway:Gateway?
     var devices:[Device] = []
+    var scenes:[Scene] = []
     var loader : ViewControllerUtils = ViewControllerUtils()
     
     @IBOutlet weak var deviceTableView: UITableView!
@@ -67,7 +68,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         sceneIDedit.delegate = self
         sceneNameEdit.delegate = self
-        
+        refreshSceneList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
@@ -119,7 +120,22 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             abort()
         }
     }
-
+    func updateSceneList () {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: "Scene")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
+        if let results = fetResults {
+            scenes = results
+        } else {
+            println("Nije htela...")
+        }
+    }
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         var fetchRequest = NSFetchRequest(entityName: "Device")
@@ -137,7 +153,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             println("Nije htela...")
         }
     }
-    
+    func refreshSceneList() {
+        updateSceneList()
+        sceneTableView.reloadData()
+    }
     func refreshDeviceList() {
         updateDeviceList()
         deviceTableView.reloadData()
@@ -149,11 +168,28 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     
     @IBAction func btnAdd(sender: AnyObject) {
-        
+        if let sceneId = sceneIDedit.text.toInt(), let sceneName = sceneNameEdit.text {
+            if sceneId <= 32767 {
+                var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                scene.sceneId = sceneId
+                scene.sceneName = sceneName
+                scene.sceneImage = UIImagePNGRepresentation(imageScene.image)
+                scene.gateway = gateway!
+                saveChanges()
+                refreshSceneList()
+                NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+            }
+        }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        
+        if let scene = selectedScene {
+            appDel.managedObjectContext!.deleteObject(scene)
+        }
+        sceneIDedit.text = ""
+        sceneNameEdit.text = ""
+        refreshSceneList()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -378,21 +414,11 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     // ======================= *** TABLE VIEW *** =======================
     
     func returnThreeCharactersForByte (number:Int) -> String {
-//        var string = ""
-//        var numberLength = "\(number)"
-//        if count(numberLength) == 1 {
-//            string = "00\(number)"
-//        } else if count(numberLength) == 2 {
-//            string = "0\(number)"
-//        } else {
-//            string = "\(number)"
-//        }
-//        return string
         return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if tableView == deviceTableView{
+        if tableView == deviceTableView {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.lblRow.text = "\(indexPath.row+1)."
@@ -402,11 +428,14 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             return cell
         }
         }
-        if tableView == sceneTableView{
+        if tableView == sceneTableView {
             if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
                 cell.backgroundColor = UIColor.clearColor()
-                cell.labelID.text = "\(indexPath.row)"
-                cell.labelName.text = "dadad"
+                cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
+                cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
+                if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+                    cell.imageScene.image = sceneImage
+                }
                 return cell
             }
         }
@@ -418,11 +447,22 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == sceneTableView{
-            return 3
+            return scenes.count
         }
-        return gateway!.device.count
+        return devices.count
     }
-
+    var selectedScene:Scene?
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView == sceneTableView {
+            selectedScene = scenes[indexPath.row]
+            sceneIDedit.text = "\(scenes[indexPath.row].sceneId)"
+            sceneNameEdit.text = "\(scenes[indexPath.row].sceneName)"
+            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+                imageScene.image = sceneImage
+            }
+        }
+    }
+    
 }
 
 class ScanCell:UITableViewCell{
