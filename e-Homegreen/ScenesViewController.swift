@@ -225,7 +225,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
         //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        SendingHandler(byteArray: Functions().setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+        SendingHandler(byteArray: Function.setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         println(" ")
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

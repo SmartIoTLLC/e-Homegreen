@@ -174,7 +174,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     loader.showActivityIndicator(self.view)
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 }
             }
         }
@@ -202,14 +202,14 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                         searchDeviceTimer?.invalidate()
                         searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                         var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-                        SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                        SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                     } else {
                         loader.hideActivityIndicator()
                     }
                 } else {
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 }
             } else {
                 if toAddress >= searchForDeviceWithId {
@@ -218,7 +218,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 } else {
                     loader.hideActivityIndicator()
                 }
@@ -233,7 +233,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-                    SendingHandler(byteArray: Functions().searchForDevices(address), gateway: gateway!)
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 } else {
                     searchForDeviceWithId = 0
                     timesRepeatedCounter = 0
@@ -301,20 +301,20 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func sendCommandForFindingName (#index:Int) {
         if devices[index].type == "Dimmer" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler(byteArray: Functions().getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "hvac" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler(byteArray: Functions().getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "sensor" {
             var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler(byteArray: Functions().getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            SendingHandler(byteArray: Functions().getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
     }
     
