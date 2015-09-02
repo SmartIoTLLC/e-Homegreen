@@ -59,8 +59,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
-    var socket:InSocket?
-    var sockets:[InSocket] = []
+//    var socket:InSocket?
+//    var sockets:[InSocket] = []
     var inOutSockets:[InOutSocket] = []
     var gateways:[Gateway] = []
     func fetchGateways () {
@@ -107,32 +107,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         println("12345")
         return "255.255.255.255"
     }
-    func findLocalConnectionToConnect () {
-        if let ssid = UIDevice.currentDevice().SSID {
-            var error:NSError?
-            var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
-            let predicateOne = NSPredicate(format: "turnedOn == %@ AND ssid == %@", NSNumber(bool: true), ssid)
-            fetchRequest.predicate = predicateOne
-            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptor]
-            let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-            if let results = fetResults {
-                if results.count != 0 {
-                    createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
-                }
-            } else {
-                println("Nije htela...")
-            }
-        }
-    }
-    func createSocket (ip:String, port:UInt16) {
-        if let socket = socket {
-            self.socket?.socket.close()
-            self.socket = InSocket(ip: ip, port: port)
-        } else {
-            self.socket = InSocket(ip: ip, port: port)
-        }
-    }
+//    func findLocalConnectionToConnect () {
+//        if let ssid = UIDevice.currentDevice().SSID {
+//            var error:NSError?
+//            var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+//            let predicateOne = NSPredicate(format: "turnedOn == %@ AND ssid == %@", NSNumber(bool: true), ssid)
+//            fetchRequest.predicate = predicateOne
+//            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//            fetchRequest.sortDescriptors = [sortDescriptor]
+//            let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
+//            if let results = fetResults {
+//                if results.count != 0 {
+//                    createSocket(results[0].localIp, port: UInt16(Int(results[0].localPort)))
+//                }
+//            } else {
+//                println("Nije htela...")
+//            }
+//        }
+//    }
+//    func createSocket (ip:String, port:UInt16) {
+//        if let socket = socket {
+//            self.socket?.socket.close()
+//            self.socket = InSocket(ip: ip, port: port)
+//        } else {
+//            self.socket = InSocket(ip: ip, port: port)
+//        }
+//    }
     func disconnectAllConnections () {
         if inOutSockets != [] {
             for inOutSocket in inOutSockets {

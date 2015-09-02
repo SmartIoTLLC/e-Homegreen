@@ -116,6 +116,24 @@ class IncomingHandler: NSObject {
             println("Nije htela...")
         }
     }
+    func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
+//        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
+        // OVDE ISKACE BUD NA ANY
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let predicateOne = NSPredicate(format: "gateway == %@", gateways[0].objectID)
+        let predicateTwo = NSPredicate(format: "gateway.addressOne == %@", addressOne)
+        let predicateThree = NSPredicate(format: "gateway.addressTwo == %@", addressTwo)
+        let predicateFour = NSPredicate(format: "address == %@", addressThree)
+        let predicateFive = NSPredicate(format: "channel == %@", channel)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree, predicateFour, predicateFive])
+        fetchRequest.predicate = compoundPredicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+    }
     func fetchGateways (host:String, port:UInt16) {
         var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))

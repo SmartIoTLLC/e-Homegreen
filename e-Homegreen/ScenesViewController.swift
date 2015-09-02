@@ -93,7 +93,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
-            self.view.addSubview(pullDown)
+//            self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
@@ -133,7 +133,7 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
-            self.view.addSubview(pullDown)
+//            self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
