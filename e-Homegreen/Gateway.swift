@@ -2,7 +2,7 @@
 //  Gateway.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 8/26/15.
+//  Created by Teodor Stevic on 9/2/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
@@ -23,7 +23,9 @@ class Gateway: NSManagedObject {
     @NSManaged var remotePort: NSNumber
     @NSManaged var ssid: String
     @NSManaged var turnedOn: NSNumber
-    @NSManaged var device: NSSet
-    @NSManaged var scene: NSSet
+    @NSManaged var devices: NSSet
+    @NSManaged var scenes: NSSet
+    @NSManaged var sequences: NSSet
+    @NSManaged var events: Event
 
 }

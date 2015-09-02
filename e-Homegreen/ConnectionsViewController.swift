@@ -226,7 +226,7 @@ extension ConnectionsViewController: UITableViewDataSource {
             cell.layer.cornerRadius = 10
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
-            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].device.count) device(s)"
+            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"
             cell.add1.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressOne))
             cell.add2.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressTwo))
             cell.add3.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressThree))

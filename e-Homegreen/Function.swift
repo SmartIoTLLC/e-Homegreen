@@ -9,8 +9,6 @@
 import UIKit
 
 class Function {
-//    var id1Address = 1, id2Address = 0, id3Address = 0
-    
     static func getLightRelayStatus (address:[UInt8]) -> [UInt8] {
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
@@ -23,36 +21,13 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x06
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-//    static func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, runningTime:UInt8) -> [UInt8]{
-//        var messageInfo:[UInt8] = []
-//        var message:[UInt8] = []
-//        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, 0x00, 0x00, 0x00, runningTime, 0x00, 0x00, 0x00, channel]
-//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = UInt8(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[1]
-//        message[4] = address[2]
-//        message[5] = 0x03
-//        message[6] = 0x07
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
     static func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:UInt8) -> [UInt8]{
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
@@ -69,41 +44,13 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x07
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-//    staticfunc setDelayRunningTimeSkip (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:Int) -> [UInt8]{
-//        var messageInfo:[UInt8] = []
-//        var message:[UInt8] = []
-//        var delayOne = UInt8((delay / 0x100) % 0x100)
-//        var delayTwo = UInt8(delay % 0x100)
-//        var runtimeOne = UInt8((runningTime / 0x100) % 0x100)
-//        var runtimeTwo = UInt8(runningTime % 0x100)
-//        messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
-//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = UInt8(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[1]
-//        message[4] = address[2]
-//        message[5] = 0x03
-//        message[6] = 0x07
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
-    // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
     static func searchForDevices (address:[UInt8]) -> [UInt8]{
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
@@ -116,10 +63,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x01 // NIJE DOBRO
         message[6] = 0x01
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -137,10 +82,8 @@ class Function {
         message[4] = 0xFF
         message[5] = 0x03
         message[6] = 0x07
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -159,10 +102,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x10
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -181,10 +122,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x10
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -202,10 +141,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x07
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -224,10 +161,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x03
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -245,10 +180,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x05
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -266,10 +199,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x06
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -287,10 +218,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x07
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -308,10 +237,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x08
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -329,20 +256,16 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x0A
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
     static func runEvent (address:[UInt8], id:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        messageInfo = [id, 0xFF]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        var messageInfo:[UInt8] = [id, 0xFF]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
         message[2] = address[0]
@@ -350,10 +273,25 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x10
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setSequence (address:[UInt8], id:UInt8, cycle:UInt8) -> [UInt8]{
+        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, id]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x03
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -378,10 +316,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x03
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -399,10 +335,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x01
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -420,10 +354,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x02
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -441,10 +373,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x03
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -462,22 +392,18 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x03
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
     static func setScene (address:[UInt8], id:Int) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
         var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
         var numberTwo:UInt8 = UInt8(id % 0x100)
-        messageInfo = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
         message[2] = address[0]
@@ -485,38 +411,13 @@ class Function {
         message[4] = address[0]
         message[5] = 0x03
         message[6] = 0x07
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-//    static func setDelayRuntimeSkipState (address:[UInt8], id:Int) -> [UInt8]{
-//        var messageInfo:[UInt8] = []
-//        var message:[UInt8] = []
-//        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-//        var numberTwo:UInt8 = UInt8(id % 0x100)
-//        messageInfo = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = UInt8(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[0]
-//        message[4] = address[0]
-//        message[5] = 0x03
-//        message[6] = 0x07
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
     static func getChannelName (address:[UInt8], channel:UInt8) -> [UInt8]{
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
@@ -529,10 +430,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x01
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -550,10 +449,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x01
         message[6] = 0x0D
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -571,10 +468,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x01
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -592,10 +487,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x04
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -613,10 +506,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x02
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -635,10 +526,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x09
         message[6] = 0x05
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -658,10 +547,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x09
         message[6] = 0x0E
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -680,10 +567,8 @@ class Function {
         message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x0C
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10

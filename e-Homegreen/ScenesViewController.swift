@@ -264,7 +264,7 @@ extension ScenesViewController: UICollectionViewDataSource {
 //        cell.backgroundColor = UIColor.lightGrayColor()
         //3
         cell.sceneCellLabel.text = "\(scenes[indexPath.row].sceneName)"
-        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             cell.sceneCellImageView.image = sceneImage
         }
 //        cell.sceneCellLabel.image = "\()"

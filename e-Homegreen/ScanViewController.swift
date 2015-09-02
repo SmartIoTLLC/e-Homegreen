@@ -53,9 +53,9 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         imageScene.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap"))
         
         var gradient:CAGradientLayer = CAGradientLayer()
-        if self.view.frame.size.height > self.view.frame.size.width{
+        if self.view.frame.size.height > self.view.frame.size.width {
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
-        }else{
+        } else {
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
         }
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
@@ -173,7 +173,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
                 scene.sceneId = sceneId
                 scene.sceneName = sceneName
-                scene.sceneImage = UIImagePNGRepresentation(imageScene.image)
+                scene.sceneImageOne = UIImagePNGRepresentation(imageScene.image)
                 scene.gateway = gateway!
                 saveChanges()
                 refreshSceneList()
@@ -433,7 +433,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 cell.backgroundColor = UIColor.clearColor()
                 cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
                 cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
-                if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+                if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                     cell.imageScene.image = sceneImage
                 }
                 return cell
@@ -457,7 +457,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             selectedScene = scenes[indexPath.row]
             sceneIDedit.text = "\(scenes[indexPath.row].sceneId)"
             sceneNameEdit.text = "\(scenes[indexPath.row].sceneName)"
-            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
+            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                 imageScene.image = sceneImage
             }
         }
