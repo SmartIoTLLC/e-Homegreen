@@ -7,10 +7,17 @@
 //
 
 import UIKit
+import CoreData
 
 class SequencesViewController: CommonViewController {
 
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
+    @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var cyclesTextField: UITextField!
+    
+    var appDel:AppDelegate!
+    var sequences:[Sequence] = []
+    var error:NSError? = nil
     
     private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     private let reuseIdentifier = "SequenceCell"
@@ -18,6 +25,9 @@ class SequencesViewController: CommonViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        updateSequencesList()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: "refreshSequenceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -36,7 +46,32 @@ class SequencesViewController: CommonViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    func refreshSequenceList () {
+        updateSequencesList()
+        sequenceCollectionView.reloadData()
+    }
+    func updateSequencesList () {
+        var fetchRequest = NSFetchRequest(entityName: "Sequence")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Sequence]
+        if let results = fetResults {
+            sequences = results
+        } else {
+            
+        }
+    }
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
 }
 
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -65,7 +100,7 @@ extension SequencesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return sequences.count
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
@@ -77,7 +112,10 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.layer.insertSublayer(gradient, atIndex: 0)
         //        cell.backgroundColor = UIColor.lightGrayColor()
         //3
-        cell.sequenceTitle.text = ""
+        cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
+        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
+            cell.sequenceImageView.image = sceneImage
+        }
 //        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
 //            cell.sceneCellImageView.image = sceneImage
 //        }
