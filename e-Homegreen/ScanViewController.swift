@@ -53,8 +53,10 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         sceneView.hidden = true
-        devAddressOne.text = "\(gateway?.addressOne)"
-        devAddressTwo.text = "\(gateway?.addressTwo)"
+        if let gwAdrOne = gateway!.addressOne as? Int, let gwAdrTwo = gateway!.addressTwo as? Int {
+            devAddressOne.text = "\(returnThreeCharactersForByte(gwAdrOne))"
+            devAddressTwo.text = "\(returnThreeCharactersForByte(gwAdrTwo))"
+        }
         devAddressThree.delegate = self
         
         imageSceneOne.userInteractionEnabled = true
@@ -531,7 +533,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 selected = choosedTabArray[indexPath.row]
                 IDedit.text = "\(choosedTabArray[indexPath.row].sceneId)"
                 nameEdit.text = "\(choosedTabArray[indexPath.row].sceneName)"
-                devAddressThree.text = "\(choosedTabArray[indexPath.row].address)"
+                devAddressThree.text = "\(returnThreeCharactersForByte(Int(choosedTabArray[indexPath.row].address)))"
                 if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
                     imageSceneOne.image = sceneImage
                 }
