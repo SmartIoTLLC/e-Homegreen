@@ -17,10 +17,19 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var choosedTab:ChoosedTab = .Devices
     var senderButton:UIButton?
     enum ChoosedTab {
-        case Devices
-        case Scenes
-        case Events
-        case Sequences
+        case Devices, Scenes, Events, Sequences
+        func returnStringDescription() -> String {
+            switch self {
+            case .Devices:
+                return ""
+            case .Scenes:
+                return "Scene"
+            case .Events:
+                return "Event"
+            case .Sequences:
+                return "Sequence"
+            }
+        }
     }
 
     @IBOutlet weak var imageHeight: NSLayoutConstraint!
@@ -201,7 +210,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
     }
     func refreshSceneList() {
-        updateSceneList()
+//        updateSceneList()
+        updateListFetchingFromCD(choosedTab.returnStringDescription(), entityId: "\(choosedTab.returnStringDescription())Id", entityName: "\(choosedTab.returnStringDescription())Name")
         sceneTableView.reloadData()
     }
     func refreshDeviceList() {
@@ -215,10 +225,12 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if choosedTab == .Scenes {
-            if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text {
-                if sceneId <= 32767 {
-                    var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+//        if choosedTab == .Scenes {
+        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt() {
+            if sceneId <= 32767 && address <= 255 {
+                switch choosedTab {
+                case .Scenes:
+                    var scene = NSEntityDescription.insertNewObjectForEntityForName(choosedTab.returnStringDescription(), inManagedObjectContext: appDel.managedObjectContext!) as! Scene
                     scene.sceneId = sceneId
                     scene.sceneName = sceneName
                     scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image)
@@ -227,21 +239,42 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     saveChanges()
                     refreshSceneList()
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+                case .Events:
+                    var event = NSEntityDescription.insertNewObjectForEntityForName(choosedTab.returnStringDescription(), inManagedObjectContext: appDel.managedObjectContext!) as! Event
+                    event.eventId = sceneId
+                    event.eventName = sceneName
+                    event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image)
+                    event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                    event.gateway = gateway!
+                    saveChanges()
+                    refreshSceneList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+                case .Sequences:
+                    var sequence = NSEntityDescription.insertNewObjectForEntityForName(choosedTab.returnStringDescription(), inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
+                    sequence.sequenceId = sceneId
+                    sequence.sequenceName = sceneName
+                    sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image)
+                    sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                    sequence.gateway = gateway!
+                    saveChanges()
+                    refreshSceneList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
                 }
             }
         }
+//        }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if choosedTab == .Scenes {
-            if let scene = selected as? Scene{
-                appDel.managedObjectContext!.deleteObject(scene)
-            }
+//        if choosedTab == .Scenes {
+        if let scene = selected as? Scene{
+            appDel.managedObjectContext!.deleteObject(scene)
             IDedit.text = ""
             nameEdit.text = ""
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
         }
+//        }
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -529,7 +562,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var selected:AnyObject?
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == sceneTableView {
-            if choosedTab == .Scenes {
+//            if choosedTab == .Scenes {
                 selected = choosedTabArray[indexPath.row]
                 IDedit.text = "\(choosedTabArray[indexPath.row].sceneId)"
                 nameEdit.text = "\(choosedTabArray[indexPath.row].sceneName)"
@@ -540,7 +573,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
                     imageSceneTwo.image = sceneImage
                 }
-            }
+//            }
         }
     }
     
