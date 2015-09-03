@@ -35,7 +35,7 @@
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="devices" inverseEntity="Gateway" syncable="YES"/>
     </entity>
-    <entity name="Event" representedClassName="PRODUCT_MODULE_NAME.Event" syncable="YES">
+    <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -57,7 +57,7 @@
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
-        <relationship name="events" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -70,7 +70,7 @@
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="scenes" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="Security" syncable="YES"/>
-    <entity name="Sequence" representedClassName="PRODUCT_MODULE_NAME.Sequence" syncable="YES">
+    <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -84,11 +84,11 @@
     <entity name="Timer" syncable="YES"/>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
-        <element name="Event" positionX="-9" positionY="171" width="128" height="135"/>
+        <element name="Event" positionX="-9" positionY="171" width="128" height="30"/>
         <element name="Gateway" positionX="-63" positionY="54" width="128" height="285"/>
         <element name="Scene" positionX="-54" positionY="135" width="128" height="135"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="45"/>
-        <element name="Sequence" positionX="-27" positionY="162" width="128" height="135"/>
+        <element name="Sequence" positionX="-27" positionY="162" width="128" height="30"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
         <element name="Timer" positionX="9" positionY="180" width="128" height="45"/>
     </elements>
