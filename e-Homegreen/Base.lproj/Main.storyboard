@@ -117,6 +117,7 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -524,12 +525,12 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D5h-E6-Z7C">
                                         <rect key="frame" x="97" y="6" width="88" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lZG-Dt-XAD">
                                         <rect key="frame" x="223" y="6" width="87" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                     </textField>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hxT-en-wQY">
                                         <rect key="frame" x="0.0" y="82" width="320" height="371"/>
@@ -641,7 +642,7 @@
                                             <constraint firstAttribute="width" constant="40" id="JtB-wL-Pm5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scene ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8h-jg-dA3">
                                         <rect key="frame" x="8" y="71" width="52" height="16"/>
@@ -756,7 +757,7 @@
                                             <constraint firstAttribute="width" constant="48" id="NSK-KB-h2M"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8Q-zC-qDf">
                                         <rect key="frame" x="208" y="22" width="48" height="30"/>
@@ -764,7 +765,7 @@
                                             <constraint firstAttribute="width" constant="48" id="CDO-bP-BAY"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hif-eE-Dvl">
                                         <rect key="frame" x="266" y="22" width="48" height="30"/>
@@ -772,7 +773,7 @@
                                             <constraint firstAttribute="width" constant="48" id="YUc-S1-egQ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="6ol-jv-2QA">
                                         <rect key="frame" x="260" y="107" width="50" height="50"/>
@@ -1327,7 +1328,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2hK-WW-Oey">
-                                <rect key="frame" x="0.0" y="40" width="320" height="528"/>
+                                <rect key="frame" x="0.0" y="80" width="320" height="488"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="P4m-nq-3rx">
                                     <size key="itemSize" width="150" height="180"/>
@@ -1375,20 +1376,34 @@
                                     <outlet property="delegate" destination="7dl-YJ-IEQ" id="lDP-eP-xc9"/>
                                 </connections>
                             </collectionView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UaZ-xI-sRi">
+                                <rect key="frame" x="9" y="35" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6T-ud-Yep">
+                                <rect key="frame" x="80" y="38" width="87" height="25"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leadingMargin" constant="-7" id="43e-WG-cap"/>
                             <constraint firstItem="sxx-f6-ns2" firstAttribute="top" secondItem="qWN-Ys-QcX" secondAttribute="bottom" id="BJQ-5o-JcH"/>
+                            <constraint firstItem="2hK-WW-Oey" firstAttribute="top" secondItem="UaZ-xI-sRi" secondAttribute="bottom" constant="14" id="Cwi-Yx-zcc"/>
                             <constraint firstAttribute="trailing" secondItem="qWN-Ys-QcX" secondAttribute="trailing" id="HG6-Et-BjO"/>
+                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="centerY" secondItem="T6T-ud-Yep" secondAttribute="centerY" id="KMb-fk-4nj"/>
                             <constraint firstItem="sxx-f6-ns2" firstAttribute="top" secondItem="2hK-WW-Oey" secondAttribute="bottom" id="MZo-JS-OZl"/>
                             <constraint firstAttribute="trailing" secondItem="2hK-WW-Oey" secondAttribute="trailing" id="Ujs-XO-UHV"/>
                             <constraint firstItem="2hK-WW-Oey" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leading" id="VF7-UF-MPu"/>
-                            <constraint firstItem="2hK-WW-Oey" firstAttribute="top" secondItem="P78-MS-K1z" secondAttribute="bottom" constant="20" id="nch-61-RmY"/>
+                            <constraint firstItem="T6T-ud-Yep" firstAttribute="leading" secondItem="UaZ-xI-sRi" secondAttribute="trailing" constant="22" id="ozh-Yg-fyN"/>
+                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="top" secondItem="P78-MS-K1z" secondAttribute="bottom" constant="15" id="qsi-Aq-FF0"/>
                             <constraint firstItem="qWN-Ys-QcX" firstAttribute="top" secondItem="P78-MS-K1z" secondAttribute="bottom" id="qtd-Im-gas"/>
                             <constraint firstItem="qWN-Ys-QcX" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leading" id="yuE-8v-6Jp"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="broadcastSwitch" destination="UaZ-xI-sRi" id="xeb-DF-ABg"/>
                         <outlet property="scenesCollectionView" destination="2hK-WW-Oey" id="CZ7-S0-rBp"/>
                     </connections>
                 </viewController>

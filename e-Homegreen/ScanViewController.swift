@@ -56,10 +56,33 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var deviceTableView: UITableView!
     @IBOutlet weak var sceneTableView: UITableView!
+    
+    func endEditingNow(){
+        rangeFrom.resignFirstResponder()
+        rangeTo.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
+        IDedit.resignFirstResponder()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        var toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        rangeFrom.inputAccessoryView = keyboardDoneButtonView
+        rangeTo.inputAccessoryView = keyboardDoneButtonView
+        devAddressOne.inputAccessoryView = keyboardDoneButtonView
+        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
+        devAddressThree.inputAccessoryView = keyboardDoneButtonView
+        IDedit.inputAccessoryView = keyboardDoneButtonView
         
         sceneView.hidden = true
         if let gwAdrOne = gateway!.addressOne as? Int, let gwAdrTwo = gateway!.addressTwo as? Int {

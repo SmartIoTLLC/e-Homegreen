@@ -29,6 +29,9 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
     
     var senderButton:UIButton?
     
+    @IBOutlet weak var broadcastSwitch: UISwitch!
+    
+    
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
     override func viewDidLoad() {
