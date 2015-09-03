@@ -30,7 +30,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
 //    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
 //    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
-    var chooseList:[String] = ["Devices", "Scenes"]
+    var chooseList:[String] = ["Devices", "Scenes", "Events", "Sequences"]
 //>>>>>>> origin/master
     var tableList:[String] = []
     

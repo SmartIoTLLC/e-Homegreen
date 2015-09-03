@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SceneGalleryDelegate{
-    func backString(strText: String)
+    func backString(strText: String, imageIndex:Int)
 }
 
 class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
@@ -17,6 +17,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     var delegate : SceneGalleryDelegate?
     
     var galleryList:[String] = ["allhigh", "alllow", "allmed", "alloff", "allon"]
+    var imageIndex:Int!
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
     
@@ -107,7 +108,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        delegate?.backString(galleryList[indexPath.row])
+        delegate?.backString(galleryList[indexPath.row], imageIndex: imageIndex)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -191,8 +192,9 @@ extension SceneGalleryVC :  UIViewControllerTransitioningDelegate{
 
 
 extension UIViewController {
-    func showGallery() -> SceneGalleryVC {
+    func showGallery(index:Int) -> SceneGalleryVC {
         var galleryVC = SceneGalleryVC()
+        galleryVC.imageIndex = index
         self.presentViewController(galleryVC, animated: true, completion: nil)
         return galleryVC
     }

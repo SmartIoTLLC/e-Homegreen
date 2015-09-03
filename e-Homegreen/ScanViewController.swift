@@ -14,20 +14,27 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var rangeFrom: UITextField!
     @IBOutlet weak var rangeTo: UITextField!
-    
+    var choosedTab:ChoosedTab = .Devices
     var senderButton:UIButton?
-    
+    enum ChoosedTab {
+        case Devices
+        case Scenes
+        case Events
+        case Sequences
+    }
 
     @IBOutlet weak var imageHeight: NSLayoutConstraint!
     
     @IBOutlet weak var sceneView: UIView!
     @IBOutlet weak var deviceView: UIView!
     
-    @IBOutlet weak var sceneIDedit: UITextField!
-    @IBOutlet weak var sceneNameEdit: UITextField!
-    
-    
-    @IBOutlet weak var imageScene: UIImageView!
+    @IBOutlet weak var IDedit: UITextField!
+    @IBOutlet weak var nameEdit: UITextField!
+    @IBOutlet weak var imageSceneOne: UIImageView!
+    @IBOutlet weak var imageSceneTwo: UIImageView!
+    @IBOutlet weak var devAddressOne: UITextField!
+    @IBOutlet weak var devAddressTwo: UITextField!
+    @IBOutlet weak var devAddressThree: UITextField!
     
     
     var appDel:AppDelegate!
@@ -35,7 +42,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var isPresenting:Bool = true
     var gateway:Gateway?
     var devices:[Device] = []
-    var scenes:[Scene] = []
+    var choosedTabArray:[AnyObject] = []
     var loader : ViewControllerUtils = ViewControllerUtils()
     
     @IBOutlet weak var deviceTableView: UITableView!
@@ -46,11 +53,16 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         sceneView.hidden = true
+        devAddressOne.text = "\(gateway?.addressOne)"
+        devAddressTwo.text = "\(gateway?.addressTwo)"
+        devAddressThree.delegate = self
         
-        
-        
-        imageScene.userInteractionEnabled = true
-        imageScene.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap"))
+        imageSceneOne.userInteractionEnabled = true
+        imageSceneOne.tag = 1
+        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneTwo.userInteractionEnabled = true
+        imageSceneTwo.tag = 2
+        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width {
@@ -66,8 +78,8 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         rangeTo.delegate = self
         refreshDeviceList()
         
-        sceneIDedit.delegate = self
-        sceneNameEdit.delegate = self
+        IDedit.delegate = self
+        nameEdit.delegate = self
         refreshSceneList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
@@ -85,12 +97,19 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
     }
     
-    func handleTap(){
-        showGallery().delegate = self
+    func handleTap (gesture:UITapGestureRecognizer) {
+        if let index = gesture.view?.tag {
+            showGallery(index).delegate = self
+        }
     }
     
-    func backString(strText: String) {
-        self.imageScene.image = UIImage(named: strText)
+    func backString(strText: String, imageIndex:Int) {
+        if imageIndex == 1 {
+            self.imageSceneOne.image = UIImage(named: strText)
+        }
+        if imageIndex == 2 {
+            self.imageSceneTwo.image = UIImage(named: strText)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -131,9 +150,35 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         fetchRequest.predicate = predicate
         let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
         if let results = fetResults {
-            scenes = results
+            choosedTabArray = results
         } else {
             println("Nije htela...")
+        }
+    }
+    func updateListFetchingFromCD (entity:String, entityId:String, entityName:String) {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: entity)
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: entityId, ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: entityName, ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        switch entity {
+        case "Scene":
+            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene] {
+                choosedTabArray = fetResults
+            }
+        case "Event":
+            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Event] {
+                choosedTabArray = fetResults
+            }
+        case "Sequence":
+            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Sequence] {
+                choosedTabArray = fetResults
+            }
+        default:
+            println()
         }
     }
     func updateDeviceList () {
@@ -168,28 +213,33 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = sceneIDedit.text.toInt(), let sceneName = sceneNameEdit.text {
-            if sceneId <= 32767 {
-                var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-                scene.sceneId = sceneId
-                scene.sceneName = sceneName
-                scene.sceneImageOne = UIImagePNGRepresentation(imageScene.image)
-                scene.gateway = gateway!
-                saveChanges()
-                refreshSceneList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+        if choosedTab == .Scenes {
+            if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text {
+                if sceneId <= 32767 {
+                    var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                    scene.sceneId = sceneId
+                    scene.sceneName = sceneName
+                    scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image)
+                    scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                    scene.gateway = gateway!
+                    saveChanges()
+                    refreshSceneList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+                }
             }
         }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let scene = selectedScene {
-            appDel.managedObjectContext!.deleteObject(scene)
+        if choosedTab == .Scenes {
+            if let scene = selected as? Scene{
+                appDel.managedObjectContext!.deleteObject(scene)
+            }
+            IDedit.text = ""
+            nameEdit.text = ""
+            refreshSceneList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
         }
-        sceneIDedit.text = ""
-        sceneNameEdit.text = ""
-        refreshSceneList()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -389,10 +439,30 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func saveText(strText: String) {
         println(reverse(strText))
         senderButton?.setTitle(strText, forState: .Normal)
-        if strText == "Devices"{
+        if strText == "Devices" {
+            choosedTab = .Devices
+            sceneTableView.reloadData()
             sceneView.hidden = true
             deviceView.hidden = false
-        }else{
+        }
+        if strText == "Scenes" {
+            choosedTab = .Scenes
+            updateListFetchingFromCD("Scene", entityId: "sceneId", entityName: "sceneName")
+            sceneTableView.reloadData()
+            sceneView.hidden = false
+            deviceView.hidden = true
+        }
+        if strText == "Events" {
+            choosedTab = .Events
+            updateListFetchingFromCD("Event", entityId: "eventId", entityName: "eventName")
+            sceneTableView.reloadData()
+            sceneView.hidden = false
+            deviceView.hidden = true
+        }
+        if strText == "Sequences" {
+            choosedTab = .Sequences
+            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")
+            sceneTableView.reloadData()
             sceneView.hidden = false
             deviceView.hidden = true
         }
@@ -431,10 +501,13 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         if tableView == sceneTableView {
             if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
                 cell.backgroundColor = UIColor.clearColor()
-                cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
-                cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
-                if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-                    cell.imageScene.image = sceneImage
+                cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
+                cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
+                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
+                    cell.imageOne.image = sceneImage
+                }
+                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
+                    cell.imageTwo.image = sceneImage
                 }
                 return cell
             }
@@ -447,18 +520,24 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == sceneTableView{
-            return scenes.count
+            return choosedTabArray.count
         }
         return devices.count
     }
-    var selectedScene:Scene?
+    var selected:AnyObject?
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == sceneTableView {
-            selectedScene = scenes[indexPath.row]
-            sceneIDedit.text = "\(scenes[indexPath.row].sceneId)"
-            sceneNameEdit.text = "\(scenes[indexPath.row].sceneName)"
-            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-                imageScene.image = sceneImage
+            if choosedTab == .Scenes {
+                selected = choosedTabArray[indexPath.row]
+                IDedit.text = "\(choosedTabArray[indexPath.row].sceneId)"
+                nameEdit.text = "\(choosedTabArray[indexPath.row].sceneName)"
+                devAddressThree.text = "\(choosedTabArray[indexPath.row].address)"
+                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
+                    imageSceneOne.image = sceneImage
+                }
+                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
+                    imageSceneTwo.image = sceneImage
+                }
             }
         }
     }
@@ -478,7 +557,8 @@ class SceneCell:UITableViewCell{
     
     @IBOutlet weak var labelID: UILabel!
     @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageScene: UIImageView!
+    @IBOutlet weak var imageOne: UIImageView!
+    @IBOutlet weak var imageTwo: UIImageView!
 
     
 }
