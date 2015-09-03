@@ -90,13 +90,13 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            self.imageHeight.constant = 50
-        }else{
-            
-            self.imageHeight.constant = 120
-            
-        }
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            self.imageHeight.constant = 50
+//        }else{
+//            
+//            self.imageHeight.constant = 120
+//            
+//        }
     }
     
     func handleTap (gesture:UITapGestureRecognizer) {
