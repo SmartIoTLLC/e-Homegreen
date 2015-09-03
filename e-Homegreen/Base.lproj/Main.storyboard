@@ -118,6 +118,8 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -2346,12 +2348,25 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="yuu-3O-qiS">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yFn-kC-fqy">
+                                <rect key="frame" x="10" y="10" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJa-fE-cjK">
+                                <rect key="frame" x="81" y="13" width="87" height="25"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="top" secondItem="VE6-Xg-TLF" secondAttribute="top" id="5c9-zJ-skx"/>
+                            <constraint firstItem="yFn-kC-fqy" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leadingMargin" constant="-6" id="Li4-C6-PLl"/>
                             <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="bottom" id="MIK-El-D6j"/>
+                            <constraint firstItem="yFn-kC-fqy" firstAttribute="top" secondItem="Hak-iV-erg" secondAttribute="bottom" constant="-10" id="X23-XM-S3m"/>
+                            <constraint firstItem="yFn-kC-fqy" firstAttribute="centerY" secondItem="JJa-fE-cjK" secondAttribute="centerY" id="fx4-n1-jfy"/>
                             <constraint firstAttribute="trailing" secondItem="yuu-3O-qiS" secondAttribute="trailing" id="had-8G-qiT"/>
+                            <constraint firstItem="JJa-fE-cjK" firstAttribute="leading" secondItem="yFn-kC-fqy" secondAttribute="trailing" constant="22" id="j0S-dP-ZcY"/>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" id="uzc-aa-4Bc"/>
                         </constraints>
                     </view>
@@ -2375,8 +2390,18 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="4sY-cu-Hed">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e97-eR-tNg">
+                                <rect key="frame" x="10" y="10" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f18-Uu-S2U">
+                                <rect key="frame" x="81" y="13" width="87" height="25"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9hI-oP-r4e">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <rect key="frame" x="0.0" y="56" width="320" height="512"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5rk-3G-81l">
                                     <size key="itemSize" width="124" height="158"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -2424,14 +2449,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="e97-eR-tNg" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leadingMargin" constant="-6" id="55M-o3-L60"/>
                             <constraint firstItem="4sY-cu-Hed" firstAttribute="top" secondItem="DpZ-k8-H9w" secondAttribute="top" id="5B2-sM-Zi2"/>
                             <constraint firstItem="y33-wi-w9j" firstAttribute="top" secondItem="4sY-cu-Hed" secondAttribute="bottom" id="8Q2-El-rS8"/>
                             <constraint firstItem="9hI-oP-r4e" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leading" id="Emg-ZR-W6p"/>
+                            <constraint firstItem="f18-Uu-S2U" firstAttribute="leading" secondItem="e97-eR-tNg" secondAttribute="trailing" constant="22" id="FPz-Ja-OaV"/>
                             <constraint firstAttribute="trailing" secondItem="9hI-oP-r4e" secondAttribute="trailing" id="H4O-Ve-0Kb"/>
                             <constraint firstItem="4sY-cu-Hed" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leading" id="PTB-K5-hf1"/>
+                            <constraint firstItem="e97-eR-tNg" firstAttribute="top" secondItem="U4g-Eo-hXj" secondAttribute="bottom" constant="-10" id="VJC-8V-zUq"/>
                             <constraint firstItem="y33-wi-w9j" firstAttribute="top" secondItem="9hI-oP-r4e" secondAttribute="bottom" id="Y98-B5-wVZ"/>
-                            <constraint firstItem="9hI-oP-r4e" firstAttribute="top" secondItem="U4g-Eo-hXj" secondAttribute="bottom" id="jEB-ff-gsa"/>
+                            <constraint firstItem="9hI-oP-r4e" firstAttribute="top" secondItem="e97-eR-tNg" secondAttribute="bottom" constant="15" id="a4c-pd-ywA"/>
                             <constraint firstAttribute="trailing" secondItem="4sY-cu-Hed" secondAttribute="trailing" id="lAT-D7-HXI"/>
+                            <constraint firstItem="e97-eR-tNg" firstAttribute="centerY" secondItem="f18-Uu-S2U" secondAttribute="centerY" id="mIp-S9-fyn"/>
                         </constraints>
                     </view>
                     <connections>
