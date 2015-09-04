@@ -115,31 +115,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
         cell.lblTime.text = "\(NSDate())"
-//        if let data = getData("http://192.168.0.45:8081/"){
-////            dispatch_async(dispatch_get_main_queue(), {
-//                cell.image.image = UIImage(data: data)
-////            })
+
+//        if let nesto = cameraList[indexPath.row].image{
+//            cell.image.image = UIImage(data: nesto)
 //        }
-//        let url:NSURL!
-//        if indexPath.row == 0{
-//            url = NSURL(string: "http://192.168.0.45:8081/")
-//        }
-//        else if indexPath.row == 1{
-//            url = NSURL(string: "http://192.168.0.19:8081/")
-//        }else {
-//            url = NSURL(string: cameraList[indexPath.row])
-//        }
-//        let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
-//            if error == nil{
-//                dispatch_async(dispatch_get_main_queue(), {
-        if let nesto = cameraList[indexPath.row].image{
-            cell.image.image = UIImage(data: nesto)
-        }
-//
-//                })
-//            }
-//        }
-//        task.resume()
+
 
         cell.layer.cornerRadius = 5
         
