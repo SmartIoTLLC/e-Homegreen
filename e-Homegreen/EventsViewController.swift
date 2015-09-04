@@ -24,6 +24,12 @@ class EventsViewController: CommonViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+            collectionViewCellSize = CGSize(width: 128, height: 156)
+        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+            collectionViewCellSize = CGSize(width: 118, height: 144)
+        }
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         updateEventsList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: "refreshEventListNotification", object: nil)
@@ -33,6 +39,26 @@ class EventsViewController: CommonViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.width == 568{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }else if self.view.frame.size.width == 667{
+                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            }
+        }else{
+            if self.view.frame.size.width == 320{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }else if self.view.frame.size.width == 375{
+                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }
+        }
     }
     
     
