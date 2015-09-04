@@ -263,7 +263,6 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     refreshSceneList()
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
                 case .Events:
-                    println("Sladjanovo maslo \(choosedTab.returnStringDescription())")
                     var event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
                     event.eventId = sceneId
                     event.eventName = sceneName
