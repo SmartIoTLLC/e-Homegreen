@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
-            landmarkName = "collectionView(_:didSelectItemAtIndexPath:)"
+            landmarkName = "updateSequencesList()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

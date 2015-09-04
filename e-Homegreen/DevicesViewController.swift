@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
 class DeviceImage:NSObject{
     var image:UIImage!
@@ -66,6 +67,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         updateDeviceList()
         
         socket.send("ping")
+//        var utterance = AVSpeechUtterance(string: "Hello world. Hello Vladimir! What about these new things? What about everything?")
+//        var synth = AVSpeechSynthesizer()
+//        synth.speakUtterance(utterance)
     }
     
     var appDel:AppDelegate!
