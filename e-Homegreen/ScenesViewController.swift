@@ -231,19 +231,18 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
 extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        SendingHandler(byteArray: Function.setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
-        println(" ")
+        var address:[UInt8] = []
+        if broadcastSwitch.on {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
+        }
+        SendingHandler(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-
-        return collectionViewCellSize
-
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
     }
 }
 

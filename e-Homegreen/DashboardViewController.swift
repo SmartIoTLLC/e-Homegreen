@@ -86,8 +86,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     }
     
     override func viewWillAppear(animated: Bool) {
-        
-        
+        println("")
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {

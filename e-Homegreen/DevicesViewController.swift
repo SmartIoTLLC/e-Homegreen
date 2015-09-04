@@ -44,7 +44,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var mySecondView:Array<UIView> = []
     
     var timer:NSTimer = NSTimer()
-    
+    var socket:OutSocket = OutSocket(ip: "192.168.0.7", port: 8081)
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
@@ -65,6 +65,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
         updateDeviceList()
         
+        socket.send("ping")
     }
     
     var appDel:AppDelegate!

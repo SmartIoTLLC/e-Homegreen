@@ -280,8 +280,29 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setSequence (address:[UInt8], id:UInt8, cycle:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, id]
+    static func setScene (address:[UInt8], id:Int) -> [UInt8]{
+        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
+        var numberTwo:UInt8 = UInt8(id % 0x100)
+        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[0]
+        message[4] = address[0]
+        message[5] = 0x03
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setSequence (address:[UInt8], id:Int, cycle:UInt8) -> [UInt8]{
+        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
+        var numberTwo:UInt8 = UInt8(id % 0x100)
+        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
@@ -392,25 +413,6 @@ class Function {
         message[4] = address[2]
         message[5] = 0x05
         message[6] = 0x03
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setScene (address:[UInt8], id:Int) -> [UInt8]{
-        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-        var numberTwo:UInt8 = UInt8(id % 0x100)
-        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[0]
-        message[4] = address[0]
-        message[5] = 0x03
-        message[6] = 0x07
         for i in 0...messageInfo.count - 1 {
             message[7+i] = messageInfo[i]
         }

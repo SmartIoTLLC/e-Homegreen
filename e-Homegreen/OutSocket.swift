@@ -26,7 +26,7 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
         socket.bindToPort(port, error: &error)
         socket.connectToHost(ip, onPort: port, error: &error)
-        socket.enableBroadcast(true, error: &error)
+//        socket.enableBroadcast(true, error: &error)
         send("ping")
     }
     
@@ -38,7 +38,16 @@ class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
         socket.sendData(data, withTimeout: -1, tag: 0)
     }
-    
+    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+        println("Hej.")
+        println("Hej.")
+        println("Hej.")
+        println(data.convertToBytes())
+        println(data.convertToBytes())
+        println("Hej.")
+        println("Hej.")
+        println("Hej.")
+    }
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
         println("didConnectToAddress")
     }

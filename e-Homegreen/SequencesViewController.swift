@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SequencesViewController: CommonViewController {
+class SequencesViewController: CommonViewController, UITextFieldDelegate {
 
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
     @IBOutlet weak var broadcastSwitch: UISwitch!
@@ -25,6 +25,7 @@ class SequencesViewController: CommonViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        cyclesTextField.delegate = self
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         updateSequencesList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: "refreshSequenceListNotification", object: nil)
@@ -46,7 +47,10 @@ class SequencesViewController: CommonViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     func refreshSequenceList () {
         updateSequencesList()
         sequenceCollectionView.reloadData()
@@ -77,10 +81,19 @@ class SequencesViewController: CommonViewController {
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-//        SendingHandler(byteArray: Function.setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
-        println(" ")
+        var address:[UInt8] = []
+        if broadcastSwitch.on {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
+        }
+        if let cycles = cyclesTextField.text.toInt() {
+            if cycles >= 0 && cycles <= 255 {
+                SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
+            }
+        } else {
+            SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
+        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets

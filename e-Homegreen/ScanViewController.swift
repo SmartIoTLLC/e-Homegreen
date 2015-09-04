@@ -291,15 +291,27 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-//        if choosedTab == .Scenes {
-        if let scene = selected as? Scene{
+        if let scene = selected as? Scene {
             appDel.managedObjectContext!.deleteObject(scene)
             IDedit.text = ""
             nameEdit.text = ""
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
         }
-//        }
+        if let event = selected as? Event {
+            appDel.managedObjectContext!.deleteObject(event)
+            IDedit.text = ""
+            nameEdit.text = ""
+            refreshSceneList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+        }
+        if let sequence = selected as? Sequence {
+            appDel.managedObjectContext!.deleteObject(sequence)
+            IDedit.text = ""
+            nameEdit.text = ""
+            refreshSceneList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+        }
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -578,6 +590,16 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                         cell.imageOne.image = sceneImage
                     }
                     if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
+                        cell.imageTwo.image = sceneImage
+                    }
+                } else if choosedTab == .Sequences {
+                    cell.backgroundColor = UIColor.clearColor()
+                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
+                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
+                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
+                        cell.imageOne.image = sceneImage
+                    }
+                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
                         cell.imageTwo.image = sceneImage
                     }
                 }

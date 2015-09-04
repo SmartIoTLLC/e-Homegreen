@@ -76,9 +76,16 @@ class EventsViewController: CommonViewController {
 extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(myView)
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.addSubview(mySecondView)
-        //        SendingHandler(byteArray: Function.setScene([0xFF, 0xFF, 0xFF], id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+        var address:[UInt8] = []
+        if broadcastSwitch.on {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), UInt8(Int(events[indexPath.row].address))]
+        }
+        let eventId = Int(events[indexPath.row].eventId)
+        if eventId >= 0 && eventId <= 255 {
+            SendingHandler(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
+        }
         println(" ")
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
