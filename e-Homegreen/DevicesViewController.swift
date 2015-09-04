@@ -165,7 +165,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "Dimmer" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 deviceInControlMode = true
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
 //                SendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)

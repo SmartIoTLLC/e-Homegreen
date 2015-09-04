@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -8,6 +8,7 @@
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
@@ -2578,15 +2579,72 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="XFc-Vp-gGW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="U1Y-hf-wHH">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yip-Ts-gH6">
+                                    <size key="itemSize" width="150" height="150"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Surveillance" id="vOe-B5-X7h" customClass="SurveillenceCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pcT-1s-LGE">
+                                                    <rect key="frame" x="8" y="8" width="134" height="13"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gpf-nW-J8I">
+                                                    <rect key="frame" x="8" y="26" width="134" height="116"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="pcT-1s-LGE" firstAttribute="top" secondItem="vOe-B5-X7h" secondAttribute="topMargin" id="8PV-OU-iTp"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leadingMargin" id="BKt-hr-5mL"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="gpf-nW-J8I" secondAttribute="trailing" id="EHa-dZ-oYI"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="top" secondItem="pcT-1s-LGE" secondAttribute="bottom" constant="5" id="Ixz-Ic-TXn"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="pcT-1s-LGE" secondAttribute="trailing" id="OC7-X1-T1n"/>
+                                            <constraint firstItem="pcT-1s-LGE" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leadingMargin" id="c4u-ir-GnP"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="gpf-nW-J8I" secondAttribute="bottom" id="cuK-n5-oqi"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="image" destination="gpf-nW-J8I" id="j3t-yr-DdJ"/>
+                                            <outlet property="lblTime" destination="pcT-1s-LGE" id="eps-Ja-i3m"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="egY-f5-Hy1" id="4fp-UN-6Hj"/>
+                                    <outlet property="delegate" destination="egY-f5-Hy1" id="cDx-nc-h6P"/>
+                                </connections>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="U1Y-hf-wHH" firstAttribute="top" secondItem="WGs-GQ-nYb" secondAttribute="bottom" id="3RU-9p-vhR"/>
+                            <constraint firstItem="U1Y-hf-wHH" firstAttribute="leading" secondItem="iDH-Zu-leq" secondAttribute="leading" id="4z9-fX-92V"/>
                             <constraint firstItem="XFc-Vp-gGW" firstAttribute="leading" secondItem="iDH-Zu-leq" secondAttribute="leading" id="aLu-7a-ry6"/>
                             <constraint firstAttribute="trailing" secondItem="XFc-Vp-gGW" secondAttribute="trailing" id="d7Y-Yk-T9N"/>
+                            <constraint firstAttribute="trailing" secondItem="U1Y-hf-wHH" secondAttribute="trailing" id="e5y-L0-Yz5"/>
+                            <constraint firstItem="XTq-I3-AwM" firstAttribute="top" secondItem="U1Y-hf-wHH" secondAttribute="bottom" id="fiQ-YE-1HT"/>
                             <constraint firstItem="XFc-Vp-gGW" firstAttribute="top" secondItem="iDH-Zu-leq" secondAttribute="top" id="s9X-lI-cCY"/>
                             <constraint firstItem="XTq-I3-AwM" firstAttribute="top" secondItem="XFc-Vp-gGW" secondAttribute="bottom" id="ugi-Pf-q7t"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cameraCollectionView" destination="U1Y-hf-wHH" id="oUq-Sj-ZNI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vaS-5J-u44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2908,15 +2966,26 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="gXH-xP-LdQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4I-7S-Oet">
+                                <rect key="frame" x="16" y="70" width="288" height="448"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="gXH-xP-LdQ" secondAttribute="trailing" id="J9o-vd-2dl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="D4I-7S-Oet" secondAttribute="trailing" id="JBP-S2-ZmK"/>
                             <constraint firstItem="gXH-xP-LdQ" firstAttribute="top" secondItem="bzt-Ja-3Qw" secondAttribute="top" id="OPC-dX-aTz"/>
                             <constraint firstItem="iGA-0e-J41" firstAttribute="top" secondItem="gXH-xP-LdQ" secondAttribute="bottom" id="Q6N-9e-new"/>
+                            <constraint firstItem="D4I-7S-Oet" firstAttribute="top" secondItem="Dv0-Gm-qeZ" secondAttribute="bottom" constant="50" id="alk-LX-yhl"/>
+                            <constraint firstItem="iGA-0e-J41" firstAttribute="top" secondItem="D4I-7S-Oet" secondAttribute="bottom" constant="50" id="fYn-6J-pSh"/>
                             <constraint firstItem="gXH-xP-LdQ" firstAttribute="leading" secondItem="bzt-Ja-3Qw" secondAttribute="leading" id="xqU-ha-51a"/>
+                            <constraint firstItem="D4I-7S-Oet" firstAttribute="leading" secondItem="bzt-Ja-3Qw" secondAttribute="leadingMargin" id="zFg-iE-eUV"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="liveStreamWebView" destination="D4I-7S-Oet" id="VXb-kr-bFz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqT-RP-2Wj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
