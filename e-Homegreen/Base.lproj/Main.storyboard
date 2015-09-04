@@ -121,6 +121,8 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -2375,24 +2377,37 @@
                                             <rect key="frame" x="0.0" y="0.0" width="124" height="158"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t7i-XD-6UT">
-                                                    <rect key="frame" x="14" y="34" width="96" height="90"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="t7i-XD-6UT">
+                                                    <rect key="frame" x="8" y="34" width="108" height="86"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-L0-x0d">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-L0-x0d">
                                                     <rect key="frame" x="39" y="120" width="46" height="30"/>
                                                     <state key="normal" title="Button">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyN-zP-qVR">
-                                                    <rect key="frame" x="21" y="8" width="83" height="21"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyN-zP-qVR">
+                                                    <rect key="frame" x="0.0" y="8" width="124" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="t7i-XD-6UT" firstAttribute="leading" secondItem="Aj4-Dz-6da" secondAttribute="leading" constant="8" id="5fs-4U-KmI"/>
+                                            <constraint firstItem="lUP-L0-x0d" firstAttribute="top" secondItem="t7i-XD-6UT" secondAttribute="bottom" id="SAT-QM-f2A"/>
+                                            <constraint firstAttribute="trailing" secondItem="FyN-zP-qVR" secondAttribute="trailing" id="Tv7-8C-IKo"/>
+                                            <constraint firstItem="t7i-XD-6UT" firstAttribute="top" secondItem="FyN-zP-qVR" secondAttribute="bottom" constant="5" id="WxX-G8-y2F"/>
+                                            <constraint firstItem="lUP-L0-x0d" firstAttribute="centerX" secondItem="t7i-XD-6UT" secondAttribute="centerX" id="XZb-K9-Ieo"/>
+                                            <constraint firstAttribute="bottom" secondItem="lUP-L0-x0d" secondAttribute="bottom" constant="8" id="hAv-8B-aJ2"/>
+                                            <constraint firstItem="lUP-L0-x0d" firstAttribute="top" secondItem="FyN-zP-qVR" secondAttribute="bottom" constant="91" id="hKt-OE-QKw"/>
+                                            <constraint firstAttribute="trailing" secondItem="t7i-XD-6UT" secondAttribute="trailing" constant="8" id="jAE-ny-5Nc"/>
+                                            <constraint firstItem="FyN-zP-qVR" firstAttribute="top" secondItem="Aj4-Dz-6da" secondAttribute="top" constant="8" id="jgF-1b-2nk"/>
+                                            <constraint firstItem="lUP-L0-x0d" firstAttribute="bottom" secondItem="Aj4-Dz-6da" secondAttribute="bottomMargin" id="nfv-SQ-1DP"/>
+                                            <constraint firstItem="FyN-zP-qVR" firstAttribute="leading" secondItem="Aj4-Dz-6da" secondAttribute="leading" id="yuN-Hn-QBN"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="eventButton" destination="lUP-L0-x0d" id="Ixz-av-Xiz"/>
                                             <outlet property="eventImageView" destination="t7i-XD-6UT" id="Fri-9H-nNi"/>
@@ -2471,24 +2486,35 @@
                                             <rect key="frame" x="0.0" y="0.0" width="124" height="158"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kgD-4a-F6H">
-                                                    <rect key="frame" x="14" y="34" width="96" height="90"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kgD-4a-F6H">
+                                                    <rect key="frame" x="8" y="37" width="108" height="83"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5x-UX-eAU">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5x-UX-eAU">
                                                     <rect key="frame" x="39" y="120" width="46" height="30"/>
                                                     <state key="normal" title="Button">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yY-Bx-x8I">
-                                                    <rect key="frame" x="21" y="8" width="83" height="21"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yY-Bx-x8I">
+                                                    <rect key="frame" x="0.0" y="8" width="124" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="kgD-4a-F6H" firstAttribute="leading" secondItem="xKh-Uk-pDK" secondAttribute="leading" constant="8" id="4yU-xt-GUW"/>
+                                            <constraint firstAttribute="trailing" secondItem="kgD-4a-F6H" secondAttribute="trailing" constant="8" id="JX7-hP-JZV"/>
+                                            <constraint firstAttribute="trailing" secondItem="1yY-Bx-x8I" secondAttribute="trailing" id="UGC-4W-6Lw"/>
+                                            <constraint firstItem="X5x-UX-eAU" firstAttribute="centerX" secondItem="kgD-4a-F6H" secondAttribute="centerX" id="Vb9-rP-6mN"/>
+                                            <constraint firstItem="1yY-Bx-x8I" firstAttribute="top" secondItem="xKh-Uk-pDK" secondAttribute="top" constant="8" id="Ymt-0b-N5t"/>
+                                            <constraint firstItem="1yY-Bx-x8I" firstAttribute="leading" secondItem="xKh-Uk-pDK" secondAttribute="leading" id="Ztt-MR-MP2"/>
+                                            <constraint firstItem="kgD-4a-F6H" firstAttribute="top" secondItem="1yY-Bx-x8I" secondAttribute="bottom" constant="8" id="o6C-cz-aIf"/>
+                                            <constraint firstItem="X5x-UX-eAU" firstAttribute="bottom" secondItem="xKh-Uk-pDK" secondAttribute="bottomMargin" id="tFl-lV-uGE"/>
+                                            <constraint firstItem="X5x-UX-eAU" firstAttribute="top" secondItem="kgD-4a-F6H" secondAttribute="bottom" id="wT1-PS-cgz"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="sequenceButton" destination="X5x-UX-eAU" id="CjD-Y6-lOK"/>
                                             <outlet property="sequenceImageView" destination="kgD-4a-F6H" id="4Ol-CC-hcm"/>
