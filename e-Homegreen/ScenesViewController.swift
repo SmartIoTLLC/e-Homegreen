@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScenesViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
 
     
@@ -167,23 +167,23 @@ class ScenesViewController: CommonViewController, UITableViewDelegate, UITableVi
         senderButton?.setTitle(strText, forState: .Normal)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-        //        if let tableString = tableList[indexPath.row] as String {
-        cell.textLabel?.text = tableList[indexPath.row]
-        //        }
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return tableList.count
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        senderButton!.setTitle(tableList[indexPath.row], forState: UIControlState.Normal)
-//        table.hidden = true
-    }
+//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+//        //        if let tableString = tableList[indexPath.row] as String {
+//        cell.textLabel?.text = tableList[indexPath.row]
+//        //        }
+//        return cell
+//    }
+//    
+//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        
+//        return tableList.count
+//    }
+//    
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        senderButton!.setTitle(tableList[indexPath.row], forState: UIControlState.Normal)
+////        table.hidden = true
+//    }
 
     var popoverVC:PopOverViewController = PopOverViewController()
     
@@ -257,19 +257,14 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
-        //2
-        //        let flickrPhoto = photoForIndexPath(indexPath)
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, 150, 150)
+        gradient.frame = cell.bounds
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
-//        cell.backgroundColor = UIColor.lightGrayColor()
-        //3
         cell.sceneCellLabel.text = "\(scenes[indexPath.row].sceneName)"
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             cell.sceneCellImageView.image = sceneImage
         }
-//        cell.sceneCellLabel.image = "\()"
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

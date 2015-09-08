@@ -168,15 +168,16 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
 //            println(gestureIsDraggingFromRigthToLeft)
 //            if view.frame.origin.x >= 0 {
 //                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
-        if recognizer.locationInView(self.view).x < 300 && state == false && gestureIsDraggingFromLeftToRight == true {
+        if recognizer.locationInView(self.view).x < 300 && state == false && gestureIsDraggingFromLeftToRight == true  {
             state = true
         }
         switch(recognizer.state) {
         case .Began:
             if (currentState == .LeftPanelCollapsed) {
-                if (gestureIsDraggingFromLeftToRight) && state == true {
-                    addLeftPanelViewController()
-                }
+//                if (gestureIsDraggingFromLeftToRight) && state == true {
+//                    addLeftPanelViewController()
+//                }
+                addLeftPanelViewController()
                 showShadowForCenterViewController(true)
             }
         case .Changed:

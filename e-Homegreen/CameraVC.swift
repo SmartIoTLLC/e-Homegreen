@@ -42,8 +42,8 @@ class CameraVC: UIViewController {
         var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
         self.view.addGestureRecognizer(tapGesture)
         
-        backView.layer.borderWidth = 1
-//        backView.layer.borderColor = UIColor.grayColor().CGColor
+        backView.layer.borderWidth = 2
+        backView.layer.borderColor = UIColor.blackColor().CGColor
         backView.layer.cornerRadius = 5
         backView.clipsToBounds = true
         
