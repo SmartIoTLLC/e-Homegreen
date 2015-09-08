@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
                 <outlet property="backView" destination="AHq-ao-muM" id="uZY-ou-Ifs"/>
+                <outlet property="backViewHeightConstraint" destination="K7h-dL-bjW" id="6AM-bg-lY8"/>
                 <outlet property="image" destination="6QJ-za-RtQ" id="DXP-Lq-wQo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -25,7 +26,7 @@
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="6QJ-za-RtQ" secondAttribute="bottom" constant="5" id="1fz-6D-rNv"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" constant="5" id="9tA-0A-Oal"/>

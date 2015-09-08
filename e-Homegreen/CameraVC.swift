@@ -21,6 +21,9 @@ class CameraVC: UIViewController {
     
     var timer:NSTimer = NSTimer()
     
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
+    
     init(point:CGPoint, lync:NSURL){
         super.init(nibName: "CameraVC", bundle: nil)
         transitioningDelegate = self
@@ -40,8 +43,8 @@ class CameraVC: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
         
         backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backView.layer.cornerRadius = 10
+//        backView.layer.borderColor = UIColor.grayColor().CGColor
+        backView.layer.cornerRadius = 5
         backView.clipsToBounds = true
         
         self.view.backgroundColor = UIColor.clearColor()
@@ -73,6 +76,24 @@ class CameraVC: UIViewController {
     func handleTap(){
         timer.invalidate()
         self.dismissViewControllerAnimated(true, completion: nil)        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeightConstraint.constant = 250
+            }else if self.view.frame.size.height == 375{
+                backViewHeightConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                backViewHeightConstraint.constant = 350
+            }else{
+                backViewHeightConstraint.constant = 400
+            }
+        }else{
+            
+            backViewHeightConstraint.constant = 400
+            
+        }
     }
 
 }

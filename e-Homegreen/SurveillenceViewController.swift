@@ -8,7 +8,7 @@
 
 class Camera:NSObject{
     var image:NSData?
-    var time:NSDate?
+    var time:String?
     var lync:String!
 }
 
@@ -41,7 +41,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 
         getData()
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view.
     }
@@ -52,16 +52,15 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
             let url = NSURL(string: item.lync)
             let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
                 if error == nil{
-                                        dispatch_async(dispatch_get_main_queue(), {
-                    item.image = data
-                    item.time = NSDate()
-                                        })
+                    dispatch_async(dispatch_get_main_queue(), {
+                        item.image = data
+                        item.time = "\(NSDate())"
+                    })
                 }
             }
             task.resume()
-
         }
-
+        
     }
     
     func update(){
@@ -80,14 +79,14 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
-        cell.lblTime.text = "\(NSDate())"
+        
 
         if let nesto = cameraList[indexPath.row].image{
             cell.image.image = UIImage(data: nesto)
         }
         
         if let time = cameraList[indexPath.row].time{
-            cell.lblTime.text = "\(time)"
+            cell.lblTime.text = "\(time.removeCharsFromEnd(6))"
         }
 
         cell.layer.cornerRadius = 5
@@ -107,6 +106,17 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
 
 
+}
+
+extension String {
+    
+    func removeCharsFromEnd(count_:Int) -> String {
+        let stringLength = count(self)
+        
+        let substringIndex = (stringLength < count_) ? 0 : stringLength - count_
+        
+        return self.substringToIndex(advance(self.startIndex, substringIndex))
+    }
 }
 
 class SurveillenceCell:UICollectionViewCell{
