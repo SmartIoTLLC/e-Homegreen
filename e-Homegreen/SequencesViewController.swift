@@ -12,8 +12,8 @@ import CoreData
 class SequencesViewController: CommonViewController, UITextFieldDelegate {
 
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
-    @IBOutlet weak var broadcastSwitch: UISwitch!
-    @IBOutlet weak var cyclesTextField: UITextField!
+//    @IBOutlet weak var broadcastSwitch: UISwitch!
+//    @IBOutlet weak var cyclesTextField: UITextField!
     
     var appDel:AppDelegate!
     var sequences:[Sequence] = []
@@ -25,7 +25,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        cyclesTextField.delegate = self
+//        cyclesTextField.delegate = self
         
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
@@ -108,19 +108,19 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate {
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var address:[UInt8] = []
-        if broadcastSwitch.on {
-            address = [0xFF, 0xFF, 0xFF]
-        } else {
-            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
-        }
-        if let cycles = cyclesTextField.text.toInt() {
-            if cycles >= 0 && cycles <= 255 {
-                SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
-            }
-        } else {
-            SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
-        }
+//        var address:[UInt8] = []
+//        if broadcastSwitch.on {
+//            address = [0xFF, 0xFF, 0xFF]
+//        } else {
+//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
+//        }
+//        if let cycles = cyclesTextField.text.toInt() {
+//            if cycles >= 0 && cycles <= 255 {
+//                SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
+//            }
+//        } else {
+//            SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
+//        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets

@@ -56,6 +56,9 @@
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
+		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
+		73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */; };
+		73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
@@ -195,6 +198,9 @@
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
+		73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBarVC.swift; sourceTree = "<group>"; };
+		73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressBarVC.xib; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -500,6 +506,8 @@
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
 				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
+				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
+				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -610,6 +618,7 @@
 			isa = PBXGroup;
 			children = (
 				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
+				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
 				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
@@ -758,6 +767,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7DC67C91B457C0E00EA6543 /* weather-snow@2x.png in Resources */,
+				73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */,
 				E7DC67C11B457C0E00EA6543 /* weather-rain-night@2x.png in Resources */,
 				E7DC67C51B457C0E00EA6543 /* weather-scattered@2x.png in Resources */,
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
@@ -866,6 +876,7 @@
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				736265E11B4A48330078C11D /* OutSocket.swift in Sources */,
+				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				738BFD041B9EF362005D183F /* Category.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
@@ -883,6 +894,7 @@
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
+				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736089F71B98404B00BC5810 /* Scene.swift in Sources */,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -8,10 +8,6 @@
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
@@ -1334,7 +1330,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2hK-WW-Oey">
-                                <rect key="frame" x="0.0" y="80" width="320" height="488"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="P4m-nq-3rx">
                                     <size key="itemSize" width="150" height="180"/>
@@ -1382,34 +1378,20 @@
                                     <outlet property="delegate" destination="7dl-YJ-IEQ" id="lDP-eP-xc9"/>
                                 </connections>
                             </collectionView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UaZ-xI-sRi">
-                                <rect key="frame" x="8" y="35" width="51" height="31"/>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6T-ud-Yep">
-                                <rect key="frame" x="79" y="38" width="87" height="25"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leading" constant="8" id="43e-WG-cap"/>
                             <constraint firstItem="sxx-f6-ns2" firstAttribute="top" secondItem="qWN-Ys-QcX" secondAttribute="bottom" id="BJQ-5o-JcH"/>
-                            <constraint firstItem="2hK-WW-Oey" firstAttribute="top" secondItem="UaZ-xI-sRi" secondAttribute="bottom" constant="14" id="Cwi-Yx-zcc"/>
                             <constraint firstAttribute="trailing" secondItem="qWN-Ys-QcX" secondAttribute="trailing" id="HG6-Et-BjO"/>
-                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="centerY" secondItem="T6T-ud-Yep" secondAttribute="centerY" id="KMb-fk-4nj"/>
+                            <constraint firstItem="2hK-WW-Oey" firstAttribute="top" secondItem="qWN-Ys-QcX" secondAttribute="top" id="J51-Fm-2dA"/>
                             <constraint firstItem="sxx-f6-ns2" firstAttribute="top" secondItem="2hK-WW-Oey" secondAttribute="bottom" id="MZo-JS-OZl"/>
                             <constraint firstItem="qWN-Ys-QcX" firstAttribute="top" secondItem="P78-MS-K1z" secondAttribute="bottom" id="QaH-Ph-VfY"/>
                             <constraint firstAttribute="trailing" secondItem="2hK-WW-Oey" secondAttribute="trailing" id="Ujs-XO-UHV"/>
                             <constraint firstItem="2hK-WW-Oey" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leading" id="VF7-UF-MPu"/>
-                            <constraint firstItem="T6T-ud-Yep" firstAttribute="leading" secondItem="UaZ-xI-sRi" secondAttribute="trailing" constant="22" id="ozh-Yg-fyN"/>
-                            <constraint firstItem="UaZ-xI-sRi" firstAttribute="top" secondItem="P78-MS-K1z" secondAttribute="bottom" constant="15" id="qsi-Aq-FF0"/>
                             <constraint firstItem="qWN-Ys-QcX" firstAttribute="leading" secondItem="Ww5-a8-gmL" secondAttribute="leading" id="yuE-8v-6Jp"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="broadcastSwitch" destination="UaZ-xI-sRi" id="xeb-DF-ABg"/>
                         <outlet property="scenesCollectionView" destination="2hK-WW-Oey" id="CZ7-S0-rBp"/>
                     </connections>
                 </viewController>
@@ -2352,17 +2334,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="yuu-3O-qiS">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yFn-kC-fqy">
-                                <rect key="frame" x="8" y="35" width="51" height="31"/>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJa-fE-cjK">
-                                <rect key="frame" x="79" y="38" width="87" height="25"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4NH-vy-rBJ">
-                                <rect key="frame" x="0.0" y="80" width="320" height="478"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="558"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xef-g0-V6b">
                                     <size key="itemSize" width="124" height="158"/>
@@ -2426,21 +2399,14 @@
                         <constraints>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="top" secondItem="VE6-Xg-TLF" secondAttribute="top" id="5c9-zJ-skx"/>
                             <constraint firstItem="4NH-vy-rBJ" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leadingMargin" constant="-16" id="7E4-Ga-dfc"/>
-                            <constraint firstItem="yFn-kC-fqy" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" constant="8" id="Li4-C6-PLl"/>
+                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="top" id="9Td-bx-Yfm"/>
                             <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="bottom" id="MIK-El-D6j"/>
-                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="top" secondItem="yFn-kC-fqy" secondAttribute="bottom" constant="14" id="Qd2-ro-U0Z"/>
                             <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="4NH-vy-rBJ" secondAttribute="bottom" constant="10" id="Qj5-hm-DOJ"/>
-                            <constraint firstItem="yFn-kC-fqy" firstAttribute="top" secondItem="Hak-iV-erg" secondAttribute="bottom" constant="15" id="X23-XM-S3m"/>
-                            <constraint firstItem="yFn-kC-fqy" firstAttribute="centerY" secondItem="JJa-fE-cjK" secondAttribute="centerY" id="fx4-n1-jfy"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4NH-vy-rBJ" secondAttribute="trailing" constant="-16" id="h7i-r0-az3"/>
                             <constraint firstAttribute="trailing" secondItem="yuu-3O-qiS" secondAttribute="trailing" id="had-8G-qiT"/>
-                            <constraint firstItem="JJa-fE-cjK" firstAttribute="leading" secondItem="yFn-kC-fqy" secondAttribute="trailing" constant="22" id="j0S-dP-ZcY"/>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" id="uzc-aa-4Bc"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="broadcastSwitch" destination="yFn-kC-fqy" id="qDe-K1-ASq"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gxR-nm-6Wf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2461,17 +2427,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="4sY-cu-Hed">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e97-eR-tNg">
-                                <rect key="frame" x="8" y="35" width="51" height="31"/>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f18-Uu-S2U">
-                                <rect key="frame" x="79" y="38" width="87" height="25"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9hI-oP-r4e">
-                                <rect key="frame" x="0.0" y="81" width="320" height="487"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5rk-3G-81l">
                                     <size key="itemSize" width="124" height="158"/>
@@ -2528,44 +2485,20 @@
                                     <outlet property="delegate" destination="WNC-j0-jSd" id="hxG-Yb-nYm"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle(s):" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otQ-FN-u4K">
-                                <rect key="frame" x="182" y="38" width="78" height="25"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AEH-ZX-fs5">
-                                <rect key="frame" x="273" y="36" width="39" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="39" id="MC7-qb-L3M"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="AEH-ZX-fs5" secondAttribute="trailing" constant="8" id="19f-PQ-NB8"/>
-                            <constraint firstItem="e97-eR-tNg" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leading" constant="8" id="55M-o3-L60"/>
                             <constraint firstItem="4sY-cu-Hed" firstAttribute="top" secondItem="DpZ-k8-H9w" secondAttribute="top" id="5B2-sM-Zi2"/>
-                            <constraint firstItem="otQ-FN-u4K" firstAttribute="centerY" secondItem="AEH-ZX-fs5" secondAttribute="centerY" id="5hO-P2-SMq"/>
                             <constraint firstItem="y33-wi-w9j" firstAttribute="top" secondItem="4sY-cu-Hed" secondAttribute="bottom" id="8Q2-El-rS8"/>
-                            <constraint firstItem="AEH-ZX-fs5" firstAttribute="leading" secondItem="otQ-FN-u4K" secondAttribute="trailing" constant="13" id="A53-nP-tPr"/>
                             <constraint firstItem="9hI-oP-r4e" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leading" id="Emg-ZR-W6p"/>
-                            <constraint firstItem="f18-Uu-S2U" firstAttribute="leading" secondItem="e97-eR-tNg" secondAttribute="trailing" constant="22" id="FPz-Ja-OaV"/>
                             <constraint firstAttribute="trailing" secondItem="9hI-oP-r4e" secondAttribute="trailing" id="H4O-Ve-0Kb"/>
                             <constraint firstItem="4sY-cu-Hed" firstAttribute="leading" secondItem="DpZ-k8-H9w" secondAttribute="leading" id="PTB-K5-hf1"/>
-                            <constraint firstItem="e97-eR-tNg" firstAttribute="top" secondItem="U4g-Eo-hXj" secondAttribute="bottom" constant="15" id="VJC-8V-zUq"/>
                             <constraint firstItem="y33-wi-w9j" firstAttribute="top" secondItem="9hI-oP-r4e" secondAttribute="bottom" id="Y98-B5-wVZ"/>
-                            <constraint firstItem="9hI-oP-r4e" firstAttribute="top" secondItem="e97-eR-tNg" secondAttribute="bottom" constant="15" id="a4c-pd-ywA"/>
+                            <constraint firstItem="9hI-oP-r4e" firstAttribute="top" secondItem="4sY-cu-Hed" secondAttribute="top" id="hcy-z5-XWL"/>
                             <constraint firstAttribute="trailing" secondItem="4sY-cu-Hed" secondAttribute="trailing" id="lAT-D7-HXI"/>
-                            <constraint firstItem="e97-eR-tNg" firstAttribute="centerY" secondItem="f18-Uu-S2U" secondAttribute="centerY" id="mIp-S9-fyn"/>
-                            <constraint firstItem="f18-Uu-S2U" firstAttribute="centerY" secondItem="otQ-FN-u4K" secondAttribute="centerY" id="nW8-PA-TLQ"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="broadcastSwitch" destination="e97-eR-tNg" id="mgo-q3-7qT"/>
-                        <outlet property="cyclesTextField" destination="AEH-ZX-fs5" id="oy2-dl-vY8"/>
                         <outlet property="sequenceCollectionView" destination="9hI-oP-r4e" id="1yV-Oz-hyB"/>
                     </connections>
                 </viewController>

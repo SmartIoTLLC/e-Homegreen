@@ -43,14 +43,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var myView:Array<UIView> = []
     var mySecondView:Array<UIView> = []
-    
     var timer:NSTimer = NSTimer()
     var socket:OutSocket = OutSocket(ip: "192.168.0.7", port: 8081)
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
-        
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -71,7 +69,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //        var synth = AVSpeechSynthesizer()
 //        synth.speakUtterance(utterance)
     }
-    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
