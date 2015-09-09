@@ -174,6 +174,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
     
+    override func viewWillLayoutSubviews() {
+        gatewayTableView.reloadData()
+    }
+    
     func changeValue(sender:UISwitch){
         if sender.on == true {
             gateways[sender.tag].turnedOn = true
@@ -204,23 +208,27 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         //        return string
         return String(format: "%03d",number)
     }
+    
+
 }
 
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println(indexPath.section)
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             
             let gradientLayer = CAGradientLayer()
-            gradientLayer.frame = CGRectMake(0, 0, 120, 128)
+//            if cell.gradientLayer == nil {
+//                gradientLayer!.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
+//            }else{
+                gradientLayer.frame = cell.bounds
+//            }
             gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
             gradientLayer.locations = [0.0, 1.0]
             gradientLayer.borderWidth = 1
             gradientLayer.borderColor = UIColor.grayColor().CGColor
             gradientLayer.cornerRadius = 10
-            cell.contentView.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            cell.contentView.backgroundView = UIView()
-//            cell.backgroundView?.layer.insertSublayer(gradientLayer, atIndex: 0)
+//            cell.gradientLayer = gradientLayer
+            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
             cell.layer.borderWidth = 1
             cell.layer.borderColor = UIColor.grayColor().CGColor
             cell.layer.cornerRadius = 10
@@ -274,6 +282,10 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 128
+//    }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 5
@@ -344,6 +356,7 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var lblGatewayName: UILabel!
     @IBOutlet weak var lblGatewayDeviceNumber: UILabel!
     @IBOutlet weak var lblGatewayDescription: UILabel!
+    var gradientLayer: CAGradientLayer?
     
     
     @IBOutlet weak var buttonGatewayScan: UIButton!

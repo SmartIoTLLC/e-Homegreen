@@ -132,6 +132,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.btnDecHourPressed.tag = 1
             cell.hourLabel.text = "\(hourRefresh)"
             
+            cell.backgroundColor = UIColor.clearColor()
             
             cell.btnAddMinPressed.addTarget(self, action: "btnAddHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.btnDecMinPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -148,6 +149,8 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             }else{
                 cell.openLastScreen.on = false
             }
+            
+            cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
         } else {
