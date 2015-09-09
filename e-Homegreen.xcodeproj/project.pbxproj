@@ -25,6 +25,9 @@
 		736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */; };
 		736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */; };
 		736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */; };
+		738BFD021B9EF098005D183F /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD011B9EF098005D183F /* Zone.swift */; };
+		738BFD041B9EF362005D183F /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD031B9EF362005D183F /* Category.swift */; };
+		738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD051B9EF79F005D183F /* DataImporter.swift */; };
 		73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */; };
 		73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */; };
 		73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB849E1B30116D000DB4EB /* ScenesViewController.swift */; };
@@ -157,6 +160,9 @@
 		736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillenceViewController.swift; sourceTree = "<group>"; };
 		736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnergyViewController.swift; sourceTree = "<group>"; };
 		736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		738BFD011B9EF098005D183F /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
+		738BFD031B9EF362005D183F /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		738BFD051B9EF79F005D183F /* DataImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendingHandler.swift; sourceTree = "<group>"; };
 		73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSocket.swift; sourceTree = "<group>"; };
 		73DB849E1B30116D000DB4EB /* ScenesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenesViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +337,7 @@
 		736265DD1B4A47FE0078C11D /* API ili tako nesto */ = {
 			isa = PBXGroup;
 			children = (
+				738BFD001B9EF077005D183F /* Zone and Category */,
 				73E2390E1B97145D00CB38ED /* NSMOM */,
 				733C15701B5A825400554FD1 /* Device info and settings */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
@@ -341,6 +348,16 @@
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 			);
 			name = "API ili tako nesto";
+			sourceTree = "<group>";
+		};
+		738BFD001B9EF077005D183F /* Zone and Category */ = {
+			isa = PBXGroup;
+			children = (
+				738BFD011B9EF098005D183F /* Zone.swift */,
+				738BFD031B9EF362005D183F /* Category.swift */,
+				738BFD051B9EF79F005D183F /* DataImporter.swift */,
+			);
+			name = "Zone and Category";
 			sourceTree = "<group>";
 		};
 		73BD1EBE1B4E655700AA5B28 /* Other */ = {
@@ -843,11 +860,13 @@
 				E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
+				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				736265E11B4A48330078C11D /* OutSocket.swift in Sources */,
+				738BFD041B9EF362005D183F /* Category.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
@@ -871,6 +890,7 @@
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				736089F31B98404B00BC5810 /* Sequence.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
+				738BFD021B9EF098005D183F /* Zone.swift in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,

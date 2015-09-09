@@ -206,12 +206,14 @@ class DeviceInfo: NSObject {
         deviceType[DeviceType(deviceId: 0x45, subId: 0x00)] = DeviceChannelType(channel:SIX_CHANEL, name:HVAC) // 6-in-1 Multisensor, Indoor Ceiling Mount
         deviceType[DeviceType(deviceId: 0x45, subId: 0x01)] = DeviceChannelType(channel:SIX_CHANEL, name:HVAC) // 6-in-1 Multisensor, Indoor Wall Mount
         deviceType[DeviceType(deviceId: 0x0C, subId: 0x00)] = DeviceChannelType(channel:ONE_CHANEL, name:PC) // e-Homegreen PC Controller
+        
+        deviceType[DeviceType(deviceId: 0x43, subId: 0x00)] = DeviceChannelType(channel:ONE_CHANEL, name:PC) // Digital Input Module, 4CH
         // ...
     }
 }
-class DeviceChannelType {
-    var channel:Int
-    var name:String
+struct DeviceChannelType {
+    let channel:Int
+    let name:String
     init (channel:Int, name:String) {
         self.channel = channel
         self.name = name
