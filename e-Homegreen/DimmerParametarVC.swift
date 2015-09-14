@@ -92,7 +92,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
         editSkipState.text = "\(devices[indexPathRow].skipState)"
         overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblLevel.text = "\(devices[indexPathRow].parentZoneId)"
         lblZone.text = "\(devices[indexPathRow].zoneId)"
         lblCategory.text = "\(devices[indexPathRow].categoryId)"
         

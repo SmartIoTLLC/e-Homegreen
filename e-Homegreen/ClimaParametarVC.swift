@@ -60,10 +60,10 @@ class ClimaParametarVC: UIViewController {
 //        devices[indexPathRow].zoneId
 //        devices[indexPathRow].categoryId
 //        devices[indexPathRow].name
-//        devices[indexPathRow].level
+//        devices[indexPathRow].parentZoneId
         
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblLevel.text = "\(devices[indexPathRow].parentZoneId)"
         lblZone.text = "\(devices[indexPathRow].zoneId)"
         lblCategory.text = "\(devices[indexPathRow].categoryId)"
         println(devices[indexPathRow])

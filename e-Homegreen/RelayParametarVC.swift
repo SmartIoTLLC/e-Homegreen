@@ -74,7 +74,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
 //        devices[indexPathRow].delay
 //        devices[indexPathRow].isEnabled
 //        devices[indexPathRow].name
-//        devices[indexPathRow].level
+//        devices[indexPathRow].parentZoneId
 //        devices[indexPathRow].overrideControl1
 //        devices[indexPathRow].overrideControl2
 //        devices[indexPathRow].overrideControl3
@@ -82,7 +82,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
         editDelay.text = "\(devices[indexPathRow].delay)"
         overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(devices[indexPathRow].level)"
+        lblLevel.text = "\(devices[indexPathRow].parentZoneId)"
         lblZone.text = "\(devices[indexPathRow].zoneId)"
         lblCategory.text = "\(devices[indexPathRow].categoryId)"
         

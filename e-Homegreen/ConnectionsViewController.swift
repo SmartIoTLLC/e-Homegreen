@@ -174,9 +174,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
     
-    override func viewWillLayoutSubviews() {
-        gatewayTableView.reloadData()
-    }
+//    override func viewWillLayoutSubviews() {
+//        gatewayTableView.reloadData()
+//    }
     
     func changeValue(sender:UISwitch){
         if sender.on == true {
@@ -220,7 +220,7 @@ extension ConnectionsViewController: UITableViewDataSource {
 //            if cell.gradientLayer == nil {
 //                gradientLayer!.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
 //            }else{
-                gradientLayer.frame = cell.bounds
+                gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
 //            }
             gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
             gradientLayer.locations = [0.0, 1.0]

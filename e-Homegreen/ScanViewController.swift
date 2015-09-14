@@ -53,6 +53,7 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     var devices:[Device] = []
     var choosedTabArray:[AnyObject] = []
     var loader : ViewControllerUtils = ViewControllerUtils()
+    var progressBar:ProgressBarVC?
     
     @IBOutlet weak var deviceTableView: UITableView!
     @IBOutlet weak var sceneTableView: UITableView!
@@ -553,6 +554,24 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
+    func changeValueEnable (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isEnabled = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isEnabled = NSNumber(bool: false)
+        }
+        saveChanges()
+    }
+    
+    func changeValueVisible (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isVisible = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isVisible = NSNumber(bool: false)
+        }
+        saveChanges()
+    }
+    
     // ======================= *** TABLE VIEW *** =======================
     
     func returnThreeCharactersForByte (number:Int) -> String {
@@ -567,6 +586,13 @@ class ScanViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             cell.lblDesc.text = "\(devices[indexPath.row].name)"
             cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
             cell.lblType.text = "Type: \(devices[indexPath.row].type)"
+            cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
+            cell.isEnabledSwitch.tag = indexPath.row
+            cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
+            cell.isVisibleSwitch.tag = indexPath.row
+            cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
+            
             return cell
         }
         }
@@ -668,7 +694,8 @@ class ScanCell:UITableViewCell{
     @IBOutlet weak var lblDesc: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblType: UILabel!
-    
+    @IBOutlet weak var isEnabledSwitch: UISwitch!
+    @IBOutlet weak var isVisibleSwitch: UISwitch!
 }
 
 class SceneCell:UITableViewCell{
