@@ -29,7 +29,6 @@ class IncomingHandler: NSObject {
         if gateways != [] {
             fetchDevices()
             self.byteArray = byteArrayToHandle
-            TryCatch.try({
                 // Check if byteArray is correct one (check byte also, which is missing)
                 if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
                     println("Uslo je u incoming handler.")
@@ -97,11 +96,6 @@ class IncomingHandler: NSObject {
                     }
                     
                 }
-                }, catch: {error in
-                    println("NEKI EROR COVECE MOJ, PA STA SE OVO DESAVA SADA, KAZE DA JE OVO: \(error)")
-                }, finally: {
-            
-            })
         }
     }
     func fetchDevices () {
@@ -293,7 +287,6 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
-        TryCatch.try({
             self.fetchDevices()
             for var i = 0; i < self.devices.count; i++ {
                 if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
@@ -305,11 +298,6 @@ class IncomingHandler: NSObject {
             }
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
-            }, catch: { error in
-                println("NEKI EROR COVECE MOJ, PA STA SE OVO DESAVA SADA, KAZE DA JE OVO: \(error)")
-            }, finally: {
-                
-        })
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {

@@ -16,6 +16,5 @@
 #import "CocoaAsyncSocket/AsyncSocket.h"
 #import "CocoaAsyncSocket/AsyncUdpSocket.h"
 #import "CocoaAsyncSocket/GCDAsyncSocket.h"
-#import "TryCatch.h"
 
 #endif
