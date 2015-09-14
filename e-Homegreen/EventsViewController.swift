@@ -103,7 +103,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var address:[UInt8] = []
-        if broadcastSwitch.on {
+        if events[indexPath.row].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
         } else {
             address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), UInt8(Int(events[indexPath.row].address))]

@@ -8,12 +8,15 @@
 
 import UIKit
 
-class SequenceParametarVC: UIViewController, UIGestureRecognizerDelegate {
+class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
     var sequence:Sequence?
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     @IBOutlet weak var backView: UIView!
     
@@ -39,8 +42,27 @@ class SequenceParametarVC: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.on = sequence!.isBroadcast.boolValue
-        
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        cyclesTextField.delegate = self
         // Do any additional setup after loading the view.
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if let cycles = cyclesTextField.text.toInt() {
+            sequence?.sequenceCycles = cycles
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+        }
+        return true
+    }
+    func changeValue (sender:UISwitch){
+        if sender.on == true {
+            sequence?.isBroadcast = true
+        } else {
+            sequence?.isBroadcast = false
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
     }
     
     func dismissViewController () {
@@ -52,6 +74,13 @@ class SequenceParametarVC: UIViewController, UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     override func didReceiveMemoryWarning() {

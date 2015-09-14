@@ -44,6 +44,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         
         // Do any additional setup after loading the view.
     }
+    
     func changeValue (sender:UISwitch){
         if sender.on == true {
             event?.isBroadcast = true
@@ -53,6 +54,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
     }
+    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }

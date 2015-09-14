@@ -75,6 +75,7 @@
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="sequenceCycles" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="sequenceImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -91,7 +92,7 @@
         <element name="Gateway" positionX="-63" positionY="54" width="128" height="285"/>
         <element name="Scene" positionX="-54" positionY="135" width="128" height="150"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="45"/>
-        <element name="Sequence" positionX="-27" positionY="162" width="128" height="150"/>
+        <element name="Sequence" positionX="-27" positionY="162" width="128" height="165"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
         <element name="Timer" positionX="9" positionY="180" width="128" height="45"/>
     </elements>

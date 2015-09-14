@@ -211,12 +211,15 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var address:[UInt8] = []
-        if broadcastSwitch.on {
+        if scenes[indexPath.row].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
         } else {
             address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
         }
-        SendingHandler(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+        let sceneId = Int(scenes[indexPath.row].sceneId)
+        if sceneId >= 0 && sceneId <= 255 {
+            SendingHandler(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets

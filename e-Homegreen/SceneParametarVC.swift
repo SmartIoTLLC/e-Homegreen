@@ -15,6 +15,9 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var indexPathRow: Int = -1
     var scene:Scene?
     
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var isBroadcast: UISwitch!
@@ -36,12 +39,31 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.on = scene!.isBroadcast.boolValue
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
+    func changeValue (sender:UISwitch){
+        if sender.on == true {
+            scene?.isBroadcast = true
+        } else {
+            scene?.isBroadcast = false
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+    }
+    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     override func didReceiveMemoryWarning() {

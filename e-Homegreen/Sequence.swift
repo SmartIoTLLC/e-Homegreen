@@ -12,11 +12,12 @@ import CoreData
 class Sequence: NSManagedObject {
 
     @NSManaged var address: NSNumber
+    @NSManaged var isBroadcast: NSNumber
     @NSManaged var sequenceId: NSNumber
     @NSManaged var sequenceImageOne: NSData
     @NSManaged var sequenceImageTwo: NSData
     @NSManaged var sequenceName: String
-    @NSManaged var isBroadcast: NSNumber
+    @NSManaged var sequenceCycles: NSNumber
     @NSManaged var gateway: Gateway
 
 }
