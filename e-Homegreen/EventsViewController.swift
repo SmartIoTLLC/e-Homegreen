@@ -145,18 +145,34 @@ extension EventsViewController: UICollectionViewDataSource {
         //        cell.backgroundColor = UIColor.lightGrayColor()
         //3
         cell.eventTitle.text = "\(events[indexPath.row].eventName)"
-        if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
-            cell.eventImageView.image = sceneImage
+        cell.eventTitle.tag = indexPath.row
+        cell.eventTitle.userInteractionEnabled = true
+        
+        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.eventTitle.addGestureRecognizer(longPress)
+        
+        if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
+            cell.eventImageView.image = eventImage
         }
-        //        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
-        //            cell.sceneCellImageView.image = sceneImage
-        //        }
-        //        cell.sceneCellLabel.image = "\()"
+        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
     }
+    
+    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+        var tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(eventCollectionView)
+            if let index = eventCollectionView.indexPathForItemAtPoint(location){
+                var cell = eventCollectionView.cellForItemAtIndexPath(index)
+                showEventParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - eventCollectionView.contentOffset.y), event: events[tag])
+            }
+        }
+    }
+    
 }
 
 

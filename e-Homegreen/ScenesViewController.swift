@@ -157,33 +157,12 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
-
-            
-            
         }
     }
     
     func saveText(strText: String) {
         senderButton?.setTitle(strText, forState: .Normal)
     }
-    
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-//        //        if let tableString = tableList[indexPath.row] as String {
-//        cell.textLabel?.text = tableList[indexPath.row]
-//        //        }
-//        return cell
-//    }
-//    
-//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        
-//        return tableList.count
-//    }
-//    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        senderButton!.setTitle(tableList[indexPath.row], forState: UIControlState.Normal)
-////        table.hidden = true
-//    }
 
     var popoverVC:PopOverViewController = PopOverViewController()
     
@@ -255,6 +234,7 @@ extension ScenesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return scenes.count
     }
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
         var gradient:CAGradientLayer = CAGradientLayer()
@@ -262,6 +242,13 @@ extension ScenesViewController: UICollectionViewDataSource {
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
         cell.sceneCellLabel.text = "\(scenes[indexPath.row].sceneName)"
+        cell.sceneCellLabel.tag = indexPath.row
+        cell.sceneCellLabel.userInteractionEnabled = true
+        
+        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.sceneCellLabel.addGestureRecognizer(longPress)
+        
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             cell.sceneCellImageView.image = sceneImage
         }
@@ -269,6 +256,18 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
+    }
+    
+    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+        var tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(scenesCollectionView)
+            if let index = scenesCollectionView.indexPathForItemAtPoint(location){
+                var cell = scenesCollectionView.cellForItemAtIndexPath(index)
+                showSceneParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - scenesCollectionView.contentOffset.y), scene: scenes[tag])
+            }
+        }
+        
     }
 }
 

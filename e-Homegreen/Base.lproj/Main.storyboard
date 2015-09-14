@@ -2225,10 +2225,13 @@
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" id="uzc-aa-4Bc"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="eventCollectionView" destination="4NH-vy-rBJ" id="a4E-U8-NEh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gxR-nm-6Wf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="731" y="1477"/>
+            <point key="canvasLocation" x="756" y="1481"/>
         </scene>
         <!--Sequences View Controller-->
         <scene sceneID="f56-MJ-cOB">
