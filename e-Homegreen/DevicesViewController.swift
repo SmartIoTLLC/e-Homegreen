@@ -719,14 +719,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
             
-            cell.labelID.text = "\(indexPath.row+1)"
-            cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+//            cell.labelID.text = "\(indexPath.row+1)"
+//            cell.labelName.text = "\(devices[indexPath.row].name)"
+//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
+//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
+//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
-            cell.labelWarningState.text = ""
+//            cell.labelWarningState.text = ""
             
             
             cell.infoView.layer.cornerRadius = 5
@@ -861,13 +861,13 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.backView.hidden = false
             }
             
-            cell.labelID.text = "\(indexPath.row+1)"
-            cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+//            cell.labelID.text = "\(indexPath.row+1)"
+//            cell.labelName.text = "\(devices[indexPath.row].name)"
+//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
+//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
+//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-            cell.labelWarningState.text = ""
+//            cell.labelWarningState.text = ""
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
@@ -983,11 +983,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.infoView.layer.borderWidth = 1
             
-            cell.labelID.text = "\(indexPath.row + 1)"
-            cell.labelName.text = "\(devices[indexPath.row].name)"
-            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+//            cell.labelID.text = "\(indexPath.row + 1)"
+//            cell.labelName.text = "\(devices[indexPath.row].name)"
+//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
+//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
+//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
             if cell.infoGradientLayer == nil {
@@ -1130,7 +1130,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
             
             if cell.infoGradientLayer == nil {
-                cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+//                cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 let gradientLayerInfo = CAGradientLayer()
                 gradientLayerInfo.frame = cell.bounds
                 gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
@@ -1174,14 +1174,11 @@ class DeviceCollectionCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var labelCategory: UILabel!
-    @IBOutlet weak var labelLevel: UILabel!
-    @IBOutlet weak var labelZone: UILabel!
+    @IBOutlet weak var lblVoltage: UILabel!
+    @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
-    @IBOutlet weak var labelWarningState: UILabel!
+    @IBOutlet weak var btnRefresh: UIButton!
     var infoGradientLayer: CAGradientLayer?
     
     
@@ -1196,13 +1193,11 @@ class ApplianceCollectionCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var labelCategory: UILabel!
-    @IBOutlet weak var labelLevel: UILabel!
-    @IBOutlet weak var labelZone: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
-    @IBOutlet weak var labelWarningState: UILabel!
+    @IBOutlet weak var lblElectricity: UILabel!
+    @IBOutlet weak var lblVoltage: UILabel!
+    @IBOutlet weak var btnRefresh: UIButton!
+    
     var infoGradientLayer: CAGradientLayer?
     
     
@@ -1239,12 +1234,11 @@ class ClimateCell: UICollectionViewCell {
     var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var labelCategory: UILabel!
-    @IBOutlet weak var labelLevel: UILabel!
-    @IBOutlet weak var labelZone: UILabel!
+    @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
+    @IBOutlet weak var lblElectricity: UILabel!
+    @IBOutlet weak var btnRefresh: UIButton!
+    
     var infoGradientLayer: CAGradientLayer?
     
     
