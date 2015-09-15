@@ -917,11 +917,8 @@
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73E75DCC1BA8300700D2B101 /* Category.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
-<<<<<<< HEAD
-=======
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
 				736089F91B98715200BC5810 /* Gateway.swift in Sources */,
->>>>>>> origin/master
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
