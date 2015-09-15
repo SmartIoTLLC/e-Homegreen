@@ -223,6 +223,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanDeviceViewController.view.hidden = false
             
             self.addChildViewController(scanDeviceViewController)
+            scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanDeviceViewController.view)
             scanDeviceViewController.didMoveToParentViewController(self)
             
@@ -241,6 +242,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanSceneViewController.view.hidden = false
             
             self.addChildViewController(scanSceneViewController)
+            scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanSceneViewController.view)
             scanSceneViewController.didMoveToParentViewController(self)
             
@@ -257,6 +259,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanEventsViewController.view.hidden = false
             
             self.addChildViewController(scanEventsViewController)
+            scanEventsViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanEventsViewController.view)
             scanEventsViewController.didMoveToParentViewController(self)
             
@@ -275,6 +278,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanSequencesViewController.view.hidden = false
             
             self.addChildViewController(scanSequencesViewController)
+            scanSequencesViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanSequencesViewController.view)
             scanSequencesViewController.didMoveToParentViewController(self)
             
