@@ -213,6 +213,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //            oldController.removeFromParentViewController()
 //            newController.didMoveToParentViewController(self)
             
+            let oldController = childViewControllers.last as! UIViewController
+            oldController.view.hidden = true
+            
+            scanDeviceViewController.view.hidden = false
+            
             self.addChildViewController(scanDeviceViewController)
             container.addSubview(scanDeviceViewController.view)
             scanDeviceViewController.didMoveToParentViewController(self)
@@ -225,6 +230,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
         if strText == "Scenes" {
             choosedTab = .Scenes
+            
+            let oldController = childViewControllers.last as! UIViewController
+            oldController.view.hidden = true
+            
+            scanSceneViewController.view.hidden = false
             
             self.addChildViewController(scanSceneViewController)
             container.addSubview(scanSceneViewController.view)

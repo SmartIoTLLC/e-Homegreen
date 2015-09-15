@@ -537,7 +537,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Bwx-Lu-Qcb" firstAttribute="width" secondItem="nX3-CD-Oc4" secondAttribute="width" id="5gx-I0-LPP"/>
                             <constraint firstItem="vnc-eW-drx" firstAttribute="leading" secondItem="Bwx-Lu-Qcb" secondAttribute="trailing" constant="10" id="7SJ-Jg-5Lz"/>
@@ -753,7 +753,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EW1-xk-4rC" firstAttribute="leading" secondItem="Q4q-vo-hH4" secondAttribute="leading" id="0Qc-Ji-Ld7"/>
                             <constraint firstItem="oPN-ZS-VyR" firstAttribute="leading" secondItem="Q4q-vo-hH4" secondAttribute="trailing" constant="9" id="1ox-bz-RUY"/>
