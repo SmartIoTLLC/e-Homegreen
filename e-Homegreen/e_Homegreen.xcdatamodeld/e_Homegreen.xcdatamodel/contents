@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Category" representedClassName="PRODUCT_MODULE_NAME.Category" syncable="YES">
+        <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="categories" inverseEntity="Gateway" syncable="YES"/>
+    </entity>
     <entity name="Device" representedClassName="e_Homegreen.Device" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="amp" optional="YES" attributeType="String" syncable="YES"/>
@@ -57,10 +63,12 @@
         <attribute name="remotePort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="gateway" inverseEntity="Category" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="zones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Zone" inverseName="gateway" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -86,14 +94,23 @@
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Timer" syncable="YES"/>
+    <entity name="Zone" representedClassName="PRODUCT_MODULE_NAME.Zone" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zoneDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="zones" inverseEntity="Gateway" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
         <element name="Event" positionX="-9" positionY="171" width="128" height="150"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="285"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="315"/>
         <element name="Scene" positionX="-54" positionY="135" width="128" height="150"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="45"/>
         <element name="Sequence" positionX="-27" positionY="162" width="128" height="165"/>
         <element name="SSID" positionX="-54" positionY="99" width="128" height="60"/>
         <element name="Timer" positionX="9" positionY="180" width="128" height="45"/>
+        <element name="Zone" positionX="-18" positionY="135" width="128" height="120"/>
+        <element name="Category" positionX="-9" positionY="144" width="128" height="105"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  Gateway.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/3/15.
+//  Created by Teodor Stevic on 9/15/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
@@ -27,5 +27,7 @@ class Gateway: NSManagedObject {
     @NSManaged var events: NSSet
     @NSManaged var scenes: NSSet
     @NSManaged var sequences: NSSet
+    @NSManaged var zones: NSSet
+    @NSManaged var categories: NSSet
 
 }
