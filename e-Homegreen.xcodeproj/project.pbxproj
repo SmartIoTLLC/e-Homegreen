@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
-		736265DF1B4A48200078C11D /* InSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265DE1B4A48200078C11D /* InSocket.swift */; };
-		736265E11B4A48330078C11D /* OutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E01B4A48330078C11D /* OutSocket.swift */; };
 		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
@@ -151,8 +149,6 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		736265DE1B4A48200078C11D /* InSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InSocket.swift; sourceTree = "<group>"; };
-		736265E01B4A48330078C11D /* OutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutSocket.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
@@ -357,8 +353,6 @@
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
 				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
 				736265E21B4A483E0078C11D /* Function.swift */,
-				736265DE1B4A48200078C11D /* InSocket.swift */,
-				736265E01B4A48330078C11D /* OutSocket.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
 			);
@@ -892,7 +886,6 @@
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
-				736265E11B4A48330078C11D /* OutSocket.swift in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
@@ -929,7 +922,6 @@
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
-				736265DF1B4A48200078C11D /* InSocket.swift in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,

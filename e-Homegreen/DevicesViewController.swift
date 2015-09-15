@@ -44,7 +44,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var myView:Array<UIView> = []
     var mySecondView:Array<UIView> = []
     var timer:NSTimer = NSTimer()
-    var socket:OutSocket = OutSocket(ip: "192.168.0.7", port: 8081)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //        commonConstruct()
@@ -64,7 +64,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
         updateDeviceList()
         
-        socket.send("ping")
         //        var utterance = AVSpeechUtterance(string: "Hello world. Hello Vladimir! What about these new things? What about everything?")
         //        var synth = AVSpeechSynthesizer()
         //        synth.speakUtterance(utterance)

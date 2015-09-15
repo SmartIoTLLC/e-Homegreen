@@ -287,9 +287,13 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
-            self.fetchDevices()
-            for var i = 0; i < self.devices.count; i++ {
-                if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
+        println("Uslo je u ackADICmdGetInterfaceStatus")
+        self.fetchDevices()
+        println("proslo je fetchDevices")
+        for var i = 0; i < self.devices.count; i++ {
+            println("proslo je for var i = 0; i < self.devices.count; i++ {")
+            if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
+                println("self.devices[i].gateway.addressOne")
                     var channel = Int(self.devices[i].channel)
                     println("osluskuj 1")
                     self.devices[i].currentValue = Int(byteArray[7+channel])

@@ -13,8 +13,7 @@ import CoreData
 class DatabaseViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var databaseTable: UITableView!
-    var inSocket:InSocket!
-    var outSocket:OutSocket!
+//    var outSocket:OutSocket!
     var appDel:AppDelegate!
     var devices:[Device] = []
     var gateways:[Gateway] = []
@@ -25,7 +24,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     @IBOutlet weak var idRangeFrom: UITextField!
     @IBOutlet weak var idRangeTo: UITextField!
-    var receivingSocket:InSocket?
     
     
     @IBOutlet weak var topView: UIView!

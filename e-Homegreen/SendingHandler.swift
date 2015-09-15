@@ -32,7 +32,6 @@ class SendingHandler: NSObject {
                     var i:Int
                     for i in 0...appDel.inOutSockets.count-1 {
                         if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-//                            appDel.inOutSockets[i].sendByte(gateway.remoteIp, arrayByte:byteArray)
                             println(gateway.remoteIpInUse)
                             appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
                         }
@@ -45,7 +44,6 @@ class SendingHandler: NSObject {
                 var i:Int
                 for i in 0...appDel.inOutSockets.count-1 {
                     if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-//                        appDel.inOutSockets[i].sendByte(gateway.remoteIp, arrayByte:byteArray)
                         println(gateway.remoteIpInUse)
                         appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
                     }
