@@ -134,6 +134,8 @@
 		E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B031B8F27840025082D /* SceneGalleryVC.xib */; };
 		E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */; };
 		E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */; };
+		E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */; };
+		E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */; };
 		E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FB6A1F1B9D95D50016246B /* CameraVC.swift */; };
 		E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7FB6A201B9D95D50016246B /* CameraVC.xib */; };
 /* End PBXBuildFile section */
@@ -290,6 +292,8 @@
 		E7F15B031B8F27840025082D /* SceneGalleryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SceneGalleryVC.xib; sourceTree = "<group>"; };
 		E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
+		E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanScenesViewController.swift; sourceTree = "<group>"; };
+		E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDevicesViewController.swift; sourceTree = "<group>"; };
 		E7FB6A1F1B9D95D50016246B /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		E7FB6A201B9D95D50016246B /* CameraVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraVC.xib; sourceTree = "<group>"; };
 		F11FF07D3FA9EC191F84026C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -506,6 +510,7 @@
 		E739739E1B43E62E0077E984 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
 				E7F15B011B8F26970025082D /* SettingsXIB */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
@@ -684,6 +689,15 @@
 				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
 			);
 			name = SettingsXIB;
+			sourceTree = "<group>";
+		};
+		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
+				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
+			);
+			name = ScanViewController;
 			sourceTree = "<group>";
 		};
 		E7FB6A1A1B9D95370016246B /* Surveillence */ = {
@@ -903,6 +917,11 @@
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73E75DCC1BA8300700D2B101 /* Category.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
+<<<<<<< HEAD
+=======
+				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
+				736089F91B98715200BC5810 /* Gateway.swift in Sources */,
+>>>>>>> origin/master
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
@@ -922,6 +941,7 @@
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
+				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
