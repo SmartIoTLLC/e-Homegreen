@@ -1,5 +1,5 @@
 //
-//  ScanScenesViewController.swift
+//  ScanSequencesesViewController.swift
 //  e-Homegreen
 //
 //  Created by Vladimir on 9/15/15.
@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import CoreData
 
-class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalleryDelegate {
+class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -19,11 +18,9 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var editCycle: UITextField!
     
-    @IBOutlet weak var sceneTableView: UITableView!
-    
-    var appDel:AppDelegate!
-    var error:NSError? = nil
+    @IBOutlet weak var sequencesTableView: UITableView!
     
     func endEditingNow(){
         devAddressOne.resignFirstResponder()
@@ -41,12 +38,12 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         var toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-    
+        
         devAddressOne.inputAccessoryView = keyboardDoneButtonView
         devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
-
+        
         nameEdit.delegate = self
         
         imageSceneOne.userInteractionEnabled = true
@@ -55,7 +52,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-        
+
         // Do any additional setup after loading the view.
     }
     
@@ -157,54 +154,54 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
-//            if choosedTab == .Scenes {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            } else if choosedTab == .Events {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            } else if choosedTab == .Sequences {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            }
-            return cell
-        }
-    
+                if let cell = tableView.dequeueReusableCellWithIdentifier("sequencesCell") as? SequencesCell {
+        //            if choosedTab == .Scenes {
+        //                cell.backgroundColor = UIColor.clearColor()
+        //                cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
+        //                cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
+        //                    cell.imageOne.image = sceneImage
+        //                }
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
+        //                    cell.imageTwo.image = sceneImage
+        //                }
+        //            } else if choosedTab == .Events {
+        //                cell.backgroundColor = UIColor.clearColor()
+        //                cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
+        //                cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
+        //                    cell.imageOne.image = sceneImage
+        //                }
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
+        //                    cell.imageTwo.image = sceneImage
+        //                }
+        //            } else if choosedTab == .Sequences {
+        //                cell.backgroundColor = UIColor.clearColor()
+        //                cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
+        //                cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
+        //                    cell.imageOne.image = sceneImage
+        //                }
+        //                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
+        //                    cell.imageTwo.image = sceneImage
+        //                }
+        //            }
+                    return cell
+                }
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
+        cell.textLabel?.text = "sequnces"
         return cell
         
     }
     
-        func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 10
-        }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
 
 }
 
-class SceneCell:UITableViewCell{
+class SequencesCell:UITableViewCell{
     
     @IBOutlet weak var labelID: UILabel!
     @IBOutlet weak var labelName: UILabel!

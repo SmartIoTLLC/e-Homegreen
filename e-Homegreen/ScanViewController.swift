@@ -17,6 +17,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     var scanSceneViewController: UIViewController!
     var scanDeviceViewController: UIViewController!
+    var scanSequencesViewController: UIViewController!
+    var scanEventsViewController: UIViewController!
     
     
     var appDel:AppDelegate!
@@ -67,6 +69,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 
         scanSceneViewController = storyboard.instantiateViewControllerWithIdentifier("ScanScenes") as! ScanScenesViewController
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
+        scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
+        scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
         
         scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
         container.addSubview(scanSceneViewController.view)
@@ -246,15 +250,35 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //            deviceView.hidden = true
         }
         if strText == "Events" {
+            
+            let oldController = childViewControllers.last as! UIViewController
+            oldController.view.hidden = true
+            
+            scanEventsViewController.view.hidden = false
+            
+            self.addChildViewController(scanEventsViewController)
+            container.addSubview(scanEventsViewController.view)
+            scanEventsViewController.didMoveToParentViewController(self)
+            
             choosedTab = .Events
-            updateListFetchingFromCD("Event", entityId: "eventId", entityName: "eventName")
+//            updateListFetchingFromCD("Event", entityId: "eventId", entityName: "eventName")
 //            sceneTableView.reloadData()
 //            sceneView.hidden = false
 //            deviceView.hidden = true
         }
         if strText == "Sequences" {
             choosedTab = .Sequences
-            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")
+            
+            let oldController = childViewControllers.last as! UIViewController
+            oldController.view.hidden = true
+            
+            scanSequencesViewController.view.hidden = false
+            
+            self.addChildViewController(scanSequencesViewController)
+            container.addSubview(scanSequencesViewController.view)
+            scanSequencesViewController.didMoveToParentViewController(self)
+            
+//            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")
 //            sceneTableView.reloadData()
 //            sceneView.hidden = false
 //            deviceView.hidden = true
@@ -314,22 +338,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //    
 }
 
-class ScanCell:UITableViewCell{
-    
-    @IBOutlet weak var lblRow: UILabel!
-    @IBOutlet weak var lblDesc: UILabel!
-    @IBOutlet weak var lblAddress: UILabel!
-    @IBOutlet weak var lblType: UILabel!
-    @IBOutlet weak var isEnabledSwitch: UISwitch!
-    @IBOutlet weak var isVisibleSwitch: UISwitch!
-}
 
-class SceneCell:UITableViewCell{
-    
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
 
-    
-}
+

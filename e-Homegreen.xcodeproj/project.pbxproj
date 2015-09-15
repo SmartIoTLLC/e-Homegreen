@@ -133,6 +133,8 @@
 		E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */; };
 		E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */; };
 		E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */; };
+		E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */; };
+		E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */; };
 		E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FB6A1F1B9D95D50016246B /* CameraVC.swift */; };
 		E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7FB6A201B9D95D50016246B /* CameraVC.xib */; };
 /* End PBXBuildFile section */
@@ -288,6 +290,8 @@
 		E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
 		E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanScenesViewController.swift; sourceTree = "<group>"; };
 		E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDevicesViewController.swift; sourceTree = "<group>"; };
+		E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanSequencesesViewController.swift; sourceTree = "<group>"; };
+		E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanEventsViewController.swift; sourceTree = "<group>"; };
 		E7FB6A1F1B9D95D50016246B /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		E7FB6A201B9D95D50016246B /* CameraVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraVC.xib; sourceTree = "<group>"; };
 		F11FF07D3FA9EC191F84026C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -679,6 +683,8 @@
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
+				E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */,
+				E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -915,6 +921,7 @@
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
+				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
@@ -946,6 +953,7 @@
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
+				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

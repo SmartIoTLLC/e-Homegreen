@@ -33,10 +33,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        if let parentVC = parentViewController as? ScanViewController {
-            gateway = parentVC.gateway
-        }
-        refreshDeviceList()
+//        if let parentVC = parentViewController as? ScanViewController {
+//            gateway = parentVC.gateway
+//        }
+//        refreshDeviceList()
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
@@ -296,7 +296,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     //        if tableView == deviceTableView {
-    //        if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
     //            cell.backgroundColor = UIColor.clearColor()
     //            cell.lblRow.text = "\(indexPath.row+1)."
     //            cell.lblDesc.text = "\(devices[indexPath.row].name)"
@@ -345,8 +345,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     //                        cell.imageTwo.image = sceneImage
     //                    }
     //                }
-    //                return cell
-    //            }
+                    return cell
+                }
     //        }
             let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
             cell.textLabel?.text = "dads"
@@ -355,10 +355,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         }
 
         func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 5
+            return 10
         }
 
+}
+
+class ScanCell:UITableViewCell{
     
-
-
+    @IBOutlet weak var lblRow: UILabel!
+    @IBOutlet weak var lblDesc: UILabel!
+    @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var lblType: UILabel!
+    @IBOutlet weak var isEnabledSwitch: UISwitch!
+    @IBOutlet weak var isVisibleSwitch: UISwitch!
 }
