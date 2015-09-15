@@ -294,14 +294,14 @@ class IncomingHandler: NSObject {
             println("proslo je for var i = 0; i < self.devices.count; i++ {")
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
                 println("self.devices[i].gateway.addressOne")
-                    var channel = Int(self.devices[i].channel)
-                    println("osluskuj 1")
-                    self.devices[i].currentValue = Int(byteArray[7+channel])
-                    println("osluskuj 2")
-                }
+                var channel = Int(self.devices[i].channel)
+                println("osluskuj 1")
+                self.devices[i].currentValue = Int(byteArray[7+channel])
+                println("osluskuj 2")
             }
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        }
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
