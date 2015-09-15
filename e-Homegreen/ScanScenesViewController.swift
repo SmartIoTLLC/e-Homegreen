@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalleryDelegate {
     
@@ -19,6 +20,9 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressThree: UITextField!
     
     @IBOutlet weak var sceneTableView: UITableView!
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     func endEditingNow(){
         devAddressOne.resignFirstResponder()

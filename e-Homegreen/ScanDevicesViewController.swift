@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
@@ -14,7 +15,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var rangeTo: UITextField!
     
     @IBOutlet weak var deviceTableView: UITableView!
+    var loader : ViewControllerUtils = ViewControllerUtils()
     
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    var devices:[Device] = []
+    var gateway:Gateway?
     
     func endEditingNow(){
         rangeFrom.resignFirstResponder()
@@ -23,6 +30,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        if let parentVC = parentViewController as? ScanViewController {
+            gateway = parentVC.gateway
+        }
+        refreshDeviceList()
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
@@ -33,13 +47,214 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
 
-
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
+    func updateDeviceList () {
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        var fetchRequest = NSFetchRequest(entityName: "Device")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
+        if let results = fetResults {
+            devices = results
+        } else {
+            println("Nije htela...")
+        }
+    }
+    
+    // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
+    
+    var searchDeviceTimer:NSTimer?
+    var searchForDeviceWithId:Int?
+    var fromAddress:Int?
+    var toAddress:Int?
+    
+    
+    
+    func checkIfGatewayDidGetDevice (timer:NSTimer) {
+        if let index = timer.userInfo as? Int {
+            updateDeviceList()
+            if (timesRepeatedCounter + 1) != 4 {
+                timesRepeatedCounter = timesRepeatedCounter + 1
+                var deviceFound = false
+                // OVDE JE PUKLO JEDNOM!!!
+                if devices.count > 0 {
+                    for i in 0...devices.count-1 {
+                        if Int(devices[i].address) == index {
+                            deviceFound = true
+                            break
+                        }
+                    }
+                }
+                if deviceFound {
+                    if toAddress >= (searchForDeviceWithId!+1) {
+                        timesRepeatedCounter = 0
+                        searchForDeviceWithId = searchForDeviceWithId! + 1
+                        searchDeviceTimer?.invalidate()
+                        searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                        var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                        SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
+                    } else {
+                        loader.hideActivityIndicator()
+                    }
+                } else {
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
+                }
+            } else {
+                if toAddress >= searchForDeviceWithId {
+                    timesRepeatedCounter = 0
+                    searchForDeviceWithId = searchForDeviceWithId! + 1
+                    searchDeviceTimer?.invalidate()
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
+                } else {
+                    loader.hideActivityIndicator()
+                }
+            }
+        }
+    }
+    
+    func deviceReceivedFromPLC (notification:NSNotification) {
+        if toAddress >= (searchForDeviceWithId!+1) {
+            timesRepeatedCounter = 0
+            searchForDeviceWithId = searchForDeviceWithId! + 1
+            searchDeviceTimer?.invalidate()
+            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+            var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+            SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
+        } else {
+            searchForDeviceWithId = 0
+            timesRepeatedCounter = 0
+            searchDeviceTimer?.invalidate()
+            loader.hideActivityIndicator()
+        }
+    }
+    
+    func hideActivitIndicator () {
+        loader.hideActivityIndicator()
+    }
+    
+    // ======================= *** FINDING NAMES FOR DEVICE *** =======================
+    
+    var deviceNameTimer:NSTimer?
+    
+    
+    
+    var index:Int = 0
+    var timesRepeatedCounter:Int = 0
+    
+    func nameReceivedFromPLC (notification:NSNotification) {
+        if let info = notification.userInfo! as? [String:Int] {
+            if let deviceIndex = info["deviceIndexForFoundName"] {
+                if deviceIndex == devices.count-1 {
+                    index = 0
+                    timesRepeatedCounter = 0
+                } else {
+                    index = deviceIndex + 1
+                    timesRepeatedCounter = 0
+                    deviceNameTimer?.invalidate()
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                    sendCommandForFindingName(index: index)
+                }
+            }
+        }
+    }
+    
+    func checkIfDeviceDidGetName (timer:NSTimer) {
+        if let deviceIndex = timer.userInfo as? Int {
+            if index != 0 || deviceIndex < index {
+                //                index = index + 1
+                timesRepeatedCounter += 1
+                if timesRepeatedCounter < 4 {
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
+                    sendCommandForFindingName(index: deviceIndex)
+                } else {
+                    var newIndex = deviceIndex + 1
+                    timesRepeatedCounter = 0
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
+                    sendCommandForFindingName(index: newIndex)
+                }
+            }
+        }
+    }
+    
+    func sendCommandForFindingName (#index:Int) {
+        if devices[index].type == "Dimmer" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "hvac" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == "sensor" {
+            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+    }
+    
+    func getDevicesNames (timer:NSTimer) {
+        if let index = timer.userInfo as? Int {
+            sendCommandForFindingName(index: index)
+        }
+    }
+    
+    func refreshDeviceList() {
+        updateDeviceList()
+        deviceTableView.reloadData()
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
+    // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
+    
+    func changeValueEnable (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isEnabled = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isEnabled = NSNumber(bool: false)
+        }
+        saveChanges()
+    }
+    
+    func changeValueVisible (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isVisible = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isVisible = NSNumber(bool: false)
+        }
+        saveChanges()
     }
     
     @IBAction func findDevice(sender: AnyObject) {

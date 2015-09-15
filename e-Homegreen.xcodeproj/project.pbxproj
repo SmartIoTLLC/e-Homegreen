@@ -126,9 +126,6 @@
 		E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8231B3804F1008D8713 /* Slt.framework */; };
 		E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E242111B68B35400CEAB9A /* CellParametarVC.swift */; };
 		E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E242121B68B35400CEAB9A /* CellParametarVC.xib */; };
-		E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */; };
-		E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */; };
-		E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */; };
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
 		E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B021B8F27840025082D /* SceneGalleryVC.swift */; };
 		E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B031B8F27840025082D /* SceneGalleryVC.xib */; };
@@ -284,9 +281,6 @@
 		E7E1A8231B3804F1008D8713 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		E7E242111B68B35400CEAB9A /* CellParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellParametarVC.swift; sourceTree = "<group>"; };
 		E7E242121B68B35400CEAB9A /* CellParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellParametarVC.xib; sourceTree = "<group>"; };
-		E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
-		E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDialogViewController.swift; sourceTree = "<group>"; };
-		E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDialogViewController.xib; sourceTree = "<group>"; };
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E7F15B021B8F27840025082D /* SceneGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneGalleryVC.swift; sourceTree = "<group>"; };
 		E7F15B031B8F27840025082D /* SceneGalleryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SceneGalleryVC.xib; sourceTree = "<group>"; };
@@ -397,7 +391,6 @@
 			children = (
 				73D8B2821B51070E006B7101 /* Other */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
-				E7E08E061B4E4DA700153E9A /* LogIn */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
@@ -453,11 +446,11 @@
 			children = (
 				73BD1EBE1B4E655700AA5B28 /* Other */,
 				E7E1A81F1B3804F1008D8713 /* Framework */,
-				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
+				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
 				73ECD4A21B332A6F00767740 /* Common.swift */,
-				73DEA21F1B32CE67007836B4 /* ViewControllers */,
+				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
@@ -515,7 +508,6 @@
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
-				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
 				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
@@ -646,16 +638,6 @@
 			name = Devices;
 			sourceTree = "<group>";
 		};
-		E7E08E061B4E4DA700153E9A /* LogIn */ = {
-			isa = PBXGroup;
-			children = (
-				E7E4B2011B4AA21E00AEDD6C /* LogInViewController.swift */,
-				E7E4B2031B4ACD6600AEDD6C /* AlertDialogViewController.swift */,
-				E7E4B2041B4ACD6600AEDD6C /* AlertDialogViewController.xib */,
-			);
-			name = LogIn;
-			sourceTree = "<group>";
-		};
 		E7E149B91B3AAF55005FD41D /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -694,8 +676,9 @@
 		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
+				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
+				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -818,7 +801,6 @@
 				E7DC67C31B457C0E00EA6543 /* weather-rain@2x.png in Resources */,
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
-				E7E4B2061B4ACD6600AEDD6C /* AlertDialogViewController.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
@@ -897,7 +879,6 @@
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
-				E7E4B2021B4AA21E00AEDD6C /* LogInViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
@@ -910,7 +891,6 @@
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
-				E7E4B2051B4ACD6600AEDD6C /* AlertDialogViewController.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73E2312A1BA7239E003E41EC /* Sequence.swift in Sources */,
@@ -918,7 +898,6 @@
 				73E75DCC1BA8300700D2B101 /* Category.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
-				736089F91B98715200BC5810 /* Gateway.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
