@@ -34,11 +34,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         println(parentViewController)
         println(presentingViewController)
-        if let parentVC = parentViewController as? ScanViewController {
-            gateway = parentVC.gateway
-            for device in gateway!.devices {
-                devices.append(device as! Device)
-            }
+        for device in gateway!.devices {
+            devices.append(device as! Device)
         }
         refreshDeviceList()
         

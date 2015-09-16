@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalleryDelegate {
+class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalleryDelegate, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -28,15 +28,19 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     var gateway:Gateway?
     var scenes:[Scene]?
     
+    var selected:AnyObject?
+    
     func endEditingNow(){
         devAddressOne.resignFirstResponder()
         devAddressTwo.resignFirstResponder()
         devAddressThree.resignFirstResponder()
         IDedit.resignFirstResponder()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
@@ -44,17 +48,17 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         var toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        var gateway:Gateway?
-        println(parentViewController)
-        if let parentVC = parentViewController as? ScanViewController {
-            gateway = parentVC.gateway
+        
+        for scene in gateway!.scenes {
+            scenes!.append(scene as! Scene)
         }
+        refreshSceneList()
         
         devAddressOne.inputAccessoryView = keyboardDoneButtonView
         devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
-
+        
         nameEdit.delegate = self
         
         imageSceneOne.userInteractionEnabled = true
@@ -65,6 +69,34 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
         // Do any additional setup after loading the view.
+    }
+    
+    func refreshSceneList() {
+        updateSceneList()
+        sceneTableView.reloadData()
+    }
+    
+    func updateSceneList () {
+        var fetchRequest = NSFetchRequest(entityName: "Scene")
+        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
+        if let results = fetResults {
+            scenes = results
+        } else {
+            println("Nije htela...")
+        }
+    }
+    
+    func saveChanges() {
+        if !appDel.managedObjectContext!.save(&error) {
+            println("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     func handleTap (gesture:UITapGestureRecognizer) {
@@ -90,126 +122,68 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     override func viewWillAppear(animated: Bool) {
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        
-        //            if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt() {
-        //                if sceneId <= 32767 && address <= 255 {
-        //                    switch choosedTab {
-        //                    case .Scenes:
-        //                        var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-        //                        scene.sceneId = sceneId
-        //                        scene.sceneName = sceneName
-        //                        scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image)
-        //                        scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
-        //                        scene.gateway = gateway!
-        //                        saveChanges()
-        //                        refreshSceneList()
-        //                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
-        //                    case .Events:
-        //                        var event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-        //                        event.eventId = sceneId
-        //                        event.eventName = sceneName
-        //                        event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image)
-        //                        event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
-        //                        event.gateway = gateway!
-        //                        saveChanges()
-        //                        refreshSceneList()
-        //                        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
-        //                    case .Sequences:
-        //                        var sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
-        //                        sequence.sequenceId = sceneId
-        //                        sequence.sequenceName = sceneName
-        //                        sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image)
-        //                        sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
-        //                        sequence.gateway = gateway!
-        //                        saveChanges()
-        //                        refreshSceneList()
-        //                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-        //                    default:
-        //                        assert(false, "Unexprected index")
-        //                    }
-        //                }
-        //            }
-        
+        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt() {
+            if sceneId <= 32767 && address <= 255 {
+                var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                scene.sceneId = sceneId
+                scene.sceneName = sceneName
+                scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image)
+                scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                scene.isBroadcast = NSNumber(bool: false)
+                scene.gateway = gateway!
+                saveChanges()
+                refreshSceneList()
+                NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+            }
+        }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        //            if let scene = selected as? Scene {
-        //                appDel.managedObjectContext!.deleteObject(scene)
-        //                IDedit.text = ""
-        //                nameEdit.text = ""
-        //                refreshSceneList()
-        //                NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
-        //            }
-        //            if let event = selected as? Event {
-        //                appDel.managedObjectContext!.deleteObject(event)
-        //                IDedit.text = ""
-        //                nameEdit.text = ""
-        //                refreshSceneList()
-        //                NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
-        //            }
-        //            if let sequence = selected as? Sequence {
-        //                appDel.managedObjectContext!.deleteObject(sequence)
-        //                IDedit.text = ""
-        //                nameEdit.text = ""
-        //                refreshSceneList()
-        //                NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-        //            }
+        if let scene = selected as? Scene {
+            appDel.managedObjectContext!.deleteObject(scene)
+            IDedit.text = ""
+            nameEdit.text = ""
+            refreshSceneList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
-//            if choosedTab == .Scenes {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            } else if choosedTab == .Events {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            } else if choosedTab == .Sequences {
-//                cell.backgroundColor = UIColor.clearColor()
-//                cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
-//                cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
-//                    cell.imageOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
-//                    cell.imageTwo.image = sceneImage
-//                }
-//            }
+            cell.backgroundColor = UIColor.clearColor()
+            cell.labelID.text = "\(scenes![indexPath.row].sceneId)"
+            cell.labelName.text = "\(scenes![indexPath.row].sceneName)"
+            if let sceneImage = UIImage(data: scenes![indexPath.row].sceneImageOne) {
+                cell.imageOne.image = sceneImage
+            }
+            if let sceneImage = UIImage(data: scenes![indexPath.row].sceneImageTwo) {
+                cell.imageTwo.image = sceneImage
+            }
             return cell
         }
-    
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
         
     }
     
-        func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 10
-        }
-
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selected = scenes![indexPath.row]
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return scenes!.count
+    }
+    
 }
 
 class SceneCell:UITableViewCell{

@@ -15,10 +15,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     @IBOutlet weak var container: UIView!
     
-    var scanSceneViewController: UIViewController!
-    var scanDeviceViewController: UIViewController!
-    var scanSequencesViewController: UIViewController!
-    var scanEventsViewController: UIViewController!
+    var scanSceneViewController: ScanScenesViewController!
+    var scanDeviceViewController: ScanDevicesViewController!
+    var scanSequencesViewController: ScanSequencesesViewController!
+    var scanEventsViewController: ScanEventsViewController!
     
     
     var appDel:AppDelegate!
@@ -71,6 +71,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
+        
+        scanSceneViewController.gateway = gateway
+        scanDeviceViewController.gateway = gateway
+        scanSequencesViewController.gateway = gateway
+        scanEventsViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
@@ -308,7 +313,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         return String(format: "%03d",number)
     }
     
-    var selected:AnyObject?
 //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        if tableView == sceneTableView {
 //            if choosedTab == .Scenes {
