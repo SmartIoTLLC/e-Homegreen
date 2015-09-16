@@ -273,7 +273,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     toAddress = numberTwo
                     searchForDeviceWithId = numberOne
                     timesRepeatedCounter = 0
-                    loader.showActivityIndicator(self.view)
+                    if let parentVC = self.parentViewController {
+                        loader.showActivityIndicator(parentVC.view)
+                    }else{
+                        loader.showActivityIndicator(self.view)
+                    }
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
