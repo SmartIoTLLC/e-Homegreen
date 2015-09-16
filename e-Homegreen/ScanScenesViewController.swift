@@ -25,6 +25,9 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     var appDel:AppDelegate!
     var error:NSError? = nil
     
+    var gateway:Gateway?
+    var scenes:[Scene]?
+    
     func endEditingNow(){
         devAddressOne.resignFirstResponder()
         devAddressTwo.resignFirstResponder()
@@ -39,13 +42,13 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         keyboardDoneButtonView.sizeToFit()
         let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
         var toolbarButtons = [item]
-//        
-//        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-//        var gateway:Gateway?
-//        println(parentViewController)
-//        if let parentVC = parentViewController as? ScanViewController {
-//            gateway = parentVC.gateway
-//        }
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        var gateway:Gateway?
+        println(parentViewController)
+        if let parentVC = parentViewController as? ScanViewController {
+            gateway = parentVC.gateway
+        }
         
         devAddressOne.inputAccessoryView = keyboardDoneButtonView
         devAddressTwo.inputAccessoryView = keyboardDoneButtonView

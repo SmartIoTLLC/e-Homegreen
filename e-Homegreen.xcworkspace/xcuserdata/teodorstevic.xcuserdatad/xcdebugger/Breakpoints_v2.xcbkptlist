@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanViewController.swift"
-            timestampString = "464078298.877735"
+            timestampString = "464081178.504266"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "226"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanDevicesViewController.swift"
-            timestampString = "464079169.737125"
+            timestampString = "464080726.254685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "findNames(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanDevicesViewController.swift"
-            timestampString = "464080146.150327"
+            timestampString = "464080726.254685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
             landmarkName = "checkIfDeviceDidGetName(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanDevicesViewController.swift"
-            timestampString = "464080154.369911"
+            timestampString = "464080726.254685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "checkIfDeviceDidGetName(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanDevicesViewController.swift"
-            timestampString = "464080157.989808"
+            timestampString = "464080726.254685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "checkIfDeviceDidGetName(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ScanDevicesViewController.swift"
-            timestampString = "464080336.507806"
+            timestampString = "464080726.254685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
             landmarkName = "findNames(_:)"
             landmarkType = "5">
          </BreakpointContent>

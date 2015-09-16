@@ -72,10 +72,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
         
-        scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-        container.addSubview(scanSceneViewController.view)
-        self.addChildViewController(scanSceneViewController)
-
+        self.addChildViewController(scanDeviceViewController)
+        scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
+        container.addSubview(scanDeviceViewController.view)
+        scanDeviceViewController.didMoveToParentViewController(self)
+        
         var gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width {
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
@@ -84,8 +85,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
-
-
+        
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         // Do any additional setup after loading the view.
@@ -241,14 +241,17 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             choosedTab = .Scenes
             
             let oldController = childViewControllers.last as! UIViewController
-            oldController.view.hidden = true
-            
-            scanSceneViewController.view.hidden = false
+//            oldController.view.hidden = true
+//            
+//            scanSceneViewController.view.hidden = false
             
             self.addChildViewController(scanSceneViewController)
             scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanSceneViewController.view)
             scanSceneViewController.didMoveToParentViewController(self)
+            oldController.view.hidden = true
+            
+            scanSceneViewController.view.hidden = false
             
 //            updateListFetchingFromCD("Scene", entityId: "sceneId", entityName: "sceneName")
 //            sceneTableView.reloadData()
@@ -277,15 +280,18 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             choosedTab = .Sequences
             
             let oldController = childViewControllers.last as! UIViewController
-            oldController.view.hidden = true
-            
-            scanSequencesViewController.view.hidden = false
+//            oldController.view.hidden = true
+//            
+//            scanSequencesViewController.view.hidden = false
             
             self.addChildViewController(scanSequencesViewController)
             scanSequencesViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanSequencesViewController.view)
             scanSequencesViewController.didMoveToParentViewController(self)
             
+            oldController.view.hidden = true
+            
+            scanSequencesViewController.view.hidden = false
 //            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")
 //            sceneTableView.reloadData()
 //            sceneView.hidden = false

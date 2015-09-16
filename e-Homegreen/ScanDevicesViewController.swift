@@ -55,6 +55,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
 
         
         
