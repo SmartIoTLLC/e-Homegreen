@@ -51,7 +51,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
 
         idRangeFrom.delegate = self
         idRangeTo.delegate = self

@@ -32,11 +32,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-//        if let parentVC = parentViewController as? ScanViewController {
-//            gateway = parentVC.gateway
-//        }
-//        refreshDeviceList()
+        println(parentViewController)
+        println(presentingViewController)
+        if let parentVC = parentViewController as? ScanViewController {
+            gateway = parentVC.gateway
+            for device in gateway!.devices {
+                devices.append(device as! Device)
+            }
+        }
+        refreshDeviceList()
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
@@ -45,6 +49,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
+        rangeFrom.text = "\(Int(gateway!.addressThree)+1)"
+        rangeTo.text = "\(Int(gateway!.addressThree)+1)"
+//
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
@@ -246,6 +253,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             devices[sender.tag].isEnabled = NSNumber(bool: false)
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
     }
     
     func changeValueVisible (sender:UISwitch) {
@@ -255,59 +263,59 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             devices[sender.tag].isVisible = NSNumber(bool: false)
         }
         saveChanges()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
     }
     
     @IBAction func findDevice(sender: AnyObject) {
-//        if rangeFrom.text != "" && rangeTo.text != "" {
-//            if let numberOne = rangeFrom.text.toInt(), let numberTwo = rangeTo.text.toInt() {
-//                if numberTwo >= numberOne {
-//                    fromAddress = numberOne
-//                    toAddress = numberTwo
-//                    searchForDeviceWithId = numberOne
-//                    timesRepeatedCounter = 0
-//                    loader.showActivityIndicator(self.view)
-//                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-//                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-//                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
-//                }
-//            }
-//        }
+        if rangeFrom.text != "" && rangeTo.text != "" {
+            if let numberOne = rangeFrom.text.toInt(), let numberTwo = rangeTo.text.toInt() {
+                if numberTwo >= numberOne {
+                    fromAddress = numberOne
+                    toAddress = numberTwo
+                    searchForDeviceWithId = numberOne
+                    timesRepeatedCounter = 0
+                    loader.showActivityIndicator(self.view)
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
+                }
+            }
+        }
     }
     
     @IBAction func deleteAll(sender: AnyObject) {
-        //        for var item = 0; item < devices.count; item++ {
-        //            if devices[item].gateway.objectID == gateway!.objectID {
-        //                appDel.managedObjectContext!.deleteObject(devices[item])
-        //            }
-        //        }
-        //        saveChanges()
-        //        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+                for var item = 0; item < devices.count; item++ {
+                    if devices[item].gateway.objectID == gateway!.objectID {
+                        appDel.managedObjectContext!.deleteObject(devices[item])
+                    }
+                }
+                saveChanges()
+                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
 
     @IBAction func findNames(sender: AnyObject) {
-//        var index:Int
-//        if devices.count != 0 {
-//            index = 0
-//            timesRepeatedCounter = 0
-//            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
-//            sendCommandForFindingName(index: 0)
-//        }
+        var index:Int
+        if devices.count != 0 {
+            index = 0
+            timesRepeatedCounter = 0
+            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
+            sendCommandForFindingName(index: 0)
+        }
     }
     
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    //        if tableView == deviceTableView {
             if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
-    //            cell.backgroundColor = UIColor.clearColor()
-    //            cell.lblRow.text = "\(indexPath.row+1)."
-    //            cell.lblDesc.text = "\(devices[indexPath.row].name)"
-    //            cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
-    //            cell.lblType.text = "Type: \(devices[indexPath.row].type)"
-    //            cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
-    //            cell.isEnabledSwitch.tag = indexPath.row
-    //            cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
-    //            cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
-    //            cell.isVisibleSwitch.tag = indexPath.row
-    //            cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.backgroundColor = UIColor.clearColor()
+                cell.lblRow.text = "\(indexPath.row+1)."
+                cell.lblDesc.text = "\(devices[indexPath.row].name)"
+                cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
+                cell.lblType.text = "Type: \(devices[indexPath.row].type)"
+                cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
+                cell.isEnabledSwitch.tag = indexPath.row
+                cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
+                cell.isVisibleSwitch.tag = indexPath.row
+                cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
     //
     //            return cell
     //        }
@@ -347,7 +355,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     //                }
                     return cell
                 }
-    //        }
             let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
             cell.textLabel?.text = "dads"
             return cell
@@ -355,7 +362,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         }
 
         func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 10
+            return gateway!.devices.count
         }
 
 }

@@ -218,14 +218,18 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //            newController.didMoveToParentViewController(self)
             
             let oldController = childViewControllers.last as! UIViewController
-            oldController.view.hidden = true
-            
-            scanDeviceViewController.view.hidden = false
-            
+//            oldController.view.hidden = true
+//            
+//            scanDeviceViewController.view.hidden = false
+            println("To care")
             self.addChildViewController(scanDeviceViewController)
             scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanDeviceViewController.view)
             scanDeviceViewController.didMoveToParentViewController(self)
+            println("To care")
+            oldController.view.hidden = true
+            
+            scanDeviceViewController.view.hidden = false
             
 //            scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
 //            container.addSubview(scanDeviceViewController.view)

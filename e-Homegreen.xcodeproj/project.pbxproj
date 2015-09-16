@@ -442,8 +442,6 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
-				73BD1EBE1B4E655700AA5B28 /* Other */,
-				E7E1A81F1B3804F1008D8713 /* Framework */,
 				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
@@ -453,6 +451,8 @@
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
+				73BD1EBE1B4E655700AA5B28 /* Other */,
+				E7E1A81F1B3804F1008D8713 /* Framework */,
 				73E206A91B2EEFFE0008B002 /* Supporting Files */,
 			);
 			path = "e-Homegreen";

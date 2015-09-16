@@ -39,9 +39,14 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         keyboardDoneButtonView.sizeToFit()
         let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
         var toolbarButtons = [item]
+//        
+//        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+//        var gateway:Gateway?
+//        println(parentViewController)
+//        if let parentVC = parentViewController as? ScanViewController {
+//            gateway = parentVC.gateway
+//        }
         
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-    
         devAddressOne.inputAccessoryView = keyboardDoneButtonView
         devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
