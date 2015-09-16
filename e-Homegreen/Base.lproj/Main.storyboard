@@ -2796,7 +2796,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4NH-vy-rBJ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="558"/>
+                                <rect key="frame" x="0.0" y="10" width="320" height="558"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xef-g0-V6b">
                                     <size key="itemSize" width="124" height="158"/>
@@ -2859,11 +2859,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="top" secondItem="VE6-Xg-TLF" secondAttribute="top" id="5c9-zJ-skx"/>
-                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leadingMargin" constant="-16" id="7E4-Ga-dfc"/>
-                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="top" id="9Td-bx-Yfm"/>
+                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" id="7E4-Ga-dfc"/>
+                            <constraint firstItem="4NH-vy-rBJ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="top" constant="10" id="9Td-bx-Yfm"/>
                             <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="yuu-3O-qiS" secondAttribute="bottom" id="MIK-El-D6j"/>
-                            <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="4NH-vy-rBJ" secondAttribute="bottom" constant="10" id="Qj5-hm-DOJ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="4NH-vy-rBJ" secondAttribute="trailing" constant="-16" id="h7i-r0-az3"/>
+                            <constraint firstItem="ISx-OR-kPZ" firstAttribute="top" secondItem="4NH-vy-rBJ" secondAttribute="bottom" id="Qj5-hm-DOJ"/>
+                            <constraint firstAttribute="trailing" secondItem="4NH-vy-rBJ" secondAttribute="trailing" id="h7i-r0-az3"/>
                             <constraint firstAttribute="trailing" secondItem="yuu-3O-qiS" secondAttribute="trailing" id="had-8G-qiT"/>
                             <constraint firstItem="yuu-3O-qiS" firstAttribute="leading" secondItem="VE6-Xg-TLF" secondAttribute="leading" id="uzc-aa-4Bc"/>
                         </constraints>
