@@ -30,8 +30,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     var selected:AnyObject?
     
     func endEditingNow(){
-        devAddressOne.resignFirstResponder()
-        devAddressTwo.resignFirstResponder()
+//        devAddressOne.resignFirstResponder()
+//        devAddressTwo.resignFirstResponder()
         devAddressThree.resignFirstResponder()
         IDedit.resignFirstResponder()
     }
@@ -53,8 +53,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         }
         refreshEventList()
         
-        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
+//        devAddressOne.inputAccessoryView = keyboardDoneButtonView
+//        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         
@@ -66,7 +66,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-
+        
+        devAddressOne.text = "\(gateway!.addressOne)"
+        devAddressTwo.text = "\(gateway!.addressTwo)"
+        
         // Do any additional setup after loading the view.
     }
     

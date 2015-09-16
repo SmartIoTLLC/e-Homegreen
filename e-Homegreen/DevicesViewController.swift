@@ -218,7 +218,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             //            SendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway)
             var deviceCurrentValue = Int(devices[tag].currentValue)
             devices[tag].currentValue = Int(setDeviceValue)
-            RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+            
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                dispatch_async(dispatch_get_main_queue(), {
+                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                })
+            })
         }
         // Appliance?
         if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
@@ -231,7 +237,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else {
                 devices[tag].currentValue = 255
             }
-            RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                dispatch_async(dispatch_get_main_queue(), {
+                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                })
+            })
         }
         // Curtain?
         if devices[tag].type == "curtainsRS485" {
@@ -245,7 +255,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(setDeviceValue)
             var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
 //            SendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway)
-            RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                dispatch_async(dispatch_get_main_queue(), {
+                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                })
+            })
             
         }
         

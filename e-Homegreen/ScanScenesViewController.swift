@@ -68,6 +68,9 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
+        devAddressOne.text = "\(gateway!.addressOne)"
+        devAddressTwo.text = "\(gateway!.addressTwo)"
+        
         // Do any additional setup after loading the view.
     }
     

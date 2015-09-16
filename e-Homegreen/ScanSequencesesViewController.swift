@@ -32,8 +32,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     var selected:AnyObject?
     
     func endEditingNow(){
-        devAddressOne.resignFirstResponder()
-        devAddressTwo.resignFirstResponder()
+//        devAddressOne.resignFirstResponder()
+//        devAddressTwo.resignFirstResponder()
         devAddressThree.resignFirstResponder()
         IDedit.resignFirstResponder()
         editCycle.resignFirstResponder()
@@ -59,8 +59,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         }
         refreshSequenceList()
         
-        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
+//        devAddressOne.inputAccessoryView = keyboardDoneButtonView
+//        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         editCycle.inputAccessoryView = keyboardDoneButtonView
@@ -73,7 +73,10 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-
+        
+        devAddressOne.text = "\(gateway!.addressOne)"
+        devAddressTwo.text = "\(gateway!.addressTwo)"
+        
         // Do any additional setup after loading the view.
     }
     
