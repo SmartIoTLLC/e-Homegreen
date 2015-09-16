@@ -155,6 +155,10 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         }
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
@@ -178,6 +182,16 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selected = scenes[indexPath.row]
+        IDedit.text = "\(scenes[indexPath.row].sceneId)"
+        nameEdit.text = "\(scenes[indexPath.row].sceneName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
+        broadcastSwitch.on = scenes[indexPath.row].isBroadcast.boolValue
+        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
+            imageSceneOne.image = sceneImage
+        }
+        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
+            imageSceneTwo.image = sceneImage
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

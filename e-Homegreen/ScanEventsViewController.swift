@@ -155,6 +155,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         }
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("eventsCell") as? EventsCell {
@@ -178,6 +182,16 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selected = events[indexPath.row]
+        IDedit.text = "\(events[indexPath.row].eventId)"
+        nameEdit.text = "\(events[indexPath.row].eventName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
+        broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
+        if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
+            imageSceneOne.image = sceneImage
+        }
+        if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
+            imageSceneTwo.image = sceneImage
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

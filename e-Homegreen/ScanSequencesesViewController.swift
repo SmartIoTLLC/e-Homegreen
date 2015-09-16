@@ -134,7 +134,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt() {
+        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt(), let cycles = editCycle.text.toInt() {
             if sceneId <= 32767 && address <= 255 {
                 var sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
                 sequence.sequenceId = sceneId
@@ -143,6 +143,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                 sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image)
                 sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
                 sequence.isBroadcast = NSNumber(bool: broadcastSwitch.on)
+                sequence.sequenceCycles = cycles
                 sequence.gateway = gateway!
                 saveChanges()
                 refreshSequenceList()
@@ -161,6 +162,10 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         }
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sequencesCell") as? SequencesCell {
@@ -173,6 +178,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
                 cell.imageTwo.image = sceneImage
             }
+            return cell
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -183,6 +189,17 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selected = sequences[indexPath.row]
+        IDedit.text = "\(sequences[indexPath.row].sequenceId)"
+        nameEdit.text = "\(sequences[indexPath.row].sequenceName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
+        editCycle.text = "\(sequences[indexPath.row].sequenceCycles)"
+        broadcastSwitch.on = sequences[indexPath.row].isBroadcast.boolValue
+        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
+            imageSceneOne.image = sceneImage
+        }
+        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
+            imageSceneTwo.image = sceneImage
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

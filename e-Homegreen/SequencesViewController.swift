@@ -127,7 +127,6 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        
         return collectionViewCellSize
         
     }
@@ -153,6 +152,11 @@ extension SequencesViewController: UICollectionViewDataSource {
         //        cell.backgroundColor = UIColor.lightGrayColor()
         //3
         cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
+        
+        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.sequenceTitle.addGestureRecognizer(longPress)
+        
         if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
             cell.sequenceImageView.image = sceneImage
         }
