@@ -299,6 +299,7 @@ class IncomingHandler: NSObject {
                 self.devices[i].currentValue = Int(byteArray[7+channel])
                 println("osluskuj 2")
             }
+            println("proslo je self.devices[i].gateway.addressOne")
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
