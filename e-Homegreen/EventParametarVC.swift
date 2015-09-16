@@ -35,6 +35,16 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var isBroadcast: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var gradient:CAGradientLayer = CAGradientLayer()
+        gradient.frame = backView.bounds
+        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        backView.layer.insertSublayer(gradient, atIndex: 0)
+        backView.layer.borderWidth = 1
+        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        backView.layer.cornerRadius = 10
+        backView.clipsToBounds = true
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
@@ -77,17 +87,6 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

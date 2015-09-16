@@ -146,7 +146,7 @@ extension SequencesViewController: UICollectionViewDataSource {
         //2
         //        let flickrPhoto = photoForIndexPath(indexPath)
         var gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, 150, 150)
+        gradient.frame = cell.bounds
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
         //        cell.backgroundColor = UIColor.lightGrayColor()

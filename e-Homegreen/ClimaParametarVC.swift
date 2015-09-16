@@ -50,7 +50,7 @@ class ClimaParametarVC: UIViewController {
         
         var gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
-        gradient.colors = [UIColor.blackColor().colorWithAlphaComponent(0.95).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
+        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backView.layer.insertSublayer(gradient, atIndex: 0)
         backView.layer.borderWidth = 1
         backView.layer.borderColor = UIColor.lightGrayColor().CGColor
