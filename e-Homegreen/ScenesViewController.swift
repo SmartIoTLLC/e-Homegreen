@@ -220,6 +220,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
         if sceneId >= 0 && sceneId <= 255 {
             SendingHandler(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         }
+        scenesCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -255,6 +256,11 @@ extension ScenesViewController: UICollectionViewDataSource {
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             cell.sceneCellImageView.image = sceneImage
         }
+        
+        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
+            cell.sceneCellImageView.highlightedImage = sceneImage
+        }
+        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

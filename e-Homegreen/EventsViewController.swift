@@ -156,10 +156,32 @@ extension EventsViewController: UICollectionViewDataSource {
             cell.eventImageView.image = eventImage
         }
         
+        if let eventImage = UIImage(data: events[indexPath.row].eventImageTwo) {
+            cell.eventImageView.highlightedImage = eventImage
+        }
+        
+        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
+        cell.eventButton.addGestureRecognizer(tap)
+        cell.eventButton.tag = indexPath.row
+        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
+    }
+    
+    func tapCancel (gestureRecognizer:UITapGestureRecognizer) {
+        var tag = gestureRecognizer.view!.tag
+        if let eventId = events[tag].eventId as? Int {
+            var address:[UInt8] = []
+            if events[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else {
+                address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
+            }
+            SendingHandler(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
+        }
     }
     
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){

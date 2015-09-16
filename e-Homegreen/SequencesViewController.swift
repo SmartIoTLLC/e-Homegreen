@@ -141,6 +141,18 @@ extension SequencesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sequences.count
     }
+    
+    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+        var tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(sequenceCollectionView)
+            if let index = sequenceCollectionView.indexPathForItemAtPoint(location){
+                var cell = sequenceCollectionView.cellForItemAtIndexPath(index)
+                showSequenceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - sequenceCollectionView.contentOffset.y), sequence: sequences[tag])
+            }
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
         //2
@@ -160,6 +172,15 @@ extension SequencesViewController: UICollectionViewDataSource {
         if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
             cell.sequenceImageView.image = sceneImage
         }
+        
+        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
+            cell.sequenceImageView.highlightedImage = sceneImage
+        }
+        
+        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
+        cell.sequenceButton.addGestureRecognizer(tap)
+        cell.sequenceButton.tag = indexPath.row
+        
 //        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
 //            cell.sceneCellImageView.image = sceneImage
 //        }
@@ -168,6 +189,20 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
+    }
+    
+    func tapStop (gestureRecognizer:UITapGestureRecognizer) {
+        var tag = gestureRecognizer.view!.tag
+        if let sequenceId = sequences[tag].sequenceId as? Int {
+            var address:[UInt8] = []
+            if sequences[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else {
+                address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), UInt8(Int(sequences[tag].address))]
+            }
+            SendingHandler(byteArray: Function.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
+            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
+        }
     }
 }
 

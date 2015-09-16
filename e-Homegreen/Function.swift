@@ -280,6 +280,23 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+    static func cancelEvent (address:[UInt8], id:UInt8) -> [UInt8]{
+        var messageInfo:[UInt8] = [id, 0xEF]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x10
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
     static func setScene (address:[UInt8], id:Int) -> [UInt8]{
         var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
         var numberTwo:UInt8 = UInt8(id % 0x100)
