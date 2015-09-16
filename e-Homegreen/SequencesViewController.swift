@@ -121,6 +121,7 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
         } else {
             SendingHandler(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
         }
+        sequenceCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -167,14 +168,15 @@ extension SequencesViewController: UICollectionViewDataSource {
         
         var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
+        cell.sequenceTitle.userInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
         
-        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
-            cell.sequenceImageView.image = sceneImage
+        if let sequenceImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
+            cell.sequenceImageView.image = sequenceImage
         }
         
-        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
-            cell.sequenceImageView.highlightedImage = sceneImage
+        if let sequenceImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
+            cell.sequenceImageView.highlightedImage = sequenceImage
         }
         
         var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")

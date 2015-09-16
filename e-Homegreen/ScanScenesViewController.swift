@@ -31,8 +31,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     var selected:AnyObject?
     
     func endEditingNow(){
-        devAddressOne.resignFirstResponder()
-        devAddressTwo.resignFirstResponder()
+//        devAddressOne.resignFirstResponder()
+//        devAddressTwo.resignFirstResponder()
         devAddressThree.resignFirstResponder()
         IDedit.resignFirstResponder()
     }
@@ -54,8 +54,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         }
         refreshSceneList()
         
-        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
+//        devAddressOne.inputAccessoryView = keyboardDoneButtonView
+//        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         

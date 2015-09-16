@@ -112,16 +112,15 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
         if eventId >= 0 && eventId <= 255 {
             SendingHandler(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
         }
-        println(" ")
+        eventCollectionView.reloadData()
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        
         return collectionViewCellSize
-        
     }
 }
 
