@@ -393,7 +393,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         levelButton.layer.borderWidth = 1
         levelButton.tag = 2
-        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        //levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         pullDown.addSubview(levelButton)
         
