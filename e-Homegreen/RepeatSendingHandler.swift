@@ -9,14 +9,14 @@
 import Foundation
 import CoreData
 
-class RepeatSendingHandler {
+class RepeatSendingHandler: NSObject {
     
-    let byteArray: [UInt8]
-    let gateway: Gateway
+    var byteArray: [UInt8]!
+    var gateway: Gateway!
     var repeatCounter:Int = 1
     
-    var device:Device
-    let deviceOldValue:Int
+    var device:Device!
+    var deviceOldValue:Int!
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -28,7 +28,7 @@ class RepeatSendingHandler {
     // ================== Sending command for changing value of device ====================
     //
     init(byteArray:[UInt8], gateway: Gateway, notificationName:String, device:Device, oldValue:Int) {
-        
+        super.init()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         self.byteArray = byteArray
@@ -38,20 +38,22 @@ class RepeatSendingHandler {
         
         didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification", name: notificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification:", name: notificationName, object: nil)
     }
     
-    func didGetResponseNotification () {
+    func didGetResponseNotification (notification:NSNotification) {
         didGetResponse = true
         didGetResponseTimer!.invalidate()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "testTestTest123", object: nil)
     }
     
-    func sendComand () {
+    func sendCommand () {
         if !didGetResponse {
             if repeatCounter <= 4 {
                 SendingHandler(byteArray: byteArray, gateway: gateway)
                 repeatCounter += 1
             } else {
+                didGetResponseTimer!.invalidate()
                 device.currentValue = deviceOldValue
                 saveChanges()
                 NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self)

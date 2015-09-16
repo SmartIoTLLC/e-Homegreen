@@ -25,7 +25,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     var error:NSError? = nil
     
     var gateway:Gateway?
-    var events:[Event]?
+    var events:[Event] = []
     
     var selected:AnyObject?
     
@@ -49,7 +49,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
         for event in gateway!.events {
-            events!.append(event as! Event)
+            events.append(event as! Event)
         }
         refreshEventList()
         
@@ -159,12 +159,12 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("eventsCell") as? EventsCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(events![indexPath.row].eventId)"
-            cell.labelName.text = "\(events![indexPath.row].eventName)"
-            if let sceneImage = UIImage(data: events![indexPath.row].eventImageOne) {
+            cell.labelID.text = "\(events[indexPath.row].eventId)"
+            cell.labelName.text = "\(events[indexPath.row].eventName)"
+            if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
                 cell.imageOne.image = sceneImage
             }
-            if let sceneImage = UIImage(data: events![indexPath.row].eventImageTwo) {
+            if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
                 cell.imageTwo.image = sceneImage
             }
             return cell
@@ -177,11 +177,11 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = events![indexPath.row]
+        selected = events[indexPath.row]
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events!.count
+        return events.count
     }
 
 }

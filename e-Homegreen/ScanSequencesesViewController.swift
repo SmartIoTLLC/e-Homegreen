@@ -27,7 +27,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     var error:NSError? = nil
     
     var gateway:Gateway?
-    var sequences:[Sequence]?
+    var sequences:[Sequence] = []
     
     var selected:AnyObject?
     
@@ -51,8 +51,11 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for sequence in gateway!.sequences {
-            sequences!.append(sequence as! Sequence)
+        for sequenceFromGateway in gateway!.sequences {
+            if let sequence = sequenceFromGateway as? Sequence {
+                sequences.append(sequence)
+                println(sequences.count)
+            }
         }
         refreshSequenceList()
         
@@ -136,9 +139,10 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                 var sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
                 sequence.sequenceId = sceneId
                 sequence.sequenceName = sceneName
+                sequence.address = address
                 sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image)
                 sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
-                sequence.isBroadcast = NSNumber(bool: false)
+                sequence.isBroadcast = NSNumber(bool: broadcastSwitch.on)
                 sequence.gateway = gateway!
                 saveChanges()
                 refreshSequenceList()
@@ -161,12 +165,12 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sequencesCell") as? SequencesCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(sequences![indexPath.row].sequenceId)"
-            cell.labelName.text = "\(sequences![indexPath.row].sequenceName)"
-            if let sceneImage = UIImage(data: sequences![indexPath.row].sequenceImageOne) {
+            cell.labelID.text = "\(sequences[indexPath.row].sequenceId)"
+            cell.labelName.text = "\(sequences[indexPath.row].sequenceName)"
+            if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
                 cell.imageOne.image = sceneImage
             }
-            if let sceneImage = UIImage(data: sequences![indexPath.row].sequenceImageTwo) {
+            if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
                 cell.imageTwo.image = sceneImage
             }
         }
@@ -178,11 +182,11 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = sequences![indexPath.row]
+        selected = sequences[indexPath.row]
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sequences!.count
+        return sequences.count
     }
 
 }

@@ -26,7 +26,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     var error:NSError? = nil
     
     var gateway:Gateway?
-    var scenes:[Scene]?
+    var scenes:[Scene] = []
     
     var selected:AnyObject?
     
@@ -50,7 +50,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
         for scene in gateway!.scenes {
-            scenes!.append(scene as! Scene)
+            scenes.append(scene as! Scene)
         }
         refreshSceneList()
         
@@ -159,12 +159,12 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(scenes![indexPath.row].sceneId)"
-            cell.labelName.text = "\(scenes![indexPath.row].sceneName)"
-            if let sceneImage = UIImage(data: scenes![indexPath.row].sceneImageOne) {
+            cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
+            cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
+            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                 cell.imageOne.image = sceneImage
             }
-            if let sceneImage = UIImage(data: scenes![indexPath.row].sceneImageTwo) {
+            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
                 cell.imageTwo.image = sceneImage
             }
             return cell
@@ -177,11 +177,11 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = scenes![indexPath.row]
+        selected = scenes[indexPath.row]
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return scenes!.count
+        return scenes.count
     }
     
 }
