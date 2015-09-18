@@ -438,6 +438,20 @@ extension UIDevice {
 //                    return interfaceData[kCNNetworkInfoKeySSID] as? String
 //                }
 //            }
+            var currentSSID:String = ""
+            let interfaces:CFArray! = CNCopySupportedInterfaces()
+            for i in 0..<CFArrayGetCount(interfaces){
+                let interfaceName: UnsafePointer<Void> = CFArrayGetValueAtIndex(interfaces, i)
+                let rec = unsafeBitCast(interfaceName, AnyObject.self)
+                let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)")
+                if unsafeInterfaceData != nil {
+                    let interfaceData = unsafeInterfaceData! as NSDictionary!
+                    currentSSID = interfaceData["SSID"] as! String
+                    return currentSSID
+                } else {
+                    currentSSID = ""
+                }
+            }
             return nil
             
         }

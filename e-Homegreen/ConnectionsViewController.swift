@@ -21,7 +21,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     @IBOutlet weak var gatewayTableView: UITableView!
     @IBOutlet weak var topView: UIView!
     
-    var isPresenting:Bool = true
+    var isPresenting:Bool = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -67,6 +67,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        transitioningDelegate = self
         self.commonConstruct()
         let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
@@ -136,7 +137,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
-//        self.performSegueWithIdentifier("unwindSettings", sender: self)
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {

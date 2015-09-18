@@ -67,22 +67,22 @@ class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
         print("Nemoj mi samo reci da je ovo problem!")
     }
     func setupConnection1(){
-        var error : NSError?
+//        var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
         do {
             try socket.bindToPort(port)
         } catch let error1 as NSError {
-            error = error1
+            print("4 \(error1)")
         }
         do {
             try socket.connectToHost(ip, onPort: port)
         } catch let error1 as NSError {
-            error = error1
+            print("4 \(error1)")
         }
         do {
             try socket.enableBroadcast(true)
         } catch let error1 as NSError {
-            error = error1
+            print("4 \(error1)")
         }
         send("ping")
     }

@@ -155,7 +155,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
         }
 //        let gestureIsDraggingFromRigthToLeft = (gestureRecognizer.velocityInView(view).x < 0)
 //        println(gestureIsDraggingFromRigthToLeft)
-        if let slider = touch.view as? UISlider {
+        if let _ = touch.view as? UISlider {
             return false
         }
         return true

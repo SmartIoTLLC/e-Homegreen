@@ -30,24 +30,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         }
 
     }
-    
-    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {
-        if let id = identifier{
-            if id == "unwindSettings" {
-                let unwindSegue = SettingsUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
-                    
-                })
-                return unwindSegue
-            }
-        }
-        
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
-    }
-    
-    @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
-        
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

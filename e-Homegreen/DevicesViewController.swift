@@ -471,7 +471,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var zoneSearch:String = "All"
     var categorySearch:String = "All"
     func saveText(strText: String) {
-        if let tag = senderButton!.tag as? Int {
+        let tag = senderButton!.tag
             switch tag {
             case 1:
                 locationSearch = strText
@@ -487,7 +487,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             updateDeviceList()
             deviceCollectionView.reloadData()
             senderButton?.setTitle(strText, forState: .Normal)
-        }
+        
     }
     
     @available(iOS 8.0, *)

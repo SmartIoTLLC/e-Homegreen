@@ -64,8 +64,6 @@
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
-		E709867B1BAC0826002BAC87 /* SettingsUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E709867A1BAC0826002BAC87 /* SettingsUnwind.swift */; settings = {ASSET_TAGS = (); }; };
-		E709867D1BAC0891002BAC87 /* SettingsSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E709867C1BAC0891002BAC87 /* SettingsSegue.swift */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
@@ -212,8 +210,6 @@
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E709867A1BAC0826002BAC87 /* SettingsUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsUnwind.swift; sourceTree = "<group>"; };
-		E709867C1BAC0891002BAC87 /* SettingsSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSegue.swift; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
 		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
@@ -512,8 +508,6 @@
 				73DB84A61B3013B2000DB4EB /* DatabaseViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
-				E709867C1BAC0891002BAC87 /* SettingsSegue.swift */,
-				E709867A1BAC0826002BAC87 /* SettingsUnwind.swift */,
 				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
 				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
 				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
@@ -895,7 +889,6 @@
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
-				E709867B1BAC0826002BAC87 /* SettingsUnwind.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
@@ -921,7 +914,6 @@
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
-				E709867D1BAC0891002BAC87 /* SettingsSegue.swift in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,

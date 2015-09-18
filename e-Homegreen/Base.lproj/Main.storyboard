@@ -1963,7 +1963,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XA5-hK-WEz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-436" y="1600"/>
+            <point key="canvasLocation" x="-429" y="1533"/>
         </scene>
         <!--Scenes View Controller-->
         <scene sceneID="bqd-Ev-0IK">
@@ -3405,14 +3405,13 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="settingsTableView" destination="pXc-gk-3gj" id="p4L-Tk-OIz"/>
-                        <segue destination="Rfu-9c-EhD" kind="custom" identifier="databaseSettings" id="UtL-h7-BWt"/>
                         <segue destination="rly-Zt-L69" kind="custom" identifier="connectionSettings" customClass="CustomSegue" customModule="e_Homegreen" customModuleProvider="target" id="udR-PT-Jtb"/>
                         <segue destination="cx0-di-cec" kind="custom" identifier="menuSettings" customClass="CustomSegue" customModule="e_Homegreen" customModuleProvider="target" id="jCv-nG-vLG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OpW-oq-dSq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="126" y="727"/>
+            <point key="canvasLocation" x="-49" y="749"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="lyA-hx-IpT">
@@ -3721,7 +3720,7 @@
                     <navigationItem key="navigationItem" id="B6r-Pk-LKt"/>
                     <connections>
                         <outlet property="topView" destination="nHO-Xa-7xo" id="M3a-Vl-P1X"/>
-                        <segue destination="ss4-wQ-fe4" kind="unwind" identifier="unwindSettings" unwindAction="returnFromSegueActions:" id="113-qd-ie8"/>
+                        <segue destination="ss4-wQ-fe4" kind="unwind" identifier="unWindSettings" unwindAction="returnFromSegueActions:" id="lea-Ev-smV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2eA-f2-dCf" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,7 +15,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     var menuList:[NSString] = []
     var listOfMenuItems: Array<MenuItem>!
     
-    var isPresenting:Bool = true
+    var isPresenting:Bool = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -34,7 +34,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
-//        self.transitioningDelegate = self
+        self.transitioningDelegate = self
         
         menuItems = MenuViewControllers.sharedInstance.allMenuItems()
         listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
@@ -150,8 +150,9 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
         NSUserDefaults.standardUserDefaults().synchronize()
         self.dismissViewControllerAnimated(true, completion: nil)
-//        self.performSegueWithIdentifier("unwindSettings", sender: self)
     }
+    
+
 
 
 }
