@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/ConnectionSettingsVC.swift"
-            timestampString = "464276064.228497"
+            timestampString = "464276479.476188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
             landmarkName = "UIDevice"
             landmarkType = "3">
          </BreakpointContent>
