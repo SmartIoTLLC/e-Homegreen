@@ -59,23 +59,33 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
         scenesCollectionView.reloadData()
     }
     func updateSceneList () {
-        var fetchRequest = NSFetchRequest(entityName: "Scene")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Scene")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
-        if let results = fetResults {
-            scenes = results
-        } else {
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            scenes = fetResults!
+        } catch  {
             
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+//        if let results = fetResults {
+//            scenes = results
+//        } else {
+//            
+//        }
+        
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -102,12 +112,12 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
             
-            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+            let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
             zoneLabel.text = "Zone"
             zoneLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(zoneLabel)
             
-            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
             zoneButton.backgroundColor = UIColor.grayColor()
             zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
             zoneButton.setTitle("All", forState: UIControlState.Normal)
@@ -141,12 +151,12 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
-            var zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+            let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
             zoneLabel.text = "Scene"
             zoneLabel.textColor = UIColor.whiteColor()
             pullDown.addSubview(zoneLabel)
             
-            var zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+            let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
             zoneButton.backgroundColor = UIColor.grayColor()
             zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
             zoneButton.setTitle("All", forState: UIControlState.Normal)
@@ -186,6 +196,7 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
         
     }
     
+    @available(iOS 8.0, *)
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -241,7 +252,7 @@ extension ScenesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = cell.bounds
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -249,7 +260,7 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellLabel.tag = indexPath.row
         cell.sceneCellLabel.userInteractionEnabled = true
         
-        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.sceneCellLabel.addGestureRecognizer(longPress)
         
@@ -268,11 +279,11 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
     
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
-        var tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(scenesCollectionView)
             if let index = scenesCollectionView.indexPathForItemAtPoint(location){
-                var cell = scenesCollectionView.cellForItemAtIndexPath(index)
+                let cell = scenesCollectionView.cellForItemAtIndexPath(index)
                 showSceneParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - scenesCollectionView.contentOffset.y), scene: scenes[tag])
             }
         }

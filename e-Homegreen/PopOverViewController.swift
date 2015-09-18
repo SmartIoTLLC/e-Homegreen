@@ -55,16 +55,17 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     func updateDeviceList (whatToFetch:String, array:String) {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        var fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetchRequest = NSFetchRequest(entityName: "Device")
         fetchRequest.propertiesToFetch = [whatToFetch]
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.returnsDistinctResults = true
         fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
-        var sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        if let results = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) {
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest)
             for device in results {
-                println(device[whatToFetch]!)
+                print(device[whatToFetch]!)
 //                var zoneIdString = device["zoneId"]
                 if let fetchedObject:Int = device[whatToFetch] as? Int {
                     switch array {
@@ -77,14 +78,15 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                     case "categoryList":
                         categoryList.append("\(fetchedObject)")
                     default:
-                        println(zoneList)
+                        print(zoneList)
                     }
                 }
                 if let gatewayName = device[whatToFetch] as? String {
                     gatewayList.append("\(gatewayName)")
                 }
             }
-        } else {
+        } catch let error1 as NSError {
+            error = error1
             
         }
     }

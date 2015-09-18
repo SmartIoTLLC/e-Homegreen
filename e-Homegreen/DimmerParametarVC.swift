@@ -44,7 +44,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
         self.point = point
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -67,7 +67,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
 //        self.view.addGestureRecognizer(tapGesture)
 //        self.view.tag = 1
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backView.layer.insertSublayer(gradient, atIndex: 0)
@@ -111,9 +111,9 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     }
     
     func handleTap(gesture:UITapGestureRecognizer){
-        var point:CGPoint = gesture.locationInView(self.view)
-        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        println(tappedView.tag)
+        let point:CGPoint = gesture.locationInView(self.view)
+        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
+        print(tappedView.tag)
         if tappedView.tag == 1{
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -143,7 +143,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     
 
     @IBAction func btnSave(sender: AnyObject) {
-        if let numberOne = editDelay.text.toInt(), let numberTwo = editRunTime.text.toInt(), let numberThree = editSkipState.text.toInt() {
+        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
             if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
                 getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
                 self.dismissViewControllerAnimated(true, completion: nil)
@@ -154,7 +154,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     func getDeviceAndSave (numberOne:Int, numberTwo:Int, numberThree:Int) {
         if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
             device = deviceObject
-            println(device)
+            print(device)
             device!.delay = numberOne
             device!.runtime = numberTwo
             device!.skipState = numberThree
@@ -162,8 +162,11 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
         }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -171,7 +174,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
 
 extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -188,7 +191,7 @@ extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 
@@ -201,7 +204,7 @@ extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -236,7 +239,7 @@ extension DimmerParametarVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showDimmerParametar(point:CGPoint, indexPathRow: Int, devices:[Device]) {
-        var ad = DimmerParametarVC(point: point)
+        let ad = DimmerParametarVC(point: point)
         ad.indexPathRow = indexPathRow
         ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)

@@ -42,13 +42,13 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     //pragma mark - LXReorderableCollectionViewDataSource methods
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, willMoveToIndexPath toIndexPath: NSIndexPath!) {
-        var pom = menuItems[fromIndexPath.item]
+        let pom = menuItems[fromIndexPath.item]
         menuItems.removeAtIndex(fromIndexPath.item)
         menuItems.insert(pom, atIndex: toIndexPath.item)
         
     }
     
-    func collectionView(collectionView: UICollectionView!, canMoveItemAtIndexPath indexPath: NSIndexPath!) -> Bool {
+    func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 //        var pom = menuItems[fromIndexPath.item]
         if indexPath.item == (menuItems.count - 1) {
             return false
@@ -66,19 +66,19 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     //pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        println("did begin drag")
+        print("did begin drag")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        println("did end drag")
+        print("did end drag")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        println("will begin drag")
+        print("will begin drag")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        println("will end drag")
+        print("will end drag")
     }
 
     
@@ -139,7 +139,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
         if cell.gradientLayer == nil {
-            var gradient:CAGradientLayer = CAGradientLayer()
+            let gradient:CAGradientLayer = CAGradientLayer()
             gradient.frame = cell.bounds
             gradient.colors = [UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor, UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor]
             gradient.locations = [0.0, 1.0]

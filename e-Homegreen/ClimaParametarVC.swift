@@ -35,7 +35,7 @@ class ClimaParametarVC: UIViewController {
         self.point = point
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -48,7 +48,7 @@ class ClimaParametarVC: UIViewController {
 //        self.view.tag = 1
         
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backView.layer.insertSublayer(gradient, atIndex: 0)
@@ -66,7 +66,7 @@ class ClimaParametarVC: UIViewController {
         lblLevel.text = "\(devices[indexPathRow].parentZoneId)"
         lblZone.text = "\(devices[indexPathRow].zoneId)"
         lblCategory.text = "\(devices[indexPathRow].categoryId)"
-        println(devices[indexPathRow])
+        print(devices[indexPathRow])
         
         self.view.backgroundColor = UIColor.clearColor()
 
@@ -82,9 +82,9 @@ class ClimaParametarVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func handleTap(gesture:UITapGestureRecognizer){
-        var point:CGPoint = gesture.locationInView(self.view)
-        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        println(tappedView.tag)
+        let point:CGPoint = gesture.locationInView(self.view)
+        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
+        print(tappedView.tag)
         if tappedView.tag == 1{
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -122,7 +122,7 @@ class ClimaParametarVC: UIViewController {
 
 extension ClimaParametarVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -139,7 +139,7 @@ extension ClimaParametarVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 
@@ -152,7 +152,7 @@ extension ClimaParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -187,7 +187,7 @@ extension ClimaParametarVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showClimaParametar(point:CGPoint, indexPathRow: Int, devices:[Device]) {
-        var ad = ClimaParametarVC(point: point)
+        let ad = ClimaParametarVC(point: point)
         ad.indexPathRow = indexPathRow
         ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)

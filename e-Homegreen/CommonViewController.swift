@@ -23,7 +23,7 @@ class CommonViewController: UIViewController {
     
     var backgroundImageView = UIImageView()
     override func viewWillAppear(animated: Bool) {
-        println()
+        print("")
     }
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")

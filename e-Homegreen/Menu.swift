@@ -23,14 +23,14 @@ class Menu {
     }
     
     class func allMenuItems() -> Array<Menu> {
-        var returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
+        let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
         
         
         if let unwrappedTitlesForTip = returnValue {
             var menu: Array<Menu>!
             for item in unwrappedTitlesForTip{
                 
-                var men:Menu = Menu (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
+                let men:Menu = Menu (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
                 menu.append(men)
             }
             return menu
@@ -140,7 +140,7 @@ class MenuViewControllers: NSObject {
     }
     
     func allMenuItems1() -> Array<MenuItem> {
-        var returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
+        let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
         
         
         if let unwrappedTitlesForTip = returnValue {
@@ -148,7 +148,7 @@ class MenuViewControllers: NSObject {
             
             for item in unwrappedTitlesForTip{
                 
-                var men:MenuItem = MenuItem (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
+                let men:MenuItem = MenuItem (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
                 menu.append(men)
             }
             return menu

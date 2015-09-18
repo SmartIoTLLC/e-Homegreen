@@ -32,8 +32,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        println(parentViewController)
-        println(presentingViewController)
+        print(parentViewController)
+        print(presentingViewController)
         for device in gateway!.devices {
             devices.append(device as! Device)
         }
@@ -42,7 +42,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
         let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        var toolbarButtons = [item]
+        let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
@@ -70,20 +70,28 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        var fetchRequest = NSFetchRequest(entityName: "Device")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Device")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            devices = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+//        if let results = fetResults {
+//            devices = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -116,14 +124,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                         searchForDeviceWithId = searchForDeviceWithId! + 1
                         searchDeviceTimer?.invalidate()
                         searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-                        var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                        let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                         SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                     } else {
                         loader.hideActivityIndicator()
                     }
                 } else {
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 }
             } else {
@@ -132,7 +140,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     searchForDeviceWithId = searchForDeviceWithId! + 1
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 } else {
                     loader.hideActivityIndicator()
@@ -147,7 +155,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             searchForDeviceWithId = searchForDeviceWithId! + 1
             searchDeviceTimer?.invalidate()
             searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-            var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+            let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
             SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
         } else {
             searchForDeviceWithId = 0
@@ -196,7 +204,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
                     sendCommandForFindingName(index: deviceIndex)
                 } else {
-                    var newIndex = deviceIndex + 1
+                    let newIndex = deviceIndex + 1
                     timesRepeatedCounter = 0
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
                     sendCommandForFindingName(index: newIndex)
@@ -205,21 +213,21 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func sendCommandForFindingName (#index:Int) {
+    func sendCommandForFindingName (index index:Int) {
         if devices[index].type == "Dimmer" {
-            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
-            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "hvac" {
-            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == "sensor" {
-            var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             SendingHandler(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
@@ -237,8 +245,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -267,7 +278,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func findDevice(sender: AnyObject) {
         if rangeFrom.text != "" && rangeTo.text != "" {
-            if let numberOne = rangeFrom.text.toInt(), let numberTwo = rangeTo.text.toInt() {
+            if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
                 if numberTwo >= numberOne {
                     fromAddress = numberOne
                     toAddress = numberTwo
@@ -279,7 +290,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                         loader.showActivityIndicator(self.view)
                     }
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-                    var address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 }
             }
@@ -297,7 +308,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func findNames(sender: AnyObject) {
-        var index:Int
+//        var index:Int
         if devices.count != 0 {
             index = 0
             timesRepeatedCounter = 0

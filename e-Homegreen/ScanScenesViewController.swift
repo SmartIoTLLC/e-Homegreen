@@ -45,7 +45,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
         let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        var toolbarButtons = [item]
+        let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
@@ -80,24 +80,35 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     }
     
     func updateSceneList () {
-        var fetchRequest = NSFetchRequest(entityName: "Scene")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Scene")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
-        if let results = fetResults {
-            scenes = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            scenes = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+//        if let results = fetResults {
+//            scenes = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -132,13 +143,13 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt() {
+        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                var scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
                 scene.sceneId = sceneId
                 scene.sceneName = sceneName
-                scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image)
-                scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 scene.isBroadcast = NSNumber(bool: false)
                 scene.gateway = gateway!
                 saveChanges()

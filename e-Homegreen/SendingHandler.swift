@@ -19,7 +19,7 @@ class SendingHandler: NSObject {
             if gateway.ssid == ssid {
                 //  Send via local ip
                 if appDel.inOutSockets != [] {
-                    var i:Int
+//                    var i:Int
                     for i in 0...appDel.inOutSockets.count-1 {
                         if appDel.inOutSockets[i].port == UInt16(Int(gateway.localPort)) {
                             appDel.inOutSockets[i].sendByte(gateway.localIp, arrayByte:byteArray)
@@ -29,10 +29,10 @@ class SendingHandler: NSObject {
             } else {
                 //  Send via remote ip
                 if appDel.inOutSockets != [] {
-                    var i:Int
+//                    var i:Int
                     for i in 0...appDel.inOutSockets.count-1 {
                         if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-                            println(gateway.remoteIpInUse)
+                            print(gateway.remoteIpInUse)
                             appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
                         }
                     }
@@ -41,10 +41,10 @@ class SendingHandler: NSObject {
         } else {
             //  Send vie remote ip
             if appDel.inOutSockets != [] {
-                var i:Int
+//                var i:Int
                 for i in 0...appDel.inOutSockets.count-1 {
                     if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-                        println(gateway.remoteIpInUse)
+                        print(gateway.remoteIpInUse)
                         appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
                     }
                 }

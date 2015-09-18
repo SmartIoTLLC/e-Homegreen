@@ -77,23 +77,36 @@ class EventsViewController: CommonViewController {
         eventCollectionView.reloadData()
     }
     func updateEventsList () {
-        var fetchRequest = NSFetchRequest(entityName: "Event")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Event")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Event]
-        if let results = fetResults {
-            events = results
-        } else {
-            
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+            events = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+        
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+//        if let results = fetResults {
+//            events = results
+//        } else {
+//            
+//        }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -137,7 +150,7 @@ extension EventsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! EventsCollectionViewCell
         //2
         //        let flickrPhoto = photoForIndexPath(indexPath)
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = cell.bounds
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -147,7 +160,7 @@ extension EventsViewController: UICollectionViewDataSource {
         cell.eventTitle.tag = indexPath.row
         cell.eventTitle.userInteractionEnabled = true
         
-        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.eventTitle.addGestureRecognizer(longPress)
         
@@ -159,7 +172,7 @@ extension EventsViewController: UICollectionViewDataSource {
             cell.eventImageView.highlightedImage = eventImage
         }
         
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
         cell.eventButton.addGestureRecognizer(tap)
         cell.eventButton.tag = indexPath.row
         
@@ -170,7 +183,7 @@ extension EventsViewController: UICollectionViewDataSource {
     }
     
     func tapCancel (gestureRecognizer:UITapGestureRecognizer) {
-        var tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
         if let eventId = events[tag].eventId as? Int {
             var address:[UInt8] = []
             if events[tag].isBroadcast.boolValue {
@@ -184,11 +197,11 @@ extension EventsViewController: UICollectionViewDataSource {
     }
     
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
-        var tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(eventCollectionView)
             if let index = eventCollectionView.indexPathForItemAtPoint(location){
-                var cell = eventCollectionView.cellForItemAtIndexPath(index)
+                let cell = eventCollectionView.cellForItemAtIndexPath(index)
                 showEventParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - eventCollectionView.contentOffset.y), event: events[tag])
             }
         }

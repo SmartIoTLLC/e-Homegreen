@@ -29,14 +29,14 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
     }
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     @IBOutlet weak var isBroadcast: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backView.layer.insertSublayer(gradient, atIndex: 0)
@@ -70,15 +70,18 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view.isDescendantOfView(backView){
+        if touch.view!.isDescendantOfView(backView){
             return false
         }
         return true
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -92,7 +95,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
 
 extension EventParametarVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -109,7 +112,7 @@ extension EventParametarVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 
@@ -122,7 +125,7 @@ extension EventParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -157,7 +160,7 @@ extension EventParametarVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showEventParametar(point:CGPoint, event:Event) {
-        var ep = EventParametarVC(point: point)
+        let ep = EventParametarVC(point: point)
 //        ad.indexPathRow = indexPathRow
         ep.event = event
         self.view.window?.rootViewController?.presentViewController(ep, animated: true, completion: nil)

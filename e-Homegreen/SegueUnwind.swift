@@ -15,13 +15,13 @@ class SegueUnwind: UIStoryboardSegue {
     
         
         
-        var secondVCView = self.sourceViewController.view as UIView!
-        var firstVCView = self.destinationViewController.view as UIView!
+        let secondVCView = self.sourceViewController.view as UIView!
+        let firstVCView = self.destinationViewController.view as UIView!
         
-        let screenHeight = UIScreen.mainScreen().bounds.size.height
+//        let screenHeight = UIScreen.mainScreen().bounds.size.height
         let screenWidth = UIScreen.mainScreen().bounds.size.width
         
-        let window = UIApplication.sharedApplication().keyWindow
+//        let window = UIApplication.sharedApplication().keyWindow
         secondVCView.superview?.insertSubview(firstVCView, atIndex: 0)
 
 //        window?.insertSubview(firstVCView, aboveSubview: secondVCView)

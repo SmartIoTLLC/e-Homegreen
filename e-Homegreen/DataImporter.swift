@@ -29,58 +29,73 @@ class DataImporter {
 //    }
     class func createZonesFromFile (fileName:String) -> [ZoneJSON]? {
         var data:NSData!
-        var paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        var filePath = paths.stringByAppendingPathComponent(fileName)
-        var checkValidation = NSFileManager.defaultManager()
+        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+        let filePath = paths.stringByAppendingPathComponent(fileName)
+        let checkValidation = NSFileManager.defaultManager()
         if checkValidation.fileExistsAtPath(filePath) {
-            println("Postoji.")
+            print("Postoji.")
             data = NSData(contentsOfFile: filePath)
-            var jsonError: NSError?
-            if let file = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? JSONDictionary {
-                if jsonError == nil {
-                    if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
-                        var zones:[ZoneJSON] = []
-                        for zone in zonesDictionary {
-                            zones.append(ZoneJSON(dictionary: zone)!)
-                        }
-                        return zones
-                    }
-                }
-                return nil
+            let jsonError: NSError?
+            
+            do {
+                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary
+//                if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
+//                    var zones:[ZoneJSON] = []
+//                    for zone in zonesDictionary {
+//                        zones.append(ZoneJSON(dictionary: zone)!)
+//                    }
+//                    return zones
+//                }
+            } catch let error1 as NSError {
+                jsonError = error1
+                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                abort()
             }
+//            if let file = NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary {
+//                if jsonError == nil {
+//                    if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
+//                        var zones:[ZoneJSON] = []
+//                        for zone in zonesDictionary {
+//                            zones.append(ZoneJSON(dictionary: zone)!)
+//                        }
+//                        return zones
+//                    }
+//                }
+//                return nil
+//            }
             return nil
             
         } else {
-            println("Ne postoji.fileName")
+            print("Ne postoji.fileName")
         }
         return nil
     }
     class func createCategoriesFromFile (fileName:String) -> [CategoryJSON]? {
         var data:NSData!
-        var paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        var filePath = paths.stringByAppendingPathComponent(fileName)
-        var checkValidation = NSFileManager.defaultManager()
+        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+        let filePath = paths.stringByAppendingPathComponent(fileName)
+        let checkValidation = NSFileManager.defaultManager()
         if checkValidation.fileExistsAtPath(filePath) {
-            println("Postoji.")
+            print("Postoji.")
             data = NSData(contentsOfFile: filePath)
-            var jsonError: NSError?
-            if let file = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? JSONDictionary {
-                if jsonError == nil {
-                    if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
-                        var categories:[CategoryJSON] = []
-                        for category in categoriesDictionary {
-                            categories.append(CategoryJSON(dictionary: category)!)
-                        }
-                        return categories
-                    }
-                }
-                return nil
-            }
+            let jsonError: NSError?
+//            if let file = NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary {
+//                if jsonError == nil {
+//                    if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
+//                        var categories:[CategoryJSON] = []
+//                        for category in categoriesDictionary {
+//                            categories.append(CategoryJSON(dictionary: category)!)
+//                        }
+//                        return categories
+//                    }
+//                }
+//                return nil
+//            }
             return nil
             
             
         } else {
-            println("Ne postoji.fileName")
+            print("Ne postoji.fileName")
         }
         return nil
     }
@@ -98,7 +113,7 @@ struct ZoneJSON {
 extension ZoneJSON {
     init?(dictionary:JSONDictionary) {
         if let id = dictionary["ID"] as? String, let level = dictionary["Level"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-            if let idInt = id.toInt(), levelInt = level.toInt() {
+            if let idInt = Int(id), levelInt = Int(level) {
                 self.id = idInt
                 self.level = levelInt
                 self.name = name
@@ -119,12 +134,12 @@ struct CategoryJSON {
 extension CategoryJSON {
     init?(dictionary:JSONDictionary) {
         if let id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-            if let idInt = id.toInt() {
+//            if let idInt = Int(id) {
                 self.id = id
                 self.name = name
                 self.description = description
                 return
-            }
+//            }
         }
         return nil
     }

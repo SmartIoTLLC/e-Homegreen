@@ -33,12 +33,12 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view.isDescendantOfView(gallery){
+        if touch.view!.isDescendantOfView(gallery){
             return false
         }
         return true
@@ -47,12 +47,12 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backview.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backview.layer.insertSublayer(gradient, atIndex: 0)
@@ -92,7 +92,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
+        let cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
         
         cell.cellImage.image = UIImage(named: galleryList[indexPath.row])
         
@@ -133,7 +133,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
 
 extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -148,7 +148,7 @@ extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
@@ -157,7 +157,7 @@ extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -193,7 +193,7 @@ extension SceneGalleryVC :  UIViewControllerTransitioningDelegate{
 
 extension UIViewController {
     func showGallery(index:Int) -> SceneGalleryVC {
-        var galleryVC = SceneGalleryVC()
+        let galleryVC = SceneGalleryVC()
         galleryVC.imageIndex = index
         self.presentViewController(galleryVC, animated: true, completion: nil)
         return galleryVC

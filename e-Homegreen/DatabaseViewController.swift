@@ -31,7 +31,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     @IBOutlet weak var btnChooseGateway: UIButton!
     var isPresenting:Bool = true
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         transitioningDelegate = self
     }
@@ -40,7 +40,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         super.viewDidLoad()
         btnChooseGateway.setTitle("Choose your connection", forState: UIControlState.Normal)
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
         }else{
@@ -75,9 +75,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     @IBAction func btnFindNames(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
-            var index:Int
+//            var index:Int
             for index in 0...devices.count-1 {
-                var number:NSTimeInterval = NSTimeInterval(index)
+                let number:NSTimeInterval = NSTimeInterval(index)
                 NSTimer.scheduledTimerWithTimeInterval(number*0.5, target: self, selector: "getDevicesNames:", userInfo: index, repeats: false)
             }
         }
@@ -85,20 +85,20 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     func getDevicesNames (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
             if devices[index].type == "Dimmer" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
                 SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             if devices[index].type == "curtainsRelay" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
                 SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             
             if devices[index].type == "hvac" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
                 SendingHandler(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             if devices[index].type == "sensor" {
-                var address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+                let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
                 SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
         }
@@ -135,6 +135,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         }
     }
     
+    @available(iOS 8.0, *)
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -146,20 +147,29 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        var fetchRequest = NSFetchRequest(entityName: "Device")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        var sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Device")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         let predicate = NSPredicate(format: "gateway == %@", gateways[choosedGatewayIndex].objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            devices = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+        
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+//        if let results = fetResults {
+//            devices = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     
     func refreshDeviceListOnDatabasVC () {
@@ -179,17 +189,25 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     func fetchAllGateways () {
-        var fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicate = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicate
         let sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor1]
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            gateways = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//        if let results = fetResults {
+//            gateways = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     
     func commonConstruct() {
@@ -203,9 +221,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     
     @IBAction func findDevices(sender: AnyObject) {
         if choosedGatewayIndex != -1 {
-            var number:Int = 1
+//            var number:Int = 1
             if idRangeFrom.text != "" && idRangeFrom.text != "" {
-                if let numberOne = idRangeFrom.text.toInt(), let numberTwo = idRangeTo.text.toInt() {
+                if let numberOne = Int(idRangeFrom.text!), let numberTwo = Int(idRangeTo.text!) {
                     if numberTwo >= numberOne {
                         loader.showActivityIndicator(self.view)
                         var dictionary:[Int:Int] = [:]
@@ -213,9 +231,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
                             dictionary[i] = numberOne + i
                         }
                         for i in 0...(numberTwo-numberOne) {
-                            var calculation:NSNumber = i
-                            var number:NSTimeInterval = NSTimeInterval(calculation.doubleValue)
-                            println("   \(number)    ")
+                            let calculation:NSNumber = i
+                            let number:NSTimeInterval = NSTimeInterval(calculation.doubleValue)
+                            print("   \(number)    ")
                             NSTimer.scheduledTimerWithTimeInterval(number, target: self, selector: "searchIds:", userInfo: dictionary[i]!, repeats: false)
                         }
                         for var i = numberOne; i <= numberTwo; ++i {
@@ -228,9 +246,9 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     func searchIds(timer:NSTimer) {
-        println("!!!   \(timer.userInfo)    !!!")
+        print("!!!   \(timer.userInfo)    !!!")
         if let deviceNumber = timer.userInfo as? Int {
-            var address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
+            let address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
             SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateways[choosedGatewayIndex])
         }
     }
@@ -251,13 +269,16 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5
     }
     
@@ -269,20 +290,21 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView.bounds.size.width
-            containerView.addSubview(presentedControllerView)
+            presentedControllerView.center.x += containerView!.bounds.size.width
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView.bounds.size.width
+                presentedControllerView.center.x -= containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            
             let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView.bounds.size.width
+                presentedControllerView.center.x += containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })

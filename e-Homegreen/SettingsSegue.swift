@@ -1,16 +1,16 @@
 //
-//  CustomSegue.swift
+//  SettingsSegue.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 7/27/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Vladimir on 9/18/15.
+//  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class CustomSegue: UIStoryboardSegue {
-    
+class SettingsSegue: UIStoryboardSegue {
     override func perform() {
+        // Assign the source and destination views to local variables.
         let firstVCView = self.sourceViewController.view as UIView!
         let secondVCView = self.destinationViewController.view as UIView!
         
@@ -19,8 +19,7 @@ class CustomSegue: UIStoryboardSegue {
         let screenHeight = UIScreen.mainScreen().bounds.size.height
         
         // Specify the initial position of the destination view.
-        secondVCView.frame = CGRectMake(screenWidth, 0.0, screenWidth, screenHeight)
-    
+        secondVCView.frame = CGRectMake(0.0, screenHeight, screenWidth, screenHeight)
         
         // Access the app's key window and insert the destination view above the current (source) one.
         let window = UIApplication.sharedApplication().keyWindow
@@ -28,15 +27,14 @@ class CustomSegue: UIStoryboardSegue {
         
         // Animate the transition.
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-//            firstVCView.frame = CGRectOffset(firstVCView.frame, -screenWidth, 0)
-            secondVCView.frame = CGRectOffset(secondVCView.frame, -screenWidth, 0)
+            firstVCView.frame = CGRectOffset(firstVCView.frame, 0.0, -screenHeight)
+            secondVCView.frame = CGRectOffset(secondVCView.frame, 0.0, -screenHeight)
             
             }) { (Finished) -> Void in
-
-                self.sourceViewController.presentViewController(self.destinationViewController ,
+                self.sourceViewController.presentViewController(self.destinationViewController as UIViewController,
                     animated: false,
                     completion: nil)
         }
+        
     }
-   
 }

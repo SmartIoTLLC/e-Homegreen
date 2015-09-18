@@ -47,14 +47,14 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
         let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        var toolbarButtons = [item]
+        let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
         for sequenceFromGateway in gateway!.sequences {
             if let sequence = sequenceFromGateway as? Sequence {
                 sequences.append(sequence)
-                println(sequences.count)
+                print(sequences.count)
             }
         }
         refreshSequenceList()
@@ -86,23 +86,34 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     func updateSequenceList () {
-        var fetchRequest = NSFetchRequest(entityName: "Sequence")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Sequence")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Sequence]
-        if let results = fetResults {
-            sequences = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+            sequences = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+//        if let results = fetResults {
+//            sequences = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -137,14 +148,14 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = IDedit.text.toInt(), let sceneName = nameEdit.text, let address = devAddressThree.text.toInt(), let cycles = editCycle.text.toInt() {
+        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
             if sceneId <= 32767 && address <= 255 {
-                var sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
+                let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
                 sequence.sequenceId = sceneId
                 sequence.sequenceName = sceneName
                 sequence.address = address
-                sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image)
-                sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image)
+                sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 sequence.isBroadcast = NSNumber(bool: broadcastSwitch.on)
                 sequence.sequenceCycles = cycles
                 sequence.gateway = gateway!

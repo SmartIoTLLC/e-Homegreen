@@ -65,7 +65,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        var storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
         scanSceneViewController = storyboard.instantiateViewControllerWithIdentifier("ScanScenes") as! ScanScenesViewController
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
@@ -82,7 +82,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width {
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
         } else {
@@ -118,51 +118,86 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
     func updateSceneList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        var fetchRequest = NSFetchRequest(entityName: "Scene")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Scene")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene]
-        if let results = fetResults {
-            choosedTabArray = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            choosedTabArray = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+//        if let results = fetResults {
+//            choosedTabArray = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     func updateListFetchingFromCD (entity:String, entityId:String, entityName:String) {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        var fetchRequest = NSFetchRequest(entityName: entity)
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: entityId, ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: entityName, ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: entity)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: entityId, ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: entityName, ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
         fetchRequest.predicate = predicate
         switch entity {
         case "Scene":
-            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Scene] {
-                choosedTabArray = fetResults
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+                choosedTabArray = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
             }
+//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene] {
+//                choosedTabArray = fetResults
+//            }
         case "Event":
-            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Event] {
-                choosedTabArray = fetResults
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+                choosedTabArray = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
             }
+//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event] {
+//                choosedTabArray = fetResults
+//            }
         case "Sequence":
-            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Sequence] {
-                choosedTabArray = fetResults
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+                choosedTabArray = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
             }
+//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence] {
+//                choosedTabArray = fetResults
+//            }
         default:
-            println()
+            print("")
         }
     }
     func refreshSceneList() {
@@ -193,7 +228,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             if let popoverController = popoverVC.popoverPresentationController {
                 popoverController.delegate = self
                 popoverController.permittedArrowDirections = .Any
-                popoverController.sourceView = sender as! UIView
+                popoverController.sourceView = sender as? UIView
                 popoverController.sourceRect = sender.bounds
                 popoverController.backgroundColor = UIColor.lightGrayColor()
                 presentViewController(popoverVC, animated: true, completion: nil)
@@ -201,12 +236,13 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             }
     }
     
+    @available(iOS 8.0, *)
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
     
     func saveText(strText: String) {
-        println(reverse(strText))
+        print(Array(strText.characters.reverse()))
         senderButton?.setTitle(strText, forState: .Normal)
         if strText == "Devices" {
             choosedTab = .Devices
@@ -222,17 +258,17 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //            oldController.removeFromParentViewController()
 //            newController.didMoveToParentViewController(self)
             
-            let oldController = childViewControllers.last as! UIViewController
+            let oldController = childViewControllers.last
 //            oldController.view.hidden = true
 //            
 //            scanDeviceViewController.view.hidden = false
-            println("To care")
+            print("To care")
             self.addChildViewController(scanDeviceViewController)
             scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanDeviceViewController.view)
             scanDeviceViewController.didMoveToParentViewController(self)
-            println("To care")
-            oldController.view.hidden = true
+            print("To care")
+            oldController!.view.hidden = true
             
             scanDeviceViewController.view.hidden = false
             
@@ -245,7 +281,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         if strText == "Scenes" {
             choosedTab = .Scenes
             
-            let oldController = childViewControllers.last as! UIViewController
+            let oldController = childViewControllers.last
 //            oldController.view.hidden = true
 //            
 //            scanSceneViewController.view.hidden = false
@@ -254,7 +290,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanSceneViewController.view)
             scanSceneViewController.didMoveToParentViewController(self)
-            oldController.view.hidden = true
+            oldController!.view.hidden = true
             
             scanSceneViewController.view.hidden = false
             
@@ -265,8 +301,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
         if strText == "Events" {
             
-            let oldController = childViewControllers.last as! UIViewController
-            oldController.view.hidden = true
+            let oldController = childViewControllers.last
+            oldController!.view.hidden = true
             
             scanEventsViewController.view.hidden = false
             
@@ -284,7 +320,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         if strText == "Sequences" {
             choosedTab = .Sequences
             
-            let oldController = childViewControllers.last as! UIViewController
+            let oldController = childViewControllers.last
 //            oldController.view.hidden = true
 //            
 //            scanSequencesViewController.view.hidden = false
@@ -294,7 +330,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             container.addSubview(scanSequencesViewController.view)
             scanSequencesViewController.didMoveToParentViewController(self)
             
-            oldController.view.hidden = true
+            oldController!.view.hidden = true
             
             scanSequencesViewController.view.hidden = false
 //            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")

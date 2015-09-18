@@ -28,11 +28,11 @@ class CenterViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = CGRectMake(0, 0, 1024, 64)
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
-        var backgroundImageView = UIImageView()
+        let backgroundImageView = UIImageView()
         backgroundImageView.image = UIImage(named: "Background")
         backgroundImageView.frame = CGRectMake(0, 0, 375, 667)
         view.insertSubview(backgroundImageView, atIndex: 0)
@@ -46,7 +46,7 @@ class CenterViewController: UIViewController {
                 titleOfViewController.text = "Settings"
             }
         }else{
-            var returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
+            let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
             if let unwrappedTitlesForTip = returnValue {
                 titleOfViewController.text = unwrappedTitlesForTip[0] as String
             }else{
@@ -62,8 +62,8 @@ class CenterViewController: UIViewController {
     func imageFromLayer (layer:CALayer) -> UIImage {
         UIGraphicsBeginImageContext(layer.frame.size)
         
-        layer.renderInContext(UIGraphicsGetCurrentContext())
-        var img = UIGraphicsGetImageFromCurrentImageContext()
+        layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
         return img
         
     }

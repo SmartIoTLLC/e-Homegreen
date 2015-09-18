@@ -47,7 +47,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
@@ -61,7 +61,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         lblHeat.text = "\(heatTemperature)"
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = settingsView.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         settingsView.layer.insertSublayer(gradient, atIndex: 0)
@@ -95,7 +95,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     func getACState () {
         updateDevice()
-        var speedState = device.speed
+        let speedState = device.speed
         switch speedState {
         case "Low":
             pressedLow()
@@ -106,7 +106,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         default:
             pressedAutoSecond()
         }
-        var modeState = device.mode
+        let modeState = device.mode
         switch modeState {
         case "Cool":
             pressedCool()
@@ -310,22 +310,22 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     @IBAction func btnCoolPressed(sender: UIButton) {
 //        pressedCool()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
     @IBAction func btnHeatPressed(sender: UIButton) {
 //        pressedHeat()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
     @IBAction func fan(sender: UIButton) {
 //        pressedFan()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
     @IBAction func auto(sender: UIButton) {
 //        pressedAuto()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         
     }
@@ -369,28 +369,28 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     @IBAction func low(sender: AnyObject) {
 //        pressedLow()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
     @IBAction func med(sender: AnyObject) {
 //        pressedMed()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
     @IBAction func high(sender: AnyObject) {
 //        pressedHigh()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
     @IBAction func fanAuto(sender: AnyObject) {
 //        pressedAutoSecond()
-        var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         SendingHandler(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
     }
     func handleTap(gesture:UITapGestureRecognizer){
-        var point:CGPoint = gesture.locationInView(self.view)
-        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        println(tappedView.tag)
+        let point:CGPoint = gesture.locationInView(self.view)
+        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
+        print(tappedView.tag)
         if tappedView.tag == 1{
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -398,11 +398,11 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     
     @IBAction func onOff(sender: AnyObject) {
         if device.currentValue == 0x00 {
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
         }
         if device.currentValue == 0xFF {
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
         }
     }
@@ -413,7 +413,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -444,7 +444,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     func coolTemeperatureUpdate (timer:NSTimer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
@@ -468,7 +468,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     func heatTemeperatureUpdate (timer:NSTimer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
-            var address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+number)), gateway: device.gateway)
         }
     }
@@ -500,7 +500,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
 
 extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -516,7 +516,7 @@ extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
@@ -526,7 +526,7 @@ extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -559,7 +559,7 @@ extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showClimaSettings(indexPathRow: Int, devices:[Device]) {
-        var ad = ClimaSettingsViewController()
+        let ad = ClimaSettingsViewController()
         ad.indexPathRow = indexPathRow
         ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)

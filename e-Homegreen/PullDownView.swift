@@ -27,26 +27,26 @@ class PullDownView: UIScrollView {
         self.bounces = false
         self.showsVerticalScrollIndicator = false
         self.backgroundColor = UIColor.clearColor()
-        var pixelOutside:CGFloat = 2
+        let pixelOutside:CGFloat = 2
         self.contentSize = CGSizeMake(320, frame.size.height * 2 - pixelOutside)
         
-        var redArea:UIView = UIView(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
+        let redArea:UIView = UIView(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
         redArea.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.9)
         self.addSubview(redArea)
         
         //  RGB za pulldown ruckicu je R: 128/255 G: 128/255 B: 128/255
         
-        var pullView:UIImageView = UIImageView(frame: CGRectMake(frame.size.width/2 - 30, frame.size.height, 60, 30))
+        let pullView:UIImageView = UIImageView(frame: CGRectMake(frame.size.width/2 - 30, frame.size.height, 60, 30))
         pullView.image = UIImage(named: "pulldown")
         //        pullView.backgroundColor = UIColor.whiteColor()
         self.addSubview(pullView)
         
         pullView.userInteractionEnabled = true
-        var tapRec = UITapGestureRecognizer()
+        let tapRec = UITapGestureRecognizer()
         tapRec.addTarget(self, action: "tap")
         pullView.addGestureRecognizer(tapRec)
         
-        var grayBottomLine = UIView(frame:CGRectMake(0, frame.size.height-2, frame.size.width, 2))
+        let grayBottomLine = UIView(frame:CGRectMake(0, frame.size.height-2, frame.size.width, 2))
         grayBottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         self.addSubview(grayBottomLine)
     }
@@ -54,7 +54,7 @@ class PullDownView: UIScrollView {
     func tap(){
        self.setContentOffset(CGPointMake(0, 0), animated: false)
     }
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

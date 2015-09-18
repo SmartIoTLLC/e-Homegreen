@@ -19,7 +19,7 @@ class ProgressBarVC: UIViewController {
         super.init(nibName: nibName, bundle: bundle)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     override func viewDidLoad() {

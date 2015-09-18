@@ -17,15 +17,15 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     
     var isPresenting:Bool = true
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        transitioningDelegate = self
+//        transitioningDelegate = self
     }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
         }else{
@@ -34,7 +34,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
         
-        self.transitioningDelegate = self
+//        self.transitioningDelegate = self
         
         menuItems = MenuViewControllers.sharedInstance.allMenuItems()
         listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
@@ -52,7 +52,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         // Do any additional setup after loading the view.
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5
     }
     
@@ -64,10 +64,10 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView.bounds.size.width
-            containerView.addSubview(presentedControllerView)
+            presentedControllerView.center.x += containerView!.bounds.size.width
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView.bounds.size.width
+                presentedControllerView.center.x -= containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -77,7 +77,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView.bounds.size.width
+                presentedControllerView.center.x += containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -150,6 +150,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
         NSUserDefaults.standardUserDefaults().synchronize()
         self.dismissViewControllerAnimated(true, completion: nil)
+//        self.performSegueWithIdentifier("unwindSettings", sender: self)
     }
 
 

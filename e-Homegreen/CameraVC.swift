@@ -32,14 +32,14 @@ class CameraVC: UIViewController {
         self.lync = lync
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
         self.view.addGestureRecognizer(tapGesture)
         
         backView.layer.borderWidth = 2
@@ -60,7 +60,7 @@ class CameraVC: UIViewController {
         let task = NSURLSession.sharedSession().dataTaskWithURL(lync!){(data,response,error) in
             if error == nil{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.image.image = UIImage(data: data)
+                    self.image.image = UIImage(data: data!)
                 })
             }
         }
@@ -100,7 +100,7 @@ class CameraVC: UIViewController {
 
 extension CameraVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -117,7 +117,7 @@ extension CameraVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 
@@ -130,9 +130,7 @@ extension CameraVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
             
-            // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
@@ -165,7 +163,7 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showCamera(point:CGPoint, lync:NSURL) {
-        var ad = CameraVC(point: point, lync:lync)
+        let ad = CameraVC(point: point, lync:lync)
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

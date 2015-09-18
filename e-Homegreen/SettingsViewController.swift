@@ -31,6 +31,23 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
 
     }
     
+    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {
+        if let id = identifier{
+            if id == "unwindSettings" {
+                let unwindSegue = SettingsUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
+                    
+                })
+                return unwindSegue
+            }
+        }
+        
+        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
+    }
+    
+    @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -53,13 +70,13 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var headerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
         headerView.backgroundColor = UIColor.clearColor()
         return headerView
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        var footerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
+        let footerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
         footerView.backgroundColor = UIColor.clearColor()
         return footerView
     }
@@ -184,7 +201,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        var destinationVC = segue.destinationViewController as! UIViewController
+        let destinationVC = segue.destinationViewController 
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 }

@@ -113,7 +113,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
         sidePanelController.didMoveToParentViewController(self)
     }
     
-    func animateLeftPanel(#shouldExpand: Bool) {
+    func animateLeftPanel(shouldExpand shouldExpand: Bool) {
         centerPanelExpandedOffset = UIScreen.mainScreen().bounds.width - 200
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
@@ -129,7 +129,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
         }
     }
     
-    func animateCenterPanelXPosition(#targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
+    func animateCenterPanelXPosition(targetPosition targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.centerNavigationController.view.frame.origin.x = targetPosition
             }, completion: completion)
@@ -150,8 +150,8 @@ extension ContainerViewController: CenterViewControllerDelegate {
 extension ContainerViewController: UIGestureRecognizerDelegate {
     // MARK: Gesture recognizer
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if let touch = touch.view.superview as? UICollectionView {
-            println(touch)
+        if let touch = touch.view!.superview as? UICollectionView {
+            print(touch)
         }
 //        let gestureIsDraggingFromRigthToLeft = (gestureRecognizer.velocityInView(view).x < 0)
 //        println(gestureIsDraggingFromRigthToLeft)
@@ -162,7 +162,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     }
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
-        let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
+//        let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
 //        if let view = recognizer.view {
 //            println(view.frame.origin.x)
 //            println(gestureIsDraggingFromRigthToLeft)

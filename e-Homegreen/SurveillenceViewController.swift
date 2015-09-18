@@ -99,7 +99,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
 //        dispatch_async(dispatch_get_main_queue(), {
         showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), lync: NSURL(string: cameraList[indexPath.row].lync)!)
 //        })
@@ -111,11 +111,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 extension String {
     
     func removeCharsFromEnd(count_:Int) -> String {
-        let stringLength = count(self)
+        let stringLength = self.characters.count
         
         let substringIndex = (stringLength < count_) ? 0 : stringLength - count_
         
-        return self.substringToIndex(advance(self.startIndex, substringIndex))
+        return self.substringToIndex(self.startIndex.advancedBy(substringIndex))
     }
 }
 

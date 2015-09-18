@@ -83,23 +83,35 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate {
         sequenceCollectionView.reloadData()
     }
     func updateSequencesList () {
-        var fetchRequest = NSFetchRequest(entityName: "Sequence")
-        var sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        var sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-        var sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Sequence")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Sequence]
-        if let results = fetResults {
-            sequences = results
-        } else {
-            
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+            sequences = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+        
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+//        if let results = fetResults {
+//            sequences = results
+//        } else {
+//            
+//        }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -144,11 +156,11 @@ extension SequencesViewController: UICollectionViewDataSource {
     }
     
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
-        var tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(sequenceCollectionView)
             if let index = sequenceCollectionView.indexPathForItemAtPoint(location){
-                var cell = sequenceCollectionView.cellForItemAtIndexPath(index)
+                let cell = sequenceCollectionView.cellForItemAtIndexPath(index)
                 showSequenceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - sequenceCollectionView.contentOffset.y), sequence: sequences[tag])
             }
         }
@@ -158,7 +170,7 @@ extension SequencesViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
         //2
         //        let flickrPhoto = photoForIndexPath(indexPath)
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = cell.bounds
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -166,7 +178,7 @@ extension SequencesViewController: UICollectionViewDataSource {
         //3
         cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
         
-        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.sequenceTitle.userInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
@@ -179,7 +191,7 @@ extension SequencesViewController: UICollectionViewDataSource {
             cell.sequenceImageView.highlightedImage = sequenceImage
         }
         
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
         cell.sequenceButton.addGestureRecognizer(tap)
         cell.sequenceButton.tag = indexPath.row
         
@@ -194,7 +206,7 @@ extension SequencesViewController: UICollectionViewDataSource {
     }
     
     func tapStop (gestureRecognizer:UITapGestureRecognizer) {
-        var tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
         if let sequenceId = sequences[tag].sequenceId as? Int {
             var address:[UInt8] = []
             if sequences[tag].isBroadcast.boolValue {

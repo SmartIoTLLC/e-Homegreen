@@ -51,7 +51,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
 //        commonConstruct()
         let date = NSDate()
         let calendarUnit = NSCalendar.currentCalendar()
-        let components = calendarUnit.components(.CalendarUnitHour | .CalendarUnitMinute, fromDate: date)
+        let components = calendarUnit.components([.Hour, .Minute], fromDate: date)
         let hour = components.hour
         
         if hour < 20 && hour > 6{
@@ -67,7 +67,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         calendar.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.55)
         calendar.layer.cornerRadius = 10
         
-        var clock:SPClockView = SPClockView(frame: CGRectMake(170, 220, 140, 140))
+        let clock:SPClockView = SPClockView(frame: CGRectMake(170, 220, 140, 140))
         clock.timeZone = NSTimeZone.localTimeZone()
         self.view.addSubview(clock)
         
@@ -77,20 +77,20 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
         
-        var panRecognizer = UIPanGestureRecognizer(target:self, action:"detectPan:")
+        let panRecognizer = UIPanGestureRecognizer(target:self, action:"detectPan:")
         clock.addGestureRecognizer(panRecognizer)
         
-        var panRecognizer1 = UIPanGestureRecognizer(target:self, action:"detectPan1:")
+        let panRecognizer1 = UIPanGestureRecognizer(target:self, action:"detectPan1:")
         calendar.addGestureRecognizer(panRecognizer1)
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
-        println("")
+        print("")
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        var location = locations.last as! CLLocation
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last!
         let long = NSString(format: "%.15lf", location.coordinate.longitude)
         let lat = NSString(format: "%.15lf", location.coordinate.latitude)
         getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)")
@@ -103,14 +103,14 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     }
     
     func detectPan(recognizer:UIPanGestureRecognizer) {
-        var translation  = recognizer.translationInView(self.view)
+        let translation  = recognizer.translationInView(self.view)
         recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
             recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
     }
     
     func detectPan1(recognizer:UIPanGestureRecognizer) {
-        var translation  = recognizer.translationInView(self.view)
+        let translation  = recognizer.translationInView(self.view)
         recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
             recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
@@ -121,7 +121,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
             if error == nil{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.setLabel(data)
+                    self.setLabel(data!)
                     
                 })
             }
@@ -132,7 +132,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     func setLabel(weatherData: NSData){
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute, fromDate: date)
+        let components = calendar.components([.Hour, .Minute], fromDate: date)
         let hour = components.hour
         
         if hour < 20 && hour > 6{
@@ -142,46 +142,46 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         }
 //        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
 //        self.view.insertSubview(backgroundImageView, atIndex: 0)
-        var jsonError: NSError?
-        if let json = NSJSONSerialization.JSONObjectWithData(weatherData, options: nil, error: &jsonError) as? NSDictionary {
-            if jsonError == nil{
-                //            println(json)
-                if let name = json["name"] as? String{
-                    lblPlace.text = name
-                }
-                
-                if let weather = json["weather"] as? NSArray{
-                    
-                    if let weatherDict = weather[0] as? NSDictionary {
-                        if let main = weatherDict["main"] as? String{
-                            lblWeather.text = main
-                        }
-                        if let icon = weatherDict["icon"] as? String{
-                            imageWeather.image = UIImage(named: weatherDictionary[icon]!)
-                        }
-                        
-                    }
-                    
-                    
-                }
-                
-                if let main = json["main"] as? NSDictionary{
-                    if let temp = main["temp"] as? Double {
-                        lblTemp.text =  String(format: "%.1f", temp - 273) + "°C"
-                    }
-                    var str:String!
-                    if let temp_min = main["temp_min"] as? Double{
-                        str = String(format: "%.1f", temp_min - 273) + "°C/"
-                    }
-                    
-                    if let temp_max = main["temp_max"] as? Double{
-                        lblMinMaxTemp.text = str.stringByAppendingString(String(format: "%.1f", temp_max - 273) + "°C")
-                    }
-                }
-                
-                
-            }
-        }
+//        let jsonError: NSError?
+//        if let json = NSJSONSerialization.JSONObjectWithData(weatherData, options: []) as? NSDictionary {
+//            if jsonError == nil{
+//                //            println(json)
+//                if let name = json["name"] as? String{
+//                    lblPlace.text = name
+//                }
+//                
+//                if let weather = json["weather"] as? NSArray{
+//                    
+//                    if let weatherDict = weather[0] as? NSDictionary {
+//                        if let main = weatherDict["main"] as? String{
+//                            lblWeather.text = main
+//                        }
+//                        if let icon = weatherDict["icon"] as? String{
+//                            imageWeather.image = UIImage(named: weatherDictionary[icon]!)
+//                        }
+//                        
+//                    }
+//                    
+//                    
+//                }
+//                
+//                if let main = json["main"] as? NSDictionary{
+//                    if let temp = main["temp"] as? Double {
+//                        lblTemp.text =  String(format: "%.1f", temp - 273) + "°C"
+//                    }
+//                    var str:String!
+//                    if let temp_min = main["temp_min"] as? Double{
+//                        str = String(format: "%.1f", temp_min - 273) + "°C/"
+//                    }
+//                    
+//                    if let temp_max = main["temp_max"] as? Double{
+//                        lblMinMaxTemp.text = str.stringByAppendingString(String(format: "%.1f", temp_max - 273) + "°C")
+//                    }
+//                }
+//                
+//                
+//            }
+//        }
         
     }
 

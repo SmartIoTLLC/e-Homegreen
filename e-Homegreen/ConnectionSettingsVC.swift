@@ -47,7 +47,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -66,7 +66,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         super.viewDidLoad()
         
         
-        println(UIDevice.currentDevice().SSID)
+        print(UIDevice.currentDevice().SSID)
         
         if UIScreen.mainScreen().scale > 2.5{
             addressFirst.layer.borderWidth = 1
@@ -132,7 +132,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backView.bounds
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         backView.layer.insertSublayer(gradient, atIndex: 0)
@@ -192,7 +192,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         return String(format: "%03d",number)
     }
     override func viewWillAppear(animated: Bool) {
-        println()
+        print("")
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -238,38 +238,39 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" {
             
         } else {
-            if let remoPort = port.text.toInt(), let locaPort = localPort.text.toInt(), let adrFirst = addressFirst.text.toInt(), let adrSecond = addressSecond.text.toInt(), let adrThird = addressThird.text.toInt() {
-                    if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
-                        if gatewayIndex == -1 {
-                            var gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
-                            gateway.name = name.text
-                            gateway.remoteIp = ipHost.text
-                            gateway.remotePort = port.text.toInt()!
-                            gateway.localIp = localIP.text
-                            gateway.localPort = localPort.text.toInt()!
-                            gateway.ssid = localSSID.text
-                            gateway.addressOne = addressFirst.text.toInt()!
-                            gateway.addressTwo = addressSecond.text.toInt()!
-                            gateway.addressThree = addressThird.text.toInt()!
-                            gateway.gatewayDescription = txtDescription.text
-                            gateway.turnedOn = true
-                            saveChanges()
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                        } else {
-                            gateways[gatewayIndex].name = name.text
-                            gateways[gatewayIndex].remoteIp = ipHost.text
-                            gateways[gatewayIndex].remotePort = port.text.toInt()!
-                            gateways[gatewayIndex].localIp = localIP.text
-                            gateways[gatewayIndex].localPort = localPort.text.toInt()!
-                            gateways[gatewayIndex].ssid = localSSID.text
-                            gateways[gatewayIndex].addressOne = addressFirst.text.toInt()!
-                            gateways[gatewayIndex].addressTwo = addressSecond.text.toInt()!
-                            gateways[gatewayIndex].addressThree = addressThird.text.toInt()!
-                            gateways[gatewayIndex].gatewayDescription = txtDescription.text
-                            saveChanges()
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                        }
+            //            if let remoPort = Int(port.text!), let locaPort = Int(localPort.text!), let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
+            if let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
+                if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
+                    if gatewayIndex == -1 {
+                        let gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
+                        gateway.name = name.text!
+                        gateway.remoteIp = ipHost.text!
+                        gateway.remotePort = Int(port.text!)!
+                        gateway.localIp = localIP.text!
+                        gateway.localPort = Int(localPort.text!)!
+                        gateway.ssid = localSSID.text!
+                        gateway.addressOne = Int(addressFirst.text!)!
+                        gateway.addressTwo = Int(addressSecond.text!)!
+                        gateway.addressThree = Int(addressThird.text!)!
+                        gateway.gatewayDescription = txtDescription.text
+                        gateway.turnedOn = true
+                        saveChanges()
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    } else {
+                        gateways[gatewayIndex].name = name.text!
+                        gateways[gatewayIndex].remoteIp = ipHost.text!
+                        gateways[gatewayIndex].remotePort = Int(port.text!)!
+                        gateways[gatewayIndex].localIp = localIP.text!
+                        gateways[gatewayIndex].localPort = Int(localPort.text!)!
+                        gateways[gatewayIndex].ssid = localSSID.text!
+                        gateways[gatewayIndex].addressOne = Int(addressFirst.text!)!
+                        gateways[gatewayIndex].addressTwo = Int(addressSecond.text!)!
+                        gateways[gatewayIndex].addressThree = Int(addressThird.text!)!
+                        gateways[gatewayIndex].gatewayDescription = txtDescription.text
+                        saveChanges()
+                        self.dismissViewControllerAnimated(true, completion: nil)
                     }
+                }
             }
         }
     }
@@ -277,19 +278,30 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     var gateways:[Gateway] = []
     var error:NSError? = nil
     func fetchGateways() {
-        var fetchRequest = NSFetchRequest(entityName: "Gateway")
-        var sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor1]
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            gateways = results
-        } else {
-            
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//        if let results = fetResults {
+//            gateways = results
+//        } else {
+//            
+//        }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
         NSNotificationCenter.defaultCenter().postNotificationName("updateGatewayListNotification", object: self, userInfo: nil)
@@ -300,7 +312,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         if txtDescription.isFirstResponder(){
             if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
@@ -359,7 +371,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
 
 extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
     
@@ -374,7 +386,7 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView.addSubview(presentedControllerView)
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
@@ -383,7 +395,7 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
+//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -419,13 +431,13 @@ extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
 extension UIDevice {
     public var SSID: String? {
         get {
-            if let interfaces = CNCopySupportedInterfaces() {
-                let interfacesArray = interfaces.takeRetainedValue() as! [String]
-                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo(interfacesArray[0] as String) {
-                    let interfaceData = unsafeInterfaceData.takeRetainedValue() as Dictionary!
-                    return interfaceData[kCNNetworkInfoKeySSID] as? String
-                }
-            }
+//            if let interfaces = CNCopySupportedInterfaces() {
+//                let interfacesArray = interfaces.takeRetainedValue() as! [String]
+//                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo(interfacesArray[0] as String) {
+//                    let interfaceData = unsafeInterfaceData.takeRetainedValue() as Dictionary!
+//                    return interfaceData[kCNNetworkInfoKeySSID] as? String
+//                }
+//            }
             return nil
             
         }
@@ -434,7 +446,7 @@ extension UIDevice {
 
 extension UIViewController {
     func showConnectionSettings(gatewayIndex: Int) {
-        var connSettVC = ConnectionSettingsVC()
+        let connSettVC = ConnectionSettingsVC()
         connSettVC.gatewayIndex = gatewayIndex
         self.presentViewController(connSettVC, animated: true, completion: nil)
     }

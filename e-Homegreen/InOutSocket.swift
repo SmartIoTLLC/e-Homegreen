@@ -26,35 +26,53 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
-        if !socket.bindToPort(port, error: &error) {
-            println("1 \(error)")
-            println("U pitanju je \(ip) \(port)")
+        do {
+            try socket.bindToPort(port)
+        } catch let error1 as NSError {
+            error = error1
+            print("1 \(error)")
+            print("U pitanju je \(ip) \(port)")
         }
         
-        if !socket.beginReceiving(&error) {
-            println("4 \(error)")
-            println("U pitanju je \(ip) \(port)")
+        do {
+            try socket.beginReceiving()
+        } catch let error1 as NSError {
+            error = error1
+            print("4 \(error)")
+            print("U pitanju je \(ip) \(port)")
         }
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        println("INOUT SOCKET incoming message: \(address.convertToBytes())")
+        print("INOUT SOCKET incoming message: \(address.convertToBytes())")
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
         if let hostHost = host as? String {
-            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+            print("\(hostHost) \(hostPort) \(data.convertToBytes())")
             IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
         }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
-        println("Nemoj mi samo reci da je ovo problem!")
+        print("Nemoj mi samo reci da je ovo problem!")
     }
     func setupConnection1(){
-        var error : NSError?
+//        var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        socket.bindToPort(port, error: &error)
-        socket.connectToHost(ip, onPort: port, error: &error)
-        socket.enableBroadcast(true, error: &error)
+        do {
+            try socket.bindToPort(port)
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+        }
+        do {
+            try socket.connectToHost(ip, onPort: port)
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+        }
+        do {
+            try socket.enableBroadcast(true)
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+        }
         send("ping")
     }
     
@@ -68,19 +86,19 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
-        println("didConnectToAddress")
+        print("didConnectToAddress")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotConnect error: NSError!) {
-        println("didNotConnect \(error)")
+        print("didNotConnect \(error)")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: Int) {
-        println("didSendDataWithTag")
+        print("didSendDataWithTag")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: Int, dueToError error: NSError!) {
-        println("didNotSendDataWithTag")
+        print("didNotSendDataWithTag")
     }
 }
 extension NSData {

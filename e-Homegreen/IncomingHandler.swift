@@ -31,7 +31,7 @@ class IncomingHandler: NSObject {
             self.byteArray = byteArrayToHandle
                 // Check if byteArray is correct one (check byte also, which is missing)
                 if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
-                    println("Uslo je u incoming handler.")
+                    print("Uslo je u incoming handler.")
                     
                     //  ACKNOWLEDGMENT ABOUT NEW DEVICES
                     if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
@@ -100,20 +100,28 @@ class IncomingHandler: NSObject {
     }
     func fetchDevices () {
         // OVDE ISKACE BUD NA ANY
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
         fetchRequest.predicate = predicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            devices = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+//        if let results = fetResults {
+//            devices = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
 //        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
         // OVDE ISKACE BUD NA ANY
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicateOne = NSPredicate(format: "gateway == %@", gateways[0].objectID)
         let predicateTwo = NSPredicate(format: "gateway.addressOne == %@", addressOne)
         let predicateThree = NSPredicate(format: "gateway.addressTwo == %@", addressTwo)
@@ -121,15 +129,23 @@ class IncomingHandler: NSObject {
         let predicateFive = NSPredicate(format: "channel == %@", channel)
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree, predicateFour, predicateFive])
         fetchRequest.predicate = compoundPredicate
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Device]
-        if let results = fetResults {
-            devices = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            devices = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+//        if let results = fetResults {
+//            devices = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     func fetchGateways (host:String, port:UInt16) {
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
         let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
@@ -137,16 +153,27 @@ class IncomingHandler: NSObject {
         fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            gateways = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//        if let results = fetResults {
+//            gateways = results
+//        } else {
+//            print("Nije htela...")
+//        }
     }
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -154,7 +181,7 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                var channel = Int(devices[i].channel)
+                let channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+13*(channel-1)])
                 if let mode = DeviceInfo().setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo().modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo().setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo().speedState[Int(byteArray[12+13*(channel-1)])] {
                     devices[i].mode = mode
@@ -185,9 +212,9 @@ class IncomingHandler: NSObject {
                 if byteArray[7] != 0xFF {
                     devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
                 } else {
-                    var channelNumber = Int(devices[i].channel)
+                    let channelNumber = Int(devices[i].channel)
                     devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
-                    println(devices[i].runningTime)
+                    print(devices[i].runningTime)
                 }
             }
         }
@@ -203,21 +230,24 @@ class IncomingHandler: NSObject {
         }
         return result
     }
+    
     func returnRunningTime (runningTimeByteArray:[UInt8]) -> String {
-        println(runningTimeByteArray)
-        var x = Int(bytesToUInt(runningTimeByteArray))
-        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
-        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
+        print(runningTimeByteArray)
+        let x = Int(bytesToUInt(runningTimeByteArray))
+//        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
+//        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
         var seconds = x / 10
-        var hours = seconds / 3600
-        var minutes = (seconds % 3600) / 60
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
         seconds = seconds % 60
-        var secdiv = (x % 60) % 10
+        let secdiv = (x % 60) % 10
         return "\(returnTwoPlaces(hours)):\(returnTwoPlaces(minutes)):\(returnTwoPlaces(seconds)),\(secdiv)s"
     }
+    
     func returnTwoPlaces (number:Int) -> String {
         return String(format: "%02d",number)
     }
+    
     //  informacije o imenima uredjaja na MULTISENSORU
     func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
         fetchDevices()
@@ -227,13 +257,13 @@ class IncomingHandler: NSObject {
         }
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-                var channel = Int(devices[i].channel)
+//                var channel = Int(devices[i].channel)
                 if string != "" {
                     devices[i].name = string
                 } else {
                     devices[i].name = "Unknown"
                 }
-                var data = ["deviceIndexForFoundName":i]
+                let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }
@@ -277,7 +307,7 @@ class IncomingHandler: NSObject {
                 devices[i].parentZoneId = Int(byteArray[34])
                 devices[i].categoryId = Int(byteArray[32])
 //                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[70])]!
-                var data = ["deviceIndexForFoundName":i]
+                let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }
@@ -287,19 +317,19 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
-        println("Uslo je u ackADICmdGetInterfaceStatus")
+        print("Uslo je u ackADICmdGetInterfaceStatus")
         self.fetchDevices()
-        println("proslo je fetchDevices")
+        print("proslo je fetchDevices")
         for var i = 0; i < self.devices.count; i++ {
-            println("proslo je for var i = 0; i < self.devices.count; i++ {")
+            print("proslo je for var i = 0; i < self.devices.count; i++ {")
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
-                println("self.devices[i].gateway.addressOne")
-                var channel = Int(self.devices[i].channel)
-                println("osluskuj 1")
+                print("self.devices[i].gateway.addressOne")
+                let channel = Int(self.devices[i].channel)
+                print("osluskuj 1")
                 self.devices[i].currentValue = Int(byteArray[7+channel])
-                println("osluskuj 2")
+                print("osluskuj 2")
             }
-            println("proslo je self.devices[i].gateway.addressOne")
+            print("proslo je self.devices[i].gateway.addressOne")
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
@@ -320,7 +350,7 @@ class IncomingHandler: NSObject {
             if !deviceExists {
                 for var i=1 ; i<=channel ; i++ {
                     if channel == 10 && name == "sensor" {
-                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
 //                        device.name = DeviceInfo().inputInterface10in1[i]!
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
@@ -337,7 +367,7 @@ class IncomingHandler: NSObject {
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         saveChanges()
                     } else if channel == 6 && name == "sensor" {
-                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
 //                        device.name = DeviceInfo().inputInterface6in1[i]!
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
@@ -354,7 +384,7 @@ class IncomingHandler: NSObject {
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         saveChanges()
                     } else if name == "hvac" {
-                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
 //                        device.name = name + " \(i)"
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
@@ -377,7 +407,7 @@ class IncomingHandler: NSObject {
                         device.current = 0
                         saveChanges()
                     } else {
-                        var device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
 //                        device.name = name + " \(i)"
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
@@ -409,7 +439,7 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                var channelNumber = Int(devices[i].channel)
+                let channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
                 devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
@@ -426,9 +456,9 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                var channelNumber = Int(devices[i].channel)
+                let channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
-                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
+//                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
@@ -461,7 +491,7 @@ class IncomingHandler: NSObject {
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
 //                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
-                var data = ["deviceIndexForFoundName":i]
+                let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
         }

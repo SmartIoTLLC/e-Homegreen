@@ -17,9 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
-            println("IMA")
+            print(hourValue + minuteValue)
         } else {
-            println("NEMA")
+            print("NEMA")
             NSUserDefaults.standardUserDefaults().setValue(0, forKey: "hourRefresh")
             NSUserDefaults.standardUserDefaults().setValue(1, forKey: "minRefresh")
         }
@@ -63,31 +63,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var gateways:[Gateway] = []
     func fetchGateways () {
         var error:NSError?
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
         fetchRequest.predicate = predicateOne
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            gateways = results
-        } else {
-            println("Nije htela...")
+        do {
+            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//        if let results = fetResults {
+//            gateways = results
+//        } else {
+//            print("Nije htela...")
+//        }
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             for item in self.gateways {
                 item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
             }
-//            dispatch_async(dispatch_get_main_queue(), {
-                self.managedObjectContext!.save(&error)
+        do {
+            //            dispatch_async(dispatch_get_main_queue(), {
+            try self.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+        }
 //            })
 //        })
     }
     func returnIpAddress (url:String) -> String {
-        println("123")
+        print("123")
         let host = CFHostCreateWithName(nil,url).takeRetainedValue();
         CFHostStartInfoResolution(host, .Addresses, nil);
-        var success: Boolean = 0;
+        var success: DarwinBoolean = false
         if let test = CFHostGetAddressing(host, &success) {
             let addresses = test.takeUnretainedValue() as NSArray
             if (addresses.count > 0){
@@ -96,13 +108,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
                     &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
                         if let numAddress = String.fromCString(hostname) {
-                            println("1234")
+                            print("1234")
                             return numAddress
                         }
                 }
             }
         }
-        println("12345")
+        print("12345")
         return "255.255.255.255"
     }
     
@@ -161,7 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.e-homeautomation.e_Homegreen" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as! NSURL
+        return urls[urls.count-1] 
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -177,7 +189,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("e_Homegreen.sqlite")
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
+        do {
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+        } catch var error1 as NSError {
+            error = error1
             coordinator = nil
             // Report any error we got.
             var dict = [String: AnyObject]()
@@ -189,6 +204,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             abort()
+        } catch {
+            fatalError()
         }
         
         return coordinator
@@ -210,11 +227,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func saveContext () {
         if let moc = self.managedObjectContext {
             var error: NSError? = nil
-            if moc.hasChanges && !moc.save(&error) {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog("Unresolved error \(error), \(error!.userInfo)")
-                abort()
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch let error1 as NSError {
+                    error = error1
+                    // Replace this implementation with code to handle the error appropriately.
+                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    NSLog("Unresolved error \(error), \(error!.userInfo)")
+                    abort()
+                }
             }
         }
     }

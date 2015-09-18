@@ -31,10 +31,10 @@ class Function {
     static func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:UInt8) -> [UInt8]{
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
-        var delayOne = UInt8((delay / 0x100) % 0x100)
-        var delayTwo = UInt8(delay % 0x100)
-        var runtimeOne = UInt8((runningTime / 0x100) % 0x100)
-        var runtimeTwo = UInt8(runningTime % 0x100)
+        let delayOne = UInt8((delay / 0x100) % 0x100)
+        let delayTwo = UInt8(delay % 0x100)
+        let runtimeOne = UInt8((runningTime / 0x100) % 0x100)
+        let runtimeTwo = UInt8(runningTime % 0x100)
         messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
@@ -298,8 +298,8 @@ class Function {
         return message
     }
     static func setScene (address:[UInt8], id:Int) -> [UInt8]{
-        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-        var numberTwo:UInt8 = UInt8(id % 0x100)
+        let numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
+        let numberTwo:UInt8 = UInt8(id % 0x100)
         var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
@@ -317,8 +317,8 @@ class Function {
         return message
     }
     static func setSequence (address:[UInt8], id:Int, cycle:UInt8) -> [UInt8]{
-        var numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-        var numberTwo:UInt8 = UInt8(id % 0x100)
+        let numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
+        let numberTwo:UInt8 = UInt8(id % 0x100)
         var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
@@ -635,12 +635,12 @@ class Function {
 //        message[message.count-1] = 0x10
 //        return message
 //    }
-    static func getChkByte (#byteArray:[UInt8]) -> UInt8 {
+    static func getChkByte (byteArray byteArray:[UInt8]) -> UInt8 {
         var chk:Int = 0
         for var i = 1; i <= byteArray.count-3; i++ {
-            var number = "\(byteArray[i])"
+            let number = "\(byteArray[i])"
             
-            chk = chk + number.toInt()!
+            chk = chk + Int(number)!
         }
         chk = chk%256
         return UInt8(chk)

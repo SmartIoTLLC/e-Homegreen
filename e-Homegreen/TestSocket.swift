@@ -29,43 +29,61 @@ class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
         
         
         
-        if !socket.bindToPort(port, error: &error) {
-            println("1 \(error)")
+        do {
+            try socket.bindToPort(port)
+        } catch let error1 as NSError {
+            error = error1
+            print("1 \(error)")
         }
-//        if !socket.connectToHost(ip, onPort: port, error: &error) {
-//            println("1 \(error)")
-//        }
-//        if !socket.enableBroadcast(true, error: &error) {
-//            println("2 \(error)")
-//        }
-//        if !socket.joinMulticastGroup(ip, error: &error) {
-//            println("3 \(error)")
-//        }
-        if !socket.beginReceiving(&error) {
-            println("4 \(error)")
+        //        if !socket.connectToHost(ip, onPort: port, error: &error) {
+        //            println("1 \(error)")
+        //        }
+        //        if !socket.enableBroadcast(true, error: &error) {
+        //            println("2 \(error)")
+        //        }
+        //        if !socket.joinMulticastGroup(ip, error: &error) {
+        //            println("3 \(error)")
+        //        }
+        do {
+            try socket.beginReceiving()
+        } catch let error1 as NSError {
+            error = error1
+            print("4 \(error)")
         }
         
         
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
-        println("incoming message: \(address.convertToBytes())")
+        print("incoming message: \(address.convertToBytes())")
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
         if let hostHost = host as? String {
-            println("\(hostHost) \(hostPort) \(data.convertToBytes())")
+            print("\(hostHost) \(hostPort) \(data.convertToBytes())")
             IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
         }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
-        println("Nemoj mi samo reci da je ovo problem!")
+        print("Nemoj mi samo reci da je ovo problem!")
     }
     func setupConnection1(){
         var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        socket.bindToPort(port, error: &error)
-        socket.connectToHost(ip, onPort: port, error: &error)
-        socket.enableBroadcast(true, error: &error)
+        do {
+            try socket.bindToPort(port)
+        } catch let error1 as NSError {
+            error = error1
+        }
+        do {
+            try socket.connectToHost(ip, onPort: port)
+        } catch let error1 as NSError {
+            error = error1
+        }
+        do {
+            try socket.enableBroadcast(true)
+        } catch let error1 as NSError {
+            error = error1
+        }
         send("ping")
     }
     
@@ -81,18 +99,18 @@ class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
-        println("didConnectToAddress")
+        print("didConnectToAddress")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotConnect error: NSError!) {
-        println("didNotConnect \(error)")
+        print("didNotConnect \(error)")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: Int) {
-        println("didSendDataWithTag")
+        print("didSendDataWithTag")
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: Int, dueToError error: NSError!) {
-        println("didNotSendDataWithTag")
+        print("didNotSendDataWithTag")
     }
 }

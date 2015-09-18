@@ -23,9 +23,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     var isPresenting:Bool = true
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        transitioningDelegate = self
+//        transitioningDelegate = self
     }
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
@@ -36,7 +36,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
         if sender.identifier == "scanUnwind" {
-            println("nesto adadad")
+            print("nesto adadad")
         }
     }
     
@@ -61,14 +61,14 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             }
         }
         
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
+        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
     
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonConstruct()
-        var gradient:CAGradientLayer = CAGradientLayer()
+        let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
         }else{
@@ -95,15 +95,24 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     func fetchGateways () {
-        var fetchRequest = NSFetchRequest(entityName: "Gateway")
-        var sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error) as? [Gateway]
-        if let results = fetResults {
-            gateways = results
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
             refreshGatewayList()
-        } else {
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
+//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//        if let results = fetResults {
+//            gateways = results
+//            refreshGatewayList()
+//        } else {
+//        }
     }
     
     func refreshGatewayList () {
@@ -127,9 +136,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+//        self.performSegueWithIdentifier("unwindSettings", sender: self)
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5
     }
     
@@ -141,10 +151,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView.bounds.size.width
-            containerView.addSubview(presentedControllerView)
+            presentedControllerView.center.x += containerView!.bounds.size.width
+            containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView.bounds.size.width
+                presentedControllerView.center.x -= containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -154,7 +164,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView.bounds.size.width
+                presentedControllerView.center.x += containerView!.bounds.size.width
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -190,8 +200,11 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     func saveChanges() {
-        if !appDel.managedObjectContext!.save(&error) {
-            println("Unresolved error \(error), \(error!.userInfo)")
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
@@ -318,8 +331,8 @@ extension ConnectionsViewController: UITableViewDelegate {
         })
     }
     
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        var button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction!, indexPath:NSIndexPath!) in
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
                 self.tableView(self.gatewayTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
