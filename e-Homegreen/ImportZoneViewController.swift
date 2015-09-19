@@ -42,7 +42,11 @@ extension ImportZoneViewController: UITableViewDelegate {
 }
 extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        <#code#>
+        
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        cell.textLabel?.text = "zones"
+        return cell
+        
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return zones.count

@@ -9,6 +9,8 @@
 import UIKit
 
 class ImportCategoryViewController: UIViewController {
+    
+    var categories:[Category] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,4 +34,24 @@ class ImportCategoryViewController: UIViewController {
     }
     */
 
+}
+extension ImportCategoryViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+}
+extension ImportCategoryViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        cell.textLabel?.text = "zones"
+        return cell
+        
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categories.count
+    }
+}
+class ImportCategoryTableViewCell: UITableViewCell {
+    
 }

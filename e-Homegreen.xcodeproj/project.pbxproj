@@ -53,7 +53,6 @@
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E75DCC1BA8300700D2B101 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E75DCB1BA8300700D2B101 /* Category.swift */; };
-		73E75DCE1BA8300800D2B101 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E75DCD1BA8300800D2B101 /* Gateway.swift */; };
 		73E75DD01BA8300800D2B101 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E75DCF1BA8300800D2B101 /* Zone.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
@@ -77,6 +76,11 @@
 		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
 		E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41681B6641A6005080F1 /* CustomSegue.swift */; };
 		E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F416A1B664BC3005080F1 /* SegueUnwind.swift */; };
+		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E79A893F1BAD723A00714C64 /* Gateway+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		E79A89401BAD723A00714C64 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893C1BAD723A00714C64 /* Gateway.swift */; settings = {ASSET_TAGS = (); }; };
+		E79A89411BAD723A00714C64 /* Timer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893D1BAD723A00714C64 /* Timer+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		E79A89421BAD723A00714C64 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893E1BAD723A00714C64 /* Timer.swift */; settings = {ASSET_TAGS = (); }; };
 		E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */; };
 		E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */; };
 		E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAE1B70B77D00410E2D /* AccessParametarVC.swift */; };
@@ -200,7 +204,6 @@
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E75DCB1BA8300700D2B101 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		73E75DCD1BA8300800D2B101 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		73E75DCF1BA8300800D2B101 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
@@ -232,6 +235,11 @@
 		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		E75F41681B6641A6005080F1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
 		E75F416A1B664BC3005080F1 /* SegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueUnwind.swift; sourceTree = "<group>"; };
+		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
+		E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gateway+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E79A893C1BAD723A00714C64 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
+		E79A893D1BAD723A00714C64 /* Timer+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Timer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E79A893E1BAD723A00714C64 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimaParametarVC.swift; sourceTree = "<group>"; };
 		E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClimaParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBAE1B70B77D00410E2D /* AccessParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessParametarVC.swift; sourceTree = "<group>"; };
@@ -495,8 +503,11 @@
 				73E231211BA7010C003E41EC /* Event.swift */,
 				73E231291BA7239E003E41EC /* Sequence.swift */,
 				73E75DCF1BA8300800D2B101 /* Zone.swift */,
-				73E75DCD1BA8300800D2B101 /* Gateway.swift */,
 				73E75DCB1BA8300700D2B101 /* Category.swift */,
+				E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */,
+				E79A893C1BAD723A00714C64 /* Gateway.swift */,
+				E79A893D1BAD723A00714C64 /* Timer+CoreDataProperties.swift */,
+				E79A893E1BAD723A00714C64 /* Timer.swift */,
 				738BFD001B9EF077005D183F /* Zone and Category */,
 			);
 			name = NSMOM;
@@ -683,6 +694,7 @@
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
 				E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */,
 				E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */,
+				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 			);
@@ -882,11 +894,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
-				73E75DCE1BA8300800D2B101 /* Gateway.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
+				E79A89401BAD723A00714C64 /* Gateway.swift in Sources */,
+				E79A893F1BAD723A00714C64 /* Gateway+CoreDataProperties.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
+				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
@@ -901,6 +915,8 @@
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73E2312A1BA7239E003E41EC /* Sequence.swift in Sources */,
+				E79A89411BAD723A00714C64 /* Timer+CoreDataProperties.swift in Sources */,
+				E79A89421BAD723A00714C64 /* Timer.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73E75DCC1BA8300700D2B101 /* Category.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,

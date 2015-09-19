@@ -25,9 +25,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
     func endEditingNow(){
         rangeFrom.resignFirstResponder()
-        rangeTo.resignFirstResponder()        
+        rangeTo.resignFirstResponder()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,17 +48,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         
         rangeFrom.text = "\(Int(gateway!.addressThree)+1)"
         rangeTo.text = "\(Int(gateway!.addressThree)+1)"
-//
+        //
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
-
+        
         
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -86,12 +86,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-//        if let results = fetResults {
-//            devices = results
-//        } else {
-//            print("Nije htela...")
-//        }
+        //        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+        //        if let results = fetResults {
+        //            devices = results
+        //        } else {
+        //            print("Nije htela...")
+        //        }
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -298,17 +298,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func deleteAll(sender: AnyObject) {
-                for var item = 0; item < devices.count; item++ {
-                    if devices[item].gateway.objectID == gateway!.objectID {
-                        appDel.managedObjectContext!.deleteObject(devices[item])
-                    }
-                }
-                saveChanges()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        for var item = 0; item < devices.count; item++ {
+            if devices[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(devices[item])
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-
+    
     @IBAction func findNames(sender: AnyObject) {
-//        var index:Int
+        //        var index:Int
         if devices.count != 0 {
             index = 0
             timesRepeatedCounter = 0
@@ -317,68 +317,68 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-        func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
-                cell.backgroundColor = UIColor.clearColor()
-                cell.lblRow.text = "\(indexPath.row+1)."
-                cell.lblDesc.text = "\(devices[indexPath.row].name)"
-                cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
-                cell.lblType.text = "Type: \(devices[indexPath.row].type)"
-                cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
-                cell.isEnabledSwitch.tag = indexPath.row
-                cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
-                cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
-                cell.isVisibleSwitch.tag = indexPath.row
-                cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
-    //
-    //            return cell
-    //        }
-    //        }
-    //        if tableView == sceneTableView {
-    //            if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
-    //                if choosedTab == .Scenes {
-    //                    cell.backgroundColor = UIColor.clearColor()
-    //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
-    //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
-    //                        cell.imageOne.image = sceneImage
-    //                    }
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
-    //                        cell.imageTwo.image = sceneImage
-    //                    }
-    //                } else if choosedTab == .Events {
-    //                    cell.backgroundColor = UIColor.clearColor()
-    //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
-    //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
-    //                        cell.imageOne.image = sceneImage
-    //                    }
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
-    //                        cell.imageTwo.image = sceneImage
-    //                    }
-    //                } else if choosedTab == .Sequences {
-    //                    cell.backgroundColor = UIColor.clearColor()
-    //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
-    //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
-    //                        cell.imageOne.image = sceneImage
-    //                    }
-    //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
-    //                        cell.imageTwo.image = sceneImage
-    //                    }
-    //                }
-                    return cell
-                }
-            let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-            cell.textLabel?.text = "dads"
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
+            cell.backgroundColor = UIColor.clearColor()
+            cell.lblRow.text = "\(indexPath.row+1)."
+            cell.lblDesc.text = "\(devices[indexPath.row].name)"
+            cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
+            cell.lblType.text = "Type: \(devices[indexPath.row].type)"
+            cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
+            cell.isEnabledSwitch.tag = indexPath.row
+            cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
+            cell.isVisibleSwitch.tag = indexPath.row
+            cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
+            //
+            //            return cell
+            //        }
+            //        }
+            //        if tableView == sceneTableView {
+            //            if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
+            //                if choosedTab == .Scenes {
+            //                    cell.backgroundColor = UIColor.clearColor()
+            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
+            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
+            //                        cell.imageOne.image = sceneImage
+            //                    }
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
+            //                        cell.imageTwo.image = sceneImage
+            //                    }
+            //                } else if choosedTab == .Events {
+            //                    cell.backgroundColor = UIColor.clearColor()
+            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
+            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
+            //                        cell.imageOne.image = sceneImage
+            //                    }
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
+            //                        cell.imageTwo.image = sceneImage
+            //                    }
+            //                } else if choosedTab == .Sequences {
+            //                    cell.backgroundColor = UIColor.clearColor()
+            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
+            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
+            //                        cell.imageOne.image = sceneImage
+            //                    }
+            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
+            //                        cell.imageTwo.image = sceneImage
+            //                    }
+            //                }
             return cell
+        }
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        cell.textLabel?.text = "dads"
+        return cell
+        
+    }
     
-        }
-
-        func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return gateway!.devices.count
-        }
-
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return gateway!.devices.count
+    }
+    
 }
 
 class ScanCell:UITableViewCell{
