@@ -38,14 +38,15 @@ class DataImporter {
             let jsonError: NSError?
             
             do {
-                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary
-//                if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
-//                    var zones:[ZoneJSON] = []
-//                    for zone in zonesDictionary {
-//                        zones.append(ZoneJSON(dictionary: zone)!)
-//                    }
-//                    return zones
-//                }
+                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                print(file["Zones"])
+                if let zonesDictionary = file["Zones"] as? [JSONDictionary]! {
+                    var zones:[ZoneJSON] = []
+                    for zone in zonesDictionary {
+                        zones.append(ZoneJSON(dictionary: zone)!)
+                    }
+                    return zones
+                }
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
@@ -79,6 +80,22 @@ class DataImporter {
             print("Postoji.")
             data = NSData(contentsOfFile: filePath)
             let jsonError: NSError?
+            
+            do {
+                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                print(file["categoriesDictionary"])
+                if let categoriesDictionary = file["Categories"] as? [JSONDictionary]! {
+                    var categories:[CategoryJSON] = []
+                    for category in categoriesDictionary {
+                         categories.append(CategoryJSON(dictionary: category)!)
+                    }
+                    return categories
+                }
+            } catch let error1 as NSError {
+                jsonError = error1
+                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                abort()
+            }
 //            if let file = NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary {
 //                if jsonError == nil {
 //                    if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {

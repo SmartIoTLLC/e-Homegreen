@@ -17,21 +17,14 @@ import CoreData
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-//<<<<<<< HEAD
     var locationList:[String] = []
     var levelList:[String] = []
     var zoneList:[String] = []
     var categoryList:[String] = []
     var gatewayList:[String] = []
-//=======
-//    var locationList:[String] = ["All"]
-//    var levelList:[String] = ["All"]
-//    var zoneList:[String] = ["Zone 1", "Zone 2", "All"]
-//    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
-//    var gatewayList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
-    var chooseList:[String] = ["Devices", "Scenes", "Events", "Sequences"]
-//>>>>>>> origin/master
+    var chooseList:[String] = ["Devices", "Scenes", "Events", "Sequences", "Zones", "Categories"]
+    
     var tableList:[String] = []
     
     var appDel:AppDelegate!
@@ -90,27 +83,35 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         }
     }
+    enum PopOver: Int {
+        case Gateways = 1
+        case Levels = 2
+        case Zones = 3
+        case Categories = 4
+        case Scenes = 5
+        case ScanGateway = 6
+    }
     override func viewWillAppear(animated: Bool) {
-        if indexTab == 1{
+        if indexTab == PopOver.Gateways.rawValue {
             updateDeviceList("gateway.name", array:"gatewayList")
             tableList = gatewayList
             tableList.append("All")
-        } else if indexTab == 2 {
+        } else if indexTab == PopOver.Levels.rawValue {
             updateDeviceList("level", array:"levelList")
             tableList = levelList
             tableList.append("All")
-        } else if indexTab == 3 {
+        } else if indexTab == PopOver.Zones.rawValue {
             updateDeviceList("zoneId", array:"zoneList")
             tableList = zoneList
             tableList.append("All")
-        } else if indexTab == 4 {
+        } else if indexTab == PopOver.Categories.rawValue {
             updateDeviceList("categoryId", array:"categoryList")
             tableList = categoryList
             tableList.append("All")
-        } else if indexTab == 5 {
+        } else if indexTab == PopOver.Scenes.rawValue {
             tableList = sceneList
             tableList.append("All")
-        } else {
+        } else if indexTab == PopOver.ScanGateway.rawValue {
             tableList = chooseList
         }
     }
@@ -132,15 +133,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//<<<<<<< HEAD
-//        if indexTab != 4 {
-//=======
-//        if indexTab != 7 {
-//>>>>>>> origin/master
             delegate?.saveText!(tableList[indexPath.row])
-//        } else {
-//            delegate?.clickedOnGatewayWithIndex!(indexPath.row)
-//        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

@@ -55,8 +55,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
         
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -125,13 +123,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                         searchDeviceTimer?.invalidate()
                         searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                         let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                        setProgressBarParametarsForSearchingDevices(address)
                         SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                     } else {
-                        loader.hideActivityIndicator()
+                        hideActivityIndicator()
                     }
                 } else {
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 }
             } else {
@@ -141,9 +141,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 } else {
-                    loader.hideActivityIndicator()
+                    hideActivityIndicator()
                 }
             }
         }
@@ -156,24 +157,37 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             searchDeviceTimer?.invalidate()
             searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
             let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+            setProgressBarParametarsForSearchingDevices(address)
             SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateway!)
         } else {
             searchForDeviceWithId = 0
             timesRepeatedCounter = 0
             searchDeviceTimer?.invalidate()
-            loader.hideActivityIndicator()
+            hideActivityIndicator()
         }
     }
     
-    func hideActivitIndicator () {
+    func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
+        let number:Int = Int(address[2])
+        pbFD?.lblHowMuchOf.text = "\(number)/\(toAddress!)"
+        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(number)/Float(toAddress!)*100)
+        pbFD?.progressView.progress = Float(number)/Float(toAddress!)
+    }
+    
+    func setProgressBarParametarsForFindingNames (index:Int) {
+        pbFN?.lblHowMuchOf.text = "\(index+1)/\(devices.count)"
+        pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(index+1)/Float(devices.count)*100)
+        pbFN?.progressView.progress = Float(index+1)/Float(devices.count)
+    }
+    
+    func hideActivityIndicator () {
+        pbFD?.dissmissProgressBar()
         loader.hideActivityIndicator()
     }
     
     // ======================= *** FINDING NAMES FOR DEVICE *** =======================
     
     var deviceNameTimer:NSTimer?
-    
-    
     
     var index:Int = 0
     var timesRepeatedCounter:Int = 0
@@ -184,6 +198,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                 if deviceIndex == devices.count-1 {
                     index = 0
                     timesRepeatedCounter = 0
+                    deviceNameTimer?.invalidate()
+                    pbFN?.dissmissProgressBar()
                 } else {
                     index = deviceIndex + 1
                     timesRepeatedCounter = 0
@@ -197,6 +213,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
+            print("HELLO 2")
             if index != 0 || deviceIndex < index {
                 //                index = index + 1
                 timesRepeatedCounter += 1
@@ -209,11 +226,24 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
                     sendCommandForFindingName(index: newIndex)
                 }
+            } else {
+                print("MATICUUU KADA CEMO DA KRENEMO KUCI!")
+                if index == 0 {
+                timesRepeatedCounter += 1
+                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
+                sendCommandForFindingName(index: 0)
+                } else {
+                    print("VELIKI PROBLEM ANGAZUJ SVE LJDUE IZ FIRME I OKUPI VELIKI BRAIN TRUST, SNAGU I NADU NASE FIRME!")
+                }
             }
         }
     }
     
     func sendCommandForFindingName (index index:Int) {
+        print("HELLO 3")
+        print(devices[0])
+        print("HELLO 3")
+        setProgressBarParametarsForFindingNames(index)
         if devices[index].type == "Dimmer" {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -230,12 +260,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             SendingHandler(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-        }
-    }
-    
-    func getDevicesNames (timer:NSTimer) {
-        if let index = timer.userInfo as? Int {
-            sendCommandForFindingName(index: index)
         }
     }
     
@@ -276,6 +300,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
     }
     
+    var pbFD:ProgressBarVC?
+    var pbFN:ProgressBarVC?
     @IBAction func findDevice(sender: AnyObject) {
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
@@ -284,6 +310,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     toAddress = numberTwo
                     searchForDeviceWithId = numberOne
                     timesRepeatedCounter = 0
+                    
+                    pbFD = ProgressBarVC(title: "Finding devices", percentage: Float(fromAddress!)/Float(toAddress!), howMuchOf: "1 / \(toAddress!-fromAddress!+1)")
+                    self.presentViewController(pbFD!, animated: true, completion: nil)
+                    
                     if let parentVC = self.parentViewController {
                         loader.showActivityIndicator(parentVC.view)
                     }else{
@@ -296,6 +326,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
     
     @IBAction func deleteAll(sender: AnyObject) {
         for var item = 0; item < devices.count; item++ {
@@ -310,8 +341,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     @IBAction func findNames(sender: AnyObject) {
         //        var index:Int
         if devices.count != 0 {
+            print("HELLO 1")
             index = 0
             timesRepeatedCounter = 0
+            pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
+            self.presentViewController(pbFN!, animated: true, completion: nil)
             deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
             sendCommandForFindingName(index: 0)
         }
@@ -330,43 +364,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
             cell.isVisibleSwitch.tag = indexPath.row
             cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
-            //
-            //            return cell
-            //        }
-            //        }
-            //        if tableView == sceneTableView {
-            //            if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
-            //                if choosedTab == .Scenes {
-            //                    cell.backgroundColor = UIColor.clearColor()
-            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sceneId)"
-            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sceneName)"
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
-            //                        cell.imageOne.image = sceneImage
-            //                    }
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
-            //                        cell.imageTwo.image = sceneImage
-            //                    }
-            //                } else if choosedTab == .Events {
-            //                    cell.backgroundColor = UIColor.clearColor()
-            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].eventId)"
-            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].eventName)"
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
-            //                        cell.imageOne.image = sceneImage
-            //                    }
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
-            //                        cell.imageTwo.image = sceneImage
-            //                    }
-            //                } else if choosedTab == .Sequences {
-            //                    cell.backgroundColor = UIColor.clearColor()
-            //                    cell.labelID.text = "\(choosedTabArray[indexPath.row].sequenceId)"
-            //                    cell.labelName.text = "\(choosedTabArray[indexPath.row].sequenceName)"
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
-            //                        cell.imageOne.image = sceneImage
-            //                    }
-            //                    if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
-            //                        cell.imageTwo.image = sceneImage
-            //                    }
-            //                }
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

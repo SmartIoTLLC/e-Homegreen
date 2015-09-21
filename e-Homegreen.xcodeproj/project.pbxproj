@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
+		73556C821BB02C6600428375 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73556C811BB02C6600428375 /* File.swift */; settings = {ASSET_TAGS = (); }; };
 		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
@@ -155,6 +156,7 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		73556C811BB02C6600428375 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				736265E21B4A483E0078C11D /* Function.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
+				73556C811BB02C6600428375 /* File.swift */,
 			);
 			name = "API ili tako nesto";
 			sourceTree = "<group>";
@@ -936,6 +939,7 @@
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
+				73556C821BB02C6600428375 /* File.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,

@@ -19,6 +19,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanDeviceViewController: ScanDevicesViewController!
     var scanSequencesViewController: ScanSequencesesViewController!
     var scanEventsViewController: ScanEventsViewController!
+    var importZoneViewController:ImportZoneViewController!
+    var importCategoryViewController: ImportCategoryViewController!
     
     
     var appDel:AppDelegate!
@@ -27,7 +29,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var senderButton:UIButton?
     
     enum ChoosedTab {
-        case Devices, Scenes, Events, Sequences
+        case Devices, Scenes, Events, Sequences, Zones, Categories
         func returnStringDescription() -> String {
             switch self {
             case .Devices:
@@ -38,6 +40,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
                 return "Event"
             case .Sequences:
                 return "Sequence"
+            case .Zones:
+                return "Zones"
+            case .Categories:
+                return "Categories"
             }
         }
     }
@@ -71,11 +77,15 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
+        importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
+        importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
         
         scanSceneViewController.gateway = gateway
         scanDeviceViewController.gateway = gateway
         scanSequencesViewController.gateway = gateway
         scanEventsViewController.gateway = gateway
+        importZoneViewController.gateway = gateway
+        importCategoryViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
@@ -169,9 +179,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
                 print("Unresolved error \(error), \(error!.userInfo)")
                 abort()
             }
-//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene] {
-//                choosedTabArray = fetResults
-//            }
         case "Event":
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
@@ -181,9 +188,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
                 print("Unresolved error \(error), \(error!.userInfo)")
                 abort()
             }
-//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event] {
-//                choosedTabArray = fetResults
-//            }
         case "Sequence":
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
@@ -193,9 +197,24 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
                 print("Unresolved error \(error), \(error!.userInfo)")
                 abort()
             }
-//            if let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence] {
-//                choosedTabArray = fetResults
-//            }
+        case "Zones":
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+                choosedTabArray = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
+        case "Categories":
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+                choosedTabArray = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
         default:
             print("")
         }
@@ -247,44 +266,20 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         if strText == "Devices" {
             choosedTab = .Devices
             
-            
-//            var newController = storyboard!.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
-//            let oldController = childViewControllers.last as! UIViewController
-//            
-//            oldController.willMoveToParentViewController(nil)
-//            addChildViewController(newController)
-//            newController.view.frame = oldController.view.frame
-//            
-//            oldController.removeFromParentViewController()
-//            newController.didMoveToParentViewController(self)
-            
             let oldController = childViewControllers.last
-//            oldController.view.hidden = true
-//            
-//            scanDeviceViewController.view.hidden = false
-            print("To care")
+            
             self.addChildViewController(scanDeviceViewController)
             scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
             container.addSubview(scanDeviceViewController.view)
             scanDeviceViewController.didMoveToParentViewController(self)
-            print("To care")
             oldController!.view.hidden = true
             
             scanDeviceViewController.view.hidden = false
-            
-//            scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-//            container.addSubview(scanDeviceViewController.view)
-//            sceneTableView.reloadData()
-//            sceneView.hidden = true
-//            deviceView.hidden = false
         }
         if strText == "Scenes" {
             choosedTab = .Scenes
             
             let oldController = childViewControllers.last
-//            oldController.view.hidden = true
-//            
-//            scanSceneViewController.view.hidden = false
             
             self.addChildViewController(scanSceneViewController)
             scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
@@ -293,11 +288,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             oldController!.view.hidden = true
             
             scanSceneViewController.view.hidden = false
-            
-//            updateListFetchingFromCD("Scene", entityId: "sceneId", entityName: "sceneName")
-//            sceneTableView.reloadData()
-//            sceneView.hidden = false
-//            deviceView.hidden = true
         }
         if strText == "Events" {
             
@@ -312,18 +302,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             scanEventsViewController.didMoveToParentViewController(self)
             
             choosedTab = .Events
-//            updateListFetchingFromCD("Event", entityId: "eventId", entityName: "eventName")
-//            sceneTableView.reloadData()
-//            sceneView.hidden = false
-//            deviceView.hidden = true
         }
         if strText == "Sequences" {
             choosedTab = .Sequences
             
             let oldController = childViewControllers.last
-//            oldController.view.hidden = true
-//            
-//            scanSequencesViewController.view.hidden = false
             
             self.addChildViewController(scanSequencesViewController)
             scanSequencesViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
@@ -333,10 +316,34 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             oldController!.view.hidden = true
             
             scanSequencesViewController.view.hidden = false
-//            updateListFetchingFromCD("Sequence", entityId: "sequenceId", entityName: "sequenceName")
-//            sceneTableView.reloadData()
-//            sceneView.hidden = false
-//            deviceView.hidden = true
+        }
+        if strText == "Zones" {
+            choosedTab = .Categories
+            
+            let oldController = childViewControllers.last
+            
+            self.addChildViewController(importZoneViewController)
+            importZoneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
+            container.addSubview(importZoneViewController.view)
+            importZoneViewController.didMoveToParentViewController(self)
+            
+            oldController!.view.hidden = true
+            
+            importZoneViewController.view.hidden = false
+        }
+        if strText == "Categories" {
+            choosedTab = .Zones
+            
+            let oldController = childViewControllers.last
+            
+            self.addChildViewController(importCategoryViewController)
+            importCategoryViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
+            container.addSubview(importCategoryViewController.view)
+            importCategoryViewController.didMoveToParentViewController(self)
+            
+            oldController!.view.hidden = true
+            
+            importCategoryViewController.view.hidden = false
         }
     }
     

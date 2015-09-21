@@ -50,7 +50,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
         
         let gradient:CAGradientLayer = CAGradientLayer()
         gradient.frame = backview.bounds

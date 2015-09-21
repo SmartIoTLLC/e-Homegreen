@@ -7,14 +7,26 @@
 //
 
 import UIKit
+import CoreData
 
+//IPGCW02001_000_000_Categories List
 class ImportCategoryViewController: UIViewController {
     
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     var categories:[Category] = []
-
+    var gateway:Gateway?
+    
+    @IBOutlet weak var importCategoryTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let categories:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")!
+        print(categories)
+        
         // Do any additional setup after loading the view.
     }
 
@@ -23,7 +35,43 @@ class ImportCategoryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func brnDeleteAll(sender: AnyObject) {
+        
+    }
 
+    @IBAction func btnImportFile(sender: AnyObject) {
+        
+    }
+    
+    
+    func updateCategoryList () {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            categories = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -44,7 +92,7 @@ extension ImportCategoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "zones"
+        cell.textLabel?.text = "\(categories[indexPath.row].id). \(categories[indexPath.row].name), Desc: \(categories[indexPath.row].categoryDescription)"
         return cell
         
     }

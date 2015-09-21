@@ -46,6 +46,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var timer:NSTimer = NSTimer()
     
     override func viewDidLoad() {
+        print(heeeeeeej())
         super.viewDidLoad()
         //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
