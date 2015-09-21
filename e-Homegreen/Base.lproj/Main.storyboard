@@ -353,6 +353,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hvz-yb-Uoe">
                                 <rect key="frame" x="0.0" y="48" width="320" height="520"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="DUA-Vw-J7g">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -376,11 +377,12 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="fId-5r-lP7" id="Kl4-PU-jmf"/>
+                                    <outlet property="delegate" destination="fId-5r-lP7" id="H3J-nY-AcV"/>
+                                </connections>
                             </tableView>
                         </subviews>
-<<<<<<< HEAD
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-=======
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jtI-eH-dCS" firstAttribute="width" secondItem="swp-OH-1ab" secondAttribute="width" id="6ik-bZ-AMg"/>
@@ -395,7 +397,6 @@
                             <constraint firstItem="jtI-eH-dCS" firstAttribute="leading" secondItem="swp-OH-1ab" secondAttribute="trailing" constant="10" id="qaU-SG-5hg"/>
                             <constraint firstItem="jtI-eH-dCS" firstAttribute="top" secondItem="HEV-Zh-OUe" secondAttribute="top" constant="10" id="ziV-QR-2tC"/>
                         </constraints>
->>>>>>> origin/master
                     </view>
                     <connections>
                         <outlet property="importZoneTableView" destination="Hvz-yb-Uoe" id="hT3-Yy-3Sy"/>
@@ -450,6 +451,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lty-bs-V72">
                                 <rect key="frame" x="0.0" y="48" width="320" height="520"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="rxG-dm-bgV">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -473,11 +475,12 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="YTT-sW-B1V" id="HTB-t2-HFC"/>
+                                    <outlet property="delegate" destination="YTT-sW-B1V" id="F4H-hY-FZt"/>
+                                </connections>
                             </tableView>
                         </subviews>
-<<<<<<< HEAD
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-=======
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="8LN-bF-dNl" firstAttribute="top" secondItem="Yme-9K-wm4" secondAttribute="top" constant="10" id="DX5-CE-zF3"/>
@@ -491,7 +494,6 @@
                             <constraint firstAttribute="trailing" secondItem="8LN-bF-dNl" secondAttribute="trailing" constant="9" id="sfO-9o-SJH"/>
                             <constraint firstItem="8LN-bF-dNl" firstAttribute="leading" secondItem="Rzg-KV-9yh" secondAttribute="trailing" constant="3" id="xqV-ZF-LFY"/>
                         </constraints>
->>>>>>> origin/master
                     </view>
                     <connections>
                         <outlet property="importCategoryTableView" destination="Lty-bs-V72" id="qAX-kY-9tD"/>

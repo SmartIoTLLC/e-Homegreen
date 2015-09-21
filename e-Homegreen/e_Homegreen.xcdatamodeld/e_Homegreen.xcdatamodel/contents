@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="14E46" minimumToolsVersion="Automatic">
-    <entity name="Category" representedClassName="PRODUCT_MODULE_NAME.Category" syncable="YES">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="14F27" minimumToolsVersion="Automatic">
+    <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
         <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -94,7 +94,7 @@
     <entity name="SSID" syncable="YES">
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Timer" representedClassName="Timer" syncable="YES">
+    <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timerId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -103,7 +103,7 @@
         <attribute name="timerName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="timers" inverseEntity="Gateway" syncable="YES"/>
     </entity>
-    <entity name="Zone" representedClassName="PRODUCT_MODULE_NAME.Zone" syncable="YES">
+    <entity name="Zone" representedClassName="e_Homegreen.Zone" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
