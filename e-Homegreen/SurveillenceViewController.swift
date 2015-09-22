@@ -31,13 +31,13 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         super.viewDidLoad()
         
         
-        camera1.lync = "http://192.168.0.16:8081/"
+        camera1.lync = "http://192.168.0.18:8081/"
         camera2.lync = "http://192.168.0.18:8081/"
         camera3.lync = "http://192.168.0.32:8081/"
         
-//        cameraList.append(camera1)
-        cameraList.append(camera2)
-        cameraList.append(camera3)
+        cameraList.append(camera1)
+//        cameraList.append(camera2)
+//        cameraList.append(camera3)
 
         getData()
         

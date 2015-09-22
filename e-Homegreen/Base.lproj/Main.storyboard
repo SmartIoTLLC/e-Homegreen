@@ -117,6 +117,10 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -316,23 +320,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swp-OH-1ab">
-                                <rect key="frame" x="6" y="10" width="151" height="30"/>
-                                <state key="normal" title="DELETE ALL">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtI-eH-dCS">
-                                <rect key="frame" x="160" y="10" width="151" height="30"/>
-                                <state key="normal" title="IMPORT FILE">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hvz-yb-Uoe">
-                                <rect key="frame" x="0.0" y="48" width="320" height="520"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swp-OH-1ab">
+                                <rect key="frame" x="6" y="10" width="147" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="80e-KG-3ud"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <state key="normal" title="DELETE ALL">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtI-eH-dCS">
+                                <rect key="frame" x="163" y="10" width="147" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="CE4-QS-MVm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <state key="normal" title="IMPORT FILE">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hvz-yb-Uoe">
+                                <rect key="frame" x="0.0" y="48" width="320" height="520"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="DUA-Vw-J7g">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -341,24 +355,42 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkD-AV-kdm">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkD-AV-kdm">
                                                     <rect key="frame" x="8" y="11" width="304" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bkD-AV-kdm" firstAttribute="leading" secondItem="6ca-Bp-8x3" secondAttribute="leading" constant="8" id="QnN-wO-LwF"/>
+                                                <constraint firstAttribute="trailing" secondItem="bkD-AV-kdm" secondAttribute="trailing" constant="8" id="ieZ-0I-vkZ"/>
+                                                <constraint firstItem="bkD-AV-kdm" firstAttribute="centerY" secondItem="6ca-Bp-8x3" secondAttribute="centerY" id="ryu-RN-Nks"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jtI-eH-dCS" firstAttribute="width" secondItem="swp-OH-1ab" secondAttribute="width" id="6ik-bZ-AMg"/>
+                            <constraint firstAttribute="trailing" secondItem="Hvz-yb-Uoe" secondAttribute="trailing" id="8j9-mB-YZW"/>
+                            <constraint firstAttribute="trailing" secondItem="jtI-eH-dCS" secondAttribute="trailing" constant="10" id="9Je-Bk-SuN"/>
+                            <constraint firstItem="Lhd-3i-9GN" firstAttribute="top" secondItem="Hvz-yb-Uoe" secondAttribute="bottom" id="EOa-Za-Ymy"/>
+                            <constraint firstItem="Hvz-yb-Uoe" firstAttribute="top" secondItem="jtI-eH-dCS" secondAttribute="bottom" constant="8" id="HpW-1M-Vmk"/>
+                            <constraint firstItem="swp-OH-1ab" firstAttribute="leading" secondItem="HEV-Zh-OUe" secondAttribute="leading" constant="6" id="Vxp-gP-oU0"/>
+                            <constraint firstItem="Hvz-yb-Uoe" firstAttribute="top" secondItem="swp-OH-1ab" secondAttribute="bottom" constant="8" id="X78-br-wM6"/>
+                            <constraint firstItem="swp-OH-1ab" firstAttribute="top" secondItem="HEV-Zh-OUe" secondAttribute="top" constant="10" id="XKc-0s-rt5"/>
+                            <constraint firstItem="Hvz-yb-Uoe" firstAttribute="leading" secondItem="HEV-Zh-OUe" secondAttribute="leading" id="b35-gZ-J4G"/>
+                            <constraint firstItem="jtI-eH-dCS" firstAttribute="leading" secondItem="swp-OH-1ab" secondAttribute="trailing" constant="10" id="qaU-SG-5hg"/>
+                            <constraint firstItem="jtI-eH-dCS" firstAttribute="top" secondItem="HEV-Zh-OUe" secondAttribute="top" constant="10" id="ziV-QR-2tC"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HXE-l3-G6E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1584" y="1521"/>
+            <point key="canvasLocation" x="-1584" y="1515"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="f01-Ti-XkW">
@@ -372,23 +404,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rzg-KV-9yh">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rzg-KV-9yh">
                                 <rect key="frame" x="6" y="10" width="151" height="30"/>
-                                <state key="normal" title="DELETE ALL">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8LN-bF-dNl">
-                                <rect key="frame" x="160" y="10" width="151" height="30"/>
-                                <state key="normal" title="IMPORT FILE">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lty-bs-V72">
-                                <rect key="frame" x="0.0" y="48" width="320" height="520"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="fTK-Kc-hA6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <state key="normal" title="DELETE ALL">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8LN-bF-dNl">
+                                <rect key="frame" x="160" y="10" width="151" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="zBh-68-JAz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <state key="normal" title="IMPORT FILE">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lty-bs-V72">
+                                <rect key="frame" x="0.0" y="48" width="320" height="520"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="rxG-dm-bgV">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -397,19 +439,36 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HK9-4E-Yyd">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HK9-4E-Yyd">
                                                     <rect key="frame" x="8" y="11" width="304" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="HK9-4E-Yyd" firstAttribute="centerY" secondItem="8Ta-qe-Duf" secondAttribute="centerY" id="0fK-JF-YFq"/>
+                                                <constraint firstItem="HK9-4E-Yyd" firstAttribute="leading" secondItem="8Ta-qe-Duf" secondAttribute="leading" constant="8" id="6oP-Qu-dNf"/>
+                                                <constraint firstAttribute="trailing" secondItem="HK9-4E-Yyd" secondAttribute="trailing" constant="8" id="NLH-sY-cTu"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8LN-bF-dNl" firstAttribute="top" secondItem="Yme-9K-wm4" secondAttribute="top" constant="10" id="DX5-CE-zF3"/>
+                            <constraint firstItem="Rzg-KV-9yh" firstAttribute="leading" secondItem="Yme-9K-wm4" secondAttribute="leading" constant="6" id="Hp8-xM-MDb"/>
+                            <constraint firstItem="8LN-bF-dNl" firstAttribute="width" secondItem="Rzg-KV-9yh" secondAttribute="width" id="Jcu-oq-KbZ"/>
+                            <constraint firstItem="Rzg-KV-9yh" firstAttribute="top" secondItem="Yme-9K-wm4" secondAttribute="top" constant="10" id="a6r-Vd-vAm"/>
+                            <constraint firstItem="Lty-bs-V72" firstAttribute="leading" secondItem="Yme-9K-wm4" secondAttribute="leading" id="cV0-Op-sNt"/>
+                            <constraint firstItem="x3x-bC-26N" firstAttribute="top" secondItem="Lty-bs-V72" secondAttribute="bottom" id="doJ-8s-P5h"/>
+                            <constraint firstItem="Lty-bs-V72" firstAttribute="top" secondItem="8LN-bF-dNl" secondAttribute="bottom" constant="8" id="fLn-UT-fH2"/>
+                            <constraint firstAttribute="trailing" secondItem="Lty-bs-V72" secondAttribute="trailing" id="lNb-Yp-6a2"/>
+                            <constraint firstAttribute="trailing" secondItem="8LN-bF-dNl" secondAttribute="trailing" constant="9" id="sfO-9o-SJH"/>
+                            <constraint firstItem="8LN-bF-dNl" firstAttribute="leading" secondItem="Rzg-KV-9yh" secondAttribute="trailing" constant="3" id="xqV-ZF-LFY"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29x-uu-uHt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -586,7 +645,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tXN-LQ-XRp">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tXN-LQ-XRp">
                                 <rect key="frame" x="0.0" y="98" width="320" height="470"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -594,7 +653,7 @@
                                         <rect key="frame" x="0.0" y="22" width="320" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z7E-av-cdM" id="WVa-uO-rlQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I88-E0-e41">
@@ -625,7 +684,7 @@
                                                     <rect key="frame" x="263" y="6" width="51" height="31"/>
                                                 </switch>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OOA-qY-cGo">
-                                                    <rect key="frame" x="263" y="51" width="51" height="31"/>
+                                                    <rect key="frame" x="263" y="50" width="51" height="31"/>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Enable" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAh-Eb-wYL">
                                                     <rect key="frame" x="214" y="13" width="44" height="17"/>
@@ -634,7 +693,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visible" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="za4-rg-VAw">
-                                                    <rect key="frame" x="214" y="58" width="43" height="17"/>
+                                                    <rect key="frame" x="214" y="57" width="43" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -1495,7 +1554,7 @@
                             <constraint firstItem="Tkn-8v-aF5" firstAttribute="centerY" secondItem="21z-9E-5ow" secondAttribute="centerY" id="TCJ-Ei-6CV"/>
                             <constraint firstItem="hwc-aT-oeO" firstAttribute="leading" secondItem="wHm-W8-OJ2" secondAttribute="trailing" constant="10" id="TkF-wf-BI0"/>
                             <constraint firstItem="QQf-LS-cJd" firstAttribute="leading" secondItem="8O3-RJ-Jhp" secondAttribute="trailing" constant="10" id="ZG2-TO-uw1"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="F5F-Bn-9fP" secondAttribute="trailing" constant="-8" id="a2w-Ha-Qg5"/>
+                            <constraint firstAttribute="trailing" secondItem="F5F-Bn-9fP" secondAttribute="trailing" constant="8" id="a2w-Ha-Qg5"/>
                             <constraint firstItem="eOX-BW-B4y" firstAttribute="centerY" secondItem="9Ps-YQ-aHp" secondAttribute="centerY" id="aa3-Ea-mtm"/>
                             <constraint firstItem="1Je-PW-Tm9" firstAttribute="centerY" secondItem="8Na-do-rvb" secondAttribute="centerY" id="ahz-ka-Tx5"/>
                             <constraint firstItem="21z-9E-5ow" firstAttribute="leading" secondItem="Tkn-8v-aF5" secondAttribute="trailing" constant="10" id="ch7-lW-2Py"/>
