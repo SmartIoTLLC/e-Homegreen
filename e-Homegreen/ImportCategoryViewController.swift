@@ -40,7 +40,22 @@ class ImportCategoryViewController: UIViewController {
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
-        
+        if let categoriesJSON:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")! {
+            for categoryJSON in categoriesJSON {
+                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                category.id = categoryJSON.id
+                category.name = categoryJSON.name
+                category.categoryDescription = categoryJSON.description
+                category.gateway = gateway!
+                saveChanges()
+            }
+        }
+        refreshCategoryList()
+    }
+    
+    func refreshCategoryList () {
+        updateCategoryList()
+        importCategoryTableView.reloadData()
     }
     
     

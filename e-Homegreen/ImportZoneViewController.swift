@@ -38,13 +38,14 @@ class ImportZoneViewController: UIViewController {
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
-        if let zones:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
-            for zoneJSON in zones {
+        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
+            for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 zone.id = zoneJSON.id
                 zone.name = zoneJSON.name
                 zone.zoneDescription = zoneJSON.description
                 zone.level = zoneJSON.level
+                zone.gateway = gateway!
                 saveChanges()
             }
         }

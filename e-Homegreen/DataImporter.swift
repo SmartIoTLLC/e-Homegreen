@@ -143,14 +143,14 @@ extension ZoneJSON {
 }
 
 struct CategoryJSON {
-    let id:String
+    let id:Int
     let name:String
     let description:String
 }
 
 extension CategoryJSON {
     init?(dictionary:JSONDictionary) {
-        if let id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+        if let id  = dictionary["ID"] as? Int, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
 //            if let idInt = Int(id) {
                 self.id = id
                 self.name = name
