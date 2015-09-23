@@ -27,6 +27,8 @@ class ImportCategoryViewController: UIViewController {
 //        let categories:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")!
 //        print(categories)
         
+        refreshCategoryList()
+        
         // Do any additional setup after loading the view.
     }
 
@@ -36,11 +38,17 @@ class ImportCategoryViewController: UIViewController {
     }
     
     @IBAction func brnDeleteAll(sender: AnyObject) {
-        
+        for var item = 0; item < categories.count; item++ {
+            if categories[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(categories[item])
+            }
+        }
+        saveChanges()
+        refreshCategoryList()
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
-        if let categoriesJSON:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")! {
+        if let categoriesJSON = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json") {
             for categoryJSON in categoriesJSON {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                 category.id = categoryJSON.id

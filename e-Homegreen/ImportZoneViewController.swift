@@ -25,6 +25,8 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
 //        let zones:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")!
 //        print(zones)
 
+        refreshZoneList()
+        
         // Do any additional setup after loading the view.
     }
 
@@ -49,7 +51,13 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     }
     
     @IBAction func btnDeleteAll(sender: AnyObject) {
-        
+        for var item = 0; item < zones.count; item++ {
+            if zones[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(zones[item])
+            }
+        }
+        saveChanges()
+        refreshZoneList()
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
@@ -123,6 +131,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name), Level: \(zones[indexPath.row].level), Desc: \(zones[indexPath.row].zoneDescription)"
+        cell.textLabel?.textColor = UIColor.whiteColor()
         cell.backgroundColor = UIColor.clearColor()
         return cell
         
