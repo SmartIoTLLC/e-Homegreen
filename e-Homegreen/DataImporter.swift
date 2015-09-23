@@ -52,18 +52,6 @@ class DataImporter {
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
                 abort()
             }
-//            if let file = NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary {
-//                if jsonError == nil {
-//                    if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
-//                        var zones:[ZoneJSON] = []
-//                        for zone in zonesDictionary {
-//                            zones.append(ZoneJSON(dictionary: zone)!)
-//                        }
-//                        return zones
-//                    }
-//                }
-//                return nil
-//            }
             return nil
             
         } else {
@@ -83,7 +71,7 @@ class DataImporter {
             
             do {
                 let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
-                print(file["categoriesDictionary"])
+                print(file["Categories"])
                 if let categoriesDictionary = file["Categories"] as? [JSONDictionary]! {
                     var categories:[CategoryJSON] = []
                     for category in categoriesDictionary {
@@ -96,18 +84,6 @@ class DataImporter {
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
                 abort()
             }
-//            if let file = NSJSONSerialization.JSONObjectWithData(data, options: []) as? JSONDictionary {
-//                if jsonError == nil {
-//                    if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
-//                        var categories:[CategoryJSON] = []
-//                        for category in categoriesDictionary {
-//                            categories.append(CategoryJSON(dictionary: category)!)
-//                        }
-//                        return categories
-//                    }
-//                }
-//                return nil
-//            }
             return nil
             
             
@@ -150,13 +126,13 @@ struct CategoryJSON {
 
 extension CategoryJSON {
     init?(dictionary:JSONDictionary) {
-        if let id  = dictionary["ID"] as? Int, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-//            if let idInt = Int(id) {
-                self.id = id
+        if let id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+            if let idInt = Int(id) {
+                self.id = idInt
                 self.name = name
                 self.description = description
                 return
-//            }
+            }
         }
         return nil
     }
