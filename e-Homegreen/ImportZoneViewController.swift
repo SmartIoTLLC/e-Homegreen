@@ -22,8 +22,8 @@ class ImportZoneViewController: UIViewController {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let zones:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")!
-        print(zones)
+//        let zones:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")!
+//        print(zones)
 
         // Do any additional setup after loading the view.
     }

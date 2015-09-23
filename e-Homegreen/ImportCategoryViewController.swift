@@ -24,8 +24,8 @@ class ImportCategoryViewController: UIViewController {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let categories:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")!
-        print(categories)
+//        let categories:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")!
+//        print(categories)
         
         // Do any additional setup after loading the view.
     }
