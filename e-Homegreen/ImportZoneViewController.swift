@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //IPGCW02001_000_000_Zones List
-class ImportZoneViewController: UIViewController {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -33,12 +33,8 @@ class ImportZoneViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func btnDeleteAll(sender: AnyObject) {
-        
-    }
-
-    @IBAction func btnImportFile(sender: AnyObject) {
-        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
+    func backURL(strText: String) {
+        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile(strText)! {
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 zone.id = zoneJSON.id
@@ -50,6 +46,26 @@ class ImportZoneViewController: UIViewController {
             }
         }
         refreshZoneList()
+    }
+    
+    @IBAction func btnDeleteAll(sender: AnyObject) {
+        
+    }
+
+    @IBAction func btnImportFile(sender: AnyObject) {
+        showImportFiles().delegate = self
+//        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
+//            for zoneJSON in zonesJSON {
+//                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
+//                zone.id = zoneJSON.id
+//                zone.name = zoneJSON.name
+//                zone.zoneDescription = zoneJSON.description
+//                zone.level = zoneJSON.level
+//                zone.gateway = gateway!
+//                saveChanges()
+//            }
+//        }
+//        refreshZoneList()
     }
     
     func refreshZoneList() {
@@ -107,6 +123,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name), Level: \(zones[indexPath.row].level), Desc: \(zones[indexPath.row].zoneDescription)"
+        cell.backgroundColor = UIColor.clearColor()
         return cell
         
     }

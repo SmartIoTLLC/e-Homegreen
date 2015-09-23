@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImportFilesViewController" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="cmT-DR-l8Y" id="lnZ-YX-BIX"/>
+                <outlet property="tableOfFiles" destination="ZhJ-pd-w0a" id="iy2-oc-6py"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cmT-DR-l8Y">
+                    <rect key="frame" x="145" y="145" width="310" height="310"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3x-mw-ccM">
+                            <rect key="frame" x="82" y="269" width="67" height="31"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="67" id="kxd-yu-sMx"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="CANCEL">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnCancel:" destination="-1" eventType="touchUpInside" id="3T1-eH-jJt"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mc-tx-6tq">
+                            <rect key="frame" x="162" y="269" width="67" height="31"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="67" id="5D1-el-Vda"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="IMPORT">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnImport:" destination="-1" eventType="touchUpInside" id="Go6-LG-wUb"/>
+                            </connections>
+                        </button>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZhJ-pd-w0a">
+                            <rect key="frame" x="5" y="5" width="300" height="244"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="gwC-KF-tag"/>
+                                <outlet property="delegate" destination="-1" id="CWC-b4-01U"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="310" id="7fQ-mc-HwJ"/>
+                        <constraint firstItem="5mc-tx-6tq" firstAttribute="centerX" secondItem="cmT-DR-l8Y" secondAttribute="centerX" constant="40" id="Ioi-bd-E0Z"/>
+                        <constraint firstItem="ZhJ-pd-w0a" firstAttribute="leading" secondItem="cmT-DR-l8Y" secondAttribute="leading" constant="5" id="KPw-mg-uj3"/>
+                        <constraint firstAttribute="height" constant="310" id="X5T-fs-0Kw"/>
+                        <constraint firstItem="b3x-mw-ccM" firstAttribute="centerX" secondItem="cmT-DR-l8Y" secondAttribute="centerX" constant="-40" id="XLR-aN-IsW"/>
+                        <constraint firstAttribute="trailing" secondItem="ZhJ-pd-w0a" secondAttribute="trailing" constant="5" id="cpi-JR-9jf"/>
+                        <constraint firstItem="ZhJ-pd-w0a" firstAttribute="top" secondItem="cmT-DR-l8Y" secondAttribute="top" constant="5" id="dW9-tv-fYd"/>
+                        <constraint firstItem="b3x-mw-ccM" firstAttribute="top" secondItem="ZhJ-pd-w0a" secondAttribute="bottom" constant="20" id="hO1-gf-RFq"/>
+                        <constraint firstItem="b3x-mw-ccM" firstAttribute="centerY" secondItem="5mc-tx-6tq" secondAttribute="centerY" id="mjo-tC-91s"/>
+                        <constraint firstAttribute="bottom" secondItem="5mc-tx-6tq" secondAttribute="bottom" constant="10" id="sea-0y-Ypb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="cmT-DR-l8Y" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Fd9-x7-frp"/>
+                <constraint firstItem="cmT-DR-l8Y" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Qg1-JW-LQG"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

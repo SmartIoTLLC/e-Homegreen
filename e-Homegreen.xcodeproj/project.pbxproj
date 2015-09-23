@@ -77,6 +77,8 @@
 		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
 		E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41681B6641A6005080F1 /* CustomSegue.swift */; };
 		E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F416A1B664BC3005080F1 /* SegueUnwind.swift */; };
+		E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E79A893F1BAD723A00714C64 /* Gateway+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		E79A89401BAD723A00714C64 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A893C1BAD723A00714C64 /* Gateway.swift */; settings = {ASSET_TAGS = (); }; };
@@ -237,6 +239,8 @@
 		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		E75F41681B6641A6005080F1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
 		E75F416A1B664BC3005080F1 /* SegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueUnwind.swift; sourceTree = "<group>"; };
+		E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportFilesViewController.swift; sourceTree = "<group>"; };
+		E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImportFilesViewController.xib; sourceTree = "<group>"; };
 		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
 		E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gateway+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E79A893C1BAD723A00714C64 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
@@ -700,6 +704,8 @@
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
+				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
+				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -826,6 +832,7 @@
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
+				E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */,
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
 				E7DC67BD1B457C0E00EA6543 /* weather-mist@2x.png in Resources */,
@@ -899,6 +906,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,
+				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E79A89401BAD723A00714C64 /* Gateway.swift in Sources */,
 				E79A893F1BAD723A00714C64 /* Gateway+CoreDataProperties.swift in Sources */,
