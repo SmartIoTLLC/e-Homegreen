@@ -17,6 +17,9 @@ class SecurityViewController: CommonViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        
+        Function.sendKeySecurity([0x00, 0x01], key: 0xFF)
     }
 
     override func didReceiveMemoryWarning() {

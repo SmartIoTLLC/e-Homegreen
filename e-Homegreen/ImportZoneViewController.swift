@@ -25,6 +25,8 @@ class ImportZoneViewController: UIViewController {
 //        let zones:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")!
 //        print(zones)
 
+        refreshZoneList()
+        
         // Do any additional setup after loading the view.
     }
 
@@ -34,11 +36,17 @@ class ImportZoneViewController: UIViewController {
     }
     
     @IBAction func btnDeleteAll(sender: AnyObject) {
-        
+        for var item = 0; item < zones.count; item++ {
+            if zones[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(zones[item])
+            }
+        }
+        saveChanges()
+        refreshZoneList()
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
-        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
+        if let zonesJSON = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json") {
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 zone.id = zoneJSON.id

@@ -64,7 +64,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                     switch array {
                     case "gatewayList":
                         gatewayList.append("\(fetchedObject)")
-                    case "levelList" :
+                    case "levelList":
                         levelList.append("\(fetchedObject)")
                     case "zoneList":
                         zoneList.append("\(fetchedObject)")

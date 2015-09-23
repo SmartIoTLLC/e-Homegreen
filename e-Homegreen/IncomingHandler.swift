@@ -95,9 +95,17 @@ class IncomingHandler: NSObject {
                         self.ackADICmdGetInterfaceName(self.byteArray)
                     }
                     
+//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0x02 {
+//                        
+//                    }
                 }
         }
     }
+    
+    func refreshSecurityStatus (byteArray:[UInt8]) {
+        
+    }
+    
     func fetchDevices () {
         // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
