@@ -40,7 +40,7 @@ class DataImporter {
             do {
                 let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
                 print(file["Zones"])
-                if let zonesDictionary = file["Zones"] as? [JSONDictionary]! {
+                if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                     var zones:[ZoneJSON] = []
                     for zone in zonesDictionary {
                         zones.append(ZoneJSON(dictionary: zone)!)
@@ -72,7 +72,7 @@ class DataImporter {
             do {
                 let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
                 print(file["Categories"])
-                if let categoriesDictionary = file["Categories"] as? [JSONDictionary]! {
+                if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                     var categories:[CategoryJSON] = []
                     for category in categoriesDictionary {
                          categories.append(CategoryJSON(dictionary: category)!)

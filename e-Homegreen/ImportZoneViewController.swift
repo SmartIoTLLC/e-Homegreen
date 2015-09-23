@@ -36,7 +36,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     }
     
     func backURL(strText: String) {
-        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile(strText)! {
+        if let zonesJSON = DataImporter.createZonesFromFile(strText) {
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 zone.id = zoneJSON.id
