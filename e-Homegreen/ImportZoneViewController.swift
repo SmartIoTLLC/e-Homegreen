@@ -128,7 +128,12 @@ extension ImportZoneViewController: UITableViewDelegate {
 }
 extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+        if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
+            cell.lblName.text = "\(zones[indexPath.row].id)" + ", \(zones[indexPath.row].name)"
+            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
+            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
+            return cell
+        }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name), Level: \(zones[indexPath.row].level), Desc: \(zones[indexPath.row].zoneDescription)"
         cell.textLabel?.textColor = UIColor.whiteColor()
@@ -141,5 +146,11 @@ extension ImportZoneViewController: UITableViewDataSource {
     }
 }
 class ImportZoneTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblLevel: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var switchEnable: UISwitch!
+    @IBOutlet weak var switchVisible: UISwitch!
     
 }

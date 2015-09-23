@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //IPGCW02001_000_000_Categories List
-class ImportCategoryViewController: UIViewController {
+class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -46,9 +46,9 @@ class ImportCategoryViewController: UIViewController {
         saveChanges()
         refreshCategoryList()
     }
-
-    @IBAction func btnImportFile(sender: AnyObject) {
-        if let categoriesJSON = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json") {
+    
+    func backURL(strText: String) {
+        if let categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
             for categoryJSON in categoriesJSON {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                 category.id = categoryJSON.id
@@ -59,6 +59,21 @@ class ImportCategoryViewController: UIViewController {
             }
         }
         refreshCategoryList()
+    }
+
+    @IBAction func btnImportFile(sender: AnyObject) {
+        showImportFiles().delegate = self
+//        if let categoriesJSON = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json") {
+//            for categoryJSON in categoriesJSON {
+//                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+//                category.id = categoryJSON.id
+//                category.name = categoryJSON.name
+//                category.categoryDescription = categoryJSON.description
+//                category.gateway = gateway!
+//                saveChanges()
+//            }
+//        }
+//        refreshCategoryList()
     }
     
     func refreshCategoryList () {
@@ -113,9 +128,15 @@ extension ImportCategoryViewController: UITableViewDelegate {
 }
 extension ImportCategoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+        if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
+            cell.lblName.text = "\(categories[indexPath.row].id)" + ", \(categories[indexPath.row].name)"
+            cell.lblDescription.text = "Desc: \(categories[indexPath.row].categoryDescription)"
+            return cell
+        }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "\(categories[indexPath.row].id). \(categories[indexPath.row].name), Desc: \(categories[indexPath.row].categoryDescription)"
+        cell.backgroundColor = UIColor.clearColor()
+        cell.textLabel?.textColor = UIColor.whiteColor()
         return cell
         
     }
@@ -124,5 +145,10 @@ extension ImportCategoryViewController: UITableViewDataSource {
     }
 }
 class ImportCategoryTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var switchEnable: UISwitch!
+    @IBOutlet weak var switchVisible: UISwitch!
     
 }
