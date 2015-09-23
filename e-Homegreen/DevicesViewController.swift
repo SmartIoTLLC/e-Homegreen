@@ -68,6 +68,17 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         //        var utterance = AVSpeechUtterance(string: "Hello world. Hello Vladimir! What about these new things? What about everything?")
         //        var synth = AVSpeechSynthesizer()
         //        synth.speakUtterance(utterance)
+        
+        
+        
+//        let username = "admin"
+//        let password = "ehome779"
+//        
+//        let loginString = NSString(format: "%@:%@", username, password)
+//        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
+//        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+//        
+//        print(base64LoginString)
     }
     var appDel:AppDelegate!
     var devices:[Device] = []
