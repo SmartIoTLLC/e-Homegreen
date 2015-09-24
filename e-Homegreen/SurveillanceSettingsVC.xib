@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SurveillanceSettingsVC" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="4NT-Bl-Cye" id="iir-EE-sH9"/>
+                <outlet property="btnCancel" destination="43b-94-HX5" id="YpE-n8-ku5"/>
+                <outlet property="btnSave" destination="Oe7-RO-ZYl" id="pHC-MB-g9v"/>
+                <outlet property="editID" destination="hJ6-1h-6vt" id="wzx-Gx-ZSm"/>
+                <outlet property="editPassword" destination="M4L-vb-J6I" id="Vnv-OU-Cun"/>
+                <outlet property="editPort" destination="c7T-9E-00c" id="mSn-fi-Gr7"/>
+                <outlet property="editUserName" destination="bsM-qB-syN" id="pqi-zC-Nz3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4NT-Bl-Cye">
+                    <rect key="frame" x="150" y="150" width="300" height="240"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Surveilance Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bAt-I5-4nq">
+                            <rect key="frame" x="0.0" y="8" width="300" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="2CL-Jr-70T"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EM6-1o-JQK">
+                            <rect key="frame" x="10" y="121" width="67" height="19"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2z-2a-wFa">
+                            <rect key="frame" x="10" y="82" width="27" height="19"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hJ6-1h-6vt">
+                            <rect key="frame" x="97" y="39" width="195" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="195" id="f4j-OA-aVY"/>
+                            </constraints>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bsM-qB-syN">
+                            <rect key="frame" x="97" y="116" width="195" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M4L-vb-J6I">
+                            <rect key="frame" x="97" y="155" width="195" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43b-94-HX5">
+                            <rect key="frame" x="68" y="197" width="75" height="31"/>
+                            <color key="backgroundColor" red="0.82745098039999998" green="0.83529411760000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="75" id="L0i-b5-U9b"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="CANCEL">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnCancel:" destination="-1" eventType="touchUpInside" id="deG-Yg-hJT"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYj-4p-WPF">
+                            <rect key="frame" x="10" y="160" width="63" height="19"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3el-2Z-f6k">
+                            <rect key="frame" x="10" y="45" width="14" height="19"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c7T-9E-00c">
+                            <rect key="frame" x="97" y="77" width="195" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oe7-RO-ZYl">
+                            <rect key="frame" x="158" y="197" width="75" height="31"/>
+                            <color key="backgroundColor" red="0.82745098039999998" green="0.83529411760000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="75" id="OY2-Ke-OkM"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="SAVE">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="0LP-6R-HYa"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="c7T-9E-00c" firstAttribute="width" secondItem="hJ6-1h-6vt" secondAttribute="width" id="0bo-vJ-Hwz"/>
+                        <constraint firstItem="LYj-4p-WPF" firstAttribute="leading" secondItem="EM6-1o-JQK" secondAttribute="leading" id="3pm-FD-utO"/>
+                        <constraint firstItem="c7T-9E-00c" firstAttribute="trailing" secondItem="hJ6-1h-6vt" secondAttribute="trailing" id="4O8-ho-dH0"/>
+                        <constraint firstItem="Oe7-RO-ZYl" firstAttribute="centerX" secondItem="4NT-Bl-Cye" secondAttribute="centerX" constant="45" id="BN5-CK-z3X"/>
+                        <constraint firstItem="EM6-1o-JQK" firstAttribute="centerY" secondItem="bsM-qB-syN" secondAttribute="centerY" id="C4D-bW-EKS"/>
+                        <constraint firstItem="s2z-2a-wFa" firstAttribute="centerY" secondItem="c7T-9E-00c" secondAttribute="centerY" id="HBz-aL-iUJ"/>
+                        <constraint firstItem="c7T-9E-00c" firstAttribute="top" secondItem="hJ6-1h-6vt" secondAttribute="bottom" constant="8" id="Ig1-y8-wag"/>
+                        <constraint firstItem="M4L-vb-J6I" firstAttribute="top" secondItem="bsM-qB-syN" secondAttribute="bottom" constant="9" id="JAm-hB-BJS"/>
+                        <constraint firstItem="bsM-qB-syN" firstAttribute="width" secondItem="c7T-9E-00c" secondAttribute="width" id="M0Z-da-BNQ"/>
+                        <constraint firstItem="LYj-4p-WPF" firstAttribute="centerY" secondItem="M4L-vb-J6I" secondAttribute="centerY" id="Mtd-m4-m9q"/>
+                        <constraint firstItem="EM6-1o-JQK" firstAttribute="leading" secondItem="s2z-2a-wFa" secondAttribute="leading" id="QYg-mu-UP5"/>
+                        <constraint firstItem="M4L-vb-J6I" firstAttribute="trailing" secondItem="bsM-qB-syN" secondAttribute="trailing" id="apS-y7-xbP"/>
+                        <constraint firstAttribute="height" constant="240" id="cDb-Cq-I3R"/>
+                        <constraint firstItem="3el-2Z-f6k" firstAttribute="leading" secondItem="4NT-Bl-Cye" secondAttribute="leading" constant="10" id="cwc-lO-9BB"/>
+                        <constraint firstItem="hJ6-1h-6vt" firstAttribute="top" secondItem="bAt-I5-4nq" secondAttribute="bottom" constant="10" id="dbk-SK-I2d"/>
+                        <constraint firstItem="bsM-qB-syN" firstAttribute="top" secondItem="c7T-9E-00c" secondAttribute="bottom" constant="9" id="eqv-is-oyD"/>
+                        <constraint firstAttribute="width" constant="300" id="gqX-zz-jQj"/>
+                        <constraint firstItem="bAt-I5-4nq" firstAttribute="top" secondItem="4NT-Bl-Cye" secondAttribute="top" constant="8" id="h26-wr-1h7"/>
+                        <constraint firstAttribute="trailing" secondItem="hJ6-1h-6vt" secondAttribute="trailing" constant="8" id="hg5-FT-4H0"/>
+                        <constraint firstItem="43b-94-HX5" firstAttribute="top" secondItem="M4L-vb-J6I" secondAttribute="bottom" constant="12" id="jla-fc-L2Y"/>
+                        <constraint firstItem="bsM-qB-syN" firstAttribute="trailing" secondItem="c7T-9E-00c" secondAttribute="trailing" id="qtW-Ws-pvk"/>
+                        <constraint firstItem="3el-2Z-f6k" firstAttribute="centerY" secondItem="hJ6-1h-6vt" secondAttribute="centerY" id="sF2-YH-zGb"/>
+                        <constraint firstItem="M4L-vb-J6I" firstAttribute="width" secondItem="bsM-qB-syN" secondAttribute="width" id="sJo-6X-LZd"/>
+                        <constraint firstItem="43b-94-HX5" firstAttribute="centerX" secondItem="4NT-Bl-Cye" secondAttribute="centerX" constant="-45" id="t3B-IG-BGH"/>
+                        <constraint firstItem="s2z-2a-wFa" firstAttribute="leading" secondItem="3el-2Z-f6k" secondAttribute="leading" id="tfN-gz-px0"/>
+                        <constraint firstItem="Oe7-RO-ZYl" firstAttribute="centerY" secondItem="43b-94-HX5" secondAttribute="centerY" id="udU-UO-vgZ"/>
+                        <constraint firstAttribute="trailing" secondItem="bAt-I5-4nq" secondAttribute="trailing" id="vln-yS-WXN"/>
+                        <constraint firstItem="bAt-I5-4nq" firstAttribute="leading" secondItem="4NT-Bl-Cye" secondAttribute="leading" id="zlP-PN-CFc"/>
+                    </constraints>
+                    <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
+                        <rect key="frame" x="50" y="50" width="300" height="400"/>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4NT-Bl-Cye" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-30" id="SHK-Rc-bL2"/>
+                <constraint firstItem="4NT-Bl-Cye" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mcB-ud-WoF"/>
+            </constraints>
+            <point key="canvasLocation" x="219" y="313"/>
+        </view>
+    </objects>
+</document>

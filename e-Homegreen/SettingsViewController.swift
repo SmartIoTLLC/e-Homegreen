@@ -19,7 +19,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
             hourRefresh = hour
@@ -115,7 +115,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" {
+        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.tableCellTitle.text = settingArray[indexPath.section]
             
@@ -179,6 +179,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if indexPath.section == 1 {
             dispatch_async(dispatch_get_main_queue(),{
                 self.performSegueWithIdentifier("connectionSettings", sender: self)
+            })
+        }
+        if indexPath.section == 4 {
+            dispatch_async(dispatch_get_main_queue(),{
+                self.performSegueWithIdentifier("surveillanceSettings", sender: self)
             })
         }
     }

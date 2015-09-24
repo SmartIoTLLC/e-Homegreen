@@ -68,6 +68,9 @@
 		73F461251BB3D2F800B6B650 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461231BB3D2F800B6B650 /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
+		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
+		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
@@ -225,6 +228,9 @@
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
+		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
+		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
 		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
@@ -539,6 +545,7 @@
 				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
 				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
 				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
+				E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -695,6 +702,8 @@
 				E7F15B031B8F27840025082D /* SceneGalleryVC.xib */,
 				E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */,
 				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
+				E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */,
+				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -835,6 +844,7 @@
 				E7DC67C61B457C0E00EA6543 /* weather-shower.png in Resources */,
 				E7DC67C31B457C0E00EA6543 /* weather-rain@2x.png in Resources */,
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
+				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
@@ -945,8 +955,10 @@
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
+				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				73F461251BB3D2F800B6B650 /* Surveilence.swift in Sources */,
+				E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73E231241BA7010D003E41EC /* Scene.swift in Sources */,
