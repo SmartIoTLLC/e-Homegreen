@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class SurveillanceSettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
     
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var surveillanceTableView: UITableView!
     
     var isPresenting:Bool = false
+    
+    var surveillance:[Surveilence] = []
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -32,7 +36,9 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
         }
         gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         topView.layer.insertSublayer(gradient, atIndex: 0)
-
+        
+        fetchSurveillance()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
 
         // Do any additional setup after loading the view.
     }
@@ -43,7 +49,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
     }
     
     @IBAction func btnAddNewCamera(sender: AnyObject) {
-        showSurveillanceSettings()
+        showSurveillanceSettings(nil)
     }
     
     @IBAction func backButton(sender: AnyObject) {
@@ -104,26 +110,55 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
             abort()
         }
     }
+    
+    func fetchSurveillance () {
+        let fetchRequest = NSFetchRequest(entityName: "Surveilence")
+        let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
+            surveillance = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
+    func refreshSurveillanceList(){
+        fetchSurveillance()
+        surveillanceTableView.reloadData()
+    }
 
 }
 
 extension SurveillanceSettingsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("vlada") as? VladaCell {
-        print("Unresolved error")
-        
-//            let gradientLayer = CAGradientLayer()
-//            gradientLayer.frame = CGRectMake(0, 0, 320, 128)
-//            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-//            gradientLayer.locations = [0.0, 1.0]
-//            gradientLayer.borderWidth = 1
-//            gradientLayer.borderColor = UIColor.grayColor().CGColor
-//            gradientLayer.cornerRadius = 10
-//            
-//            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            cell.layer.borderWidth = 1
-//            cell.layer.borderColor = UIColor.grayColor().CGColor
-//            cell.layer.cornerRadius = 10
+        if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 80)
+            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+            gradientLayer.locations = [0.0, 1.0]
+            gradientLayer.borderWidth = 1
+            gradientLayer.borderColor = UIColor.grayColor().CGColor
+            gradientLayer.cornerRadius = 10
+            
+            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.cornerRadius = 10
+            
+            cell.lblID.text = surveillance[indexPath.section].ip
+            cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
+            
+            cell.switchVisible.tag = indexPath.section
+            cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            if surveillance[indexPath.section].isVisible == true {
+                cell.switchVisible.on = true
+            }else{
+                cell.switchVisible.on = false
+            }
             
             return cell
         }
@@ -132,67 +167,80 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+    func changeValue(sender:UISwitch){
+        if sender.on == true {
+            surveillance[sender.tag].isVisible = true
+        }else {
+            surveillance[sender.tag].isVisible = false
+        }
+        saveChanges()
+        surveillanceTableView.reloadData()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
     }
     
-    //    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    //        return 128
-    //    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
     
-//    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 5
-//    }
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 5
+    }
     
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-////        return gateways.count
-//        return 3
-//    }
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return surveillance.count
+    }
     
 }
 
 extension SurveillanceSettingsViewController: UITableViewDelegate {
+    
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
-//        
-//        dispatch_async(dispatch_get_main_queue(),{
-//            self.showConnectionSettings(indexPath.section)
-//        })
+        
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showSurveillanceSettings(self.surveillance[indexPath.section])
+        })
     }
     
-//    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-//        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-//            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-//            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-//                self.tableView(self.gatewayTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-//            }
-//            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-//            deleteMenu.addAction(delete)
-//            deleteMenu.addAction(cancelDelete)
-//            if let presentationController = deleteMenu.popoverPresentationController {
-//                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-//                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-//            }
-//            self.presentViewController(deleteMenu, animated: true, completion: nil)
-//        })
-//        
-//        button.backgroundColor = UIColor.redColor()
-//        return [button]
-//    }
-    
-//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    
-//        if editingStyle == .Delete {
-//            // Here needs to be deleted even devices that are from gateway that is going to be deleted
-//            appDel.managedObjectContext?.deleteObject(gateways[indexPath.section])
-//            saveChanges()
-//            fetchGateways()
-//        }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.surveillanceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
         
-//    }
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(surveillance[indexPath.section])
+            saveChanges()
+            refreshSurveillanceList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
+//            fetchGateways()
+        }
+        
+    }
 }
 
 
-class VladaCell: UITableViewCell{
+class SurvCell: UITableViewCell{
     
+    @IBOutlet weak var lblID: UILabel!
+    @IBOutlet weak var lblPort: UILabel!
+    @IBOutlet weak var switchVisible: UISwitch!
 }

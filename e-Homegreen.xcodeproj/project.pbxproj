@@ -62,8 +62,6 @@
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		73F461241BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
-		73F461251BB3D2F800B6B650 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461231BB3D2F800B6B650 /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
 		73F4612A1BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		73F4612B1BB3E6FE00B6B650 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461271BB3E6FE00B6B650 /* Zone.swift */; settings = {ASSET_TAGS = (); }; };
 		73F4612C1BB3E6FE00B6B650 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
@@ -73,6 +71,8 @@
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
+		E70515A61BB43498009FDA0D /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A41BB43498009FDA0D /* Surveilence+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		E70515A71BB43498009FDA0D /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A51BB43498009FDA0D /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
@@ -223,8 +223,6 @@
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
-		73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		73F461231BB3D2F800B6B650 /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73F461271BB3E6FE00B6B650 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -235,6 +233,8 @@
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
+		E70515A41BB43498009FDA0D /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E70515A51BB43498009FDA0D /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
 		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
@@ -527,11 +527,11 @@
 				E79A893C1BAD723A00714C64 /* Gateway.swift */,
 				E79A893D1BAD723A00714C64 /* Timer+CoreDataProperties.swift */,
 				E79A893E1BAD723A00714C64 /* Timer.swift */,
-				73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */,
-				73F461231BB3D2F800B6B650 /* Surveilence.swift */,
 				73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */,
 				73F461271BB3E6FE00B6B650 /* Zone.swift */,
 				73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */,
+				E70515A41BB43498009FDA0D /* Surveilence+CoreDataProperties.swift */,
+				E70515A51BB43498009FDA0D /* Surveilence.swift */,
 				73F461291BB3E6FE00B6B650 /* Category.swift */,
 				738BFD001B9EF077005D183F /* Zone and Category */,
 			);
@@ -962,11 +962,11 @@
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
-				73F461251BB3D2F800B6B650 /* Surveilence.swift in Sources */,
 				E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
 				73E231241BA7010D003E41EC /* Scene.swift in Sources */,
+				E70515A71BB43498009FDA0D /* Surveilence.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73F4612C1BB3E6FE00B6B650 /* Category+CoreDataProperties.swift in Sources */,
@@ -991,7 +991,7 @@
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
-				73F461241BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift in Sources */,
+				E70515A61BB43498009FDA0D /* Surveilence+CoreDataProperties.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				73F4612B1BB3E6FE00B6B650 /* Zone.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,

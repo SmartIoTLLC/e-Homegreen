@@ -13,12 +13,18 @@ class Camera:NSObject{
 }
 
 import UIKit
+import CoreData
 
 class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     
     @IBOutlet weak var cameraCollectionView: UICollectionView!
     var timer:NSTimer = NSTimer()
+    
+    var surveillance:[Surveilence] = []
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     var cameraList:[Camera] = []
     
@@ -29,6 +35,8 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         
         camera1.lync = "http://192.168.0.18:8081/"
@@ -41,7 +49,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 
         getData()
         
+        fetchSurveillance()
+        
         timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
         
         // Do any additional setup after loading the view.
     }
@@ -74,20 +86,20 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cameraList.count
+        return surveillance.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
         
 
-        if let nesto = cameraList[indexPath.row].image{
-            cell.image.image = UIImage(data: nesto)
-        }
-        
-        if let time = cameraList[indexPath.row].time{
-            cell.lblTime.text = "\(time.removeCharsFromEnd(6))"
-        }
+//        if let nesto = cameraList[indexPath.row].image{
+//            cell.image.image = UIImage(data: nesto)
+//        }
+//        
+//        if let time = cameraList[indexPath.row].time{
+//            cell.lblTime.text = "\(time.removeCharsFromEnd(6))"
+//        }
 
         cell.layer.cornerRadius = 5
         
@@ -103,6 +115,26 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 //        dispatch_async(dispatch_get_main_queue(), {
         showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), lync: NSURL(string: cameraList[indexPath.row].lync)!)
 //        })
+    }
+    
+    func fetchSurveillance () {
+        let fetchRequest = NSFetchRequest(entityName: "Surveilence")
+        let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
+            surveillance = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
+    func refreshSurveillanceList(){
+        fetchSurveillance()
+        cameraCollectionView.reloadData()
     }
 
 

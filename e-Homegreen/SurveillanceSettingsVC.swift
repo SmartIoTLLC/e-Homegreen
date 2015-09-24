@@ -25,10 +25,11 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     
     var appDel:AppDelegate!
     var error:NSError? = nil
+    var surv:Surveilence?
     
-    
-    init(){
+    init(surv: Surveilence?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
+        self.surv = surv
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
@@ -91,6 +92,13 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
         editPort.delegate = self
         editUserName.delegate = self
         editPassword.delegate = self
+        
+        if surv != nil{
+            editID.text = surv?.ip
+            editPort.text = "\(surv!.port!)"
+            editUserName.text = surv?.username
+            editPassword.text = surv?.password
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -114,12 +122,22 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             
             
         } else {
-            let surveillance = NSEntityDescription.insertNewObjectForEntityForName("Surveilence", inManagedObjectContext: appDel.managedObjectContext!) as! Surveilence
-            surveillance.ip = editID.text!
-            surveillance.port = Int(editPort.text!)!
-            surveillance.username = editUserName.text!
-            surveillance.password = editPassword.text!
-            saveChanges()
+            if surv == nil{
+                let surveillance = NSEntityDescription.insertNewObjectForEntityForName("Surveilence", inManagedObjectContext: appDel.managedObjectContext!) as! Surveilence
+                surveillance.ip = editID.text!
+                surveillance.port = Int(editPort.text!)!
+                surveillance.username = editUserName.text!
+                surveillance.password = editPassword.text!
+                surveillance.isVisible = true
+                saveChanges()
+            }else{
+                surv!.ip = editID.text!
+                surv!.port = Int(editPort.text!)!
+                surv!.username = editUserName.text!
+                surv!.password = editPassword.text!
+                saveChanges()
+            }
+            
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -132,6 +150,8 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshSurveillanceListNotification", object: self, userInfo: nil)
         
         appDel.establishAllConnections()
     }
@@ -198,8 +218,8 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSurveillanceSettings() {
-        let connSettVC = SurveillanceSettingsVC()
+    func showSurveillanceSettings(surv: Surveilence?) {
+        let connSettVC = SurveillanceSettingsVC(surv: surv)
         self.presentViewController(connSettVC, animated: true, completion: nil)
     }
 }

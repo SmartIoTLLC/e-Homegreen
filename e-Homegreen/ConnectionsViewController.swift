@@ -69,6 +69,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         super.viewDidLoad()
         transitioningDelegate = self
         self.commonConstruct()
+        
         let gradient:CAGradientLayer = CAGradientLayer()
         if self.view.frame.size.height > self.view.frame.size.width{
             gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
