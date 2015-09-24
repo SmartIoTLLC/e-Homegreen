@@ -109,8 +109,8 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
 
 extension SurveillanceSettingsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        if let cell = tableView.dequeueReusableCellWithIdentifier("vlada") as? VladaCell {
-//        print("Unresolved error")
+        if let cell = tableView.dequeueReusableCellWithIdentifier("vlada") as? VladaCell {
+        print("Unresolved error")
         
 //            let gradientLayer = CAGradientLayer()
 //            gradientLayer.frame = CGRectMake(0, 0, 320, 128)
@@ -125,8 +125,8 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
 //            cell.layer.borderColor = UIColor.grayColor().CGColor
 //            cell.layer.cornerRadius = 10
             
-//            return cell
-//        }
+            return cell
+        }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
