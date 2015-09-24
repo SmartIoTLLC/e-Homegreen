@@ -43,6 +43,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
                 zone.name = zoneJSON.name
                 zone.zoneDescription = zoneJSON.description
                 zone.level = zoneJSON.level
+                zone.isVisible = NSNumber(bool: true)
                 zone.gateway = gateway!
                 saveChanges()
             }
@@ -119,21 +120,38 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func isVisibleValueChanged (sender:UISwitch) {
+        if sender.on == true {
+            zones[sender.tag].isVisible = true
+        }else {
+            zones[sender.tag].isVisible = false
+        }
+        saveChanges()
+        importZoneTableView.reloadData()
+    }
 
 }
 extension ImportZoneViewController: UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
     }
+    
 }
 extension ImportZoneViewController: UITableViewDataSource {
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
-            cell.lblName.text = "\(zones[indexPath.row].id)" + ", \(zones[indexPath.row].name)"
+            cell.lblName.text = "\(zones[indexPath.row].id). \(zones[indexPath.row].name)"
             cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
             cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
+            cell.switchVisible.on = zones[indexPath.row].isVisible.boolValue
+            cell.switchVisible.tag = indexPath.row
+            cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name), Level: \(zones[indexPath.row].level), Desc: \(zones[indexPath.row].zoneDescription)"
         cell.textLabel?.textColor = UIColor.whiteColor()
@@ -141,6 +159,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         return cell
         
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return zones.count
     }

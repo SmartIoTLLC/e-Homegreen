@@ -54,6 +54,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
                 category.id = categoryJSON.id
                 category.name = categoryJSON.name
                 category.categoryDescription = categoryJSON.description
+                category.isVisible = NSNumber(bool: true)
                 category.gateway = gateway!
                 saveChanges()
             }
@@ -119,6 +120,16 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func isVisibleValueChanged (sender:UISwitch) {
+        if sender.on == true {
+            categories[sender.tag].isVisible = true
+        }else {
+            categories[sender.tag].isVisible = false
+        }
+        saveChanges()
+        importCategoryTableView.reloadData()
+    }
 
 }
 extension ImportCategoryViewController: UITableViewDelegate {
@@ -131,6 +142,10 @@ extension ImportCategoryViewController: UITableViewDataSource {
         if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
             cell.lblName.text = "\(categories[indexPath.row].id)" + ", \(categories[indexPath.row].name)"
             cell.lblDescription.text = "Desc: \(categories[indexPath.row].categoryDescription)"
+            print(categories[indexPath.row].isVisible)
+            cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
+            cell.switchVisible.tag = indexPath.row
+            cell.switchVisible.addTarget(self, action: "isVisibleValueChanged", forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

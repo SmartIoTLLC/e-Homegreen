@@ -53,8 +53,6 @@
 		73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B91B4D0B870083A747 /* DeviceInfo.swift */; };
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
-		73E75DCC1BA8300700D2B101 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E75DCB1BA8300700D2B101 /* Category.swift */; };
-		73E75DD01BA8300800D2B101 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E75DCF1BA8300800D2B101 /* Zone.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
@@ -66,6 +64,10 @@
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73F461241BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		73F461251BB3D2F800B6B650 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461231BB3D2F800B6B650 /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
+		73F4612A1BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		73F4612B1BB3E6FE00B6B650 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461271BB3E6FE00B6B650 /* Zone.swift */; settings = {ASSET_TAGS = (); }; };
+		73F4612C1BB3E6FE00B6B650 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		73F4612D1BB3E6FE00B6B650 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F461291BB3E6FE00B6B650 /* Category.swift */; settings = {ASSET_TAGS = (); }; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -212,8 +214,6 @@
 		73E427B91B4D0B870083A747 /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
-		73E75DCB1BA8300700D2B101 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		73E75DCF1BA8300800D2B101 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -225,6 +225,10 @@
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73F461231BB3D2F800B6B650 /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
+		73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F461271BB3E6FE00B6B650 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
+		73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F461291BB3E6FE00B6B650 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -519,14 +523,16 @@
 				73E231231BA7010D003E41EC /* Scene.swift */,
 				73E231211BA7010C003E41EC /* Event.swift */,
 				73E231291BA7239E003E41EC /* Sequence.swift */,
-				73E75DCF1BA8300800D2B101 /* Zone.swift */,
-				73E75DCB1BA8300700D2B101 /* Category.swift */,
 				E79A893B1BAD723A00714C64 /* Gateway+CoreDataProperties.swift */,
 				E79A893C1BAD723A00714C64 /* Gateway.swift */,
 				E79A893D1BAD723A00714C64 /* Timer+CoreDataProperties.swift */,
 				E79A893E1BAD723A00714C64 /* Timer.swift */,
 				73F461221BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift */,
 				73F461231BB3D2F800B6B650 /* Surveilence.swift */,
+				73F461261BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift */,
+				73F461271BB3E6FE00B6B650 /* Zone.swift */,
+				73F461281BB3E6FE00B6B650 /* Category+CoreDataProperties.swift */,
+				73F461291BB3E6FE00B6B650 /* Category.swift */,
 				738BFD001B9EF077005D183F /* Zone and Category */,
 			);
 			name = NSMOM;
@@ -945,7 +951,6 @@
 				E79A89411BAD723A00714C64 /* Timer+CoreDataProperties.swift in Sources */,
 				E79A89421BAD723A00714C64 /* Timer.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
-				73E75DCC1BA8300700D2B101 /* Category.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
@@ -964,6 +969,7 @@
 				73E231241BA7010D003E41EC /* Scene.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
+				73F4612C1BB3E6FE00B6B650 /* Category+CoreDataProperties.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
@@ -981,14 +987,15 @@
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
+				73F4612A1BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				73F461241BB3D2F800B6B650 /* Surveilence+CoreDataProperties.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
+				73F4612B1BB3E6FE00B6B650 /* Zone.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
-				73E75DD01BA8300800D2B101 /* Zone.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
@@ -1005,6 +1012,7 @@
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
+				73F4612D1BB3E6FE00B6B650 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
