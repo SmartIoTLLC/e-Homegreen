@@ -27,7 +27,7 @@ class RepeatSendingHandler: NSObject {
     //
     // ================== Sending command for changing value of device ====================
     //
-    init(byteArray:[UInt8], gateway: Gateway, notificationName:String, device:Device, oldValue:Int) {
+    init(byteArray:[UInt8], gateway: Gateway, device:Device, oldValue:Int) {
         super.init()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -39,10 +39,10 @@ class RepeatSendingHandler: NSObject {
         sendCommand()
         
 //        didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification:", name: notificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification", name: "testTestTest123", object: nil)
     }
     
-    func didGetResponseNotification (notification:NSNotification) {
+    func didGetResponseNotification () {
         didGetResponse = true
         didGetResponseTimer!.invalidate()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "testTestTest123", object: nil)

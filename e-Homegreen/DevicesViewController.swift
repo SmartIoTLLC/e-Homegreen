@@ -235,7 +235,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, device: devices[tag], oldValue: deviceCurrentValue)
                 })
             })
         }
@@ -252,7 +252,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, device: devices[tag], oldValue: deviceCurrentValue)
                 })
             })
         }
@@ -270,7 +270,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            SendingHandler.sendCommand(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway, notificationName: "testTestTest123", device: devices[tag], oldValue: deviceCurrentValue)
+                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway, device: devices[tag], oldValue: deviceCurrentValue)
                 })
             })
             

@@ -94,10 +94,6 @@ class IncomingHandler: NSObject {
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
                         self.ackADICmdGetInterfaceName(self.byteArray)
                     }
-                    
-//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0x02 {
-//                        
-//                    }
                 }
         }
     }
@@ -119,12 +115,6 @@ class IncomingHandler: NSObject {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-//        if let results = fetResults {
-//            devices = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
 //        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
@@ -145,12 +135,6 @@ class IncomingHandler: NSObject {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-//        if let results = fetResults {
-//            devices = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     func fetchGateways (host:String, port:UInt16) {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
@@ -285,7 +269,6 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
-//            devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
             }
         }
         saveChanges()
@@ -308,13 +291,9 @@ class IncomingHandler: NSObject {
                 } else {
                     devices[i].name = "Unknown"
                 }
-//                devices[i].zoneId = Int(byteArray[71])
-//                devices[i].parentZoneId = Int(byteArray[72])
-//                devices[i].categoryId = Int(byteArray[70])
                 devices[i].zoneId = Int(byteArray[33])
                 devices[i].parentZoneId = Int(byteArray[34])
                 devices[i].categoryId = Int(byteArray[32])
-//                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[70])]!
                 let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
@@ -359,11 +338,8 @@ class IncomingHandler: NSObject {
                 for var i=1 ; i<=channel ; i++ {
                     if channel == 10 && name == "sensor" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-//                        device.name = DeviceInfo().inputInterface10in1[i]!
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
-                        device.channel = i
-                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -376,11 +352,9 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else if channel == 6 && name == "sensor" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-//                        device.name = DeviceInfo().inputInterface6in1[i]!
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
-                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -393,7 +367,6 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else if name == "hvac" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-//                        device.name = name + " \(i)"
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
@@ -416,11 +389,9 @@ class IncomingHandler: NSObject {
                         saveChanges()
                     } else {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-//                        device.name = name + " \(i)"
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
                         device.channel = i
-                        //                        device.gateway = Int(byteArray[2])
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0
@@ -498,7 +469,6 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
-//                devices[i].categoryName = DeviceInfo().categoryList[Int(byteArray[8])]!
                 let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
