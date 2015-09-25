@@ -13,7 +13,7 @@ class CameraVC: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var image: UIImageView!
     
-    var lync:NSURL?
+    var surv:Surveilence!
     var point:CGPoint?
     var oldPoint:CGPoint?
     
@@ -24,12 +24,12 @@ class CameraVC: UIViewController {
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     
-    init(point:CGPoint, lync:NSURL){
+    init(point:CGPoint, surv:Surveilence){
         super.init(nibName: "CameraVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
-        self.lync = lync
+        self.surv = surv
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,6 +38,9 @@ class CameraVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
         self.view.addGestureRecognizer(tapGesture)
@@ -49,23 +52,27 @@ class CameraVC: UIViewController {
         
         self.view.backgroundColor = UIColor.clearColor()
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
         
 
         // Do any additional setup after loading the view.
     }
     
+    override func shouldAutorotate() -> Bool {
+        return true
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.LandscapeLeft
+    }
+    
+//    override func supportedInterfaceOrientations() -> Int {
+//        return UIInterfaceOrientation.LandscapeLeft.rawValue
+//    }
+    
     func update(){
-        let task = NSURLSession.sharedSession().dataTaskWithURL(lync!){(data,response,error) in
-            if error == nil{
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.image.image = UIImage(data: data!)
-                })
-            }
-        }
-        task.resume()
-        
+        self.image.image = UIImage(data: surv.imageData!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,23 +85,23 @@ class CameraVC: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)        
     }
     
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeightConstraint.constant = 250
-            }else if self.view.frame.size.height == 375{
-                backViewHeightConstraint.constant = 300
-            }else if self.view.frame.size.height == 414{
-                backViewHeightConstraint.constant = 350
-            }else{
-                backViewHeightConstraint.constant = 400
-            }
-        }else{
-            
-            backViewHeightConstraint.constant = 400
-            
-        }
-    }
+//    override func viewWillLayoutSubviews() {
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            if self.view.frame.size.height == 320{
+//                backViewHeightConstraint.constant = 250
+//            }else if self.view.frame.size.height == 375{
+//                backViewHeightConstraint.constant = 300
+//            }else if self.view.frame.size.height == 414{
+//                backViewHeightConstraint.constant = 350
+//            }else{
+//                backViewHeightConstraint.constant = 400
+//            }
+//        }else{
+//            
+//            backViewHeightConstraint.constant = 400
+//            
+//        }
+//    }
 
 }
 
@@ -162,8 +169,8 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showCamera(point:CGPoint, lync:NSURL) {
-        let ad = CameraVC(point: point, lync:lync)
+    func showCamera(point:CGPoint, surv:Surveilence) {
+        let ad = CameraVC(point: point, surv:surv)
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }

@@ -128,7 +128,6 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
-            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -3514,31 +3513,21 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pcT-1s-LGE">
-                                                    <rect key="frame" x="8" y="8" width="134" height="13"/>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gpf-nW-J8I">
-                                                    <rect key="frame" x="8" y="26" width="134" height="116"/>
+                                                    <rect key="frame" x="2" y="2" width="146" height="146"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="pcT-1s-LGE" firstAttribute="top" secondItem="vOe-B5-X7h" secondAttribute="topMargin" id="8PV-OU-iTp"/>
-                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leadingMargin" id="BKt-hr-5mL"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="gpf-nW-J8I" secondAttribute="trailing" id="EHa-dZ-oYI"/>
-                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="top" secondItem="pcT-1s-LGE" secondAttribute="bottom" constant="5" id="Ixz-Ic-TXn"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="pcT-1s-LGE" secondAttribute="trailing" id="OC7-X1-T1n"/>
-                                            <constraint firstItem="pcT-1s-LGE" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leadingMargin" id="c4u-ir-GnP"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="gpf-nW-J8I" secondAttribute="bottom" id="cuK-n5-oqi"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leading" constant="2" id="BKt-hr-5mL"/>
+                                            <constraint firstAttribute="trailing" secondItem="gpf-nW-J8I" secondAttribute="trailing" constant="2" id="EHa-dZ-oYI"/>
+                                            <constraint firstAttribute="bottom" secondItem="gpf-nW-J8I" secondAttribute="bottom" constant="2" id="cuK-n5-oqi"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="top" secondItem="vOe-B5-X7h" secondAttribute="top" constant="2" id="jI5-8N-TsR"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="image" destination="gpf-nW-J8I" id="j3t-yr-DdJ"/>
-                                            <outlet property="lblTime" destination="pcT-1s-LGE" id="eps-Ja-i3m"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

@@ -15,7 +15,7 @@
 import UIKit
 import CoreData
 
-class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GetImageHandler {
+class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     var data:NSData?
     
@@ -53,11 +53,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
         fetchSurveillance()
         
-        if surveillance != []{
-            SurveillanceHandler(surv: surveillance[0]).delegate = self
-        }
+//        if surveillance != []{
+//            SurveillanceHandler(surv: surveillance[0])
+//        }
         
-//        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
         
@@ -72,34 +72,35 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
 //        }
 //    }
     
-    func getImageHandlerFinished(succeded: Bool, data: NSData?) {
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.data = data
-            self.cameraCollectionView.reloadData()
-            self.imageBack.image = UIImage(data: self.data!)
-        })
-        
-        
-    }
+//    func getImageHandlerFinished(succeded: Bool, data: NSData?) {
+//        
+//        dispatch_async(dispatch_get_main_queue(), {
+//            self.data = data
+//            self.cameraCollectionView.reloadData()
+//        })
+//        
+//        
+//    }
     
     func getData(){
         if surveillance != []{
-            SurveillanceHandler(surv: surveillance[0]).delegate = self
+            for item in surveillance{
+                SurveillanceHandler(surv: item)
+            }
         }
         
-//        for item in cameraList {
-//            let url = NSURL(string: item.lync)
-//            let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
-//                if error == nil{
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        item.image = data
-//                        item.time = "\(NSDate())"
-//                    })
-//                }
-//            }
-//            task.resume()
-//        }
+        //        for item in cameraList {
+        //            let url = NSURL(string: item.lync)
+        //            let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
+        //                if error == nil{
+        //                    dispatch_async(dispatch_get_main_queue(), {
+        //                        item.image = data
+        //                        item.time = "\(NSDate())"
+        //                    })
+        //                }
+        //            }
+        //            task.resume()
+        //        }
         
     }
     
@@ -122,8 +123,8 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
 
 //        if let nesto = cameraList[indexPath.row].image{
-        if self.data != nil {
-            cell.image.image = UIImage(data: self.data!)
+        if surveillance[indexPath.row].imageData != nil {
+            cell.image.image = UIImage(data: surveillance[indexPath.row].imageData!)
         }
 //        }
 //        
@@ -141,9 +142,9 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
 //        dispatch_async(dispatch_get_main_queue(), {
-//        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), lync: NSURL(string: cameraList[indexPath.row].lync)!)
+            showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
 //        })
     }
     

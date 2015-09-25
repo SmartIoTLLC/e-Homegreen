@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
                 <outlet property="backView" destination="AHq-ao-muM" id="uZY-ou-Ifs"/>
-                <outlet property="backViewHeightConstraint" destination="K7h-dL-bjW" id="6AM-bg-lY8"/>
                 <outlet property="image" destination="6QJ-za-RtQ" id="DXP-Lq-wQo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -19,10 +18,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AHq-ao-muM">
-                    <rect key="frame" x="145" y="100" width="310" height="400"/>
+                    <rect key="frame" x="10" y="10" width="580" height="580"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="6QJ-za-RtQ">
-                            <rect key="frame" x="5" y="5" width="300" height="390"/>
+                            <rect key="frame" x="5" y="5" width="570" height="570"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         </imageView>
                     </subviews>
@@ -30,8 +29,6 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="6QJ-za-RtQ" secondAttribute="bottom" constant="5" id="1fz-6D-rNv"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" constant="5" id="9tA-0A-Oal"/>
-                        <constraint firstAttribute="width" constant="310" id="JJH-zA-xLF"/>
-                        <constraint firstAttribute="height" constant="400" id="K7h-dL-bjW"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" constant="5" id="LUg-hH-rTy"/>
                         <constraint firstAttribute="trailing" secondItem="6QJ-za-RtQ" secondAttribute="trailing" constant="5" id="XMG-o1-ci4"/>
                     </constraints>
@@ -39,9 +36,12 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="AHq-ao-muM" secondAttribute="centerX" id="eaC-pc-YSQ"/>
-                <constraint firstAttribute="centerY" secondItem="AHq-ao-muM" secondAttribute="centerY" id="uUr-3S-fhJ"/>
+                <constraint firstAttribute="trailing" secondItem="AHq-ao-muM" secondAttribute="trailing" constant="10" id="D3J-OW-ePN"/>
+                <constraint firstItem="AHq-ao-muM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="LFM-sx-SyH"/>
+                <constraint firstAttribute="bottom" secondItem="AHq-ao-muM" secondAttribute="bottom" constant="10" id="tPA-ht-2Gd"/>
+                <constraint firstItem="AHq-ao-muM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="wcC-3h-TDq"/>
             </constraints>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
         </view>
     </objects>
     <resources>

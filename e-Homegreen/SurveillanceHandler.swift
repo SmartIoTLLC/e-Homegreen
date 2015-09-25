@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol GetImageHandler{
-    func getImageHandlerFinished(succeded:Bool, data:NSData?)
-}
+//protocol GetImageHandler{
+//    func getImageHandlerFinished(succeded:Bool, data:NSData?)
+//}
 
 class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate{
     
-    var delegate:GetImageHandler?
+//    var delegate:GetImageHandler?
     
     init(surv: Surveilence) {
         super.init()
@@ -27,10 +27,11 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
         
         print(base64LoginString)
         
-        let url = NSURL(string: "\(surv.ip!):\(surv.port!)/")
+        let url = NSURL(string: "\(surv.ip!):\(surv.port!)/dms?nowprofileid=3")
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+//        request.setValue(3, forHTTPHeaderField: "nowprofileid")
         
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
@@ -40,9 +41,10 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
             if error == nil{
                 print(response)
                 print(data)
-                self.delegate?.getImageHandlerFinished(true, data: data!)
+                surv.imageData = data
+//                self.delegate?.getImageHandlerFinished(true, data: data!)
             }else{
-                self.delegate?.getImageHandlerFinished(false, data: nil)
+//                self.delegate?.getImageHandlerFinished(false, data: nil)
             }
             
         }
