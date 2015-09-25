@@ -19,5 +19,6 @@ extension Surveilence {
     @NSManaged var port: NSNumber?
     @NSManaged var username: String?
     @NSManaged var isVisible: NSNumber?
+    
 
 }

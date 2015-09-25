@@ -3562,6 +3562,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraCollectionView" destination="U1Y-hf-wHH" id="oUq-Sj-ZNI"/>
+                        <outlet property="imageBack" destination="XFc-Vp-gGW" id="c0e-T1-EcD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vaS-5J-u44" userLabel="First Responder" sceneMemberID="firstResponder"/>

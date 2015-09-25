@@ -6,19 +6,21 @@
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
-class Camera:NSObject{
-    var image:NSData?
-    var time:String?
-    var lync:String!
-}
+//class Camera:NSObject{
+//    var image:NSData?
+//    var time:String?
+//    var lync:String!
+//}
 
 import UIKit
 import CoreData
 
-class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GetImageHandler {
     
+    var data:NSData?
     
     @IBOutlet weak var cameraCollectionView: UICollectionView!
+    @IBOutlet weak var imageBack: UIImageView!
     var timer:NSTimer = NSTimer()
     
     var surveillance:[Surveilence] = []
@@ -26,11 +28,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    var cameraList:[Camera] = []
-    
-    var camera1 =  Camera()
-    var camera2 =  Camera()
-    var camera3 =  Camera()
+//    var cameraList:[Camera] = []
+//    
+//    var camera1 =  Camera()
+//    var camera2 =  Camera()
+//    var camera3 =  Camera()
 
 
     override func viewDidLoad() {
@@ -39,39 +41,65 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         
-        camera1.lync = "http://192.168.0.18:8081/"
-        camera2.lync = "http://192.168.0.18:8081/"
-        camera3.lync = "http://192.168.0.32:8081/"
-        
-        cameraList.append(camera1)
+//        camera1.lync = "http://192.168.0.18:8081/"
+//        camera2.lync = "http://192.168.0.18:8081/"
+//        camera3.lync = "http://192.168.0.32:8081/"
+//        
+//        cameraList.append(camera1)
 //        cameraList.append(camera2)
 //        cameraList.append(camera3)
 
-        getData()
+//        getData()
         
         fetchSurveillance()
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        if surveillance != []{
+            SurveillanceHandler(surv: surveillance[0]).delegate = self
+        }
+        
+//        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
         
         // Do any additional setup after loading the view.
     }
     
-    func getData(){
+//    func getImageHandlerFinished(succeded: Bool, data: NSData?) {
+//        if succeded{
+//            self.data = data
+//        }else{
+//            
+//        }
+//    }
+    
+    func getImageHandlerFinished(succeded: Bool, data: NSData?) {
         
-        for item in cameraList {
-            let url = NSURL(string: item.lync)
-            let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
-                if error == nil{
-                    dispatch_async(dispatch_get_main_queue(), {
-                        item.image = data
-                        item.time = "\(NSDate())"
-                    })
-                }
-            }
-            task.resume()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.data = data
+            self.cameraCollectionView.reloadData()
+            self.imageBack.image = UIImage(data: self.data!)
+        })
+        
+        
+    }
+    
+    func getData(){
+        if surveillance != []{
+            SurveillanceHandler(surv: surveillance[0]).delegate = self
         }
+        
+//        for item in cameraList {
+//            let url = NSURL(string: item.lync)
+//            let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
+//                if error == nil{
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        item.image = data
+//                        item.time = "\(NSDate())"
+//                    })
+//                }
+//            }
+//            task.resume()
+//        }
         
     }
     
@@ -94,7 +122,9 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
 
 //        if let nesto = cameraList[indexPath.row].image{
-//            cell.image.image = UIImage(data: nesto)
+        if self.data != nil {
+            cell.image.image = UIImage(data: self.data!)
+        }
 //        }
 //        
 //        if let time = cameraList[indexPath.row].time{
@@ -111,9 +141,9 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+//        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
 //        dispatch_async(dispatch_get_main_queue(), {
-        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), lync: NSURL(string: cameraList[indexPath.row].lync)!)
+//        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), lync: NSURL(string: cameraList[indexPath.row].lync)!)
 //        })
     }
     

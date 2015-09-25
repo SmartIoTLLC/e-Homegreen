@@ -10,6 +10,9 @@ import Foundation
 import CoreData
 
 class Surveilence: NSManagedObject {
+    
+    var imageData:NSData?
+
 
 // Insert code here to add functionality to your managed object subclass
 

@@ -71,14 +71,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         
         
-//        let username = "admin"
-//        let password = "ehome779"
-//        
-//        let loginString = NSString(format: "%@:%@", username, password)
-//        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-//        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-//        
-//        print(base64LoginString)
     }
     var appDel:AppDelegate!
     var devices:[Device] = []
