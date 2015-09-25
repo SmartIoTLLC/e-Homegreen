@@ -123,7 +123,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
         }
         let eventId = Int(events[indexPath.row].eventId)
         if eventId >= 0 && eventId <= 255 {
-            SendingHandler(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
+            SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
         }
         eventCollectionView.reloadData()
     }
@@ -191,7 +191,7 @@ extension EventsViewController: UICollectionViewDataSource {
             } else {
                 address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
             }
-            SendingHandler(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+            SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
             //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
         }
     }

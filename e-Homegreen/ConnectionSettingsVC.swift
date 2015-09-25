@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SystemConfiguration.CaptiveNetwork
 import CoreData
 
 class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
@@ -426,26 +425,6 @@ extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
         }
     }
     
-}
-
-extension UIDevice {
-    public var SSID: String? {
-        get {
-            if let interfaces = CNCopySupportedInterfaces(){
-                for i in 0..<CFArrayGetCount(interfaces){
-                    let interfaceName: UnsafePointer<Void> = CFArrayGetValueAtIndex(interfaces, i)
-                    let rec = unsafeBitCast(interfaceName, AnyObject.self)
-                    let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)")
-                    if unsafeInterfaceData != nil {
-                        let interfaceData = unsafeInterfaceData! as NSDictionary!
-                        return interfaceData["SSID"] as! String
-                    }
-                }
-            }
-            return nil
-            
-        }
-    }
 }
 
 extension UIViewController {

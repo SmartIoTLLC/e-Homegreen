@@ -229,7 +229,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
         }
         let sceneId = Int(scenes[indexPath.row].sceneId)
         if sceneId >= 0 && sceneId <= 255 {
-            SendingHandler(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+            SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         }
         scenesCollectionView.reloadData()
     }

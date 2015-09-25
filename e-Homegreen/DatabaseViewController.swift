@@ -86,20 +86,20 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         if let index = timer.userInfo as? Int {
             if devices[index].type == "Dimmer" {
                 let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             if devices[index].type == "curtainsRelay" {
                 let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             
             if devices[index].type == "hvac" {
                 let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
             if devices[index].type == "sensor" {
                 let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-                SendingHandler(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+                SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             }
         }
     }
@@ -249,7 +249,7 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         print("!!!   \(timer.userInfo)    !!!")
         if let deviceNumber = timer.userInfo as? Int {
             let address = [UInt8(Int(gateways[choosedGatewayIndex].addressOne)), UInt8(Int(gateways[choosedGatewayIndex].addressTwo)), UInt8(deviceNumber)]
-            SendingHandler(byteArray: Function.searchForDevices(address), gateway: gateways[choosedGatewayIndex])
+            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateways[choosedGatewayIndex])
         }
     }
     
