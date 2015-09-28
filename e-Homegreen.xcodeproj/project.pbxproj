@@ -379,7 +379,7 @@
 			name = "Device info and settings";
 			sourceTree = "<group>";
 		};
-		736265DD1B4A47FE0078C11D /* API ili tako nesto */ = {
+		736265DD1B4A47FE0078C11D /* Bussiness Logic */ = {
 			isa = PBXGroup;
 			children = (
 				73E2390E1B97145D00CB38ED /* NSMOM */,
@@ -392,7 +392,7 @@
 				73556C811BB02C6600428375 /* File.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
 			);
-			name = "API ili tako nesto";
+			name = "Bussiness Logic";
 			sourceTree = "<group>";
 		};
 		738BFD001B9EF077005D183F /* Zone and Category */ = {
@@ -478,7 +478,7 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
-				736265DD1B4A47FE0078C11D /* API ili tako nesto */,
+				736265DD1B4A47FE0078C11D /* Bussiness Logic */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
 				73ECD4A21B332A6F00767740 /* Common.swift */,
@@ -1157,7 +1157,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.Hoodbe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.Hoodbe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1180,7 +1180,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.Hoodbe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.Hoodbe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

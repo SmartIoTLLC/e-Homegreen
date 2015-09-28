@@ -1081,7 +1081,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
             cell.sensorTitle.tag = indexPath.row
-            
+            print(devices[indexPath.row])
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
                 case 1:

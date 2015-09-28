@@ -340,6 +340,7 @@ class IncomingHandler: NSObject {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
+                        device.channel = i
                         device.numberOfDevices = channel
                         device.runningTime = ""
                         device.currentValue = 0

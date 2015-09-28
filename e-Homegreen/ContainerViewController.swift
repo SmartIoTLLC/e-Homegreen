@@ -288,7 +288,7 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
         if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {
             menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
             centerViewControllerSecond.Container.addSubview(menuItem.viewController!.view)
-            menuItem.viewController!.view.hidden = false
+//            menuItem.viewController!.view.hidden = false
             centerViewControllerSecond.titleOfViewController.text = menuItem.title
 //                    view.addSubview(centerNavigationController.view)
 //                    addChildViewController(centerNavigationController)
