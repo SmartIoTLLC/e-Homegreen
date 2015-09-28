@@ -586,8 +586,7 @@
                                             <outlet property="lblDescription" destination="ji9-Yj-8JV" id="meE-r0-OW4"/>
                                             <outlet property="lblLevel" destination="UD1-xP-Quu" id="TgJ-Nw-qra"/>
                                             <outlet property="lblName" destination="V4w-QY-lOt" id="KVU-o5-eLF"/>
-                                            <outlet property="switchEnable" destination="YXU-NT-jiS" id="7F4-cc-b9P"/>
-                                            <outlet property="switchVisible" destination="wnE-sw-T8P" id="isz-AC-aj2"/>
+                                            <outlet property="switchVisible" destination="wnE-sw-T8P" id="0wq-J4-iB9"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -674,9 +673,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kkD-ty-p9p">
-                                                    <rect key="frame" x="263" y="6" width="51" height="31"/>
-                                                </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Visible" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V2v-8O-5nC">
                                                     <rect key="frame" x="215" y="13" width="43" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -704,6 +700,9 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kkD-ty-p9p">
+                                                    <rect key="frame" x="263" y="6" width="51" height="31"/>
+                                                </switch>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -727,7 +726,7 @@
                                         <connections>
                                             <outlet property="lblDescription" destination="MyU-2f-3Xq" id="Ndg-0w-mTo"/>
                                             <outlet property="lblName" destination="q37-aM-jS2" id="goy-Cl-7WB"/>
-                                            <outlet property="switchEnable" destination="kkD-ty-p9p" id="er4-Jw-6i9"/>
+                                            <outlet property="switchVisible" destination="kkD-ty-p9p" id="QYX-na-SU8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

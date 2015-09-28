@@ -106,6 +106,11 @@ class IncomingHandler: NSObject {
         // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         fetchRequest.predicate = predicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
@@ -196,6 +201,7 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("testTestTest123", object: self, userInfo: nil)
     }
     func ackDimmerGetRunningTime (byteArray:[UInt8]) {
         fetchDevices()
@@ -244,8 +250,8 @@ class IncomingHandler: NSObject {
     func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
         fetchDevices()
         var string:String = ""
-        for var i = 9; i < byteArray.count-2; i++ {
-            string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+        for var j = 9; j < byteArray.count-2; j++ {
+            string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
         }
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
@@ -283,8 +289,8 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var string:String = ""
-                for var i = 42; i < byteArray.count-2; i++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+                for var j = 42; j < byteArray.count-2; j++ {
+                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 if string != "" {
                     devices[i].name = string
@@ -456,8 +462,8 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                 var string:String = ""
-                for var i = 8+47; i < byteArray.count-2; i++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+                for var j = 8+47; j < byteArray.count-2; j++ {
+                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 if string != "" {
                     devices[i].name = string

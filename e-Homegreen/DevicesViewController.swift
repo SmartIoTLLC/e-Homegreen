@@ -424,7 +424,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         levelButton.layer.borderWidth = 1
         levelButton.tag = 2
-        //levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         pullDown.addSubview(levelButton)
         
@@ -475,26 +475,38 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var locationSearch:String = "All"
-    var levelSearch:String = "All"
     var zoneSearch:String = "All"
+    var levelSearch:String = "All"
     var categorySearch:String = "All"
-    func saveText(strText: String) {
+    func saveText (text : String, id:Int) {
         let tag = senderButton!.tag
             switch tag {
             case 1:
-                locationSearch = strText
+                locationSearch = text
             case 2:
-                levelSearch = strText
+                if id == -1 {
+                    levelSearch = "All"
+                } else {
+                    levelSearch = "\(id)"
+                }
             case 3:
-                zoneSearch = strText
+                if id == -1 {
+                    zoneSearch = "All"
+                } else {
+                    zoneSearch = "\(id)"
+                }
             case 4:
-                categorySearch = strText
+                if id == -1 {
+                    categorySearch = "All"
+                } else {
+                    categorySearch = "\(id)"
+                }
             default:
                 print("")
             }
             updateDeviceList()
             deviceCollectionView.reloadData()
-            senderButton?.setTitle(strText, forState: .Normal)
+            senderButton?.setTitle(text, forState: .Normal)
         
     }
     

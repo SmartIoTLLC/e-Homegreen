@@ -195,6 +195,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     func nameReceivedFromPLC (notification:NSNotification) {
         if let info = notification.userInfo! as? [String:Int] {
             if let deviceIndex = info["deviceIndexForFoundName"] {
+                print("HELLO 2111111111111111 \(deviceIndex)")
                 if deviceIndex == devices.count-1 {
                     index = 0
                     timesRepeatedCounter = 0
@@ -213,7 +214,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
-            print("HELLO 2")
+            print("HELLO 2 \(deviceIndex)")
             if index != 0 || deviceIndex < index {
                 //                index = index + 1
                 timesRepeatedCounter += 1

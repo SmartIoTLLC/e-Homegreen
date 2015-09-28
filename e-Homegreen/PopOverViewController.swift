@@ -28,7 +28,12 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var categoryList:[Category] = []
     var gatewayList:[Gateway] = []
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
-    var chooseList:[String] = ["Devices", "Scenes", "Events", "Sequences", "Zones", "Categories"]
+    var chooseList:[TableList] = [TableList(name: "Devices", id: -1),
+        TableList(name: "Scenes", id: -1),
+        TableList(name: "Events", id: -1),
+        TableList(name: "Sequences", id: -1),
+        TableList(name: "Zones", id: -1),
+        TableList(name: "Categories", id: -1)]
     
     var tableList:[TableList] = []
     
@@ -92,7 +97,10 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if whatToFetch == "Gateway" {
             let fetchRequest = NSFetchRequest(entityName: "Gateway")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
             fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
                 for item in results {
@@ -107,7 +115,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if whatToFetch == "Zone" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let predicateOne = NSPredicate(format: "level != %@", NSNumber(short: 0))
+            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
             fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
                 for item in results {
@@ -122,7 +134,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if whatToFetch == "Level" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
+            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
             fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
                 for item in results {
@@ -137,7 +153,10 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if whatToFetch == "Category" {
             let fetchRequest = NSFetchRequest(entityName: "Category")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
             fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
                 for item in results {
@@ -174,6 +193,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if indexTab == PopOver.Scenes.rawValue {
             tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.ScanGateway.rawValue {
+            tableList = chooseList
         }
     }
     

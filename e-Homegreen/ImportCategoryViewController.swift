@@ -143,6 +143,7 @@ extension ImportCategoryViewController: UITableViewDataSource {
             cell.lblName.text = "\(categories[indexPath.row].id)" + ", \(categories[indexPath.row].name)"
             cell.lblDescription.text = "Desc: \(categories[indexPath.row].categoryDescription)"
             print(categories[indexPath.row].isVisible)
+            print(categories[indexPath.row].isVisible.boolValue)
             cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged", forControlEvents: UIControlEvents.ValueChanged)

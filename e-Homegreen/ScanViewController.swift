@@ -260,10 +260,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         return .None
     }
     
-    func saveText(strText: String) {
-        print(Array(strText.characters.reverse()))
-        senderButton?.setTitle(strText, forState: .Normal)
-        if strText == "Devices" {
+    func saveText(text: String, id: Int) {
+        print(Array(text.characters.reverse()))
+        senderButton?.setTitle(text, forState: .Normal)
+        if text == "Devices" {
             choosedTab = .Devices
             
             let oldController = childViewControllers.last
@@ -276,7 +276,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             
             scanDeviceViewController.view.hidden = false
         }
-        if strText == "Scenes" {
+        if text == "Scenes" {
             choosedTab = .Scenes
             
             let oldController = childViewControllers.last
@@ -289,7 +289,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             
             scanSceneViewController.view.hidden = false
         }
-        if strText == "Events" {
+        if text == "Events" {
             
             let oldController = childViewControllers.last
             oldController!.view.hidden = true
@@ -303,7 +303,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             
             choosedTab = .Events
         }
-        if strText == "Sequences" {
+        if text == "Sequences" {
             choosedTab = .Sequences
             
             let oldController = childViewControllers.last
@@ -317,7 +317,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             
             scanSequencesViewController.view.hidden = false
         }
-        if strText == "Zones" {
+        if text == "Zones" {
             choosedTab = .Categories
             
             let oldController = childViewControllers.last
@@ -331,7 +331,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             
             importZoneViewController.view.hidden = false
         }
-        if strText == "Categories" {
+        if text == "Categories" {
             choosedTab = .Zones
             
             let oldController = childViewControllers.last
