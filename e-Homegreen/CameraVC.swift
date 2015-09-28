@@ -13,6 +13,12 @@ class CameraVC: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var image: UIImageView!
     
+    
+    @IBOutlet weak var leftButton: LeftCustomButtom!
+    @IBOutlet weak var rightButton: CustomButton!
+    @IBOutlet weak var topButton: TopButton!
+    @IBOutlet weak var bottomButtom: BottomButton!
+    
     var surv:Surveilence!
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -50,6 +56,8 @@ class CameraVC: UIViewController {
         backView.layer.cornerRadius = 5
         backView.clipsToBounds = true
         
+        
+        
         self.view.backgroundColor = UIColor.clearColor()
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
@@ -84,6 +92,24 @@ class CameraVC: UIViewController {
         timer.invalidate()
         self.dismissViewControllerAnimated(true, completion: nil)        
     }
+    
+    @IBAction func leftButtomAction(sender: AnyObject) {
+        MoveCameraHandler(surv: surv, position: "left")
+    }
+    
+    @IBAction func rightButtomAction(sender: AnyObject) {
+        MoveCameraHandler(surv: surv, position: "right")
+    }
+    
+    @IBAction func topButtomAction(sender: AnyObject) {
+        MoveCameraHandler(surv: surv, position: "up")
+    }
+    
+    @IBAction func bottomButtomAction(sender: AnyObject) {
+        MoveCameraHandler(surv: surv, position: "down")
+    }
+    
+    
     
 //    override func viewWillLayoutSubviews() {
 //        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -174,3 +200,23 @@ extension UIViewController {
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }
+
+//extension UIButton {
+//    private func imageWithColor(color: UIColor) -> UIImage {
+//        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+//        UIGraphicsBeginImageContext(rect.size)
+//        let context = UIGraphicsGetCurrentContext()
+//        
+//        CGContextSetFillColorWithColor(context, color.CGColor)
+//        CGContextFillRect(context, rect)
+//        
+//        let image = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        
+//        return image
+//    }
+//    
+//    func setBackgroundColor(color: UIColor, forUIControlState state: UIControlState) {
+//        self.setBackgroundImage(imageWithColor(color), forState: state)
+//    }
+//}

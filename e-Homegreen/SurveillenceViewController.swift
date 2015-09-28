@@ -155,7 +155,12 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
-            surveillance = fetResults!
+            surveillance = []
+            for item in fetResults!{
+                if item.isVisible == true {
+                    surveillance.append(item)
+                }
+            }
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")

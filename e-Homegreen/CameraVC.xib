@@ -8,7 +8,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
                 <outlet property="backView" destination="AHq-ao-muM" id="uZY-ou-Ifs"/>
+                <outlet property="bottomButtom" destination="xFe-Xn-ttb" id="2ZM-23-opc"/>
                 <outlet property="image" destination="6QJ-za-RtQ" id="DXP-Lq-wQo"/>
+                <outlet property="leftButton" destination="YjC-Rz-VHS" id="tGz-wG-7zv"/>
+                <outlet property="rightButton" destination="0pl-og-EBU" id="cGd-6q-5MN"/>
+                <outlet property="topButton" destination="rM0-a5-W0S" id="FcH-D7-7ZD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,17 +24,77 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AHq-ao-muM">
                     <rect key="frame" x="10" y="10" width="580" height="580"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="6QJ-za-RtQ">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6QJ-za-RtQ">
                             <rect key="frame" x="5" y="5" width="570" height="570"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YjC-Rz-VHS" customClass="LeftCustomButtom" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="290" height="580"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="leftButtomAction:" destination="-1" eventType="touchUpInside" id="csd-NF-nAP"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pl-og-EBU" customClass="CustomButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="290" y="0.0" width="290" height="580"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="rightButtomAction:" destination="-1" eventType="touchUpInside" id="1aX-iO-xFI"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rM0-a5-W0S" customClass="TopButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="580" height="290"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="topButtomAction:" destination="-1" eventType="touchUpInside" id="AIx-5x-Mqi"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFe-Xn-ttb" customClass="BottomButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="290" width="580" height="290"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="bottomButtomAction:" destination="-1" eventType="touchUpInside" id="2qJ-Bx-xCF"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="6QJ-za-RtQ" secondAttribute="bottom" constant="5" id="1fz-6D-rNv"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" constant="5" id="9tA-0A-Oal"/>
+                        <constraint firstItem="xFe-Xn-ttb" firstAttribute="top" secondItem="rM0-a5-W0S" secondAttribute="bottom" id="Hi7-c9-Ysd"/>
+                        <constraint firstItem="xFe-Xn-ttb" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" id="HzI-Tw-571"/>
+                        <constraint firstItem="xFe-Xn-ttb" firstAttribute="height" secondItem="rM0-a5-W0S" secondAttribute="height" id="Iil-QA-pka"/>
+                        <constraint firstItem="YjC-Rz-VHS" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" id="Jho-jq-d5W"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" constant="5" id="LUg-hH-rTy"/>
+                        <constraint firstItem="0pl-og-EBU" firstAttribute="leading" secondItem="YjC-Rz-VHS" secondAttribute="trailing" id="Om3-q0-FNM"/>
+                        <constraint firstAttribute="bottom" secondItem="YjC-Rz-VHS" secondAttribute="bottom" id="U1X-xe-haa"/>
+                        <constraint firstAttribute="bottom" secondItem="xFe-Xn-ttb" secondAttribute="bottom" id="XAx-KC-Ymg"/>
                         <constraint firstAttribute="trailing" secondItem="6QJ-za-RtQ" secondAttribute="trailing" constant="5" id="XMG-o1-ci4"/>
+                        <constraint firstItem="rM0-a5-W0S" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" id="b9n-7f-Ifm"/>
+                        <constraint firstAttribute="trailing" secondItem="xFe-Xn-ttb" secondAttribute="trailing" id="cwy-ej-6tR"/>
+                        <constraint firstItem="rM0-a5-W0S" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="eCE-7x-561"/>
+                        <constraint firstAttribute="bottom" secondItem="0pl-og-EBU" secondAttribute="bottom" id="f42-Ik-ZV3"/>
+                        <constraint firstItem="YjC-Rz-VHS" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="hQz-8r-Cpq"/>
+                        <constraint firstItem="0pl-og-EBU" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="kos-H9-STR"/>
+                        <constraint firstAttribute="trailing" secondItem="rM0-a5-W0S" secondAttribute="trailing" id="pOw-0w-pAE"/>
+                        <constraint firstItem="0pl-og-EBU" firstAttribute="width" secondItem="YjC-Rz-VHS" secondAttribute="width" id="pUx-2E-U0M"/>
+                        <constraint firstAttribute="trailing" secondItem="0pl-og-EBU" secondAttribute="trailing" id="xQy-oU-T8v"/>
                     </constraints>
                 </view>
             </subviews>
@@ -44,7 +108,4 @@
             <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
         </view>
     </objects>
-    <resources>
-        <image name="Background" width="1024" height="768"/>
-    </resources>
 </document>

@@ -149,6 +149,11 @@
 		E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */; };
 		E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */; };
 		E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */; };
+		E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F5FC191BB9744200071982 /* CustomButton.swift */; settings = {ASSET_TAGS = (); }; };
+		E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */; settings = {ASSET_TAGS = (); }; };
+		E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F5FC1B1BB9744200071982 /* TopButton.swift */; settings = {ASSET_TAGS = (); }; };
+		E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F5FC1C1BB9744200071982 /* BottomButton.swift */; settings = {ASSET_TAGS = (); }; };
+		E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */; settings = {ASSET_TAGS = (); }; };
 		E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FB6A1F1B9D95D50016246B /* CameraVC.swift */; };
 		E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7FB6A201B9D95D50016246B /* CameraVC.xib */; };
 		E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */; settings = {ASSET_TAGS = (); }; };
@@ -321,6 +326,11 @@
 		E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDevicesViewController.swift; sourceTree = "<group>"; };
 		E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanSequencesesViewController.swift; sourceTree = "<group>"; };
 		E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanEventsViewController.swift; sourceTree = "<group>"; };
+		E7F5FC191BB9744200071982 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftCustomButtom.swift; sourceTree = "<group>"; };
+		E7F5FC1B1BB9744200071982 /* TopButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopButton.swift; sourceTree = "<group>"; };
+		E7F5FC1C1BB9744200071982 /* BottomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomButton.swift; sourceTree = "<group>"; };
+		E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveCameraHandler.swift; sourceTree = "<group>"; };
 		E7FB6A1F1B9D95D50016246B /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		E7FB6A201B9D95D50016246B /* CameraVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraVC.xib; sourceTree = "<group>"; };
 		E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceHandler.swift; sourceTree = "<group>"; };
@@ -391,6 +401,7 @@
 				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
 				73556C811BB02C6600428375 /* File.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
+				E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */,
 			);
 			name = "Bussiness Logic";
 			sourceTree = "<group>";
@@ -729,6 +740,10 @@
 		E7FB6A1A1B9D95370016246B /* Surveillence */ = {
 			isa = PBXGroup;
 			children = (
+				E7F5FC191BB9744200071982 /* CustomButton.swift */,
+				E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */,
+				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
+				E7F5FC1C1BB9744200071982 /* BottomButton.swift */,
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				E7FB6A1F1B9D95D50016246B /* CameraVC.swift */,
 				E7FB6A201B9D95D50016246B /* CameraVC.xib */,
@@ -968,6 +983,7 @@
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
+				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
@@ -977,6 +993,7 @@
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
+				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
@@ -984,6 +1001,7 @@
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
 				73F4612A1BB3E6FE00B6B650 /* Zone+CoreDataProperties.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
+				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E70515A61BB43498009FDA0D /* Surveilence+CoreDataProperties.swift in Sources */,
@@ -994,6 +1012,8 @@
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
+				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,

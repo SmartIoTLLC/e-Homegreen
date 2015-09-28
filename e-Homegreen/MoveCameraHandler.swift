@@ -1,22 +1,16 @@
 //
-//  SurveillanceHandler.swift
+//  MoveCameraHandler.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/25/15.
+//  Created by Vladimir on 9/28/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-//protocol GetImageHandler{
-//    func getImageHandlerFinished(succeded:Bool, data:NSData?)
-//}
-
-class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate{
+class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     
-//    var delegate:GetImageHandler?
-    
-    init(surv: Surveilence) {
+    init(surv: Surveilence, position: String) {
         super.init()
         let username = surv.username
         let password = surv.password
@@ -27,7 +21,7 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
         
         print(base64LoginString)
         
-        let url = NSURL(string: "\(surv.ip!):\(surv.port!)/dms?nowprofileid=3")
+        let url = NSURL(string: "\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=1&tiltstep=1")
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
@@ -38,16 +32,14 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
             
             if error == nil{
-//                print(response)
-//                print(data)
-                surv.imageData = data
+                
             }else{
-                surv.imageData = nil
+                
             }
             
         }
         task.resume()
     }
     
-
+    
 }
