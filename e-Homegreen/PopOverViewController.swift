@@ -12,20 +12,25 @@ import CoreData
 @objc protocol PopOverIndexDelegate
 {
     optional func saveText (strText : String)
+    optional func saveText (text : String, id:Int)
     optional func clickedOnGatewayWithIndex (index : Int)
+}
+
+struct TableList {
+    var name:String
+    var id:Int
 }
 
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var locationList:[String] = []
-    var levelList:[String] = []
-    var zoneList:[String] = []
-    var categoryList:[String] = []
-    var gatewayList:[String] = []
+    var levelList:[Zone] = []
+    var zoneList:[Zone] = []
+    var categoryList:[Category] = []
+    var gatewayList:[Gateway] = []
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
     var chooseList:[String] = ["Devices", "Scenes", "Events", "Sequences", "Zones", "Categories"]
     
-    var tableList:[String] = []
+    var tableList:[TableList] = []
     
     var appDel:AppDelegate!
     var devices:[Device] = []
@@ -39,50 +44,112 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
 
         table.layer.cornerRadius = 8
         
-        
-        
         // Do any additional setup after loading the view.
     }
-    func updateDeviceList (whatToFetch:String, array:String) {
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let fetchRequest = NSFetchRequest(entityName: "Device")
-        fetchRequest.propertiesToFetch = [whatToFetch]
-        fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.returnsDistinctResults = true
-        fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
-        let sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest)
-            for device in results {
-                print(device[whatToFetch]!)
-//                var zoneIdString = device["zoneId"]
-                if let fetchedObject:Int = device[whatToFetch] as? Int {
-                    switch array {
-                    case "gatewayList":
-                        gatewayList.append("\(fetchedObject)")
-                    case "levelList":
-                        levelList.append("\(fetchedObject)")
-                    case "zoneList":
-                        zoneList.append("\(fetchedObject)")
-                    case "categoryList":
-                        categoryList.append("\(fetchedObject)")
-                    default:
-                        print(zoneList)
-                    }
+//    func updateDeviceList (whatToFetch:String, array:String) {
+//        let fetchRequest = NSFetchRequest(entityName: "Device")
+//        fetchRequest.propertiesToFetch = [whatToFetch]
+//        fetchRequest.returnsObjectsAsFaults = false
+//        fetchRequest.returnsDistinctResults = true
+//        fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
+//        let sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        do {
+//            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest)
+//            print(results)
+//            for device in results {
+//                print(device[whatToFetch]!)
+////                var zoneIdString = device["zoneId"]
+//                if let fetchedObject:Int = device[whatToFetch] as? Int {
+//                    switch array {
+//                    case "gatewayList":
+//                        gatewayList.append("\(fetchedObject)")
+//                    case "levelList":
+//                        levelList.append("\(fetchedObject)")
+//                    case "zoneList":
+//                        zoneList.append("\(fetchedObject)")
+//                    case "categoryList":
+//                        categoryList.append("\(fetchedObject)")
+//                    default:
+//                        print(zoneList)
+//                    }
+//                }
+//                if let gatewayName = device[whatToFetch] as? String {
+//                    gatewayList.append("\(gatewayName)")
+//                }
+//            }
+//        } catch let error1 as NSError {
+//            error = error1
+//            
+//        }
+//    }
+    func updateDeviceList (whatToFetch:String) {
+        if whatToFetch == "Gateway" {
+            let fetchRequest = NSFetchRequest(entityName: "Gateway")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
+                for item in results {
+                    tableList.append(TableList(name: item.name, id: -1))
                 }
-                if let gatewayName = device[whatToFetch] as? String {
-                    gatewayList.append("\(gatewayName)")
-                }
+            } catch let catchedError as NSError {
+                error = catchedError
             }
-        } catch let error1 as NSError {
-            error = error1
-            
+            return
+        }
+        
+        if whatToFetch == "Zone" {
+            let fetchRequest = NSFetchRequest(entityName: "Zone")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+                for item in results {
+                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        
+        if whatToFetch == "Level" {
+            let fetchRequest = NSFetchRequest(entityName: "Zone")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+                for item in results {
+                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        
+        if whatToFetch == "Category" {
+            let fetchRequest = NSFetchRequest(entityName: "Category")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+                for item in results {
+                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
         }
     }
+    
     enum PopOver: Int {
         case Gateways = 1
         case Levels = 2
@@ -93,26 +160,20 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
-            updateDeviceList("gateway.name", array:"gatewayList")
-            tableList = gatewayList
-            tableList.append("All")
+            updateDeviceList("Gateway")
+            tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.Levels.rawValue {
-            updateDeviceList("level", array:"levelList")
-            tableList = levelList
-            tableList.append("All")
+            updateDeviceList("Level")
+            tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.Zones.rawValue {
-            updateDeviceList("zoneId", array:"zoneList")
-            tableList = zoneList
-            tableList.append("All")
+            updateDeviceList("Zone")
+            tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.Categories.rawValue {
-            updateDeviceList("categoryId", array:"categoryList")
-            tableList = categoryList
-            tableList.append("All")
+            updateDeviceList("Category")
+            tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.Scenes.rawValue {
-            tableList = sceneList
-            tableList.append("All")
+            tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.ScanGateway.rawValue {
-            tableList = chooseList
         }
     }
     
@@ -123,9 +184,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
-            cell.tableItem.text = tableList[indexPath.row]
+            cell.tableItem.text = tableList[indexPath.row].name
             return cell
-            
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
@@ -133,7 +193,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-            delegate?.saveText!(tableList[indexPath.row])
+            delegate?.saveText!(tableList[indexPath.row].name, id: tableList[indexPath.row].id)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -144,11 +204,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func shouldAutomaticallyForwardRotationMethods() -> Bool {
         return false
     }
-
-    
-
-
-
 }
 
 class PullDownViewCell: UITableViewCell {

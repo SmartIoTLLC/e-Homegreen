@@ -22,7 +22,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     func setupConnection(){
         var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         

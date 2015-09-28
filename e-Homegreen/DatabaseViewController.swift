@@ -115,24 +115,24 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @IBAction func btnChooseGateway(sender: UIButton) {
-        gatewaysNames = []
-        for item in gateways {
-            gatewaysNames.append("\(item.name)")
-        }
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.gatewayList = gatewaysNames
-        popoverVC.indexTab = 4
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            self.presentViewController(popoverVC, animated: true, completion: nil)
-        }
+//        gatewaysNames = []
+//        for item in gateways {
+//            gatewaysNames.append("\(item.name)")
+//        }
+//        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+//        popoverVC.modalPresentationStyle = .Popover
+//        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+//        popoverVC.delegate = self
+//        popoverVC.gatewayList = gatewaysNames
+//        popoverVC.indexTab = 4
+//        if let popoverController = popoverVC.popoverPresentationController {
+//            popoverController.delegate = self
+//            popoverController.permittedArrowDirections = .Any
+//            popoverController.sourceView = sender as UIView
+//            popoverController.sourceRect = sender.bounds
+//            popoverController.backgroundColor = UIColor.lightGrayColor()
+//            self.presentViewController(popoverVC, animated: true, completion: nil)
+//        }
     }
     
     @available(iOS 8.0, *)

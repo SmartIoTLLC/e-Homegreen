@@ -325,6 +325,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        print("override func viewWillAppear(animated: Bool) {print(")
+    }
+    
     override func viewWillLayoutSubviews() {
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {

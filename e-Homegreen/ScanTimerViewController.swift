@@ -125,12 +125,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        
-    }
-    
+    }    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
