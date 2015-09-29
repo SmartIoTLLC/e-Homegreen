@@ -74,6 +74,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         // Do any additional setup after loading the view.
     }
     
+    
+    
     func refreshSceneList() {
         updateSceneList()
         sceneTableView.reloadData()

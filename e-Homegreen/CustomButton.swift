@@ -53,7 +53,7 @@ class CustomButton: UIButton {
     override var highlighted: Bool {
         didSet {
             if highlighted {
-                fillColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+                fillColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.35)
                 setNeedsDisplay()
             } else {
                 fillColor = UIColor.clearColor()

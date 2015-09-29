@@ -80,6 +80,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         // Do any additional setup after loading the view.
     }
     
+    
+    
     func refreshSequenceList() {
         updateSequenceList()
         sequencesTableView.reloadData()

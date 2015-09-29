@@ -38,8 +38,8 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
             
             if error == nil{
-//                print(response)
-//                print(data)
+                print(response)
+                print(data)
                 surv.imageData = data
             }else{
                 surv.imageData = nil

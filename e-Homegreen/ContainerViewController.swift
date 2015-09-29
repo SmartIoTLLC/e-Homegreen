@@ -286,8 +286,16 @@ private extension UIStoryboard {
 extension ContainerViewController: SidePanelViewControllerDelegate {
     func menuItemSelected(menuItem: MenuItem) {
         if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {
+//            addChildViewController(menuItem.viewController!)
+//            menuItem.viewController!.didMoveToParentViewController(self)
+            if menuItem.title == "Surveillance"{
+                NSNotificationCenter.defaultCenter().postNotificationName("runTimer", object: self, userInfo: nil)
+            }else{
+                NSNotificationCenter.defaultCenter().postNotificationName("stopTimer", object: self, userInfo: nil)
+            }
             menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
             centerViewControllerSecond.Container.addSubview(menuItem.viewController!.view)
+//            menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
 //            menuItem.viewController!.view.hidden = false
             centerViewControllerSecond.titleOfViewController.text = menuItem.title
 //                    view.addSubview(centerNavigationController.view)

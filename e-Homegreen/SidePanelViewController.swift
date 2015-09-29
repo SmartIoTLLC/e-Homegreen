@@ -116,6 +116,10 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()
         
+        
+        
+        
+        
         delegate?.menuItemSelected(selectedMenuItem)
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

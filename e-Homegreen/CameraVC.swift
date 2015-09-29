@@ -48,17 +48,17 @@ class CameraVC: UIViewController {
         let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
-        self.view.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
+//        self.view.addGestureRecognizer(tapGesture)
         
-        backView.layer.borderWidth = 2
-        backView.layer.borderColor = UIColor.blackColor().CGColor
-        backView.layer.cornerRadius = 5
-        backView.clipsToBounds = true
+//        backView.layer.borderWidth = 2
+//        backView.layer.borderColor = UIColor.blackColor().CGColor
+//        backView.layer.cornerRadius = 5
+//        backView.clipsToBounds = true
         
         
         
-        self.view.backgroundColor = UIColor.clearColor()
+//        self.view.backgroundColor = UIColor.clearColor()
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
@@ -71,6 +71,12 @@ class CameraVC: UIViewController {
         return true
     }
     
+    @IBAction func exitButton(sender: AnyObject) {
+        timer.invalidate()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.LandscapeLeft
     }
@@ -80,7 +86,11 @@ class CameraVC: UIViewController {
 //    }
     
     func update(){
-        self.image.image = UIImage(data: surv.imageData!)
+        if surv.imageData != nil{
+            self.image.image = UIImage(data: surv.imageData!)
+        }else{
+            self.image.image = UIImage(named: "loading")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -88,10 +98,10 @@ class CameraVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func handleTap(){
-        timer.invalidate()
-        self.dismissViewControllerAnimated(true, completion: nil)        
-    }
+//    func handleTap(){
+//        timer.invalidate()
+//        self.dismissViewControllerAnimated(true, completion: nil)        
+//    }
     
     @IBAction func leftButtomAction(sender: AnyObject) {
         MoveCameraHandler(surv: surv, position: "left")

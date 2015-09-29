@@ -39,7 +39,6 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
         
         fetchSurveillance()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
-
         // Do any additional setup after loading the view.
     }
 
