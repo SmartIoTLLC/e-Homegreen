@@ -1100,11 +1100,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEs-xQ-Adf" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-<<<<<<< HEAD
                                                 <rect key="frame" x="94" y="125" width="218" height="31"/>
-=======
-                                                <rect key="frame" x="94" y="118" width="218" height="31"/>
->>>>>>> origin/master
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <state key="normal" title="Category">
@@ -1131,11 +1127,7 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eoy-cW-3Ir" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-<<<<<<< HEAD
                                                 <rect key="frame" x="8" y="194" width="150" height="31"/>
-=======
-                                                <rect key="frame" x="8" y="187" width="150" height="31"/>
->>>>>>> origin/master
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="cxf-EL-nZH"/>
@@ -1199,23 +1191,6 @@
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eb3-1o-xCw" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-<<<<<<< HEAD
-                                                <rect key="frame" x="94" y="91" width="218" height="31"/>
-=======
-                                                <rect key="frame" x="94" y="84" width="218" height="31"/>
->>>>>>> origin/master
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="Zone">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="btnScenes:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="Y4o-73-xKD"/>
-                                                    <action selector="btnZone:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="IIv-9c-W1P"/>
-                                                </connections>
-                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timer Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqH-oR-70Z">
                                                 <rect key="frame" x="120" y="166" width="71" height="16"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
@@ -1329,6 +1304,19 @@
                                                     <outlet property="delegate" destination="vTZ-Oh-4tp" id="OSy-JP-JLl"/>
                                                 </connections>
                                             </tableView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eb3-1o-xCw" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="90" width="218" height="31"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="Zone">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnScenes:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="Y4o-73-xKD"/>
+                                                    <action selector="btnZone:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="IIv-9c-W1P"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>

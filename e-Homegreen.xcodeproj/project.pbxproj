@@ -768,12 +768,9 @@
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
 				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
-<<<<<<< HEAD
 				E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */,
-=======
 				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
 				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
->>>>>>> origin/master
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -1064,11 +1061,8 @@
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
-<<<<<<< HEAD
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
-=======
 				738DECA61BBBC3DA00D6B834 /* SecurityParametarVC.swift in Sources */,
->>>>>>> origin/master
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,

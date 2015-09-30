@@ -123,7 +123,8 @@ extension SecurityViewController: UICollectionViewDataSource {
 class SecurityCollectionCell: UICollectionViewCell {
     
     
-    @IBOutlet weak var securityCellLabel: UILabel!
-    @IBOutlet weak var securityCellImageView: UIImageView!
+    @IBOutlet weak var securityTitle: UILabel!
+    @IBOutlet weak var securityImageView: UIImageView!
+    @IBOutlet weak var securityCellImageView: UIButton!
     
 }
