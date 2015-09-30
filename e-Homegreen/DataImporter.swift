@@ -92,6 +92,39 @@ class DataImporter {
         }
         return nil
     }
+    class func createSecuritiesFromFile (filePath:String) -> [SecurityJSON]? {
+        var data:NSData!
+//        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+//        let filePath = paths.stringByAppendingPathComponent(fileName)
+        let checkValidation = NSFileManager.defaultManager()
+        if checkValidation.fileExistsAtPath(filePath) {
+            print("Postoji.")
+            data = NSData(contentsOfFile: filePath)
+            let jsonError: NSError?
+            
+            do {
+                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                print(file["Securities"])
+                if let securitiesDictionary = file["Securities"] as? [JSONDictionary] {
+                    var securities:[SecurityJSON] = []
+                    for security in securitiesDictionary {
+                        securities.append(SecurityJSON(dictionary: security)!)
+                    }
+                    return securities
+                }
+            } catch let error1 as NSError {
+                jsonError = error1
+                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                abort()
+            }
+            return nil
+            
+            
+        } else {
+            print("Ne postoji.fileName")
+        }
+        return nil
+    }
 }
 
 typealias JSONDictionary = [String:AnyObject]
@@ -133,6 +166,21 @@ extension CategoryJSON {
                 self.description = description
                 return
             }
+        }
+        return nil
+    }
+}
+
+struct SecurityJSON {
+    let name:String
+    let modeExplanation:String
+}
+extension SecurityJSON {
+    init?(dictionary:JSONDictionary) {
+        if let name = dictionary["name"] as? String, let modeExplanation = dictionary["modeExplanation"] as? String {
+            self.name = name
+            self.modeExplanation = modeExplanation
+            return
         }
         return nil
     }

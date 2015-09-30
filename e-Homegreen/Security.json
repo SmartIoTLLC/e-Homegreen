@@ -1,0 +1,6 @@
+{"Securities":[{"name":"Away","modeExplanation":"Interior Zones Security System will be activated after 30 secs from the time the residents exit the villa. Upon returning to the villa, the system can be deactivated in 30 secs."},
+               {"name":"Night","modeExplanation":"Interior Zones Security System will be activated from the first floor at night."},
+               {"name":"Day","modeExplanation":"Interior Zones Security System will be inactive except the heat sensors."},
+               {"name":"Vacation","modeExplanation":"Interior Zones Security System will be inactive except the heat sensors with vacation dial plan."},
+               {"name":"Disarm","modeExplanation":""},
+               {"name":"Panic","modeExplanation":"Activating Alarm system in case of an emergency."}]}

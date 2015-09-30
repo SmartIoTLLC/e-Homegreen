@@ -36,18 +36,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let containerViewController = ContainerViewController()
         window!.rootViewController = containerViewController
         
-//        var storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        var viewController:UIViewController
-//        viewController = storyboard.instantiateViewControllerWithIdentifier("logInController") as! LogInViewController
-//        window!.rootViewController = viewController
-//        
-//        window!.makeKeyAndVisible()
-        
-//        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(1)
+        //   Configuring data for first time
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let isPreloaded = defaults.boolForKey("isPreloaded")
+        if !isPreloaded {
+            preloadData()
+            defaults.setBool(true, forKey: "isPreloaded")
+        }
         
         return true
     }
-
+    func preloadData () {
+        print(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
+        let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
+        for securityJSON in importedData! {
+            let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: managedObjectContext!) as! Security
+            security.name = securityJSON.name
+            security.modeExplanation = securityJSON.modeExplanation
+            security.addressOne = 1
+            security.addressTwo = 0
+            security.addressThree = 254
+            saveContext()
+        }
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
