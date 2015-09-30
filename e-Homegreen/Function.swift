@@ -635,6 +635,11 @@ class Function {
 //        message[message.count-1] = 0x10
 //        return message
 //    }
+    
+    //   **************************************************************************************
+    //   ************************************   SECURITY   ************************************
+    //   **************************************************************************************
+    
     static func refreshSecurityMode (address:[UInt8]) -> [UInt8]{
         let messageInfo:[UInt8] = [0x02, 0x00]
         var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
@@ -654,6 +659,7 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+    //   1, 2, 3, 4, 5, 6, 7, 8, 9, 0B (star), 1A (hash)
     static func sendKeySecurity (address:[UInt8], key:UInt8) -> [UInt8]{
         let messageInfo:[UInt8] = [0x01, key]
         var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
@@ -673,7 +679,82 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    
+    static func getCurrentSecurityMode (address:[UInt8]) -> [UInt8]{
+        let messageInfo:[UInt8] = [0x02, 0x00]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func changeSecurityMode (address:[UInt8], mode:UInt8) -> [UInt8]{
+        let messageInfo:[UInt8] = [0x02, mode]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func getCurrentAlarmState (address:[UInt8]) -> [UInt8]{
+        let messageInfo:[UInt8] = [0x03, 0x00]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setPanic (address:[UInt8], panic:UInt8) -> [UInt8]{
+        let messageInfo:[UInt8] = [0x04, panic]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = UInt8(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
 //    ===========================   Timer   ===========================
     static func getTimerParametar (address:[UInt8], id:UInt8) -> [UInt8]{
         let messageInfo:[UInt8] = [id]

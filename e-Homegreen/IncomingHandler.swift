@@ -91,8 +91,8 @@ class IncomingHandler: NSObject {
 //                    }
                     
                     // - Ovo je izgleda u redu
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
-                        self.ackADICmdGetInterfaceName(self.byteArray)
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+                        self.securityFeedbackHandler(self.byteArray)
                     }
                 }
         }
@@ -483,5 +483,31 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         
+    }
+    func securityFeedbackHandler (byteArray:[UInt8]) {
+//        fetchDevices()
+//        for var i = 0; i < devices.count; i++ {
+//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+//                var string:String = ""
+//                for var j = 8+47; j < byteArray.count-2; j++ {
+//                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+//                }
+//                if string != "" {
+//                    devices[i].name = string
+//                } else {
+//                    devices[i].name = "Unknown"
+//                }
+//                devices[i].overrideControl1 = Int(byteArray[23])
+//                devices[i].overrideControl2 = Int(byteArray[24])
+//                devices[i].overrideControl3 = Int(byteArray[25])
+//                devices[i].zoneId = Int(byteArray[9])
+//                devices[i].parentZoneId = Int(byteArray[10])
+//                devices[i].categoryId = Int(byteArray[8])
+//                let data = ["deviceIndexForFoundName":i]
+//                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+//            }
+//        }
+//        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
     }
 }

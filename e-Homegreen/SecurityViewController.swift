@@ -26,6 +26,29 @@ class SecurityViewController: CommonViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+//    ima: adresu, gateway, alarm state, naziv
+    func didSelectCell (tag:Int) {
+//        if tag == 0 {
+//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x01), gateway: Gateway())
+//        }
+//        if tag == 1 {
+//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x02), gateway: Gateway())
+//        }
+//        if tag == 2 {
+//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x03), gateway: Gateway())
+//        }
+//        if tag == 3 {
+//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x04), gateway: Gateway())
+//        }
+//        if tag == 4 {
+//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x04), gateway: Gateway())
+//        }
+//        if tag == 5 {
+//            
+//        }
+    }
 
 }
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
