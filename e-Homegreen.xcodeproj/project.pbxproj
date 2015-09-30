@@ -141,6 +141,7 @@
 		E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E242111B68B35400CEAB9A /* CellParametarVC.swift */; };
 		E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E242121B68B35400CEAB9A /* CellParametarVC.xib */; };
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
+		E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */; settings = {ASSET_TAGS = (); }; };
 		E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B021B8F27840025082D /* SceneGalleryVC.swift */; };
 		E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7F15B031B8F27840025082D /* SceneGalleryVC.xib */; };
 		E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */; };
@@ -318,6 +319,7 @@
 		E7E242111B68B35400CEAB9A /* CellParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellParametarVC.swift; sourceTree = "<group>"; };
 		E7E242121B68B35400CEAB9A /* CellParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellParametarVC.xib; sourceTree = "<group>"; };
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientButton.swift; sourceTree = "<group>"; };
 		E7F15B021B8F27840025082D /* SceneGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneGalleryVC.swift; sourceTree = "<group>"; };
 		E7F15B031B8F27840025082D /* SceneGalleryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SceneGalleryVC.xib; sourceTree = "<group>"; };
 		E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -741,6 +743,7 @@
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
 				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
+				E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -1024,6 +1027,7 @@
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
+				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,

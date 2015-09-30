@@ -373,47 +373,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         return String(format: "%03d",number)
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if tableView == sceneTableView {
-//            if choosedTab == .Scenes {
-//                selected = choosedTabArray[indexPath.row]
-//                IDedit.text = "\(choosedTabArray[indexPath.row].sceneId)"
-//                nameEdit.text = "\(choosedTabArray[indexPath.row].sceneName)"
-//                devAddressThree.text = "\(returnThreeCharactersForByte(Int(choosedTabArray[indexPath.row].address)))"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageOne) {
-//                    imageSceneOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sceneImageTwo) {
-//                    imageSceneTwo.image = sceneImage
-//                }
-//            }
-//            if choosedTab == .Events {
-//                selected = choosedTabArray[indexPath.row]
-//                IDedit.text = "\(choosedTabArray[indexPath.row].eventId)"
-//                nameEdit.text = "\(choosedTabArray[indexPath.row].eventName)"
-//                devAddressThree.text = "\(returnThreeCharactersForByte(Int(choosedTabArray[indexPath.row].address)))"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageOne) {
-//                    imageSceneOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].eventImageTwo) {
-//                    imageSceneTwo.image = sceneImage
-//                }
-//            }
-//            if choosedTab == .Sequences {
-//                selected = choosedTabArray[indexPath.row]
-//                IDedit.text = "\(choosedTabArray[indexPath.row].sequenceId)"
-//                nameEdit.text = "\(choosedTabArray[indexPath.row].sequenceName)"
-//                devAddressThree.text = "\(returnThreeCharactersForByte(Int(choosedTabArray[indexPath.row].address)))"
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageOne) {
-//                    imageSceneOne.image = sceneImage
-//                }
-//                if let sceneImage = UIImage(data: choosedTabArray[indexPath.row].sequenceImageTwo) {
-//                    imageSceneTwo.image = sceneImage
-//                }
-//            }
-//        }
-//    }
-//    
+
 }
 
 

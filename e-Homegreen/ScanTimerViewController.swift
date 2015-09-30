@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate {
+class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -21,6 +21,8 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     @IBOutlet weak var broadcastSwitch: UISwitch!
     
     @IBOutlet weak var timerTableView: UITableView!
+    
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -158,6 +160,70 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
 //            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
 //        }
     }
+    @IBAction func btnZone(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 6
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
+    }
+    
+  
+    @IBAction func btnCategory(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 6
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
+    }
+    
+    
+    @IBAction func btnTimerType(sender: AnyObject) {
+            
+//            senderButton = sender as? UIButton
+        
+            popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+            popoverVC.modalPresentationStyle = .Popover
+            popoverVC.preferredContentSize = CGSizeMake(300, 200)
+            popoverVC.delegate = self
+            popoverVC.indexTab = 6
+            if let popoverController = popoverVC.popoverPresentationController {
+                popoverController.delegate = self
+                popoverController.permittedArrowDirections = .Any
+                popoverController.sourceView = sender as? UIView
+                popoverController.sourceRect = sender.bounds
+                popoverController.backgroundColor = UIColor.lightGrayColor()
+                presentViewController(popoverVC, animated: true, completion: nil)
+                
+            }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
+    func saveText(text: String, id: Int) {
+        
+    }
+    
     
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)
