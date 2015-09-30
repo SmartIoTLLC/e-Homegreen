@@ -11,12 +11,24 @@ import CoreData
 
 class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scroll: UIScrollView!
+    @IBOutlet weak var centarConstraint: NSLayoutConstraint!
     var isPresenting: Bool = true
     
     @IBOutlet weak var backView: UIView!
     
-    @IBOutlet weak var editID: UITextField!
-    @IBOutlet weak var editPort: UITextField!
+    @IBOutlet weak var editLocation: UITextField!
+    @IBOutlet weak var editName: UITextField!
+    
+    
+    @IBOutlet weak var editIPLocal: UITextField!
+    @IBOutlet weak var editPortLocal: UITextField!
+    @IBOutlet weak var editSSID: UITextField!
+    
+    
+    @IBOutlet weak var editIPRemote: UITextField!
+    @IBOutlet weak var editPortRemote: UITextField!
     @IBOutlet weak var editUserName: UITextField!
     @IBOutlet weak var editPassword: UITextField!
     
@@ -44,34 +56,64 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         if UIScreen.mainScreen().scale > 2.5{
-            editID.layer.borderWidth = 1
-            editPort.layer.borderWidth = 1
+            editIPRemote.layer.borderWidth = 1
+            editPortRemote.layer.borderWidth = 1
             editUserName.layer.borderWidth = 1
             editPassword.layer.borderWidth = 1
+            editLocation.layer.borderWidth = 1
+            editName.layer.borderWidth = 1
+            editIPLocal.layer.borderWidth = 1
+            editPortLocal.layer.borderWidth = 1
+            editSSID.layer.borderWidth = 1
         }else{
-            editID.layer.borderWidth = 0.5
-            editPort.layer.borderWidth = 0.5
+            editIPRemote.layer.borderWidth = 0.5
+            editPortRemote.layer.borderWidth = 0.5
             editUserName.layer.borderWidth = 0.5
             editPassword.layer.borderWidth = 0.5
+            editLocation.layer.borderWidth = 0.5
+            editName.layer.borderWidth = 0.5
+            editIPLocal.layer.borderWidth = 0.5
+            editPortLocal.layer.borderWidth = 0.5
+            editSSID.layer.borderWidth = 0.5
         }
         
-        editID.layer.cornerRadius = 2
-        editPort.layer.cornerRadius = 2
+        editIPRemote.layer.cornerRadius = 2
+        editPortRemote.layer.cornerRadius = 2
         editUserName.layer.cornerRadius = 2
         editPassword.layer.cornerRadius = 2
+        editLocation.layer.cornerRadius = 2
+        editName.layer.cornerRadius = 2
+        editIPLocal.layer.cornerRadius = 2
+        editPortLocal.layer.cornerRadius = 2
+        editSSID.layer.cornerRadius = 2
         
-        editID.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editPort.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editIPRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editPortRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
         editUserName.layer.borderColor = UIColor.lightGrayColor().CGColor
         editPassword.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editLocation.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editName.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editIPLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editPortLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editSSID.layer.borderColor = UIColor.lightGrayColor().CGColor
         
-        editID.attributedPlaceholder = NSAttributedString(string:"IP/Host",
+        editIPRemote.attributedPlaceholder = NSAttributedString(string:"IP/Host",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editPort.attributedPlaceholder = NSAttributedString(string:"Port",
+        editPortRemote.attributedPlaceholder = NSAttributedString(string:"Port",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editUserName.attributedPlaceholder = NSAttributedString(string:"IP/Host",
+        editUserName.attributedPlaceholder = NSAttributedString(string:"Username",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editPassword.attributedPlaceholder = NSAttributedString(string:"Port",
+        editPassword.attributedPlaceholder = NSAttributedString(string:"Password",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editLocation.attributedPlaceholder = NSAttributedString(string:"Location",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editName.attributedPlaceholder = NSAttributedString(string:"Name",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editIPLocal.attributedPlaceholder = NSAttributedString(string:"IP local",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editPortLocal.attributedPlaceholder = NSAttributedString(string:"Local Port",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editSSID.attributedPlaceholder = NSAttributedString(string:"SSID",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         
         btnCancel.layer.cornerRadius = 2
@@ -88,24 +130,55 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
-        editID.delegate = self
-        editPort.delegate = self
+        editIPRemote.delegate = self
+        editPortRemote.delegate = self
         editUserName.delegate = self
         editPassword.delegate = self
+        editLocation.delegate = self
+        editName.delegate = self
+        editIPLocal.delegate = self
+        editPortLocal.delegate = self
+        editSSID.delegate = self
         
         if surv != nil{
-            editID.text = surv?.ip
-            editPort.text = "\(surv!.port!)"
+            editIPRemote.text = surv?.ip
+            editPortRemote.text = "\(surv!.port!)"
             editUserName.text = surv?.username
             editPassword.text = surv?.password
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
 
         // Do any additional setup after loading the view.
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.centarConstraint.constant = 0
+        UIView.animateWithDuration(0.3,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveLinear,
+            animations: { self.view.layoutIfNeeded() },
+            completion: nil)
         return true
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeightConstraint.constant = 250
+            }else if self.view.frame.size.height == 375{
+                backViewHeightConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                backViewHeightConstraint.constant = 350
+            }else{
+                backViewHeightConstraint.constant = 480
+            }
+        }else{
+            
+            backViewHeightConstraint.constant = 480
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,21 +191,21 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
-        if editID.text == "" || editPort.text == "" || editUserName.text == "" || editPassword.text == ""{
+        if editIPRemote.text == "" || editPortRemote.text == "" || editUserName.text == "" || editPassword.text == ""{
             
             
         } else {
             if surv == nil{
                 let surveillance = NSEntityDescription.insertNewObjectForEntityForName("Surveilence", inManagedObjectContext: appDel.managedObjectContext!) as! Surveilence
-                surveillance.ip = editID.text!
-                surveillance.port = Int(editPort.text!)!
+                surveillance.ip = editIPRemote.text!
+                surveillance.port = Int(editPortRemote.text!)!
                 surveillance.username = editUserName.text!
                 surveillance.password = editPassword.text!
                 surveillance.isVisible = true
                 saveChanges()
             }else{
-                surv!.ip = editID.text!
-                surv!.port = Int(editPort.text!)!
+                surv!.ip = editIPRemote.text!
+                surv!.port = Int(editPortRemote.text!)!
                 surv!.username = editUserName.text!
                 surv!.password = editPassword.text!
                 saveChanges()
@@ -140,6 +213,70 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+//        if editPortRemote.isFirstResponder(){
+//            if backView.frame.origin.y + editPortRemote.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+//                
+//                self.centarConstraint.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+//                
+//            }
+//        }
+        if editPortRemote.isFirstResponder(){
+            if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editIPRemote.isFirstResponder(){
+            if backView.frame.origin.y + editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPortLocal.isFirstResponder(){
+            if backView.frame.origin.y + editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editIPLocal.isFirstResponder(){
+            if backView.frame.origin.y + editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editUserName.isFirstResponder(){
+            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPassword.isFirstResponder(){
+            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editSSID.isFirstResponder(){
+            if backView.frame.origin.y + editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
     }
     
     func saveChanges() {
