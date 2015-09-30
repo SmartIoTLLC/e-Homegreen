@@ -52,7 +52,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         for timer in gateway!.timers {
             timers.append(timer as! Timer)
         }
-        refreshTimerList()
+//        refreshTimerList()
         
         //        devAddressOne.inputAccessoryView = keyboardDoneButtonView
         //        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
@@ -133,30 +133,30 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
-            if sceneId <= 32767 && address <= 255 {
-                let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
-                timer.timerId = sceneId
-                timer.timerName = sceneName
-                timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
-                timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
-                timer.isBroadcast = NSNumber(bool: false)
-                timer.gateway = gateway!
-                saveChanges()
-                refreshTimerList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
-            }
-        }
+//        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
+//            if sceneId <= 32767 && address <= 255 {
+//                let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
+//                timer.timerId = sceneId
+//                timer.timerName = sceneName
+//                timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
+//                timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+//                timer.isBroadcast = NSNumber(bool: false)
+//                timer.gateway = gateway!
+//                saveChanges()
+//                refreshTimerList()
+//                NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+//            }
+//        }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let timer = selected as? Timer {
-            appDel.managedObjectContext!.deleteObject(timer)
-            IDedit.text = ""
-            nameEdit.text = ""
-            refreshTimerList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
-        }
+//        if let timer = selected as? Timer {
+//            appDel.managedObjectContext!.deleteObject(timer)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            refreshTimerList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+//        }
     }
     
     func returnThreeCharactersForByte (number:Int) -> String {
@@ -172,15 +172,15 @@ extension ScanTimerViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("timerCell") as? TimerCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(timers[indexPath.row].timerId)"
-            cell.labelName.text = "\(timers[indexPath.row].timerName)"
-            if let sceneImage = UIImage(data: timers[indexPath.row].timerImageOne) {
-                cell.imageOne.image = sceneImage
-            }
-            if let sceneImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
-                cell.imageTwo.image = sceneImage
-            }
+//            cell.backgroundColor = UIColor.clearColor()
+//            cell.labelID.text = "\(timers[indexPath.row].timerId)"
+//            cell.labelName.text = "\(timers[indexPath.row].timerName)"
+//            if let sceneImage = UIImage(data: timers[indexPath.row].timerImageOne) {
+//                cell.imageOne.image = sceneImage
+//            }
+//            if let sceneImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
+//                cell.imageTwo.image = sceneImage
+//            }
             return cell
         }
         
@@ -190,7 +190,7 @@ extension ScanTimerViewController: UITableViewDataSource {
         
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return timers.count
+        return 20
     }
     
 }

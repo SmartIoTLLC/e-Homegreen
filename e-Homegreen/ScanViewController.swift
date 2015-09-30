@@ -19,6 +19,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanDeviceViewController: ScanDevicesViewController!
     var scanSequencesViewController: ScanSequencesesViewController!
     var scanEventsViewController: ScanEventsViewController!
+    var scanTimersViewController: ScanTimerViewController!
     var importZoneViewController:ImportZoneViewController!
     var importCategoryViewController: ImportCategoryViewController!
     
@@ -77,6 +78,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
+        scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier("ScanTimers") as! ScanTimerViewController
         importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
         importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
         
@@ -84,6 +86,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController.gateway = gateway
         scanSequencesViewController.gateway = gateway
         scanEventsViewController.gateway = gateway
+        scanTimersViewController.gateway = gateway
         importZoneViewController.gateway = gateway
         importCategoryViewController.gateway = gateway
         
@@ -344,6 +347,20 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             oldController!.view.hidden = true
             
             importCategoryViewController.view.hidden = false
+        }
+        if text == "Timers" {
+            choosedTab = .Zones
+            
+            let oldController = childViewControllers.last
+            
+            self.addChildViewController(scanTimersViewController)
+            scanTimersViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
+            container.addSubview(scanTimersViewController.view)
+            scanTimersViewController.didMoveToParentViewController(self)
+            
+            oldController!.view.hidden = true
+            
+            scanTimersViewController.view.hidden = false
         }
     }
     

@@ -48,21 +48,7 @@ class CameraVC: UIViewController {
         let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
-//        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap"))
-//        self.view.addGestureRecognizer(tapGesture)
-        
-//        backView.layer.borderWidth = 2
-//        backView.layer.borderColor = UIColor.blackColor().CGColor
-//        backView.layer.cornerRadius = 5
-//        backView.clipsToBounds = true
-        
-        
-        
-//        self.view.backgroundColor = UIColor.clearColor()
-        
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
-        
-        
 
         // Do any additional setup after loading the view.
     }
@@ -81,10 +67,6 @@ class CameraVC: UIViewController {
         return UIInterfaceOrientationMask.LandscapeLeft
     }
     
-//    override func supportedInterfaceOrientations() -> Int {
-//        return UIInterfaceOrientation.LandscapeLeft.rawValue
-//    }
-    
     func update(){
         if surv.imageData != nil{
             self.image.image = UIImage(data: surv.imageData!)
@@ -97,11 +79,6 @@ class CameraVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-//    func handleTap(){
-//        timer.invalidate()
-//        self.dismissViewControllerAnimated(true, completion: nil)        
-//    }
     
     @IBAction func leftButtomAction(sender: AnyObject) {
         MoveCameraHandler(surv: surv, position: "left")
@@ -118,26 +95,6 @@ class CameraVC: UIViewController {
     @IBAction func bottomButtomAction(sender: AnyObject) {
         MoveCameraHandler(surv: surv, position: "down")
     }
-    
-    
-    
-//    override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.height == 320{
-//                backViewHeightConstraint.constant = 250
-//            }else if self.view.frame.size.height == 375{
-//                backViewHeightConstraint.constant = 300
-//            }else if self.view.frame.size.height == 414{
-//                backViewHeightConstraint.constant = 350
-//            }else{
-//                backViewHeightConstraint.constant = 400
-//            }
-//        }else{
-//            
-//            backViewHeightConstraint.constant = 400
-//            
-//        }
-//    }
 
 }
 
@@ -211,22 +168,3 @@ extension UIViewController {
     }
 }
 
-//extension UIButton {
-//    private func imageWithColor(color: UIColor) -> UIImage {
-//        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
-//        UIGraphicsBeginImageContext(rect.size)
-//        let context = UIGraphicsGetCurrentContext()
-//        
-//        CGContextSetFillColorWithColor(context, color.CGColor)
-//        CGContextFillRect(context, rect)
-//        
-//        let image = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//        
-//        return image
-//    }
-//    
-//    func setBackgroundColor(color: UIColor, forUIControlState state: UIControlState) {
-//        self.setBackgroundImage(imageWithColor(color), forState: state)
-//    }
-//}

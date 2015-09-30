@@ -6,12 +6,6 @@
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
 
-//class Camera:NSObject{
-//    var image:NSData?
-//    var time:String?
-//    var lync:String!
-//}
-
 import UIKit
 import CoreData
 
@@ -58,8 +52,6 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         }
     }
     
-    
-    
     func getData(){
         if surveillance != []{
             for item in surveillance{
@@ -103,9 +95,8 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
-//        dispatch_async(dispatch_get_main_queue(), {
-            showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
-//        })
+        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
+        
     }
     
     func fetchSurveillance () {
