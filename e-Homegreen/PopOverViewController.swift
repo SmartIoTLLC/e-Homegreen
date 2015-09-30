@@ -33,7 +33,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Events", id: -1),
         TableList(name: "Sequences", id: -1),
         TableList(name: "Zones", id: -1),
-        TableList(name: "Categories", id: -1)]
+        TableList(name: "Categories", id: -1),
+        TableList(name: "Timers", id: -1)]
     
     var tableList:[TableList] = []
     
