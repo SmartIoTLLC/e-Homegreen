@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -4416,8 +4416,14 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7Aw-aS-dZc">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcL-5z-e2q">
+                                <rect key="frame" x="20" y="20" width="138" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <rect key="frame" x="0.0" y="50" width="320" height="518"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Izm-5s-CxM">
                                     <size key="itemSize" width="150" height="170"/>
@@ -4442,6 +4448,10 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="away" translatesAutoresizingMaskIntoConstraints="NO" id="0hn-TZ-S1d">
                                                     <rect key="frame" x="20" y="33" width="110" height="117"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gm-PY-TxL">
+                                                    <rect key="frame" x="52" y="140" width="46" height="30"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -4455,8 +4465,9 @@
                                             <constraint firstItem="3RI-OW-fEN" firstAttribute="leading" secondItem="jcr-OI-xZ7" secondAttribute="leading" id="p6a-QP-tBa"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="securityCellImageView" destination="0hn-TZ-S1d" id="iIO-hL-Yba"/>
-                                            <outlet property="securityCellLabel" destination="3RI-OW-fEN" id="hFX-EF-QvM"/>
+                                            <outlet property="securityButton" destination="0gm-PY-TxL" id="sU0-lS-Egf"/>
+                                            <outlet property="securityImageView" destination="0hn-TZ-S1d" id="7bO-6d-48J"/>
+                                            <outlet property="securityTitle" destination="3RI-OW-fEN" id="ng2-lz-EME"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -4468,7 +4479,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="zTE-Nb-Lqm" firstAttribute="top" secondItem="ZEX-2z-WQp" secondAttribute="bottom" id="3fq-mq-gYs"/>
+                            <constraint firstItem="zTE-Nb-Lqm" firstAttribute="top" secondItem="ZEX-2z-WQp" secondAttribute="bottom" constant="30" id="3fq-mq-gYs"/>
                             <constraint firstItem="eMG-Cc-kb4" firstAttribute="top" secondItem="zTE-Nb-Lqm" secondAttribute="bottom" id="70f-RX-D2a"/>
                             <constraint firstItem="zTE-Nb-Lqm" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" id="7Bk-iZ-lyx"/>
                             <constraint firstAttribute="trailing" secondItem="7Aw-aS-dZc" secondAttribute="trailing" id="CuV-6V-YkM"/>
@@ -4479,6 +4490,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lblAlarmState" destination="hcL-5z-e2q" id="IGU-a2-79C"/>
                         <outlet property="securityCollectionView" destination="zTE-Nb-Lqm" id="WPQ-NW-hL0"/>
                     </connections>
                 </viewController>

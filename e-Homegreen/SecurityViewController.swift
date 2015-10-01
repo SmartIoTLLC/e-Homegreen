@@ -18,6 +18,7 @@ class SecurityViewController: CommonViewController {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
+    @IBOutlet weak var lblAlarmState: UILabel!
     
 
     @IBOutlet weak var securityCollectionView: UICollectionView!
@@ -113,28 +114,28 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {
-        case "":
+        case "Away":
             cell.securityImageView.image = UIImage(named: "away")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
 //            cell.
             cell.securityButton.tag = indexPath.row
-        case "":
+        case "Night":
             cell.securityImageView.image = UIImage(named: "night")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
-        case "":
+        case "Day":
             cell.securityImageView.image = UIImage(named: "day")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
-        case "":
-            cell.securityImageView.image = UIImage(named: "panic")
+        case "Vacation":
+            cell.securityImageView.image = UIImage(named: "vacation")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
-        case "":
-            cell.securityImageView.image = UIImage(named: "vacation")
+        case "Disarm":
+            cell.securityImageView.image = UIImage(named: "disarm")
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
-        case "":
+        case "Panic":
             cell.securityImageView.image = UIImage(named: "panic")
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
