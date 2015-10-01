@@ -219,7 +219,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             fatalError()
         }
-        
         return coordinator
     }()
 
