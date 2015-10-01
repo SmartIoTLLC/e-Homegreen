@@ -55,9 +55,9 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let hour = components.hour
         
         if hour < 20 && hour > 6{
-            backgroundImage.image = UIImage(named: "day")
+            backgroundImage.image = UIImage(named: "dashboardDay")
         }else{
-            backgroundImage.image = UIImage(named: "night")
+            backgroundImage.image = UIImage(named: "dashboardNight")
         }
 //        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
 //        self.view.insertSubview(backgroundImageView, atIndex: 0)
@@ -144,9 +144,9 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let hour = components.hour
         
         if hour < 20 && hour > 6{
-            backgroundImage.image = UIImage(named: "day")
+            backgroundImage.image = UIImage(named: "dashboardDay")
         }else{
-            backgroundImage.image = UIImage(named: "night")
+            backgroundImage.image = UIImage(named: "dashboardNight")
         }
         
         do {

@@ -28,8 +28,7 @@ class SecurityViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
         
-        
-        Function.sendKeySecurity([0x00, 0x01], key: 0xFF)
+        updateSecurityList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,7 +93,6 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         return CGSize(width: 150, height: 150)
     }
 }
@@ -111,6 +109,38 @@ extension SecurityViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
         let gradient:CAGradientLayer = CAGradientLayer()
+        cell.securityTitle.text = "\(securities[indexPath.row].name)"
+        cell.securityImageView.image = UIImage(named: "maaa")
+        cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
+        switch securities[indexPath.row].name {
+        case "":
+            cell.securityImageView.image = UIImage(named: "away")
+            cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+//            cell.
+            cell.securityButton.tag = indexPath.row
+        case "":
+            cell.securityImageView.image = UIImage(named: "night")
+            cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.tag = indexPath.row
+        case "":
+            cell.securityImageView.image = UIImage(named: "day")
+            cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.tag = indexPath.row
+        case "":
+            cell.securityImageView.image = UIImage(named: "panic")
+            cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.tag = indexPath.row
+        case "":
+            cell.securityImageView.image = UIImage(named: "vacation")
+            cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
+            cell.securityButton.tag = indexPath.row
+        case "":
+            cell.securityImageView.image = UIImage(named: "panic")
+            cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
+            cell.securityButton.tag = indexPath.row
+        default:
+            print("")
+        }
         gradient.frame = CGRectMake(0, 0, 150, 150)
         gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -125,6 +155,6 @@ class SecurityCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var securityTitle: UILabel!
     @IBOutlet weak var securityImageView: UIImageView!
-    @IBOutlet weak var securityCellImageView: UIButton!
+    @IBOutlet weak var securityButton: UIButton!
     
 }
