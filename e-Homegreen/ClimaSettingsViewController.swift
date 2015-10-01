@@ -54,8 +54,6 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         btnModeSetUp()
         btnFanSetUp()
-//        removeLayers()
-//        btnModeSetUp()
         
         lblCool.text = "\(coolTemperature)"
         lblHeat.text = "\(heatTemperature)"

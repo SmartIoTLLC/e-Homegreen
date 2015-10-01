@@ -55,20 +55,6 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
         
         editDelay.delegate = self
         
-//        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-//        //        tapGesture.delegate = self
-//        self.view.addGestureRecognizer(tapGesture)
-//        self.view.tag = 1
-        
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = backView.bounds
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        backView.layer.insertSublayer(gradient, atIndex: 0)
-        backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backView.layer.cornerRadius = 10
-        backView.clipsToBounds = true
-        
 //        devices[indexPathRow].zoneId
 //        devices[indexPathRow].categoryId
 //        devices[indexPathRow].delay
@@ -116,14 +102,6 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
-        }
-    }
-    func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        print(tappedView.tag)
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     

@@ -466,6 +466,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
@@ -646,6 +647,7 @@
 		E76B57651BBD1DAC00A70F69 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
 				E76B57661BBD1DB900A70F69 /* Button */,
 			);
@@ -670,6 +672,32 @@
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		E76B576A1BBD245400A70F69 /* ScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				73ECD4A01B33189800767740 /* PullDownView.swift */,
+			);
+			name = ScrollView;
+			sourceTree = "<group>";
+		};
+		E76B576B1BBD24A100A70F69 /* XIB */ = {
+			isa = PBXGroup;
+			children = (
+				E76B576C1BBD24BB00A70F69 /* DeviceXIB */,
+			);
+			name = XIB;
+			sourceTree = "<group>";
+		};
+		E76B576C1BBD24BB00A70F69 /* DeviceXIB */ = {
+			isa = PBXGroup;
+			children = (
+				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
+				E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */,
+				E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */,
+			);
+			name = DeviceXIB;
 			sourceTree = "<group>";
 		};
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
@@ -743,12 +771,8 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
-				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
-				E7E08E021B4E4D9700153E9A /* ClimaSettingsViewController.swift */,
-				E7E08E031B4E4D9700153E9A /* ClimaSettingsViewController.xib */,
 			);
 			name = Devices;
 			sourceTree = "<group>";

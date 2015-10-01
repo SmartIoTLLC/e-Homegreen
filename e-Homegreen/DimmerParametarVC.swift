@@ -62,20 +62,6 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
         editRunTime.delegate = self
         editSkipState.delegate = self
         
-//        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        //        tapGesture.delegate = self
-//        self.view.addGestureRecognizer(tapGesture)
-//        self.view.tag = 1
-        
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = backView.bounds
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        backView.layer.insertSublayer(gradient, atIndex: 0)
-        backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backView.layer.cornerRadius = 10
-        backView.clipsToBounds = true
-        
 //        devices[indexPathRow].zoneId
 //        devices[indexPathRow].categoryId
 //        devices[indexPathRow].delay
@@ -108,15 +94,6 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        print(tappedView.tag)
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
     }
     
     override func viewWillLayoutSubviews() {
