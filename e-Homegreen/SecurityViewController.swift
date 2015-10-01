@@ -29,7 +29,20 @@ class SecurityViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotification", object: nil)
+        
+        refreshSecurity()
+    }
+    func refreshSecurity () {
         updateSecurityList()
+        refreshSecurityAlarmStateAndSecurityMode()
+    }
+    func refreshSecurityAlarmStateAndSecurityMode () {
+        let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+        if let gateway = securities[0].gateway {
+            SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
+            SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,25 +76,46 @@ class SecurityViewController: CommonViewController {
     }
     
 //    ima: adresu, gateway, alarm state, naziv
-    func didSelectCell (tag:Int) {
-//        if tag == 0 {
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x01), gateway: Gateway())
-//        }
-//        if tag == 1 {
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x02), gateway: Gateway())
-//        }
-//        if tag == 2 {
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x03), gateway: Gateway())
-//        }
-//        if tag == 3 {
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x04), gateway: Gateway())
-//        }
-//        if tag == 4 {
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode([0x00, 0x00, 0x00], mode: 0x04), gateway: Gateway())
-//        }
-//        if tag == 5 {
-//            
-//        }
+    func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
+        let tag = gestureRecognizer.view!.tag
+        if tag == 0 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
+            }
+        }
+        if tag == 1 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+            }
+        }
+        if tag == 2 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+            }
+        }
+        if tag == 3 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+            }
+        }
+        if tag == 4 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
+            }
+        }
+        if tag == 5 {
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let gateway = securities[0].gateway {
+                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+            }
+        }
     }
 
 }
@@ -117,27 +151,32 @@ extension SecurityViewController: UICollectionViewDataSource {
         case "Away":
             cell.securityImageView.image = UIImage(named: "away")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-//            cell.
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         case "Night":
             cell.securityImageView.image = UIImage(named: "night")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         case "Day":
             cell.securityImageView.image = UIImage(named: "day")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         case "Vacation":
             cell.securityImageView.image = UIImage(named: "vacation")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         case "Disarm":
             cell.securityImageView.image = UIImage(named: "disarm")
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         case "Panic":
             cell.securityImageView.image = UIImage(named: "panic")
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
+            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.securityButton.tag = indexPath.row
         default:
             print("")
