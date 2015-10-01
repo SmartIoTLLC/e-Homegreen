@@ -2,7 +2,7 @@
 //  Surveilence.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/24/15.
+//  Created by Teodor Stevic on 10/1/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
@@ -12,8 +12,7 @@ import CoreData
 class Surveilence: NSManagedObject {
     
     var imageData:NSData?
-
-
+    
 // Insert code here to add functionality to your managed object subclass
 
 }
