@@ -230,22 +230,22 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
             
-            let gradientLayer = CAGradientLayer()
-//            if cell.gradientLayer == nil {
-//                gradientLayer!.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
-//            }else{
-                gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
-//            }
-            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-            gradientLayer.locations = [0.0, 1.0]
-            gradientLayer.borderWidth = 1
-            gradientLayer.borderColor = UIColor.grayColor().CGColor
-            gradientLayer.cornerRadius = 10
-//            cell.gradientLayer = gradientLayer
-            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-            cell.layer.borderWidth = 1
-            cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.cornerRadius = 10
+//            let gradientLayer = CAGradientLayer()
+////            if cell.gradientLayer == nil {
+////                gradientLayer!.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
+////            }else{
+//                gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
+////            }
+//            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+//            gradientLayer.locations = [0.0, 1.0]
+//            gradientLayer.borderWidth = 1
+//            gradientLayer.borderColor = UIColor.grayColor().CGColor
+//            gradientLayer.cornerRadius = 10
+////            cell.gradientLayer = gradientLayer
+//            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
+//            cell.layer.borderWidth = 1
+//            cell.layer.borderColor = UIColor.grayColor().CGColor
+//            cell.layer.cornerRadius = 10
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"
@@ -380,6 +380,39 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var add1: UILabel!
     @IBOutlet weak var add2: UILabel!
     @IBOutlet weak var add3: UILabel!
+    
+    override func drawRect(rect: CGRect) {
+        let width = rect.width
+        let height = rect.height
+        
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: UIRectCorner.AllCorners,
+            cornerRadii: CGSize(width: 8.0, height: 8.0))
+        path.addClip()
+        path.lineWidth = 2
+        
+        UIColor.lightGrayColor().setStroke()
+        
+        
+        
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        path.stroke()
+    }
     
 }
 

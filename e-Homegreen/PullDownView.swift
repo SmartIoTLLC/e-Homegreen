@@ -19,6 +19,12 @@ class PullDownView: UIScrollView {
     
         var senderButton:UIButton?
     
+//    init(){
+//        super.init(frame: CGRectZero)
+//    }
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

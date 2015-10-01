@@ -1,16 +1,16 @@
 //
-//  CustomGradientButton.swift
+//  CustomGradientBackground.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/30/15.
+//  Created by Vladimir on 10/1/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
 @IBDesignable
-class CustomGradientButton: UIButton {
-
+class CustomGradientBackground: UIView {
+    
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
@@ -20,7 +20,9 @@ class CustomGradientButton: UIButton {
         path.lineWidth = 2
         
         UIColor.lightGrayColor().setStroke()
-    
+        
+        
+        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
         
@@ -39,5 +41,7 @@ class CustomGradientButton: UIButton {
         
         path.stroke()
     }
+
+    
 
 }

@@ -132,6 +132,9 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -316,7 +319,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pwN-7b-HwS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-783" y="106"/>
+            <point key="canvasLocation" x="-791" y="125"/>
         </scene>
         <!--Surveillance Settings View Controller-->
         <scene sceneID="iRG-wp-nSG">
@@ -2553,7 +2556,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="Awk-Se-txD" secondAttribute="centerY" constant="25" id="zjW-CV-C1Q"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="add1" destination="ec1-Ml-EeH" id="Vuh-7X-VWT"/>
                                             <outlet property="add2" destination="Ush-Me-lcK" id="IdS-Qt-Wmp"/>
@@ -4093,15 +4096,43 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="jSQ-uG-qM3">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Gg1-v0-gcy">
+                                <rect key="frame" x="105" y="201" width="110" height="22"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="BBo-tp-w7d">
+                                <rect key="frame" x="147" y="258" width="27" height="19"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5gR-A5-pWu">
+                                <rect key="frame" x="149" y="231" width="22" height="19"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="BBo-tp-w7d" firstAttribute="centerX" secondItem="jSQ-uG-qM3" secondAttribute="centerX" id="2ok-xL-VLk"/>
                             <constraint firstItem="aOG-LN-foA" firstAttribute="top" secondItem="jSQ-uG-qM3" secondAttribute="bottom" id="4YY-Q7-wCb"/>
+                            <constraint firstItem="Gg1-v0-gcy" firstAttribute="centerX" secondItem="jSQ-uG-qM3" secondAttribute="centerX" id="5BC-F5-WPA"/>
+                            <constraint firstItem="BBo-tp-w7d" firstAttribute="top" secondItem="5gR-A5-pWu" secondAttribute="bottom" constant="8" id="8LG-uf-1Qh"/>
                             <constraint firstAttribute="trailing" secondItem="jSQ-uG-qM3" secondAttribute="trailing" id="FlH-sp-0AN"/>
                             <constraint firstItem="jSQ-uG-qM3" firstAttribute="leading" secondItem="Y4o-Xe-RRj" secondAttribute="leading" id="Qud-XA-OUj"/>
+                            <constraint firstItem="5gR-A5-pWu" firstAttribute="top" secondItem="Gg1-v0-gcy" secondAttribute="bottom" constant="8" id="S9Y-EB-eCg"/>
+                            <constraint firstItem="5gR-A5-pWu" firstAttribute="centerX" secondItem="jSQ-uG-qM3" secondAttribute="centerX" id="eiC-e5-lVX"/>
+                            <constraint firstItem="5gR-A5-pWu" firstAttribute="centerY" secondItem="jSQ-uG-qM3" secondAttribute="centerY" constant="-44" id="ys7-dg-rpn"/>
                             <constraint firstItem="jSQ-uG-qM3" firstAttribute="top" secondItem="Y4o-Xe-RRj" secondAttribute="top" id="yxa-8G-lKW"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="current" destination="5gR-A5-pWu" id="ocO-S7-F80"/>
+                        <outlet property="powerUsage" destination="BBo-tp-w7d" id="3Kg-j9-nJs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NxN-BS-3a7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

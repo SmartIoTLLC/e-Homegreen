@@ -135,18 +135,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
 extension SurveillanceSettingsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 80)
-            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-            gradientLayer.locations = [0.0, 1.0]
-            gradientLayer.borderWidth = 1
-            gradientLayer.borderColor = UIColor.grayColor().CGColor
-            gradientLayer.cornerRadius = 10
-            
-            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-            cell.layer.borderWidth = 1
-            cell.layer.borderColor = UIColor.grayColor().CGColor
-            cell.layer.cornerRadius = 10
+
             
             cell.lblID.text = surveillance[indexPath.section].ip
             cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
@@ -242,4 +231,37 @@ class SurvCell: UITableViewCell{
     @IBOutlet weak var lblID: UILabel!
     @IBOutlet weak var lblPort: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
+    
+    override func drawRect(rect: CGRect) {
+        let width = rect.width
+        let height = rect.height
+        
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: UIRectCorner.AllCorners,
+            cornerRadii: CGSize(width: 8.0, height: 8.0))
+        path.addClip()
+        path.lineWidth = 2
+        
+        UIColor.lightGrayColor().setStroke()
+        
+        
+        
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        path.stroke()
+    }
 }

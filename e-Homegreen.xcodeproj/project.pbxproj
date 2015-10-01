@@ -93,6 +93,7 @@
 		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
 		E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41681B6641A6005080F1 /* CustomSegue.swift */; };
 		E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F416A1B664BC3005080F1 /* SegueUnwind.swift */; };
+		E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */; settings = {ASSET_TAGS = (); }; };
 		E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -279,6 +280,7 @@
 		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		E75F41681B6641A6005080F1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
 		E75F416A1B664BC3005080F1 /* SegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueUnwind.swift; sourceTree = "<group>"; };
+		E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientBackground.swift; sourceTree = "<group>"; };
 		E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportFilesViewController.swift; sourceTree = "<group>"; };
 		E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImportFilesViewController.xib; sourceTree = "<group>"; };
 		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
+				E76B57651BBD1DAC00A70F69 /* UI */,
 				736265DD1B4A47FE0078C11D /* Bussiness Logic */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
@@ -638,6 +641,35 @@
 				E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */,
 			);
 			name = Calendar;
+			sourceTree = "<group>";
+		};
+		E76B57651BBD1DAC00A70F69 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E76B57671BBD1E7100A70F69 /* View */,
+				E76B57661BBD1DB900A70F69 /* Button */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		E76B57661BBD1DB900A70F69 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */,
+				E7F5FC191BB9744200071982 /* CustomButton.swift */,
+				E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */,
+				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
+				E7F5FC1C1BB9744200071982 /* BottomButton.swift */,
+			);
+			name = Button;
+			sourceTree = "<group>";
+		};
+		E76B57671BBD1E7100A70F69 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
@@ -771,7 +803,6 @@
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
 				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
-				E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */,
 				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
 				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
 			);
@@ -781,10 +812,6 @@
 		E7FB6A1A1B9D95370016246B /* Surveillence */ = {
 			isa = PBXGroup;
 			children = (
-				E7F5FC191BB9744200071982 /* CustomButton.swift */,
-				E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */,
-				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
-				E7F5FC1C1BB9744200071982 /* BottomButton.swift */,
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				E7FB6A1F1B9D95D50016246B /* CameraVC.swift */,
 				E7FB6A201B9D95D50016246B /* CameraVC.xib */,
@@ -1012,6 +1039,7 @@
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
+				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
 				73DB84A51B301399000DB4EB /* CameraViewController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,

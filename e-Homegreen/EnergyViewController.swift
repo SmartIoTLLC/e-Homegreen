@@ -9,9 +9,14 @@
 import UIKit
 
 class EnergyViewController: CommonViewController {
+    
+    @IBOutlet weak var current: UILabel!
+    @IBOutlet weak var powerUsage: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
     }
 
