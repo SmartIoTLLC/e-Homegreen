@@ -38,10 +38,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //   Configuring data for first time
         let defaults = NSUserDefaults.standardUserDefaults()
-        let isPreloaded = defaults.boolForKey("isPreloaded")
+        let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
             preloadData()
-            defaults.setBool(true, forKey: "isPreloaded")
+            defaults.setBool(true, forKey: "EHGisPreloaded")
+            defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
+            //        Idle, Trobule, Alert, alarm
+            defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
+            //        Disarm, Away, Night, Day, Vacation
+            defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
+            //        No Panic, Panic
         }
         
         return true

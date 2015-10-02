@@ -485,29 +485,66 @@ class IncomingHandler: NSObject {
         
     }
     func securityFeedbackHandler (byteArray:[UInt8]) {
-//        fetchDevices()
-//        for var i = 0; i < devices.count; i++ {
-//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-//                var string:String = ""
-//                for var j = 8+47; j < byteArray.count-2; j++ {
-//                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-//                }
-//                if string != "" {
-//                    devices[i].name = string
-//                } else {
-//                    devices[i].name = "Unknown"
-//                }
-//                devices[i].overrideControl1 = Int(byteArray[23])
-//                devices[i].overrideControl2 = Int(byteArray[24])
-//                devices[i].overrideControl3 = Int(byteArray[25])
-//                devices[i].zoneId = Int(byteArray[9])
-//                devices[i].parentZoneId = Int(byteArray[10])
-//                devices[i].categoryId = Int(byteArray[8])
-//                let data = ["deviceIndexForFoundName":i]
-//                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
-//            }
-//        }
-//        saveChanges()
+        fetchSecurity()
+        let address = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+        if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if byteArray[7] == 0x02 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setObject("Disarm", forKey: "")
+                case 0x01:
+                    defaults.setObject("Away", forKey: "")
+                case 0x02:
+                    defaults.setObject("Nigth", forKey: "")
+                case 0x03:
+                    defaults.setObject("Day", forKey: "")
+                case 0x04:
+                    defaults.setObject("Vacation", forKey: "")
+                default: break
+                }
+            }
+            if byteArray[7] == 0x03 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setObject("Idle", forKey: "")
+                case 0x01:
+                    defaults.setObject("Trouble", forKey: "")
+                case 0x02:
+                    defaults.setObject("Alert", forKey: "")
+                case 0x03:
+                    defaults.setObject("Alarm", forKey: "")
+                default: break
+                }
+            }
+            if byteArray[7] == 0x04 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setObject("No panic", forKey: "")
+                case 0x01:
+                    defaults.setObject("Panic", forKey: "")
+                default: break
+                }
+            }
+        }
         NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
+    }
+    var securities:[Security] = []
+    func fetchSecurity () {
+        // OVDE ISKACE BUD NA ANY
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+            securities = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
 }

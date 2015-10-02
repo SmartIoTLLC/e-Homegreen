@@ -19,6 +19,8 @@ class SecurityViewController: CommonViewController {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
+    
     @IBOutlet weak var lblAlarmState: UILabel!
     
 
@@ -27,6 +29,12 @@ class SecurityViewController: CommonViewController {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+            collectionViewCellSize = CGSize(width: 128, height: 156)
+        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+            collectionViewCellSize = CGSize(width: 118, height: 144)
+        }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
@@ -37,9 +45,21 @@ class SecurityViewController: CommonViewController {
         // Do any additional setup after loading the view.
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotification", object: nil)
-        
         refreshSecurity()
+        
+//        defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
+//        //        Idle, Trobule, Alert, alarm
+//        defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
+//        //        Disarm, Away, Night, Day, Vacation
+//        defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
+//        //        No Panic, Panic
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
+        lblAlarmState.text = "Alarm state: \(alarmState!)"
+        
+        
     }
+
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.width == 568{
@@ -90,7 +110,15 @@ class SecurityViewController: CommonViewController {
             abort()
         }
     }
-    
+//    func testTestTest () {
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let isPreloaded = defaults.boolForKey("isPreloaded")
+//        defaults.
+//        if !isPreloaded {
+//            preloadData()
+//            defaults.setBool(true, forKey: "isPreloaded")
+//        }
+//    }
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -160,6 +188,8 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
+    }
 }
 
 extension SecurityViewController: UICollectionViewDataSource {
@@ -179,39 +209,57 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {
         case "Away":
-            cell.securityImageView.image = UIImage(named: "away")
+            cell.securityImageView.image = UIImage(named: "inactiveaway")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.tag = indexPath.row
             let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
             cell.securityButton.addGestureRecognizer(tap)
         case "Night":
-            cell.securityImageView.image = UIImage(named: "night")
+            cell.securityImageView.image = UIImage(named: "inactivenight")
+            cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.securityButton.tag = indexPath.row
         case "Day":
-            cell.securityImageView.image = UIImage(named: "day")
+            cell.securityImageView.image = UIImage(named: "inactiveday")
+            cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.securityButton.tag = indexPath.row
         case "Vacation":
-            cell.securityImageView.image = UIImage(named: "vacation")
+            cell.securityImageView.image = UIImage(named: "inactivevacation")
+            cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
             cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.securityButton.tag = indexPath.row
         case "Disarm":
-            cell.securityImageView.image = UIImage(named: "disarm")
+            cell.securityImageView.image = UIImage(named: "inactivedisarm")
+            cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
             cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.securityButton.tag = indexPath.row
         case "Panic":
-            cell.securityImageView.image = UIImage(named: "panic")
+            cell.securityImageView.image = UIImage(named: "inactivepanic")
+            cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
             cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.securityButton.tag = indexPath.row
         default:
             print("")
         }
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let securityMode = defaults.valueForKey("EHGSecuritySecurityMode") as? String {
+        if securities[indexPath.row].name == securityMode {
+                    switch securityMode {
+                    case "Away":
+                        cell.securityImageView.image = UIImage(named: "away")
+                    case "Night":
+                        cell.securityImageView.image = UIImage(named: "night")
+                    case "Day":
+                        cell.securityImageView.image = UIImage(named: "day")
+                    case "Vacation":
+                        cell.securityImageView.image = UIImage(named: "vacation")
+                    default:
+                        cell.securityImageView.image = UIImage(named: "inactivedisarm")
+                    }
+        }
+        }
+
 //        gradient.frame = CGRectMake(0, 0, 150, 150)
 //        gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
 //        cell.layer.insertSublayer(gradient, atIndex: 0)
@@ -259,3 +307,42 @@ class SecurityCollectionCell: UICollectionViewCell {
     
     
 }
+
+//    let array1 = ["Away", "Night", "Day", "Vacation", "Disarm","Panic"]
+//    let array2 = ["Interior Zones Security System will be activated after 30 secs from the time the residents exit the villa. Upon returning to the villa, the system can be deactivated in 30 secs.",
+//        "Interior Zones Security System will be activated from the first floor at night.",
+//        "Interior Zones Security System will be inactive except the heat sensors.",
+//        "Interior Zones Security System will be inactive except the heat sensors with vacation dial plan.",
+//        "",
+//        "Activating Alarm system in case of an emergency."]
+//    let array3 = [1, 0, 254]
+//    func test () {
+//        let saveDir = "/var/mobile/testtesttest/"
+//        let fileManager = NSFileManager.defaultManager()
+//        let attributes = NSMutableDictionary()
+//        let permission = NSNumber(long: 0755)
+//        attributes.setObject(permission, forKey: NSFilePosixPermissions)
+//        do {
+//            try fileManager.createDirectoryAtPath(saveDir, withIntermediateDirectories: true, attributes: [NSFilePosixPermissions:permission])
+//        }  catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            print("test")
+//        }
+//    }
+//    func test2 () {
+////        let saveDir = "/var/mobile/Documents/testtesttest"
+//        let saveDir = NSHomeDirectory().stringByAppendingString("/testtestetesttest/")
+//        print(saveDir)
+//        let fileManager = NSFileManager.defaultManager()
+//        let attributes = NSMutableDictionary()
+//        let permission = NSNumber(short: 0777)
+//        attributes.setObject(permission, forKey: NSFilePosixPermissions)
+//        do {
+//            try fileManager.createDirectoryAtPath(saveDir, withIntermediateDirectories: true, attributes: [NSFilePosixPermissions:permission] )
+//        }  catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            print("test2")
+//        }
+//    }
