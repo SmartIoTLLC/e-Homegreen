@@ -14,6 +14,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
     
+    @IBOutlet weak var popUpView: UIView!
     
     var isPresenting: Bool = true
     
