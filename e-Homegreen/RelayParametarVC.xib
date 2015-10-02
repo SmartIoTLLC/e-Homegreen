@@ -232,6 +232,9 @@
                         <constraint firstAttribute="bottom" secondItem="gkQ-Iv-MrB" secondAttribute="bottom" id="TO1-2q-L4C"/>
                         <constraint firstItem="gkQ-Iv-MrB" firstAttribute="leading" secondItem="nyw-ia-m1i" secondAttribute="leading" id="puF-Xz-QlP"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

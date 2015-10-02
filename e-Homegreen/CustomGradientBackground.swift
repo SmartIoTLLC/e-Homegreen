@@ -11,15 +11,19 @@ import UIKit
 @IBDesignable
 class CustomGradientBackground: UIView {
     
+    @IBInspectable var isHeader: Bool = true
+    
     override func drawRect(rect: CGRect) {
-        
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 5.0, height: 5.0))
-        path.addClip()
-        path.lineWidth = 2
-        
-        UIColor.lightGrayColor().setStroke()
+        var path = UIBezierPath()
+        if isHeader == false{
+            path = UIBezierPath(roundedRect: rect,
+                byRoundingCorners: UIRectCorner.AllCorners,
+                cornerRadii: CGSize(width: 5.0, height: 5.0))
+            path.addClip()
+            path.lineWidth = 2
+            
+            UIColor.lightGrayColor().setStroke()
+        }
         
         
         
@@ -38,8 +42,9 @@ class CustomGradientBackground: UIView {
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
-        path.stroke()
+        if isHeader == false{
+            path.stroke()
+        }
     }
 
     

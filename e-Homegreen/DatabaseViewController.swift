@@ -40,15 +40,6 @@ class DatabaseViewController: UIViewController, UIViewControllerTransitioningDel
         super.viewDidLoad()
         btnChooseGateway.setTitle("Choose your connection", forState: UIControlState.Normal)
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        if self.view.frame.size.height > self.view.frame.size.width{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
-        }else{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
-        }
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        topView.layer.insertSublayer(gradient, atIndex: 0)
-        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)

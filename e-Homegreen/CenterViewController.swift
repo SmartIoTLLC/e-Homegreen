@@ -27,15 +27,15 @@ class CenterViewController: UIViewController {
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Image"), forBarMetrics: .Default)
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0, 0, 1024, 64)
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        topView.layer.insertSublayer(gradient, atIndex: 0)
-        let backgroundImageView = UIImageView()
-        backgroundImageView.image = UIImage(named: "Background")
-        backgroundImageView.frame = CGRectMake(0, 0, 375, 667)
-        view.insertSubview(backgroundImageView, atIndex: 0)
+//        
+//        let gradient:CAGradientLayer = CAGradientLayer()
+//        gradient.frame = CGRectMake(0, 0, 1024, 64)
+//        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+//        topView.layer.insertSublayer(gradient, atIndex: 0)
+//        let backgroundImageView = UIImageView()
+//        backgroundImageView.image = UIImage(named: "Background")
+//        backgroundImageView.frame = CGRectMake(0, 0, 375, 667)
+//        view.insertSubview(backgroundImageView, atIndex: 0)
         
         
         //  Loading device view controller from singleton

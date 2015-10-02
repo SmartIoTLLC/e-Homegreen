@@ -70,15 +70,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         transitioningDelegate = self
         self.commonConstruct()
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        if self.view.frame.size.height > self.view.frame.size.width{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
-        }else{
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
-        }
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        topView.layer.insertSublayer(gradient, atIndex: 0)
-        
         // Do any additional setup after loading the view.
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         fetchGateways()
@@ -229,23 +220,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
-            
-//            let gradientLayer = CAGradientLayer()
-////            if cell.gradientLayer == nil {
-////                gradientLayer!.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
-////            }else{
-//                gradientLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 128)
-////            }
-//            gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-//            gradientLayer.locations = [0.0, 1.0]
-//            gradientLayer.borderWidth = 1
-//            gradientLayer.borderColor = UIColor.grayColor().CGColor
-//            gradientLayer.cornerRadius = 10
-////            cell.gradientLayer = gradientLayer
-//            cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-//            cell.layer.borderWidth = 1
-//            cell.layer.borderColor = UIColor.grayColor().CGColor
-//            cell.layer.cornerRadius = 10
+
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"

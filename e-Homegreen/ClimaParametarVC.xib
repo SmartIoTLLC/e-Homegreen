@@ -236,6 +236,9 @@
                         <constraint firstAttribute="width" constant="310" id="ZTW-6f-CaF"/>
                         <constraint firstAttribute="bottom" secondItem="6Cd-dc-oal" secondAttribute="bottom" id="eCM-5H-CNB"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

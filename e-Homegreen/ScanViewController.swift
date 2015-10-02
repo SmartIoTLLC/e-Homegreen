@@ -95,17 +95,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        if self.view.frame.size.height > self.view.frame.size.width {
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.height, 64)
-        } else {
-            gradient.frame = CGRectMake(0, 0, self.view.frame.size.width, 64)
-        }
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        topView.layer.insertSublayer(gradient, atIndex: 0)
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         // Do any additional setup after loading the view.
     }
     
