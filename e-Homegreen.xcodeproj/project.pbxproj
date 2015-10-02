@@ -111,6 +111,8 @@
 		E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */; };
 		E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */; };
 		E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */; };
+		E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
 		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC679C1B457C0E00EA6543 /* weather-broken.png */; };
@@ -298,6 +300,8 @@
 		E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInput.swift; sourceTree = "<group>"; };
 		E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInput.xib; sourceTree = "<group>"; };
+		E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraParametarXIBViewController.swift; sourceTree = "<group>"; };
+		E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraParametarXIBViewController.xib; sourceTree = "<group>"; };
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -779,6 +783,8 @@
 			children = (
 				E7FB6A1F1B9D95D50016246B /* CameraVC.swift */,
 				E7FB6A201B9D95D50016246B /* CameraVC.xib */,
+				E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */,
+				E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */,
 			);
 			name = SurveillanceXIB;
 			sourceTree = "<group>";
@@ -991,6 +997,7 @@
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
 				E7DC67B81B457C0E00EA6543 /* weather-few-night.png in Resources */,
+				E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */,
 				E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */,
 				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
@@ -1109,6 +1116,7 @@
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
+				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,

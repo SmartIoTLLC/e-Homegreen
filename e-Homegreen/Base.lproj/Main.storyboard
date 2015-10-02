@@ -141,6 +141,8 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -4155,21 +4157,41 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gpf-nW-J8I">
-                                                    <rect key="frame" x="2" y="2" width="146" height="146"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="gpf-nW-J8I">
+                                                    <rect key="frame" x="1" y="25" width="148" height="100"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-f9-8MW">
+                                                    <rect key="frame" x="2" y="3" width="146" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kpI-Mb-lqL">
+                                                    <rect key="frame" x="2" y="126" width="146" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leading" constant="2" id="BKt-hr-5mL"/>
-                                            <constraint firstAttribute="trailing" secondItem="gpf-nW-J8I" secondAttribute="trailing" constant="2" id="EHa-dZ-oYI"/>
-                                            <constraint firstAttribute="bottom" secondItem="gpf-nW-J8I" secondAttribute="bottom" constant="2" id="cuK-n5-oqi"/>
-                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="top" secondItem="vOe-B5-X7h" secondAttribute="top" constant="2" id="jI5-8N-TsR"/>
+                                            <constraint firstAttribute="trailing" secondItem="gpf-nW-J8I" secondAttribute="trailing" constant="1" id="2yg-dN-RVW"/>
+                                            <constraint firstItem="Od6-f9-8MW" firstAttribute="top" secondItem="vOe-B5-X7h" secondAttribute="top" constant="3" id="G3O-Vh-zXL"/>
+                                            <constraint firstItem="kpI-Mb-lqL" firstAttribute="top" secondItem="gpf-nW-J8I" secondAttribute="bottom" constant="1" id="Ju6-Qs-GIt"/>
+                                            <constraint firstItem="kpI-Mb-lqL" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leading" constant="2" id="KY1-Lh-ZFg"/>
+                                            <constraint firstAttribute="trailing" secondItem="kpI-Mb-lqL" secondAttribute="trailing" constant="2" id="Mva-kD-nLi"/>
+                                            <constraint firstAttribute="bottom" secondItem="kpI-Mb-lqL" secondAttribute="bottom" constant="3" id="RSb-o3-B63"/>
+                                            <constraint firstItem="Od6-f9-8MW" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leading" constant="2" id="ecO-i3-C7A"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="leading" secondItem="vOe-B5-X7h" secondAttribute="leading" constant="1" id="ngW-4s-5k6"/>
+                                            <constraint firstAttribute="trailing" secondItem="Od6-f9-8MW" secondAttribute="trailing" constant="2" id="un1-FK-ngx"/>
+                                            <constraint firstItem="gpf-nW-J8I" firstAttribute="top" secondItem="Od6-f9-8MW" secondAttribute="bottom" constant="1" id="uwY-rC-nr3"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="image" destination="gpf-nW-J8I" id="j3t-yr-DdJ"/>
+                                            <outlet property="lblName" destination="Od6-f9-8MW" id="AjC-1F-cfl"/>
+                                            <outlet property="lblTime" destination="kpI-Mb-lqL" id="Fam-h1-jc1"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

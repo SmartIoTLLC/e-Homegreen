@@ -1,32 +1,22 @@
 //
-//  SequenceParametarVC.swift
+//  CameraParametarXIBViewController.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/14/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Vladimir on 10/2/15.
+//  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class CameraParametarXIBViewController: UIViewController {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
-    var indexPathRow: Int = -1
-    var sequence:Sequence?
-    
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
-    @IBOutlet weak var backView: UIView!
-    
-    @IBOutlet weak var cyclesTextField: UITextField!
-    @IBOutlet weak var isBroadcast: UISwitch!
     
     var isPresenting: Bool = true
     
     init(point:CGPoint){
-        super.init(nibName: "SequenceParametarVC", bundle: nil)
+        super.init(nibName: "CameraParametarXIBViewController", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
@@ -35,76 +25,30 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor.clearColor()
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
-        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        isBroadcast.on = sequence!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        cyclesTextField.delegate = self
+
         // Do any additional setup after loading the view.
     }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if let cycles = Int(cyclesTextField.text!) {
-            sequence?.sequenceCycles = cycles
-            saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-        }
-        return true
-    }
-    func changeValue (sender:UISwitch){
-        if sender.on == true {
-            sequence?.isBroadcast = true
-        } else {
-            sequence?.isBroadcast = false
-        }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            return false
-        }
-        return true
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
-extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
+extension CameraParametarXIBViewController : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -136,7 +80,7 @@ extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
+            //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -153,7 +97,7 @@ extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension SequenceParametarVC : UIViewControllerTransitioningDelegate {
+extension CameraParametarXIBViewController : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -170,10 +114,8 @@ extension SequenceParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSequenceParametar(point:CGPoint, sequence:Sequence) {
-        let sp = SequenceParametarVC(point: point)
-//        ad.indexPathRow = indexPathRow
-        sp.sequence = sequence
+    func showCameraParametar(point:CGPoint, surveillance:Surveilence?) {
+        let sp = CameraParametarXIBViewController(point: point)
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }
 }

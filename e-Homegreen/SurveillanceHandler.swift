@@ -37,8 +37,10 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
             
             if error == nil{
                 surv.imageData = data
+                surv.lastDate = NSDate()
             }else{
                 surv.imageData = nil
+                surv.lastDate = nil
             }
             
         }

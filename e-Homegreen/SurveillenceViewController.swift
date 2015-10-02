@@ -71,20 +71,47 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         // Dispose of any resources that can be recreated.
     }
     
+    func cameraParametar(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(cameraCollectionView)
+            if let index = cameraCollectionView.indexPathForItemAtPoint(location){
+                let cell = cameraCollectionView.cellForItemAtIndexPath(index)
+                showCameraParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), surveillance: surveillance[index.row])
+            }
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return surveillance.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
-
+        
+        cell.lblName.text = surveillance[indexPath.row].name
+        cell.lblName.userInteractionEnabled = true
+        cell.lblName.tag = indexPath.row
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cameraParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.lblName.addGestureRecognizer(longPress)
+        
         if surveillance[indexPath.row].imageData != nil {
             cell.image.image = UIImage(data: surveillance[indexPath.row].imageData!)
         }else{
             cell.image.image = UIImage(named: "loading")
         }
-
-        cell.layer.cornerRadius = 5
+        
+        if surveillance[indexPath.row].lastDate != nil {
+            let date = "\(surveillance[indexPath.row].lastDate!)"
+            cell.lblTime.text = date.removeCharsFromEnd(5)
+        }else{
+            cell.lblTime.text = ""
+        }
+        
+        
+        
+//        cell.layer.cornerRadius = 5
         
         return cell
     }
@@ -140,9 +167,12 @@ extension String {
 
 class SurveillenceCell:UICollectionViewCell{
     
+    @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var image: UIImageView!
     
 }
+
+
 
 

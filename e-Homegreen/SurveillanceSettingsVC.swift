@@ -145,6 +145,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             editPortRemote.text = "\(surv!.port!)"
             editUserName.text = surv?.username
             editPassword.text = surv?.password
+            editName.text = surv?.name
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
@@ -191,7 +192,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
-        if editIPRemote.text == "" || editPortRemote.text == "" || editUserName.text == "" || editPassword.text == ""{
+        if editIPRemote.text == "" || editPortRemote.text == "" || editUserName.text == "" || editPassword.text == "" || editName.text == ""{
             
             
         } else {
@@ -202,12 +203,14 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surveillance.username = editUserName.text!
                 surveillance.password = editPassword.text!
                 surveillance.isVisible = true
+                surveillance.name = editName.text!
                 saveChanges()
             }else{
                 surv!.ip = editIPRemote.text!
                 surv!.port = Int(editPortRemote.text!)!
                 surv!.username = editUserName.text!
                 surv!.password = editPassword.text!
+                surv!.name = editName.text!
                 saveChanges()
             }
             
