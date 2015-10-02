@@ -128,8 +128,9 @@ class SecurityViewController: CommonViewController {
             abort()
         }
     }
-    
-//    ima: adresu, gateway, alarm state, naziv
+    func openParametar (gestureRecognizer:UITapGestureRecognizer) {
+//        let tag = gestureRecognizer.view!.tag
+    }
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if tag == 0 {
@@ -169,7 +170,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
+                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
             }
 //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
 //            if let gateway = securities[0].gateway {
@@ -228,40 +229,52 @@ extension SecurityViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
 //        let gradient:CAGradientLayer = CAGradientLayer()
         cell.securityTitle.text = "\(securities[indexPath.row].name)"
+        cell.securityTitle.tag = indexPath.row
+        let openParametar:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "openParametar:")
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {
         case "Away":
+            cell.securityButton.tag = indexPath.row
             cell.securityImageView.image = UIImage(named: "inactiveaway")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            cell.securityButton.tag = indexPath.row
             let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
             cell.securityButton.addGestureRecognizer(tap)
+            cell.securityTitle.addGestureRecognizer(openParametar)
         case "Night":
             cell.securityImageView.image = UIImage(named: "inactivenight")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            cell.securityButton.addGestureRecognizer(tap)
+            cell.securityTitle.addGestureRecognizer(openParametar)
         case "Day":
             cell.securityImageView.image = UIImage(named: "inactiveday")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            cell.securityButton.addGestureRecognizer(tap)
+            cell.securityTitle.addGestureRecognizer(openParametar)
         case "Vacation":
             cell.securityImageView.image = UIImage(named: "inactivevacation")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            cell.securityButton.addGestureRecognizer(tap)
+            cell.securityTitle.addGestureRecognizer(openParametar)
         case "Disarm":
             cell.securityImageView.image = UIImage(named: "inactivedisarm")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
-            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            cell.securityButton.addGestureRecognizer(tap)
         case "Panic":
             cell.securityImageView.image = UIImage(named: "inactivepanic")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
-            cell.securityButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            cell.securityButton.addGestureRecognizer(tap)
+            cell.securityTitle.addGestureRecognizer(openParametar)
         default:
             print("")
         }

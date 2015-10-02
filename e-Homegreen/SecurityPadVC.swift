@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecurityPadVC: UIViewController {
+class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -30,6 +30,10 @@ class SecurityPadVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
 
         // Do any additional setup after loading the view.
     }
@@ -37,6 +41,17 @@ class SecurityPadVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func handleTap(gesture:UITapGestureRecognizer){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(popUpView){
+            return false
+        }
+        return true
     }
     
     @IBAction func btnOne(sender: AnyObject) {

@@ -17,11 +17,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NKO-kJ-amA">
-                    <rect key="frame" x="81" y="160" width="439" height="280"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NKO-kJ-amA">
+                    <rect key="frame" x="150" y="175" width="300" height="249"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HtQ-Ck-V4t">
-                            <rect key="frame" x="177" y="208" width="120" height="30"/>
+                            <rect key="frame" x="90" y="199" width="120" height="30"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" title="Update"/>
                             <connections>
@@ -29,16 +29,24 @@
                             </connections>
                         </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7JR-v1-0Ut">
-                            <rect key="frame" x="109" y="57" width="240" height="128"/>
+                            <rect key="frame" x="8" y="8" width="284" height="174"/>
                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                     </subviews>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="1Gc-Jc-oNg"/>
+                        <constraint firstAttribute="height" constant="249" id="5n0-6s-2fj"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="NKO-kJ-amA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="R9y-f3-rIU"/>
+                <constraint firstItem="NKO-kJ-amA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="jo5-Cq-4rX"/>
+            </constraints>
         </view>
     </objects>
 </document>

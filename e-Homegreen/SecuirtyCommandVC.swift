@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecuirtyCommandVC: UIViewController {
+class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -36,15 +36,32 @@ class SecuirtyCommandVC: UIViewController {
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
 //        popUpTextView.delegate = self
 
         // Do any additional setup after loading the view.
+    }
+    
+    func handleTap(gesture:UITapGestureRecognizer){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(popUpView){
+            return false
+        }
+        return true
     }
 
     override func didReceiveMemoryWarning() {
