@@ -133,49 +133,72 @@ class SecurityViewController: CommonViewController {
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if tag == 0 {
-//            if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 let location = gestureRecognizer.locationInView(securityCollectionView)
                 if let index = securityCollectionView.indexPathForItemAtPoint(location){
                     let cell = securityCollectionView.cellForItemAtIndexPath(index)
                     showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
                 }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
 //            }
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-            }
         }
         if tag == 1 {
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
             }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+//            }
         }
         if tag == 2 {
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
             }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+//            }
         }
         if tag == 3 {
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
             }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+//            }
         }
         if tag == 4 {
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
             }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+//                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
+//            }
         }
         if tag == 5 {
-            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            if let gateway = securities[0].gateway {
-                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
             }
+//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+//            if let gateway = securities[0].gateway {
+//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+//            }
         }
     }
 
@@ -244,20 +267,20 @@ extension SecurityViewController: UICollectionViewDataSource {
         }
         let defaults = NSUserDefaults.standardUserDefaults()
         if let securityMode = defaults.valueForKey("EHGSecuritySecurityMode") as? String {
-        if securities[indexPath.row].name == securityMode {
-                    switch securityMode {
-                    case "Away":
-                        cell.securityImageView.image = UIImage(named: "away")
-                    case "Night":
-                        cell.securityImageView.image = UIImage(named: "night")
-                    case "Day":
-                        cell.securityImageView.image = UIImage(named: "day")
-                    case "Vacation":
-                        cell.securityImageView.image = UIImage(named: "vacation")
-                    default:
-                        cell.securityImageView.image = UIImage(named: "inactivedisarm")
-                    }
-        }
+            if securities[indexPath.row].name == securityMode {
+                switch securityMode {
+                case "Away":
+                    cell.securityImageView.image = UIImage(named: "away")
+                case "Night":
+                    cell.securityImageView.image = UIImage(named: "night")
+                case "Day":
+                    cell.securityImageView.image = UIImage(named: "day")
+                case "Vacation":
+                    cell.securityImageView.image = UIImage(named: "vacation")
+                default:
+                    cell.securityImageView.image = UIImage(named: "inactivedisarm")
+                }
+            }
         }
 
 //        gradient.frame = CGRectMake(0, 0, 150, 150)
