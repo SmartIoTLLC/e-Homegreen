@@ -7,8 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecuirtyCommandVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
-                <outlet property="btnCancel" destination="i0A-Bb-f3H" id="rbx-LY-8tz"/>
-                <outlet property="btnOK" destination="W31-BK-91W" id="lbP-E8-2Yw"/>
                 <outlet property="popUpTextView" destination="YMP-tc-onp" id="mbX-NC-8oG"/>
                 <outlet property="popUpView" destination="LLs-6x-7r1" id="dMz-UY-qLU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

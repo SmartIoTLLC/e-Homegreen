@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecuirtyCommandVC: UIViewController, UITextViewDelegate {
+class SecuirtyCommandVC: UIViewController {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -42,7 +42,7 @@ class SecuirtyCommandVC: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        popUpTextView.delegate = self
+//        popUpTextView.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -52,10 +52,10 @@ class SecuirtyCommandVC: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textViewShouldEndEditing(textView: UITextView) -> Bool {
-        textView.resignFirstResponder()
-        return true
-    }
+//    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+//        textView.resignFirstResponder()
+//        return true
+//    }
 //    func textFieldShouldReturn(textField: UITextField) -> Bool {
 //        textField.resignFirstResponder()
 //        return true
@@ -139,8 +139,9 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityCommand(point:CGPoint) {
+    func showSecurityCommand(point:CGPoint, text:String) {
         let sc = SecuirtyCommandVC(point: point)
+//        sc.popUpTextView.text = text
         self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
     }
 }
