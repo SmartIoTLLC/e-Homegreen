@@ -143,6 +143,8 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -394,7 +396,7 @@
                                     <constraint firstItem="krw-oE-FvZ" firstAttribute="centerY" secondItem="eyb-Vc-R20" secondAttribute="centerY" id="oUa-Dn-Ibh"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zd6-cQ-Cef">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zd6-cQ-Cef">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -402,7 +404,7 @@
                                         <rect key="frame" x="0.0" y="50" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6kQ-0Z-VXS" id="W45-AG-ur2">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fXe-64-R9F">
@@ -481,7 +483,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xrg-Gw-TzH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-324" y="107"/>
+            <point key="canvasLocation" x="-363" y="148"/>
         </scene>
         <!--Side Panel View Controller-->
         <scene sceneID="ph1-Zo-cdg">
@@ -3930,11 +3932,12 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-L0-x0d">
-                                                    <rect key="frame" x="40" y="142" width="71" height="30"/>
+                                                    <rect key="frame" x="40" y="141" width="71" height="31"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="Kwt-HB-HfA"/>
                                                     </constraints>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                     <state key="normal" title="CANCEL">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -3947,7 +3950,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="t7i-XD-6UT">
-                                                    <rect key="frame" x="8" y="37" width="134" height="97"/>
+                                                    <rect key="frame" x="8" y="37" width="134" height="96"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -4614,13 +4617,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcL-5z-e2q">
-                                <rect key="frame" x="8" y="25" width="42" height="21"/>
+                                <rect key="frame" x="8" y="24" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
-                                <rect key="frame" x="0.0" y="56" width="320" height="512"/>
+                                <rect key="frame" x="0.0" y="53" width="320" height="515"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Izm-5s-CxM">
                                     <size key="itemSize" width="150" height="183"/>
@@ -4643,23 +4646,27 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gm-PY-TxL">
-                                                    <rect key="frame" x="52" y="145" width="46" height="30"/>
+                                                    <rect key="frame" x="40" y="147" width="70" height="31"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="46" id="ebD-7l-WgM"/>
+                                                        <constraint firstAttribute="width" constant="70" id="ebD-7l-WgM"/>
                                                     </constraints>
-                                                    <state key="normal" title="Button"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                    <state key="normal" title="Button">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="away" translatesAutoresizingMaskIntoConstraints="NO" id="0hn-TZ-S1d">
-                                                    <rect key="frame" x="10" y="30" width="130" height="107"/>
+                                                    <rect key="frame" x="10" y="30" width="130" height="112"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="0hn-TZ-S1d" firstAttribute="top" secondItem="3RI-OW-fEN" secondAttribute="bottom" constant="8" id="5lo-ga-Dd1"/>
-                                            <constraint firstAttribute="bottom" secondItem="0gm-PY-TxL" secondAttribute="bottom" constant="8" id="Re9-k9-EQ9"/>
+                                            <constraint firstAttribute="bottom" secondItem="0gm-PY-TxL" secondAttribute="bottom" constant="5" id="Re9-k9-EQ9"/>
                                             <constraint firstItem="3RI-OW-fEN" firstAttribute="leading" secondItem="jcr-OI-xZ7" secondAttribute="leading" constant="2" id="WQN-TD-ZJe"/>
-                                            <constraint firstItem="0gm-PY-TxL" firstAttribute="top" secondItem="0hn-TZ-S1d" secondAttribute="bottom" constant="8" id="ZYx-bh-G4A"/>
+                                            <constraint firstItem="0gm-PY-TxL" firstAttribute="top" secondItem="0hn-TZ-S1d" secondAttribute="bottom" constant="5" id="ZYx-bh-G4A"/>
                                             <constraint firstItem="0hn-TZ-S1d" firstAttribute="leading" secondItem="jcr-OI-xZ7" secondAttribute="leading" constant="10" id="aex-TL-bL2"/>
                                             <constraint firstAttribute="trailing" secondItem="0hn-TZ-S1d" secondAttribute="trailing" constant="10" id="ifW-gg-qLk"/>
                                             <constraint firstItem="3RI-OW-fEN" firstAttribute="top" secondItem="jcr-OI-xZ7" secondAttribute="top" constant="5" id="kOQ-b2-Fc7"/>
@@ -4686,10 +4693,10 @@
                             <constraint firstAttribute="trailing" secondItem="7Aw-aS-dZc" secondAttribute="trailing" id="CuV-6V-YkM"/>
                             <constraint firstAttribute="trailing" secondItem="zTE-Nb-Lqm" secondAttribute="trailing" id="Dbv-XU-9nc"/>
                             <constraint firstItem="eMG-Cc-kb4" firstAttribute="top" secondItem="7Aw-aS-dZc" secondAttribute="bottom" id="IKD-9Q-OG4"/>
-                            <constraint firstItem="hcL-5z-e2q" firstAttribute="top" secondItem="ZEX-2z-WQp" secondAttribute="bottom" constant="5" id="alV-dJ-S1y"/>
-                            <constraint firstItem="hcL-5z-e2q" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" constant="8" id="dzu-PV-gDm"/>
+                            <constraint firstItem="hcL-5z-e2q" firstAttribute="top" secondItem="ZEX-2z-WQp" secondAttribute="bottom" constant="4" id="Uuh-cI-axK"/>
+                            <constraint firstItem="zTE-Nb-Lqm" firstAttribute="top" secondItem="hcL-5z-e2q" secondAttribute="bottom" constant="8" id="gZi-PF-49c"/>
+                            <constraint firstItem="hcL-5z-e2q" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" constant="8" id="hFX-FI-HBb"/>
                             <constraint firstItem="7Aw-aS-dZc" firstAttribute="top" secondItem="Oqg-TI-CP4" secondAttribute="top" id="hd7-kj-dNz"/>
-                            <constraint firstItem="zTE-Nb-Lqm" firstAttribute="top" secondItem="hcL-5z-e2q" secondAttribute="bottom" constant="10" id="rj4-up-s95"/>
                             <constraint firstItem="7Aw-aS-dZc" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" id="wLm-E9-f3q"/>
                         </constraints>
                     </view>

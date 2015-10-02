@@ -128,6 +128,7 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
 
+            cell.backgroundColor = UIColor.clearColor()
             
             cell.lblID.text = surveillance[indexPath.section].ip
             cell.lblPort.text = "\(surveillance[indexPath.section].port!)"

@@ -221,6 +221,7 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
 
+            cell.backgroundColor = UIColor.clearColor()
             cell.lblGatewayName.text = gateways[indexPath.section].name
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"
@@ -357,8 +358,6 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var add3: UILabel!
     
     override func drawRect(rect: CGRect) {
-        let width = rect.width
-        let height = rect.height
         
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
