@@ -48,6 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //        Disarm, Away, Night, Day, Vacation
             defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
             //        No Panic, Panic
+            defaults.setObject(1, forKey: "EHGSecurityAddressOne")
+            //        No Panic, Panic
+            defaults.setObject(0, forKey: "EHGSecurityAddressTwo")
+            //        No Panic, Panic
+            defaults.setObject(254, forKey: "EHGSecurityAddressThree")
+            //        No Panic, Panic
+            defaults.setBool(false, forKey: "EHGSecurityPanic")
         }
         
         return true

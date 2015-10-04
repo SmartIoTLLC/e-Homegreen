@@ -16,7 +16,8 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     var devices:[Device] = []
     var appDel:AppDelegate!
-var error:NSError? = nil
+    var error:NSError? = nil
+    var security:Security!
     
     var isPresenting: Bool = true
     
@@ -145,8 +146,9 @@ extension SecurityParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityParametar (point:CGPoint) {
+    func showSecurityParametar (point:CGPoint, security: Security) {
         let sp = SecurityParametarVC(point: point)
+        sp.security = security
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }
 }

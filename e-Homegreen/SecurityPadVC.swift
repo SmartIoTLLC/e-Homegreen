@@ -17,6 +17,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var popUpView: UIView!
     
     var isPresenting: Bool = true
+    var security:Security!
     
     init(point:CGPoint){
         super.init(nibName: "SecurityPadVC", bundle: nil)
@@ -56,40 +57,40 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnOne(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x01), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x01), gateway: security.gateway!)
     }
     @IBAction func btnTwo(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x02), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x02), gateway: security.gateway!)
     }
     @IBAction func btnThree(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x03), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x03), gateway: security.gateway!)
     }
     @IBAction func btnFour(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x04), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x04), gateway: security.gateway!)
     }
     @IBAction func btnFive(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x05), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x05), gateway: security.gateway!)
     }
     @IBAction func btnSix(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x06), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x06), gateway: security.gateway!)
     }
     @IBAction func btnSeven(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x07), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x07), gateway: security.gateway!)
     }
     @IBAction func btnEight(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x08), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x08), gateway: security.gateway!)
     }
     @IBAction func btnNine(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x09), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x09), gateway: security.gateway!)
     }
     @IBAction func btnStar(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x0B), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x0B), gateway: security.gateway!)
     }
     @IBAction func btnNull(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x00), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x00), gateway: security.gateway!)
     }
     @IBAction func btnHash(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x1A), gateway: Gateway())
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x1A), gateway: security.gateway!)
     }
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -173,8 +174,9 @@ extension SecurityPadVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityPad (point:CGPoint) {
+    func showSecurityPad (point:CGPoint, security: Security) {
         let sp = SecurityPadVC(point: point)
+        sp.security = security
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }
 }

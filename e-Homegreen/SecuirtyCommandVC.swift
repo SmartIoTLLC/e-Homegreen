@@ -17,7 +17,8 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var devices:[Device] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
+    var security:Security!
+    var defaults = NSUserDefaults.standardUserDefaults()
     var isPresenting: Bool = true
     
     @IBOutlet weak var popUpView: UIView!
@@ -33,6 +34,26 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     @IBAction func btnOk(sender: AnyObject) {
+        let address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
+        switch security.name {
+        case "Away":
+            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
+        case "Night":
+            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: security.gateway!)
+        case "Day":
+            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: security.gateway!)
+        case "Vacation":
+            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: security.gateway!)
+        case "Panic":
+            if defaults.boolForKey("EHGSecurityPanic") {
+                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
+                defaults.setBool(false, forKey: "EHGSecurityPanic")
+            } else {
+                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
+                defaults.setBool(true, forKey: "EHGSecurityPanic")
+            }
+        default: break
+        }
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
@@ -134,8 +155,7 @@ extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-        }
-        
+        }        
     }
 }
 
@@ -156,9 +176,9 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityCommand(point:CGPoint, text:String) {
+    func showSecurityCommand(point:CGPoint, text:String, security: Security) {
         let sc = SecuirtyCommandVC(point: point)
-//        sc.popUpTextView.text = text
+        sc.security = security
         self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
     }
 }

@@ -13,7 +13,7 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var backView: UIView!
     
     var isPresenting:Bool = false
-    
+    var defaults:NSUserDefaults!
     
     @IBOutlet weak var addOne: UITextField!
     @IBOutlet weak var addTwo: UITextField!
@@ -38,19 +38,37 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         addOne.inputAccessoryView = keyboardDoneButtonView
         addTwo.inputAccessoryView = keyboardDoneButtonView
         addThree.inputAccessoryView = keyboardDoneButtonView
+        
+        defaults = NSUserDefaults.standardUserDefaults()
+        
+        addOne.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressOne"))
+        addTwo.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressTwo"))
+        addThree.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressThree"))
 
         transitioningDelegate = self
 
         // Do any additional setup after loading the view.
     }
-
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBAction func btnChooseGateway(sender: AnyObject) {
+        
+    }
     
     @IBAction func btnSave(sender: AnyObject) {
-        
+        if addOne.text != "" && addTwo.text != "" && addThree.text != "" {
+            if let addressOne = Int(addOne.text!), let addressTwo = Int(addTwo.text!), let addressThree = Int(addThree.text!) {
+                defaults.setObject(addressOne, forKey: "EHGSecurityAddressOne")
+                defaults.setObject(addressTwo, forKey: "EHGSecurityAddressTwo")
+                defaults.setObject(addressThree, forKey: "EHGSecurityAddressThree")
+            }
+        }
     }
     
     @IBAction func backBtn(sender: AnyObject) {

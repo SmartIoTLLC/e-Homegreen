@@ -23,7 +23,7 @@ class SecurityViewController: CommonViewController {
     
     @IBOutlet weak var lblAlarmState: UILabel!
     
-
+    
     @IBOutlet weak var securityCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,19 +47,19 @@ class SecurityViewController: CommonViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotification", object: nil)
         refreshSecurity()
         
-//        defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
-//        //        Idle, Trobule, Alert, alarm
-//        defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
-//        //        Disarm, Away, Night, Day, Vacation
-//        defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
-//        //        No Panic, Panic
+        //        defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
+        //        //        Idle, Trobule, Alert, alarm
+        //        defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
+        //        //        Disarm, Away, Night, Day, Vacation
+        //        defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
+        //        //        No Panic, Panic
         let defaults = NSUserDefaults.standardUserDefaults()
         let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
         lblAlarmState.text = "Alarm state: \(alarmState!)"
         
         
     }
-
+    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.width == 568{
@@ -90,7 +90,7 @@ class SecurityViewController: CommonViewController {
             SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -110,15 +110,15 @@ class SecurityViewController: CommonViewController {
             abort()
         }
     }
-//    func testTestTest () {
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        let isPreloaded = defaults.boolForKey("isPreloaded")
-//        defaults.
-//        if !isPreloaded {
-//            preloadData()
-//            defaults.setBool(true, forKey: "isPreloaded")
-//        }
-//    }
+    //    func testTestTest () {
+    //        let defaults = NSUserDefaults.standardUserDefaults()
+    //        let isPreloaded = defaults.boolForKey("isPreloaded")
+    //        defaults.
+    //        if !isPreloaded {
+    //            preloadData()
+    //            defaults.setBool(true, forKey: "isPreloaded")
+    //        }
+    //    }
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -129,80 +129,116 @@ class SecurityViewController: CommonViewController {
         }
     }
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
-//        let tag = gestureRecognizer.view!.tag
+        let tag = gestureRecognizer.view!.tag
+        switch securities[tag].name {
+        case "Away":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        case "Night":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        case "Day":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        case "Vacation":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        case "Disarm":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        case "Panic":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+            }
+        default: break
+        }
     }
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
-        if tag == 0 {
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                    showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
-                }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-//            }
-        }
-        if tag == 1 {
+        switch securities[tag].name {
+        case "Away":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
             }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
-//            }
-        }
-        if tag == 2 {
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
+            //            }
+        case "Night":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
             }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
-//            }
-        }
-        if tag == 3 {
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+            //            }        
+        case "Day":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
             }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-//            }
-        }
-        if tag == 4 {
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+            //            }
+        case "Vacation":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
             }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-//                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
-//            }
-        }
-        if tag == 5 {
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+            //                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
+            //            }
+        case "Disarm":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation)
+                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
             }
-//            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-//            if let gateway = securities[0].gateway {
-//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-//                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
-//            }
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+            //            }
+        case "Panic":
+            let location = gestureRecognizer.locationInView(securityCollectionView)
+            if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+            }
+            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            //            if let gateway = securities[0].gateway {
+            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+            //            }
+        default: break
         }
     }
-
+    
 }
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -227,7 +263,7 @@ extension SecurityViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
-//        let gradient:CAGradientLayer = CAGradientLayer()
+        //        let gradient:CAGradientLayer = CAGradientLayer()
         cell.securityTitle.text = "\(securities[indexPath.row].name)"
         cell.securityTitle.tag = indexPath.row
         let openParametar:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "openParametar:")
@@ -275,8 +311,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
-        default:
-            print("")
+        default: break
         }
         let defaults = NSUserDefaults.standardUserDefaults()
         if let securityMode = defaults.valueForKey("EHGSecuritySecurityMode") as? String {
@@ -295,10 +330,7 @@ extension SecurityViewController: UICollectionViewDataSource {
                 }
             }
         }
-
-//        gradient.frame = CGRectMake(0, 0, 150, 150)
-//        gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-//        cell.layer.insertSublayer(gradient, atIndex: 0)
+        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
