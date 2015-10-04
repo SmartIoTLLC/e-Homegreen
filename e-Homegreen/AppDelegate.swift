@@ -46,8 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //        Idle, Trobule, Alert, alarm
             defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
             //        Disarm, Away, Night, Day, Vacation
-            defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
-            //        No Panic, Panic
             defaults.setObject(1, forKey: "EHGSecurityAddressOne")
             //        No Panic, Panic
             defaults.setObject(0, forKey: "EHGSecurityAddressTwo")

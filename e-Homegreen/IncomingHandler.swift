@@ -492,37 +492,37 @@ class IncomingHandler: NSObject {
             if byteArray[7] == 0x02 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setObject("Disarm", forKey: "")
+                    defaults.setValue("Disarm", forKey: "EHGSecuritySecurityMode")
                 case 0x01:
-                    defaults.setObject("Away", forKey: "")
+                    defaults.setValue("Away", forKey: "EHGSecuritySecurityMode")
                 case 0x02:
-                    defaults.setObject("Nigth", forKey: "")
+                    defaults.setValue("Nigth", forKey: "EHGSecuritySecurityMode")
                 case 0x03:
-                    defaults.setObject("Day", forKey: "")
+                    defaults.setValue("Day", forKey: "EHGSecuritySecurityMode")
                 case 0x04:
-                    defaults.setObject("Vacation", forKey: "")
+                    defaults.setValue("Vacation", forKey: "EHGSecuritySecurityMode")
                 default: break
                 }
             }
             if byteArray[7] == 0x03 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setObject("Idle", forKey: "")
+                    defaults.setValue("Idle", forKey: "EHGSecurityAlarmState")
                 case 0x01:
-                    defaults.setObject("Trouble", forKey: "")
+                    defaults.setValue("Trouble", forKey: "EHGSecurityAlarmState")
                 case 0x02:
-                    defaults.setObject("Alert", forKey: "")
+                    defaults.setValue("Alert", forKey: "EHGSecurityAlarmState")
                 case 0x03:
-                    defaults.setObject("Alarm", forKey: "")
+                    defaults.setValue("Alarm", forKey: "EHGSecurityAlarmState")
                 default: break
                 }
             }
             if byteArray[7] == 0x04 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setObject("No panic", forKey: "")
+                    defaults.setBool(true, forKey: "EHGSecurityPanic")
                 case 0x01:
-                    defaults.setObject("Panic", forKey: "")
+                    defaults.setBool(false, forKey: "EHGSecurityPanic")
                 default: break
                 }
             }

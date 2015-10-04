@@ -135,37 +135,37 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Night":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Day":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Vacation":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Disarm":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Panic":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         default: break
         }
@@ -177,7 +177,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -187,7 +187,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -197,7 +197,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -207,7 +207,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -218,7 +218,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), gateway: securities[tag].gateway!)
+                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -228,7 +228,7 @@ class SecurityViewController: CommonViewController {
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, gateway: securities[tag].gateway!)
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
             //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             //            if let gateway = securities[0].gateway {
@@ -266,7 +266,8 @@ extension SecurityViewController: UICollectionViewDataSource {
         //        let gradient:CAGradientLayer = CAGradientLayer()
         cell.securityTitle.text = "\(securities[indexPath.row].name)"
         cell.securityTitle.tag = indexPath.row
-        let openParametar:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "openParametar:")
+        cell.securityTitle.userInteractionEnabled = true
+        let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openParametar:")
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {

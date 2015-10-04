@@ -18,6 +18,8 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     
     var isPresenting: Bool = true
     var security:Security!
+    let defaults = NSUserDefaults.standardUserDefaults()
+    var address:[UInt8]!
     
     init(point:CGPoint){
         super.init(nibName: "SecurityPadVC", bundle: nil)
@@ -32,7 +34,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
@@ -57,40 +59,40 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnOne(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x01), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x01), gateway: security.gateway!)
     }
     @IBAction func btnTwo(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x02), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x02), gateway: security.gateway!)
     }
     @IBAction func btnThree(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x03), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x03), gateway: security.gateway!)
     }
     @IBAction func btnFour(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x04), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x04), gateway: security.gateway!)
     }
     @IBAction func btnFive(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x05), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x05), gateway: security.gateway!)
     }
     @IBAction func btnSix(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x06), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x06), gateway: security.gateway!)
     }
     @IBAction func btnSeven(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x07), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x07), gateway: security.gateway!)
     }
     @IBAction func btnEight(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x08), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x08), gateway: security.gateway!)
     }
     @IBAction func btnNine(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x09), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x09), gateway: security.gateway!)
     }
     @IBAction func btnStar(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x0B), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x0B), gateway: security.gateway!)
     }
     @IBAction func btnNull(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x00), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: security.gateway!)
     }
     @IBAction func btnHash(sender: AnyObject) {
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity([], key: 0x1A), gateway: security.gateway!)
+        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x1A), gateway: security.gateway!)
     }
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

@@ -19,6 +19,8 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var error:NSError? = nil
     var security:Security!
     
+    @IBOutlet weak var popUpView: UIView!
+    
     var isPresenting: Bool = true
     
     init(point:CGPoint){
@@ -27,7 +29,6 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
     }
-    @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var popUpTextView: UITextView!
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,14 +36,28 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnUpdate(sender: AnyObject) {
-        
+        if popUpTextView.text != "" {
+            security.modeExplanation = popUpTextView.text
+            saveChanges()
+        }
     }
     
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        popUpTextView.text = security.modeExplanation
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
