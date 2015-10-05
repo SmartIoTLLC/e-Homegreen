@@ -2,8 +2,8 @@
 //  Event.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/14/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Teodor Stevic on 10/5/15.
+//  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import Foundation
@@ -11,12 +11,6 @@ import CoreData
 
 class Event: NSManagedObject {
 
-    @NSManaged var address: NSNumber
-    @NSManaged var eventId: NSNumber
-    @NSManaged var eventImageOne: NSData
-    @NSManaged var eventImageTwo: NSData
-    @NSManaged var eventName: String
-    @NSManaged var isBroadcast: NSNumber
-    @NSManaged var gateway: Gateway
+// Insert code here to add functionality to your managed object subclass
 
 }

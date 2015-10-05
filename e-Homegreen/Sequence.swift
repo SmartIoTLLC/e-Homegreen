@@ -2,8 +2,8 @@
 //  Sequence.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/14/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Teodor Stevic on 10/5/15.
+//  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import Foundation
@@ -11,13 +11,6 @@ import CoreData
 
 class Sequence: NSManagedObject {
 
-    @NSManaged var address: NSNumber
-    @NSManaged var isBroadcast: NSNumber
-    @NSManaged var sequenceId: NSNumber
-    @NSManaged var sequenceImageOne: NSData
-    @NSManaged var sequenceImageTwo: NSData
-    @NSManaged var sequenceName: String
-    @NSManaged var sequenceCycles: NSNumber
-    @NSManaged var gateway: Gateway
+// Insert code here to add functionality to your managed object subclass
 
 }

@@ -39,6 +39,7 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
         if popUpTextView.text != "" {
             security.modeExplanation = popUpTextView.text
             saveChanges()
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
