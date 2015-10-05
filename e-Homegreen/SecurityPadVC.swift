@@ -15,6 +15,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     var indexPathRow: Int = -1
     
     @IBOutlet weak var popUpView: UIView!
+    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
     
     var isPresenting: Bool = true
     var security:Security!
@@ -56,6 +57,19 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeight.constant = 300
+                
+            }else {
+                backViewHeight.constant = 365
+            }
+        }else{
+            backViewHeight.constant = 365
+        }
     }
     
     @IBAction func btnOne(sender: AnyObject) {
