@@ -1,5 +1,5 @@
 //
-//  Timer+CoreDataProperties.swift
+//  Sequence+CoreDataProperties.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 10/5/15.
@@ -12,15 +12,15 @@
 import Foundation
 import CoreData
 
-extension Timer {
+extension Sequence {
 
     @NSManaged var address: NSNumber
     @NSManaged var isBroadcast: NSNumber
-    @NSManaged var timerId: NSNumber
-    @NSManaged var timerImageOne: NSData
-    @NSManaged var timerImageTwo: NSData
-    @NSManaged var timerName: String
-    @NSManaged var type: String
+    @NSManaged var sequenceCycles: NSNumber
+    @NSManaged var sequenceId: NSNumber
+    @NSManaged var sequenceImageOne: NSData
+    @NSManaged var sequenceImageTwo: NSData
+    @NSManaged var sequenceName: String
     @NSManaged var gateway: Gateway
     @NSManaged var gatewayZone: Zone
     @NSManaged var gatewayCategory: Category

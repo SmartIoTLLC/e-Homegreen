@@ -69,6 +69,8 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
+        popUpTextView.text = security.modeExplanation
+        
 //        popUpTextView.delegate = self
 
         // Do any additional setup after loading the view.

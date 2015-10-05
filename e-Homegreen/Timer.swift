@@ -2,7 +2,7 @@
 //  Timer.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/19/15.
+//  Created by Teodor Stevic on 10/5/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 

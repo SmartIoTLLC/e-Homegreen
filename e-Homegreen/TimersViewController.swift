@@ -7,13 +7,10 @@
 //
 
 import UIKit
+import CoreData
 
 class TimersViewController: CommonViewController {
-    
-    @IBOutlet weak var timersCollectionView: UICollectionView!
-    //    @IBOutlet weak var broadcastSwitch: UISwitch!
-    //    @IBOutlet weak var cyclesTextField: UITextField!
-    
+        
     var appDel:AppDelegate!
     var timers:[Timer] = []
     var error:NSError? = nil
@@ -21,6 +18,8 @@ class TimersViewController: CommonViewController {
     private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     private let reuseIdentifier = "TimerCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
+    
+    @IBOutlet weak var timersCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,28 +81,21 @@ class TimersViewController: CommonViewController {
         timersCollectionView.reloadData()
     }
     func updateTimersList () {
-//        let fetchRequest = NSFetchRequest(entityName: "Timer")
-//        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-//        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-//        fetchRequest.predicate = predicate
-//        do {
-//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//            sequences = fetResults!
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//        
-//        //        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//        //        if let results = fetResults {
-//        //            sequences = results
-//        //        } else {
-//        //
-//        //        }
+        let fetchRequest = NSFetchRequest(entityName: "Timer")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            timers = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     func saveChanges() {
         do {
@@ -222,9 +214,39 @@ extension TimersViewController: UICollectionViewDataSource {
 
 class TimerCollectionViewCell: UICollectionViewCell {
     
-//    @IBOutlet weak var timerTitle: UILabel!
-//    @IBOutlet weak var timerImageView: UIImageView!
-//    @IBOutlet weak var sequenceButton: UIButton!
+    @IBOutlet weak var timerTitle: UILabel!
+    @IBOutlet weak var timerImageView: UIImageView!
+    @IBOutlet weak var timerButton: UIButton!
+    @IBOutlet weak var timerButtonLeft: UIButton!
+    @IBOutlet weak var timerButtonRight: UIButton!
     
+    override func drawRect(rect: CGRect) {
+        
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: UIRectCorner.AllCorners,
+            cornerRadii: CGSize(width: 5.0, height: 5.0))
+        path.addClip()
+        path.lineWidth = 2
+        
+        UIColor.lightGrayColor().setStroke()
+        
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        path.stroke()
+    }
     
 }
