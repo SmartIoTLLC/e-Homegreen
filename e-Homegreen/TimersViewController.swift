@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TimersViewController: CommonViewController {
         
@@ -80,28 +81,21 @@ class TimersViewController: CommonViewController {
         timersCollectionView.reloadData()
     }
     func updateTimersList () {
-//        let fetchRequest = NSFetchRequest(entityName: "Timer")
-//        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-//        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-//        fetchRequest.predicate = predicate
-//        do {
-//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//            sequences = fetResults!
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//        
-//        //        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//        //        if let results = fetResults {
-//        //            sequences = results
-//        //        } else {
-//        //
-//        //        }
+        let fetchRequest = NSFetchRequest(entityName: "Timer")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            timers = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     func saveChanges() {
         do {
