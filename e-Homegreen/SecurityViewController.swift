@@ -130,6 +130,7 @@ class SecurityViewController: CommonViewController {
     }
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
         switch securities[tag].name {
         case "Away":
             let location = gestureRecognizer.locationInView(securityCollectionView)
@@ -168,6 +169,7 @@ class SecurityViewController: CommonViewController {
                 showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         default: break
+        }
         }
     }
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
@@ -268,6 +270,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
         let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openParametar:")
+        openParametar.minimumPressDuration = 0.5
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {

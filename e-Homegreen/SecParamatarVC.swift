@@ -1,14 +1,14 @@
 //
-//  SecurityParametarVC.swift
+//  SecParamatarVC.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/30/15.
+//  Created by Vladimir on 10/5/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
+class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -20,19 +20,44 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var security:Security!
     
     @IBOutlet weak var popUpView: UIView!
+    @IBOutlet weak var popUpViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var centarY: NSLayoutConstraint!
+    @IBOutlet weak var popUpTextView: CustomTextView!
     
     var isPresenting: Bool = true
     
     init(point:CGPoint){
-        super.init(nibName: "SecurityParametarVC", bundle: nil)
+        super.init(nibName: "SecParamatarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
     }
-    @IBOutlet weak var popUpTextView: UITextView!
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        popUpTextView.text = security.modeExplanation
+        popUpTextView.delegate = self
+        textViewDidChange(popUpTextView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
+
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func btnUpdate(sender: AnyObject) {
@@ -51,24 +76,32 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
             abort()
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        popUpTextView.text = security.modeExplanation
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-
-        // Do any additional setup after loading the view.
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        if popUpTextView.isFirstResponder(){
+            if popUpView.frame.origin.y + popUpView.frame.size.height > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -50
+                
+            }
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func textViewDidChange(textView: UITextView) {
+        
+        let fixedWidth = textView.frame.size.width
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = textView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        if newFrame.size.height + 60 < 190{
+            textView.frame = newFrame
+            popUpViewHeight.constant = textView.frame.size.height + 60
+        }
+        
+        
     }
     
     func handleTap(gesture:UITapGestureRecognizer){
@@ -83,19 +116,10 @@ class SecurityParametarVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
-
-extension SecurityParametarVC : UIViewControllerAnimatedTransitioning {
+extension SecParamatarVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -144,7 +168,7 @@ extension SecurityParametarVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension SecurityParametarVC : UIViewControllerTransitioningDelegate {
+extension SecParamatarVC : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -162,7 +186,7 @@ extension SecurityParametarVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showSecurityParametar (point:CGPoint, security: Security) {
-        let sp = SecurityParametarVC(point: point)
+        let sp = SecParamatarVC(point: point)
         sp.security = security
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }

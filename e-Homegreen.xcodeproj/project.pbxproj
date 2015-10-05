@@ -24,8 +24,6 @@
 		738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */; settings = {ASSET_TAGS = (); }; };
 		738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */; settings = {ASSET_TAGS = (); }; };
 		738DECA31BBBC39F00D6B834 /* SecuirtyCommandVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */; settings = {ASSET_TAGS = (); }; };
-		738DECA61BBBC3DA00D6B834 /* SecurityParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECA41BBBC3DA00D6B834 /* SecurityParametarVC.swift */; settings = {ASSET_TAGS = (); }; };
-		738DECA71BBBC3DA00D6B834 /* SecurityParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DECA51BBBC3DA00D6B834 /* SecurityParametarVC.xib */; settings = {ASSET_TAGS = (); }; };
 		738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECAB1BBBEA6300D6B834 /* Security.swift */; settings = {ASSET_TAGS = (); }; };
 		738DECB11BBBFC1100D6B834 /* Security.json in Resources */ = {isa = PBXBuildFile; fileRef = 738DECB01BBBFC1100D6B834 /* Security.json */; settings = {ASSET_TAGS = (); }; };
@@ -113,6 +111,9 @@
 		E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */; };
 		E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */; settings = {ASSET_TAGS = (); }; };
+		E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */; settings = {ASSET_TAGS = (); }; };
+		E7C9CE011BC2B2AD007D8FE8 /* SecParamatarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */; settings = {ASSET_TAGS = (); }; };
 		E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */; };
 		E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */; };
 		E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DC679C1B457C0E00EA6543 /* weather-broken.png */; };
@@ -201,8 +202,6 @@
 		738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityPadVC.xib; sourceTree = "<group>"; };
 		738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuirtyCommandVC.swift; sourceTree = "<group>"; };
 		738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecuirtyCommandVC.xib; sourceTree = "<group>"; };
-		738DECA41BBBC3DA00D6B834 /* SecurityParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityParametarVC.swift; sourceTree = "<group>"; };
-		738DECA51BBBC3DA00D6B834 /* SecurityParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityParametarVC.xib; sourceTree = "<group>"; };
 		738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Security+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		738DECAB1BBBEA6300D6B834 /* Security.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 		738DECB01BBBFC1100D6B834 /* Security.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Security.json; sourceTree = "<group>"; };
@@ -302,6 +301,9 @@
 		E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInput.xib; sourceTree = "<group>"; };
 		E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraParametarXIBViewController.swift; sourceTree = "<group>"; };
 		E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraParametarXIBViewController.xib; sourceTree = "<group>"; };
+		E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
+		E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecParamatarVC.swift; sourceTree = "<group>"; };
+		E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecParamatarVC.xib; sourceTree = "<group>"; };
 		E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "e-Homegreen-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		E7D9FFE61B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E7D9FFE71B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -450,9 +452,9 @@
 				738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */,
 				738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */,
 				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
-				738DECA41BBBC3DA00D6B834 /* SecurityParametarVC.swift */,
-				738DECA51BBBC3DA00D6B834 /* SecurityParametarVC.xib */,
 				738DECB01BBBFC1100D6B834 /* Security.json */,
+				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
+				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -649,6 +651,7 @@
 		E76B57651BBD1DAC00A70F69 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E7C9CDFB1BC28CDC007D8FE8 /* TextView */,
 				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
 				E76B57661BBD1DB900A70F69 /* Button */,
@@ -787,6 +790,14 @@
 				E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */,
 			);
 			name = SurveillanceXIB;
+			sourceTree = "<group>";
+		};
+		E7C9CDFB1BC28CDC007D8FE8 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */,
+			);
+			name = TextView;
 			sourceTree = "<group>";
 		};
 		E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */ = {
@@ -1003,6 +1014,7 @@
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
+				E7C9CE011BC2B2AD007D8FE8 /* SecParamatarVC.xib in Resources */,
 				E7DC67C41B457C0E00EA6543 /* weather-scattered.png in Resources */,
 				E7DC67BA1B457C0E00EA6543 /* weather-few.png in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
@@ -1018,7 +1030,6 @@
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
-				738DECA71BBBC3DA00D6B834 /* SecurityParametarVC.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */,
@@ -1120,6 +1131,7 @@
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
+				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				73E2312A1BA7239E003E41EC /* Sequence.swift in Sources */,
 				E79A89411BAD723A00714C64 /* Timer+CoreDataProperties.swift in Sources */,
 				E79A89421BAD723A00714C64 /* Timer.swift in Sources */,
@@ -1177,12 +1189,12 @@
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
+				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
-				738DECA61BBBC3DA00D6B834 /* SecurityParametarVC.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
