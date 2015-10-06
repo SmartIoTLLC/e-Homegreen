@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SceneParametarVC" customModule="e_Homegreen" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimerParametarVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
-                <outlet property="backView" destination="1XU-nd-9JR" id="c5v-LF-bA3"/>
-                <outlet property="isBroadcast" destination="Ppg-Dv-ZQn" id="2d4-J8-8Dy"/>
+                <outlet property="backView" destination="e4t-t3-Qln" id="ZMD-RT-ZHj"/>
+                <outlet property="isBroadcast" destination="3fd-e7-cEP" id="d5f-xb-Hun"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,35 +17,34 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1XU-nd-9JR" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e4t-t3-Qln" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="200" y="172" width="200" height="256"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9Q-uZ-PRa">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnV-rG-c9B">
                             <rect key="frame" x="52" y="98" width="97" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ppg-Dv-ZQn">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fd-e7-cEP">
                             <rect key="frame" x="76" y="127" width="51" height="31"/>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="256" id="Iy4-nd-4SF"/>
-                        <constraint firstAttribute="width" constant="200" id="tnT-lx-sT1"/>
+                        <constraint firstAttribute="height" constant="256" id="haR-QP-wH0"/>
+                        <constraint firstAttribute="width" constant="200" id="nEL-zZ-Ra0"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerY" secondItem="1XU-nd-9JR" secondAttribute="centerY" id="57I-gq-g0e"/>
-                <constraint firstAttribute="centerX" secondItem="1XU-nd-9JR" secondAttribute="centerX" id="Dil-07-UZI"/>
+                <constraint firstItem="e4t-t3-Qln" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="p4O-hG-3et"/>
+                <constraint firstItem="e4t-t3-Qln" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uQY-sP-8r4"/>
             </constraints>
-            <point key="canvasLocation" x="289" y="361"/>
         </view>
     </objects>
 </document>
