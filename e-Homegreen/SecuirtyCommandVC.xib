@@ -4,9 +4,15 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecuirtyCommandVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
+                <outlet property="backViewHeight" destination="dZ3-te-SIs" id="euJ-jh-X0G"/>
                 <outlet property="popUpTextView" destination="YMP-tc-onp" id="mbX-NC-8oG"/>
                 <outlet property="popUpView" destination="LLs-6x-7r1" id="dMz-UY-qLU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -18,21 +24,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLs-6x-7r1" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="192" width="300" height="216"/>
+                    <rect key="frame" x="150" y="200" width="300" height="200"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W31-BK-91W">
-                            <rect key="frame" x="46" y="170" width="73" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0A-Bb-f3H">
+                            <rect key="frame" x="166" y="160" width="73" height="30"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" title="Ok">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="btnOk:" destination="-1" eventType="touchUpInside" id="NkH-pc-hvu"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0A-Bb-f3H">
-                            <rect key="frame" x="183" y="170" width="71" height="30"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="73" id="OJf-iw-HZw"/>
+                            </constraints>
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -40,18 +39,40 @@
                                 <action selector="btnCancel:" destination="-1" eventType="touchUpInside" id="MR4-aK-bA8"/>
                             </connections>
                         </button>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMP-tc-onp">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="YMP-tc-onp">
                             <rect key="frame" x="8" y="8" width="284" height="142"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W31-BK-91W">
+                            <rect key="frame" x="61" y="160" width="73" height="30"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="73" id="vOk-Pi-oJ4"/>
+                            </constraints>
+                            <state key="normal" title="Ok">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnOk:" destination="-1" eventType="touchUpInside" id="NkH-pc-hvu"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="i0A-Bb-f3H" firstAttribute="centerY" secondItem="W31-BK-91W" secondAttribute="centerY" id="0O5-Vx-dUt"/>
+                        <constraint firstAttribute="trailing" secondItem="i0A-Bb-f3H" secondAttribute="trailing" constant="61" id="5Zh-Ot-RQM"/>
                         <constraint firstAttribute="width" constant="300" id="Coe-9r-gFu"/>
-                        <constraint firstAttribute="height" constant="216" id="dZ3-te-SIs"/>
+                        <constraint firstItem="W31-BK-91W" firstAttribute="leading" secondItem="LLs-6x-7r1" secondAttribute="leading" constant="61" id="HA8-5i-uFx"/>
+                        <constraint firstAttribute="bottom" secondItem="W31-BK-91W" secondAttribute="bottom" constant="10" id="Hte-O9-4Al"/>
+                        <constraint firstAttribute="trailing" secondItem="YMP-tc-onp" secondAttribute="trailing" constant="8" id="KQe-mm-7cv"/>
+                        <constraint firstItem="W31-BK-91W" firstAttribute="top" secondItem="YMP-tc-onp" secondAttribute="bottom" constant="10" id="OXJ-qd-c3X"/>
+                        <constraint firstItem="YMP-tc-onp" firstAttribute="leading" secondItem="LLs-6x-7r1" secondAttribute="leading" constant="8" id="UDl-6j-f4F"/>
+                        <constraint firstItem="YMP-tc-onp" firstAttribute="top" secondItem="LLs-6x-7r1" secondAttribute="top" constant="8" id="Zss-6X-5k7"/>
+                        <constraint firstAttribute="height" constant="200" id="dZ3-te-SIs"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>

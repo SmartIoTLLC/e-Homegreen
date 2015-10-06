@@ -21,6 +21,9 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var defaults = NSUserDefaults.standardUserDefaults()
     var isPresenting: Bool = true
     
+    
+    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
+    
     @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var popUpTextView: UITextView!
     init(point:CGPoint){
@@ -70,10 +73,25 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         self.view.addGestureRecognizer(tapGesture)
         
         popUpTextView.text = security.modeExplanation
+        sizeText()
         
 //        popUpTextView.delegate = self
 
         // Do any additional setup after loading the view.
+    }
+    
+    func sizeText(){
+        let fixedWidth = popUpTextView.frame.size.width
+        popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = popUpTextView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        if newFrame.size.height + 60 < 200{
+            popUpTextView.frame = newFrame
+            backViewHeight.constant = popUpTextView.frame.size.height + 50
+        }else{
+            backViewHeight.constant = 200
+        }
     }
     
     func handleTap(gesture:UITapGestureRecognizer){

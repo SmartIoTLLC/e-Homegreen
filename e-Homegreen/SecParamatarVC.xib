@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09i-eo-FuD" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="155" width="300" height="190"/>
+                    <rect key="frame" x="150" y="145" width="300" height="190"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWK-JW-gkX">
                             <rect key="frame" x="8" y="152" width="284" height="30"/>
@@ -60,7 +60,7 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="09i-eo-FuD" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-50" id="TMJ-rf-Rsc"/>
+                <constraint firstItem="09i-eo-FuD" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-60" id="TMJ-rf-Rsc"/>
                 <constraint firstItem="09i-eo-FuD" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="quW-t9-IyQ"/>
             </constraints>
         </view>

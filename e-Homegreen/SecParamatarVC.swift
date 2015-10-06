@@ -54,6 +54,14 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            centarY.constant = -80
+        }else{
+            centarY.constant = -60
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
