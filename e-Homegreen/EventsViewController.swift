@@ -59,6 +59,7 @@ class EventsViewController: CommonViewController {
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
         }
+        eventCollectionView.reloadData()
     }
     
     func refreshEventsList () {

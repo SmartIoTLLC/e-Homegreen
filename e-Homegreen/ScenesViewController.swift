@@ -168,6 +168,7 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
             pullDown.addSubview(zoneButton)
         }
+        scenesCollectionView.reloadData()
     }
     
     func saveText(strText: String) {

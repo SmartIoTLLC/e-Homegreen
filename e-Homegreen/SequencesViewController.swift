@@ -57,6 +57,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate {
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
         }
+        sequenceCollectionView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
