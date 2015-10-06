@@ -1,20 +1,20 @@
 //
-//  SceneParametarVC.swift
+//  TimerParametarVC.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/14/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Teodor Stevic on 10/6/15.
+//  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
+class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
-    var scene:Scene?
+    var timer:Timer?
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -25,7 +25,7 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var isPresenting: Bool = true
     
     init(point:CGPoint){
-        super.init(nibName: "SceneParametarVC", bundle: nil)
+        super.init(nibName: "TimerParametarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
@@ -40,7 +40,7 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        isBroadcast.on = scene!.isBroadcast.boolValue
+        isBroadcast.on = timer!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -49,9 +49,9 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     func changeValue (sender:UISwitch){
         if sender.on == true {
-            scene?.isBroadcast = true
+            timer?.isBroadcast = true
         } else {
-            scene?.isBroadcast = false
+            timer?.isBroadcast = false
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
@@ -82,20 +82,20 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         }
         return true
     }
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
 
-extension SceneParametarVC : UIViewControllerAnimatedTransitioning {
+extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -127,7 +127,7 @@ extension SceneParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
+            //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -144,7 +144,7 @@ extension SceneParametarVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension SceneParametarVC : UIViewControllerTransitioningDelegate {
+extension TimerParametarVC : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -161,10 +161,10 @@ extension SceneParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSceneParametar(point:CGPoint, scene:Scene) {
-        let sp = SceneParametarVC(point: point)
-//        ad.indexPathRow = indexPathRow
-        sp.scene = scene
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+    func showTimerParametar(point:CGPoint, timer:Timer) {
+        let st = TimerParametarVC(point: point)
+        //        ad.indexPathRow = indexPathRow
+        st.timer = timer
+        self.view.window?.rootViewController?.presentViewController(st, animated: true, completion: nil)
     }
 }

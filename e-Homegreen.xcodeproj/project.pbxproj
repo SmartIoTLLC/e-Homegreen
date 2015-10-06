@@ -31,6 +31,8 @@
 		736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */; };
 		736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */; };
 		736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */; };
+		7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB1E1BC3F7600097806D /* TimerParametarVC.swift */; settings = {ASSET_TAGS = (); }; };
+		7372EB211BC3F7600097806D /* TimerParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7372EB1F1BC3F7600097806D /* TimerParametarVC.xib */; settings = {ASSET_TAGS = (); }; };
 		738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD051B9EF79F005D183F /* DataImporter.swift */; };
 		738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */; settings = {ASSET_TAGS = (); }; };
 		738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */; settings = {ASSET_TAGS = (); }; };
@@ -212,6 +214,8 @@
 		736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillenceViewController.swift; sourceTree = "<group>"; };
 		736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnergyViewController.swift; sourceTree = "<group>"; };
 		736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		7372EB1E1BC3F7600097806D /* TimerParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerParametarVC.swift; sourceTree = "<group>"; };
+		7372EB1F1BC3F7600097806D /* TimerParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerParametarVC.xib; sourceTree = "<group>"; };
 		738BFD051B9EF79F005D183F /* DataImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityPadVC.swift; sourceTree = "<group>"; };
 		738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityPadVC.xib; sourceTree = "<group>"; };
@@ -441,6 +445,15 @@
 			name = "Bussiness Logic";
 			sourceTree = "<group>";
 		};
+		7372EB221BC3F76C0097806D /* TimerXIB */ = {
+			isa = PBXGroup;
+			children = (
+				7372EB1E1BC3F7600097806D /* TimerParametarVC.swift */,
+				7372EB1F1BC3F7600097806D /* TimerParametarVC.xib */,
+			);
+			name = TimerXIB;
+			sourceTree = "<group>";
+		};
 		738BFD001B9EF077005D183F /* Zone, Category and Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +466,15 @@
 			isa = PBXGroup;
 			children = (
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
+<<<<<<< HEAD
+=======
+				738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */,
+				738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */,
+				738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */,
+				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
+				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
+				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
+>>>>>>> origin/master
 				738DECB01BBBFC1100D6B834 /* Security.json */,
 			);
 			name = Security;
@@ -693,6 +715,7 @@
 		E76B576B1BBD24A100A70F69 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				7372EB221BC3F76C0097806D /* TimerXIB */,
 				E7AAF7671BBE88AD00992A18 /* SurveillanceXIB */,
 				E7AAF7661BBE889800992A18 /* SecurityXIB */,
 				E7F15B011B8F26970025082D /* SettingsXIB */,
@@ -1052,6 +1075,7 @@
 				738DECA31BBBC39F00D6B834 /* SecuirtyCommandVC.xib in Resources */,
 				E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */,
 				73E206B91B2EEFFE0008B002 /* LaunchScreen.xib in Resources */,
+				7372EB211BC3F7600097806D /* TimerParametarVC.xib in Resources */,
 				73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
@@ -1218,6 +1242,7 @@
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
+				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73532EE61BC2A55D00FEDA3D /* Sequence+CoreDataProperties.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,

@@ -148,14 +148,14 @@ extension TimersViewController: UICollectionViewDataSource {
     }
     
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
-//        let tag = gestureRecognizer.view!.tag
-//        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-//            let location = gestureRecognizer.locationInView(timersCollectionView)
-//            if let index = timersCollectionView.indexPathForItemAtPoint(location){
-//                let cell = timersCollectionView.cellForItemAtIndexPath(index)
-//                showSequenceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - timersCollectionView.contentOffset.y), sequence: sequences[tag])
-//            }
-//        }
+        let tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(timersCollectionView)
+            if let index = timersCollectionView.indexPathForItemAtPoint(location){
+                let cell = timersCollectionView.cellForItemAtIndexPath(index)
+                showTimerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - timersCollectionView.contentOffset.y), timer: timers[tag])
+            }
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -178,6 +178,9 @@ extension TimersViewController: UICollectionViewDataSource {
 //        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
 //        cell.timerButton.addGestureRecognizer(tap)
 //        cell.timerButton.tag = indexPath.row
+        
+        // cancel start pause resume
+        //
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
