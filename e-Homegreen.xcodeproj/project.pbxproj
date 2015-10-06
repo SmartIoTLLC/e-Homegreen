@@ -466,15 +466,12 @@
 			isa = PBXGroup;
 			children = (
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
-<<<<<<< HEAD
-=======
 				738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */,
 				738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */,
 				738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */,
 				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
 				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
 				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
->>>>>>> origin/master
 				738DECB01BBBFC1100D6B834 /* Security.json */,
 			);
 			name = Security;
