@@ -1,5 +1,5 @@
 //
-//  Category.swift
+//  Flag.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 10/6/15.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class Category: NSManagedObject {
+class Flag: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
 

@@ -99,6 +99,14 @@ class IncomingHandler: NSObject {
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
                         self.ackADICmdGetInterfaceName(self.byteArray)
                     }
+                    
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
+                        self.ackTimerStatus(self.byteArray)
+                    }
+                    
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
+                        self.ackFlagStatus(self.byteArray)
+                    }
                 }
         }
     }
@@ -489,6 +497,27 @@ class IncomingHandler: NSObject {
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        
+    }
+    //  informacije o parametrima kanala
+    func ackTimerStatus (byteArray:[UInt8]){
+//        fetchDevices()
+//        for var i = 0; i < devices.count; i++ {
+//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+//            }
+//        }
+//        saveChanges()
+//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        
+    }
+    //  informacije o parametrima kanala
+    func ackFlagStatus (byteArray:[UInt8]){
+//        fetchDevices()
+//        for var i = 0; i < devices.count; i++ {
+//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+//        }
+//        saveChanges()
+//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         
     }
     func securityFeedbackHandler (byteArray:[UInt8]) {

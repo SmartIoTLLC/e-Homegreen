@@ -2,7 +2,7 @@
 //  Gateway+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/19/15.
+//  Created by Teodor Stevic on 10/6/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -30,8 +30,10 @@ extension Gateway {
     @NSManaged var devices: NSSet
     @NSManaged var events: NSSet
     @NSManaged var scenes: NSSet
+    @NSManaged var security: NSSet
     @NSManaged var sequences: NSSet
-    @NSManaged var zones: NSSet
     @NSManaged var timers: NSSet
+    @NSManaged var zones: NSSet
+    @NSManaged var flags: NSSet
 
 }

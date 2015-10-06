@@ -19,6 +19,6 @@ extension Security {
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressTwo: NSNumber
     @NSManaged var addressThree: NSNumber
-    @NSManaged var gateway: Gateway?
+    @NSManaged var gateway: Gateway
 
 }
