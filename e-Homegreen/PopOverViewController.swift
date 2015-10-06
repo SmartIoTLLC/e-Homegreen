@@ -20,7 +20,6 @@ struct TableList {
     var name:String
     var id:Int
 }
-
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var levelList:[Zone] = []
@@ -35,7 +34,13 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Zones", id: -1),
         TableList(name: "Categories", id: -1),
         TableList(name: "Timers", id: -1)]
-    
+    var chooseTimerTypeList:[TableList] = [TableList(name: "Once", id: -1),
+        TableList(name: "Daily", id: -1),
+        TableList(name: "Monthly", id: -1),
+        TableList(name: "Yearly", id: -1),
+        TableList(name: "Hourly", id: -1),
+        TableList(name: "Minutely", id: -1),
+        TableList(name: "Countdowmn", id: -1)]
     var tableList:[TableList] = []
     
     var appDel:AppDelegate!
@@ -57,43 +62,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         // Do any additional setup after loading the view.
     }
-//    func updateDeviceList (whatToFetch:String, array:String) {
-//        let fetchRequest = NSFetchRequest(entityName: "Device")
-//        fetchRequest.propertiesToFetch = [whatToFetch]
-//        fetchRequest.returnsObjectsAsFaults = false
-//        fetchRequest.returnsDistinctResults = true
-//        fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
-//        let sortDescriptor = NSSortDescriptor(key: whatToFetch, ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        do {
-//            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest)
-//            print(results)
-//            for device in results {
-//                print(device[whatToFetch]!)
-////                var zoneIdString = device["zoneId"]
-//                if let fetchedObject:Int = device[whatToFetch] as? Int {
-//                    switch array {
-//                    case "gatewayList":
-//                        gatewayList.append("\(fetchedObject)")
-//                    case "levelList":
-//                        levelList.append("\(fetchedObject)")
-//                    case "zoneList":
-//                        zoneList.append("\(fetchedObject)")
-//                    case "categoryList":
-//                        categoryList.append("\(fetchedObject)")
-//                    default:
-//                        print(zoneList)
-//                    }
-//                }
-//                if let gatewayName = device[whatToFetch] as? String {
-//                    gatewayList.append("\(gatewayName)")
-//                }
-//            }
-//        } catch let error1 as NSError {
-//            error = error1
-//            
-//        }
-//    }
+    
     func updateDeviceList (whatToFetch:String) {
         if whatToFetch == "Gateway" {
             let fetchRequest = NSFetchRequest(entityName: "Gateway")
@@ -177,6 +146,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case Categories = 4
         case Scenes = 5
         case ScanGateway = 6
+        case ScanTimerType = 7
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -195,6 +165,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList.append(TableList(name: "All", id: -1))
         } else if indexTab == PopOver.ScanGateway.rawValue {
             tableList = chooseList
+        } else if indexTab == PopOver.ScanTimerType.rawValue {
+            tableList = chooseTimerTypeList
         }
     }
     

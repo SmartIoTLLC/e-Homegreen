@@ -32,7 +32,7 @@ class TimersViewController: CommonViewController {
         }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        updateTimersList()
+        refreshTimerList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
@@ -76,7 +76,7 @@ class TimersViewController: CommonViewController {
         textField.resignFirstResponder()
         return true
     }
-    func refreshSequenceList () {
+    func refreshTimerList () {
         updateTimersList()
         timersCollectionView.reloadData()
     }
@@ -160,40 +160,28 @@ extension TimersViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TimerCollectionViewCell
-//        //2
-//        //        let flickrPhoto = photoForIndexPath(indexPath)
-//        let gradient:CAGradientLayer = CAGradientLayer()
-//        gradient.frame = cell.bounds
-//        gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-//        cell.layer.insertSublayer(gradient, atIndex: 0)
-//        //        cell.backgroundColor = UIColor.lightGrayColor()
-//        //3
-//        cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
-//        
-//        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
-//        longPress.minimumPressDuration = 0.5
-//        cell.sequenceTitle.userInteractionEnabled = true
-//        cell.sequenceTitle.addGestureRecognizer(longPress)
-//        
-//        if let sequenceImage = UIImage(data: timers[indexPath.row].sequenceImageOne) {
-//            cell.sequenceImageView.image = sequenceImage
-//        }
-//        
-//        if let sequenceImage = UIImage(data: timers[indexPath.row].sequenceImageTwo) {
-//            cell.sequenceImageView.highlightedImage = sequenceImage
-//        }
-//        
+        cell.timerTitle.text = "\(timers[indexPath.row].timerName)"
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.timerTitle.userInteractionEnabled = true
+        cell.timerTitle.addGestureRecognizer(longPress)
+        
+        if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
+            cell.timerImageView.image = timerImage
+        }
+        
+        if let timerImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
+            cell.timerImageView.highlightedImage = timerImage
+        }
+        
 //        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
-//        cell.sequenceButton.addGestureRecognizer(tap)
-//        cell.sequenceButton.tag = indexPath.row
-//        
-//        //        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
-//        //            cell.sceneCellImageView.image = sceneImage
-//        //        }
-//        //        cell.sceneCellLabel.image = "\()"
-//        cell.layer.cornerRadius = 5
-//        cell.layer.borderColor = UIColor.grayColor().CGColor
-//        cell.layer.borderWidth = 0.5
+//        cell.timerButton.addGestureRecognizer(tap)
+//        cell.timerButton.tag = indexPath.row
+        
+        cell.layer.cornerRadius = 5
+        cell.layer.borderColor = UIColor.grayColor().CGColor
+        cell.layer.borderWidth = 0.5
         return cell
     }
     
