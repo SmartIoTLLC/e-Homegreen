@@ -313,6 +313,8 @@ class IncomingHandler: NSObject {
         print("Uslo je u ackADICmdGetInterfaceStatus")
         self.fetchDevices()
         print("proslo je fetchDevices")
+        print("Ovde printa broj device-ova sa self\(self.devices.count)")
+        print("Ovde printa broj device-ova bez self \(devices.count)")
         for var i = 0; i < self.devices.count; i++ {
             print("proslo je for var i = 0; i < self.devices.count; i++ {")
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
@@ -492,7 +494,7 @@ class IncomingHandler: NSObject {
             if byteArray[7] == 0x02 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setValue("Disarm", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Disarm", forKey: "EHGSecuritySeczurityMode")
                 case 0x01:
                     defaults.setValue("Away", forKey: "EHGSecuritySecurityMode")
                 case 0x02:
@@ -533,11 +535,11 @@ class IncomingHandler: NSObject {
     func fetchSecurity () {
         // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
-        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+//        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
+//        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
-        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [sortDescriptorTwo]
+//        fetchRequest.predicate = predicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
             securities = fetResults!

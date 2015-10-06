@@ -78,6 +78,7 @@ class SecurityViewController: CommonViewController {
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
         }
+        securityCollectionView.reloadData()
     }
     func refreshSecurity () {
         updateSecurityList()
