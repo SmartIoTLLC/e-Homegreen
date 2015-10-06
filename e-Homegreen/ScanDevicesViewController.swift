@@ -219,6 +219,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
             print("HELLO 2 \(deviceIndex)")
+            print("HELLO 2 \(index)")
             if index != 0 || deviceIndex < index {
                 //                index = index + 1
                 timesRepeatedCounter += 1
@@ -226,10 +227,18 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
                     sendCommandForFindingName(index: deviceIndex)
                 } else {
-                    let newIndex = deviceIndex + 1
-                    timesRepeatedCounter = 0
-                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
-                    sendCommandForFindingName(index: newIndex)
+                    if index == devices.count - 1 {
+                        index = 0
+                        timesRepeatedCounter = 0
+                        deviceNameTimer?.invalidate()
+                        pbFN?.dissmissProgressBar()
+                    } else {
+                        index = deviceIndex + 1
+                        let newIndex = deviceIndex + 1
+                        timesRepeatedCounter = 0
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
+                        sendCommandForFindingName(index: newIndex)
+                    }
                 }
             } else {
                 print("MATICUUU KADA CEMO DA KRENEMO KUCI!")

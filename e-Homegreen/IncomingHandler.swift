@@ -94,6 +94,11 @@ class IncomingHandler: NSObject {
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
                         self.securityFeedbackHandler(self.byteArray)
                     }
+                    
+                    
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
+                        self.ackADICmdGetInterfaceName(self.byteArray)
+                    }
                 }
         }
     }
