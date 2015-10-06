@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecuritySettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
+class SecuritySettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
 
     @IBOutlet weak var backView: UIView!
     
@@ -18,6 +18,8 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var addOne: UITextField!
     @IBOutlet weak var addTwo: UITextField!
     @IBOutlet weak var addThree: UITextField!
+    
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     func endEditingNow(){
         addOne.resignFirstResponder()
@@ -57,8 +59,26 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     @IBAction func btnChooseGateway(sender: AnyObject) {
-        
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 1
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
     }
     
     @IBAction func btnSave(sender: AnyObject) {

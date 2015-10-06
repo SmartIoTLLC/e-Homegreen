@@ -13,7 +13,7 @@ class ViewControllerUtils : UIView {
     
     var container: UIView = UIView()
     var loadingView: UIView = UIView()
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+//    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     /*
     Show customized activity indicator,
@@ -23,6 +23,7 @@ class ViewControllerUtils : UIView {
     */
     func showActivityIndicator(uiView: UIView) {
         container.frame = uiView.frame
+        container.frame.size.width = uiView.frame.size.height
         container.center = uiView.center
         container.backgroundColor = UIColorFromHex(0xffffff, alpha: 0.3)
         
@@ -33,15 +34,15 @@ class ViewControllerUtils : UIView {
         loadingView.clipsToBounds = true
         loadingView.layer.cornerRadius = 10
         
-        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-        activityIndicator.color = UIColor.darkGrayColor()
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.center = CGPointMake(loadingView.frame.size.width / 2, loadingView.frame.size.height / 2);
+//        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+//        activityIndicator.color = UIColor.darkGrayColor()
+//        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+//        activityIndicator.center = CGPointMake(loadingView.frame.size.width / 2, loadingView.frame.size.height / 2);
         
-        loadingView.addSubview(activityIndicator)
+//        loadingView.addSubview(activityIndicator)
         container.addSubview(loadingView)
         uiView.addSubview(container)
-        activityIndicator.startAnimating()
+//        activityIndicator.startAnimating()
     }
     
     /*
@@ -51,7 +52,7 @@ class ViewControllerUtils : UIView {
     @param uiView - remove activity indicator from this view
     */
     func hideActivityIndicator() {
-        activityIndicator.stopAnimating()
+//        activityIndicator.stopAnimating()
         container.removeFromSuperview()
     }
     
@@ -80,15 +81,15 @@ class ViewControllerUtils : UIView {
         loadingView.clipsToBounds = true
         loadingView.layer.cornerRadius = 10
         
-        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.color = UIColor.darkGrayColor()
-        activityIndicator.center = CGPointMake(loadingView.frame.size.width / 2, loadingView.frame.size.height / 2);
+//        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+//        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+//        activityIndicator.color = UIColor.darkGrayColor()
+//        activityIndicator.center = CGPointMake(loadingView.frame.size.width / 2, loadingView.frame.size.height / 2);
         
-        loadingView.addSubview(activityIndicator)
+//        loadingView.addSubview(activityIndicator)
         container.addSubview(loadingView)
         uiView.addSubview(container)
-        activityIndicator.startAnimating()
+//        activityIndicator.startAnimating()
     }
 
     
