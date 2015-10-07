@@ -2,7 +2,7 @@
 //  Event+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 10/5/15.
+//  Created by Teodor Stevic on 10/6/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -20,8 +20,8 @@ extension Event {
     @NSManaged var eventImageTwo: NSData
     @NSManaged var eventName: String
     @NSManaged var isBroadcast: NSNumber
+    @NSManaged var eventZone: String
+    @NSManaged var eventCategory: String
     @NSManaged var gateway: Gateway
-    @NSManaged var gatewayZone: Zone
-    @NSManaged var gatewayCategory: Category
 
 }

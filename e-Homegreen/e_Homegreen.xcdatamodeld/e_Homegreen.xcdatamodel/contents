@@ -5,11 +5,7 @@
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gatewayCategory" inverseEntity="Event" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="categories" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gatewayCategory" inverseEntity="Scene" syncable="YES"/>
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gatewayCategory" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Timer" inverseName="gatewayCategory" inverseEntity="Timer" syncable="YES"/>
     </entity>
     <entity name="Device" representedClassName="e_Homegreen.Device" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -48,14 +44,26 @@
     </entity>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="eventCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="eventImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="events" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="gatewayCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="events" inverseEntity="Category" syncable="YES"/>
-        <relationship name="gatewayZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="events" inverseEntity="Zone" syncable="YES"/>
+    </entity>
+    <entity name="Flag" representedClassName=".Flag" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="flagCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="flagImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="flagImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="flagName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="setState" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="flags" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="Gateway" representedClassName="e_Homegreen.Gateway" syncable="YES">
         <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -73,6 +81,7 @@
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="gateway" inverseEntity="Category" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
+        <relationship name="flags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
         <relationship name="security" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Security" inverseName="gateway" inverseEntity="Security" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
@@ -82,13 +91,13 @@
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="sceneCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sceneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sceneImageOne" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="sceneImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="sceneName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sceneZone" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="scenes" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="gatewayCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="scenes" inverseEntity="Category" syncable="YES"/>
-        <relationship name="gatewayZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="scenes" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Security" representedClassName=".Security" syncable="YES">
         <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -101,38 +110,43 @@
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="sequenceCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceCycles" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="sequenceImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="sequenceName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceZone" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="sequences" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="gatewayCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="sequences" inverseEntity="Category" syncable="YES"/>
-        <relationship name="gatewayZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="sequences" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Surveilence" representedClassName="e_Homegreen.Surveilence" syncable="YES">
+        <attribute name="autSpanStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dwellTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="ip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="panStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tiltStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="timerCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timerImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="timerImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="timerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timerState" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="timers" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="gatewayCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="timers" inverseEntity="Category" syncable="YES"/>
-        <relationship name="gatewayZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="timers" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Zone" representedClassName="e_Homegreen.Zone" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -140,23 +154,19 @@
         <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoneDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gatewayZone" inverseEntity="Event" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="zones" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="parentZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="parentZone" inverseEntity="Zone" syncable="YES"/>
-        <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gatewayZone" inverseEntity="Scene" syncable="YES"/>
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gatewayZone" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Timer" inverseName="gatewayZone" inverseEntity="Timer" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Category" positionX="-9" positionY="144" width="128" height="180"/>
+        <element name="Category" positionX="-9" positionY="144" width="128" height="120"/>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
         <element name="Event" positionX="-9" positionY="171" width="128" height="180"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="345"/>
+        <element name="Flag" positionX="-18" positionY="135" width="128" height="195"/>
+        <element name="Gateway" positionX="-63" positionY="54" width="128" height="360"/>
         <element name="Scene" positionX="-54" positionY="135" width="128" height="180"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="135"/>
         <element name="Sequence" positionX="-27" positionY="162" width="128" height="195"/>
-        <element name="Surveilence" positionX="-18" positionY="135" width="128" height="195"/>
-        <element name="Timer" positionX="9" positionY="180" width="128" height="195"/>
-        <element name="Zone" positionX="-18" positionY="135" width="128" height="210"/>
+        <element name="Surveilence" positionX="-18" positionY="135" width="128" height="255"/>
+        <element name="Timer" positionX="9" positionY="180" width="128" height="210"/>
+        <element name="Zone" positionX="-18" positionY="135" width="128" height="135"/>
     </elements>
 </model>

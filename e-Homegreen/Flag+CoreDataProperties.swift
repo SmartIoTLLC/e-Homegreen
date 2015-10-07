@@ -1,5 +1,5 @@
 //
-//  Timer+CoreDataProperties.swift
+//  Flag+CoreDataProperties.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 10/6/15.
@@ -12,18 +12,17 @@
 import Foundation
 import CoreData
 
-extension Timer {
+extension Flag {
 
-    @NSManaged var address: NSNumber
+    @NSManaged var flagId: NSNumber
+    @NSManaged var flagName: String
+    @NSManaged var setState: NSNumber
+    @NSManaged var flagImageOne: NSData
+    @NSManaged var flagImageTwo: NSData
     @NSManaged var isBroadcast: NSNumber
-    @NSManaged var timerId: NSNumber
-    @NSManaged var timerImageOne: NSData
-    @NSManaged var timerImageTwo: NSData
-    @NSManaged var timerName: String
-    @NSManaged var type: String
-    @NSManaged var timerState: NSNumber
-    @NSManaged var timeZone: String
-    @NSManaged var timerCategory: String
+    @NSManaged var flagZone: String
+    @NSManaged var flagCategory: String
+    @NSManaged var address: NSNumber
     @NSManaged var gateway: Gateway
 
 }
