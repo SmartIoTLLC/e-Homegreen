@@ -204,6 +204,10 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surveillance.password = editPassword.text!
                 surveillance.isVisible = true
                 surveillance.name = editName.text!
+                surveillance.tiltStep = 1
+                surveillance.panStep = 1
+                surveillance.autSpanStep = 1
+                surveillance.dwellTime = 15
                 saveChanges()
             }else{
                 surv!.ip = editIPRemote.text!

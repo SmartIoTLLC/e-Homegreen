@@ -59,11 +59,10 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        panStepSlider.value = 5
-        tiltStepSlider.value = 3
-        autoPanStepSlider.value = 4
-        dwellTimeSlider.value = 20
-        print(surv)
+        panStepSlider.value = Float(surv.panStep!)
+        tiltStepSlider.value = Float(surv.tiltStep!)
+        autoPanStepSlider.value = Float(surv.autSpanStep!)
+        dwellTimeSlider.value = Float(surv.dwellTime!)
         
         panStepLabel.text = "\(panStepSlider.value)"
         tiltStepLabel.text = "\(tiltStepSlider.value)"
@@ -95,12 +94,11 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     
     @IBAction func btnSave(sender: AnyObject) {
         
-//        surv!.ip = editIPRemote.text!
-//        surv!.port = Int(editPortRemote.text!)!
-//        surv!.username = editUserName.text!
-//        surv!.password = editPassword.text!
-//        surv!.name = editName.text!
-//        saveChanges()
+        surv!.panStep = panStepSlider.value
+        surv!.tiltStep = tiltStepSlider.value
+        surv!.autSpanStep = autoPanStepSlider.value
+        surv!.dwellTime = dwellTimeSlider.value
+        saveChanges()
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }

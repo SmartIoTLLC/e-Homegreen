@@ -8,11 +8,12 @@
 
 import UIKit
 
-protocol SceneGalleryDelegate{
-    func backString(strText: String, imageIndex:Int)
+@objc protocol SceneGalleryDelegate{
+    optional func backString(strText: String, imageIndex:Int)
+    optional func backImageFromGallery(data:NSData, imageIndex:Int)
 }
 
-class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
+class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var delegate : SceneGalleryDelegate?
     
@@ -20,6 +21,8 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     var imageIndex:Int!
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
+
+    var imagePicker = UIImagePickerController()
     
     var isPresenting: Bool = true
     
@@ -51,21 +54,63 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = backview.bounds
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        backview.layer.insertSublayer(gradient, atIndex: 0)
-        backview.layer.borderWidth = 1
-        backview.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backview.layer.cornerRadius = 10
-        backview.clipsToBounds = true
-        
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         self.gallery.registerNib(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
 
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func openGallery(sender: AnyObject) {
+        
+//        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+            print("Button capture")
+            
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+//            imagePicker.allowsEditing = false
+            
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+//        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        
+        delegate?.backImageFromGallery!(UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150))!, 0.5)!, imageIndex: imageIndex)
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func RBResizeImage(image: UIImage?, targetSize: CGSize) -> UIImage? {
+        if let image = image {
+            let size = image.size
+            
+            let widthRatio  = targetSize.width  / image.size.width
+            let heightRatio = targetSize.height / image.size.height
+            
+            // Figure out what our orientation is, and use that to form the rectangle
+            var newSize: CGSize
+            if(widthRatio > heightRatio) {
+                newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+            } else {
+                newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+            }
+            
+            // This is the rect that we've calculated out and this is what is actually used below
+            let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+            
+            // Actually do the resizing to the rect using the ImageContext stuff
+            UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+            image.drawInRect(rect)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return newImage
+        } else {
+            return nil
+        }
+    }
+
     
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -107,7 +152,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        delegate?.backString(galleryList[indexPath.row], imageIndex: imageIndex)
+        delegate?.backString!(galleryList[indexPath.row], imageIndex: imageIndex)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -198,3 +243,4 @@ extension UIViewController {
         return galleryVC
     }
 }
+
