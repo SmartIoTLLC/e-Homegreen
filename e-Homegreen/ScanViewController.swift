@@ -22,6 +22,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanTimersViewController: ScanTimerViewController!
     var importZoneViewController:ImportZoneViewController!
     var importCategoryViewController: ImportCategoryViewController!
+    var scanFlagsViewController: ScanFlagViewController!
     
     
     var appDel:AppDelegate!
@@ -81,6 +82,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier("ScanTimers") as! ScanTimerViewController
         importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
         importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
+        scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanFlags") as! ScanFlagViewController
         
         scanSceneViewController.gateway = gateway
         scanDeviceViewController.gateway = gateway
@@ -89,6 +91,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanTimersViewController.gateway = gateway
         importZoneViewController.gateway = gateway
         importCategoryViewController.gateway = gateway
+        scanFlagsViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
@@ -207,6 +210,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
                 print("Unresolved error \(error), \(error!.userInfo)")
                 abort()
             }
+        
         default:
             print("")
         }
@@ -350,6 +354,20 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             oldController!.view.hidden = true
             
             scanTimersViewController.view.hidden = false
+        }
+        if text == "Flag" {
+            choosedTab = .Zones
+            
+            let oldController = childViewControllers.last
+            
+            self.addChildViewController(scanFlagsViewController)
+            scanFlagsViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
+            container.addSubview(scanFlagsViewController.view)
+            scanFlagsViewController.didMoveToParentViewController(self)
+            
+            oldController!.view.hidden = true
+            
+            scanFlagsViewController.view.hidden = false
         }
     }
     

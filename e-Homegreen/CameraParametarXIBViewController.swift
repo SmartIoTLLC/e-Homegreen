@@ -8,18 +8,35 @@
 
 import UIKit
 
-class CameraParametarXIBViewController: UIViewController {
+class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     
     var isPresenting: Bool = true
     
-    init(point:CGPoint){
+    var surv:Surveilence!
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    
+    @IBOutlet weak var backView: CustomGradientBackground!
+    
+    @IBOutlet weak var panStepSlider: UISlider!
+    @IBOutlet weak var tiltStepSlider: UISlider!
+    @IBOutlet weak var autoPanStepSlider: UISlider!
+    @IBOutlet weak var dwellTimeSlider: UISlider!
+    
+    @IBOutlet weak var panStepLabel: UILabel!
+    @IBOutlet weak var tiltStepLabel: UILabel!
+    @IBOutlet weak var autoPanStepLabel: UILabel!
+    @IBOutlet weak var dwellTimeLabel: UILabel!
+    
+    init(point:CGPoint, surv:Surveilence){
         super.init(nibName: "CameraParametarXIBViewController", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
+        self.surv = surv
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,12 +46,82 @@ class CameraParametarXIBViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         self.view.backgroundColor = UIColor.clearColor()
         
+        panStepSlider.addTarget(self, action: "changePanStep:", forControlEvents: .ValueChanged)
+        tiltStepSlider.addTarget(self, action: "changeTiltStep:", forControlEvents: .ValueChanged)
+        autoPanStepSlider.addTarget(self, action: "changeAutoPanStep:", forControlEvents: .ValueChanged)
+        dwellTimeSlider.addTarget(self, action: "changeDwellTimeSlider:", forControlEvents: .ValueChanged)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        
+        panStepSlider.value = 5
+        tiltStepSlider.value = 3
+        autoPanStepSlider.value = 4
+        dwellTimeSlider.value = 20
+        print(surv)
+        
+        panStepLabel.text = "\(panStepSlider.value)"
+        tiltStepLabel.text = "\(tiltStepSlider.value)"
+        autoPanStepLabel.text = "\(autoPanStepSlider.value)"
+        dwellTimeLabel.text = "\(dwellTimeSlider.value)"
 
         // Do any additional setup after loading the view.
+    }
+    
+    func changePanStep(slider: UISlider){
+        slider.value = round(slider.value)
+        panStepLabel.text = "\(round(slider.value))"
+    }
+    
+    func changeTiltStep(slider: UISlider){
+        slider.value = round(slider.value)
+        tiltStepLabel.text = "\(round(slider.value))"
+    }
+    
+    func changeAutoPanStep(slider: UISlider){
+        slider.value = round(slider.value)
+        autoPanStepLabel.text = "\(round(slider.value))"
+    }
+    
+    func changeDwellTimeSlider(slider: UISlider){
+        slider.value = round(slider.value)
+        dwellTimeLabel.text = "\(round(slider.value))"
+    }
+    
+    @IBAction func btnSave(sender: AnyObject) {
+        
+//        surv!.ip = editIPRemote.text!
+//        surv!.port = Int(editPortRemote.text!)!
+//        surv!.username = editUserName.text!
+//        surv!.password = editPassword.text!
+//        surv!.name = editName.text!
+//        saveChanges()
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        
+        appDel.establishAllConnections()
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            return false
+        }
+        return true
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,8 +201,8 @@ extension CameraParametarXIBViewController : UIViewControllerTransitioningDelega
     
 }
 extension UIViewController {
-    func showCameraParametar(point:CGPoint, surveillance:Surveilence?) {
-        let sp = CameraParametarXIBViewController(point: point)
+    func showCameraParametar(point:CGPoint, surveillance:Surveilence) {
+        let sp = CameraParametarXIBViewController(point: point, surv: surveillance)
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }
 }

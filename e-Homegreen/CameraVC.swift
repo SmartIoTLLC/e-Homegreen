@@ -23,6 +23,8 @@ class CameraVC: UIViewController {
     var point:CGPoint?
     var oldPoint:CGPoint?
     
+    var moveCam:MoveCameraHandler = MoveCameraHandler()
+    
     var isPresenting: Bool = true
     
     var timer:NSTimer = NSTimer()
@@ -57,11 +59,32 @@ class CameraVC: UIViewController {
         return true
     }
     
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            print("vodoravno")
+        }else{
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
     @IBAction func exitButton(sender: AnyObject) {
         timer.invalidate()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    
+    @IBAction func btnAutoSpan(sender: AnyObject) {
+        moveCam.autoSpan(surv)
+    }
+    
+    @IBAction func btnStop(sender: AnyObject) {
+        moveCam.stop(surv)
+    }
+    
+    
+    @IBAction func btnPresetSequence(sender: AnyObject) {
+        moveCam.presetSequence(surv)
+    }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.LandscapeLeft
@@ -81,19 +104,19 @@ class CameraVC: UIViewController {
     }
     
     @IBAction func leftButtomAction(sender: AnyObject) {
-        MoveCameraHandler(surv: surv, position: "left")
+        moveCam.moveCamera(surv, position: "left")
     }
     
     @IBAction func rightButtomAction(sender: AnyObject) {
-        MoveCameraHandler(surv: surv, position: "right")
+        moveCam.moveCamera(surv, position: "right")
     }
     
     @IBAction func topButtomAction(sender: AnyObject) {
-        MoveCameraHandler(surv: surv, position: "up")
+        moveCam.moveCamera(surv, position: "up")
     }
     
     @IBAction func bottomButtomAction(sender: AnyObject) {
-        MoveCameraHandler(surv: surv, position: "down")
+        moveCam.moveCamera(surv, position: "down")
     }
 
 }

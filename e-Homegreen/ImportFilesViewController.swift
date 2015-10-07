@@ -64,9 +64,9 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func enumerateDirectory() -> [String] {
-        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as? [String]
-        if dirs != nil {
-            let dir = dirs![0]
+        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as [String]
+//        if dirs != nil {
+            let dir = dirs[0]
             do {
                 let fileList = try NSFileManager.defaultManager().contentsOfDirectoryAtPath(dir)
                 return fileList as [String]
@@ -74,9 +74,9 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
                 
             }
             
-        }else{
-            return []
-        }
+//        }else{
+//            return []
+//        }
         return []
         
     }

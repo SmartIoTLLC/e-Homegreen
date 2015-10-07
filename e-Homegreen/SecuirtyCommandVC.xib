@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -27,11 +27,8 @@
                     <rect key="frame" x="150" y="200" width="300" height="200"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0A-Bb-f3H">
-                            <rect key="frame" x="166" y="160" width="73" height="30"/>
+                            <rect key="frame" x="155" y="160" width="135" height="30"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="73" id="OJf-iw-HZw"/>
-                            </constraints>
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -48,11 +45,8 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W31-BK-91W">
-                            <rect key="frame" x="61" y="160" width="73" height="30"/>
+                            <rect key="frame" x="10" y="160" width="135" height="30"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="73" id="vOk-Pi-oJ4"/>
-                            </constraints>
                             <state key="normal" title="Ok">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -64,15 +58,17 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="i0A-Bb-f3H" firstAttribute="centerY" secondItem="W31-BK-91W" secondAttribute="centerY" id="0O5-Vx-dUt"/>
-                        <constraint firstAttribute="trailing" secondItem="i0A-Bb-f3H" secondAttribute="trailing" constant="61" id="5Zh-Ot-RQM"/>
                         <constraint firstAttribute="width" constant="300" id="Coe-9r-gFu"/>
-                        <constraint firstItem="W31-BK-91W" firstAttribute="leading" secondItem="LLs-6x-7r1" secondAttribute="leading" constant="61" id="HA8-5i-uFx"/>
                         <constraint firstAttribute="bottom" secondItem="W31-BK-91W" secondAttribute="bottom" constant="10" id="Hte-O9-4Al"/>
                         <constraint firstAttribute="trailing" secondItem="YMP-tc-onp" secondAttribute="trailing" constant="8" id="KQe-mm-7cv"/>
                         <constraint firstItem="W31-BK-91W" firstAttribute="top" secondItem="YMP-tc-onp" secondAttribute="bottom" constant="10" id="OXJ-qd-c3X"/>
                         <constraint firstItem="YMP-tc-onp" firstAttribute="leading" secondItem="LLs-6x-7r1" secondAttribute="leading" constant="8" id="UDl-6j-f4F"/>
                         <constraint firstItem="YMP-tc-onp" firstAttribute="top" secondItem="LLs-6x-7r1" secondAttribute="top" constant="8" id="Zss-6X-5k7"/>
+                        <constraint firstAttribute="trailing" secondItem="i0A-Bb-f3H" secondAttribute="trailing" constant="10" id="b0K-wF-1J2"/>
                         <constraint firstAttribute="height" constant="200" id="dZ3-te-SIs"/>
+                        <constraint firstItem="i0A-Bb-f3H" firstAttribute="leading" secondItem="W31-BK-91W" secondAttribute="trailing" constant="10" id="gtD-Ol-wGN"/>
+                        <constraint firstItem="i0A-Bb-f3H" firstAttribute="width" secondItem="W31-BK-91W" secondAttribute="width" id="gtJ-dV-nH5"/>
+                        <constraint firstItem="W31-BK-91W" firstAttribute="leading" secondItem="LLs-6x-7r1" secondAttribute="leading" constant="10" id="k0Z-ED-bbe"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
