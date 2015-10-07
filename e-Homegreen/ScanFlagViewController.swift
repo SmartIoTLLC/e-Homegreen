@@ -27,7 +27,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     var error:NSError? = nil
     
     var gateway:Gateway?
-    var events:[Event] = []
+    var flags:[Flag] = []
     
     var selected:AnyObject?
     
@@ -50,8 +50,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for event in gateway!.events {
-            events.append(event as! Event)
+        for flag in gateway!.flags {
+            flags.append(flag as! Flag)
         }
 //        refreshEventList()
         
@@ -194,14 +194,14 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("flagCell") as? FlagCell {
             cell.backgroundColor = UIColor.clearColor()
-//            cell.labelID.text = "\(events[indexPath.row].eventId)"
-//            cell.labelName.text = "\(events[indexPath.row].eventName)"
-//            if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
-//                cell.imageOne.image = sceneImage
-//            }
-//            if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
-//                cell.imageTwo.image = sceneImage
-//            }
+            cell.labelID.text = "\(flags[indexPath.row].flagId)"
+            cell.labelName.text = "\(flags[indexPath.row].flagName)"
+            if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
+                cell.imageOne.image = flagImage
+            }
+            if let flagImage = UIImage(data: flags[indexPath.row].flagImageTwo) {
+                cell.imageTwo.image = flagImage
+            }
             return cell
         }
         
@@ -212,22 +212,21 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = events[indexPath.row]
-        IDedit.text = "\(events[indexPath.row].eventId)"
-        nameEdit.text = "\(events[indexPath.row].eventName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
-        broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
-        if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
-            imageSceneOne.image = sceneImage
+        selected = flags[indexPath.row]
+        IDedit.text = "\(flags[indexPath.row].flagId)"
+        nameEdit.text = "\(flags[indexPath.row].flagName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
+        broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
+        if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
+            imageSceneOne.image = flagImage
         }
-        if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
-            imageSceneTwo.image = sceneImage
+        if let flagImage = UIImage(data: flags[indexPath.row].flagImageTwo) {
+            imageSceneTwo.image = flagImage
         }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return events.count
-        return 20
+        return flags.count
     }
 
 }

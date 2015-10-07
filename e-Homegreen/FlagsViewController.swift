@@ -112,20 +112,19 @@ class FlagsViewController: CommonViewController {
 extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //        var address:[UInt8] = []
-        //        if sequences[indexPath.row].isBroadcast.boolValue {
-        //            address = [0xFF, 0xFF, 0xFF]
-        //        } else {
-        //            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
-        //        }
-        //        if let cycles = sequences[indexPath.row].sequenceCycles as? Int {
-        //            if cycles >= 0 && cycles <= 255 {
-        //                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
-        //            }
-        //        } else {
-        //            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
-        //        }
-        //        sequenceCollectionView.reloadData()
+        if let flagId = flags[indexPath.row].flagId as? Int {
+            var address:[UInt8] = []
+            if flags[indexPath.row].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else {
+                address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), UInt8(Int(flags[indexPath.row].address))]
+            }
+            if flags[indexPath.row].setState.boolValue {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[indexPath.row].gateway)
+            } else {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[indexPath.row].gateway)
+            }
+        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -176,8 +175,13 @@ extension FlagsViewController: UICollectionViewDataSource {
         }
         
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
-        cell.flagButton.addGestureRecognizer(tap)
         cell.flagButton.tag = indexPath.row
+        cell.flagButton.addGestureRecognizer(tap)
+        if flags[indexPath.row].setState.boolValue {
+            cell.flagButton.setTitle("Set False", forState: UIControlState.Normal)
+        } else {
+            cell.flagButton.setTitle("Set True", forState: UIControlState.Normal)
+        }
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
@@ -194,8 +198,11 @@ extension FlagsViewController: UICollectionViewDataSource {
             } else {
                 address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
             }
-//            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
-            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
+            if flags[tag].setState.boolValue {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+            } else {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
+            }
         }
     }
 }

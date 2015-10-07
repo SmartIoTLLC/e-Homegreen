@@ -1,20 +1,19 @@
 //
-//  TimerParametarVC.swift
+//  FlagParametarVC.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 10/6/15.
+//  Created by Teodor Stevic on 10/7/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
+class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
-    var timer:Timer?
+    var flag:Flag?
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -25,7 +24,7 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var isPresenting: Bool = true
     
     init(point:CGPoint){
-        super.init(nibName: "TimerParametarVC", bundle: nil)
+        super.init(nibName: "FlagParametarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
@@ -40,7 +39,7 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        isBroadcast.on = timer!.isBroadcast.boolValue
+        isBroadcast.on = flag!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -49,12 +48,12 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     func changeValue (sender:UISwitch){
         if sender.on == true {
-            timer?.isBroadcast = true
+            flag?.isBroadcast = true
         } else {
-            timer?.isBroadcast = false
+            flag?.isBroadcast = false
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListtNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListtNotification", object: self, userInfo: nil)
     }
     
     func dismissViewController () {
@@ -95,7 +94,7 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
 }
 
-extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
+extension FlagParametarVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -144,7 +143,7 @@ extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension TimerParametarVC : UIViewControllerTransitioningDelegate {
+extension FlagParametarVC : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -161,10 +160,9 @@ extension TimerParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showTimerParametar(point:CGPoint, timer:Timer) {
-        let st = TimerParametarVC(point: point)
-        //        ad.indexPathRow = indexPathRow
-        st.timer = timer
-        self.view.window?.rootViewController?.presentViewController(st, animated: true, completion: nil)
+    func showTimerParametar(point:CGPoint, flag:Flag) {
+        let fp = FlagParametarVC(point: point)
+        fp.flag = flag
+        self.view.window?.rootViewController?.presentViewController(fp, animated: true, completion: nil)
     }
 }

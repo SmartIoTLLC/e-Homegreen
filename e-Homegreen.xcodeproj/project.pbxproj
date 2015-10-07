@@ -74,6 +74,8 @@
 		73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B51B4D08CE0083A747 /* IncomingHandler.swift */; };
 		73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B91B4D0B870083A747 /* DeviceInfo.swift */; };
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
+		73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E6CDB71BC56454003A5F55 /* FlagParametarVC.swift */; settings = {ASSET_TAGS = (); }; };
+		73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */; settings = {ASSET_TAGS = (); }; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
@@ -264,6 +266,8 @@
 		73E427B51B4D08CE0083A747 /* IncomingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingHandler.swift; sourceTree = "<group>"; };
 		73E427B91B4D0B870083A747 /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
+		73E6CDB71BC56454003A5F55 /* FlagParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagParametarVC.swift; sourceTree = "<group>"; };
+		73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlagParametarVC.xib; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
@@ -617,6 +621,15 @@
 			name = NSMOModel;
 			sourceTree = "<group>";
 		};
+		73E6CDB61BC56421003A5F55 /* FlagXIB */ = {
+			isa = PBXGroup;
+			children = (
+				73E6CDB71BC56454003A5F55 /* FlagParametarVC.swift */,
+				73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */,
+			);
+			name = FlagXIB;
+			sourceTree = "<group>";
+		};
 		E739739E1B43E62E0077E984 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +727,7 @@
 		E76B576B1BBD24A100A70F69 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				73E6CDB61BC56421003A5F55 /* FlagXIB */,
 				7372EB221BC3F76C0097806D /* TimerXIB */,
 				E7AAF7671BBE88AD00992A18 /* SurveillanceXIB */,
 				E7AAF7661BBE889800992A18 /* SecurityXIB */,
@@ -802,14 +816,12 @@
 		E7AAF7661BBE889800992A18 /* SecurityXIB */ = {
 			isa = PBXGroup;
 			children = (
-
 				738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */,
 				738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */,
 				738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */,
 				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
 				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
 				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
-
 			);
 			name = SecurityXIB;
 			sourceTree = "<group>";
@@ -1079,6 +1091,7 @@
 				73E206B91B2EEFFE0008B002 /* LaunchScreen.xib in Resources */,
 				7372EB211BC3F7600097806D /* TimerParametarVC.xib in Resources */,
 				73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */,
+				73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
@@ -1188,6 +1201,7 @@
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
+				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
@@ -1221,7 +1235,6 @@
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
-				73532EE41BC2A55D00FEDA3D /* Timer+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
