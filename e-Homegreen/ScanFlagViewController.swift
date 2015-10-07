@@ -105,6 +105,15 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         }
     }
     
+    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+        if imageIndex == 1 {
+            self.imageSceneOne.image = UIImage(data: data)
+        }
+        if imageIndex == 2 {
+            self.imageSceneTwo.image = UIImage(data: data)
+        }
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

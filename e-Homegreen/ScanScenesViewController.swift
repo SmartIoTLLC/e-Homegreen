@@ -203,8 +203,6 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                 let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
                 scene.sceneId = sceneId
                 scene.sceneName = sceneName
-//                scene.sceneImageOne = UIImageJPEGRepresentation(imageSceneOne.image!, 0.2)!
-//                scene.sceneImageTwo = UIImageJPEGRepresentation(imageSceneTwo.image!, 0.2)!
                 scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 scene.isBroadcast = NSNumber(bool: false)

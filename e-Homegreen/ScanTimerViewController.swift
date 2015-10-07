@@ -124,6 +124,15 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         }
     }
     
+    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+        if imageIndex == 1 {
+            self.imageTimerOne.image = UIImage(data: data)
+        }
+        if imageIndex == 2 {
+            self.imageTimerTwo.image = UIImage(data: data)
+        }
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
