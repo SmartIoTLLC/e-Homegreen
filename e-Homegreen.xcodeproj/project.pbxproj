@@ -74,8 +74,6 @@
 		73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B51B4D08CE0083A747 /* IncomingHandler.swift */; };
 		73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E427B91B4D0B870083A747 /* DeviceInfo.swift */; };
 		73E485231B60D531007A35AD /* InOutSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E485221B60D531007A35AD /* InOutSocket.swift */; };
-		73E6D9151BBD231E00FC8B8E /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E6D9131BBD231E00FC8B8E /* Surveilence+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
-		73E6D9161BBD231E00FC8B8E /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E6D9141BBD231E00FC8B8E /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
@@ -83,6 +81,8 @@
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
 		73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */; };
 		73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */; };
+		73EE52E51BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E41BC532D200E76BC3 /* Surveilence.swift */; settings = {ASSET_TAGS = (); }; };
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -263,8 +263,6 @@
 		73E427B51B4D08CE0083A747 /* IncomingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingHandler.swift; sourceTree = "<group>"; };
 		73E427B91B4D0B870083A747 /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		73E485221B60D531007A35AD /* InOutSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InOutSocket.swift; sourceTree = "<group>"; };
-		73E6D9131BBD231E00FC8B8E /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		73E6D9141BBD231E00FC8B8E /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
@@ -272,6 +270,8 @@
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
 		73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBarVC.swift; sourceTree = "<group>"; };
 		73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressBarVC.xib; sourceTree = "<group>"; };
+		73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73EE52E41BC532D200E76BC3 /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
@@ -598,8 +598,6 @@
 				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
 				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
 				738DECAB1BBBEA6300D6B834 /* Security.swift */,
-				73E6D9131BBD231E00FC8B8E /* Surveilence+CoreDataProperties.swift */,
-				73E6D9141BBD231E00FC8B8E /* Surveilence.swift */,
 				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
 				7372EB241BC410800097806D /* Timer.swift */,
 				7372EB251BC410800097806D /* Scene+CoreDataProperties.swift */,
@@ -617,6 +615,8 @@
 				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
 				7372EB321BC410800097806D /* Sequence.swift */,
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
+				73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */,
+				73EE52E41BC532D200E76BC3 /* Surveilence.swift */,
 			);
 			name = NSMOModel;
 			sourceTree = "<group>";
@@ -1144,6 +1144,7 @@
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				7372EB381BC410800097806D /* Flag.swift in Sources */,
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
+				73EE52E51BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
@@ -1185,20 +1186,19 @@
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				73DB84A11B301184000DB4EB /* NFCViewController.swift in Sources */,
-				73E6D9151BBD231E00FC8B8E /* Surveilence+CoreDataProperties.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				7372EB391BC410800097806D /* Zone+CoreDataProperties.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
-				73E6D9161BBD231E00FC8B8E /* Surveilence.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
+				73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
