@@ -947,9 +947,9 @@
 				E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */,
 				E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */,
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
+				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
-				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";

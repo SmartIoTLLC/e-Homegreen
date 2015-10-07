@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     
@@ -78,6 +79,29 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func refreshFlagList() {
+        updateFlagList()
+        flagTableView.reloadData()
+    }
+    
+    func updateFlagList () {
+        let fetchRequest = NSFetchRequest(entityName: "Flag")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
+            flags = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     func saveChanges() {
@@ -160,30 +184,30 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-//        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
-//            if sceneId <= 32767 && address <= 255 {
-//                let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-//                event.eventId = sceneId
-//                event.eventName = sceneName
-//                event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-//                event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-//                event.isBroadcast = NSNumber(bool: false)
-//                event.gateway = gateway!
-//                saveChanges()
-//                refreshEventList()
-//                NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
-//            }
-//        }
+        if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
+            if flagId <= 32767 && address <= 255 {
+                let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
+                flag.flagId = flagId
+                flag.flagName = flagName
+                flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                flag.isBroadcast = NSNumber(bool: false)
+                flag.gateway = gateway!
+                saveChanges()
+                refreshFlagList()
+                NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+            }
+        }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-//        if let event = selected as? Event {
-//            appDel.managedObjectContext!.deleteObject(event)
-//            IDedit.text = ""
-//            nameEdit.text = ""
-//            refreshEventList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
-//        }
+        if let flag = selected as? Flag {
+            appDel.managedObjectContext!.deleteObject(flag)
+            IDedit.text = ""
+            nameEdit.text = ""
+            refreshFlagList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+        }
     }
     
     func returnThreeCharactersForByte (number:Int) -> String {
