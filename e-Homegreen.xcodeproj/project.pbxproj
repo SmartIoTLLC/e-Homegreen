@@ -802,15 +802,14 @@
 		E7AAF7661BBE889800992A18 /* SecurityXIB */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
+
 				738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */,
 				738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */,
 				738DECA01BBBC39F00D6B834 /* SecuirtyCommandVC.swift */,
 				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
 				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
 				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
-=======
->>>>>>> origin/master
+
 			);
 			name = SecurityXIB;
 			sourceTree = "<group>";
@@ -1222,11 +1221,8 @@
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
-<<<<<<< HEAD
 				73532EE41BC2A55D00FEDA3D /* Timer+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
-=======
->>>>>>> origin/master
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
