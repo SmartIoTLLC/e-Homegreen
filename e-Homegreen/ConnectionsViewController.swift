@@ -223,7 +223,9 @@ extension ConnectionsViewController: UITableViewDataSource {
 
             cell.backgroundColor = UIColor.clearColor()
             cell.lblGatewayName.text = gateways[indexPath.section].name
+            
             cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
+            
             cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"
             cell.add1.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressOne))
             cell.add2.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressTwo))
@@ -345,7 +347,7 @@ class GatewayCell: UITableViewCell {
     
     @IBOutlet weak var lblGatewayName: UILabel!
     @IBOutlet weak var lblGatewayDeviceNumber: UILabel!
-    @IBOutlet weak var lblGatewayDescription: UILabel!
+    @IBOutlet weak var lblGatewayDescription: MarqueeLabel!
     var gradientLayer: CAGradientLayer?
     
     

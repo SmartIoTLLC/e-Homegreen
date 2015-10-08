@@ -167,7 +167,7 @@ extension String {
 
 class SurveillenceCell:UICollectionViewCell{
     
-    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblName: MarqueeLabel!
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var image: UIImageView!
     

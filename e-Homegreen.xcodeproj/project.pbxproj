@@ -108,6 +108,8 @@
 		E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */; settings = {ASSET_TAGS = (); }; };
+		E79309BE1BC571770009EFB1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E79309BD1BC571770009EFB1 /* QuartzCore.framework */; };
 		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */; };
 		E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */; };
@@ -308,6 +310,9 @@
 		E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportFilesViewController.swift; sourceTree = "<group>"; };
 		E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImportFilesViewController.xib; sourceTree = "<group>"; };
 		E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFlagViewController.swift; sourceTree = "<group>"; };
+		E79309BA1BC5715D0009EFB1 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
+		E79309BD1BC571770009EFB1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
 		E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimaParametarVC.swift; sourceTree = "<group>"; };
 		E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClimaParametarVC.xib; sourceTree = "<group>"; };
@@ -392,6 +397,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E79309BE1BC571770009EFB1 /* QuartzCore.framework in Frameworks */,
 				E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */,
 				E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */,
 				E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */,
@@ -423,6 +429,7 @@
 		1B233F1151142CED73C3C4C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E79309BD1BC571770009EFB1 /* QuartzCore.framework */,
 				E7EBA7651B57B321003D023E /* SystemConfiguration.framework */,
 				E3AFD136AEC4526FF7C887E1 /* libPods.a */,
 			);
@@ -688,6 +695,9 @@
 		E76B57651BBD1DAC00A70F69 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E79309B91BC571470009EFB1 /* UILabel */,
+				E79309BA1BC5715D0009EFB1 /* MarqueeLabel.h */,
+				E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */,
 				E7C9CDFB1BC28CDC007D8FE8 /* TextView */,
 				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
@@ -747,6 +757,13 @@
 				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
 			);
 			name = DeviceXIB;
+			sourceTree = "<group>";
+		};
+		E79309B91BC571470009EFB1 /* UILabel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UILabel;
 			sourceTree = "<group>";
 		};
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
@@ -1227,6 +1244,7 @@
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
+				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				73DB84A71B3013B2000DB4EB /* DatabaseViewController.swift in Sources */,
