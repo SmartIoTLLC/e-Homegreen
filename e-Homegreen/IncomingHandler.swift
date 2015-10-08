@@ -519,13 +519,18 @@ class IncomingHandler: NSObject {
         print("AOOO 2")
         print(byteArray)
         fetchEntities("Flag")
-        for item in flags {
-            if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(byteArray[7]) {
-                
+        for var i = 1; i <= 16; i++ {
+            print(flags.count)
+            for item in flags {
+                if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(i) {
+                    print("alo \(NSNumber(integer: Int(byteArray[9+i])))")
+                    print("\(i) \(byteArray[7+i])")
+                    item.setState = NSNumber(integer: Int(byteArray[8+i]))
+                    saveChanges()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+                }
             }
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
         
     }
     func securityFeedbackHandler (byteArray:[UInt8]) {
@@ -581,10 +586,11 @@ class IncomingHandler: NSObject {
     func fetchEntities (whatToFetch:String) {
         if whatToFetch == "Flag" {
             let fetchRequest = NSFetchRequest(entityName: "Flag")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptors]
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
+                print(results.count)
                 flags = results
             } catch let catchedError as NSError {
                 error = catchedError
@@ -594,7 +600,7 @@ class IncomingHandler: NSObject {
         
         if whatToFetch == "Timer" {
             let fetchRequest = NSFetchRequest(entityName: "Timer")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptors = NSSortDescriptor(key: "timerName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptors]
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
