@@ -216,6 +216,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             appDel.managedObjectContext!.deleteObject(event)
             IDedit.text = ""
             nameEdit.text = ""
+            saveChanges()
             refreshEventList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
         }

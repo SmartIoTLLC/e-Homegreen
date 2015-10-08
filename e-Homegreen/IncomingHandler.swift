@@ -328,6 +328,7 @@ class IncomingHandler: NSObject {
         print("proslo je fetchDevices")
         print("Ovde printa broj device-ova sa self\(self.devices.count)")
         print("Ovde printa broj device-ova bez self \(devices.count)")
+        print(byteArray)
         for var i = 0; i < self.devices.count; i++ {
             print("proslo je for var i = 0; i < self.devices.count; i++ {")
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
@@ -501,27 +502,36 @@ class IncomingHandler: NSObject {
     }
     //  informacije o parametrima kanala
     func ackTimerStatus (byteArray:[UInt8]){
-//        fetchDevices()
-//        for var i = 0; i < devices.count; i++ {
-//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-//            }
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        print("AOOO")
+        print(byteArray)
+        fetchEntities("Timer")
+        for item in timers {
+            if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(byteArray[7]) {
+                
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
         
     }
     //  informacije o parametrima kanala
     func ackFlagStatus (byteArray:[UInt8]){
-//        fetchDevices()
-//        for var i = 0; i < devices.count; i++ {
-//            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        print("AOOO 2")
+        print(byteArray)
+        fetchEntities("Flag")
+        for item in flags {
+            if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(byteArray[7]) {
+                
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
         
     }
     func securityFeedbackHandler (byteArray:[UInt8]) {
-        fetchSecurity()
+        print("AOOO 3")
+        print(byteArray)
+        fetchEntities("Security")
         let address = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
         if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -562,25 +572,52 @@ class IncomingHandler: NSObject {
                 default: break
                 }
             }
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
     }
+    var timers:[Timer] = []
+    var flags:[Flag] = []
     var securities:[Security] = []
-    func fetchSecurity () {
-        // OVDE ISKACE BUD NA ANY
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
-//        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
-//        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorTwo]
-//        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-            securities = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+    func fetchEntities (whatToFetch:String) {
+        if whatToFetch == "Flag" {
+            let fetchRequest = NSFetchRequest(entityName: "Flag")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
+                flags = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
         }
+        
+        if whatToFetch == "Timer" {
+            let fetchRequest = NSFetchRequest(entityName: "Timer")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
+                timers = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Security" {
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptorTwo]
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+                securities = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
+        }
+    }
+    func fetchSecurity () {
     }
 }

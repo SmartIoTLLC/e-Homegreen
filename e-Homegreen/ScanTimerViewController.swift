@@ -152,6 +152,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                 timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
                 timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
                 timer.isBroadcast = NSNumber(bool: false)
+                timer.address = address
                 timer.gateway = gateway!
                 saveChanges()
                 refreshTimerList()
@@ -166,6 +167,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
             IDedit.text = ""
             nameEdit.text = ""
             devAddressThree.text = ""
+            saveChanges()
             refreshTimerList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
         }

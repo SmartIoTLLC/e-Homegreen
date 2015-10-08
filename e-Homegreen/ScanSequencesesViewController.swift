@@ -222,6 +222,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             appDel.managedObjectContext!.deleteObject(sequence)
             IDedit.text = ""
             nameEdit.text = ""
+            saveChanges()
             refreshSequenceList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
         }

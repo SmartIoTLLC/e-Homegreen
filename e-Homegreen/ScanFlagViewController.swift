@@ -192,6 +192,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                 flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 flag.isBroadcast = NSNumber(bool: false)
+                flag.address = address
                 flag.gateway = gateway!
                 saveChanges()
                 refreshFlagList()
@@ -205,6 +206,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             appDel.managedObjectContext!.deleteObject(flag)
             IDedit.text = ""
             nameEdit.text = ""
+            saveChanges()
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
         }

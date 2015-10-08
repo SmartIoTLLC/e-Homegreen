@@ -219,6 +219,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             appDel.managedObjectContext!.deleteObject(scene)
             IDedit.text = ""
             nameEdit.text = ""
+            saveChanges()
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
         }
