@@ -285,7 +285,8 @@ private extension UIStoryboard {
 }
 extension ContainerViewController: SidePanelViewControllerDelegate {
     func menuItemSelected(menuItem: MenuItem) {
-        if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {
+        if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {            
+//            centerViewController.Container.viewWithTag(<#T##tag: Int##Int#>)
 //            addChildViewController(menuItem.viewController!)
 //            menuItem.viewController!.didMoveToParentViewController(self)
             if menuItem.title == "Surveillance"{
@@ -301,6 +302,7 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
 //                    view.addSubview(centerNavigationController.view)
 //                    addChildViewController(centerNavigationController)
 //                    centerNavigationController.didMoveToParentViewController(self)
+            
         }
         self.toggleLeftPanel()
     }

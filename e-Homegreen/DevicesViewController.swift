@@ -339,6 +339,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         print("override func viewWillAppear(animated: Bool) {print(")
     }
     
