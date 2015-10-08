@@ -18,6 +18,8 @@ class EventsViewController: CommonViewController {
     var events:[Event] = []
     var error:NSError? = nil
     
+    
+    
     private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     private let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)

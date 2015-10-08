@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -1530,6 +1530,7 @@
                         <outlet property="devAddressOne" destination="kxh-aA-jf0" id="bug-OB-sKA"/>
                         <outlet property="devAddressThree" destination="ms2-Pb-xC1" id="RPt-P2-xbo"/>
                         <outlet property="devAddressTwo" destination="rl3-HZ-P22" id="ebv-ma-7Fr"/>
+                        <outlet property="flagTableView" destination="CNg-YJ-ncy" id="xEk-OB-9xX"/>
                         <outlet property="imageSceneOne" destination="Qje-dZ-jJ7" id="9fN-QU-9hV"/>
                         <outlet property="imageSceneTwo" destination="hWN-Gp-fIR" id="AP6-6Q-0qx"/>
                         <outlet property="nameEdit" destination="v0Q-Eg-N32" id="zPs-xK-EBq"/>
@@ -4766,7 +4767,7 @@
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="CNk-lB-ZXV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="CNk-lB-ZXV">
                                                     <rect key="frame" x="8" y="34" width="134" height="103"/>
                                                 </imageView>
                                             </subviews>
