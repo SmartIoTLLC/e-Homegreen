@@ -152,9 +152,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 if devices[index.row].type == "Dimmer" {
                     showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                //                if devices[index.row].type == "sensor" {
-                //                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-                //                }
+//                if devices[index.row].type == "sensor" {
+//                    showDigitalInputParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
+//                }
                 if devices[index.row].type == "hvac" {
                     showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
@@ -165,9 +165,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
                 }
                 
-                //                showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
-                
-                //                showAccessParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
             }
         }
     }
@@ -176,6 +173,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Light
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        
         if devices[tag].type == "Dimmer" {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
@@ -528,21 +526,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    //    func infoView() -> UIView {
-    //        var info:UIView = UIView(frame: CGRectMake(0, 0, collectionViewCellSize.width, collectionViewCellSize.height))
-    //        info.backgroundColor = UIColor.grayColor()
-    //        var idLabel:UILabel = UILabel(frame: CGRectMake(10, 10, 100, 30))
-    //        idLabel.textColor = UIColor.whiteColor()
-    //        idLabel.text = "hakhdakhdj"
-    //        info.addSubview(idLabel)
-    //        info.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-    //        //        let gradientLayer = CAGradientLayer()
-    //        //        gradientLayer.frame = info.bounds
-    //        //        gradientLayer.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.2).CGColor]
-    //        //        gradientLayer.locations = [0.0, 1.0]
-    //        //        info.layer.insertSublayer(gradientLayer, atIndex: 0)
-    //        return info
-    //    }
     
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
@@ -559,9 +542,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else if devices[index.row].type == "hvac" {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
+            } else if devices[index.row].type == "curtainsRS485" {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
+                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             }
-            
-            
             
             devices[index.row].info = true
         }
@@ -584,6 +568,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             }else if devices[index.row].type == "hvac" {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
+                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
+            }else if devices[index.row].type == "curtainsRS485" {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             }
             devices[index.row].info = false
@@ -624,13 +611,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         changeSliderValueOldValue = 0
         deviceInControlMode = false
     }
+    
     var changeSliderValueOldValue = 0
+    
     func changeSliderValue(sender: UISlider){
-        print("hm")
         let tag = sender.tag
-        //        deviceInControlMode = true
-//        let oldValue = Int(devices[tag].currentValue)
-//        changeSliderValueOldValue = Int(sender.value * 100)
         devices[tag].currentValue = Int(sender.value * 100)
         if sender.value == 1{
             devices[tag].opening = false
@@ -638,29 +623,14 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if sender.value == 0{
             devices[tag].opening = true
         }
-//        deviceInControlMode = false
-//        if devices[tag].type == "Dimmer" {
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
-//            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway)
-//        }
-        //  Curtain
-//        if devices[tag].type == "curtainsRS485" {
-//            SendingHandler.sendCommand(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway, device: devices[tag], oldValue: oldValue)
-//                })
-//            })
-//        }
         
-                UIView.setAnimationsEnabled(false)
-                self.deviceCollectionView.performBatchUpdates({
-                    let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-                    self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                    }, completion:  {(completed: Bool) -> Void in
-                        UIView.setAnimationsEnabled(true)
-                })
-//        deviceCollectionView.reloadData()
+        UIView.setAnimationsEnabled(false)
+        self.deviceCollectionView.performBatchUpdates({
+            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+            }, completion:  {(completed: Bool) -> Void in
+                UIView.setAnimationsEnabled(true)
+        })
     }
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
@@ -717,6 +687,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
     }
 }
+
 extension DevicesViewController: UICollectionViewDataSource {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -736,6 +707,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             abort()
         }
     }
+    
     func updateDeviceStatus (indexPathRow indexPathRow: Int) {
         devices[indexPathRow].stateUpdatedAt = NSDate()
         saveChanges()
@@ -756,6 +728,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
     }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if let collectionView = scrollView as? UICollectionView {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
@@ -784,6 +757,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         isScrolling = true
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             if cell.gradientLayer == nil {
@@ -826,16 +800,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
-            
-//            cell.labelID.text = "\(indexPath.row+1)"
-//            cell.labelName.text = "\(devices[indexPath.row].name)"
-//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
-//            cell.labelWarningState.text = ""
-            
             
             cell.infoView.layer.cornerRadius = 5
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
@@ -883,18 +850,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.layer.cornerRadius = 5
-            cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.layer.borderWidth = 1
-            //            cell.curtainSlider.addTarget(self, action: "deviceDidEndControlMode", forControlEvents: .ValueChanged)
+            
+            cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
             if deviceValue >= 0 && deviceValue < 0.2 {
@@ -909,20 +866,35 @@ extension DevicesViewController: UICollectionViewDataSource {
             } else {
                 cell.curtainImage.image = UIImage(named: "curtain4")
             }
+            cell.curtainName.userInteractionEnabled = true
             cell.curtainSlider.value = Float(deviceValue)
             cell.curtainImage.userInteractionEnabled = true
-            cell.curtainImage.tag = 1
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
                 cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
                 cell.curtainSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
+                cell.curtainSlider.addTarget(self, action: "changeSliderValueEnded:", forControlEvents:  UIControlEvents.TouchUpInside)
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
                 let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
                 lpgr.minimumPressDuration = 0.5
                 lpgr.delegate = self
                 cell.curtainImage.addGestureRecognizer(lpgr)
                 cell.curtainImage.addGestureRecognizer(tap)
+                cell.curtainName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+                longPress.minimumPressDuration = 0.5
+                cell.curtainName.addGestureRecognizer(longPress)
+                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             }
+            
+            if devices[indexPath.row].info {
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
+            }else {
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
+            }
+            
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
@@ -969,14 +941,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.infoView.hidden = true
                 cell.backView.hidden = false
             }
-            
-//            cell.labelID.text = "\(indexPath.row+1)"
-//            cell.labelName.text = "\(devices[indexPath.row].name)"
-//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-//            cell.labelWarningState.text = ""
+
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
@@ -1091,12 +1058,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.infoView.layer.cornerRadius = 5
             cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
             cell.infoView.layer.borderWidth = 1
-            
-//            cell.labelID.text = "\(indexPath.row + 1)"
-//            cell.labelName.text = "\(devices[indexPath.row].name)"
-//            cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
-//            cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
-//            cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
+
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
             if cell.infoGradientLayer == nil {
@@ -1314,10 +1276,50 @@ class ApplianceCollectionCell: UICollectionViewCell {
 //curtain
 class CurtainCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
     @IBOutlet weak var curtainSlider: UISlider!
     var gradientLayer: CAGradientLayer?
+    
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var labelPowrUsege: UILabel!
+    @IBOutlet weak var lblElectricity: UILabel!
+    @IBOutlet weak var lblVoltage: UILabel!
+    @IBOutlet weak var btnRefresh: UIButton!
+    
+    override func drawRect(rect: CGRect) {
+        
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: UIRectCorner.AllCorners,
+            cornerRadii: CGSize(width: 8.0, height: 8.0))
+        path.addClip()
+        path.lineWidth = 2
+        
+        UIColor.lightGrayColor().setStroke()
+        
+        
+        
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        path.stroke()
+    }
+    
+    
     
 }
 //Door

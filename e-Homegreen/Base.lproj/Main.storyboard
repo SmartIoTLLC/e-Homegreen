@@ -153,6 +153,13 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -3716,38 +3723,151 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbk-5J-of7">
-                                                    <rect key="frame" x="0.0" y="8" width="150" height="0.0"/>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FPC-Qx-77a">
-                                                    <rect key="frame" x="8" y="145" width="134" height="31"/>
-                                                </slider>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="curtain0" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Lk-PX4">
-                                                    <rect key="frame" x="20" y="16" width="110" height="121"/>
-                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K02-Ib-2gO" userLabel="Back View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <subviews>
+                                                        <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FPC-Qx-77a">
+                                                            <rect key="frame" x="8" y="142" width="134" height="31"/>
+                                                        </slider>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbk-5J-of7" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="2" y="8" width="146" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="rate">
+                                                                    <real key="value" value="20"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
+                                                                    <real key="value" value="5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                                                    <real key="value" value="5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                                                    <real key="value" value="10"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="curtain0" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Lk-PX4">
+                                                            <rect key="frame" x="8" y="35" width="134" height="99"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="6yc-Lk-PX4" secondAttribute="trailing" constant="8" id="4V8-Ab-B5s"/>
+                                                        <constraint firstItem="FPC-Qx-77a" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="10" id="4xY-lK-85h"/>
+                                                        <constraint firstAttribute="trailing" secondItem="FPC-Qx-77a" secondAttribute="trailing" constant="10" id="7BT-Ui-0Ks"/>
+                                                        <constraint firstAttribute="trailing" secondItem="tbk-5J-of7" secondAttribute="trailing" constant="2" id="8Gg-nE-ouQ"/>
+                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="8" id="BPb-WA-gke"/>
+                                                        <constraint firstItem="tbk-5J-of7" firstAttribute="top" secondItem="K02-Ib-2gO" secondAttribute="top" constant="8" id="Kes-Zq-9fq"/>
+                                                        <constraint firstAttribute="bottom" secondItem="FPC-Qx-77a" secondAttribute="bottom" constant="8" id="aO1-JH-H9w"/>
+                                                        <constraint firstItem="FPC-Qx-77a" firstAttribute="top" secondItem="6yc-Lk-PX4" secondAttribute="bottom" constant="8" id="cod-RO-WiF"/>
+                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="top" secondItem="tbk-5J-of7" secondAttribute="bottom" constant="8" id="jSZ-2l-l83"/>
+                                                        <constraint firstItem="tbk-5J-of7" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="2" id="y67-hX-Zh2"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66l-f6-pas" userLabel="Info View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SM-Zw-PPe">
+                                                            <rect key="frame" x="0.0" y="46" width="150" height="15"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGi-6J-dC3">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="15"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="71o-dN-nmL">
+                                                            <rect key="frame" x="0.0" y="28" width="150" height="13"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEw-C2-KXd">
+                                                            <rect key="frame" x="0.0" y="80" width="150" height="13"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7gt-wB-cHu">
+                                                            <rect key="frame" x="0.0" y="96" width="150" height="13"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sEA-Ee-Pmu">
+                                                            <rect key="frame" x="52" y="112" width="46" height="20"/>
+                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="46" id="I6i-w7-VfC"/>
+                                                                <constraint firstAttribute="height" constant="20" id="joq-Uw-Ag9"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                            <state key="normal" title="Refresh">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                        </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 V" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xN-fQ-4Na">
+                                                            <rect key="frame" x="0.0" y="64" width="150" height="13"/>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="UEw-C2-KXd" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="1ef-wc-8HY"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7gt-wB-cHu" secondAttribute="trailing" id="4ZL-4d-3ZN"/>
+                                                        <constraint firstAttribute="trailing" secondItem="3SM-Zw-PPe" secondAttribute="trailing" id="4ka-9S-foy"/>
+                                                        <constraint firstAttribute="trailing" secondItem="UGi-6J-dC3" secondAttribute="trailing" id="FP9-ad-8q5"/>
+                                                        <constraint firstAttribute="trailing" secondItem="71o-dN-nmL" secondAttribute="trailing" id="JRp-vc-gcM"/>
+                                                        <constraint firstItem="7gt-wB-cHu" firstAttribute="top" secondItem="UEw-C2-KXd" secondAttribute="bottom" constant="3" id="KqC-SL-OqA"/>
+                                                        <constraint firstItem="3SM-Zw-PPe" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="M2w-BG-g4q"/>
+                                                        <constraint firstAttribute="trailing" secondItem="UEw-C2-KXd" secondAttribute="trailing" id="Pd7-9f-CNb"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7xN-fQ-4Na" secondAttribute="trailing" id="Q0d-bO-d0B"/>
+                                                        <constraint firstItem="71o-dN-nmL" firstAttribute="top" secondItem="UGi-6J-dC3" secondAttribute="bottom" constant="5" id="T5C-oE-CD6"/>
+                                                        <constraint firstItem="7gt-wB-cHu" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="gIl-Uf-PjZ"/>
+                                                        <constraint firstItem="UEw-C2-KXd" firstAttribute="top" secondItem="7xN-fQ-4Na" secondAttribute="bottom" constant="3" id="ggi-Ae-oSw"/>
+                                                        <constraint firstItem="71o-dN-nmL" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="irh-Sj-sHx"/>
+                                                        <constraint firstItem="7gt-wB-cHu" firstAttribute="centerX" secondItem="sEA-Ee-Pmu" secondAttribute="centerX" id="iws-2E-Z3e"/>
+                                                        <constraint firstItem="UGi-6J-dC3" firstAttribute="top" secondItem="66l-f6-pas" secondAttribute="top" constant="8" id="jxa-3g-Xk6"/>
+                                                        <constraint firstItem="sEA-Ee-Pmu" firstAttribute="top" secondItem="7gt-wB-cHu" secondAttribute="bottom" constant="3" id="ksT-7f-j7z"/>
+                                                        <constraint firstItem="3SM-Zw-PPe" firstAttribute="top" secondItem="71o-dN-nmL" secondAttribute="bottom" constant="5" id="nzF-OY-gWC"/>
+                                                        <constraint firstItem="7xN-fQ-4Na" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="s6F-UV-hrL"/>
+                                                        <constraint firstItem="7xN-fQ-4Na" firstAttribute="top" secondItem="3SM-Zw-PPe" secondAttribute="bottom" constant="3" id="yDU-9T-Xp6"/>
+                                                        <constraint firstItem="UGi-6J-dC3" firstAttribute="leading" secondItem="66l-f6-pas" secondAttribute="leading" id="ygP-XE-PO4"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="6yc-Lk-PX4" firstAttribute="top" secondItem="tbk-5J-of7" secondAttribute="bottom" constant="8" id="1Ie-oG-InU"/>
-                                            <constraint firstAttribute="trailing" secondItem="FPC-Qx-77a" secondAttribute="trailing" constant="10" id="4Im-qV-yhj"/>
-                                            <constraint firstAttribute="trailing" secondItem="tbk-5J-of7" secondAttribute="trailing" id="OzM-MK-QBr"/>
-                                            <constraint firstItem="tbk-5J-of7" firstAttribute="top" secondItem="wcg-Qu-60Z" secondAttribute="top" constant="8" id="PBN-pA-Zon"/>
-                                            <constraint firstItem="FPC-Qx-77a" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" constant="10" id="ZGw-HA-Jnj"/>
-                                            <constraint firstAttribute="bottom" secondItem="FPC-Qx-77a" secondAttribute="bottom" constant="5" id="lmk-A2-5uk"/>
-                                            <constraint firstItem="tbk-5J-of7" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="mI3-i7-34G"/>
-                                            <constraint firstItem="6yc-Lk-PX4" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" constant="20" id="suE-Z3-MT6"/>
-                                            <constraint firstAttribute="trailing" secondItem="6yc-Lk-PX4" secondAttribute="trailing" constant="20" id="wQM-uO-hpM"/>
-                                            <constraint firstItem="FPC-Qx-77a" firstAttribute="top" secondItem="6yc-Lk-PX4" secondAttribute="bottom" constant="8" id="xCv-wv-CWs"/>
+                                            <constraint firstItem="66l-f6-pas" firstAttribute="top" secondItem="wcg-Qu-60Z" secondAttribute="top" id="OBd-n0-9f5"/>
+                                            <constraint firstItem="66l-f6-pas" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="VHC-2W-bPP"/>
+                                            <constraint firstAttribute="bottom" secondItem="66l-f6-pas" secondAttribute="bottom" id="eMO-3m-XMQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="66l-f6-pas" secondAttribute="trailing" id="lFm-bt-DNi"/>
+                                            <constraint firstAttribute="bottom" secondItem="K02-Ib-2gO" secondAttribute="bottom" id="oki-Qf-eYB"/>
+                                            <constraint firstAttribute="trailing" secondItem="K02-Ib-2gO" secondAttribute="trailing" id="qLn-ny-MtW"/>
+                                            <constraint firstItem="K02-Ib-2gO" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="qUZ-uq-bsd"/>
+                                            <constraint firstItem="K02-Ib-2gO" firstAttribute="top" secondItem="wcg-Qu-60Z" secondAttribute="top" id="sJ0-ad-26w"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="backView" destination="K02-Ib-2gO" id="TIn-jG-vLe"/>
+                                            <outlet property="btnRefresh" destination="sEA-Ee-Pmu" id="tNV-i9-hri"/>
                                             <outlet property="curtainImage" destination="6yc-Lk-PX4" id="YbN-jr-3sP"/>
                                             <outlet property="curtainName" destination="tbk-5J-of7" id="tza-zI-cBv"/>
                                             <outlet property="curtainSlider" destination="FPC-Qx-77a" id="jgx-eZ-hnM"/>
+                                            <outlet property="infoView" destination="66l-f6-pas" id="lxJ-Hr-82d"/>
+                                            <outlet property="labelPowrUsege" destination="7gt-wB-cHu" id="gK4-q1-eTU"/>
+                                            <outlet property="lblElectricity" destination="UEw-C2-KXd" id="FlW-Md-JaK"/>
+                                            <outlet property="lblVoltage" destination="7xN-fQ-4Na" id="6mR-Rs-rkk"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="applianceCell" id="ymB-1e-PPO" customClass="ApplianceCollectionCell" customModule="e_Homegreen" customModuleProvider="target">

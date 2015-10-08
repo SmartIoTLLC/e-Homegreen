@@ -140,13 +140,17 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
         
         
-//        cell.layer.cornerRadius = 5
+        cell.layer.cornerRadius = 5
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        return sectionInsets
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return collectionViewCellSize
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -199,6 +203,37 @@ class SurveillenceCell:UICollectionViewCell{
     @IBOutlet weak var lblName: MarqueeLabel!
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var image: UIImageView!
+    
+    override func drawRect(rect: CGRect) {
+        
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: UIRectCorner.AllCorners,
+            cornerRadii: CGSize(width: 8.0, height: 8.0))
+        path.addClip()
+        path.lineWidth = 2
+        
+        UIColor.lightGrayColor().setStroke()
+        
+        
+        
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        path.stroke()
+    }
     
 }
 
