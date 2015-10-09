@@ -20,8 +20,8 @@ extension Flag {
     @NSManaged var flagImageOne: NSData
     @NSManaged var flagImageTwo: NSData
     @NSManaged var isBroadcast: NSNumber
-    @NSManaged var flagZone: String
-    @NSManaged var flagCategory: String
+    @NSManaged var flagZone: String?
+    @NSManaged var flagCategory: String?
     @NSManaged var address: NSNumber
     @NSManaged var gateway: Gateway
 

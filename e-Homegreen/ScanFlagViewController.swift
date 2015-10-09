@@ -88,9 +88,15 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         flagTableView.reloadData()
     }
     
-//    func saveText(text: String, id: Int) {
-//        <#code#>
-//    }
+    func saveText(text: String, id: Int) {
+        switch id {
+        case 3:
+            btnZone.setTitle(text, forState: UIControlState.Normal)
+        case 4:
+            btnCategory.setTitle(text, forState: UIControlState.Normal)
+        default: break
+        }
+    }
     
     func updateFlagList () {
         let fetchRequest = NSFetchRequest(entityName: "Flag")
@@ -199,6 +205,12 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                 flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 flag.isBroadcast = NSNumber(bool: false)
                 flag.address = address
+                if btnZone.titleLabel?.text != "--" {
+                    flag.flagZone = btnZone.titleLabel!.text!
+                }
+                if btnCategory.titleLabel?.text != "--" {
+                    flag.flagCategory = btnCategory.titleLabel!.text!
+                }
                 flag.gateway = gateway!
                 saveChanges()
                 refreshFlagList()
@@ -212,6 +224,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             appDel.managedObjectContext!.deleteObject(flag)
             IDedit.text = ""
             nameEdit.text = ""
+            btnZone.titleLabel?.text = "--"
+            btnCategory.titleLabel?.text = "--"
             saveChanges()
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
@@ -249,6 +263,16 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         nameEdit.text = "\(flags[indexPath.row].flagName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
         broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
+        if let _ = flags[indexPath.row].flagZone {
+            btnZone.titleLabel?.text = "\(flags[indexPath.row].flagZone)"
+        } else {
+            btnZone.titleLabel?.text = "--"
+        }
+        if let _ = flags[indexPath.row].flagCategory {
+            btnCategory.titleLabel?.text = "\(flags[indexPath.row].flagCategory)"
+        } else {
+            btnCategory.titleLabel?.text = "--"
+        }
         if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
             imageSceneOne.image = flagImage
         }

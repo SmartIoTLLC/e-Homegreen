@@ -148,7 +148,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
-            if timerId <= 32767 && address <= 255 && type != "Type" {
+            if timerId <= 32767 && address <= 255 && type != "--" {
                 let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
                 timer.timerId = timerId
                 timer.timerName = timerName
@@ -157,6 +157,12 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                 timer.isBroadcast = NSNumber(bool: false)
                 timer.address = address
                 timer.type = type
+                if btnZone.titleLabel?.text != "--" {
+                    timer.timeZone = btnZone.titleLabel!.text!
+                }
+                if btnCategory.titleLabel?.text != "--" {
+                    timer.timerCategory = btnCategory.titleLabel!.text!
+                }
                 timer.gateway = gateway!
                 saveChanges()
                 refreshTimerList()
@@ -171,6 +177,9 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
             IDedit.text = ""
             nameEdit.text = ""
             devAddressThree.text = ""
+            btnZone.titleLabel?.text = "--"
+            btnCategory.titleLabel?.text = "--"
+            btnType.titleLabel?.text = "--"
             saveChanges()
             refreshTimerList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
@@ -283,10 +292,17 @@ extension ScanTimerViewController: UITableViewDataSource {
         nameEdit.text = "\(timers[indexPath.row].timerName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
         btnType.setTitle("\(timers[indexPath.row].type)", forState: UIControlState.Normal)
-//        if let _ = timers[indexPath.row].timerZone {
-//            
-//        }
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
+        if let _ = timers[indexPath.row].timeZone {
+            btnZone.titleLabel?.text = "\(timers[indexPath.row].timeZone)"
+        } else {
+            btnZone.titleLabel?.text = "--"
+        }
+        if let _ = timers[indexPath.row].timerCategory {
+            btnCategory.titleLabel?.text = "\(timers[indexPath.row].timerCategory)"
+        } else {
+            btnCategory.titleLabel?.text = "--"
+        }
         if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
             imageTimerOne.image = timerImage
         }

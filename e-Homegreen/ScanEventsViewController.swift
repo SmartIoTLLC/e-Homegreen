@@ -192,6 +192,16 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         }
     }
     
+    func saveText(text: String, id: Int) {
+        switch id {
+        case 3:
+            btnZone.setTitle(text, forState: UIControlState.Normal)
+        case 4:
+            btnCategory.setTitle(text, forState: UIControlState.Normal)
+        default: break
+        }
+    }
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -205,6 +215,12 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                 event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 event.isBroadcast = NSNumber(bool: false)
+                if btnZone.titleLabel?.text != "--" {
+                    event.eventZone = btnZone.titleLabel!.text!
+                }
+                if btnCategory.titleLabel?.text != "--" {
+                    event.eventCategory = btnCategory.titleLabel!.text!
+                }
                 event.gateway = gateway!
                 saveChanges()
                 refreshEventList()
@@ -218,6 +234,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             appDel.managedObjectContext!.deleteObject(event)
             IDedit.text = ""
             nameEdit.text = ""
+            btnZone.titleLabel?.text = "--"
+            btnCategory.titleLabel?.text = "--"
             saveChanges()
             refreshEventList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
@@ -255,6 +273,16 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         nameEdit.text = "\(events[indexPath.row].eventName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
         broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
+        if let _ = events[indexPath.row].eventZone {
+            btnZone.titleLabel?.text = "\(events[indexPath.row].eventZone)"
+        } else {
+            btnZone.titleLabel?.text = "--"
+        }
+        if let _ = events[indexPath.row].eventCategory {
+            btnCategory.titleLabel?.text = "\(events[indexPath.row].eventCategory)"
+        } else {
+            btnCategory.titleLabel?.text = "--"
+        }
         if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
             imageSceneOne.image = sceneImage
         }

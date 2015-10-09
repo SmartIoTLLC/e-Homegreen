@@ -22,8 +22,8 @@ extension Timer {
     @NSManaged var timerName: String
     @NSManaged var type: String
     @NSManaged var timerState: NSNumber
-    @NSManaged var timeZone: String
-    @NSManaged var timerCategory: String
+    @NSManaged var timeZone: String?
+    @NSManaged var timerCategory: String?
     @NSManaged var gateway: Gateway
 
 }

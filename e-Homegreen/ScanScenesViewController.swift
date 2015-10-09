@@ -157,6 +157,15 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         // Dispose of any resources that can be recreated.
     }
     
+    func saveText(text: String, id: Int) {
+        switch id {
+        case 3:
+            btnZone.setTitle(text, forState: UIControlState.Normal)
+        case 4:
+            btnCategory.setTitle(text, forState: UIControlState.Normal)
+        default: break
+        }
+    }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
         
@@ -208,6 +217,12 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                 scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 scene.isBroadcast = NSNumber(bool: false)
+                if btnZone.titleLabel?.text != "--" {
+                    scene.sceneZone = btnZone.titleLabel!.text!
+                }
+                if btnCategory.titleLabel?.text != "--" {
+                    scene.sceneCategory = btnCategory.titleLabel!.text!
+                }
                 scene.gateway = gateway!
                 saveChanges()
                 refreshSceneList()
@@ -221,6 +236,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             appDel.managedObjectContext!.deleteObject(scene)
             IDedit.text = ""
             nameEdit.text = ""
+            btnZone.titleLabel?.text = "--"
+            btnCategory.titleLabel?.text = "--"
             saveChanges()
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
@@ -237,6 +254,16 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
             cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
+            if let _ = scenes[indexPath.row].sceneZone {
+                btnZone.titleLabel?.text = "\(scenes[indexPath.row].sceneZone)"
+            } else {
+                btnZone.titleLabel?.text = "--"
+            }
+            if let _ = scenes[indexPath.row].sceneCategory {
+                btnCategory.titleLabel?.text = "\(scenes[indexPath.row].sceneCategory)"
+            } else {
+                btnCategory.titleLabel?.text = "--"
+            }
             if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                 cell.imageOne.image = sceneImage
             }

@@ -162,6 +162,16 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         // Dispose of any resources that can be recreated.
     }
     
+    func saveText(text: String, id: Int) {
+        switch id {
+        case 3:
+            btnZone.setTitle(text, forState: UIControlState.Normal)
+        case 4:
+            btnCategory.setTitle(text, forState: UIControlState.Normal)
+        default: break
+        }
+    }
+    
     @IBAction func btnCategoryAction(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
@@ -207,6 +217,12 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                 sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                 sequence.isBroadcast = NSNumber(bool: broadcastSwitch.on)
                 sequence.sequenceCycles = cycles
+                if btnZone.titleLabel?.text != "--" {
+                    sequence.sequenceZone = btnZone.titleLabel!.text!
+                }
+                if btnCategory.titleLabel?.text != "--" {
+                    sequence.sequenceCategory = btnCategory.titleLabel!.text!
+                }
                 sequence.gateway = gateway!
                 saveChanges()
                 refreshSequenceList()
@@ -224,6 +240,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             appDel.managedObjectContext!.deleteObject(sequence)
             IDedit.text = ""
             nameEdit.text = ""
+            btnZone.titleLabel?.text = "--"
+            btnCategory.titleLabel?.text = "--"
             saveChanges()
             refreshSequenceList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
@@ -262,6 +280,16 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
         editCycle.text = "\(sequences[indexPath.row].sequenceCycles)"
         broadcastSwitch.on = sequences[indexPath.row].isBroadcast.boolValue
+        if let _ = sequences[indexPath.row].sequenceZone {
+            btnZone.titleLabel?.text = "\(sequences[indexPath.row].sequenceZone)"
+        } else {
+            btnZone.titleLabel?.text = "--"
+        }
+        if let _ = sequences[indexPath.row].sequenceCategory {
+            btnCategory.titleLabel?.text = "\(sequences[indexPath.row].sequenceCategory)"
+        } else {
+            btnCategory.titleLabel?.text = "--"
+        }
         if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
             imageSceneOne.image = sceneImage
         }
