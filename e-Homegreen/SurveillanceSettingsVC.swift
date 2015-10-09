@@ -146,6 +146,19 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             editUserName.text = surv?.username
             editPassword.text = surv?.password
             editName.text = surv?.name
+            if surv?.location != nil{
+                editLocation.text = surv?.location
+            }
+            if surv?.localIp != nil{
+                editIPLocal.text = surv?.localIp
+            }
+            if surv?.localPort != nil{
+                editPortLocal.text = surv?.localPort
+            }
+            if surv?.ssid != nil{
+                editSSID.text = surv?.ssid
+            }
+            
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
@@ -204,6 +217,20 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surveillance.password = editPassword.text!
                 surveillance.isVisible = true
                 surveillance.name = editName.text!
+                
+                if editLocation.text != ""{
+                    surveillance.location = editLocation.text!
+                }
+                if editIPLocal.text != ""{
+                    surveillance.localIp = editIPLocal.text!
+                }
+                if editPortLocal.text != ""{
+                    surveillance.localPort = editPortLocal.text!
+                }
+                if editSSID.text != ""{
+                    surveillance.ssid = editSSID.text!
+                }
+                
                 surveillance.tiltStep = 1
                 surveillance.panStep = 1
                 surveillance.autSpanStep = 1
@@ -215,6 +242,20 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surv!.username = editUserName.text!
                 surv!.password = editPassword.text!
                 surv!.name = editName.text!
+                
+                if editLocation.text != ""{
+                    surv!.location = editLocation.text!
+                }
+                if editIPLocal.text != ""{
+                    surv!.localIp = editIPLocal.text!
+                }
+                if editPortLocal.text != ""{
+                    surv!.localPort = editPortLocal.text!
+                }
+                if editSSID.text != ""{
+                    surv!.ssid = editSSID.text!
+                }
+                
                 saveChanges()
             }
             
