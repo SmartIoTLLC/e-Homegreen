@@ -696,8 +696,6 @@
 			isa = PBXGroup;
 			children = (
 				E79309B91BC571470009EFB1 /* UILabel */,
-				E79309BA1BC5715D0009EFB1 /* MarqueeLabel.h */,
-				E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */,
 				E7C9CDFB1BC28CDC007D8FE8 /* TextView */,
 				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
@@ -762,6 +760,8 @@
 		E79309B91BC571470009EFB1 /* UILabel */ = {
 			isa = PBXGroup;
 			children = (
+				E79309BA1BC5715D0009EFB1 /* MarqueeLabel.h */,
+				E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */,
 			);
 			name = UILabel;
 			sourceTree = "<group>";

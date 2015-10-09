@@ -47,7 +47,7 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
-//        self.view.addSubview(pullDown)
+        self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         updateSceneList()
@@ -89,7 +89,9 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             abort()
         }
     }
+    
     override func viewWillLayoutSubviews() {
+        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             
             if self.view.frame.size.width == 568{
@@ -106,30 +108,11 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
-//            self.view.addSubview(pullDown)
+            self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-            
-            
-            let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-            zoneLabel.text = "Zone"
-            zoneLabel.textColor = UIColor.whiteColor()
-            pullDown.addSubview(zoneLabel)
-            
-            let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
-            zoneButton.backgroundColor = UIColor.grayColor()
-            zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
-            zoneButton.setTitle("All", forState: UIControlState.Normal)
-            zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-            zoneButton.layer.cornerRadius = 5
-            zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-            zoneButton.layer.borderWidth = 0.5
-            zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
-            zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-            pullDown.addSubview(zoneButton)
-
-            
+   
         } else {
             
             if self.view.frame.size.width == 320{
@@ -146,45 +129,135 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
-//            self.view.addSubview(pullDown)
+            self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-            
-            let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-            zoneLabel.text = "Scene"
-            zoneLabel.textColor = UIColor.whiteColor()
-            pullDown.addSubview(zoneLabel)
-            
-            let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
-            zoneButton.backgroundColor = UIColor.grayColor()
-            zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
-            zoneButton.setTitle("All", forState: UIControlState.Normal)
-            zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-            zoneButton.layer.cornerRadius = 5
-            zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-            zoneButton.layer.borderWidth = 0.5
-            zoneButton.addTarget(self, action: "menuZone:", forControlEvents: UIControlEvents.TouchUpInside)
-            zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-            pullDown.addSubview(zoneButton)
+
         }
+        drawMenu()
         scenesCollectionView.reloadData()
     }
     
-    func saveText(strText: String) {
-        senderButton?.setTitle(strText, forState: .Normal)
+    func drawMenu(){
+        let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+        locationLabel.text = "Location"
+        locationLabel.textColor = UIColor.whiteColor()
+        pullDown.addSubview(locationLabel)
+        
+        let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+        levelLabel.text = "Level"
+        levelLabel.textColor = UIColor.whiteColor()
+        pullDown.addSubview(levelLabel)
+        
+        let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
+        zoneLabel.text = "Zone"
+        zoneLabel.textColor = UIColor.whiteColor()
+        pullDown.addSubview(zoneLabel)
+        
+        let categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
+        categoryLabel.text = "Category"
+        categoryLabel.textColor = UIColor.whiteColor()
+        pullDown.addSubview(categoryLabel)
+        
+        let locationButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
+        locationButton.backgroundColor = UIColor.grayColor()
+        locationButton.titleLabel?.tintColor = UIColor.whiteColor()
+        locationButton.setTitle("All", forState: UIControlState.Normal)
+        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        locationButton.layer.cornerRadius = 5
+        locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        locationButton.layer.borderWidth = 1
+        locationButton.tag = 1
+        locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        pullDown.addSubview(locationButton)
+        
+        let levelButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
+        levelButton.backgroundColor = UIColor.grayColor()
+        levelButton.titleLabel?.tintColor = UIColor.whiteColor()
+        levelButton.setTitle("All", forState: UIControlState.Normal)
+        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        levelButton.layer.cornerRadius = 5
+        levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        levelButton.layer.borderWidth = 1
+        levelButton.tag = 2
+        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        pullDown.addSubview(levelButton)
+        
+        let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
+        zoneButton.backgroundColor = UIColor.grayColor()
+        zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
+        zoneButton.setTitle("All", forState: UIControlState.Normal)
+        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        zoneButton.layer.cornerRadius = 5
+        zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        zoneButton.layer.borderWidth = 1
+        zoneButton.tag = 3
+        zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        pullDown.addSubview(zoneButton)
+        
+        let categoryButton:UIButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
+        categoryButton.backgroundColor = UIColor.grayColor()
+        categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
+        categoryButton.setTitle("All", forState: UIControlState.Normal)
+        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        categoryButton.layer.cornerRadius = 5
+        categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        categoryButton.layer.borderWidth = 1
+        categoryButton.tag = 4
+        categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        pullDown.addSubview(categoryButton)
+    }
+    
+    var locationSearch:String = "All"
+    var zoneSearch:String = "All"
+    var levelSearch:String = "All"
+    var categorySearch:String = "All"
+    
+    func saveText (text : String, id:Int) {
+        let tag = senderButton!.tag
+        switch tag {
+        case 1:
+            locationSearch = text
+        case 2:
+            if id == -1 {
+                levelSearch = "All"
+            } else {
+                levelSearch = "\(id)"
+            }
+        case 3:
+            if id == -1 {
+                zoneSearch = "All"
+            } else {
+                zoneSearch = "\(id)"
+            }
+        case 4:
+            if id == -1 {
+                categorySearch = "All"
+            } else {
+                categorySearch = "\(id)"
+            }
+        default:
+            print("")
+        }
+        senderButton?.setTitle(text, forState: .Normal)
+        
     }
 
     var popoverVC:PopOverViewController = PopOverViewController()
     
-    func menuZone(sender : UIButton){
+    func menuTable(sender : UIButton){
         senderButton = sender
         
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 5
+        popoverVC.indexTab = sender.tag
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -197,7 +270,6 @@ class ScenesViewController: CommonViewController, PopOverIndexDelegate, UIPopove
         
     }
     
-    @available(iOS 8.0, *)
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
