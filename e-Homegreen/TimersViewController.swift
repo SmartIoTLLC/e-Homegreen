@@ -205,12 +205,9 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         default:
             print("")
         }
-<<<<<<< HEAD
         timersCollectionView.reloadData()
-=======
-        senderButton?.setTitle(text, forState: .Normal)
+//        senderButton?.setTitle(text, forState: .Normal)
         
->>>>>>> origin/master
     }
     
     override func didReceiveMemoryWarning() {

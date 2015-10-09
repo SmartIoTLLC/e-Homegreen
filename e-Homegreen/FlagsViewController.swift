@@ -79,10 +79,6 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
             
             drawMenu()
         }
-<<<<<<< HEAD
-=======
-        
->>>>>>> origin/master
         flagsCollectionView.reloadData()
     }
     
