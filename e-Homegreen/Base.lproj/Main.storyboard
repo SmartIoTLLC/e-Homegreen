@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -147,87 +147,9 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Log In View Controller-->
-        <scene sceneID="HuE-Cv-0XR">
-            <objects>
-                <viewController storyboardIdentifier="logInController" id="J7H-Mw-iLp" customClass="LogInViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Tyt-xI-wIH"/>
-                        <viewControllerLayoutGuide type="bottom" id="SG4-l0-3ff"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9wY-hv-cRy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Home logo" translatesAutoresizingMaskIntoConstraints="NO" id="UuF-WC-v1A">
-                                <rect key="frame" x="67" y="50" width="187" height="185"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="185" id="Cie-og-LDQ"/>
-                                    <constraint firstAttribute="width" constant="187" id="JTA-fz-Jmd"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O7K-2g-mHB">
-                                <rect key="frame" x="56" y="293" width="100" height="37"/>
-                                <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="rM7-cj-YM4"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <state key="normal" title="Remote IP">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="remoteIP:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="m1e-7Y-mXf"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjE-02-CDy">
-                                <rect key="frame" x="164" y="293" width="100" height="37"/>
-                                <color key="backgroundColor" red="0.82745098039999998" green="0.83529411760000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="QKy-L3-tYf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
-                                <state key="normal" title="Local IP">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="localIP:" destination="J7H-Mw-iLp" eventType="touchUpInside" id="WrY-hv-j5b"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="UuF-WC-v1A" secondAttribute="centerX" constant="-0.5" id="3yc-dW-qaJ"/>
-                            <constraint firstItem="O7K-2g-mHB" firstAttribute="top" secondItem="UuF-WC-v1A" secondAttribute="bottom" constant="58" id="BFH-cT-Ny7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="IjE-02-CDy" secondAttribute="trailing" constant="40" id="Dyy-He-mKz"/>
-                            <constraint firstItem="O7K-2g-mHB" firstAttribute="leading" secondItem="9wY-hv-cRy" secondAttribute="leadingMargin" constant="40" id="ZYt-vo-YaA"/>
-                            <constraint firstItem="IjE-02-CDy" firstAttribute="centerY" secondItem="O7K-2g-mHB" secondAttribute="centerY" id="exk-Pm-oso"/>
-                            <constraint firstItem="UuF-WC-v1A" firstAttribute="top" secondItem="Tyt-xI-wIH" secondAttribute="bottom" constant="30" id="nZC-fi-h0V"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X0r-S9-PbV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1703" y="113"/>
-        </scene>
         <!--Security Settings View Controller-->
         <scene sceneID="XQi-Ek-tys">
             <objects>
@@ -291,9 +213,6 @@
                                 </state>
                                 <connections>
                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="4lk-JW-pv6"/>
-                                    <action selector="btnRemove:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="G1l-KE-tTS"/>
-                                    <action selector="btnRemove:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="bD8-uv-4bf"/>
-                                    <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="j77-Uf-sKx"/>
                                     <action selector="btnSave:" destination="lMK-jO-vIT" eventType="touchUpInside" id="fHh-OL-lFi"/>
                                 </connections>
                             </button>
@@ -1038,7 +957,6 @@
                                 <connections>
                                     <action selector="findDevice:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="lUN-gG-YC9"/>
                                     <action selector="findDevice:" destination="2sz-D7-yhw" eventType="touchUpInside" id="vWO-Do-k6h"/>
-                                    <action selector="findDevices:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="Nkh-PB-o5t"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEp-x1-R0Z">
@@ -1050,7 +968,6 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnFindNames:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="hdI-QO-f5A"/>
                                     <action selector="findNames:" destination="2sz-D7-yhw" eventType="touchUpInside" id="IRJ-cp-iJ8"/>
                                     <action selector="findNames:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="rq8-Ri-I2e"/>
                                 </connections>
@@ -1064,7 +981,6 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnDeleteAll:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="xfe-rT-2jC"/>
                                     <action selector="deleteAll:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="0q3-Zs-JEV"/>
                                     <action selector="deleteAll:" destination="2sz-D7-yhw" eventType="touchUpInside" id="veV-Oq-Vpb"/>
                                 </connections>
@@ -1370,9 +1286,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="btnAdd:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="UCP-Z8-dj6"/>
-                                                    <action selector="btnAdd:" destination="azm-bF-cJq" eventType="touchUpInside" id="Uw3-yK-eOK"/>
                                                     <action selector="btnAdd:" destination="YJk-2a-b9t" eventType="touchUpInside" id="heR-5S-eiZ"/>
-                                                    <action selector="btnAdd:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="wgM-tk-IEK"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tgx-oa-9OI">
@@ -1386,9 +1300,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="Ocz-iN-29P"/>
                                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="W7d-fa-Qwz"/>
-                                                    <action selector="btnRemove:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="XJ9-Nj-TMp"/>
                                                     <action selector="btnRemove:" destination="YJk-2a-b9t" eventType="touchUpInside" id="fzJ-kt-Fup"/>
                                                 </connections>
                                             </button>
@@ -1534,6 +1446,8 @@
                     <connections>
                         <outlet property="IDedit" destination="fNn-Kw-zcS" id="PWA-LU-Dx2"/>
                         <outlet property="broadcastSwitch" destination="8po-CM-XFg" id="dOu-QD-l4U"/>
+                        <outlet property="btnCategory" destination="861-H5-mSd" id="ECS-un-UYv"/>
+                        <outlet property="btnZone" destination="HUS-7p-W7x" id="VWJ-RL-gzN"/>
                         <outlet property="devAddressOne" destination="kxh-aA-jf0" id="bug-OB-sKA"/>
                         <outlet property="devAddressThree" destination="ms2-Pb-xC1" id="RPt-P2-xbo"/>
                         <outlet property="devAddressTwo" destination="rl3-HZ-P22" id="ebv-ma-7Fr"/>
@@ -1593,7 +1507,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="btnCategory:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="KJg-Eb-Cbj"/>
-                                                    <action selector="btnScenes:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="ZiZ-U7-bTW"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPk-M6-q3d">
@@ -1660,9 +1573,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnRemove:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="cof-qe-mAZ"/>
                                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="fPk-p6-U0I"/>
-                                                    <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="mv0-iU-hMe"/>
                                                     <action selector="btnRemove:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="z39-N9-jfp"/>
                                                 </connections>
                                             </button>
@@ -1714,9 +1625,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="btnAdd:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="POl-ej-iPF"/>
-                                                    <action selector="btnAdd:" destination="azm-bF-cJq" eventType="touchUpInside" id="RiK-fQ-PAJ"/>
                                                     <action selector="btnAdd:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="XoI-Cp-VbG"/>
-                                                    <action selector="btnAdd:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="lXR-Ar-UfR"/>
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EIJ-fx-OQB">
@@ -1876,6 +1785,9 @@
                     <connections>
                         <outlet property="IDedit" destination="nmk-tC-ADC" id="Pgj-sx-jYE"/>
                         <outlet property="broadcastSwitch" destination="dDs-FS-g4r" id="Kc8-mu-Kh0"/>
+                        <outlet property="btnCategory" destination="xEs-xQ-Adf" id="ph9-7t-dMI"/>
+                        <outlet property="btnType" destination="eoy-cW-3Ir" id="Jhu-bo-5P3"/>
+                        <outlet property="btnZone" destination="Eb3-1o-xCw" id="Z06-Mb-4ML"/>
                         <outlet property="devAddressOne" destination="Fba-ca-JRs" id="Qme-xh-tnj"/>
                         <outlet property="devAddressThree" destination="sCC-FB-ylv" id="rzQ-WG-bUC"/>
                         <outlet property="devAddressTwo" destination="7GJ-Mi-9l7" id="OKq-9P-4io"/>
@@ -1887,7 +1799,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LfM-Uf-9GL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2269" y="793"/>
+            <point key="canvasLocation" x="-2273" y="793"/>
         </scene>
         <!--Scan Events View Controller-->
         <scene sceneID="GLd-nI-dk4">
@@ -2037,7 +1949,6 @@
                                                 <connections>
                                                     <action selector="btnAdd:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="2LQ-Oi-mGl"/>
                                                     <action selector="btnAdd:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="F28-Vu-WgM"/>
-                                                    <action selector="btnAdd:" destination="azm-bF-cJq" eventType="touchUpInside" id="I7V-ay-6GY"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dH-yZ-3aK">
@@ -2051,7 +1962,6 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="8j6-R7-iJL"/>
                                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="ThO-YI-OO2"/>
                                                     <action selector="btnRemove:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="ybN-e4-9YJ"/>
                                                 </connections>
@@ -2196,6 +2106,8 @@
                     <connections>
                         <outlet property="IDedit" destination="Zze-0l-51k" id="WWX-rg-lVp"/>
                         <outlet property="broadcastSwitch" destination="OQs-Vi-noK" id="EDr-YO-Q3j"/>
+                        <outlet property="btnCategory" destination="qrM-oS-ZOn" id="CdK-9M-S9D"/>
+                        <outlet property="btnZone" destination="TWm-sf-5j3" id="SLZ-2c-0mI"/>
                         <outlet property="devAddressOne" destination="NQE-Sd-Eje" id="M9M-fX-mFx"/>
                         <outlet property="devAddressThree" destination="CwX-Gv-o9r" id="veL-rk-Nqh"/>
                         <outlet property="devAddressTwo" destination="EWh-o5-QVJ" id="Bgw-8h-tJv"/>
@@ -2344,7 +2256,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="btnAdd:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="Cyn-Tp-39l"/>
-                                                    <action selector="btnAdd:" destination="azm-bF-cJq" eventType="touchUpInside" id="Dj3-IT-vM4"/>
                                                     <action selector="btnAdd:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="gZ1-CR-XZO"/>
                                                 </connections>
                                             </button>
@@ -2372,7 +2283,6 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="CMT-FV-l9u"/>
                                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="jdS-Wj-wxb"/>
                                                     <action selector="btnRemove:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="xKe-AO-nLQ"/>
                                                 </connections>
@@ -2534,6 +2444,8 @@
                     <connections>
                         <outlet property="IDedit" destination="rTW-M0-GrN" id="vuV-46-cNr"/>
                         <outlet property="broadcastSwitch" destination="ifZ-om-sOq" id="ea4-Lu-aYp"/>
+                        <outlet property="btnCategory" destination="Wef-qp-Xeq" id="ape-id-YOB"/>
+                        <outlet property="btnZone" destination="p8M-FH-Dld" id="sqi-Vd-RKW"/>
                         <outlet property="devAddressOne" destination="48s-NI-fpz" id="a7D-uF-yVa"/>
                         <outlet property="devAddressThree" destination="4b3-9J-e0r" id="Mm9-YY-dwE"/>
                         <outlet property="devAddressTwo" destination="gad-yZ-FqM" id="Mob-zZ-MkN"/>
@@ -2680,7 +2592,6 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnAdd:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="0Rn-1G-cPT"/>
                                                     <action selector="btnAdd:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="duu-nk-xnA"/>
                                                     <action selector="btnAdd:" destination="azm-bF-cJq" eventType="touchUpInside" id="iMY-4G-sGI"/>
                                                 </connections>
@@ -2710,7 +2621,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="btnRemove:" destination="azm-bF-cJq" eventType="touchUpInside" id="OeK-PU-gqW"/>
-                                                    <action selector="btnRemove:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="UNP-iY-uxt"/>
                                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="pAB-kd-usg"/>
                                                 </connections>
                                             </button>
@@ -2856,6 +2766,8 @@
                     <connections>
                         <outlet property="IDedit" destination="Ukc-GY-gNv" id="90d-7s-TQB"/>
                         <outlet property="broadcastSwitch" destination="pM5-cL-sYR" id="HnE-VS-xGY"/>
+                        <outlet property="btnCategory" destination="Gh5-nz-raz" id="iUZ-MG-IBW"/>
+                        <outlet property="btnZone" destination="q3W-VM-Vjf" id="Cba-30-c1o"/>
                         <outlet property="devAddressOne" destination="FAV-d6-zsk" id="nSF-4S-vT4"/>
                         <outlet property="devAddressThree" destination="WK0-kH-AnI" id="iP4-iE-fx4"/>
                         <outlet property="devAddressTwo" destination="dhA-5T-9mW" id="1Xd-QC-eGF"/>
@@ -3193,247 +3105,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ww-Jf-3wK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-521" y="793"/>
-        </scene>
-        <!--Database View Controller-->
-        <scene sceneID="18n-VT-qQT">
-            <objects>
-                <viewController storyboardIdentifier="DatabaseViewController" id="Rfu-9c-EhD" customClass="DatabaseViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Mbv-9V-K6a"/>
-                        <viewControllerLayoutGuide type="bottom" id="JeI-Kk-c2d"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="KgV-Ww-MOk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="z48-bS-tB2">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gjz-0x-t1W">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-EE-5JC">
-                                        <rect key="frame" x="8" y="27" width="35" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="35" id="8C9-aV-9Uo"/>
-                                            <constraint firstAttribute="height" constant="35" id="tU4-Tt-cKS"/>
-                                        </constraints>
-                                        <state key="normal" title="Button" image="back">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="backButton:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="z6o-jz-Be4"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Database settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E0e-hi-kAt">
-                                        <rect key="frame" x="85" y="33" width="150" height="23"/>
-                                        <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="DnF-7b-91Y"/>
-                                    <constraint firstItem="yqC-EE-5JC" firstAttribute="leading" secondItem="Gjz-0x-t1W" secondAttribute="leading" constant="8" id="WK9-91-TOf"/>
-                                    <constraint firstItem="E0e-hi-kAt" firstAttribute="centerY" secondItem="yqC-EE-5JC" secondAttribute="centerY" id="WxX-Vg-LZI"/>
-                                    <constraint firstAttribute="centerX" secondItem="E0e-hi-kAt" secondAttribute="centerX" id="dFX-Xu-T3y"/>
-                                    <constraint firstAttribute="bottom" secondItem="E0e-hi-kAt" secondAttribute="bottom" constant="8" id="xrC-yZ-ALw"/>
-                                </constraints>
-                            </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bHi-Ib-pu6">
-                                <rect key="frame" x="0.0" y="257" width="320" height="311"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="databaseCell" id="b92-7y-dYA" customClass="DatabaseTableViewCell" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b92-7y-dYA" id="lPi-iV-t8f">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJm-rx-IgV">
-                                                    <rect key="frame" x="16" y="11" width="304" height="21"/>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="HJm-rx-IgV" firstAttribute="trailing" secondItem="lPi-iV-t8f" secondAttribute="trailingMargin" constant="8" id="4cu-Wk-WIj"/>
-                                                <constraint firstItem="HJm-rx-IgV" firstAttribute="leading" secondItem="lPi-iV-t8f" secondAttribute="leadingMargin" constant="8" id="GTm-US-TKh"/>
-                                                <constraint firstAttribute="centerY" secondItem="HJm-rx-IgV" secondAttribute="centerY" id="kRA-zK-Fm3"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="foundItem" destination="HJm-rx-IgV" id="1EC-wu-XuD"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="Rfu-9c-EhD" id="9oB-MP-HsG"/>
-                                    <outlet property="delegate" destination="Rfu-9c-EhD" id="Ja8-zE-YtD"/>
-                                </connections>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxz-ol-5ps">
-                                <rect key="frame" x="8" y="212" width="95" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="fYG-gO-PPj"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                <state key="normal" title="FIND DEVICES">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="findDevices:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="KSB-Hu-zht"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RR7-1c-cvN">
-                                <rect key="frame" x="113" y="212" width="94" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                <state key="normal" title="FIND NAMES">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnFindNames:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="omy-n4-zSE"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roc-J4-Yc1">
-                                <rect key="frame" x="217" y="212" width="95" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                <state key="normal" title="DELETE ALL">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnDeleteAll:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="enr-yM-Y69"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKL-7S-Ixd">
-                                <rect key="frame" x="8" y="125" width="94" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="94" id="mHH-EO-yrG"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Q9-Co-aT6">
-                                <rect key="frame" x="125" y="121" width="187" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnChooseGateway:" destination="Rfu-9c-EhD" eventType="touchUpInside" id="QPf-pY-H98"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q4F-JN-DgT">
-                                <rect key="frame" x="125" y="80" width="187" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DB:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQ1-Fp-dMA">
-                                <rect key="frame" x="8" y="84" width="94" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="94" id="AMi-Ve-SCn"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KTa-hW-qJ5">
-                                <rect key="frame" x="238" y="162" width="74" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Range:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWw-pp-yVt">
-                                <rect key="frame" x="8" y="166" width="77" height="21"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWZ-9U-BwS">
-                                <rect key="frame" x="210" y="166" width="18" height="21"/>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mfK-TC-gDr">
-                                <rect key="frame" x="125" y="162" width="75" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="RR7-1c-cvN" firstAttribute="width" secondItem="roc-J4-Yc1" secondAttribute="width" id="2RB-HM-yoR"/>
-                            <constraint firstAttribute="trailing" secondItem="Gjz-0x-t1W" secondAttribute="trailing" id="2Tg-yj-KwH"/>
-                            <constraint firstItem="KTa-hW-qJ5" firstAttribute="width" secondItem="mfK-TC-gDr" secondAttribute="width" id="307-KD-rFV"/>
-                            <constraint firstItem="cWw-pp-yVt" firstAttribute="centerY" secondItem="mfK-TC-gDr" secondAttribute="centerY" id="32G-zi-Fb4"/>
-                            <constraint firstItem="KTa-hW-qJ5" firstAttribute="trailing" secondItem="5Q9-Co-aT6" secondAttribute="trailing" id="48a-yl-IDa"/>
-                            <constraint firstItem="KTa-hW-qJ5" firstAttribute="centerY" secondItem="uWZ-9U-BwS" secondAttribute="centerY" id="6Oe-6y-uek"/>
-                            <constraint firstItem="Gjz-0x-t1W" firstAttribute="top" secondItem="Mbv-9V-K6a" secondAttribute="bottom" constant="-20" id="81h-xf-BjZ"/>
-                            <constraint firstItem="JeI-Kk-c2d" firstAttribute="top" secondItem="bHi-Ib-pu6" secondAttribute="bottom" id="EiV-eA-hMK"/>
-                            <constraint firstAttribute="trailing" secondItem="bHi-Ib-pu6" secondAttribute="trailing" id="G5J-Ne-0b1"/>
-                            <constraint firstItem="RR7-1c-cvN" firstAttribute="height" secondItem="Wxz-ol-5ps" secondAttribute="height" id="GbF-UF-3Bj"/>
-                            <constraint firstItem="bHi-Ib-pu6" firstAttribute="leading" secondItem="KgV-Ww-MOk" secondAttribute="leading" id="H4p-PY-FMx"/>
-                            <constraint firstItem="q4F-JN-DgT" firstAttribute="leading" secondItem="FQ1-Fp-dMA" secondAttribute="trailing" constant="23" id="HcF-FR-sVF"/>
-                            <constraint firstItem="FQ1-Fp-dMA" firstAttribute="top" secondItem="Gjz-0x-t1W" secondAttribute="bottom" constant="20" id="KCi-qV-TIs"/>
-                            <constraint firstItem="z48-bS-tB2" firstAttribute="leading" secondItem="KgV-Ww-MOk" secondAttribute="leading" id="LdI-Jp-Abe"/>
-                            <constraint firstItem="q4F-JN-DgT" firstAttribute="trailing" secondItem="KgV-Ww-MOk" secondAttribute="trailingMargin" constant="8" id="LnE-Gb-k0w"/>
-                            <constraint firstItem="bHi-Ib-pu6" firstAttribute="top" secondItem="RR7-1c-cvN" secondAttribute="bottom" constant="15" id="Lqe-8E-Ejd"/>
-                            <constraint firstItem="z48-bS-tB2" firstAttribute="top" secondItem="Mbv-9V-K6a" secondAttribute="bottom" id="MRk-Wt-7uv"/>
-                            <constraint firstItem="CKL-7S-Ixd" firstAttribute="leading" secondItem="KgV-Ww-MOk" secondAttribute="leading" constant="8" id="OdW-D3-9FA"/>
-                            <constraint firstItem="CKL-7S-Ixd" firstAttribute="top" secondItem="FQ1-Fp-dMA" secondAttribute="bottom" constant="20" id="PYb-Xl-08z"/>
-                            <constraint firstItem="roc-J4-Yc1" firstAttribute="centerY" secondItem="RR7-1c-cvN" secondAttribute="centerY" id="RfS-Nf-516"/>
-                            <constraint firstItem="5Q9-Co-aT6" firstAttribute="leading" secondItem="mfK-TC-gDr" secondAttribute="leading" id="T7A-uN-eYm"/>
-                            <constraint firstItem="JeI-Kk-c2d" firstAttribute="top" secondItem="z48-bS-tB2" secondAttribute="bottom" id="U5T-W1-bgV"/>
-                            <constraint firstItem="roc-J4-Yc1" firstAttribute="height" secondItem="RR7-1c-cvN" secondAttribute="height" id="UMc-mV-Khy"/>
-                            <constraint firstItem="FQ1-Fp-dMA" firstAttribute="centerY" secondItem="q4F-JN-DgT" secondAttribute="centerY" id="W3b-1X-yMO"/>
-                            <constraint firstItem="Wxz-ol-5ps" firstAttribute="top" secondItem="cWw-pp-yVt" secondAttribute="bottom" constant="25" id="X35-PT-vhP"/>
-                            <constraint firstItem="5Q9-Co-aT6" firstAttribute="leading" secondItem="q4F-JN-DgT" secondAttribute="leading" id="YDk-Le-etb"/>
-                            <constraint firstItem="Wxz-ol-5ps" firstAttribute="leading" secondItem="cWw-pp-yVt" secondAttribute="leading" id="a6g-Dg-pFm"/>
-                            <constraint firstItem="Wxz-ol-5ps" firstAttribute="width" secondItem="RR7-1c-cvN" secondAttribute="width" id="auM-uC-Vgz"/>
-                            <constraint firstItem="Gjz-0x-t1W" firstAttribute="leading" secondItem="KgV-Ww-MOk" secondAttribute="leading" id="cWW-F6-zta"/>
-                            <constraint firstItem="RR7-1c-cvN" firstAttribute="centerY" secondItem="Wxz-ol-5ps" secondAttribute="centerY" id="chG-yK-5LM"/>
-                            <constraint firstItem="cWw-pp-yVt" firstAttribute="leading" secondItem="CKL-7S-Ixd" secondAttribute="leading" id="cmR-du-zW4"/>
-                            <constraint firstItem="cWw-pp-yVt" firstAttribute="top" secondItem="CKL-7S-Ixd" secondAttribute="bottom" constant="20" id="fUG-ej-jDQ"/>
-                            <constraint firstItem="FQ1-Fp-dMA" firstAttribute="leading" secondItem="KgV-Ww-MOk" secondAttribute="leading" constant="8" id="hKo-qd-hOd"/>
-                            <constraint firstItem="KTa-hW-qJ5" firstAttribute="leading" secondItem="uWZ-9U-BwS" secondAttribute="trailing" constant="10" id="hPV-GK-CgL"/>
-                            <constraint firstItem="5Q9-Co-aT6" firstAttribute="width" secondItem="q4F-JN-DgT" secondAttribute="width" id="hZB-n7-ugk"/>
-                            <constraint firstItem="5Q9-Co-aT6" firstAttribute="centerY" secondItem="CKL-7S-Ixd" secondAttribute="centerY" id="lCS-k7-MUV"/>
-                            <constraint firstAttribute="trailing" secondItem="z48-bS-tB2" secondAttribute="trailing" id="lCb-dR-e9O"/>
-                            <constraint firstItem="uWZ-9U-BwS" firstAttribute="leading" secondItem="mfK-TC-gDr" secondAttribute="trailing" constant="10" id="t2s-DS-uXN"/>
-                            <constraint firstItem="RR7-1c-cvN" firstAttribute="leading" secondItem="Wxz-ol-5ps" secondAttribute="trailing" constant="10" id="uY9-MT-kYk"/>
-                            <constraint firstItem="roc-J4-Yc1" firstAttribute="leading" secondItem="RR7-1c-cvN" secondAttribute="trailing" constant="10" id="uz2-zB-yR5"/>
-                            <constraint firstItem="KTa-hW-qJ5" firstAttribute="centerY" secondItem="mfK-TC-gDr" secondAttribute="centerY" id="xdP-aj-ljC"/>
-                            <constraint firstItem="roc-J4-Yc1" firstAttribute="trailing" secondItem="KTa-hW-qJ5" secondAttribute="trailing" id="ylk-Ki-H2z"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="btnChooseGateway" destination="5Q9-Co-aT6" id="miu-xt-hG2"/>
-                        <outlet property="databaseTable" destination="bHi-Ib-pu6" id="b2r-2w-34b"/>
-                        <outlet property="idRangeFrom" destination="mfK-TC-gDr" id="yOk-jT-rTy"/>
-                        <outlet property="idRangeTo" destination="KTa-hW-qJ5" id="U8f-VU-6wC"/>
-                        <outlet property="topView" destination="Gjz-0x-t1W" id="DQB-HA-mDQ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XA5-hK-WEz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-413" y="1479"/>
         </scene>
         <!--Scenes View Controller-->
         <scene sceneID="bqd-Ev-0IK">
@@ -4492,13 +4163,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-L0-x0d">
+                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-L0-x0d">
                                                     <rect key="frame" x="40" y="141" width="71" height="31"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="Kwt-HB-HfA"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="CANCEL">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -4524,7 +4195,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="t7i-XD-6UT">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t7i-XD-6UT">
                                                     <rect key="frame" x="8" y="37" width="134" height="96"/>
                                                 </imageView>
                                             </subviews>
@@ -4606,16 +4277,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kgD-4a-F6H">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kgD-4a-F6H">
                                                     <rect key="frame" x="8" y="37" width="134" height="101"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5x-UX-eAU">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5x-UX-eAU">
                                                     <rect key="frame" x="40" y="141" width="71" height="31"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="dEA-UH-DEM"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="STOP">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -4880,9 +4551,10 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zZ-dY-raM">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zZ-dY-raM">
                                                     <rect key="frame" x="8" y="142" width="134" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="Button">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -4970,24 +4642,24 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsS-kO-avu">
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsS-kO-avu">
                                                     <rect key="frame" x="8" y="142" width="63" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="2iY-it-mkU"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="CANCEL">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3v-05-iNU">
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3v-05-iNU">
                                                     <rect key="frame" x="79" y="142" width="63" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Etr-xL-ZIH"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="PAUSE">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5012,12 +4684,13 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vry-uM-qxB">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vry-uM-qxB">
                                                     <rect key="frame" x="8" y="142" width="134" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="t2b-oH-Fe4"/>
                                                     </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="Center">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5789,32 +5462,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="459" y="43"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="3YV-zz-Sv8">
-            <objects>
-                <viewController id="IPz-j9-znS" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ndc-AB-SLk"/>
-                        <viewControllerLayoutGuide type="bottom" id="uae-dn-sKa"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="l3t-tY-k4H">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gAB-c1-y0C">
-                                <rect key="frame" x="307" y="276" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YOc-Tp-7ds" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1225" y="43"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="lSz-J2-9Kc">

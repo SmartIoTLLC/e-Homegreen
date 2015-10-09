@@ -19,6 +19,9 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var btnZone: UIButton!
+    @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnType: UIButton!
     
     @IBOutlet weak var timerTableView: UITableView!
     
@@ -144,8 +147,8 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!) {
-            if timerId <= 32767 && address <= 255 {
+        if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
+            if timerId <= 32767 && address <= 255 && type != "Type" {
                 let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
                 timer.timerId = timerId
                 timer.timerName = timerName
@@ -153,6 +156,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                 timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
                 timer.isBroadcast = NSNumber(bool: false)
                 timer.address = address
+                timer.type = type
                 timer.gateway = gateway!
                 saveChanges()
                 refreshTimerList()
@@ -230,7 +234,15 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     }
     
     func saveText(text: String, id: Int) {
-        
+        switch id {
+        case 3:
+            btnZone.setTitle(text, forState: UIControlState.Normal)
+        case 4:
+            btnCategory.setTitle(text, forState: UIControlState.Normal)
+        case 7:
+            btnType.setTitle(text, forState: UIControlState.Normal)
+        default: break
+        }
     }
     
     
@@ -270,6 +282,10 @@ extension ScanTimerViewController: UITableViewDataSource {
         IDedit.text = "\(timers[indexPath.row].timerId)"
         nameEdit.text = "\(timers[indexPath.row].timerName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
+        btnType.setTitle("\(timers[indexPath.row].type)", forState: UIControlState.Normal)
+//        if let _ = timers[indexPath.row].timerZone {
+//            
+//        }
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
         if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
             imageTimerOne.image = timerImage

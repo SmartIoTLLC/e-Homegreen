@@ -20,6 +20,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var editCycle: UITextField!
+    @IBOutlet weak var btnZone: UIButton!
+    @IBOutlet weak var btnCategory: UIButton!
     
     @IBOutlet weak var sequencesTableView: UITableView!
     

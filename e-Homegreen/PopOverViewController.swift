@@ -35,13 +35,13 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Categories", id: -1),
         TableList(name: "Timers", id: -1),
         TableList(name: "Flag", id: -1)]
-    var chooseTimerTypeList:[TableList] = [TableList(name: "Once", id: -1),
-        TableList(name: "Daily", id: -1),
-        TableList(name: "Monthly", id: -1),
-        TableList(name: "Yearly", id: -1),
-        TableList(name: "Hourly", id: -1),
-        TableList(name: "Minutely", id: -1),
-        TableList(name: "Countdowmn", id: -1)]
+    var chooseTimerTypeList:[TableList] = [TableList(name: "Once", id: 7),
+        TableList(name: "Daily", id: 7),
+        TableList(name: "Monthly", id: 7),
+        TableList(name: "Yearly", id: 7),
+        TableList(name: "Hourly", id: 7),
+        TableList(name: "Minutely", id: 7),
+        TableList(name: "Countdown", id: 7)]
     var tableList:[TableList] = []
     
     var appDel:AppDelegate!

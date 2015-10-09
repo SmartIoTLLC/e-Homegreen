@@ -263,21 +263,21 @@ private extension UIStoryboard {
         return mainStoryboard().instantiateViewControllerWithIdentifier("ScenesViewController") as? ScenesViewController
     }
     
-    class func nfcViewController() -> NFCViewController? {
-        return mainStoryboard().instantiateViewControllerWithIdentifier("NFCViewController") as? NFCViewController
-    }
+//    class func nfcViewController() -> NFCViewController? {
+//        return mainStoryboard().instantiateViewControllerWithIdentifier("NFCViewController") as? NFCViewController
+//    }
     
     class func settingsViewController() -> SettingsViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("SettingsViewController") as? SettingsViewController
     }
     
-    class func cameraViewController() -> CameraViewController? {
-        return mainStoryboard().instantiateViewControllerWithIdentifier("CameraViewController") as? CameraViewController
-    }
+//    class func cameraViewController() -> CameraViewController? {
+//        return mainStoryboard().instantiateViewControllerWithIdentifier("CameraViewController") as? CameraViewController
+//    }
     
-    class func databaseViewController() -> DatabaseViewController? {
-        return mainStoryboard().instantiateViewControllerWithIdentifier("DatabaseViewController") as? DatabaseViewController
-    }
+//    class func databaseViewController() -> DatabaseViewController? {
+//        return mainStoryboard().instantiateViewControllerWithIdentifier("DatabaseViewController") as? DatabaseViewController
+//    }
     
     class func securityViewController() -> SecurityViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("SecurityViewController") as? SecurityViewController

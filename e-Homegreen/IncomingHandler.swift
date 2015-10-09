@@ -500,32 +500,41 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         
     }
+    //  0x00 Waiting
+    //  0x01 Started
+    //  0xF0 Elapsed
+    //  0xEE Suspend
     //  informacije o parametrima kanala
     func ackTimerStatus (byteArray:[UInt8]){
         print("AOOO")
         print(byteArray)
         fetchEntities("Timer")
-        for item in timers {
-            if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(byteArray[7]) {
-                
+        for var i = 1; i <= 16; i++ {
+            print(timers.count)
+            for item in timers {
+                if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(i) {
+                        item.timerState = NSNumber(integer: Int(byteArray[7+i]))
+                    saveChanges()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+                }
             }
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
-        
     }
     //  informacije o parametrima kanala
     func ackFlagStatus (byteArray:[UInt8]){
         print("AOOO 2")
         print(byteArray)
         fetchEntities("Flag")
-        for var i = 1; i <= 16; i++ {
+        for var i = 1; i <= 32; i++ {
             print(flags.count)
             for item in flags {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(i) {
-                    print("alo \(NSNumber(integer: Int(byteArray[9+i])))")
-                    print("\(i) \(byteArray[7+i])")
-                    item.setState = NSNumber(integer: Int(byteArray[8+i]))
+                    print("alo \(NSNumber(integer: Int(byteArray[7+i])))")
+                    if Int(byteArray[7+i]) == 1 {
+                        item.setState = NSNumber(bool: false)
+                    } else if Int(byteArray[7+i]) == 0 {
+                        item.setState = NSNumber(bool: true)
+                    }
                     saveChanges()
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
                 }

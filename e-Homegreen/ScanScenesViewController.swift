@@ -19,6 +19,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var btnZone: UIButton!
+    @IBOutlet weak var btnCategory: UIButton!
     
     @IBOutlet weak var sceneTableView: UITableView!
     

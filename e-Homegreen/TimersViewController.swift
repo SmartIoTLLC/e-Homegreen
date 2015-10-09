@@ -55,6 +55,7 @@ class TimersViewController: CommonViewController {
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
         }
+        timersCollectionView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -106,6 +107,50 @@ class TimersViewController: CommonViewController {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+    }
+    
+    func pressedPause (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
+    }
+    
+    func pressedStart (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
+    }
+    
+    func pressedResume (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
+    }
+    
+    func pressedCancel (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
     }
 }
 
@@ -174,7 +219,56 @@ extension TimersViewController: UICollectionViewDataSource {
         if let timerImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
             cell.timerImageView.highlightedImage = timerImage
         }
-        
+        cell.timerButton.tag = indexPath.row
+        cell.timerButtonLeft.tag = indexPath.row
+        cell.timerButtonRight.tag = indexPath.row
+//        cell.timerButton.buttonW = UIButtonType.Custom
+//        cell.timerButton.buttonType = UIButtonType.Custom
+//        cell.timerButton.buttonType = UIButtonType.Custom
+        print(timers[indexPath.row].type)
+        if timers[indexPath.row].type == "Countdown" {
+            if timers[indexPath.row].timerState == 1 {
+                cell.timerButton.hidden = true
+                cell.timerButtonLeft.hidden = false
+                cell.timerButtonRight.hidden = false
+                cell.timerButtonRight.setTitle("Pause", forState: UIControlState.Normal)
+                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.timerButtonRight.addTarget(self, action: "pressedPause:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            if timers[indexPath.row].timerState == 240 {
+                cell.timerButton.hidden = false
+                cell.timerButtonLeft.hidden = true
+                cell.timerButtonRight.hidden = true
+                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
+                cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            if timers[indexPath.row].timerState == 238 {
+                cell.timerButton.hidden = true
+                cell.timerButtonLeft.hidden = false
+                cell.timerButtonRight.hidden = false
+                cell.timerButtonRight.setTitle("Resume", forState: UIControlState.Normal)
+                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.timerButtonRight.addTarget(self, action: "pressedResume:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        } else {
+            if timers[indexPath.row].timerState == 240 {
+                cell.timerButton.hidden = false
+                cell.timerButtonLeft.hidden = true
+                cell.timerButtonRight.hidden = true
+                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.enabled = false
+            } else {
+                cell.timerButton.hidden = false
+                cell.timerButtonLeft.hidden = true
+                cell.timerButtonRight.hidden = true
+                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.enabled = true
+            }
+        }
 //        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
 //        cell.timerButton.addGestureRecognizer(tap)
 //        cell.timerButton.tag = indexPath.row
