@@ -10,24 +10,6 @@ import UIKit
 import CoreData
 import AVFoundation
 
-class DeviceImage:NSObject{
-    var image:UIImage!
-    var text:String!
-    var open:Bool!
-    var value:Float!
-    var stateOpening:Bool!
-    var info:Bool!
-    
-    init(image:UIImage, text:String) {
-        self.image = image
-        self.text = text
-        self.open = false
-        self.value = 0
-        self.stateOpening = true
-        self.info = false
-    }
-}
-
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate {
     
     private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -72,6 +54,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         
     }
+    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
@@ -169,6 +152,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var longTouchOldValue = 0
+    
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
         let tag = gestureRecognizer.view!.tag
@@ -522,7 +506,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
     }
     
-    @available(iOS 8.0, *)
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -760,17 +743,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.backView.layer.cornerRadius = 5
-            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.backView.layer.borderWidth = 1
+
             cell.typeOfLight.text = devices[indexPath.row].name
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
@@ -803,20 +776,7 @@ extension DevicesViewController: UICollectionViewDataSource {
 
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
-            
-            cell.infoView.layer.cornerRadius = 5
-            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.infoView.layer.borderWidth = 1
-            
-            if cell.infoGradientLayer == nil {
-                let gradientLayerInfo = CAGradientLayer()
-                gradientLayerInfo.frame = cell.bounds
-                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayerInfo.locations = [0.0, 1.0]
-                cell.infoGradientLayer = gradientLayerInfo
-                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
-            }
-            
+
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
                 cell.backView.hidden = true
@@ -898,17 +858,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.backView.layer.cornerRadius = 5
-            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.backView.layer.borderWidth = 1
+
             cell.name.text = devices[indexPath.row].name
             cell.name.tag = indexPath.row
             if devices[indexPath.row].currentValue == 255 {
@@ -920,19 +870,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.onOffLabel.text = "OFF"
             }
             cell.onOffLabel.tag = indexPath.row
-            
-            cell.infoView.layer.cornerRadius = 5
-            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.infoView.layer.borderWidth = 1
-            
-            if cell.infoGradientLayer == nil {
-                let gradientLayerInfo = CAGradientLayer()
-                gradientLayerInfo.frame = cell.bounds
-                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayerInfo.locations = [0.0, 1.0]
-                cell.infoGradientLayer = gradientLayerInfo
-                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
-            }
             
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
@@ -966,14 +903,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
+
             cell.climateName.text = devices[indexPath.row].name
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
@@ -1051,24 +981,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             } else {
                 cell.imageOnOff.image = UIImage(named: "poweron")
             }
-            cell.backView.layer.cornerRadius = 5
-            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.backView.layer.borderWidth = 1
-            
-            cell.infoView.layer.cornerRadius = 5
-            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.infoView.layer.borderWidth = 1
+
 
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-            
-            if cell.infoGradientLayer == nil {
-                let gradientLayerInfo = CAGradientLayer()
-                gradientLayerInfo.frame = cell.bounds
-                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayerInfo.locations = [0.0, 1.0]
-                cell.infoGradientLayer = gradientLayerInfo
-                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
-            }
             
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
@@ -1091,17 +1006,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         } else if devices[indexPath.row].type == "sensor" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
-            if cell.gradientLayer == nil {
-                let gradientLayer = CAGradientLayer()
-                gradientLayer.frame = cell.bounds
-                gradientLayer.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayer.locations = [0.0, 1.0]
-                cell.gradientLayer = gradientLayer
-                cell.backView.layer.insertSublayer(gradientLayer, atIndex: 0)
-            }
-            cell.backView.layer.cornerRadius = 5
-            cell.backView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.backView.layer.borderWidth = 1
+
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
             cell.sensorTitle.tag = indexPath.row
@@ -1189,27 +1094,13 @@ extension DevicesViewController: UICollectionViewDataSource {
                     cell.sensorState.text = "..."
                 }
             }
-            
-            cell.infoView.layer.cornerRadius = 5
-            cell.infoView.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-            cell.infoView.layer.borderWidth = 1
+
             
             cell.labelID.text = "\(indexPath.row + 1)"
             cell.labelName.text = "\(devices[indexPath.row].name)"
             cell.labelCategory.text = "\(devices[indexPath.row].categoryId)"
             cell.labelLevel.text = "\(devices[indexPath.row].parentZoneId)"
             cell.labelZone.text = "\(devices[indexPath.row].zoneId)"
-            
-            if cell.infoGradientLayer == nil {
-//                cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-                let gradientLayerInfo = CAGradientLayer()
-                gradientLayerInfo.frame = cell.bounds
-                gradientLayerInfo.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-                gradientLayerInfo.locations = [0.0, 1.0]
-                cell.infoGradientLayer = gradientLayerInfo
-                cell.infoView.layer.insertSublayer(gradientLayerInfo, atIndex: 0)
-            }
-            
             
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
@@ -1242,7 +1133,6 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var typeOfLight: UILabel!
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var lightSlider: UISlider!
-    var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
@@ -1250,8 +1140,6 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
-    var infoGradientLayer: CAGradientLayer?
-    
     
 }
 //Appliance on/off
@@ -1261,16 +1149,12 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var onOffLabel: UILabel!
-    var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
-    
-    var infoGradientLayer: CAGradientLayer?
-    
     
 }
 //curtain
@@ -1280,7 +1164,6 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
     @IBOutlet weak var curtainSlider: UISlider!
-    var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelPowrUsege: UILabel!
@@ -1288,46 +1171,12 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
     
-    override func drawRect(rect: CGRect) {
-        
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 8.0, height: 8.0))
-        path.addClip()
-        path.lineWidth = 2
-        
-        UIColor.lightGrayColor().setStroke()
-        
-        
-        
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
-        path.stroke()
-    }
-    
-    
-    
 }
 //Door
 class AccessControllCell: UICollectionViewCell {
     
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var accessImage: UIImageView!
-    var gradientLayer: CAGradientLayer?
     
 }
 //Clima
@@ -1342,16 +1191,12 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var modeImage: UIImageView!
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
-    var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
-    
-    var infoGradientLayer: CAGradientLayer?
-    
     
 }
 //Multisensor 10 in 1 and 6 in 1
@@ -1361,7 +1206,6 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!
     @IBOutlet weak var sensorState: UILabel!
-    var gradientLayer: CAGradientLayer?
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelID: UILabel!
@@ -1369,8 +1213,6 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var labelCategory: UILabel!
     @IBOutlet weak var labelLevel: UILabel!
     @IBOutlet weak var labelZone: UILabel!
-    var infoGradientLayer: CAGradientLayer?
-    
     
 }
 

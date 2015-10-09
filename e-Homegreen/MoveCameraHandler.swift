@@ -17,9 +17,14 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let loginString = NSString(format: "%@:%@", username!, password!)
         let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        
-        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvapn.cgi?action=go&speed=\(surv.autSpanStep!)")
-        let request = NSMutableURLRequest(URL: url!)
+        var url:NSURL
+        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvapn.cgi?action=go&speed=\(surv.autSpanStep!)")!
+            
+        }else{
+            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvapn.cgi?action=go&speed=\(surv.autSpanStep!)")!
+        }
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
@@ -45,9 +50,14 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let loginString = NSString(format: "%@:%@", username!, password!)
         let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        
-        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=stop")
-        let request = NSMutableURLRequest(URL: url!)
+        var url:NSURL
+        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvseq.cgi?action=stop")!
+            
+        }else{
+            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=stop")!
+        }
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
@@ -65,8 +75,13 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         }
         task.resume()
         
-        let url1 = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvapn.cgi?action=stop")
-        let request1 = NSMutableURLRequest(URL: url1!)
+        var url1:NSURL
+        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+            url1 = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvapn.cgi?action=stop")!
+        }else{
+            url1 = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvapn.cgi?action=stop")!
+        }
+        let request1 = NSMutableURLRequest(URL: url1)
         request1.HTTPMethod = "GET"
         request1.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
@@ -90,8 +105,16 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         
-        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=go")
-        let request = NSMutableURLRequest(URL: url!)
+        var url:NSURL
+        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvseq.cgi?action=go")!
+            
+        }else{
+            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=go")!
+        }
+        let request = NSMutableURLRequest(URL: url)
+//        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=go")
+//        let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
@@ -118,9 +141,17 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let loginString = NSString(format: "%@:%@", username!, password!)
         let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        print(surv.panStep)
-        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")
-        let request = NSMutableURLRequest(URL: url!)
+       
+        var url:NSURL
+        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")!
+            
+        }else{
+            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")!
+        }
+        let request = NSMutableURLRequest(URL: url)
+//        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")
+//        let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
