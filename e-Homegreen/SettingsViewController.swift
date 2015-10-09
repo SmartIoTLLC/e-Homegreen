@@ -191,8 +191,12 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 self.performSegueWithIdentifier("securitySettings", sender: self)
             })
         }
+        self.settingsTableView.userInteractionEnabled = false
+        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
     }
-    
+    func update(){
+        self.settingsTableView.userInteractionEnabled = true
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationVC = segue.destinationViewController 
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom

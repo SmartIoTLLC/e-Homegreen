@@ -77,6 +77,10 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        gatewayTableView.userInteractionEnabled = true
+    }
+    
     func refreshGatewayListWithNewData () {
         fetchGateways()
         gatewayTableView.reloadData()
@@ -288,6 +292,7 @@ extension ConnectionsViewController: UITableViewDataSource {
     }
     func scanDevice(button:UIButton){
         performSegueWithIdentifier("scan", sender: button)
+        gatewayTableView.userInteractionEnabled = false
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "scan" {

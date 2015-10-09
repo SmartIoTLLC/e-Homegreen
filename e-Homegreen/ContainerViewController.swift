@@ -35,8 +35,7 @@ class ContainerViewController: UIViewController {
             showShadowForCenterViewController(shouldShowShadow)
         }
     }
-    
-//    var panGestureRecognizer:UIPanGestureRecognizer!
+
     
     @IBAction func hamburgerTapped(sender: AnyObject) {
 //        delegate?.toggleLeftPanel?()
@@ -59,15 +58,15 @@ class ContainerViewController: UIViewController {
         
         centerNavigationController.didMoveToParentViewController(self)
         
-//        var gestureView = UIView(frame: CGRectMake(0, 0, 50, self.view.frame.size.height))
-//        gestureView.backgroundColor = UIColor.redColor()
-////        self.view.addSubview(gestureView)
-//        centerViewController.view.addSubview(gestureView)
+
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         panGestureRecognizer.delegate = self
-//        gestureView.addGestureRecognizer(panGestureRecognizer)
         centerNavigationController.view.addGestureRecognizer(panGestureRecognizer)
+        
+        let gesture = UITapGestureRecognizer(target: self, action: "sideFunc:")
+        gesture.delegate = self
+        centerNavigationController.view.addGestureRecognizer(gesture)
     }
     
 }
@@ -117,9 +116,12 @@ extension ContainerViewController: CenterViewControllerDelegate {
         centerPanelExpandedOffset = UIScreen.mainScreen().bounds.width - 200
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
+            centerViewController.Container.userInteractionEnabled = false
             
             animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset)
         } else {
+            centerViewController.Container.userInteractionEnabled = true
+            
             animateCenterPanelXPosition(targetPosition: 0) { finished in
                 self.currentState = .LeftPanelCollapsed
                 
@@ -153,30 +155,41 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
         if let touch = touch.view!.superview as? UICollectionView {
             print(touch)
         }
-//        let gestureIsDraggingFromRigthToLeft = (gestureRecognizer.velocityInView(view).x < 0)
-//        println(gestureIsDraggingFromRigthToLeft)
+        print("\(_stdlib_getDemangledTypeName(touch.view))")
+        if let _ = touch.view as? UITableViewCell{
+            return false
+        }
+        if let _ = touch.view?.superview as? UITableViewCell{
+            return false
+        }
+        if let _ = touch.view?.superview?.superview as? UITableViewCell{
+            return false
+        }
+        
+        
         if let _ = touch.view as? UISlider {
             return false
         }
         return true
     }
+    
+    func sideFunc(recognizer: UITapGestureRecognizer){
+        let alreadyExpanded = (currentState == .LeftPanelExpanded)
+        
+        if alreadyExpanded {
+            animateLeftPanel(shouldExpand: !alreadyExpanded)
+        }
+    }
+    
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = (recognizer.velocityInView(view).x > 0)
-//        let gestureIsDraggingFromRigthToLeft = (recognizer.velocityInView(view).x < 0)
-//        if let view = recognizer.view {
-//            println(view.frame.origin.x)
-//            println(gestureIsDraggingFromRigthToLeft)
-//            if view.frame.origin.x >= 0 {
-//                if !gestureIsDraggingFromRigthToLeft && view.frame.origin.x >= 0 {
+        
         if recognizer.locationInView(self.view).x < 300 && state == false && gestureIsDraggingFromLeftToRight == true  {
             state = true
         }
         switch(recognizer.state) {
         case .Began:
             if (currentState == .LeftPanelCollapsed) {
-//                if (gestureIsDraggingFromLeftToRight) && state == true {
-//                    addLeftPanelViewController()
-//                }
                 addLeftPanelViewController()
                 showShadowForCenterViewController(true)
             }
@@ -204,45 +217,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             break
         }
     }
-//                if gestureIsDraggingFromRigthToLeft && view.frame.origin.x > 0 {
-//                    if recognizer.locationInView(self.view).x < 1000 && state == false && gestureIsDraggingFromLeftToRight == true {
-//                        state = true
-//                    }
-//                    switch(recognizer.state) {
-//                    case .Began:
-//                        if (currentState == .LeftPanelCollapsed) {
-//                            if (gestureIsDraggingFromLeftToRight) && state == true {
-//                                addLeftPanelViewController()
-//                            }
-//                            showShadowForCenterViewController(true)
-//                        }
-//                    case .Changed:
-//                        if !(currentState == .LeftPanelCollapsed) {
-//                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-//                            recognizer.setTranslation(CGPointZero, inView: view)
-//                        }
-//                        if state == true {
-//                            recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translationInView(view).x
-//                            recognizer.setTranslation(CGPointZero, inView: view)
-//                        }
-//                    case .Ended:
-//                        if (leftViewController != nil) {
-//                            // animate the side panel open or closed based on whether the view has moved more or less than halfway
-//                            let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
-//                            animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
-//                        }
-//                        state = false
-//                    default:
-//                        break
-//                    }
-//                }
-//            } else {
-//                let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
-//                animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
-//            }
-//        }
-//        
-//    }
+
 }
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()) }

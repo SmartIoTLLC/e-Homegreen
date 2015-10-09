@@ -20,24 +20,9 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var Container: UIView!
     override func viewDidLoad() {
-//        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
-//        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-//        self.navigationController?.navigationBar.setBackgroundImage(imageFromLayer(self.navigationController!.navigationBar.layer), forBarMetrics: UIBarMetrics.Default)
-//        var img = UIImage(named: "Image")
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Image"), forBarMetrics: .Default)
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        
-//        let gradient:CAGradientLayer = CAGradientLayer()
-//        gradient.frame = CGRectMake(0, 0, 1024, 64)
-//        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-//        topView.layer.insertSublayer(gradient, atIndex: 0)
-//        let backgroundImageView = UIImageView()
-//        backgroundImageView.image = UIImage(named: "Background")
-//        backgroundImageView.frame = CGRectMake(0, 0, 375, 667)
-//        view.insertSubview(backgroundImageView, atIndex: 0)
-        
-        
+
         //  Loading device view controller from singleton
         if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
             if let savedValue:String = NSUserDefaults.standardUserDefaults().stringForKey("firstItem"){
@@ -83,10 +68,7 @@ class CenterViewController: UIViewController {
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
         delegate?.toggleLeftPanel?()
     }
-//    func menuItemSelected(menuItem: Menu) {
-//        Container.addSubview(menuItem.viewController.view)
-//        //    delegate?.collapseSidePanels?()
-//    }
+
 }
 
 extension CenterViewController: SidePanelViewControllerDelegate {
