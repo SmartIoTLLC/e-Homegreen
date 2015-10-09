@@ -46,6 +46,14 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             
+            if self.view.frame.size.width == 568{
+                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            }else if self.view.frame.size.width == 667{
+                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            }
+            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -61,6 +69,13 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
             
         } else {
             
+            if self.view.frame.size.width == 320{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }else if self.view.frame.size.width == 375{
+                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            }else{
+                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }
             
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
