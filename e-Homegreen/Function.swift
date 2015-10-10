@@ -111,10 +111,8 @@ class Function {
     }
     // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
     static func getRunningTime (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        messageInfo = []
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        var messageInfo:[UInt8] = [0x00]
+        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)
         message[2] = address[0]
@@ -577,7 +575,8 @@ class Function {
     static func resetRunningTime (address:[UInt8], channel:UInt8) -> [UInt8]{
         var messageInfo:[UInt8] = []
         var message:[UInt8] = []
-        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
+//        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
+        messageInfo = [channel]
         message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = UInt8(messageInfo.count)

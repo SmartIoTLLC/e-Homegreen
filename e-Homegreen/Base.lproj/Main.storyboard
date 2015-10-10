@@ -3548,6 +3548,7 @@
                                             <outlet property="curtainSlider" destination="FPC-Qx-77a" id="jgx-eZ-hnM"/>
                                             <outlet property="infoView" destination="66l-f6-pas" id="lxJ-Hr-82d"/>
                                             <outlet property="labelPowrUsege" destination="7gt-wB-cHu" id="gK4-q1-eTU"/>
+                                            <outlet property="labelRunningTime" destination="71o-dN-nmL" id="NFb-fl-p4O"/>
                                             <outlet property="lblElectricity" destination="UEw-C2-KXd" id="FlW-Md-JaK"/>
                                             <outlet property="lblVoltage" destination="7xN-fQ-4Na" id="6mR-Rs-rkk"/>
                                         </connections>
@@ -3713,6 +3714,7 @@
                                             <outlet property="image" destination="YOI-EX-BDa" id="u4D-dY-PFJ"/>
                                             <outlet property="infoView" destination="Qxg-KS-no6" id="v9J-Sq-z6w"/>
                                             <outlet property="labelPowrUsege" destination="JmK-PB-xht" id="QSt-qI-yGL"/>
+                                            <outlet property="labelRunningTime" destination="lFU-Uv-msJ" id="qEe-nh-ha5"/>
                                             <outlet property="lblElectricity" destination="5sr-Da-cWP" id="YwE-v5-B4d"/>
                                             <outlet property="lblVoltage" destination="mUN-le-BGR" id="zgr-yB-RQe"/>
                                             <outlet property="name" destination="VVv-XD-Fgf" id="eIp-RU-zyo"/>

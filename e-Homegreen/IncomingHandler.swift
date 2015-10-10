@@ -220,11 +220,15 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                if byteArray[7] != 0xFF {
+                if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
                     devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
+                } else if byteArray[7] == 0xF0 {
+                    
                 } else {
                     let channelNumber = Int(devices[i].channel)
+                    print(Int(devices[i].channel))
                     devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
+                    print(devices[i].type)
                     print(devices[i].runningTime)
                 }
             }
