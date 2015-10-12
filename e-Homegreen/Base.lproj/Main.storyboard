@@ -3365,6 +3365,10 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ7-wf-oxt">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -3372,8 +3376,12 @@
                                         <constraints>
                                             <constraint firstItem="grV-6d-2I7" firstAttribute="top" secondItem="MxF-53-ZwS" secondAttribute="top" id="1Ed-o0-iVf"/>
                                             <constraint firstAttribute="bottom" secondItem="grV-6d-2I7" secondAttribute="bottom" id="4E9-ZY-Oam"/>
+                                            <constraint firstItem="ZQ7-wf-oxt" firstAttribute="leading" secondItem="MxF-53-ZwS" secondAttribute="leading" id="DdL-01-MIa"/>
                                             <constraint firstAttribute="trailing" secondItem="laW-Do-HeS" secondAttribute="trailing" id="PLh-vq-o4X"/>
                                             <constraint firstItem="laW-Do-HeS" firstAttribute="leading" secondItem="MxF-53-ZwS" secondAttribute="leading" id="SEc-Og-uBh"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZQ7-wf-oxt" secondAttribute="trailing" id="TQb-IG-adq"/>
+                                            <constraint firstAttribute="bottom" secondItem="ZQ7-wf-oxt" secondAttribute="bottom" id="Thk-bw-fsw"/>
+                                            <constraint firstItem="ZQ7-wf-oxt" firstAttribute="top" secondItem="MxF-53-ZwS" secondAttribute="top" id="VDR-YA-Gbi"/>
                                             <constraint firstItem="grV-6d-2I7" firstAttribute="leading" secondItem="MxF-53-ZwS" secondAttribute="leading" id="Zev-6z-yrg"/>
                                             <constraint firstAttribute="bottom" secondItem="laW-Do-HeS" secondAttribute="bottom" id="fav-4b-Q6t"/>
                                             <constraint firstItem="laW-Do-HeS" firstAttribute="top" secondItem="MxF-53-ZwS" secondAttribute="top" id="rx6-7M-msb"/>
@@ -3382,6 +3390,7 @@
                                         <connections>
                                             <outlet property="backView" destination="laW-Do-HeS" id="Gm0-H8-tAa"/>
                                             <outlet property="btnRefresh" destination="RZF-t4-VEB" id="3Yg-J6-sMI"/>
+                                            <outlet property="disabledCellView" destination="ZQ7-wf-oxt" id="CFB-wh-pSw"/>
                                             <outlet property="infoView" destination="grV-6d-2I7" id="ZTJ-SD-AcL"/>
                                             <outlet property="labelPowrUsege" destination="ook-c1-qOe" id="mPm-f6-iNL"/>
                                             <outlet property="labelRunningTime" destination="bCr-k1-qhc" id="T0V-21-KXV"/>
@@ -3526,6 +3535,10 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tSY-CN-WCT">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -3535,10 +3548,14 @@
                                             <constraint firstItem="66l-f6-pas" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="VHC-2W-bPP"/>
                                             <constraint firstAttribute="bottom" secondItem="66l-f6-pas" secondAttribute="bottom" id="eMO-3m-XMQ"/>
                                             <constraint firstAttribute="trailing" secondItem="66l-f6-pas" secondAttribute="trailing" id="lFm-bt-DNi"/>
+                                            <constraint firstItem="tSY-CN-WCT" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="nE5-mr-hge"/>
                                             <constraint firstAttribute="bottom" secondItem="K02-Ib-2gO" secondAttribute="bottom" id="oki-Qf-eYB"/>
                                             <constraint firstAttribute="trailing" secondItem="K02-Ib-2gO" secondAttribute="trailing" id="qLn-ny-MtW"/>
                                             <constraint firstItem="K02-Ib-2gO" firstAttribute="leading" secondItem="wcg-Qu-60Z" secondAttribute="leading" id="qUZ-uq-bsd"/>
                                             <constraint firstItem="K02-Ib-2gO" firstAttribute="top" secondItem="wcg-Qu-60Z" secondAttribute="top" id="sJ0-ad-26w"/>
+                                            <constraint firstAttribute="trailing" secondItem="tSY-CN-WCT" secondAttribute="trailing" id="u1l-oN-BeP"/>
+                                            <constraint firstItem="tSY-CN-WCT" firstAttribute="top" secondItem="wcg-Qu-60Z" secondAttribute="top" id="uWZ-wF-JcP"/>
+                                            <constraint firstAttribute="bottom" secondItem="tSY-CN-WCT" secondAttribute="bottom" id="uoj-C2-lZV"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="backView" destination="K02-Ib-2gO" id="TIn-jG-vLe"/>
@@ -3546,6 +3563,7 @@
                                             <outlet property="curtainImage" destination="6yc-Lk-PX4" id="YbN-jr-3sP"/>
                                             <outlet property="curtainName" destination="tbk-5J-of7" id="tza-zI-cBv"/>
                                             <outlet property="curtainSlider" destination="FPC-Qx-77a" id="jgx-eZ-hnM"/>
+                                            <outlet property="disabledCellView" destination="tSY-CN-WCT" id="wmL-8u-3Vi"/>
                                             <outlet property="infoView" destination="66l-f6-pas" id="lxJ-Hr-82d"/>
                                             <outlet property="labelPowrUsege" destination="7gt-wB-cHu" id="gK4-q1-eTU"/>
                                             <outlet property="labelRunningTime" destination="71o-dN-nmL" id="NFb-fl-p4O"/>
@@ -3694,23 +3712,32 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P9X-co-KvL">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="P9X-co-KvL" secondAttribute="bottom" id="1Qc-PD-XRv"/>
                                             <constraint firstItem="Qxg-KS-no6" firstAttribute="leading" secondItem="ymB-1e-PPO" secondAttribute="leading" id="5El-hr-HWp"/>
                                             <constraint firstAttribute="bottom" secondItem="Qxg-KS-no6" secondAttribute="bottom" id="81b-8a-wS8"/>
+                                            <constraint firstItem="P9X-co-KvL" firstAttribute="leading" secondItem="ymB-1e-PPO" secondAttribute="leading" id="NVT-xJ-6Vq"/>
+                                            <constraint firstAttribute="trailing" secondItem="P9X-co-KvL" secondAttribute="trailing" id="Xkc-bn-4g1"/>
                                             <constraint firstAttribute="bottom" secondItem="Sm4-Wf-EEJ" secondAttribute="bottom" id="an5-JQ-EIc"/>
                                             <constraint firstAttribute="trailing" secondItem="Sm4-Wf-EEJ" secondAttribute="trailing" id="cy4-gf-1dC"/>
                                             <constraint firstItem="Sm4-Wf-EEJ" firstAttribute="top" secondItem="ymB-1e-PPO" secondAttribute="top" id="feG-1s-vox"/>
                                             <constraint firstItem="Qxg-KS-no6" firstAttribute="top" secondItem="ymB-1e-PPO" secondAttribute="top" id="oVD-f2-TaZ"/>
                                             <constraint firstAttribute="trailing" secondItem="Qxg-KS-no6" secondAttribute="trailing" id="rcY-bj-ZaM"/>
+                                            <constraint firstItem="P9X-co-KvL" firstAttribute="top" secondItem="ymB-1e-PPO" secondAttribute="top" id="tun-Bs-dVZ"/>
                                             <constraint firstItem="Sm4-Wf-EEJ" firstAttribute="leading" secondItem="ymB-1e-PPO" secondAttribute="leading" id="vN7-Of-GrE"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="backView" destination="Sm4-Wf-EEJ" id="0Jm-x0-oZc"/>
                                             <outlet property="btnRefresh" destination="2k3-5P-yBW" id="QEz-SI-TYD"/>
+                                            <outlet property="disabledCellView" destination="P9X-co-KvL" id="2hZ-fL-HdI"/>
                                             <outlet property="image" destination="YOI-EX-BDa" id="u4D-dY-PFJ"/>
                                             <outlet property="infoView" destination="Qxg-KS-no6" id="v9J-Sq-z6w"/>
                                             <outlet property="labelPowrUsege" destination="JmK-PB-xht" id="QSt-qI-yGL"/>
@@ -3880,6 +3907,10 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U7O-Dq-akj">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -3888,7 +3919,11 @@
                                             <constraint firstAttribute="bottom" secondItem="LFJ-1u-t61" secondAttribute="bottom" id="43l-Pp-htW"/>
                                             <constraint firstAttribute="trailing" secondItem="RN0-vn-pbv" secondAttribute="trailing" id="4N5-0M-kGr"/>
                                             <constraint firstItem="LFJ-1u-t61" firstAttribute="leading" secondItem="JHH-bn-lg2" secondAttribute="leading" id="CKO-Kv-XaN"/>
+                                            <constraint firstAttribute="trailing" secondItem="U7O-Dq-akj" secondAttribute="trailing" id="DWN-Lg-TT0"/>
+                                            <constraint firstAttribute="bottom" secondItem="U7O-Dq-akj" secondAttribute="bottom" id="MJh-ZQ-jCO"/>
                                             <constraint firstItem="RN0-vn-pbv" firstAttribute="leading" secondItem="JHH-bn-lg2" secondAttribute="leading" id="WXN-gu-Zs7"/>
+                                            <constraint firstItem="U7O-Dq-akj" firstAttribute="top" secondItem="JHH-bn-lg2" secondAttribute="top" id="Xln-od-yq3"/>
+                                            <constraint firstItem="U7O-Dq-akj" firstAttribute="leading" secondItem="JHH-bn-lg2" secondAttribute="leading" id="Zgc-c6-gJC"/>
                                             <constraint firstItem="LFJ-1u-t61" firstAttribute="top" secondItem="JHH-bn-lg2" secondAttribute="top" id="ayc-0Y-X58"/>
                                             <constraint firstAttribute="bottom" secondItem="RN0-vn-pbv" secondAttribute="bottom" id="bH0-5M-cu4"/>
                                             <constraint firstAttribute="trailing" secondItem="LFJ-1u-t61" secondAttribute="trailing" id="iMz-mF-GqX"/>
@@ -3900,6 +3935,7 @@
                                             <outlet property="climateMode" destination="yO3-V8-WHX" id="2Op-Vm-4eI"/>
                                             <outlet property="climateName" destination="BPb-W0-bit" id="ndq-zS-5DV"/>
                                             <outlet property="climateSpeed" destination="XLD-Dw-cKD" id="Tc1-bh-gpg"/>
+                                            <outlet property="disabledCellView" destination="U7O-Dq-akj" id="BmD-Ud-NeM"/>
                                             <outlet property="fanSpeedImage" destination="PAf-lS-77v" id="c8M-bu-QZ9"/>
                                             <outlet property="imageOnOff" destination="uIH-R0-Pyj" id="iUe-7P-Ibl"/>
                                             <outlet property="infoView" destination="LFJ-1u-t61" id="pqq-89-x3k"/>
@@ -4108,6 +4144,10 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1V-id-ZxM">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -4119,11 +4159,16 @@
                                             <constraint firstAttribute="trailing" secondItem="dxX-CA-Y99" secondAttribute="trailing" id="Ifr-bz-cKm"/>
                                             <constraint firstItem="dxX-CA-Y99" firstAttribute="top" secondItem="gAi-gO-Z83" secondAttribute="top" id="MfJ-av-n7Q"/>
                                             <constraint firstItem="h2k-G5-aeU" firstAttribute="leading" secondItem="gAi-gO-Z83" secondAttribute="leading" id="RNM-fM-wqw"/>
+                                            <constraint firstAttribute="trailing" secondItem="J1V-id-ZxM" secondAttribute="trailing" id="RNv-gg-uZE"/>
+                                            <constraint firstItem="J1V-id-ZxM" firstAttribute="top" secondItem="gAi-gO-Z83" secondAttribute="top" id="TL3-cK-wpG"/>
                                             <constraint firstAttribute="bottom" secondItem="dxX-CA-Y99" secondAttribute="bottom" id="YJT-nk-hAM"/>
+                                            <constraint firstItem="J1V-id-ZxM" firstAttribute="leading" secondItem="gAi-gO-Z83" secondAttribute="leading" id="YvP-p4-Bei"/>
                                             <constraint firstItem="dxX-CA-Y99" firstAttribute="leading" secondItem="gAi-gO-Z83" secondAttribute="leading" id="cJp-5m-SYb"/>
+                                            <constraint firstAttribute="bottom" secondItem="J1V-id-ZxM" secondAttribute="bottom" id="xxR-4B-jxE"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="backView" destination="h2k-G5-aeU" id="gx9-Zl-0dQ"/>
+                                            <outlet property="disabledCellView" destination="J1V-id-ZxM" id="VUb-67-72n"/>
                                             <outlet property="infoView" destination="dxX-CA-Y99" id="0IA-3g-Yew"/>
                                             <outlet property="labelCategory" destination="LM6-NS-sQf" id="OpR-nH-GCo"/>
                                             <outlet property="labelID" destination="ZVL-4a-opT" id="Okx-7u-s4x"/>

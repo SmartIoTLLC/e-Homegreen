@@ -828,6 +828,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
                 cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.disabledCellView.hidden = true
+            } else {
+                cell.disabledCellView.hidden = false
             }
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
@@ -875,6 +878,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
                 cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.disabledCellView.hidden = true
+            } else {
+                cell.disabledCellView.hidden = false
             }
             
             if devices[indexPath.row].info {
@@ -887,57 +893,56 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as? ApplianceCollectionCell
-            cell!.name.text = devices[indexPath.row].name
-            cell!.name.tag = indexPath.row
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
+            cell.name.text = devices[indexPath.row].name
+            cell.name.tag = indexPath.row
             if devices[indexPath.row].currentValue == 255 {
-                cell!.image.image = UIImage(named: "applianceon")
-                cell!.onOffLabel.text = "ON"
+                cell.image.image = UIImage(named: "applianceon")
+                cell.onOffLabel.text = "ON"
             }
             if devices[indexPath.row].currentValue == 0{
-                cell!.image.image = UIImage(named: "applianceoff")
-                cell!.onOffLabel.text = "OFF"
+                cell.image.image = UIImage(named: "applianceoff")
+                cell.onOffLabel.text = "OFF"
             }
-            cell!.onOffLabel.tag = indexPath.row
+            cell.onOffLabel.tag = indexPath.row
             
             if devices[indexPath.row].info {
-                cell!.infoView.hidden = false
-                cell!.backView.hidden = true
+                cell.infoView.hidden = false
+                cell.backView.hidden = true
             }else {
-                cell!.infoView.hidden = true
-                cell!.backView.hidden = false
+                cell.infoView.hidden = true
+                cell.backView.hidden = false
             }
             
-            cell!.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-            cell!.lblElectricity.text = "\(Float(devices[indexPath.row].current)) V"
-            cell!.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) A"
-            cell!.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+            cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
+            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current)) V"
+            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) A"
+            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
 
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
-                cell!.name.userInteractionEnabled = true
+                cell.name.userInteractionEnabled = true
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-                cell!.image.tag = indexPath.row
-                cell!.image.userInteractionEnabled = true
-                cell!.image.addGestureRecognizer(tap)
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cell!ParametarLongPress:")
+                cell.image.tag = indexPath.row
+                cell.image.userInteractionEnabled = true
+                cell.image.addGestureRecognizer(tap)
+                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
                 longPress.minimumPressDuration = 0.5
-                cell!.name.addGestureRecognizer(longPress)
-                cell!.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+                cell.name.addGestureRecognizer(longPress)
+                cell.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 let tap1:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-                cell!.onOffLabel.userInteractionEnabled = true
-                cell!.onOffLabel.addGestureRecognizer(tap1)
-                cell!.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-                cell!.btnRefresh.tag = indexPath.row
-                cell!.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.onOffLabel.userInteractionEnabled = true
+                cell.onOffLabel.addGestureRecognizer(tap1)
+                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+                cell.btnRefresh.tag = indexPath.row
+                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.disabledCellView.hidden = true
             } else {
-                cell!.disabledCellView.frame = cell!.contentView.layer.bounds
-                cell!.disabledCellView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.2)
-                cell!.addSubview(cell!.disabledCellView)
+                cell.disabledCellView.hidden = false
             }
             
-            return cell!
+            return cell
             
         } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
@@ -1039,6 +1044,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 longPress.minimumPressDuration = 0.5
                 cell.climateName.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+                cell.disabledCellView.hidden = true
+            } else {
+                cell.disabledCellView.hidden = false
             }
             return cell
             
@@ -1154,6 +1162,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 longPress.minimumPressDuration = 0.5
                 cell.sensorTitle.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+                cell.disabledCellView.hidden = true
+            } else {
+                cell.disabledCellView.hidden = false
             }
             return cell
         }
@@ -1172,6 +1183,8 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var lightSlider: UISlider!
     
+    @IBOutlet weak var disabledCellView: UIView!
+    
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
@@ -1188,6 +1201,8 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var onOffLabel: UILabel!
     
+    @IBOutlet weak var disabledCellView: UIView!
+    
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
@@ -1195,7 +1210,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var labelRunningTime: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
     
-    var disabledCellView:UIView = UIView()
+//    var disabledCellView:UIView = UIView()
     
 }
 //curtain
@@ -1205,6 +1220,8 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
     @IBOutlet weak var curtainSlider: UISlider!
+    
+    @IBOutlet weak var disabledCellView: UIView!
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelPowrUsege: UILabel!
@@ -1234,6 +1251,8 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
     
+    @IBOutlet weak var disabledCellView: UIView!
+    
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
@@ -1248,6 +1267,8 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!
     @IBOutlet weak var sensorState: UILabel!
+    
+    @IBOutlet weak var disabledCellView: UIView!
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var labelID: UILabel!
