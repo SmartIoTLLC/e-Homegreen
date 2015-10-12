@@ -156,13 +156,23 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             print(touch)
         }
         print("\(_stdlib_getDemangledTypeName(touch.view))")
-        if let _ = touch.view as? UITableViewCell{
+        if let _ = touch.view as? UITableViewCell {
             return false
         }
-        if let _ = touch.view?.superview as? UITableViewCell{
+        if let _ = touch.view?.superview as? UITableViewCell {
             return false
         }
-        if let _ = touch.view?.superview?.superview as? UITableViewCell{
+        if let _ = touch.view?.superview?.superview as? UITableViewCell {
+            return false
+        }
+        
+        if let _ = touch.view as? UICollectionViewCell {
+            return false
+        }
+        if let _ = touch.view?.superview as? UICollectionViewCell {
+            return false
+        }
+        if let _ = touch.view?.superview?.superview as? UICollectionViewCell {
             return false
         }
         
