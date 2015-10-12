@@ -53,6 +53,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.setObject(254, forKey: "EHGSecurityAddressThree")
             //        No Panic, Panic
             defaults.setBool(false, forKey: "EHGSecurityPanic")
+            
+            LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Events", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Sequences", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All"])
+            
+            LocalSearchParametar.setLocalIds("Devices", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Scenes", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Events", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Sequences", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Timers", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Flags", parametar: ["All","All","All"])
+            LocalSearchParametar.setLocalIds("Energy", parametar: ["All","All","All"])
         }
         
         return true

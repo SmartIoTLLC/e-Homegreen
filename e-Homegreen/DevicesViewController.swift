@@ -27,6 +27,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var mySecondView:Array<UIView> = []
     var timer:NSTimer = NSTimer()
     
+    var locationSearchText = ["", "", "", ""]
+    
     override func viewDidLoad() {
         print(heeeeeeej())
         super.viewDidLoad()
@@ -45,12 +47,23 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
         // Do any additional setup after loading the view.
+        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
+        locationSearch = locationSearchText[0]
+        
+        locationSearchString = locationSearchText[0]
+        zoneSearchString = locationSearchText[1]
+        levelSearchString = locationSearchText[2]
+        categorySearchString = locationSearchText[3]
+        
+        let localSearchIds:[String] = LocalSearchParametar.getLocalIds("Devices")
+        zoneSearch = localSearchIds[0]
+        levelSearch = localSearchIds[1]
+        categorySearch = localSearchIds[2]
         updateDeviceList()
         
-        //        var utterance = AVSpeechUtterance(string: "Hello world. Hello Vladimir! What about these new things? What about everything?")
-        //        var synth = AVSpeechSynthesizer()
-        //        synth.speakUtterance(utterance)
-        
+//                let utterance = AVSpeechUtterance(string: "Fuck you motherfucker.")
+//                let synth = AVSpeechSynthesizer()
+//                synth.speakUtterance(utterance)
         
         
     }
@@ -101,15 +114,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-//        if let results = fetResults {
-//            print("ovde je uslo 2")
-//            devices = results
-//        } else {
-//            print("ovde je uslo 3")
-//        }
-//        print("ovde je izaslo")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -365,9 +369,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-            
-            drawMenu()
-            
             deviceCollectionView.reloadData()
             
         } else {
@@ -378,8 +379,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
-            
-            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -390,14 +389,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-            
-            drawMenu()
-            
             deviceCollectionView.reloadData()
         }
+        drawMenu(locationSearchText[0], levelText: locationSearchText[1], zoneText: locationSearchText[2], categoryText: locationSearchText[3])
     }
-    
-    func drawMenu(){
+    func drawMenu(locationText:String, levelText:String, zoneText:String, categoryText:String){
         let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
         locationLabel.text = "Location"
         locationLabel.textColor = UIColor.whiteColor()
@@ -421,7 +417,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let locationButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
         locationButton.backgroundColor = UIColor.grayColor()
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
-        locationButton.setTitle("All", forState: UIControlState.Normal)
+        locationButton.setTitle(locationText, forState: UIControlState.Normal)
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         locationButton.layer.cornerRadius = 5
         locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -434,7 +430,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let levelButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
         levelButton.backgroundColor = UIColor.grayColor()
         levelButton.titleLabel?.tintColor = UIColor.whiteColor()
-        levelButton.setTitle("All", forState: UIControlState.Normal)
+        levelButton.setTitle(levelText, forState: UIControlState.Normal)
         levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         levelButton.layer.cornerRadius = 5
         levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -447,7 +443,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
         zoneButton.backgroundColor = UIColor.grayColor()
         zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
-        zoneButton.setTitle("All", forState: UIControlState.Normal)
+        zoneButton.setTitle(zoneText, forState: UIControlState.Normal)
         zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         zoneButton.layer.cornerRadius = 5
         zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -460,7 +456,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let categoryButton:UIButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
         categoryButton.backgroundColor = UIColor.grayColor()
         categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
-        categoryButton.setTitle("All", forState: UIControlState.Normal)
+        categoryButton.setTitle(categoryText, forState: UIControlState.Normal)
         categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         categoryButton.layer.cornerRadius = 5
         categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -494,35 +490,45 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var locationSearchString:String = "All"
+    var zoneSearchString:String = "All"
+    var levelSearchString:String = "All"
+    var categorySearchString:String = "All"
     func saveText (text : String, id:Int) {
         let tag = senderButton!.tag
-            switch tag {
-            case 1:
-                locationSearch = text
-            case 2:
-                if id == -1 {
-                    levelSearch = "All"
-                } else {
-                    levelSearch = "\(id)"
-                }
-            case 3:
-                if id == -1 {
-                    zoneSearch = "All"
-                } else {
-                    zoneSearch = "\(id)"
-                }
-            case 4:
-                if id == -1 {
-                    categorySearch = "All"
-                } else {
-                    categorySearch = "\(id)"
-                }
-            default:
-                print("")
+        switch tag {
+        case 1:
+            locationSearch = text
+            locationSearchString = text
+        case 2:
+            if id == -1 {
+                levelSearch = "All"
+            } else {
+                levelSearch = "\(id)"
             }
-            updateDeviceList()
-            deviceCollectionView.reloadData()
-            senderButton?.setTitle(text, forState: .Normal)
+            levelSearchString = text
+        case 3:
+            if id == -1 {
+                zoneSearch = "All"
+            } else {
+                zoneSearch = "\(id)"
+            }
+            zoneSearchString = text
+        case 4:
+            if id == -1 {
+                categorySearch = "All"
+            } else {
+                categorySearch = "\(id)"
+            }
+            categorySearchString = text
+        default:
+            print("")
+        }
+        LocalSearchParametar.setLocalIds("Devices", parametar: [levelSearch, zoneSearch, categorySearch])
+        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearchString, levelSearchString, levelSearchString, categorySearchString])
+        updateDeviceList()
+        deviceCollectionView.reloadData()
+        senderButton?.setTitle(text, forState: .Normal)
         
     }
     

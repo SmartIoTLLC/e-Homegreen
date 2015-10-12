@@ -17,6 +17,12 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var pullDown = PullDownView()
     
     var senderButton:UIButton?
+    
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
+    var sumAmp:Float = 0
+    var sumPow:Float = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +34,8 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
@@ -175,6 +183,56 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var levelSearch:String = "All"
     var categorySearch:String = "All"
     
+    func updateDeviceList () {
+        sumAmp = 0
+        sumPow = 0
+        let fetchRequest = NSFetchRequest(entityName: "Device")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        //        fetchRequest.predicate = predicate
+        
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
+        if levelSearch != "All" {
+            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
+            predicateArray.append(levelPredicate)
+        }
+        if zoneSearch != "All" {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
+            predicateArray.append(zonePredicate)
+        }
+        if categorySearch != "All" {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            devices = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        for item in devices {
+//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+            sumAmp += Float(item.current)
+            sumPow += Float(item.current) * Float(item.voltage) * 0.01
+        }
+        current.text = "\(sumAmp) A"
+        powerUsage.text = "\(sumPow) W"
+    }
     func saveText (text : String, id:Int) {
         let tag = senderButton!.tag
         switch tag {
@@ -202,7 +260,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             print("")
         }
         senderButton?.setTitle(text, forState: .Normal)
-        
+        updateDeviceList()
     }
     
 

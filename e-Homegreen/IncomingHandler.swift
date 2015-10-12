@@ -292,6 +292,12 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
+//                devices[i].enabled = ""
+//                if byteArray[22] == 0x01 {
+//                    devices[i].isEnabled = NSNumber(bool: true)
+//                } else {
+//                    devices[i].isEnabled = NSNumber(bool: false)
+//                }
             }
         }
         saveChanges()
@@ -317,6 +323,12 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[33])
                 devices[i].parentZoneId = Int(byteArray[34])
                 devices[i].categoryId = Int(byteArray[32])
+//                devices[i].enabled = ""
+//                if byteArray[22] == 0x01 {
+//                    devices[i].isEnabled = NSNumber(bool: true)
+//                } else {
+//                    devices[i].isEnabled = NSNumber(bool: false)
+//                }
                 let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
@@ -496,6 +508,11 @@ class IncomingHandler: NSObject {
                 devices[i].zoneId = Int(byteArray[9])
                 devices[i].parentZoneId = Int(byteArray[10])
                 devices[i].categoryId = Int(byteArray[8])
+                if byteArray[22] == 0x01 {
+                    devices[i].isEnabled = NSNumber(bool: true)
+                } else {
+                    devices[i].isEnabled = NSNumber(bool: false)
+                }
                 let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
