@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SecuritySettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
 
@@ -18,8 +19,12 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var addOne: UITextField!
     @IBOutlet weak var addTwo: UITextField!
     @IBOutlet weak var addThree: UITextField!
-    
+    var gateways:[Gateway]?
+    var securities:[Security]?
     var popoverVC:PopOverViewController = PopOverViewController()
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     func endEditingNow(){
         addOne.resignFirstResponder()
@@ -29,6 +34,8 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
@@ -48,8 +55,33 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         addThree.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressThree"))
 
         transitioningDelegate = self
-
+        
+        
         // Do any additional setup after loading the view.
+    }
+    func saveGatewayToSecurities () {
+        fetchSecurity()
+        fetchGateways()
+        if securities!.count > 0 && gateways!.count > 0{
+            for security in securities! {
+                security.gateway = gateways![0]
+            }
+            saveChanges()
+        }
+    }
+    
+    func fetchSecurity() {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorTwo]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+            securities = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     func returnThreeCharactersForByte (number:Int) -> String {
@@ -58,6 +90,39 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    var pickedGatewayName:String = ""
+    func saveText(text: String, id: Int) {
+        pickedGatewayName = text
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
+    func fetchGateways () {
+        var error:NSError?
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicateOne = NSPredicate(format: "name == %@", pickedGatewayName)
+        let predicateTwo = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     @IBAction func btnChooseGateway(sender: AnyObject) {
@@ -87,6 +152,7 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
                 defaults.setObject(addressOne, forKey: "EHGSecurityAddressOne")
                 defaults.setObject(addressTwo, forKey: "EHGSecurityAddressTwo")
                 defaults.setObject(addressThree, forKey: "EHGSecurityAddressThree")
+                saveGatewayToSecurities()
             }
         }
     }

@@ -40,20 +40,35 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         let address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
         switch security.name {
         case "Away":
-            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
+            if security.gateway != nil {
+                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
+            }
         case "Night":
+            if security.gateway != nil {
+                
+            }
             SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: security.gateway!)
         case "Day":
+            if security.gateway != nil {
+                
+            }
             SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: security.gateway!)
         case "Vacation":
+            if security.gateway != nil {
+                
+            }
             SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: security.gateway!)
         case "Panic":
             if defaults.boolForKey("EHGSecurityPanic") {
-                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
-                defaults.setBool(false, forKey: "EHGSecurityPanic")
+                if security.gateway != nil {
+                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
+                    defaults.setBool(false, forKey: "EHGSecurityPanic")
+                }
             } else {
-                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
-                defaults.setBool(true, forKey: "EHGSecurityPanic")
+                if security.gateway != nil {
+                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
+                    defaults.setBool(true, forKey: "EHGSecurityPanic")
+                }
             }
         default: break
         }

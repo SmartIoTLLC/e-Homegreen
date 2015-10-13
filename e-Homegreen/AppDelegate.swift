@@ -71,6 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocalSearchParametar.setLocalIds("Energy", parametar: ["All","All","All"])
         }
         
+        checkIfThereISGatewayWithExistingSSID()
+        
         return true
     }
     func preloadData () {
@@ -86,7 +88,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             saveContext()
         }
     }
-    
+    func checkIfThereISGatewayWithExistingSSID () {
+        if let ssid = UIDevice.currentDevice().SSID {
+            fetchGateways()
+            for gateway in gateways {
+                if gateway.ssid == ssid {
+                    LocalSearchParametar.setLocalParametar("Devices", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Scenes", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Events", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Sequences", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Timers", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Flags", parametar: [gateway.name,"All","All","All"])
+                    LocalSearchParametar.setLocalParametar("Energy", parametar: [gateway.name,"All","All","All"])
+                    
+                    LocalSearchParametar.setLocalIds("Devices", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Scenes", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Events", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Sequences", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Timers", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Flags", parametar: ["All","All","All"])
+                    LocalSearchParametar.setLocalIds("Energy", parametar: ["All","All","All"])
+                    break
+                }
+            }
+        }
+    }
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

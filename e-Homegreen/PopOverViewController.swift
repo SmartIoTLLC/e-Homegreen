@@ -14,6 +14,7 @@ import CoreData
     optional func saveText (strText : String)
     optional func saveText (text : String, id:Int)
     optional func clickedOnGatewayWithIndex (index : Int)
+    optional func clickedOnGatewayWithObjectID(objectId:String)
 }
 
 struct TableList {
