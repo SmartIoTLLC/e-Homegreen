@@ -8,13 +8,38 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let locationManager = CLLocationManager()
+    
+    func loadItems() {
+        for item in iBeacons {
+            startMonitoringItem(item)
+        }
+    }
+    func startMonitoringItem(item: IBeacon) {
+        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
+        locationManager.startMonitoringForRegion(beaconRegion)
+        locationManager.startRangingBeaconsInRegion(beaconRegion)
+    }
+    
+    func stopMonitoringItem(item: IBeacon) {
+        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
+        locationManager.stopMonitoringForRegion(beaconRegion)
+        locationManager.stopRangingBeaconsInRegion(beaconRegion)
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        locationManager.requestAlwaysAuthorization()
+        locationManager.delegate = self
+        
+        fetchIBeacons()
+        loadItems()
         
         if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
             print(hourValue + minuteValue)
@@ -124,6 +149,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
+    
+    var iBeacons:[IBeacon] = []
+    func fetchIBeacons() {
+        var error:NSError?
+        let fetchRequest = NSFetchRequest(entityName: "IBeacon")
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [IBeacon]
+            iBeacons = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
     var inOutSockets:[InOutSocket] = []
     var gateways:[Gateway] = []
     func fetchGateways () {
@@ -305,5 +347,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+extension AppDelegate: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+        print("Failed monitoring region: \(error.description)")
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("Location manager failed: \(error.description)")
+    }
+    
+    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+        
+        for beacon in beacons {
+            for item in iBeacons {
+                if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercaseString == beacon.proximityUUID.UUIDString){
+                    print(item.name)
+                }
+            }
+        }
+        
+    }
 }
 

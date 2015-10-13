@@ -56,7 +56,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pis-PF-oQU" userLabel="Back View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pis-PF-oQU" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="150" y="60" width="300" height="480"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cga-6t-tyM">
@@ -302,7 +302,7 @@
                             </constraints>
                         </scrollView>
                     </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Cga-6t-tyM" secondAttribute="trailing" id="Fej-ch-QvR"/>
                         <constraint firstItem="Cga-6t-tyM" firstAttribute="leading" secondItem="Pis-PF-oQU" secondAttribute="leading" id="Lm5-ol-TXg"/>
@@ -311,6 +311,9 @@
                         <constraint firstAttribute="width" constant="300" id="eb4-XH-BSK"/>
                         <constraint firstItem="Cga-6t-tyM" firstAttribute="top" secondItem="Pis-PF-oQU" secondAttribute="top" id="lsU-D6-qDm"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                     <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
                         <rect key="frame" x="50" y="50" width="300" height="400"/>
                     </variation>

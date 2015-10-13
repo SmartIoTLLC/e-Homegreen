@@ -157,13 +157,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func handleTap(gesture:UITapGestureRecognizer){
-//        var point:CGPoint = gesture.locationInView(self.view)
-//        var tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-//        println(tappedView.tag)
-//        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        
-//        }
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {

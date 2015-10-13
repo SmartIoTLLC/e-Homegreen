@@ -19,7 +19,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security settings"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security settings", "iBeacon settings"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
             hourRefresh = hour
@@ -115,7 +115,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings"{
+        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings" || settingArray[indexPath.section] == "iBeacon settings"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.tableCellTitle.text = settingArray[indexPath.section]
             
@@ -191,8 +191,13 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 self.performSegueWithIdentifier("securitySettings", sender: self)
             })
         }
+        if indexPath.section == 6 {
+            dispatch_async(dispatch_get_main_queue(),{
+                self.performSegueWithIdentifier("iBeaconSettings", sender: self)
+            })
+        }
         self.settingsTableView.userInteractionEnabled = false
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
+        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
     }
     func update(){
         self.settingsTableView.userInteractionEnabled = true

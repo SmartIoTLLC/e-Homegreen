@@ -27,8 +27,6 @@
 		7372EB361BC410800097806D /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB261BC410800097806D /* Scene.swift */; settings = {ASSET_TAGS = (); }; };
 		7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		7372EB381BC410800097806D /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB281BC410800097806D /* Flag.swift */; settings = {ASSET_TAGS = (); }; };
-		7372EB391BC410800097806D /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB291BC410800097806D /* Zone+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
-		7372EB3A1BC410800097806D /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2A1BC410800097806D /* Zone.swift */; settings = {ASSET_TAGS = (); }; };
 		7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		7372EB3C1BC410800097806D /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2C1BC410800097806D /* Category.swift */; settings = {ASSET_TAGS = (); }; };
 		7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
@@ -121,6 +119,13 @@
 		E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */; };
 		E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */; };
 		E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */; };
+		E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
+		E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26111BCD116800D5C3F0 /* Zone.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */; settings = {ASSET_TAGS = (); }; };
@@ -217,8 +222,6 @@
 		7372EB261BC410800097806D /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Flag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB281BC410800097806D /* Flag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flag.swift; sourceTree = "<group>"; };
-		7372EB291BC410800097806D /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		7372EB2A1BC410800097806D /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB2C1BC410800097806D /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -324,6 +327,13 @@
 		E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInput.swift; sourceTree = "<group>"; };
 		E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInput.xib; sourceTree = "<group>"; };
+		E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeaconSettingsViewController.swift; sourceTree = "<group>"; };
+		E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeaconSettingsVC.swift; sourceTree = "<group>"; };
+		E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IBeaconSettingsVC.xib; sourceTree = "<group>"; };
+		E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IBeacon+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeacon.swift; sourceTree = "<group>"; };
+		E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E7AA26111BCD116800D5C3F0 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraParametarXIBViewController.swift; sourceTree = "<group>"; };
 		E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraParametarXIBViewController.xib; sourceTree = "<group>"; };
 		E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
@@ -610,8 +620,6 @@
 				7372EB261BC410800097806D /* Scene.swift */,
 				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
 				7372EB281BC410800097806D /* Flag.swift */,
-				7372EB291BC410800097806D /* Zone+CoreDataProperties.swift */,
-				7372EB2A1BC410800097806D /* Zone.swift */,
 				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
 				7372EB2C1BC410800097806D /* Category.swift */,
 				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
@@ -623,6 +631,10 @@
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */,
 				73EE52E41BC532D200E76BC3 /* Surveilence.swift */,
+				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
+				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
+				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
+				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
 			);
 			name = NSMOModel;
 			sourceTree = "<group>";
@@ -646,6 +658,7 @@
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
 				E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */,
 				E7FC2C221BBC31D30075CD60 /* SecuritySettingsViewController.swift */,
+				E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -949,6 +962,8 @@
 				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
 				E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */,
 				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
+				E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */,
+				E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -1121,6 +1136,7 @@
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
+				E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,10 +1216,13 @@
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
+				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
+				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
+				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
 				7372EB351BC410800097806D /* Scene+CoreDataProperties.swift in Sources */,
 				73DB8B931B2FF8A400139E58 /* ContainerViewController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
@@ -1226,7 +1245,6 @@
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
-				7372EB391BC410800097806D /* Zone+CoreDataProperties.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
@@ -1242,17 +1260,19 @@
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
+				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
-				7372EB3A1BC410800097806D /* Zone.swift in Sources */,
+				E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
+				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
@@ -1423,7 +1443,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-com.nswebdeveloment.Hoodbe";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.Hoodbe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1446,7 +1466,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-com.nswebdeveloment.Hoodbe";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.Hoodbe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
