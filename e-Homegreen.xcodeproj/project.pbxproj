@@ -119,6 +119,9 @@
 		E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */; };
 		E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */; };
 		E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */; };
+		E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79FD4E91BCE43B600CA17DB /* ChatBubbleData.swift */; settings = {ASSET_TAGS = (); }; };
+		E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */; settings = {ASSET_TAGS = (); }; };
+		E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79FD4ED1BCE43D600CA17DB /* Util.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
 		E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
@@ -327,6 +330,9 @@
 		E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInput.swift; sourceTree = "<group>"; };
 		E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInput.xib; sourceTree = "<group>"; };
+		E79FD4E91BCE43B600CA17DB /* ChatBubbleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubbleData.swift; sourceTree = "<group>"; };
+		E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
+		E79FD4ED1BCE43D600CA17DB /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeaconSettingsViewController.swift; sourceTree = "<group>"; };
 		E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeaconSettingsVC.swift; sourceTree = "<group>"; };
 		E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IBeaconSettingsVC.xib; sourceTree = "<group>"; };
@@ -730,6 +736,9 @@
 		E76B57671BBD1E7100A70F69 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E79FD4E91BCE43B600CA17DB /* ChatBubbleData.swift */,
+				E79FD4ED1BCE43D600CA17DB /* Util.swift */,
+				E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */,
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
 			);
 			name = View;
@@ -1220,6 +1229,7 @@
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
+				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
@@ -1241,6 +1251,7 @@
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
+				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
@@ -1259,6 +1270,7 @@
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
+				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
