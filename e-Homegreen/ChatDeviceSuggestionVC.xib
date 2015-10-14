@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatDeviceSuggestionVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
+                <outlet property="height" destination="ugI-df-XBJ" id="PYv-gy-9JU"/>
+                <outlet property="sugestionTableView" destination="3wH-B2-yA9" id="7Ff-wj-c4w"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -15,12 +17,24 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3wH-B2-yA9">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3wH-B2-yA9">
+                    <rect key="frame" x="150" y="150" width="300" height="300"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="Kkp-Z2-iYc"/>
+                        <constraint firstAttribute="height" constant="300" id="ugI-df-XBJ"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="45e-yl-JLf"/>
+                        <outlet property="delegate" destination="-1" id="Eer-OC-CEc"/>
+                    </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="3wH-B2-yA9" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="AZT-4E-HmP"/>
+                <constraint firstItem="3wH-B2-yA9" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="kSn-kY-gdE"/>
+            </constraints>
         </view>
     </objects>
 </document>

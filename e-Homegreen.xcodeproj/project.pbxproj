@@ -92,6 +92,8 @@
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
+		E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
 		E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBA1B42FC0B00E48454 /* FSCalendarCell.m */; };
@@ -295,6 +297,8 @@
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
+		E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceControllerTableViewCell.swift; sourceTree = "<group>"; };
+		E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VoiceControllerTableViewCell.xib; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
 		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
 		E75B4FB71B42FC0B00E48454 /* FSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendar.h; sourceTree = "<group>"; };
@@ -999,6 +1003,8 @@
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */,
 				73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */,
+				E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */,
+				E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */,
 			);
 			name = Surveillence;
 			sourceTree = "<group>";
@@ -1104,6 +1110,7 @@
 				E7C9CE011BC2B2AD007D8FE8 /* SecParamatarVC.xib in Resources */,
 				E7DC67C41B457C0E00EA6543 /* weather-scattered.png in Resources */,
 				E7DC67BA1B457C0E00EA6543 /* weather-few.png in Resources */,
+				E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */,
 				73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */,
@@ -1278,6 +1285,7 @@
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
+				E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,

@@ -59,6 +59,10 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillLayoutSubviews() {
+        chatTableView.reloadData()
+    }
+    
     
     @IBAction func sendBtnAction(sender: AnyObject) {
         if  chatTextField.text != ""{
@@ -67,6 +71,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
             chatTableView.reloadData()
             chatTextField.resignFirstResponder()
             chatTextField.text = ""
+            showSuggestion()
         }
     }
     
