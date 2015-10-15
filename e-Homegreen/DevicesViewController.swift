@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, UIGestureRecognizerDelegate {
     
@@ -59,6 +60,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelSearch = localSearchIds[1]
         categorySearch = localSearchIds[2]
         updateDeviceList()
+        
+        UIDevice.currentDevice().SSID
+        
+//                let utterance = AVSpeechUtterance(string: "Fuck you motherfucker.")
+//                let synth = AVSpeechSynthesizer()
+//                synth.speakUtterance(utterance)
         
         
     }
