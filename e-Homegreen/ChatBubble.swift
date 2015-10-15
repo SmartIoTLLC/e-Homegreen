@@ -23,10 +23,10 @@ class ChatBubble: UIView {
     
     :returns: Chat Bubble
     */
-    init(data: ChatBubbleData, startY: CGFloat){
+    init(data: ChatBubbleData, startY: CGFloat, orientation: String){
         
         // 1. Initializing parent view with calculated frame
-        super.init(frame: ChatBubble.framePrimary(data.type, startY:startY))
+        super.init(frame: ChatBubble.framePrimary(data.type, startY:startY, orientation:orientation))
         
         // Making Background color as gray color
         self.backgroundColor = UIColor.clearColor()
@@ -46,11 +46,11 @@ class ChatBubble: UIView {
         }
         
         // 3. Going to add Text if any
-        if let chatText = data.text {
+        if let _ = data.text {
             // frame calculation
-            var startX = padding
+            let startX = padding
             var startY:CGFloat = 5.0
-            if let imageView = imageViewChat {
+            if let _ = imageViewChat {
                 startY += CGRectGetMaxY(imageViewChat!.frame)
             }
             labelChatText = UILabel(frame: CGRectMake(startX, startY, CGRectGetWidth(self.frame) - 2 * startX , 5))
@@ -64,7 +64,7 @@ class ChatBubble: UIView {
         // 4. Calculation of new width and height of the chat bubble view
         var viewHeight: CGFloat = 0.0
         var viewWidth: CGFloat = 0.0
-        if let imageView = imageViewChat {
+        if let _ = imageViewChat {
             // Height calculation of the parent view depending upon the image view and text label
             viewWidth = max(CGRectGetMaxX(imageViewChat!.frame), CGRectGetMaxX(labelChatText!.frame)) + padding
             viewHeight = max(CGRectGetMaxY(imageViewChat!.frame), CGRectGetMaxY(labelChatText!.frame)) + padding
@@ -89,17 +89,17 @@ class ChatBubble: UIView {
         self.sendSubviewToBack(imageViewBG!)
 
         // Frame recalculation for filling up the bubble with background bubble image
-        var repsotionXFactor:CGFloat = data.type == .Mine ? 0.0 : -8.0
-        var bgImageNewX = CGRectGetMinX(imageViewBG!.frame) + repsotionXFactor
-        var bgImageNewWidth =  CGRectGetWidth(imageViewBG!.frame) + CGFloat(12.0)
-        var bgImageNewHeight =  CGRectGetHeight(imageViewBG!.frame) + CGFloat(6.0)
+        let repsotionXFactor:CGFloat = data.type == .Mine ? 0.0 : -8.0
+        let bgImageNewX = CGRectGetMinX(imageViewBG!.frame) + repsotionXFactor
+        let bgImageNewWidth =  CGRectGetWidth(imageViewBG!.frame) + CGFloat(12.0)
+        let bgImageNewHeight =  CGRectGetHeight(imageViewBG!.frame) + CGFloat(6.0)
         imageViewBG?.frame = CGRectMake(bgImageNewX, 0.0, bgImageNewWidth, bgImageNewHeight)
         
         // Keepping a minimum distance from the edge of the screen
         var newStartX:CGFloat = 0.0
         if data.type == .Mine {
             // Need to maintain the minimum right side padding from the right edge of the screen
-            var extraWidthToConsider = CGRectGetWidth(imageViewBG!.frame)
+            let extraWidthToConsider = CGRectGetWidth(imageViewBG!.frame)
             newStartX = ScreenSize.SCREEN_WIDTH - extraWidthToConsider
         } else {
             // Need to maintain the minimum left side padding from the left edge of the screen
@@ -114,13 +114,24 @@ class ChatBubble: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - FRAME CALCULATION
-    class func framePrimary(type:BubbleDataType, startY: CGFloat) -> CGRect{
-        let paddingFactor: CGFloat = 0.02
-        let sidePadding = ScreenSize.SCREEN_WIDTH * paddingFactor
-        let maxWidth = ScreenSize.SCREEN_WIDTH * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
-        let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
-        return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+    class func framePrimary(type:BubbleDataType, startY: CGFloat, orientation: String) -> CGRect{
+        
+        if orientation == "Landscape" {
+            let paddingFactor: CGFloat = 0.02
+            let sidePadding = ScreenSize.SCREEN_WIDTH * paddingFactor
+            let maxWidth = ScreenSize.SCREEN_HEIGHT * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
+            let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_HEIGHT * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
+            return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+        }else{
+            let paddingFactor: CGFloat = 0.02
+            let sidePadding = ScreenSize.SCREEN_WIDTH * paddingFactor
+            let maxWidth = ScreenSize.SCREEN_WIDTH * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
+            let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
+            return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+        }
+//        return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
     }
 
 

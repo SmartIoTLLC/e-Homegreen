@@ -94,6 +94,7 @@
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993171BCEA05100C74486 /* AnswersHandler.swift */; settings = {ASSET_TAGS = (); }; };
 		E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4F7E1B42CB1100E48454 /* SPClockView.m */; };
 		E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FB81B42FC0B00E48454 /* FSCalendar.m */; };
 		E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FBA1B42FC0B00E48454 /* FSCalendarCell.m */; };
@@ -299,6 +300,7 @@
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceControllerTableViewCell.swift; sourceTree = "<group>"; };
 		E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VoiceControllerTableViewCell.xib; sourceTree = "<group>"; };
+		E73993171BCEA05100C74486 /* AnswersHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswersHandler.swift; sourceTree = "<group>"; };
 		E75B4F7D1B42CB1100E48454 /* SPClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPClockView.h; sourceTree = "<group>"; };
 		E75B4F7E1B42CB1100E48454 /* SPClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPClockView.m; sourceTree = "<group>"; };
 		E75B4FB71B42FC0B00E48454 /* FSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendar.h; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 				73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
 				E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */,
+				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
 			);
 			name = "Bussiness Logic";
 			sourceTree = "<group>";
@@ -522,20 +525,20 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E73993161BCE9DDA00C74486 /* Dushboard */,
+				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
 				E7FB6A1A1B9D95370016246B /* Surveillence */,
-				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
 				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
 				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
 				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
 				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
-				736F17D91B3AE87E003A6A02 /* ChatViewController.swift */,
 				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 			);
 			name = ViewControllers;
@@ -673,6 +676,33 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		E73993141BCE9DAC00C74486 /* ChatXIB */ = {
+			isa = PBXGroup;
+			children = (
+				73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */,
+				73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */,
+				E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */,
+				E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */,
+			);
+			name = ChatXIB;
+			sourceTree = "<group>";
+		};
+		E73993151BCE9DC400C74486 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				736F17D91B3AE87E003A6A02 /* ChatViewController.swift */,
+			);
+			name = Chat;
+			sourceTree = "<group>";
+		};
+		E73993161BCE9DDA00C74486 /* Dushboard */ = {
+			isa = PBXGroup;
+			children = (
+				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
+			);
+			name = Dushboard;
+			sourceTree = "<group>";
+		};
 		E75163F01B4C089300457BED /* Widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -759,6 +789,7 @@
 		E76B576B1BBD24A100A70F69 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				E73993141BCE9DAC00C74486 /* ChatXIB */,
 				73E6CDB61BC56421003A5F55 /* FlagXIB */,
 				7372EB221BC3F76C0097806D /* TimerXIB */,
 				E7AAF7671BBE88AD00992A18 /* SurveillanceXIB */,
@@ -1001,10 +1032,6 @@
 			isa = PBXGroup;
 			children = (
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
-				73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */,
-				73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */,
-				E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */,
-				E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */,
 			);
 			name = Surveillence;
 			sourceTree = "<group>";
@@ -1319,6 +1346,7 @@
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
+				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,

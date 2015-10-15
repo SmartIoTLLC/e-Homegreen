@@ -26,6 +26,8 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
     
     var rowHeight:[CGFloat] = []
     
+    var layout:String = "Portrait"
+    
     let reuseIdentifierCommand  = "chatCommandCell"
     let reuseIdentifierAnswer  = "chatAnswerCell"
     
@@ -60,9 +62,14 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
     }
     
     override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            layout = "Landscape"
+        }else{
+            layout = "Portrait"
+        }
+        
         chatTableView.reloadData()
     }
-    
     
     @IBAction func sendBtnAction(sender: AnyObject) {
         if  chatTextField.text != ""{
@@ -71,15 +78,17 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
             chatTableView.reloadData()
             chatTextField.resignFirstResponder()
             chatTextField.text = ""
-            showSuggestion()
+//            showSuggestion()
+            let answ = AnswersHandler()
+            answ.getAnswer()
         }
     }
     
     func calculateHeight(){
         rowHeight = []
         for item in chatList{
-            var chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: NSDate(), type: item.type)
-            var chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5)
+            let chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: NSDate(), type: item.type)
+            let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
             rowHeight.append(CGRectGetMaxY(chatBubbleMine.frame))
         }
     }
@@ -154,7 +163,7 @@ extension ChatViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         
         var chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
-        var chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5)
+        var chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
         
         cell.backgroundColor = UIColor.clearColor()
         

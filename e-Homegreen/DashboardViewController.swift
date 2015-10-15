@@ -19,7 +19,6 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     @IBOutlet weak var imageWeather: UIImageView!
     
     var locationManager = CLLocationManager()
-//    var backgroundImage = UIImageView()
     
 
     @IBOutlet weak var backgroundImage: UIImageView!
@@ -93,7 +92,7 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let location = locations.last!
         let long = NSString(format: "%.15lf", location.coordinate.longitude)
         let lat = NSString(format: "%.15lf", location.coordinate.latitude)
-        getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)")
+        getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=bd82977b86bf27fb59a04b61b657fb6f")
         
     }
     
