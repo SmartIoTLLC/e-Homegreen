@@ -60,7 +60,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelSearch = localSearchIds[1]
         categorySearch = localSearchIds[2]
         updateDeviceList()
-        
+        print(ChatHandler().getCommand("bla bla bla bla bal bla turn on bla"))
+        print(ChatHandler().getCommand("bla bla bla bla bal bla turn off bla"))
+        print(ChatHandler().getCommand("bla bla bla bla bal bla start bla"))
+        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
     }
     
     var appDel:AppDelegate!
