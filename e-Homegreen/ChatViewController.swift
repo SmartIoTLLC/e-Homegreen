@@ -72,7 +72,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
         
         // Do any additional setup after loading the view.
-        textToSpeech("sdaslkdhfjalsfkh alkfjal;k djs;flksja f;lkjasd ;ldkasj ;lksdj ;fldkjasf;ldkjasf dkasf;ldks j;lsdakjf ;lsadkjf ;lasdkjf ;lasvgh;lasdjghlas ghlas")
+//        textToSpeech("sdaslkdhfjalsfkh alkfjal;k djs;flksja f;lkjasd ;ldkasj ;lksdj ;fldkjasf;ldkjasf dkasf;ldks j;lsdakjf ;lsadkjf ;lasdkjf ;lasvgh;lasdjghlas ghlas")
     }
     
     func textToSpeech(text:String) {
@@ -158,7 +158,6 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
         }else{
             layout = "Portrait"
         }
-        
         chatTableView.reloadData()
     }
     
@@ -168,16 +167,46 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
             calculateHeight()
             chatTableView.reloadData()
             chatTextField.resignFirstResponder()
-//            showSuggestion()
-            let answ = AnswersHandler()
-            print(chatTextField.text!)
-            answ.getAnswerComplition(chatTextField.text!, completion: { (result) -> Void in
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.chatList.append(ChatItem(text: result, type: .Opponent))
-                    self.calculateHeight()
-                    self.chatTableView.reloadData()
+            //            showSuggestion()
+            if chatTextField.text?.lowercaseString == "tell me a joke"{
+                let joke = TellMeAJokeHandler()
+                joke.getJokeCompletion({ (result) -> Void in
+                    dispatch_async(dispatch_get_main_queue(),{
+                        self.chatList.append(ChatItem(text: result, type: .Opponent))
+                        self.calculateHeight()
+                        self.chatTableView.reloadData()
+                        self.textToSpeech(result)
+                        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                        }
+                    })
                 })
-            })
+            }else{
+                let answ = AnswersHandler()
+                answ.getAnswerComplition(chatTextField.text!, completion: { (result) -> Void in
+                    if result != ""{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.chatList.append(ChatItem(text: result, type: .Opponent))
+                            self.calculateHeight()
+                            self.chatTableView.reloadData()
+                            self.textToSpeech(result)
+                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                            }
+                        })
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.chatList.append(ChatItem(text: "Wrong question!!!", type: .Opponent))
+                            self.calculateHeight()
+                            self.chatTableView.reloadData()
+                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                            }
+                        })
+                    }
+                    
+                })
+            }
             chatTextField.text = ""
         }
     }
@@ -260,12 +289,13 @@ extension ChatViewController: UITableViewDataSource {
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         
-        var chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
-        var chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
+        let chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
+        let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
         
         cell.backgroundColor = UIColor.clearColor()
         
         cell.contentView.addSubview(chatBubbleMine)
+
         return cell
     }
     

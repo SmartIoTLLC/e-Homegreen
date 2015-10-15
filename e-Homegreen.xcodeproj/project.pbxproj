@@ -92,7 +92,7 @@
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
-		E70A6ED11BCF9CD700EBB53D /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */; settings = {ASSET_TAGS = (); }; };
+		E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
@@ -300,7 +300,7 @@
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
-		E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
+		E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TellMeAJokeHandler.swift; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceControllerTableViewCell.swift; sourceTree = "<group>"; };
 		E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VoiceControllerTableViewCell.xib; sourceTree = "<group>"; };
@@ -485,8 +485,8 @@
 				73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
 				E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */,
-				E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */,
 				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
+				E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */,
 			);
 			name = "Bussiness Logic";
 			sourceTree = "<group>";
@@ -530,7 +530,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E73993161BCE9DDA00C74486 /* Dushboard */,
+				E73993161BCE9DDA00C74486 /* Dashboard */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
@@ -701,12 +701,12 @@
 			name = Chat;
 			sourceTree = "<group>";
 		};
-		E73993161BCE9DDA00C74486 /* Dushboard */ = {
+		E73993161BCE9DDA00C74486 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
 				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 			);
-			name = Dushboard;
+			name = Dashboard;
 			sourceTree = "<group>";
 		};
 		E75163F01B4C089300457BED /* Widget */ = {
@@ -1310,7 +1310,6 @@
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
-				E70A6ED11BCF9CD700EBB53D /* XMLParser.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
@@ -1321,6 +1320,7 @@
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
+				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,
 				E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,

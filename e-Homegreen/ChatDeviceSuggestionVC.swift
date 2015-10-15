@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var height: NSLayoutConstraint!

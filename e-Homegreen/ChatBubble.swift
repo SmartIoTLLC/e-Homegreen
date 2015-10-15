@@ -100,7 +100,12 @@ class ChatBubble: UIView {
         if data.type == .Mine {
             // Need to maintain the minimum right side padding from the right edge of the screen
             let extraWidthToConsider = CGRectGetWidth(imageViewBG!.frame)
-            newStartX = ScreenSize.SCREEN_WIDTH - extraWidthToConsider
+//            newStartX = ScreenSize.SCREEN_WIDTH - extraWidthToConsider
+            if orientation == "Landscape" {
+                newStartX = ScreenSize.SCREEN_HEIGHT - extraWidthToConsider
+            }else{
+                newStartX = ScreenSize.SCREEN_WIDTH - extraWidthToConsider
+            }
         } else {
             // Need to maintain the minimum left side padding from the left edge of the screen
             newStartX = -CGRectGetMinX(imageViewBG!.frame) + 3.0
@@ -117,21 +122,18 @@ class ChatBubble: UIView {
     
     //MARK: - FRAME CALCULATION
     class func framePrimary(type:BubbleDataType, startY: CGFloat, orientation: String) -> CGRect{
-        
+        var width:CGFloat
         if orientation == "Landscape" {
-            let paddingFactor: CGFloat = 0.02
-            let sidePadding = ScreenSize.SCREEN_WIDTH * paddingFactor
-            let maxWidth = ScreenSize.SCREEN_HEIGHT * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
-            let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_HEIGHT * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
-            return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+            width = max(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
         }else{
-            let paddingFactor: CGFloat = 0.02
-            let sidePadding = ScreenSize.SCREEN_WIDTH * paddingFactor
-            let maxWidth = ScreenSize.SCREEN_WIDTH * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
-            let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
-            return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+            width = min(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
         }
-//        return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+        let paddingFactor: CGFloat = 0.02
+        let sidePadding = width * paddingFactor
+        let maxWidth = width * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
+        let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
+        return CGRectMake(0, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+
     }
 
 

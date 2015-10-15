@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AnswersHandler.swift"
-            timestampString = "466597846.965913"
+            filePath = "e-Homegreen/ChatBubble.swift"
+            timestampString = "466609746.347856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
-            landmarkName = "getAnswerComplition(_:completion:)"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "framePrimary(_:startY:orientation:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AnswersHandler.swift"
-            timestampString = "466597874.613189"
+            filePath = "e-Homegreen/ChatBubble.swift"
+            timestampString = "466609746.347856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "getAnswerComplition(_:completion:)"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "framePrimary(_:startY:orientation:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ChatViewController.swift"
-            timestampString = "466598280.956474"
+            filePath = "e-Homegreen/ChatBubble.swift"
+            timestampString = "466609746.347856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "sendBtnAction(_:)"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "framePrimary(_:startY:orientation:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/TellMeAJokeHandler.swift"
+            timestampString = "466611436.082166"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "getJokeCompletion(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
