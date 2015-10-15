@@ -38,8 +38,14 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
+//        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("refreshStatus"), userInfo: nil, repeats: true)
+//        NSTimer.scheduledTimerWithTimeInterval(1.0, invocation: <#T##NSInvocation#>, repeats: <#T##Bool#>)
     }
-
+    func test () {
+//        for item in devices {
+//            
+//        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
