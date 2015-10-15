@@ -61,13 +61,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         categorySearch = localSearchIds[2]
         updateDeviceList()
         
-        UIDevice.currentDevice().SSID
-        
-//                let utterance = AVSpeechUtterance(string: "Fuck you motherfucker.")
-//                let synth = AVSpeechSynthesizer()
-//                synth.speakUtterance(utterance)
-        
-        
     }
     
     var appDel:AppDelegate!
