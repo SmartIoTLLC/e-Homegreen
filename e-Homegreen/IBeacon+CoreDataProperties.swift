@@ -1,5 +1,5 @@
 //
-//  Zone+CoreDataProperties.swift
+//  IBeacon+CoreDataProperties.swift
 //  e-Homegreen
 //
 //  Created by Vladimir on 10/13/15.
@@ -12,14 +12,12 @@
 import Foundation
 import CoreData
 
-extension Zone {
-    
-    @NSManaged var id: NSNumber
-    @NSManaged var isVisible: NSNumber
-    @NSManaged var level: NSNumber
-    @NSManaged var name: String
-    @NSManaged var zoneDescription: String
-    @NSManaged var gateway: Gateway
-    @NSManaged var iBeacon: IBeacon?
+extension IBeacon {
+
+    @NSManaged var name: String?
+    @NSManaged var uuid: String?
+    @NSManaged var major: NSNumber?
+    @NSManaged var minor: NSNumber?
+    @NSManaged var iBeaconZone: Zone?
 
 }

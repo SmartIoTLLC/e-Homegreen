@@ -121,15 +121,6 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = backView.bounds
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        backView.layer.insertSublayer(gradient, atIndex: 0)
-        backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backView.layer.cornerRadius = 10
-        backView.clipsToBounds = true
-        
         editIPRemote.delegate = self
         editPortRemote.delegate = self
         editUserName.delegate = self
@@ -266,14 +257,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-//        if editPortRemote.isFirstResponder(){
-//            if backView.frame.origin.y + editPortRemote.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-//                
-//                self.centarConstraint.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-//                
-//            }
-//        }
+
         if editPortRemote.isFirstResponder(){
             if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
