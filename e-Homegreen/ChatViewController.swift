@@ -168,10 +168,17 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
             calculateHeight()
             chatTableView.reloadData()
             chatTextField.resignFirstResponder()
-            chatTextField.text = ""
 //            showSuggestion()
             let answ = AnswersHandler()
-            answ.getAnswer()
+            print(chatTextField.text!)
+            answ.getAnswerComplition(chatTextField.text!, completion: { (result) -> Void in
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.chatList.append(ChatItem(text: result, type: .Opponent))
+                    self.calculateHeight()
+                    self.chatTableView.reloadData()
+                })
+            })
+            chatTextField.text = ""
         }
     }
     

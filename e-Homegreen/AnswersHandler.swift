@@ -10,9 +10,11 @@ import UIKit
 
 class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     
-    func getAnswer(){
-    
-        var url = NSURL(string: "http://answers.com/Q/what_is_banana")!
+    func getAnswerComplition(question:String, completion:(result:String) -> Void){
+        
+        var returnString:String?
+        
+        let url = NSURL(string: "http://answers.com/Q/\(question)")!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         
@@ -22,18 +24,27 @@ class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
             
             if error == nil{
-//                print(response)
-//                print(data)
-                
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                returnString = (String(data: data!, encoding: NSUTF8StringEncoding)?.sliceFrom("<div class=\"answer_text\">\n\t\t\t\t\t\t\t\t", to: "\t\t\t\t\t\t\t</div>"))!
+                completion(result: returnString!)
                 
             }else{
-                
+                completion(result: "")
             }
             
         }
         task.resume()
     }
+
  
     
+}
+
+extension String {
+    func sliceFrom(start: String, to: String) -> String? {
+        return (rangeOfString(start)?.endIndex).flatMap { sInd in
+            (rangeOfString(to, range: sInd..<endIndex)?.startIndex).map { eInd in
+                substringWithRange(sInd..<eInd)
+            }
+        }
+    }
 }

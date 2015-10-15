@@ -91,6 +91,7 @@
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; settings = {ASSET_TAGS = (); }; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; settings = {ASSET_TAGS = (); }; };
+		E70A6ED11BCF9CD700EBB53D /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */; settings = {ASSET_TAGS = (); }; };
 		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
@@ -297,6 +298,7 @@
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
+		E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
 		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceControllerTableViewCell.swift; sourceTree = "<group>"; };
 		E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VoiceControllerTableViewCell.xib; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
 				E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */,
+				E70A6ED01BCF9CD700EBB53D /* XMLParser.swift */,
 				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
 			);
 			name = "Bussiness Logic";
@@ -1304,6 +1307,7 @@
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
+				E70A6ED11BCF9CD700EBB53D /* XMLParser.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
