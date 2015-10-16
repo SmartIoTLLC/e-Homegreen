@@ -7,7 +7,8 @@
 //
 
 import Foundation
-
+import CoreData
+//enum
 class ChatHandler {
     
     let SYSTEM_NAME = "Valery"
@@ -44,47 +45,53 @@ class ChatHandler {
     
     let BEST_DEVELOPER = 15
     
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    
+    var devices:[Device] = []
+    var scenes:[Scene] = []
+    var securities:[Security] = []
+    var timers:[Timer] = []
+    var sequences:[Sequence] = []
+    var flags:[Flag] = []
+    var events:[Event] = []
+    
+    var typeOfControl:[Int:String] = [:]
+    
+    let CHAT_ANSWERS:[String:Int] = [:]
+    var CHAT_COMMANDS:[String:Int] = [:]
+    
     init () {
         setValues()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-//        var testString = "ma1 ma2 ma3 ma4 ma5    ma6".characters.split{$0 == " "}.map(String.init)
-        var string = "ma1 ma2 ma3 ma4 ma5    ma6"
-        
-        var testString = string.componentsSeparatedByString(" ")
-
-        for item in testString {
-            print(item)
-        }
-        
-        for item in testString {
-            if string.containsString(" " + item + " ") {
-                
-            }
-        }
     }
     func getCommand (message:String) -> Int {
         var listOfCommands:[Int:Int] = [:]
         let message = " " + message + " "
         for command in CHAT_COMMANDS.keys {
-            print(command)
             var numberOfMatchWords = 0
-//            let command = "turn off"
             let commandWords = command.componentsSeparatedByString(" ")
             for word in commandWords {
                 if message.containsString(" " + word + " ") {
                     numberOfMatchWords++
                 }
-                if numberOfMatchWords == commandWords.count {
-                    listOfCommands[numberOfMatchWords] = CHAT_COMMANDS[command]
-                }
             }
-            if listOfCommands.count != 0 {
-                return listOfCommands.keys.maxElement()!
-            } else {
-                return -1
+            if numberOfMatchWords == commandWords.count {
+                listOfCommands[numberOfMatchWords] = CHAT_COMMANDS[command]
             }
         }
+        if listOfCommands.count != 0 {
+            return listOfCommands[listOfCommands.keys.maxElement()!]!
+//            return listOfCommands.keys.maxElement()!
+        } else {
+            return -1
+        }
         return -1
+    }
+    
+    func getTypeOfControl(message:String)->String {
+        return typeOfControl[getCommand(message)]!
     }
     
     func getValueForDim(message:String) -> Int {
@@ -100,29 +107,124 @@ class ChatHandler {
         return -1
     }
     
-//    let typeOfControl:[Int:String] = [TURN_ON_DEVICE: CONTROL_DEVICE,
-//    TURN_OFF_DEVICE: CONTROL_DEVICE,
-//    DIM_DEVICE: CONTROL_DEVICE,
-//    CURRENT_TIME: CHAT,
-//    HOW_ARE_YOU: CHAT,
-//    SET_LOCATION: FILTER,
-//    SET_LEVEL: FILTER,
-//    SET_ZONE: FILTER,
-//    TELL_ME_JOKE: CHAT,
-//    I_LOVE_YOU: CHAT,
-//    BEST_DEVELOPER: CHAT,
-//    SET_SCENE: CONTROL_SCENE,
-//    RUN_EVENT: CONTROL_EVENT,
-//    CANCEL_EVENT: CONTROL_EVENT,
-//    START_SEQUENCE: CONTROL_SEQUENCE,
-//    STOP_SEQUENCE: CONTROL_SEQUENCE,
-//    -1: FAILED]
+    func getItemByName(typeOfControl:String, message:String) -> [AnyObject] {
+        switch typeOfControl {
+        case "control_device":
+            fetchEntities("Device")
+            var returnItems:[Device] = []
+            for item in devices {
+                if message.containsString(item.name) {
+                    returnItems.append(item)
+                }
+            }
+            return returnItems
+        case "control_scene":
+            fetchEntities("Scene")
+            var returnItems:[Scene] = []
+            for item in scenes {
+                if message.containsString(item.sceneName) {
+                    returnItems.append(item)
+                }
+            }
+            return returnItems
+        case "control_event":
+            fetchEntities("Event")
+            var returnItems:[Event] = []
+            for item in events {
+                if message.containsString(item.eventName) {
+                    returnItems.append(item)
+                }
+            }
+            return returnItems
+        case "control_sequence":
+            fetchEntities("Sequence")
+            var returnItems:[Sequence] = []
+            for item in sequences {
+                if message.containsString(item.sequenceName) {
+                    returnItems.append(item)
+                }
+            }
+            return returnItems
+        default:
+            return []
+            break
+        }
+    }
     
-    
-    let CHAT_ANSWERS:[String:Int] = [:]
-    var CHAT_COMMANDS:[String:Int] = [:]
+    func fetchEntities (whatToFetch:String) {
+        if whatToFetch == "Flag" {
+            let fetchRequest = NSFetchRequest(entityName: "Flag")
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
+                print(results.count)
+                flags = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Timer" {
+            let fetchRequest = NSFetchRequest(entityName: "Timer")
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
+                timers = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Sequence" {
+            let fetchRequest = NSFetchRequest(entityName: "Sequence")
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Sequence]
+                sequences = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Security" {
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+                securities = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
+        }
+        if whatToFetch == "Device" {
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+                devices = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
+        }
+    }
     
     func setValues () {
+        typeOfControl = [TURN_ON_DEVICE: CONTROL_DEVICE,
+        TURN_OFF_DEVICE: CONTROL_DEVICE,
+        DIM_DEVICE: CONTROL_DEVICE,
+        CURRENT_TIME: CHAT,
+        HOW_ARE_YOU: CHAT,
+        SET_LOCATION: FILTER,
+        SET_LEVEL: FILTER,
+        SET_ZONE: FILTER,
+        TELL_ME_JOKE: CHAT,
+        I_LOVE_YOU: CHAT,
+        BEST_DEVELOPER: CHAT,
+        SET_SCENE: CONTROL_SCENE,
+        RUN_EVENT: CONTROL_EVENT,
+        CANCEL_EVENT: CONTROL_EVENT,
+        START_SEQUENCE: CONTROL_SEQUENCE,
+        STOP_SEQUENCE: CONTROL_SEQUENCE,
+        -1: FAILED]
     
     CHAT_COMMANDS["set location"] = SET_LOCATION
     CHAT_COMMANDS["control location"] = SET_LOCATION

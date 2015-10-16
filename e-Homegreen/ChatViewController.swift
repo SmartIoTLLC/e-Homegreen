@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+//import CoreData
 import AVFoundation
 
 struct ChatItem {
@@ -21,14 +21,14 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var chatTextField: UITextField!
     
-    var appDel:AppDelegate!
-    var devices:[Device] = []
-    var scenes:[Scene] = []
-    var securities:[Security] = []
-    var timers:[Timer] = []
-    var sequences:[Sequence] = []
-    var flags:[Flag] = []
-    var error:NSError? = nil
+//    var appDel:AppDelegate!
+//    var devices:[Device] = []
+//    var scenes:[Scene] = []
+//    var securities:[Security] = []
+//    var timers:[Timer] = []
+//    var sequences:[Sequence] = []
+//    var flags:[Flag] = []
+//    var error:NSError? = nil
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     var chatList:[ChatItem] = []
@@ -44,7 +44,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         super.viewDidLoad()
 //        var string = "djasd;lkj alsdkja lkdj lajsdlk jglknvpfsjbvgnfsna[bnucenje 12 54 sati kdjaldkjslaksdjalksdjalskdj sdj aksdjl akjsd laks"
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         chatTextField.delegate = self
         
@@ -95,62 +95,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         }
     }
     
-    func fetchEntities (whatToFetch:String) {
-        if whatToFetch == "Flag" {
-            let fetchRequest = NSFetchRequest(entityName: "Flag")
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
-                print(results.count)
-                flags = results
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        if whatToFetch == "Timer" {
-            let fetchRequest = NSFetchRequest(entityName: "Timer")
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
-                timers = results
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        if whatToFetch == "Sequence" {
-            let fetchRequest = NSFetchRequest(entityName: "Sequence")
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Sequence]
-                sequences = results
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        if whatToFetch == "Security" {
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-                securities = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        }
-        if whatToFetch == "Device" {
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-                devices = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        }
-    }
-    
+       
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             layout = "Landscape"

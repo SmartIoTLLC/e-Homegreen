@@ -60,10 +60,22 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelSearch = localSearchIds[1]
         categorySearch = localSearchIds[2]
         updateDeviceList()
-        print(ChatHandler().getCommand("bla bla bla bla bal bla turn on bla"))
-        print(ChatHandler().getCommand("bla bla bla bla bal bla turn off bla"))
-        print(ChatHandler().getCommand("bla bla bla bla bal bla start bla"))
-        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
+//        print("***")
+//        print(ChatHandler().getCommand("bla bla bla bla bal bla turn on bla"))
+//        print(ChatHandler().getCommand("bla bla bla bla bal bla turn off bla"))
+//        print(ChatHandler().getCommand("bla select location bla"))
+//        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
+//        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
+//        print(ChatHandler().getCommand("bla control zone bla"))
+//        print(ChatHandler().getCommand("set level"))
+//        print(ChatHandler().getCommand("bla turn off turn on start bla turn on turn on"))
+//        print(ChatHandler().getCommand("on turn remove"))
+//        print(ChatHandler().getCommand("comething to remember remove"))
+//        print(ChatHandler().getCommand("on device svetlo 1 turn"))
+//        print(ChatHandler().getCommand("what time is it"))
+//        print(ChatHandler().getCommand("stop sequence"))
+//        print(ChatHandler().getCommand("stop sequence off turn"))
+//        print("***")
     }
     
     var appDel:AppDelegate!
