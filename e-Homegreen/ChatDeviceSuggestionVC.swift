@@ -8,6 +8,9 @@
 
 import UIKit
 
+protocol ChatDeviceDelegate{
+    func choosedDevice(device: String)
+}
 
 
 class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
@@ -15,6 +18,10 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var height: NSLayoutConstraint!
     var isPresenting: Bool = true
     @IBOutlet weak var sugestionTableView: UITableView!
+    
+    var listOfDevice:[String] = ["device 1", "device 2"]
+    
+    var delegate:ChatDeviceDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +32,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        height.constant = 240 + 5
+        height.constant = CGFloat(60 * listOfDevice.count + 5)
         
         sugestionTableView.registerNib(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
 
@@ -61,17 +68,18 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return listOfDevice.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("sugestionCell", forIndexPath: indexPath) as! VoiceControllerTableViewCell
-        
+        cell.deviceLbl.text = listOfDevice[indexPath.row]
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        delegate?.choosedDevice(listOfDevice[indexPath.row])
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -137,8 +145,9 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSuggestion() {
+    func showSuggestion() -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
         self.presentViewController(suggVC, animated: true, completion: nil)
+        return suggVC
     }
 }

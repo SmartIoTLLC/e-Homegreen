@@ -11,7 +11,7 @@ import UIKit
 class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     
     func getAnswerComplition(var question:String, completion:(result:String) -> Void){
-
+        
         question = question.stringByReplacingOccurrencesOfString(" ", withString: "_")
         let url = NSURL(string: "http://answers.com/Q/\(question)")!
         let request = NSMutableURLRequest(URL: url)
@@ -23,15 +23,18 @@ class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
             
             if error == nil{
-                let returnS = String(data: data!, encoding: NSUTF8StringEncoding)
-                if var returnString = returnS!.sliceFrom("<div class=\"answer_text\">\n\t\t\t\t\t\t\t\t", to: "\t\t\t\t\t\t\t</div>"){
-                    returnString = returnString.stringByReplacingOccurrencesOfString("\n", withString: "", options: .RegularExpressionSearch, range: nil)
-                    returnString = returnString.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
-                    completion(result: returnString)
+                if let returnS = String(data: data!, encoding: NSUTF8StringEncoding){
+                    if var returnString = returnS.sliceFrom("<div class=\"answer_text\">\n\t\t\t\t\t\t\t\t", to: "\t\t\t\t\t\t\t</div>"){
+                        returnString = returnString.stringByReplacingOccurrencesOfString("\n", withString: "", options: .RegularExpressionSearch, range: nil)
+                        returnString = returnString.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
+                        completion(result: returnString)
+                    }else{
+                        completion(result: "")
+                    }
                 }else{
                     completion(result: "")
                 }
-
+                
             }else{
                 completion(result: "")
             }

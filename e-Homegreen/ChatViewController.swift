@@ -15,7 +15,7 @@ struct ChatItem {
     var type:BubbleDataType
 }
 
-class ChatViewController: CommonViewController, UITextFieldDelegate {
+class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceDelegate {
 
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
@@ -31,9 +31,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
     var error:NSError? = nil
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    var chatList:[ChatItem] = [ChatItem(text: "How old are you?", type: .Mine),
-        ChatItem(text: "i am 16", type: .Opponent),
-        ChatItem(text: "agahjsg agfas f fg sdf f g gf hsdf hg g ah", type: .Opponent)]
+    var chatList:[ChatItem] = []
     
     var rowHeight:[CGFloat] = []
     
@@ -79,6 +77,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
         let utterance = AVSpeechUtterance(string: text)
         let synth = AVSpeechSynthesizer()
         synth.speakUtterance(utterance)
+//        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
     }
     
     func searchForTermInString (text:String, searchTerm:String) {
@@ -167,7 +166,10 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
             calculateHeight()
             chatTableView.reloadData()
             chatTextField.resignFirstResponder()
-            //            showSuggestion()
+            
+            if let _ = findCommand("") {
+                showSuggestion().delegate = self
+            }else{
             if chatTextField.text?.lowercaseString == "tell me a joke"{
                 let joke = TellMeAJokeHandler()
                 joke.getJokeCompletion({ (result) -> Void in
@@ -207,8 +209,17 @@ class ChatViewController: CommonViewController, UITextFieldDelegate {
                     
                 })
             }
+            }
             chatTextField.text = ""
         }
+    }
+    
+    func choosedDevice(device: String) {
+        
+    }
+    
+    func findCommand(string:String) -> String?{
+        return nil
     }
     
     func calculateHeight(){

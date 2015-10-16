@@ -113,8 +113,6 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
             url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=go")!
         }
         let request = NSMutableURLRequest(URL: url)
-//        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=go")
-//        let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
@@ -150,8 +148,6 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
             url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")!
         }
         let request = NSMutableURLRequest(URL: url)
-//        let url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)")
-//        let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         

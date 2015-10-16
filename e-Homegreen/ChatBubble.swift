@@ -132,7 +132,7 @@ class ChatBubble: UIView {
         let sidePadding = width * paddingFactor
         let maxWidth = width * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
         let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
-        return CGRectMake(0, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+        return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
 
     }
 

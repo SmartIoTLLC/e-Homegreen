@@ -42,12 +42,10 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
                                               "13n":"weather-snow",
                                               "50n":"weather-mist"]
     
-//    @IBOutlet weak var calendar: FSCalendar!
     var calendar = FSCalendar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        commonConstruct()
         let date = NSDate()
         let calendarUnit = NSCalendar.currentCalendar()
         let components = calendarUnit.components([.Hour, .Minute], fromDate: date)
@@ -58,8 +56,6 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         }else{
             backgroundImage.image = UIImage(named: "dashboardNight")
         }
-//        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-//        self.view.insertSubview(backgroundImageView, atIndex: 0)
         
         calendar.frame = CGRectMake(50, 50, 200, 200)
         self.view.addSubview(calendar)
@@ -125,14 +121,6 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
                 })
             }
         }
-//        let task = NSURLSession.sharedSession().dataTaskWithURL(url!){(data,response,error) in
-//            if error == nil{
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    self.setLabel(data!)
-//                    
-//                })
-//            }
-//        }
         task.resume()
     }
     
@@ -187,46 +175,6 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         } catch _ {
             // Error
         }
-        
-//        if let json = NSJSONSerialization.JSONObjectWithData(weatherData, options: []) as? NSDictionary {
-//            if jsonError == nil{
-//                //            println(json)
-//                if let name = json["name"] as? String{
-//                    lblPlace.text = name
-//                }
-//
-//                if let weather = json["weather"] as? NSArray{
-//
-//                    if let weatherDict = weather[0] as? NSDictionary {
-//                        if let main = weatherDict["main"] as? String{
-//                            lblWeather.text = main
-//                        }
-//                        if let icon = weatherDict["icon"] as? String{
-//                            imageWeather.image = UIImage(named: weatherDictionary[icon]!)
-//                        }
-//                        
-//                    }
-//                    
-//                    
-//                }
-//                
-//                if let main = json["main"] as? NSDictionary{
-//                    if let temp = main["temp"] as? Double {
-//                        lblTemp.text =  String(format: "%.1f", temp - 273) + "°C"
-//                    }
-//                    var str:String!
-//                    if let temp_min = main["temp_min"] as? Double{
-//                        str = String(format: "%.1f", temp_min - 273) + "°C/"
-//                    }
-//                    
-//                    if let temp_max = main["temp_max"] as? Double{
-//                        lblMinMaxTemp.text = str.stringByAppendingString(String(format: "%.1f", temp_max - 273) + "°C")
-//                    }
-//                }
-//                
-//                
-//            }
-//        }
         
     }
 
