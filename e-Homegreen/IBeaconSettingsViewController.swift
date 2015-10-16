@@ -198,10 +198,13 @@ extension IBeaconSettingsViewController: UITableViewDelegate {
         
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            let itemToRemove = iBeacons[indexPath.section]
+            
+            appDel.removeItem(itemToRemove)
             appDel.managedObjectContext?.deleteObject(iBeacons[indexPath.section])
             saveChanges()
             refreshIBeaconList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
+            appDel.startIBeacon()
 
         }
         

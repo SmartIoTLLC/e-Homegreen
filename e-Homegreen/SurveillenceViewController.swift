@@ -41,10 +41,10 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: "runTimer", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: "stopTimer", object: nil)
-        
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     

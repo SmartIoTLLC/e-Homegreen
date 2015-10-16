@@ -21,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             startMonitoringItem(item)
         }
     }
+    
+    func removeItem(item: IBeacon){
+        stopMonitoringItem(item)
+    }
+    
     func startMonitoringItem(item: IBeacon) {
         let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
         locationManager.startMonitoringForRegion(beaconRegion)
@@ -32,14 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.stopMonitoringForRegion(beaconRegion)
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
+    
+    func startIBeacon(){
+        fetchIBeacons()
+        loadItems()
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         
-        fetchIBeacons()
-        loadItems()
+        startIBeacon()
         
         if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
             print(hourValue + minuteValue)

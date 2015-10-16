@@ -29,6 +29,8 @@ class ContainerViewController: UIViewController {
     
     var state:Bool = false
     
+    var gesture:UITapGestureRecognizer!
+    
     var currentState: SlideOutState = .LeftPanelCollapsed {
         didSet {
             let shouldShowShadow = currentState != .LeftPanelCollapsed
@@ -64,9 +66,8 @@ class ContainerViewController: UIViewController {
         panGestureRecognizer.delegate = self
         centerNavigationController.view.addGestureRecognizer(panGestureRecognizer)
         
-        let gesture = UITapGestureRecognizer(target: self, action: "sideFunc:")
+        gesture = UITapGestureRecognizer(target: self, action: "sideFunc:")
         gesture.delegate = self
-        centerNavigationController.view.addGestureRecognizer(gesture)
     }
     
 }
@@ -116,10 +117,14 @@ extension ContainerViewController: CenterViewControllerDelegate {
         centerPanelExpandedOffset = UIScreen.mainScreen().bounds.width - 200
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
+            
+            centerNavigationController.view.addGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = false
             
             animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset)
         } else {
+            
+            centerNavigationController.view.removeGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = true
             
             animateCenterPanelXPosition(targetPosition: 0) { finished in
@@ -152,31 +157,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
 extension ContainerViewController: UIGestureRecognizerDelegate {
     // MARK: Gesture recognizer
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if let touch = touch.view!.superview as? UICollectionView {
-            print(touch)
-        }
-        print("\(_stdlib_getDemangledTypeName(touch.view))")
-        if let _ = touch.view as? UITableViewCell {
-            return false
-        }
-        if let _ = touch.view?.superview as? UITableViewCell {
-            return false
-        }
-        if let _ = touch.view?.superview?.superview as? UITableViewCell {
-            return false
-        }
-        
-        if let _ = touch.view as? UICollectionViewCell {
-            return false
-        }
-        if let _ = touch.view?.superview as? UICollectionViewCell {
-            return false
-        }
-        if let _ = touch.view?.superview?.superview as? UICollectionViewCell {
-            return false
-        }
-        
-        
+
         if let _ = touch.view as? UISlider {
             return false
         }

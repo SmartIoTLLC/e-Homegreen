@@ -188,7 +188,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             abort()
         }
         NSNotificationCenter.defaultCenter().postNotificationName("refreshIBeaconList", object: self, userInfo: nil)
-
+        appDel.startIBeacon()
         
         appDel.establishAllConnections()
     }

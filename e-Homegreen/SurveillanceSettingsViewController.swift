@@ -211,8 +211,8 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
             appDel.managedObjectContext?.deleteObject(surveillance[indexPath.section])
             saveChanges()
             refreshSurveillanceList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
-//            fetchGateways()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSurveillanceListNotification", object: self, userInfo: nil)
+
         }
         
     }
