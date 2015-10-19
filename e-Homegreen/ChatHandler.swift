@@ -233,6 +233,7 @@ class ChatHandler {
             SET_ZONE: FILTER,
             TELL_ME_JOKE: CHAT,
             I_LOVE_YOU: CHAT,
+            ANSWER_ME: CHAT,
             BEST_DEVELOPER: CHAT,
             SET_SCENE: CONTROL_SCENE,
             RUN_EVENT: CONTROL_EVENT,
@@ -298,9 +299,13 @@ class ChatHandler {
         CHAT_COMMANDS["tell joke"] = TELL_ME_JOKE
         CHAT_COMMANDS["say something funny"] = TELL_ME_JOKE
         
-        CHAT_COMMANDS["answer me"] = ANSWER_ME
+        CHAT_COMMANDS["what is"] = ANSWER_ME
         CHAT_COMMANDS["tell me about"] = ANSWER_ME
-        CHAT_COMMANDS["define"] = ANSWER_ME
+        CHAT_COMMANDS["do i need to"] = ANSWER_ME
+        CHAT_COMMANDS["do i want"] = ANSWER_ME
+        CHAT_COMMANDS["who is"] = ANSWER_ME
+        CHAT_COMMANDS["where is"] = ANSWER_ME
+        CHAT_COMMANDS["what do"] = ANSWER_ME
         
         CHAT_COMMANDS["love you"] = I_LOVE_YOU
         CHAT_COMMANDS["best developer android"] = BEST_DEVELOPER

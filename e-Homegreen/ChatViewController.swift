@@ -15,13 +15,8 @@ struct ChatItem {
     var type:BubbleDataType
 }
 
-<<<<<<< HEAD
-class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceDelegate {
-    
-=======
 class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDelegate {
-
->>>>>>> origin/master
+    
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
 //    @IBOutlet weak var chatTextField: UITextField!
@@ -46,6 +41,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     var rowHeight:[CGFloat] = []
     
     var layout:String = "Portrait"
+    
+    var isValeryVoiceOn:Bool = true
     
     let reuseIdentifierCommand  = "chatCommandCell"
     let reuseIdentifierAnswer  = "chatAnswerCell"
@@ -132,15 +129,15 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     @IBAction func sendBtnAction(sender: AnyObject) {
         if  chatTextView.text != ""{
             chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
+            
             calculateHeight()
             chatTableView.reloadData()
             
-<<<<<<< HEAD
-            findCommand((chatTextField.text?.lowercaseString)!)
-//            if let _ = findCommand((chatTextField.text?.lowercaseString)!) {
+            findCommand((chatTextView.text?.lowercaseString)!)
+//            if let _ = findCommand((chatTextView.text?.lowercaseString)!) {
 //                showSuggestion().delegate = self
 //            }else{
-//                if chatTextField.text?.lowercaseString == "tell me a joke"{
+//                if chatTextView.text?.lowercaseString == "tell me a joke"{
 //                    let joke = TellMeAJokeHandler()
 //                    joke.getJokeCompletion({ (result) -> Void in
 //                        dispatch_async(dispatch_get_main_queue(),{
@@ -149,7 +146,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
 //                    })
 //                }else{
 //                    let answ = AnswersHandler()
-//                    answ.getAnswerComplition(chatTextField.text!, completion: { (result) -> Void in
+//                    answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
 //                        if result != ""{
 //                            dispatch_async(dispatch_get_main_queue(),{
 //                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
@@ -163,54 +160,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
 //                    })
 //                }
 //            }
-            chatTextField.text = ""
-=======
-            if let _ = findCommand("") {
-                showSuggestion().delegate = self
-            }else{
-            if chatTextView.text?.lowercaseString == "tell me a joke"{
-                let joke = TellMeAJokeHandler()
-                joke.getJokeCompletion({ (result) -> Void in
-                    dispatch_async(dispatch_get_main_queue(),{
-                        self.chatList.append(ChatItem(text: result, type: .Opponent))
-                        self.calculateHeight()
-                        self.chatTableView.reloadData()
-                        self.textToSpeech(result)
-                        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-                            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
-                        }
-                    })
-                })
-            }else{
-                let answ = AnswersHandler()
-                answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
-                    if result != ""{
-                        dispatch_async(dispatch_get_main_queue(),{
-                            self.chatList.append(ChatItem(text: result, type: .Opponent))
-                            self.calculateHeight()
-                            self.chatTableView.reloadData()
-                            self.textToSpeech(result)
-                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
-                            }
-                        })
-                    }else{
-                        dispatch_async(dispatch_get_main_queue(),{
-                            self.chatList.append(ChatItem(text: "Wrong question!!!", type: .Opponent))
-                            self.calculateHeight()
-                            self.chatTableView.reloadData()
-                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
-                            }
-                        })
-                    }
-                    
-                })
-            }
-            }
             chatTextView.text = ""
             chatTextView.resignFirstResponder()
->>>>>>> origin/master
         }
     }
     
@@ -248,7 +199,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if device.type == "hvac" {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
-            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: true)
+            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
         } else if command == 1 {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.type == "Dimmer" {
@@ -263,15 +214,15 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if device.type == "hvac" {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
-            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: true)
+            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
         } else if command == 2 {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
                 if device.type == "Dimmer" {
                     SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
-                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: true)
+                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
                 } else {
-                    refreshChatListWithAnswer("Device is not of type dimmer.", isValeryVoiceOn: true)
+                    refreshChatListWithAnswer("Device is not of type dimmer.", isValeryVoiceOn: isValeryVoiceOn)
                 }
             }
         }
@@ -309,29 +260,44 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     }
                 } else if itemsArray.count > 1{
                     //   There are more devices than just a one
-                    print(">1")
-//                    for device in (itemsArray as? [Device])! {
-//                        print(device.name)
-//                        print(device.gateway.addressOne)
-//                        print(device.gateway.addressTwo)
-//                        print(device.address)
-//                        
-//                    }
                     if let devices = itemsArray as? [Device] {
-                        showSuggestion(devices, message: message)
+                        showSuggestion(devices, message: message).delegate = self
                     }
                 } else {
                     //   Ther are no devices with that name
                     print("=0")
-                    refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
+                    if command == 8 {
+                        let joke = TellMeAJokeHandler()
+                        joke.getJokeCompletion({ (result) -> Void in
+                            dispatch_async(dispatch_get_main_queue(),{
+                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
+                            })
+                        })
+                    }
+                    if command == 16 {
+                        let answ = AnswersHandler()
+                        answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
+                            if result != ""{
+                                dispatch_async(dispatch_get_main_queue(),{
+                                    self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
+                                })
+                            }else{
+                                dispatch_async(dispatch_get_main_queue(),{
+                                    self.refreshChatListWithAnswer("Wrong question!!!", isValeryVoiceOn:true)
+                                })
+                            }
+                            
+                        })
+                    }
+                    refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
                 }
             } else {
                 //   Sorry but there are no devices with that name
                 //   Maybe new command?
-                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
+                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
             }
         } else {
-            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
+            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
         }
     }
     
