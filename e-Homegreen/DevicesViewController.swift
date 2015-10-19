@@ -32,6 +32,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         print(heeeeeeej())
         super.viewDidLoad()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
@@ -81,10 +82,60 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
-    
+    func backgroundContext () {
+        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
+        
+        backgroundContext.performBlock{[weak self] in
+            do {
+                let devicesIds = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [NSManagedObjectID]
+                let mainContext = self!.appDel.managedObjectContext
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                })
+//                devices = fetResults!
+            } catch let error as NSError {
+                print("Unresolved error \(error), \(error.userInfo)")
+                abort()
+            }
+        }
+    }
+    func deviceBackgroundFetch () -> NSFetchRequest {
+        let request = NSFetchRequest(entityName: "Device")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        request.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
+        if levelSearch != "All" {
+            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
+            predicateArray.append(levelPredicate)
+        }
+        if zoneSearch != "All" {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
+            predicateArray.append(zonePredicate)
+        }
+        if categorySearch != "All" {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        request.predicate = compoundPredicate
+        request.resultType = .ManagedObjectIDResultType
+        
+        return request
+    }
     func updateDeviceList () {
         print("ovde je uslo")
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         let fetchRequest = NSFetchRequest(entityName: "Device")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
