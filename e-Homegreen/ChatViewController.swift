@@ -85,6 +85,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 150{
             textView.frame = newFrame
+            print(textView.frame.size.height + 16)
             viewHeight.constant = textView.frame.size.height + 16
             if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
                 self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
@@ -374,7 +375,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         
         self.bottomConstraint.constant = 0
         if chatTextView.text.isEmpty{
-            viewHeight.constant = 46
+            viewHeight.constant = 49
         }
         
         UIView.animateWithDuration(duration,
@@ -386,11 +387,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
         }
     }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
