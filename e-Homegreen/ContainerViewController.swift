@@ -31,6 +31,8 @@ class ContainerViewController: UIViewController {
     
     var gesture:UITapGestureRecognizer!
     
+    var blurEffectView = UIVisualEffectView()
+    
     var currentState: SlideOutState = .LeftPanelCollapsed {
         didSet {
             let shouldShowShadow = currentState != .LeftPanelCollapsed
@@ -50,6 +52,8 @@ class ContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         centerViewController = UIStoryboard.centerViewController()
         centerViewController.delegate = self
         
@@ -60,7 +64,9 @@ class ContainerViewController: UIViewController {
         
         centerNavigationController.didMoveToParentViewController(self)
         
-
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = centerNavigationController.view.frame
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         panGestureRecognizer.delegate = self
@@ -118,12 +124,14 @@ extension ContainerViewController: CenterViewControllerDelegate {
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
             
+            centerNavigationController.view.addSubview(blurEffectView)
             centerNavigationController.view.addGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = false
             
             animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset)
         } else {
             
+            blurEffectView.removeFromSuperview()
             centerNavigationController.view.removeGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = true
             

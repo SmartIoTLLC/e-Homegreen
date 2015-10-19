@@ -15,11 +15,20 @@ struct ChatItem {
     var type:BubbleDataType
 }
 
+<<<<<<< HEAD
 class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceDelegate {
     
+=======
+class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDelegate {
+
+>>>>>>> origin/master
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var chatTextField: UITextField!
+//    @IBOutlet weak var chatTextField: UITextField!
+    
+    @IBOutlet weak var viewHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var chatTextView: UITextView!
     
     //    var appDel:AppDelegate!
     //    var devices:[Device] = []
@@ -31,6 +40,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
     //    var error:NSError? = nil
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     var chatList:[ChatItem] = []
     
     var rowHeight:[CGFloat] = []
@@ -45,7 +55,10 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         
         //        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        chatTextField.delegate = self
+        chatTextView.delegate = self
+        chatTextView.layer.borderWidth = 1
+        chatTextView.layer.cornerRadius = 5
+        chatTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
         
         calculateHeight()
         
@@ -56,6 +69,32 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
         
         // Do any additional setup after loading the view.
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        
+        let fixedWidth = textView.frame.size.width
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = textView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        if newFrame.size.height + 60 < 150{
+            textView.frame = newFrame
+            viewHeight.constant = textView.frame.size.height + 16
+            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
+            }
+        }
+        
+        
     }
     
     func textToSpeech(text:String) {
@@ -91,12 +130,12 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
     }
     
     @IBAction func sendBtnAction(sender: AnyObject) {
-        if  chatTextField.text != ""{
-            chatList.append(ChatItem(text: chatTextField.text!, type: .Mine))
+        if  chatTextView.text != ""{
+            chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
             calculateHeight()
             chatTableView.reloadData()
-            chatTextField.resignFirstResponder()
             
+<<<<<<< HEAD
             findCommand((chatTextField.text?.lowercaseString)!)
 //            if let _ = findCommand((chatTextField.text?.lowercaseString)!) {
 //                showSuggestion().delegate = self
@@ -125,6 +164,53 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
 //                }
 //            }
             chatTextField.text = ""
+=======
+            if let _ = findCommand("") {
+                showSuggestion().delegate = self
+            }else{
+            if chatTextView.text?.lowercaseString == "tell me a joke"{
+                let joke = TellMeAJokeHandler()
+                joke.getJokeCompletion({ (result) -> Void in
+                    dispatch_async(dispatch_get_main_queue(),{
+                        self.chatList.append(ChatItem(text: result, type: .Opponent))
+                        self.calculateHeight()
+                        self.chatTableView.reloadData()
+                        self.textToSpeech(result)
+                        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                        }
+                    })
+                })
+            }else{
+                let answ = AnswersHandler()
+                answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
+                    if result != ""{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.chatList.append(ChatItem(text: result, type: .Opponent))
+                            self.calculateHeight()
+                            self.chatTableView.reloadData()
+                            self.textToSpeech(result)
+                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                            }
+                        })
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.chatList.append(ChatItem(text: "Wrong question!!!", type: .Opponent))
+                            self.calculateHeight()
+                            self.chatTableView.reloadData()
+                            if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+                                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+                            }
+                        })
+                    }
+                    
+                })
+            }
+            }
+            chatTextView.text = ""
+            chatTextView.resignFirstResponder()
+>>>>>>> origin/master
         }
     }
     
@@ -283,6 +369,9 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         
         self.bottomConstraint.constant = 0
+        if chatTextView.text.isEmpty{
+            viewHeight.constant = 46
+        }
         
         UIView.animateWithDuration(duration,
             delay: 0,
@@ -290,7 +379,7 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
         }
     }
     
