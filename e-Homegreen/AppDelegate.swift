@@ -50,14 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         startIBeacon()
         
-        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
-            print(hourValue + minuteValue)
-        } else {
-            print("NEMA")
-            NSUserDefaults.standardUserDefaults().setValue(0, forKey: "hourRefresh")
-            NSUserDefaults.standardUserDefaults().setValue(1, forKey: "minRefresh")
-        }
-        
         UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Normal)
@@ -75,6 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
             preloadData()
+            defaults.setValue(0, forKey: "hourRefresh")
+            defaults.setValue(1, forKey: "minRefresh")
             defaults.setBool(true, forKey: "EHGisPreloaded")
             defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
             //        Idle, Trobule, Alert, alarm

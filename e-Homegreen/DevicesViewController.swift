@@ -30,7 +30,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var locationSearchText = ["", "", "", ""]
     
     override func viewDidLoad() {
-        print(heeeeeeej())
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         //        commonConstruct()
@@ -47,6 +46,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
+        deviceCollectionView.delegate = self
         // Do any additional setup after loading the view.
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         locationSearch = locationSearchText[0]
@@ -61,28 +61,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         levelSearch = localSearchIds[1]
         categorySearch = localSearchIds[2]
         updateDeviceList()
-//        print("***")
-//        print(ChatHandler().getCommand("bla bla bla bla bal bla turn on bla"))
-//        print(ChatHandler().getCommand("bla bla bla bla bal bla turn off bla"))
-//        print(ChatHandler().getCommand("bla select location bla"))
-//        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
-//        print(ChatHandler().getCommand("bla turn off open bla start bla turn on bla"))
-//        print(ChatHandler().getCommand("bla control zone bla"))
-//        print(ChatHandler().getCommand("set level"))
-//        print(ChatHandler().getCommand("bla turn off turn on start bla turn on turn on"))
-//        print(ChatHandler().getCommand("on turn remove"))
-//        print(ChatHandler().getCommand("comething to remember remove"))
-//        print(ChatHandler().getCommand("on device svetlo 1 turn"))
-//        print(ChatHandler().getCommand("what time is it"))
-//        print(ChatHandler().getCommand("stop sequence"))
-//        print(ChatHandler().getCommand("stop sequence off turn"))
-//        print("***")
+//        fetchDevicesInBackground()
     }
     
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
-    func backgroundContext () {
+    func fetchDevicesInBackground () {
         let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
         
@@ -91,7 +76,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 let devicesIds = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [NSManagedObjectID]
                 let mainContext = self!.appDel.managedObjectContext
                 dispatch_async(dispatch_get_main_queue(), {
-                    
+                    self!.devices = []
+                    for deviceId in devicesIds {
+                        let device = mainContext!.objectWithID(deviceId) as! Device
+                        self!.devices.append(device)
+                    }
+                    self!.deviceCollectionView.reloadData()
                 })
 //                devices = fetResults!
             } catch let error as NSError {
@@ -587,8 +577,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
         LocalSearchParametar.setLocalIds("Devices", parametar: [levelSearch, zoneSearch, categorySearch])
         LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearchString, levelSearchString, levelSearchString, categorySearchString])
-        updateDeviceList()
-        deviceCollectionView.reloadData()
+//        updateDeviceList()
+//        deviceCollectionView.reloadData()
+        fetchDevicesInBackground()
         senderButton?.setTitle(text, forState: .Normal)
         
     }
@@ -657,7 +648,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         changeSliderValueOldValue = Int(devices[tag].currentValue)
     }
     func changeSliderValueEnded (sender:UISlider) {
-        print("hmmm")
         let tag = sender.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         //   Dimmer
@@ -667,7 +657,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, device: devices[tag], oldValue: changeSliderValueOldValue)
                 })
             })
-            print("poslato je \(changeSliderValueOldValue)")
         }
         //  Curtain
         if devices[tag].type == "curtainsRS485" {
@@ -676,7 +665,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway, device: devices[tag], oldValue: changeSliderValueOldValue)
                 })
             })
-            print("poslato je \(changeSliderValueOldValue)")
         }
         changeSliderValueOldValue = 0
         deviceInControlMode = false
@@ -704,7 +692,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
-        print(devices[tag].type)
         // Appliance?
         if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
@@ -713,13 +700,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     func refreshDeviceList() {
-        print(deviceInControlMode.boolValue)
         if !deviceInControlMode {
             if isScrolling {
                 shouldUpdate = true
             } else {
-                updateDeviceList()
-                self.deviceCollectionView.reloadData()
+//                updateDeviceList()
+//                self.deviceCollectionView.reloadData()
+                fetchDevicesInBackground()
             }
         }
     }
@@ -798,8 +785,36 @@ extension DevicesViewController: UICollectionViewDataSource {
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
     }
-    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        print("scrollViewDidEndDragging willDecelerate \(decelerate)")
+        if !decelerate {
+            if let collectionView = scrollView as? UICollectionView {
+                if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+                    for indexPath in indexPaths {
+                        if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+                            if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+                                let minutes = (hourValue * 60 + minuteValue) * 60
+                                if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
+                                    updateDeviceStatus (indexPathRow: indexPath.row)
+                                }
+                            }
+                        } else {
+                            updateDeviceStatus (indexPathRow: indexPath.row)
+                        }
+                    }
+                }
+            }
+            if shouldUpdate {
+                //            fetchDevicesInBackground()
+                //            updateDeviceList()
+                self.deviceCollectionView.reloadData()
+                shouldUpdate = false
+            }
+            isScrolling = false
+        }
+    }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        print("scrollViewDidEndDecelerating")
         if let collectionView = scrollView as? UICollectionView {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {
@@ -817,7 +832,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
         }
         if shouldUpdate {
-            updateDeviceList()
+//            fetchDevicesInBackground()
+//            updateDeviceList()
             self.deviceCollectionView.reloadData()
             shouldUpdate = false
         }
@@ -874,7 +890,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
-                print(devices[indexPath.row].isEnabled.boolValue)
                 cell.typeOfLight.userInteractionEnabled = true
                 
                 let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
@@ -1062,10 +1077,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                         cell.modeImage.startAnimating()
                     }
                 default:
-                    print("\(devices[indexPath.row].name)")
-                    print("\(devices[indexPath.row].mode)")
-                    print("\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)\(modeState)")
-                    print("\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)\(speedState)")
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = nil
                     let mode = devices[indexPath.row].mode
@@ -1123,7 +1134,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.sensorTitle.userInteractionEnabled = true
             cell.sensorTitle.text = devices[indexPath.row].name
             cell.sensorTitle.tag = indexPath.row
-            print(devices[indexPath.row])
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
                 case 1:

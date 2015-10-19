@@ -37,7 +37,7 @@ class Device: NSManagedObject {
     @NSManaged var skipState: NSNumber
     @NSManaged var speed: String
     @NSManaged var speedState: String
-    @NSManaged var stateUpdatedAt: NSDate
+    @NSManaged var stateUpdatedAt: NSDate?
     @NSManaged var temperature: NSNumber
     @NSManaged var type: String
     @NSManaged var voltage: NSNumber
