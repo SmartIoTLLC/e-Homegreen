@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ChatDeviceDelegate{
-    func choosedDevice(device: Device, message:String)
+    func choosedDevice(device: AnyObject, message:String)
 }
 
 
@@ -22,7 +22,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     var listOfDevice:[String] = []
     
     var delegate:ChatDeviceDelegate?
-    var devices:[Device] = []
+    var objects:[AnyObject] = []
     var message:String = ""
     
     override func viewDidLoad() {
@@ -85,7 +85,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.choosedDevice(devices[indexPath.row], message: message)
+        delegate?.choosedDevice(objects[indexPath.row], message: message)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -149,17 +149,31 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
     }
     
 }
-struct DeviceSuggestion {
-    let device:Device
-    let message:String
-}
+
 extension UIViewController {
-    func showSuggestion(devices:[Device], message:String) -> ChatDeviceSuggestionVC{
+    func showSuggestion(objects:[AnyObject], message:String) -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
-        suggVC.devices = devices
         suggVC.message = message
-        for device in devices {
-            suggVC.listOfDevice.append("Device: \(device.name) Location: \(device.gateway.name) Address: \(device.gateway.addressOne):\(device.gateway.addressTwo):\(device.address) Channel:\(device.channel)")
+        suggVC.objects = objects
+        if let anyObjects = objects as? [Device] {
+            for anyObject in anyObjects {
+                suggVC.listOfDevice.append("Device: \(anyObject.name) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address) Channel:\(anyObject.channel)")
+            }
+        }
+        if let anyObjects = objects as? [Scene] {
+            for anyObject in anyObjects {
+                suggVC.listOfDevice.append("Device: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+            }
+        }
+        if let anyObjects = objects as? [Sequence] {
+            for anyObject in anyObjects {
+                suggVC.listOfDevice.append("Device: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+            }
+        }
+        if let anyObjects = objects as? [Event] {
+            for anyObject in anyObjects {
+                suggVC.listOfDevice.append("Device: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+            }
         }
         self.presentViewController(suggVC, animated: true, completion: nil)
         return suggVC

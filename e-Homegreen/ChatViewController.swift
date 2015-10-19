@@ -177,13 +177,51 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         }
     }
     
-    func choosedDevice(device: Device, message:String) {
+    func choosedDevice(object: AnyObject, message:String) {
         let handler = ChatHandler()
-        let command = handler.getCommand(message)
-        let dimValue = handler.getValueForDim(message, withDeviceName: device.name)
-        sendCommand(command, forDevice: device, withDimming: dimValue)
+        if let device = object as? Device {
+            let command = handler.getCommand(message)
+            let dimValue = handler.getValueForDim(message, withDeviceName: device.name)
+            sendCommand(command, forDevice: device, withDimming: dimValue)
+        }
     }
-    
+    func setCommand(command:Int, object:AnyObject) {
+        //   Set scene
+        if command == 9 {
+            if let scene = object as? Scene {
+                let address = [UInt8(Int(scene.gateway.addressOne)),UInt8(Int(scene.gateway.addressTwo)),UInt8(Int(scene.address))]
+                SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
+            }
+        }
+        //   Run event
+        if command == 10 {
+            if let event = object as? Event {
+                let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
+                SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+            }
+        }
+        //   Cancel event
+        if command == 13 {
+            if let event = object as? Event {
+                let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
+                SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+            }
+        }
+        //   Start sequence
+        if command == 11 {
+            if let sequence = object as? Sequence {
+                let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
+                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: UInt8(Int(sequence.sequenceCycles))), gateway: sequence.gateway)
+            }
+        }
+        //   Stop sequence
+        if command == 14 {
+            if let sequence = object as? Sequence {
+                let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
+                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
+            }
+        }
+    }
     func sendCommand(command:Int, forDevice device:Device, withDimming dimValue:Int) {
         if command == 0 {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -232,14 +270,6 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         let command = helper.getCommand(message) // treba
         let typeOfControl = helper.getTypeOfControl(command)
         let itemsArray = helper.getItemByName(typeOfControl, message: message) // treba
-//        let CONTROL_DEVICE = "control_device"
-//        let CONTROL_EVENT = "control_event"
-//        let CONTROL_SCENE = "control_scene"
-//        let CONTROL_SEQUENCE = "control_sequence"
-//        let CHAT = "chat"
-//        let FILTER = "filter"
-//        let FAILED = "failed"
-//        if command == 0 || command == 0 || command == 0 ||
         if command != -1 {
             if typeOfControl == "" {
                 
@@ -263,9 +293,17 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     if let devices = itemsArray as? [Device] {
                         showSuggestion(devices, message: message).delegate = self
                     }
+                    if let scenes = itemsArray as? [Scene] {
+                        showSuggestion(scenes, message: message).delegate = self
+                    }
+                    if let sequences = itemsArray as? [Sequence] {
+                        showSuggestion(sequences, message: message).delegate = self
+                    }
+                    if let events = itemsArray as? [Event] {
+                        showSuggestion(events, message: message).delegate = self
+                    }
                 } else {
                     //   Ther are no devices with that name
-                    print("=0")
                     if command == 8 {
                         let joke = TellMeAJokeHandler()
                         joke.getJokeCompletion({ (result) -> Void in
@@ -273,8 +311,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                                 self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
                             })
                         })
-                    }
-                    if command == 16 {
+                    } else if command == 16 {
                         let answ = AnswersHandler()
                         answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
                             if result != ""{
@@ -288,8 +325,9 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                             }
                             
                         })
+                    } else {
+                        refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
                     }
-                    refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
                 }
             } else {
                 //   Sorry but there are no devices with that name
