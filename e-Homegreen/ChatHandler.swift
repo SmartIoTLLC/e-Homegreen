@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 //enum
+//struct ChatInfo {
+//    let command:Int
+//    let device:[Device]
+//    let dimValue:Int?
+//}
 class ChatHandler {
     
     let SYSTEM_NAME = "Valery"
@@ -34,6 +39,7 @@ class ChatHandler {
     let SET_ZONE = 7
     
     let TELL_ME_JOKE = 8
+    let ANSWER_ME = 16
     
     let SET_SCENE = 9
     let RUN_EVENT = 10
@@ -60,7 +66,7 @@ class ChatHandler {
     
     let CHAT_ANSWERS:[String:Int] = [:]
     var CHAT_COMMANDS:[String:Int] = [:]
-    
+
     init () {
         setValues()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -83,7 +89,7 @@ class ChatHandler {
         }
         if listOfCommands.count != 0 {
             return listOfCommands[listOfCommands.keys.maxElement()!]!
-//            return listOfCommands.keys.maxElement()!
+            //            return listOfCommands.keys.maxElement()!
         } else {
             return -1
         }
@@ -91,13 +97,14 @@ class ChatHandler {
     }
     
     func getTypeOfControl(index:Int)->String {
-//        return typeOfControl[getCommand(message)]!
+        //        return typeOfControl[getCommand(message)]!
         return typeOfControl[index]!
     }
     
-    func getValueForDim(message:String) -> Int {
+    func getValueForDim(message:String, withDeviceName:String) -> Int {
         if message != "" {
-            let stringArray = message.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            let messageWithoutName = message.stringByReplacingOccurrencesOfString(withDeviceName.lowercaseString, withString: "")
+            let stringArray = messageWithoutName.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
             let digitString = stringArray.joinWithSeparator("")
             if let integer = Int(digitString) {
                 if integer >= 0 && integer <= 100 {
@@ -107,6 +114,13 @@ class ChatHandler {
         }
         return -1
     }
+    
+//    func returnCommand (message:String) -> ChatInfo {
+//        let command = getCommand(message)
+//        let devices = getItemByName(getTypeOfControl(command), message: message)
+//        let dimValue = getValueForDim(message)
+//        return ChatInfo(command: command, device: devices, dimValue: +)
+//    }
     
     func getItemByName(typeOfControl:String, message:String) -> [AnyObject] {
         switch typeOfControl {
@@ -210,82 +224,86 @@ class ChatHandler {
     
     func setValues () {
         typeOfControl = [TURN_ON_DEVICE: CONTROL_DEVICE,
-        TURN_OFF_DEVICE: CONTROL_DEVICE,
-        DIM_DEVICE: CONTROL_DEVICE,
-        CURRENT_TIME: CHAT,
-        HOW_ARE_YOU: CHAT,
-        SET_LOCATION: FILTER,
-        SET_LEVEL: FILTER,
-        SET_ZONE: FILTER,
-        TELL_ME_JOKE: CHAT,
-        I_LOVE_YOU: CHAT,
-        BEST_DEVELOPER: CHAT,
-        SET_SCENE: CONTROL_SCENE,
-        RUN_EVENT: CONTROL_EVENT,
-        CANCEL_EVENT: CONTROL_EVENT,
-        START_SEQUENCE: CONTROL_SEQUENCE,
-        STOP_SEQUENCE: CONTROL_SEQUENCE,
-        -1: FAILED]
-    
-    CHAT_COMMANDS["set location"] = SET_LOCATION
-    CHAT_COMMANDS["control location"] = SET_LOCATION
-    CHAT_COMMANDS["select location"] = SET_LOCATION
-    
-    CHAT_COMMANDS["set level"] = SET_LEVEL
-    CHAT_COMMANDS["control level"] = SET_LEVEL
-    CHAT_COMMANDS["select level"] = SET_LEVEL
-    
-    CHAT_COMMANDS["set zone"] = SET_ZONE
-    CHAT_COMMANDS["control zone"] = SET_ZONE
-    CHAT_COMMANDS["select zone"] = SET_ZONE
-    
-    /**
-    * Commands to controlling devices
-    * */
-    CHAT_COMMANDS["turn on"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["open"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["activate"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["fill"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["insert"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["start"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["lock"] = TURN_ON_DEVICE
-    CHAT_COMMANDS["occupy"] = TURN_ON_DEVICE
-    
-    CHAT_COMMANDS["turn of"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["turn off"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["close"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["deactivate"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["empty"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["remove"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["stop"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["unlock"] = TURN_OFF_DEVICE
-    CHAT_COMMANDS["vacate"] = TURN_OFF_DEVICE
-    
-    CHAT_COMMANDS["dim"] = DIM_DEVICE
-    
-    CHAT_COMMANDS["set scene"] = SET_SCENE
-    
-    CHAT_COMMANDS["run event"] = RUN_EVENT
-    CHAT_COMMANDS["cancel event"] = CANCEL_EVENT
-    
-    CHAT_COMMANDS["start sequence"] = START_SEQUENCE
-    CHAT_COMMANDS["stop sequence"] = STOP_SEQUENCE
-    
-    /**
-    * Commands to chat with Valery
-    * */
-    CHAT_COMMANDS["what time is it"] = CURRENT_TIME
-    CHAT_COMMANDS["what is the time"] = CURRENT_TIME
-    CHAT_COMMANDS["what's time"] = CURRENT_TIME
-    
-    CHAT_COMMANDS["how are you"] = HOW_ARE_YOU
-    
-    CHAT_COMMANDS["tell me joke"] = TELL_ME_JOKE
-    CHAT_COMMANDS["tell joke"] = TELL_ME_JOKE
-    CHAT_COMMANDS["say something funny"] = TELL_ME_JOKE
-    
-    CHAT_COMMANDS["love you"] = I_LOVE_YOU
-    CHAT_COMMANDS["best developer android"] = BEST_DEVELOPER
-    CHAT_COMMANDS["answer"] = BEST_DEVELOPER
+            TURN_OFF_DEVICE: CONTROL_DEVICE,
+            DIM_DEVICE: CONTROL_DEVICE,
+            CURRENT_TIME: CHAT,
+            HOW_ARE_YOU: CHAT,
+            SET_LOCATION: FILTER,
+            SET_LEVEL: FILTER,
+            SET_ZONE: FILTER,
+            TELL_ME_JOKE: CHAT,
+            I_LOVE_YOU: CHAT,
+            BEST_DEVELOPER: CHAT,
+            SET_SCENE: CONTROL_SCENE,
+            RUN_EVENT: CONTROL_EVENT,
+            CANCEL_EVENT: CONTROL_EVENT,
+            START_SEQUENCE: CONTROL_SEQUENCE,
+            STOP_SEQUENCE: CONTROL_SEQUENCE,
+            -1: FAILED]
+        
+        CHAT_COMMANDS["set location"] = SET_LOCATION
+        CHAT_COMMANDS["control location"] = SET_LOCATION
+        CHAT_COMMANDS["select location"] = SET_LOCATION
+        
+        CHAT_COMMANDS["set level"] = SET_LEVEL
+        CHAT_COMMANDS["control level"] = SET_LEVEL
+        CHAT_COMMANDS["select level"] = SET_LEVEL
+        
+        CHAT_COMMANDS["set zone"] = SET_ZONE
+        CHAT_COMMANDS["control zone"] = SET_ZONE
+        CHAT_COMMANDS["select zone"] = SET_ZONE
+        
+        /**
+        * Commands to controlling devices
+        * */
+        CHAT_COMMANDS["turn on"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["open"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["activate"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["fill"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["insert"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["start"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["lock"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["occupy"] = TURN_ON_DEVICE
+        
+        CHAT_COMMANDS["turn of"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["turn off"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["close"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["deactivate"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["empty"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["remove"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["stop"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["unlock"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["vacate"] = TURN_OFF_DEVICE
+        
+        CHAT_COMMANDS["dim"] = DIM_DEVICE
+        
+        CHAT_COMMANDS["set scene"] = SET_SCENE
+        
+        CHAT_COMMANDS["run event"] = RUN_EVENT
+        CHAT_COMMANDS["cancel event"] = CANCEL_EVENT
+        
+        CHAT_COMMANDS["start sequence"] = START_SEQUENCE
+        CHAT_COMMANDS["stop sequence"] = STOP_SEQUENCE
+        
+        /**
+        * Commands to chat with Valery
+        * */
+        CHAT_COMMANDS["what time is it"] = CURRENT_TIME
+        CHAT_COMMANDS["what is the time"] = CURRENT_TIME
+        CHAT_COMMANDS["what's time"] = CURRENT_TIME
+        
+        CHAT_COMMANDS["how are you"] = HOW_ARE_YOU
+        
+        CHAT_COMMANDS["tell me joke"] = TELL_ME_JOKE
+        CHAT_COMMANDS["tell joke"] = TELL_ME_JOKE
+        CHAT_COMMANDS["say something funny"] = TELL_ME_JOKE
+        
+        CHAT_COMMANDS["answer me"] = ANSWER_ME
+        CHAT_COMMANDS["tell me about"] = ANSWER_ME
+        CHAT_COMMANDS["define"] = ANSWER_ME
+        
+        CHAT_COMMANDS["love you"] = I_LOVE_YOU
+        CHAT_COMMANDS["best developer android"] = BEST_DEVELOPER
+        CHAT_COMMANDS["answer"] = BEST_DEVELOPER
     }
 }

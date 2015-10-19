@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ChatDeviceDelegate{
-    func choosedDevice(device: String)
+    func choosedDevice(device: Device, message:String)
 }
 
 
@@ -19,10 +19,12 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     var isPresenting: Bool = true
     @IBOutlet weak var sugestionTableView: UITableView!
     
-    var listOfDevice:[String] = ["device 1", "device 2"]
+    var listOfDevice:[String] = []
     
     var delegate:ChatDeviceDelegate?
-
+    var devices:[Device] = []
+    var message:String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,6 +69,10 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 80
+//    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfDevice.count
     }
@@ -79,7 +85,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.choosedDevice(listOfDevice[indexPath.row])
+        delegate?.choosedDevice(devices[indexPath.row], message: message)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -143,10 +149,18 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
     }
     
 }
-
+struct DeviceSuggestion {
+    let device:Device
+    let message:String
+}
 extension UIViewController {
-    func showSuggestion() -> ChatDeviceSuggestionVC{
+    func showSuggestion(devices:[Device], message:String) -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
+        suggVC.devices = devices
+        suggVC.message = message
+        for device in devices {
+            suggVC.listOfDevice.append("Device: \(device.name) Location: \(device.gateway.name) Address: \(device.gateway.addressOne):\(device.gateway.addressTwo):\(device.address) Channel:\(device.channel)")
+        }
         self.presentViewController(suggVC, animated: true, completion: nil)
         return suggVC
     }

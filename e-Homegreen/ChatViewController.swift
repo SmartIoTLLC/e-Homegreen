@@ -140,8 +140,11 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
         }
     }
     
-    func choosedDevice(device: String) {
-        
+    func choosedDevice(device: Device, message:String) {
+        let handler = ChatHandler()
+        let command = handler.getCommand(message)
+        let dimValue = handler.getValueForDim(message, withDeviceName: device.name)
+        sendCommand(command, forDevice: device, withDimming: dimValue)
     }
     
     func sendCommand(command:Int, forDevice device:Device, withDimming dimValue:Int) {
@@ -181,38 +184,68 @@ class ChatViewController: CommonViewController, UITextFieldDelegate, ChatDeviceD
                 if device.type == "Dimmer" {
                     SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
                     refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: true)
+                } else {
+                    refreshChatListWithAnswer("Device is not of type dimmer.", isValeryVoiceOn: true)
                 }
             }
         }
     }
-    
     func findCommand(message:String) {
         let helper = ChatHandler()
-        let command = helper.getCommand(message)
+        let command = helper.getCommand(message) // treba
         let typeOfControl = helper.getTypeOfControl(command)
-        let itemsArray = helper.getItemByName(typeOfControl, message: message)
-        
-        if itemsArray.count >= 0 {
-            if itemsArray.count == 1 {
-                if let device = itemsArray[0] as? Device {
-                    sendCommand(command, forDevice: device, withDimming: helper.getValueForDim(message))
-                }
-                if let scene = itemsArray[0] as? Scene {
-                    
-                }
-                if let sequence = itemsArray[0] as? Sequence {
-                    
-                }
-                if let event = itemsArray[0] as? Event {
-                    
+        let itemsArray = helper.getItemByName(typeOfControl, message: message) // treba
+//        let CONTROL_DEVICE = "control_device"
+//        let CONTROL_EVENT = "control_event"
+//        let CONTROL_SCENE = "control_scene"
+//        let CONTROL_SEQUENCE = "control_sequence"
+//        let CHAT = "chat"
+//        let FILTER = "filter"
+//        let FAILED = "failed"
+//        if command == 0 || command == 0 || command == 0 ||
+        if command != -1 {
+            if typeOfControl == "" {
+                
+            }
+            if itemsArray.count >= 0 {
+                if itemsArray.count == 1 {
+                    if let device = itemsArray[0] as? Device {
+                        sendCommand(command, forDevice: device, withDimming: helper.getValueForDim(message, withDeviceName: device.name))
+                    }
+                    if let scene = itemsArray[0] as? Scene {
+                        
+                    }
+                    if let sequence = itemsArray[0] as? Sequence {
+                        
+                    }
+                    if let event = itemsArray[0] as? Event {
+                        
+                    }
+                } else if itemsArray.count > 1{
+                    //   There are more devices than just a one
+                    print(">1")
+//                    for device in (itemsArray as? [Device])! {
+//                        print(device.name)
+//                        print(device.gateway.addressOne)
+//                        print(device.gateway.addressTwo)
+//                        print(device.address)
+//                        
+//                    }
+                    if let devices = itemsArray as? [Device] {
+                        showSuggestion(devices, message: message)
+                    }
+                } else {
+                    //   Ther are no devices with that name
+                    print("=0")
+                    refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
                 }
             } else {
-                //   There are more devices than just a one
+                //   Sorry but there are no devices with that name
+                //   Maybe new command?
+                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
             }
         } else {
-            //   Sorry but there are no devices with that name
-            //   Maybe new command?
-            
+            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: true)
         }
     }
     
