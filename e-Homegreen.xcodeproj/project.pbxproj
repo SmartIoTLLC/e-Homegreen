@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; settings = {ASSET_TAGS = (); }; };
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
 		733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F65441BCFABA8001BE004 /* ChatHandler.swift */; settings = {ASSET_TAGS = (); }; };
 		73556C821BB02C6600428375 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73556C811BB02C6600428375 /* File.swift */; settings = {ASSET_TAGS = (); }; };
@@ -211,6 +212,8 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
+		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		733F65441BCFABA8001BE004 /* ChatHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHandler.swift; sourceTree = "<group>"; };
 		73556C811BB02C6600428375 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
@@ -460,6 +463,15 @@
 				E3AFD136AEC4526FF7C887E1 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		22CD26771BD53685005BA67D /* DAKeyboardControl */ = {
+			isa = PBXGroup;
+			children = (
+				22CD26781BD53685005BA67D /* DAKeyboardControl.h */,
+				22CD26791BD53685005BA67D /* DAKeyboardControl.m */,
+			);
+			path = DAKeyboardControl;
 			sourceTree = "<group>";
 		};
 		733C15701B5A825400554FD1 /* Device info and settings */ = {
@@ -712,6 +724,7 @@
 		E75163F01B4C089300457BED /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				22CD26771BD53685005BA67D /* DAKeyboardControl */,
 				E7E149B91B3AAF55005FD41D /* Font */,
 				E75B4F761B42B6D700E48454 /* Clock */,
 				E75B4FB61B42FA3900E48454 /* Calendar */,
@@ -1293,6 +1306,7 @@
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
+				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,

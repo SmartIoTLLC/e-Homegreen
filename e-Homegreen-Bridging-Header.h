@@ -17,5 +17,6 @@
 #import "CocoaAsyncSocket/AsyncUdpSocket.h"
 #import "CocoaAsyncSocket/GCDAsyncSocket.h"
 #import "MarqueeLabel.h"
+#import "DAKeyboardControl.h"
 
 #endif

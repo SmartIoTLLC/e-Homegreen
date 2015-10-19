@@ -58,6 +58,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         chatTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
         
         calculateHeight()
+
         
         chatTableView.estimatedRowHeight = 50
         chatTableView.rowHeight = UITableViewAutomaticDimension
@@ -85,7 +86,6 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 150{
             textView.frame = newFrame
-            print(textView.frame.size.height + 16)
             viewHeight.constant = textView.frame.size.height + 16
             if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
                 self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
