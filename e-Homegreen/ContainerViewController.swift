@@ -124,14 +124,14 @@ extension ContainerViewController: CenterViewControllerDelegate {
         if (shouldExpand) {
             currentState = .LeftPanelExpanded
             
-            centerNavigationController.view.addSubview(blurEffectView)
+//            centerNavigationController.view.addSubview(blurEffectView)
             centerNavigationController.view.addGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = false
             
             animateCenterPanelXPosition(targetPosition: CGRectGetWidth(centerNavigationController.view.frame) - centerPanelExpandedOffset)
         } else {
             
-            blurEffectView.removeFromSuperview()
+//            blurEffectView.removeFromSuperview()
             centerNavigationController.view.removeGestureRecognizer(gesture)
             centerViewController.Container.userInteractionEnabled = true
             
