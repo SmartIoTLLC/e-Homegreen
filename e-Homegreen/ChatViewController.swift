@@ -81,6 +81,14 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
 //        textToSpeech("sdaslkdhfjalsfkh alkfjal;k djs;flksja f;lkjasd ;ldkasj ;lksdj ;fldkjasf;ldkjasf dkasf;ldks j;lsdakjf ;lsadkjf ;lasdkjf ;lasvgh;lasdjghlas ghlas")
     }
     
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
     func textViewDidChange(textView: UITextView) {
         
         let fixedWidth = textView.frame.size.width
@@ -136,7 +144,6 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
             calculateHeight()
             chatTableView.reloadData()
-            chatTextView.resignFirstResponder()
             
             if let _ = findCommand("") {
                 showSuggestion().delegate = self
@@ -182,6 +189,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
             }
             chatTextView.text = ""
+            chatTextView.resignFirstResponder()
         }
     }
     
@@ -227,7 +235,9 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         
         self.bottomConstraint.constant = 0
-        viewHeight.constant = 46
+        if chatTextView.text.isEmpty{
+            viewHeight.constant = 46
+        }
         
         UIView.animateWithDuration(duration,
             delay: 0,
