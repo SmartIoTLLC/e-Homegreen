@@ -90,8 +90,9 @@ class ChatHandler {
         return -1
     }
     
-    func getTypeOfControl(message:String)->String {
-        return typeOfControl[getCommand(message)]!
+    func getTypeOfControl(index:Int)->String {
+//        return typeOfControl[getCommand(message)]!
+        return typeOfControl[index]!
     }
     
     func getValueForDim(message:String) -> Int {
@@ -113,7 +114,7 @@ class ChatHandler {
             fetchEntities("Device")
             var returnItems:[Device] = []
             for item in devices {
-                if message.containsString(item.name) {
+                if message.containsString(item.name.lowercaseString) {
                     returnItems.append(item)
                 }
             }
@@ -122,7 +123,7 @@ class ChatHandler {
             fetchEntities("Scene")
             var returnItems:[Scene] = []
             for item in scenes {
-                if message.containsString(item.sceneName) {
+                if message.containsString(item.sceneName.lowercaseString) {
                     returnItems.append(item)
                 }
             }
@@ -131,7 +132,7 @@ class ChatHandler {
             fetchEntities("Event")
             var returnItems:[Event] = []
             for item in events {
-                if message.containsString(item.eventName) {
+                if message.containsString(item.eventName.lowercaseString) {
                     returnItems.append(item)
                 }
             }
@@ -140,7 +141,7 @@ class ChatHandler {
             fetchEntities("Sequence")
             var returnItems:[Sequence] = []
             for item in sequences {
-                if message.containsString(item.sequenceName) {
+                if message.containsString(item.sequenceName.lowercaseString) {
                     returnItems.append(item)
                 }
             }
