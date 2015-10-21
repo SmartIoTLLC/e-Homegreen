@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MyOffice.gpx">
-   </FileRef>
-   <FileRef
       location = "group:e-Homegreen.xcodeproj">
    </FileRef>
    <FileRef

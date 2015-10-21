@@ -180,6 +180,8 @@ class IncomingHandler: NSObject {
     }
     func saveChanges() {
         do {
+//            let mergePolicy = NSMergePolicy(mergeType: NSMergePolicyType.MergeByPropertyStoreTrumpMergePolicyType)
+//            appDel.managedObjectContext!.mergePolicy = mergePolicy
             try appDel.managedObjectContext!.save()
         } catch let error1 as NSError {
             error = error1
@@ -480,8 +482,6 @@ class IncomingHandler: NSObject {
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
-            } else {
-                
             }
         }
         saveChanges()

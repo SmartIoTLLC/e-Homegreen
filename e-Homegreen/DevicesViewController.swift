@@ -67,10 +67,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
+    var inte = 0
     func fetchDevicesInBackground () {
+        inte++
+        print("fetchDevicesInBackground \(inte)")
         let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
-        
         backgroundContext.performBlock{[weak self] in
             do {
                 let devicesIds = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [NSManagedObjectID]
@@ -79,11 +81,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     self!.devices = []
                     for deviceId in devicesIds {
                         let device = mainContext!.objectWithID(deviceId) as! Device
+                        self!.appDel.managedObjectContext?.refreshObject(device, mergeChanges: true)
                         self!.devices.append(device)
                     }
-                    self!.deviceCollectionView.reloadData()
+                    if !self!.isScrolling {
+                        self!.deviceCollectionView.reloadData()
+                    }
                 })
-//                devices = fetResults!
             } catch let error as NSError {
                 print("Unresolved error \(error), \(error.userInfo)")
                 abort()
@@ -757,7 +761,10 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     func saveChanges() {
         do {
+//            let mergePolicy = NSMergePolicy(mergeType: NSMergePolicyType.MergeByPropertyStoreTrumpMergePolicyType)
+//            appDel.managedObjectContext!.mergePolicy = mergePolicy
             try appDel.managedObjectContext!.save()
+            
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
@@ -765,25 +772,64 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
     }
     
+    func batchUpdate (device:Device) {
+        let batch = NSBatchUpdateRequest(entityName: "Device")
+        batch.propertiesToUpdate = ["stateUpdatedAt":NSDate()]
+        let predOne = NSPredicate(format: "gateway == %@", device.gateway)
+        let predFour = NSPredicate(format: "address == %@", device.address)
+        let predFive = NSPredicate(format: "type == %@", device.type)
+        let predSix = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
+        let predSeven = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        let predArray:[NSPredicate] = [predOne, predFour, predFive, predSix, predSeven]
+        let compoundPred = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predArray)
+        batch.predicate = compoundPred
+//        batch.resultType = .UpdatedObjectsCountResultType
+        batch.resultType = .UpdatedObjectIDsResultType
+        
+        do {
+            let batchResult = try appDel.managedObjectContext!.executeRequest(batch) as? NSBatchUpdateResult
+            if let objectIDs = batchResult!.result as? [NSManagedObjectID] {
+                for objectID in objectIDs {
+                    let managedObject = appDel.managedObjectContext!.objectWithID(objectID)
+                    self.appDel.managedObjectContext!.refreshObject(managedObject, mergeChanges: true)
+                }
+            }
+        } catch let error as NSError {
+            print("Unresolved error \(error), \(error.userInfo)")
+            abort()
+        }
+    }
+    
     func updateDeviceStatus (indexPathRow indexPathRow: Int) {
-        devices[indexPathRow].stateUpdatedAt = NSDate()
+//        batchUpdate(devices[indexPathRow])
+        for device in devices {
+            if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address {
+                device.stateUpdatedAt = NSDate()
+            }
+        }
+        
+            let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
+            if devices[indexPathRow].type == "Dimmer" {
+                print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+            }
+            if devices[indexPathRow].type == "curtainsRelay" || devices[indexPathRow].type == "appliance" {
+                print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+            }
+            if devices[indexPathRow].type == "hvac" {
+                print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+                SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
+            }
+            if devices[indexPathRow].type == "sensor" {
+                print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+                SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
+            }
+            if devices[indexPathRow].type == "curtainsRS485" {
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+            }
+//        }
         saveChanges()
-        let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
-        if devices[indexPathRow].type == "Dimmer" {
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
-        }
-        if devices[indexPathRow].type == "curtainsRelay" || devices[indexPathRow].type == "appliance" {
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
-        }
-        if devices[indexPathRow].type == "hvac" {
-            SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
-        }
-        if devices[indexPathRow].type == "sensor" {
-            SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
-        }
-        if devices[indexPathRow].type == "curtainsRS485" {
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
-        }
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         print("scrollViewDidEndDragging willDecelerate \(decelerate)")
@@ -807,7 +853,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             if shouldUpdate {
                 //            fetchDevicesInBackground()
                 //            updateDeviceList()
-                self.deviceCollectionView.reloadData()
+//                self.deviceCollectionView.reloadData()
                 shouldUpdate = false
             }
             isScrolling = false
@@ -834,7 +880,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if shouldUpdate {
 //            fetchDevicesInBackground()
 //            updateDeviceList()
-            self.deviceCollectionView.reloadData()
+//            self.deviceCollectionView.reloadData()
             shouldUpdate = false
         }
         isScrolling = false
