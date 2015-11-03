@@ -158,9 +158,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         // Default gateway address
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         if gatewayIndex == -1 {
-            addressFirst.text = "\(1)"
-            addressSecond.text = "\(0)"
-            addressThird.text = "\(0)"
+            addressFirst.text = returnThreeCharactersForByte(1)
+            addressSecond.text = returnThreeCharactersForByte(0)
+            addressThird.text = returnThreeCharactersForByte(0)
             txtDescription.text = ""
         } else {
             fetchGateways()
@@ -178,16 +178,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
     }
     func returnThreeCharactersForByte (number:Int) -> String {
-        //        var string = ""
-        //        var numberLength = "\(number)"
-        //        if count(numberLength) == 1 {
-        //            string = "00\(number)"
-        //        } else if count(numberLength) == 2 {
-        //            string = "0\(number)"
-        //        } else {
-        //            string = "\(number)"
-        //        }
-        //        return string
         return String(format: "%03d",number)
     }
     override func viewWillAppear(animated: Bool) {
@@ -243,8 +233,16 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                     if gatewayIndex == -1 {
                         let gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
                         gateway.name = name.text!
-                        gateway.remoteIp = ipHost.text!
-                        gateway.remotePort = Int(port.text!)!
+                        if ipHost.text == "" {
+                            gateway.remoteIp = "0"
+                        } else {
+                            gateway.remoteIp = ipHost.text!
+                        }
+                        if port.text == "" {
+                            gateway.remotePort = 0
+                        } else {
+                            gateway.remotePort = Int(port.text!)!
+                        }
                         gateway.localIp = localIP.text!
                         gateway.localPort = Int(localPort.text!)!
                         gateway.ssid = localSSID.text!
