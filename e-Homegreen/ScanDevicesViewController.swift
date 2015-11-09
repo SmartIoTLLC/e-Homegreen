@@ -359,6 +359,42 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
     
+    func returnZoneWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnCategoryWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()
@@ -367,6 +403,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
             cell.lblType.text = "Type: \(devices[indexPath.row].type)"
             cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
+            cell.lblZone.text = "Zone: \(returnZoneWithId(Int(devices[indexPath.row].zoneId))) Parent Zone: \(returnZoneWithId(Int(devices[indexPath.row].parentZoneId)))"
+            cell.lblCategory.text = "Category: \(returnCategoryWithId(Int(devices[indexPath.row].categoryId)))"
             cell.isEnabledSwitch.tag = indexPath.row
             cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
             cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
@@ -428,6 +466,8 @@ class ScanCell:UITableViewCell{
     @IBOutlet weak var lblDesc: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblType: UILabel!
+    @IBOutlet weak var lblZone: UILabel!
+    @IBOutlet weak var lblCategory: UILabel!
     @IBOutlet weak var isEnabledSwitch: UISwitch!
     @IBOutlet weak var isVisibleSwitch: UISwitch!
 }

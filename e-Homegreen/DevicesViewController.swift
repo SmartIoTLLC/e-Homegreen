@@ -545,9 +545,26 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         pullDown.addSubview(categoryButton)
+        
+        let goButton:UIButton = UIButton(frame: CGRectMake(55, 230, 150, 40))
+        goButton.backgroundColor = UIColor.grayColor()
+        goButton.titleLabel?.tintColor = UIColor.whiteColor()
+        goButton.setTitle("Filter list", forState: UIControlState.Normal)
+        goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        goButton.layer.cornerRadius = 5
+        goButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        goButton.layer.borderWidth = 1
+        goButton.tag = 4
+        goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        pullDown.addSubview(goButton)
     }
-    
     var popoverVC:PopOverViewController = PopOverViewController()
+    
+    func goFilter(sender:UIButton) {
+        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        fetchDevicesInBackground()
+    }
     
     func menuTable(sender : UIButton){
         senderButton = sender
@@ -608,7 +625,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearchString, levelSearchString, levelSearchString, categorySearchString])
 //        updateDeviceList()
 //        deviceCollectionView.reloadData()
-        fetchDevicesInBackground()
+//        fetchDevicesInBackground()
         senderButton?.setTitle(text, forState: .Normal)
         
     }

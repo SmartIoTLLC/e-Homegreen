@@ -118,7 +118,6 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings" || settingArray[indexPath.section] == "iBeacon settings"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.tableCellTitle.text = settingArray[indexPath.section]
-            
             cell.layer.cornerRadius = 5
             
             return cell

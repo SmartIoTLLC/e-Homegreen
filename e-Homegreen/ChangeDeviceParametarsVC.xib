@@ -96,7 +96,7 @@
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsR-t9-ivu" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="64" y="218" width="70" height="30"/>
                             <animations/>
-                            <state key="normal" title="Button">
+                            <state key="normal" title="Cancel">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -106,7 +106,7 @@
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71a-ap-OSX" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="188" y="218" width="70" height="30"/>
                             <animations/>
-                            <state key="normal" title="Button">
+                            <state key="normal" title="Save">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
