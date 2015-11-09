@@ -43,21 +43,28 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
                 appDel.managedObjectContext!.deleteObject(categories[item])
             }
         }
+        createCategories(gateway!)
         saveChanges()
         refreshCategoryList()
     }
     
     func backURL(strText: String) {
         if let categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
-            for categoryJSON in categoriesJSON {
-                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                category.id = categoryJSON.id
-                category.name = categoryJSON.name
-                category.categoryDescription = categoryJSON.description
-                category.isVisible = NSNumber(bool: true)
-                category.gateway = gateway!
-                saveChanges()
+            if categoriesJSON.count != 0 {
+                for categoryJSON in categoriesJSON {
+                    let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                    category.id = categoryJSON.id
+                    category.name = categoryJSON.name
+                    category.categoryDescription = categoryJSON.description
+                    category.isVisible = NSNumber(bool: true)
+                    category.gateway = gateway!
+                    saveChanges()
+                }
+            } else {
+                createCategories(gateway!)
             }
+        } else {
+            createCategories(gateway!)
         }
         refreshCategoryList()
     }
@@ -75,6 +82,16 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
 //            }
 //        }
 //        refreshCategoryList()
+    }
+    
+    func createCategories(gateway:Gateway) {
+        if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
+            for categoryJSON in categoriesJSON {
+                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), gateway)
+                saveChanges()
+            }
+        }
     }
     
     func refreshCategoryList () {

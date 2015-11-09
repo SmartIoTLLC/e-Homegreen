@@ -10,6 +10,8 @@
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
 		733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F65441BCFABA8001BE004 /* ChatHandler.swift */; };
+		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
+		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
 		73556C821BB02C6600428375 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73556C811BB02C6600428375 /* File.swift */; };
 		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
@@ -77,6 +79,8 @@
 		73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E6CDB71BC56454003A5F55 /* FlagParametarVC.swift */; };
 		73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */; };
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
+		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
+		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
@@ -215,6 +219,8 @@
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		733F65441BCFABA8001BE004 /* ChatHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHandler.swift; sourceTree = "<group>"; };
+		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
+		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
 		73556C811BB02C6600428375 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
@@ -286,6 +292,8 @@
 		73E6CDB71BC56454003A5F55 /* FlagParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagParametarVC.swift; sourceTree = "<group>"; };
 		73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlagParametarVC.xib; sourceTree = "<group>"; };
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
+		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
+		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -487,6 +495,7 @@
 		736265DD1B4A47FE0078C11D /* Bussiness Logic */ = {
 			isa = PBXGroup;
 			children = (
+				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				733C15701B5A825400554FD1 /* Device info and settings */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
 				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
@@ -532,6 +541,8 @@
 		73BD1EBE1B4E655700AA5B28 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				73E82D0B1BECA97D00C1C621 /* Categories List.json */,
+				73E82D0C1BECA97D00C1C621 /* Zones List.json */,
 				73E2C9F81B5E25570048C072 /* ViewControllerUtils.swift */,
 				E75163F01B4C089300457BED /* Widget */,
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
@@ -658,7 +669,6 @@
 				7372EB301BC410800097806D /* Gateway.swift */,
 				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
 				7372EB321BC410800097806D /* Sequence.swift */,
-				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */,
 				73EE52E41BC532D200E76BC3 /* Surveilence.swift */,
 				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
@@ -855,6 +865,8 @@
 				E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */,
 				E79AEBBA1B70D1FC00410E2D /* DigitalInput.swift */,
 				E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */,
+				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
+				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
 			);
 			name = "Device Parametars";
 			sourceTree = "<group>";
@@ -1108,7 +1120,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = E2X3LN769S;
+						DevelopmentTeam = 2JR589G8SK;
 					};
 					73E206BD1B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -1160,8 +1172,10 @@
 				73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				E79AEBBD1B70D1FC00410E2D /* DigitalInput.xib in Resources */,
+				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
 				73E2311E1BA6E2C4003E41EC /* SceneParametarVC.xib in Resources */,
+				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
 				E7DC67BF1B457C0E00EA6543 /* weather-moon@2x.png in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
 				E7DC67BC1B457C0E00EA6543 /* weather-mist.png in Resources */,
@@ -1196,6 +1210,7 @@
 				E79AEBB11B70B77D00410E2D /* AccessParametarVC.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
+				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
 				E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */,
@@ -1319,6 +1334,7 @@
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */,
+				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
@@ -1513,9 +1529,9 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.hoodbe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3bd46259-c92b-401b-91c0-d44e1ea083b2";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 			};
@@ -1527,7 +1543,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1536,9 +1552,9 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdeveloment.hoodbe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3bd46259-c92b-401b-91c0-d44e1ea083b2";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 			};

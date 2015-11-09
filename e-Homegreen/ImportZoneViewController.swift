@@ -37,16 +37,22 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     
     func backURL(strText: String) {
         if let zonesJSON = DataImporter.createZonesFromFile(strText) {
-            for zoneJSON in zonesJSON {
-                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-                zone.id = zoneJSON.id
-                zone.name = zoneJSON.name
-                zone.zoneDescription = zoneJSON.description
-                zone.level = zoneJSON.level
-                zone.isVisible = NSNumber(bool: true)
-                zone.gateway = gateway!
-                saveChanges()
+            if zonesJSON.count != 0 {
+                for zoneJSON in zonesJSON {
+                    let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
+                    zone.id = zoneJSON.id
+                    zone.name = zoneJSON.name
+                    zone.zoneDescription = zoneJSON.description
+                    zone.level = zoneJSON.level
+                    zone.isVisible = NSNumber(bool: true)
+                    zone.gateway = gateway!
+                    saveChanges()
+                }
+            } else {
+                createZones(gateway!)
             }
+        } else {
+            createZones(gateway!)
         }
         refreshZoneList()
     }
@@ -57,6 +63,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
                 appDel.managedObjectContext!.deleteObject(zones[item])
             }
         }
+        createZones(gateway!)
         saveChanges()
         refreshZoneList()
     }
@@ -75,6 +82,16 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
 //            }
 //        }
 //        refreshZoneList()
+    }
+    
+    func createZones(gateway:Gateway) {
+        if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
+            for zoneJSON in zonesJSON {
+                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
+                (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), gateway)
+                saveChanges()
+            }
+        }
     }
     
     func refreshZoneList() {

@@ -20,6 +20,7 @@ class IncomingHandler: NSObject {
     
     init (byteArrayToHandle: [UInt8], host:String, port:UInt16) {
         super.init()
+        NSNotificationCenter.defaultCenter().postNotificationName("didReceiveMessageFromGateway", object: self, userInfo: nil)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         self.host = host
         self.port = port
@@ -63,8 +64,9 @@ class IncomingHandler: NSObject {
                     
                     //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
                     if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
-                        
+                        self.ackChannelWarnings(self.byteArray)
                     }
+                    
                     //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
                     if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
                         self.ackACParametar(self.byteArray)
@@ -114,7 +116,18 @@ class IncomingHandler: NSObject {
     func refreshSecurityStatus (byteArray:[UInt8]) {
         
     }
-    
+    func ackChannelWarnings (byteArray:[UInt8]) {
+        fetchDevices()
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
+                var number = Int(byteArray[6+5*Int(device.channel)])
+                print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
+                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+    }
     func fetchDevices () {
         // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
@@ -390,6 +403,7 @@ class IncomingHandler: NSObject {
                         device.voltage = 0
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                        device.isVisible = false
                         saveChanges()
                     } else if channel == 6 && name == "sensor" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
@@ -405,6 +419,7 @@ class IncomingHandler: NSObject {
                         device.voltage = 0
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                        device.isVisible = false
                         saveChanges()
                     } else if name == "hvac" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device

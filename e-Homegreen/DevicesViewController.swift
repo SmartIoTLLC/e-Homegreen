@@ -23,6 +23,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
+    @IBOutlet weak var redView: UIView!
+    @IBOutlet weak var greenView: UIView!
+    
     var myView:Array<UIView> = []
     var mySecondView:Array<UIView> = []
     var timer:NSTimer = NSTimer()
@@ -34,6 +37,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "incomingSignal", name: "didReceiveMessageFromGateway", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendingSignal", name: "didSendMessageToGateway", object: nil)
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -62,6 +67,26 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         categorySearch = localSearchIds[2]
         updateDeviceList()
 //        fetchDevicesInBackground()
+    }
+    
+    func sendingSignal() {
+        greenView.hidden = false
+        greenView.alpha = 1
+        UIView.animateWithDuration(1, animations: {() -> Void in
+            self.greenView.alpha = 0
+            }, completion: {(finished:Bool) -> Void in
+                self.greenView.hidden = finished
+        })
+    }
+    
+    func incomingSignal() {
+        redView.hidden = false
+        redView.alpha = 1
+        UIView.animateWithDuration(1, animations: {() -> Void in
+            self.redView.alpha = 0
+            }, completion: {(finished:Bool) -> Void in
+                self.redView.hidden = finished
+        })
     }
     
     var appDel:AppDelegate!
@@ -646,6 +671,47 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func changeSliderValueOnOneTap (gesture:UIGestureRecognizer) {
+        if let slider = gesture.view as? UISlider {
+            if slider.highlighted {return}
+            let sliderOldValue = slider.value*100
+            let pt = gesture.locationInView(slider)
+            let percentage = pt.x/slider.bounds.size.width
+            let delta = Float(percentage) * Float(slider.maximumValue - slider.minimumValue)
+            let value = round((slider.minimumValue + delta)*100)
+            slider.setValue(value/100, animated: true)
+            let tag = slider.tag
+            devices[tag].currentValue = Int(value)
+            UIView.setAnimationsEnabled(false)
+            self.deviceCollectionView.performBatchUpdates({
+                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+                }, completion:  {(completed: Bool) -> Void in
+                    UIView.setAnimationsEnabled(true)
+            })
+            changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
+        }
+    }
+    func changeSliderValueWithTag(tag:Int, withOldValue:Int) {
+        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        deviceInControlMode = false
+        //   Dimmer
+        if devices[tag].type == "Dimmer" {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                dispatch_async(dispatch_get_main_queue(), {
+                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                })
+            })
+        }
+        //  Curtain
+        if devices[tag].type == "curtainsRS485" {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                dispatch_async(dispatch_get_main_queue(), {
+                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                })
+            })
+        }
+    }
     func changeSliderValueStarted (sender: UISlider) {
         let tag = sender.tag
         deviceInControlMode = true
@@ -715,20 +781,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var deviceInControlMode = false
-    func deviceDidEndControlMode (sender: UISlider){
-        //        var tag = sender.tag
-        //        var address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-        //        deviceInControlMode = false
-        //        println("hehehehe")
-        //        if devices[tag].type == "Dimmer" {
-        //            println(devices[tag].currentValue)
-        //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue)), runningTime: 0x00), gateway: devices[tag].gateway)
-        //        }
-        //        //  Curtain
-        //        if devices[tag].type == "curtainsRS485" {
-        //            SendingHandler.sendCommand(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: UInt8(Int(devices[tag].currentValue))), gateway: devices[tag].gateway)
-        //        }
-    }
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -898,7 +950,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
-            if deviceValue >= 0 && deviceValue < 0.1 {
+            if deviceValue == 0 {
+                cell.picture.image = UIImage(named: "lightBulb")
+            } else if deviceValue > 0 && deviceValue < 0.1 {
                 cell.picture.image = UIImage(named: "lightBulb1")
             } else if deviceValue >= 0.1 && deviceValue < 0.2 {
                 cell.picture.image = UIImage(named: "lightBulb2")
@@ -926,13 +980,23 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) A"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
-
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
                 cell.backView.hidden = true
             }else {
                 cell.infoView.hidden = true
                 cell.backView.hidden = false
+            }
+            if devices[indexPath.row].warningState == 0 {
+                cell.backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+                
+            } else if devices[indexPath.row].warningState == 1 {
+                // Uppet state
+                cell.backView.colorTwo = UIColor.redColor().CGColor
+                
+            } else if devices[indexPath.row].warningState == 2 {
+                // Lower state
+                cell.backView.colorTwo = UIColor.blueColor().CGColor
             }
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
@@ -946,6 +1010,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueEnded:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
+                cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "changeSliderValueOnOneTap:"))
                 
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
                 let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
@@ -1301,7 +1366,7 @@ extension DevicesViewController: UICollectionViewDataSource {
 //Light
 class DeviceCollectionCell: UICollectionViewCell {
     
-    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var typeOfLight: UILabel!
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var lightSlider: UISlider!

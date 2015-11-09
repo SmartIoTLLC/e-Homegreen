@@ -15,18 +15,18 @@ import Foundation
 //    categories = dataCategories
 //}
 class DataImporter {
-//    init(fileName:String) {
-//        var paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-//        var filePath = paths.stringByAppendingPathComponent(fileName)
-//        var checkValidation = NSFileManager.defaultManager()
-//        if checkValidation.fileExistsAtPath(filePath) {
-//            println("Postoji.")
-////            data = NSData(contentsOfFile: filePath)
-//            
-//        } else {
-//            println("Ne postoji.fileName")
-//        }
-//    }
+    //    init(fileName:String) {
+    //        var paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    //        var filePath = paths.stringByAppendingPathComponent(fileName)
+    //        var checkValidation = NSFileManager.defaultManager()
+    //        if checkValidation.fileExistsAtPath(filePath) {
+    //            println("Postoji.")
+    ////            data = NSData(contentsOfFile: filePath)
+    //
+    //        } else {
+    //            println("Ne postoji.fileName")
+    //        }
+    //    }
     class func createZonesFromFile (fileName:String) -> [ZoneJSON]? {
         var data:NSData!
         let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
@@ -59,6 +59,39 @@ class DataImporter {
         }
         return nil
     }
+    class func createZonesFromFileFromNSBundle () -> [ZoneJSON]? {
+        var data:NSData!
+        if let filePath = NSBundle.mainBundle().pathForResource("Zones List", ofType: "json") {
+            //        let filePath = paths.stringByAppendingPathComponent(fileName)
+            let checkValidation = NSFileManager.defaultManager()
+            if checkValidation.fileExistsAtPath(filePath) {
+                print("Postoji.")
+                data = NSData(contentsOfFile: filePath)
+                let jsonError: NSError?
+                
+                do {
+                    let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                    print(file["Zones"])
+                    if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
+                        var zones:[ZoneJSON] = []
+                        for zone in zonesDictionary {
+                            zones.append(ZoneJSON(dictionary: zone)!)
+                        }
+                        return zones
+                    }
+                } catch let error1 as NSError {
+                    jsonError = error1
+                    print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                    abort()
+                }
+                return nil
+                
+            } else {
+                print("Ne postoji.fileName")
+            }
+        }
+        return nil
+    }
     class func createCategoriesFromFile (fileName:String) -> [CategoryJSON]? {
         var data:NSData!
         let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
@@ -75,7 +108,7 @@ class DataImporter {
                 if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                     var categories:[CategoryJSON] = []
                     for category in categoriesDictionary {
-                         categories.append(CategoryJSON(dictionary: category)!)
+                        categories.append(CategoryJSON(dictionary: category)!)
                     }
                     return categories
                 }
@@ -92,10 +125,44 @@ class DataImporter {
         }
         return nil
     }
+    class func createCategoriesFromFileFromNSBundle () -> [CategoryJSON]? {
+        var data:NSData!
+        if let filePath = NSBundle.mainBundle().pathForResource("Categories List", ofType: "json") {
+            //        let filePath = paths.stringByAppendingPathComponent(fileName)
+            let checkValidation = NSFileManager.defaultManager()
+            if checkValidation.fileExistsAtPath(filePath) {
+                print("Postoji.")
+                data = NSData(contentsOfFile: filePath)
+                let jsonError: NSError?
+                
+                do {
+                    let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                    print(file["Categories"])
+                    if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
+                        var categories:[CategoryJSON] = []
+                        for category in categoriesDictionary {
+                            categories.append(CategoryJSON(dictionary: category)!)
+                        }
+                        return categories
+                    }
+                } catch let error1 as NSError {
+                    jsonError = error1
+                    print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                    abort()
+                }
+                return nil
+                
+                
+            } else {
+                print("Ne postoji.fileName")
+            }
+        }
+        return nil
+    }
     class func createSecuritiesFromFile (filePath:String) -> [SecurityJSON]? {
         var data:NSData!
-//        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-//        let filePath = paths.stringByAppendingPathComponent(fileName)
+        //        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+        //        let filePath = paths.stringByAppendingPathComponent(fileName)
         let checkValidation = NSFileManager.defaultManager()
         if checkValidation.fileExistsAtPath(filePath) {
             print("Postoji.")

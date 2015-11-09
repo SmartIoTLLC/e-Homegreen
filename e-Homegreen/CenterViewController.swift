@@ -19,6 +19,8 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var titleOfViewController: UILabel!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var Container: UIView!
+    @IBOutlet weak var greenView: UIView!
+    @IBOutlet weak var redView: UIView!
     override func viewDidLoad() {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -38,12 +40,35 @@ class CenterViewController: UIViewController {
                 titleOfViewController.text = "Settings"
             }
         }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "incomingSignal", name: "didReceiveMessageFromGateway", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendingSignal", name: "didSendMessageToGateway", object: nil)
 
         
         MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
         self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view)
         
     }
+    
+    func sendingSignal() {
+        greenView.hidden = false
+        greenView.alpha = 1
+        UIView.animateWithDuration(1, animations: {() -> Void in
+            self.greenView.alpha = 0
+            }, completion: {(finished:Bool) -> Void in
+                self.greenView.hidden = finished
+        })
+    }
+    
+    func incomingSignal() {
+        redView.hidden = false
+        redView.alpha = 1
+        UIView.animateWithDuration(1, animations: {() -> Void in
+            self.redView.alpha = 0
+            }, completion: {(finished:Bool) -> Void in
+                self.redView.hidden = finished
+        })
+    }
+    
     func imageFromLayer (layer:CALayer) -> UIImage {
         UIGraphicsBeginImageContext(layer.frame.size)
         

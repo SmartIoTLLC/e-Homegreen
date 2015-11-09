@@ -13,6 +13,7 @@ class SendingHandler {
     static func sendCommand(byteArray byteArray:[UInt8], gateway:Gateway) {
         let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
+            NSNotificationCenter.defaultCenter().postNotificationName("didSendMessageToGateway", object: self, userInfo: nil)
             if let ssid = UIDevice.currentDevice().SSID {
                 if gateway.ssid == ssid {
                     //  Send via local ip
@@ -41,7 +42,6 @@ class SendingHandler {
                 }
             }
         }
-        
     }
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
+class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var rangeFrom: UITextField!
     @IBOutlet weak var rangeTo: UITextField!
@@ -88,12 +88,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        //        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-        //        if let results = fetResults {
-        //            devices = results
-        //        } else {
-        //            print("Nije htela...")
-        //        }
     }
     
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -386,8 +380,44 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = deviceTableView.cellForRowAtIndexPath(indexPath)
+        showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceTableView.contentOffset.y), device: devices[indexPath.row])
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gateway!.devices.count
+    }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
+            saveChanges()
+            updateDeviceList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        }
+        
     }
     
 }
