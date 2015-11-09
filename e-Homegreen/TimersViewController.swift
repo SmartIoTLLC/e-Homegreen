@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class TimersViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
+class TimersViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
         
     var appDel:AppDelegate!
     var timers:[Timer] = []
@@ -24,6 +24,13 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
     
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
+    var locationSearchText = ["", "", "", ""]
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        updateTimersList()
+        timersCollectionView.reloadData()
+        LocalSearchParametar.setLocalParametar("Timers", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //        cyclesTextField.delegate = self
@@ -35,15 +42,15 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
         refreshTimerList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     
     override func viewWillLayoutSubviews() {
-        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            
             if self.view.frame.size.width == 568{
                 sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
             }else if self.view.frame.size.width == 667{
@@ -51,22 +58,19 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
             }
-            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             
-            drawMenu()
-            
         } else {
-            
             if self.view.frame.size.width == 320{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }else if self.view.frame.size.width == 375{
@@ -74,117 +78,21 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
-            
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-            
-            drawMenu()
         }
         timersCollectionView.reloadData()
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func drawMenu(){
-        let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-        locationLabel.text = "Location"
-        locationLabel.textColor = UIColor.whiteColor()
-        pullDown.addSubview(locationLabel)
-        
-        let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
-        levelLabel.text = "Level"
-        levelLabel.textColor = UIColor.whiteColor()
-        pullDown.addSubview(levelLabel)
-        
-        let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
-        zoneLabel.text = "Zone"
-        zoneLabel.textColor = UIColor.whiteColor()
-        pullDown.addSubview(zoneLabel)
-        
-        let categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
-        categoryLabel.text = "Category"
-        categoryLabel.textColor = UIColor.whiteColor()
-        pullDown.addSubview(categoryLabel)
-        
-        let locationButton:UIButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
-        locationButton.backgroundColor = UIColor.grayColor()
-        locationButton.titleLabel?.tintColor = UIColor.whiteColor()
-        locationButton.setTitle("All", forState: UIControlState.Normal)
-        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        locationButton.layer.cornerRadius = 5
-        locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        locationButton.layer.borderWidth = 1
-        locationButton.tag = 1
-        locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        pullDown.addSubview(locationButton)
-        
-        let levelButton:UIButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
-        levelButton.backgroundColor = UIColor.grayColor()
-        levelButton.titleLabel?.tintColor = UIColor.whiteColor()
-        levelButton.setTitle("All", forState: UIControlState.Normal)
-        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        levelButton.layer.cornerRadius = 5
-        levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        levelButton.layer.borderWidth = 1
-        levelButton.tag = 2
-        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        pullDown.addSubview(levelButton)
-        
-        let zoneButton:UIButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
-        zoneButton.backgroundColor = UIColor.grayColor()
-        zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
-        zoneButton.setTitle("All", forState: UIControlState.Normal)
-        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        zoneButton.layer.cornerRadius = 5
-        zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        zoneButton.layer.borderWidth = 1
-        zoneButton.tag = 3
-        zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        pullDown.addSubview(zoneButton)
-        
-        let categoryButton:UIButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
-        categoryButton.backgroundColor = UIColor.grayColor()
-        categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
-        categoryButton.setTitle("All", forState: UIControlState.Normal)
-        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        categoryButton.layer.cornerRadius = 5
-        categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        categoryButton.layer.borderWidth = 1
-        categoryButton.tag = 4
-        categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        pullDown.addSubview(categoryButton)
-    }
-    
-    var popoverVC:PopOverViewController = PopOverViewController()
-    
-    func menuTable(sender : UIButton){
-        senderButton = sender
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = sender.tag
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-            
-        }
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -193,37 +101,6 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
-    
-    func saveText (text : String, id:Int) {
-        let tag = senderButton!.tag
-        switch tag {
-        case 1:
-            locationSearch = text
-        case 2:
-            if id == -1 {
-                levelSearch = "All"
-            } else {
-                levelSearch = "\(id)"
-            }
-        case 3:
-            if id == -1 {
-                zoneSearch = "All"
-            } else {
-                zoneSearch = "\(id)"
-            }
-        case 4:
-            if id == -1 {
-                categorySearch = "All"
-            } else {
-                categorySearch = "\(id)"
-            }
-        default:
-            print("")
-        }
-        timersCollectionView.reloadData()
-//        senderButton?.setTitle(text, forState: .Normal)
-        
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -238,14 +115,62 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         updateTimersList()
         timersCollectionView.reloadData()
     }
+    
+    
+    func returnZoneWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnCategoryWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
     func updateTimersList () {
         let fetchRequest = NSFetchRequest(entityName: "Timer")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        fetchRequest.predicate = predicate
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateOne]
+        if zoneSearch != "All" {
+            let zonePredicate = NSPredicate(format: "timeZone == %@", returnZoneWithId(Int(zoneSearch)!))
+            predicateArray.append(zonePredicate)
+        }
+        if categorySearch != "All" {
+            let categoryPredicate = NSPredicate(format: "timerCategory == %@", returnCategoryWithId(Int(categorySearch)!))
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
             timers = fetResults!

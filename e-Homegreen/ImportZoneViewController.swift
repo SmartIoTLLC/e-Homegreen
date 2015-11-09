@@ -38,6 +38,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     func backURL(strText: String) {
         if let zonesJSON = DataImporter.createZonesFromFile(strText) {
             if zonesJSON.count != 0 {
+                for var item = 0; item < zones.count; item++ {
+                    if zones[item].gateway.objectID == gateway!.objectID {
+                        appDel.managedObjectContext!.deleteObject(zones[item])
+                    }
+                }
                 for zoneJSON in zonesJSON {
                     let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                     zone.id = zoneJSON.id
@@ -160,6 +165,7 @@ extension ImportZoneViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
+            cell.backgroundColor = UIColor.clearColor()
             cell.lblName.text = "\(zones[indexPath.row].id). \(zones[indexPath.row].name)"
             cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
             cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"

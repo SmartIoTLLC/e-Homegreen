@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "goodnight.png",
+      "filename" : "14 Security - Night - 01.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "goodnight-1.png",
+      "filename" : "14 Security - Night - 01-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "goodnight-2.png",
+      "filename" : "14 Security - Night - 01-2.png",
       "scale" : "3x"
     }
   ],

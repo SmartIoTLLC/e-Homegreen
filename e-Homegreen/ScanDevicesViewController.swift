@@ -347,15 +347,20 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     @IBAction func findNames(sender: AnyObject) {
-        //        var index:Int
-        if devices.count != 0 {
-            print("HELLO 1")
-            index = 0
-            timesRepeatedCounter = 0
-            pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
-            self.presentViewController(pbFN!, animated: true, completion: nil)
-            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
-            sendCommandForFindingName(index: 0)
+        if rangeFrom.text != "" && rangeTo.text != "" {
+            if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
+                if numberTwo >= numberOne {        //        var index:Int
+                    if devices.count != 0 {
+                        print("HELLO 1")
+                        index = 0
+                        timesRepeatedCounter = 0
+                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
+                        self.presentViewController(pbFN!, animated: true, completion: nil)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
+                        sendCommandForFindingName(index: 0)
+                    }
+                }
+            }
         }
     }
     
@@ -403,7 +408,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
             cell.lblType.text = "Type: \(devices[indexPath.row].type)"
             cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
-            cell.lblZone.text = "Zone: \(returnZoneWithId(Int(devices[indexPath.row].zoneId))) Parent Zone: \(returnZoneWithId(Int(devices[indexPath.row].parentZoneId)))"
+            cell.lblZone.text = "Zone: \(returnZoneWithId(Int(devices[indexPath.row].zoneId))) Level: \(returnZoneWithId(Int(devices[indexPath.row].parentZoneId)))"
             cell.lblCategory.text = "Category: \(returnCategoryWithId(Int(devices[indexPath.row].categoryId)))"
             cell.isEnabledSwitch.tag = indexPath.row
             cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)

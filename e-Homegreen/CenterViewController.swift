@@ -50,22 +50,26 @@ class CenterViewController: UIViewController {
     }
     
     func sendingSignal() {
-        greenView.hidden = false
-        greenView.alpha = 1
-        UIView.animateWithDuration(1, animations: {() -> Void in
-            self.greenView.alpha = 0
-            }, completion: {(finished:Bool) -> Void in
-                self.greenView.hidden = finished
+        dispatch_async(dispatch_get_main_queue(), {
+            self.greenView.hidden = false
+            self.greenView.alpha = 1
+            UIView.animateWithDuration(1, animations: {() -> Void in
+                self.greenView.alpha = 0
+                }, completion: {(finished:Bool) -> Void in
+                    self.greenView.hidden = finished
+            })
         })
     }
     
     func incomingSignal() {
-        redView.hidden = false
-        redView.alpha = 1
-        UIView.animateWithDuration(1, animations: {() -> Void in
-            self.redView.alpha = 0
-            }, completion: {(finished:Bool) -> Void in
-                self.redView.hidden = finished
+        dispatch_async(dispatch_get_main_queue(), {
+            self.redView.hidden = false
+            self.redView.alpha = 1
+            UIView.animateWithDuration(1, animations: {() -> Void in
+                self.redView.alpha = 0
+                }, completion: {(finished:Bool) -> Void in
+                    self.redView.hidden = finished
+            })
         })
     }
     

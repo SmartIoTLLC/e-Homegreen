@@ -51,6 +51,11 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
     func backURL(strText: String) {
         if let categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
             if categoriesJSON.count != 0 {
+                for var item = 0; item < categories.count; item++ {
+                    if categories[item].gateway.objectID == gateway!.objectID {
+                        appDel.managedObjectContext!.deleteObject(categories[item])
+                    }
+                }
                 for categoryJSON in categoriesJSON {
                     let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                     category.id = categoryJSON.id
@@ -157,13 +162,14 @@ extension ImportCategoryViewController: UITableViewDelegate {
 extension ImportCategoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
+            cell.backgroundColor = UIColor.clearColor()
             cell.lblName.text = "\(categories[indexPath.row].id)" + ", \(categories[indexPath.row].name)"
             cell.lblDescription.text = "Desc: \(categories[indexPath.row].categoryDescription)"
             print(categories[indexPath.row].isVisible)
             print(categories[indexPath.row].isVisible.boolValue)
             cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
-            cell.switchVisible.addTarget(self, action: "isVisibleValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+            cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -171,7 +177,6 @@ extension ImportCategoryViewController: UITableViewDataSource {
         cell.backgroundColor = UIColor.clearColor()
         cell.textLabel?.textColor = UIColor.whiteColor()
         return cell
-        
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count

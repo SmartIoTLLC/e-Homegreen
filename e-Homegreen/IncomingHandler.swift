@@ -184,12 +184,6 @@ class IncomingHandler: NSObject {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-//        if let results = fetResults {
-//            gateways = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     func saveChanges() {
         do {
@@ -404,6 +398,7 @@ class IncomingHandler: NSObject {
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         device.isVisible = false
+                        device.isEnabled = false
                         saveChanges()
                     } else if channel == 6 && name == "sensor" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
@@ -420,6 +415,7 @@ class IncomingHandler: NSObject {
                         device.temperature = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         device.isVisible = false
+                        device.isEnabled = false
                         saveChanges()
                     } else if name == "hvac" {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
@@ -527,6 +523,7 @@ class IncomingHandler: NSObject {
                     devices[i].isEnabled = NSNumber(bool: true)
                 } else {
                     devices[i].isEnabled = NSNumber(bool: false)
+                    devices[i].isVisible = NSNumber(bool: false)
                 }
                 let data = ["deviceIndexForFoundName":i]
                 NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
