@@ -60,7 +60,7 @@
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-SA-jbj">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="480"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39">
                                     <rect key="frame" x="163" y="440" width="75" height="31"/>
                                     <animations/>
                                     <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,7 +76,7 @@
                                         <action selector="save:" destination="-1" eventType="touchUpInside" id="02t-xb-XT6"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-TQ-Tc9">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-TQ-Tc9">
                                     <rect key="frame" x="63" y="440" width="75" height="31"/>
                                     <animations/>
                                     <color key="backgroundColor" red="0.82745098039215681" green="0.83529411764705885" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
@@ -92,7 +92,7 @@
                                         <action selector="cancel:" destination="-1" eventType="touchUpInside" id="meK-L7-98W"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Td-rD-SFp">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Td-rD-SFp">
                                     <rect key="frame" x="0.0" y="8" width="300" height="21"/>
                                     <animations/>
                                     <constraints>
@@ -102,54 +102,46 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Gateway" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsh-u1-JBX">
-                                    <rect key="frame" x="10" y="41" width="58" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsh-u1-JBX">
+                                    <rect key="frame" x="10" y="41" width="56" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L04-Ng-IcQ">
-                                    <rect key="frame" x="10" y="80" width="56" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gateway" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L04-Ng-IcQ">
+                                    <rect key="frame" x="10" y="80" width="58" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="avv-DG-9ck">
-                                    <rect key="frame" x="163" y="35" width="59" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="avv-DG-9ck">
+                                    <rect key="frame" x="163" y="75" width="59" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AAr-v3-npZ">
-                                    <rect key="frame" x="232" y="35" width="58" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AAr-v3-npZ">
+                                    <rect key="frame" x="232" y="75" width="58" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P4e-7w-oyg">
-                                    <rect key="frame" x="95" y="74" width="195" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P4e-7w-oyg">
+                                    <rect key="frame" x="95" y="36" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BC5-EX-Snd">
-                                    <rect key="frame" x="95" y="35" width="58" height="30"/>
-                                    <animations/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                </textField>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor " textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="zUV-b0-XSs">
-                                    <rect key="frame" x="95" y="109" width="195" height="65"/>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor " textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="zUV-b0-XSs">
+                                    <rect key="frame" x="95" y="110" width="195" height="65"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -160,22 +152,22 @@
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                 </textView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqz-TY-rmJ">
-                                    <rect key="frame" x="10" y="132" width="74" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqz-TY-rmJ">
+                                    <rect key="frame" x="10" y="133" width="74" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gCp-7R-Sth">
-                                    <rect key="frame" x="95" y="362" width="195" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gCp-7R-Sth">
+                                    <rect key="frame" x="95" y="363" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-KA-lDE">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-KA-lDE">
                                     <rect key="frame" x="95" y="400" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -183,79 +175,87 @@
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Remote Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewp-mr-Xce">
-                                    <rect key="frame" x="0.0" y="330" width="300" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remote Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewp-mr-Xce">
+                                    <rect key="frame" x="0.0" y="331" width="300" height="21"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycg-Hi-70o">
-                                    <rect key="frame" x="10" y="366" width="50" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycg-Hi-70o">
+                                    <rect key="frame" x="10" y="367" width="50" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45b-HQ-Hfj">
-                                    <rect key="frame" x="10" y="405" width="27" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45b-HQ-Hfj">
+                                    <rect key="frame" x="10" y="406" width="27" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cye-mf-HE1">
-                                    <rect key="frame" x="95" y="212" width="195" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cye-mf-HE1">
+                                    <rect key="frame" x="95" y="213" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alB-wq-NFj">
-                                    <rect key="frame" x="95" y="251" width="195" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alB-wq-NFj">
+                                    <rect key="frame" x="95" y="252" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SSID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SxY-xb-Y9M">
-                                    <rect key="frame" x="95" y="290" width="195" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SSID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SxY-xb-Y9M">
+                                    <rect key="frame" x="95" y="291" width="195" height="30"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n97-xe-z3p">
-                                    <rect key="frame" x="10" y="217" width="50" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n97-xe-z3p">
+                                    <rect key="frame" x="10" y="218" width="50" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fx-hm-oT3">
-                                    <rect key="frame" x="10" y="256" width="27" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fx-hm-oT3">
+                                    <rect key="frame" x="10" y="257" width="27" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SSID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8T-52-CJS">
-                                    <rect key="frame" x="10" y="295" width="33" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SSID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8T-52-CJS">
+                                    <rect key="frame" x="10" y="296" width="33" height="19"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Local Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEC-hT-6Cs">
-                                    <rect key="frame" x="0.0" y="184" width="300" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEC-hT-6Cs">
+                                    <rect key="frame" x="0.0" y="185" width="300" height="21"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BC5-EX-Snd">
+                                    <rect key="frame" x="95" y="75" width="58" height="30"/>
+                                    <animations/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
                             </subviews>
                             <animations/>
                             <constraints>
@@ -268,9 +268,9 @@
                                 <constraint firstItem="5Td-rD-SFp" firstAttribute="top" secondItem="Eoz-SA-jbj" secondAttribute="top" constant="8" id="3s0-Uy-tRr"/>
                                 <constraint firstItem="zUV-b0-XSs" firstAttribute="width" secondItem="P4e-7w-oyg" secondAttribute="width" id="3uM-Nk-e7A"/>
                                 <constraint firstItem="Y8T-52-CJS" firstAttribute="leading" secondItem="9fx-hm-oT3" secondAttribute="leading" id="4Bz-t3-tei"/>
-                                <constraint firstItem="P4e-7w-oyg" firstAttribute="centerY" secondItem="L04-Ng-IcQ" secondAttribute="centerY" id="5yr-Rq-jPj"/>
                                 <constraint firstItem="SxY-xb-Y9M" firstAttribute="width" secondItem="alB-wq-NFj" secondAttribute="width" id="7if-Tt-Nu9"/>
                                 <constraint firstItem="Ycg-Hi-70o" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="leading" id="7yY-PS-R98"/>
+                                <constraint firstItem="zUV-b0-XSs" firstAttribute="top" secondItem="AAr-v3-npZ" secondAttribute="bottom" constant="5" id="9yc-EH-8pg"/>
                                 <constraint firstItem="avv-DG-9ck" firstAttribute="height" secondItem="BC5-EX-Snd" secondAttribute="height" id="9yo-yP-BpN"/>
                                 <constraint firstItem="SxY-xb-Y9M" firstAttribute="centerY" secondItem="Y8T-52-CJS" secondAttribute="centerY" id="A61-fO-4bh"/>
                                 <constraint firstItem="n97-xe-z3p" firstAttribute="leading" secondItem="Lqz-TY-rmJ" secondAttribute="leading" id="BVB-R9-eSt"/>
@@ -285,7 +285,6 @@
                                 <constraint firstAttribute="trailing" secondItem="fEC-hT-6Cs" secondAttribute="trailing" id="JJb-1F-WUW"/>
                                 <constraint firstItem="P4e-7w-oyg" firstAttribute="width" secondItem="gCp-7R-Sth" secondAttribute="width" id="KEc-yg-DuF"/>
                                 <constraint firstItem="Lqz-TY-rmJ" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="leading" id="KNw-MP-6sT"/>
-                                <constraint firstItem="wsh-u1-JBX" firstAttribute="centerY" secondItem="BC5-EX-Snd" secondAttribute="centerY" id="M7D-OR-uGL"/>
                                 <constraint firstItem="45b-HQ-Hfj" firstAttribute="centerY" secondItem="LOs-KA-lDE" secondAttribute="centerY" id="QlU-aS-uRo"/>
                                 <constraint firstItem="fEC-hT-6Cs" firstAttribute="top" secondItem="zUV-b0-XSs" secondAttribute="bottom" constant="10" id="WY2-MU-Tae"/>
                                 <constraint firstItem="45b-HQ-Hfj" firstAttribute="leading" secondItem="Ycg-Hi-70o" secondAttribute="leading" id="XIz-DN-E6h"/>
@@ -294,6 +293,8 @@
                                 <constraint firstItem="Lqz-TY-rmJ" firstAttribute="centerY" secondItem="zUV-b0-XSs" secondAttribute="centerY" id="bbM-Db-DUZ"/>
                                 <constraint firstAttribute="trailing" secondItem="ewp-mr-Xce" secondAttribute="trailing" id="brh-z7-nBc"/>
                                 <constraint firstItem="ewp-mr-Xce" firstAttribute="top" secondItem="SxY-xb-Y9M" secondAttribute="bottom" constant="10" id="cTK-oH-CQn"/>
+                                <constraint firstItem="P4e-7w-oyg" firstAttribute="centerY" secondItem="wsh-u1-JBX" secondAttribute="centerY" id="d1n-tV-uOh"/>
+                                <constraint firstItem="BC5-EX-Snd" firstAttribute="centerY" secondItem="L04-Ng-IcQ" secondAttribute="centerY" id="dMW-W3-r7c"/>
                                 <constraint firstAttribute="trailing" secondItem="5Td-rD-SFp" secondAttribute="trailing" id="dXN-8a-vc8"/>
                                 <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="centerY" secondItem="cE7-zJ-c39" secondAttribute="centerY" id="duI-nB-bZP"/>
                                 <constraint firstItem="P4e-7w-oyg" firstAttribute="trailing" secondItem="AAr-v3-npZ" secondAttribute="trailing" id="eQ8-90-vT9"/>
@@ -314,7 +315,6 @@
                                 <constraint firstItem="BC5-EX-Snd" firstAttribute="centerY" secondItem="avv-DG-9ck" secondAttribute="centerY" id="qEe-Me-Z4f"/>
                                 <constraint firstItem="n97-xe-z3p" firstAttribute="top" secondItem="fEC-hT-6Cs" secondAttribute="bottom" constant="12" id="r19-Ab-Zhq"/>
                                 <constraint firstItem="Ycg-Hi-70o" firstAttribute="leading" secondItem="Eoz-SA-jbj" secondAttribute="leading" constant="10" id="rGC-bd-XSF"/>
-                                <constraint firstItem="zUV-b0-XSs" firstAttribute="top" secondItem="P4e-7w-oyg" secondAttribute="bottom" constant="5" id="rQa-Hs-zWi"/>
                                 <constraint firstItem="avv-DG-9ck" firstAttribute="height" secondItem="AAr-v3-npZ" secondAttribute="height" id="tSv-6c-VXX"/>
                                 <constraint firstItem="wsh-u1-JBX" firstAttribute="top" secondItem="5Td-rD-SFp" secondAttribute="bottom" constant="12" id="wDk-gn-Ziw"/>
                                 <constraint firstAttribute="trailing" secondItem="gCp-7R-Sth" secondAttribute="trailing" constant="10" id="wKP-Je-JPq"/>
