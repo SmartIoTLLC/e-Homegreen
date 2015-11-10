@@ -75,6 +75,9 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         var levelText = "All"
         var zoneText = "All"
         var categoryText = "All"
+        if locationText != "All" {
+            choosedGateway = returnGatewayForName(locationText)
+        }
         if level != "All" {
             levelText = "\(returnZoneWithId(Int(level)!))"
         }
@@ -108,7 +111,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         locationButton.backgroundColor = UIColor.grayColor()
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.setTitle(locationText, forState: UIControlState.Normal)
-        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         locationButton.layer.cornerRadius = 5
         locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         locationButton.layer.borderWidth = 1
@@ -121,7 +124,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         levelButton.backgroundColor = UIColor.grayColor()
         levelButton.titleLabel?.tintColor = UIColor.whiteColor()
         levelButton.setTitle(levelText, forState: UIControlState.Normal)
-        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         levelButton.layer.cornerRadius = 5
         levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         levelButton.layer.borderWidth = 1
@@ -134,7 +137,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         zoneButton.backgroundColor = UIColor.grayColor()
         zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
         zoneButton.setTitle(zoneText, forState: UIControlState.Normal)
-        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         zoneButton.layer.cornerRadius = 5
         zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         zoneButton.layer.borderWidth = 1
@@ -147,7 +150,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         categoryButton.backgroundColor = UIColor.grayColor()
         categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
         categoryButton.setTitle(categoryText, forState: UIControlState.Normal)
-        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         categoryButton.layer.cornerRadius = 5
         categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         categoryButton.layer.borderWidth = 1
@@ -159,8 +162,8 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         goButton = UIButton(frame: CGRectMake(55, 250, 150, 40))
         goButton.backgroundColor = UIColor.grayColor()
         goButton.titleLabel?.tintColor = UIColor.whiteColor()
-        goButton.setTitle("Filter list", forState: UIControlState.Normal)
-        goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        goButton.setTitle("Go", forState: UIControlState.Normal)
+        goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         goButton.layer.cornerRadius = 5
         goButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         goButton.layer.borderWidth = 1
@@ -188,12 +191,34 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category)
         self.setContentOffset(CGPointMake(0, self.parentViewController!.view.frame.size.height - 2), animated: false)
     }
+    var choosedGateway:Gateway?
+    func returnGatewayForName(gatewayName:String) -> Gateway? {
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicate = NSPredicate(format: "name == %@", gatewayName)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            if fetResults!.count != 0 {
+                return fetResults![0]
+            } else {
+                return nil
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return nil
+    }
     
     func saveText (text : String, id:Int) {
         let tag = senderButton!.tag
         switch tag {
         case 1:
             locationButton.setTitle(text, forState: UIControlState.Normal)
+            choosedGateway = returnGatewayForName(text)
+            levelButton.setTitle("All", forState: UIControlState.Normal)
+            zoneButton.setTitle("All", forState: UIControlState.Normal)
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
         case 2:
             if id == -1 {
                 levelButton.setTitle("All", forState: UIControlState.Normal)
@@ -305,6 +330,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = sender.tag
+        popoverVC.filterGateway = choosedGateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

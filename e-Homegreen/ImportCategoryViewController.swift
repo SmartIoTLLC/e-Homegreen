@@ -49,13 +49,13 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
     }
     
     func backURL(strText: String) {
+        for var item = 0; item < categories.count; item++ {
+            if categories[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(categories[item])
+            }
+        }
         if let categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
             if categoriesJSON.count != 0 {
-                for var item = 0; item < categories.count; item++ {
-                    if categories[item].gateway.objectID == gateway!.objectID {
-                        appDel.managedObjectContext!.deleteObject(categories[item])
-                    }
-                }
                 for categoryJSON in categoriesJSON {
                     let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                     category.id = categoryJSON.id
@@ -76,17 +76,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
 
     @IBAction func btnImportFile(sender: AnyObject) {
         showImportFiles().delegate = self
-//        if let categoriesJSON = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json") {
-//            for categoryJSON in categoriesJSON {
-//                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-//                category.id = categoryJSON.id
-//                category.name = categoryJSON.name
-//                category.categoryDescription = categoryJSON.description
-//                category.gateway = gateway!
-//                saveChanges()
-//            }
-//        }
-//        refreshCategoryList()
     }
     
     func createCategories(gateway:Gateway) {

@@ -7,26 +7,7 @@
 //
 
 import Foundation
-//IPGCW02001_000_000_Categories List
-//IPGCW02001_000_000_Zones List
-//
-//var dataCategory = DataImporter(fileName: "IPGCW02001_000_000_Categories List.json")
-//if let dateCategories = dataCategory.createCategoriesFromFile()! {
-//    categories = dataCategories
-//}
 class DataImporter {
-    //    init(fileName:String) {
-    //        var paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-    //        var filePath = paths.stringByAppendingPathComponent(fileName)
-    //        var checkValidation = NSFileManager.defaultManager()
-    //        if checkValidation.fileExistsAtPath(filePath) {
-    //            println("Postoji.")
-    ////            data = NSData(contentsOfFile: filePath)
-    //
-    //        } else {
-    //            println("Ne postoji.fileName")
-    //        }
-    //    }
     class func createZonesFromFile (fileName:String) -> [ZoneJSON]? {
         var data:NSData!
         let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
@@ -50,7 +31,7 @@ class DataImporter {
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-                abort()
+//                abort()
             }
             return nil
             
@@ -82,7 +63,7 @@ class DataImporter {
                 } catch let error1 as NSError {
                     jsonError = error1
                     print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-                    abort()
+//                    abort()
                 }
                 return nil
                 
@@ -115,7 +96,7 @@ class DataImporter {
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-                abort()
+//                abort()
             }
             return nil
             
@@ -148,7 +129,7 @@ class DataImporter {
                 } catch let error1 as NSError {
                     jsonError = error1
                     print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-                    abort()
+//                    abort()
                 }
                 return nil
                 
@@ -182,7 +163,7 @@ class DataImporter {
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-                abort()
+//                abort()
             }
             return nil
             
@@ -205,7 +186,9 @@ struct ZoneJSON {
 
 extension ZoneJSON {
     init?(dictionary:JSONDictionary) {
-        if let id = dictionary["ID"] as? String, let level = dictionary["Level"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+        if var id = dictionary["ID"] as? String, var level = dictionary["Level"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+            if id == "" {id = "0"}
+            if level == "" {level = "0"}
             if let idInt = Int(id), levelInt = Int(level) {
                 self.id = idInt
                 self.level = levelInt
@@ -226,7 +209,8 @@ struct CategoryJSON {
 
 extension CategoryJSON {
     init?(dictionary:JSONDictionary) {
-        if let id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+            if id == "" {id = "0"}
             if let idInt = Int(id) {
                 self.id = idInt
                 self.name = name

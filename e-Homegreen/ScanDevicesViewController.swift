@@ -172,10 +172,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         pbFD?.progressView.progress = Float(number)/Float(toAddress!)
     }
     
-    func setProgressBarParametarsForFindingNames (index:Int) {
-        pbFN?.lblHowMuchOf.text = "\(index+1)/\(devices.count)"
-        pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(index+1)/Float(devices.count)*100)
-        pbFN?.progressView.progress = Float(index+1)/Float(devices.count)
+    func setProgressBarParametarsForFindingNames (var index:Int) {
+        index = index - fromAddress! + 1
+        pbFN?.lblHowMuchOf.text = "\(index)/\(toAddress!-fromAddress!+1)"
+        pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(index)/Float(toAddress!-fromAddress!+1)*100)
+        pbFN?.progressView.progress = Float(index)/Float(toAddress!-fromAddress!+1)
     }
     
     func hideActivityIndicator () {
@@ -193,8 +194,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     func nameReceivedFromPLC (notification:NSNotification) {
         if let info = notification.userInfo! as? [String:Int] {
             if let deviceIndex = info["deviceIndexForFoundName"] {
-                print("HELLO 2111111111111111 \(deviceIndex)")
-                if deviceIndex == devices.count-1 {
+                if deviceIndex == toAddress! {
                     index = 0
                     timesRepeatedCounter = 0
                     deviceNameTimer?.invalidate()
@@ -215,7 +215,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             print("HELLO 2 \(deviceIndex)")
             print("HELLO 2 \(index)")
             if index != 0 || deviceIndex < index {
-                //                index = index + 1
                 timesRepeatedCounter += 1
                 if timesRepeatedCounter < 4 {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
@@ -228,18 +227,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         pbFN?.dissmissProgressBar()
                     } else {
                         index = deviceIndex + 1
-                        let newIndex = deviceIndex + 1
                         timesRepeatedCounter = 0
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: newIndex, repeats: false)
-                        sendCommandForFindingName(index: newIndex)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                        sendCommandForFindingName(index: index)
                     }
                 }
             } else {
                 print("MATICUUU KADA CEMO DA KRENEMO KUCI!")
                 if index == 0 {
-                timesRepeatedCounter += 1
-                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
-                sendCommandForFindingName(index: 0)
+                    timesRepeatedCounter += 1
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
+                    sendCommandForFindingName(index: 0)
                 } else {
                     print("VELIKI PROBLEM ANGAZUJ SVE LJDUE IZ FIRME I OKUPI VELIKI BRAIN TRUST, SNAGU I NADU NASE FIRME!")
                 }
@@ -248,10 +246,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     func sendCommandForFindingName (index index:Int) {
-        print("HELLO 3")
-        print(devices[0])
-        print("HELLO 3")
         setProgressBarParametarsForFindingNames(index)
+//        index = index - 1
         if devices[index].type == "Dimmer" {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -349,15 +345,18 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     @IBAction func findNames(sender: AnyObject) {
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
-                if numberTwo >= numberOne {        //        var index:Int
+                if numberTwo >= numberOne {
+                    fromAddress = numberOne - 1
+                    toAddress = numberTwo - 1
                     if devices.count != 0 {
                         print("HELLO 1")
-                        index = 0
+                        index = fromAddress!
                         timesRepeatedCounter = 0
-                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
+                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \((fromAddress!-toAddress!)+1)")
+//                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
                         self.presentViewController(pbFN!, animated: true, completion: nil)
                         deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
-                        sendCommandForFindingName(index: 0)
+                        sendCommandForFindingName(index: index)
                     }
                 }
             }

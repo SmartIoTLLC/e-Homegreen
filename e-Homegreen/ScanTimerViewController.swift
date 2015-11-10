@@ -191,6 +191,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 3
+        popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -209,6 +210,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 4
+        popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -222,20 +224,21 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     
     
     @IBAction func btnTimerType(sender: AnyObject) {
-            popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-            popoverVC.modalPresentationStyle = .Popover
-            popoverVC.preferredContentSize = CGSizeMake(300, 200)
-            popoverVC.delegate = self
-            popoverVC.indexTab = 7
-            if let popoverController = popoverVC.popoverPresentationController {
-                popoverController.delegate = self
-                popoverController.permittedArrowDirections = .Any
-                popoverController.sourceView = sender as? UIView
-                popoverController.sourceRect = sender.bounds
-                popoverController.backgroundColor = UIColor.lightGrayColor()
-                presentViewController(popoverVC, animated: true, completion: nil)
-                
-            }
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 7
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {

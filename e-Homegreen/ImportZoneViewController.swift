@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 
-//IPGCW02001_000_000_Zones List
 class ImportZoneViewController: UIViewController, ImportFilesDelegate {
 
     var appDel:AppDelegate!
@@ -36,13 +35,13 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     }
     
     func backURL(strText: String) {
+        for var item = 0; item < zones.count; item++ {
+            if zones[item].gateway.objectID == gateway!.objectID {
+                appDel.managedObjectContext!.deleteObject(zones[item])
+            }
+        }
         if let zonesJSON = DataImporter.createZonesFromFile(strText) {
             if zonesJSON.count != 0 {
-                for var item = 0; item < zones.count; item++ {
-                    if zones[item].gateway.objectID == gateway!.objectID {
-                        appDel.managedObjectContext!.deleteObject(zones[item])
-                    }
-                }
                 for zoneJSON in zonesJSON {
                     let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                     zone.id = zoneJSON.id
@@ -54,9 +53,15 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
                     saveChanges()
                 }
             } else {
+                let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                presentViewController(alert, animated: true, completion: nil)
                 createZones(gateway!)
             }
         } else {
+            let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            presentViewController(alert, animated: true, completion: nil)
             createZones(gateway!)
         }
         refreshZoneList()
@@ -75,18 +80,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
 
     @IBAction func btnImportFile(sender: AnyObject) {
         showImportFiles().delegate = self
-//        if let zonesJSON:[ZoneJSON] = DataImporter.createZonesFromFile("IPGCW02001_000_000_Zones List.json")! {
-//            for zoneJSON in zonesJSON {
-//                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-//                zone.id = zoneJSON.id
-//                zone.name = zoneJSON.name
-//                zone.zoneDescription = zoneJSON.description
-//                zone.level = zoneJSON.level
-//                zone.gateway = gateway!
-//                saveChanges()
-//            }
-//        }
-//        refreshZoneList()
     }
     
     func createZones(gateway:Gateway) {

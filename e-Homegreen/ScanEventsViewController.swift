@@ -163,6 +163,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 3
+        popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -181,6 +182,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 4
+        popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -241,7 +243,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
         }
     }
-    
+        
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)
     }

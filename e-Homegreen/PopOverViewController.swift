@@ -49,6 +49,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var devices:[Device] = []
     var gateways:[Gateway] = []
     var error:NSError? = nil
+    var filterGateway:Gateway?
     
     @IBOutlet weak var table: UITableView!
     
@@ -89,7 +90,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level != %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
@@ -108,7 +110,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
@@ -126,7 +129,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Category")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
+            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
@@ -153,18 +157,18 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
             updateDeviceList("Gateway")
-            tableList.append(TableList(name: "All", id: -1))
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Levels.rawValue {
             updateDeviceList("Level")
-            tableList.append(TableList(name: "All", id: -1))
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Zones.rawValue {
             updateDeviceList("Zone")
-            tableList.append(TableList(name: "All", id: -1))
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Categories.rawValue {
             updateDeviceList("Category")
-            tableList.append(TableList(name: "All", id: -1))
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Scenes.rawValue {
-            tableList.append(TableList(name: "All", id: -1))
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.ScanGateway.rawValue {
             tableList = chooseList
         } else if indexTab == PopOver.ScanTimerType.rawValue {

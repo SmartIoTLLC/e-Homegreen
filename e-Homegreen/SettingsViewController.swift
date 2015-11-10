@@ -118,6 +118,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings" || settingArray[indexPath.section] == "iBeacon settings"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.tableCellTitle.text = settingArray[indexPath.section]
+            cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             
             return cell
@@ -142,6 +143,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         } else if settingArray[indexPath.section] == "Open last screen" {
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
             cell.openLastScreen.tag = indexPath.section
+            cell.backgroundColor = UIColor.clearColor()
             cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
                 cell.openLastScreen.on = true
