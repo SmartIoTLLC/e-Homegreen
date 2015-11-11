@@ -160,7 +160,7 @@
                                         <constraint firstAttribute="height" constant="52" id="iMf-EV-exi"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="* / BCSP">
+                                    <state key="normal" title="* / CLEAR">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
