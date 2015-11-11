@@ -131,6 +131,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
         if security.gateway != nil {
             SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x1A), gateway: security.gateway!)
         }
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

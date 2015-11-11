@@ -157,6 +157,12 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
                 defaults.setObject(addressOne, forKey: "EHGSecurityAddressOne")
                 defaults.setObject(addressTwo, forKey: "EHGSecurityAddressTwo")
                 defaults.setObject(addressThree, forKey: "EHGSecurityAddressThree")
+                for security in securities! {
+                    security.addressOne = addressOne
+                    security.addressTwo = addressTwo
+                    security.addressThree = addressThree
+                }
+                saveChanges()
                 saveGatewayToSecurities()
             }
         }

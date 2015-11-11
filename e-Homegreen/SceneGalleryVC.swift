@@ -18,8 +18,8 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     var delegate : SceneGalleryDelegate?
     
     var galleryList:[String] = ["04 Climate Control - Air Freshener - 00",
-"04 Climate Control - HVAC - 01",
-"04 Climate Control - HVAC - 00", 
+"04 Climate Control - Air Freshener - 01",
+"04 Climate Control - HVAC - 00",
 "04 Climate Control - HVAC - 01", 
 "11 Lighting - Bulb - 00", 
 "11 Lighting - Bulb - 01", 
@@ -37,7 +37,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
 "12 Appliance - Bell - 00", 
 "12 Appliance - Bell - 01", 
 "12 Appliance - Big Bell - 00.png", 
-", 12 Appliance - Big Bell - 01", 
+"12 Appliance - Big Bell - 01",
 "12 Appliance - Fountain - 00", 
 "12 Appliance - Fountain - 01", 
 "12 Appliance - Hood - 00", 

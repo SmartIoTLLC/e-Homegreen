@@ -101,6 +101,10 @@ class SecurityViewController: CommonViewController {
     func refreshSecurity () {
         updateSecurityList()
         refreshSecurityAlarmStateAndSecurityMode()
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
+        lblAlarmState.text = "Alarm state: \(alarmState!)"
+        securityCollectionView.reloadData()
     }
     func refreshSecurityAlarmStateAndSecurityMode () {
         let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
@@ -314,9 +318,17 @@ extension SecurityViewController: UICollectionViewDataSource {
                     cell.securityImageView.image = UIImage(named: "day")
                 case "Vacation":
                     cell.securityImageView.image = UIImage(named: "vacation")
-                default:
-                    cell.securityImageView.image = UIImage(named: "inactivedisarm")
+                case "Disarm":
+                    cell.securityImageView.image = UIImage(named: "disarm")
+                default: break
                 }
+            }
+        }
+        if securities[indexPath.row].name == "Panic" {
+            if defaults.boolForKey("EHGSecurityPanic") {
+                cell.securityImageView.image = UIImage(named: "panic")
+            } else {
+                cell.securityImageView.image = UIImage(named: "inactivepanic")
             }
         }
         

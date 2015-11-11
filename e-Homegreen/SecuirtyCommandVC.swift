@@ -38,6 +38,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     }
     @IBAction func btnOk(sender: AnyObject) {
         let address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
+//        let address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
         switch security.name {
         case "Away":
             if security.gateway != nil {
@@ -72,6 +73,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
             }
         default: break
         }
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
