@@ -19,7 +19,7 @@ class CustomGradientButton: UIButton {
         path.addClip()
         path.lineWidth = 2
         
-        UIColor.lightGrayColor().setStroke()
+        UIColor.darkGrayColor().setStroke()
     
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor , UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]

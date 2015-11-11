@@ -19,6 +19,7 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var addOne: UITextField!
     @IBOutlet weak var addTwo: UITextField!
     @IBOutlet weak var addThree: UITextField!
+    @IBOutlet weak var btnChooseGateway: CustomGradientButton!
     var gateways:[Gateway]?
     var securities:[Security]?
     var popoverVC:PopOverViewController = PopOverViewController()
@@ -50,11 +51,13 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         
         defaults = NSUserDefaults.standardUserDefaults()
         
-        addOne.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressOne"))
-        addTwo.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressTwo"))
-        addThree.text = returnThreeCharactersForByte(defaults.integerForKey("EHGSecurityAddressThree"))
+        fetchSecurity()
+        addOne.text = returnThreeCharactersForByte(Int(securities![0].addressOne))
+        addTwo.text = returnThreeCharactersForByte(Int(securities![0].addressTwo))
+        addThree.text = returnThreeCharactersForByte(Int(securities![0].addressThree))
 
         transitioningDelegate = self
+        btnChooseGateway.setTitle(securities![0].gateway?.name , forState: UIControlState.Normal)
         
         
         // Do any additional setup after loading the view.
@@ -94,6 +97,8 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     var pickedGatewayName:String = ""
     func saveText(text: String, id: Int) {
         pickedGatewayName = text
+        btnChooseGateway.setTitle(text , forState: UIControlState.Normal)
+        fetchGateways()
     }
     
     func saveChanges() {

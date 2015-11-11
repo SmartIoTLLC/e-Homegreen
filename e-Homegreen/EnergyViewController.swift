@@ -138,7 +138,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             sumAmp += Float(item.current)
             sumPow += Float(item.current) * Float(item.voltage) * 0.01
         }
-        current.text = "\(sumAmp) A"
+        current.text = "\(sumAmp * 0.01) A"
         powerUsage.text = "\(sumPow) W"
     }
     

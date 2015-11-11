@@ -23,7 +23,6 @@ class SecurityViewController: CommonViewController {
     
     @IBOutlet weak var lblAlarmState: UILabel!
     
-    
     @IBOutlet weak var securityCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +46,6 @@ class SecurityViewController: CommonViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotification", object: nil)
         refreshSecurity()
         
-        //        defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
-        //        //        Idle, Trobule, Alert, alarm
-        //        defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
-        //        //        Disarm, Away, Night, Day, Vacation
-        //        defaults.setObject("No Panic", forKey: "EHGSecurityPanic")
-        //        //        No Panic, Panic
         let defaults = NSUserDefaults.standardUserDefaults()
         let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
         lblAlarmState.text = "Alarm state: \(alarmState!)"
@@ -80,6 +73,31 @@ class SecurityViewController: CommonViewController {
         }
         securityCollectionView.reloadData()
     }
+    
+    func reorganizeSecurityArray () {
+        var tempSecurities:[Security] = securities
+        for security in securities {
+            if security.name == "Away" {
+                tempSecurities[0] = security
+            }
+            if security.name == "Night" {
+                tempSecurities[1] = security
+            }
+            if security.name == "Day" {
+                tempSecurities[2] = security
+            }
+            if security.name == "Vacation" {
+                tempSecurities[3] = security
+            }
+            if security.name == "Disarm" {
+                tempSecurities[4] = security
+            }
+            if security.name == "Panic" {
+                tempSecurities[5] = security
+            }
+        }
+        securities = tempSecurities
+    }
     func refreshSecurity () {
         updateSecurityList()
         refreshSecurityAlarmStateAndSecurityMode()
@@ -105,21 +123,13 @@ class SecurityViewController: CommonViewController {
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
             securities = fetResults!
+            reorganizeSecurityArray()
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
     }
-    //    func testTestTest () {
-    //        let defaults = NSUserDefaults.standardUserDefaults()
-    //        let isPreloaded = defaults.boolForKey("isPreloaded")
-    //        defaults.
-    //        if !isPreloaded {
-    //            preloadData()
-    //            defaults.setBool(true, forKey: "isPreloaded")
-    //        }
-    //    }
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -182,62 +192,36 @@ class SecurityViewController: CommonViewController {
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-            //            }
         case "Night":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
-            //            }        
         case "Day":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
-            //            }
         case "Vacation":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-            //                SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
-            //            }
         case "Disarm":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-            //            }
         case "Panic":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
             }
-            //            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-            //            if let gateway = securities[0].gateway {
-            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-            //                SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
-            //            }
         default: break
         }
     }
@@ -380,42 +364,3 @@ class SecurityCollectionCell: UICollectionViewCell {
     
     
 }
-
-//    let array1 = ["Away", "Night", "Day", "Vacation", "Disarm","Panic"]
-//    let array2 = ["Interior Zones Security System will be activated after 30 secs from the time the residents exit the villa. Upon returning to the villa, the system can be deactivated in 30 secs.",
-//        "Interior Zones Security System will be activated from the first floor at night.",
-//        "Interior Zones Security System will be inactive except the heat sensors.",
-//        "Interior Zones Security System will be inactive except the heat sensors with vacation dial plan.",
-//        "",
-//        "Activating Alarm system in case of an emergency."]
-//    let array3 = [1, 0, 254]
-//    func test () {
-//        let saveDir = "/var/mobile/testtesttest/"
-//        let fileManager = NSFileManager.defaultManager()
-//        let attributes = NSMutableDictionary()
-//        let permission = NSNumber(long: 0755)
-//        attributes.setObject(permission, forKey: NSFilePosixPermissions)
-//        do {
-//            try fileManager.createDirectoryAtPath(saveDir, withIntermediateDirectories: true, attributes: [NSFilePosixPermissions:permission])
-//        }  catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            print("test")
-//        }
-//    }
-//    func test2 () {
-////        let saveDir = "/var/mobile/Documents/testtesttest"
-//        let saveDir = NSHomeDirectory().stringByAppendingString("/testtestetesttest/")
-//        print(saveDir)
-//        let fileManager = NSFileManager.defaultManager()
-//        let attributes = NSMutableDictionary()
-//        let permission = NSNumber(short: 0777)
-//        attributes.setObject(permission, forKey: NSFilePosixPermissions)
-//        do {
-//            try fileManager.createDirectoryAtPath(saveDir, withIntermediateDirectories: true, attributes: [NSFilePosixPermissions:permission] )
-//        }  catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            print("test2")
-//        }
-//    }

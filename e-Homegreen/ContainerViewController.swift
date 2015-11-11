@@ -62,6 +62,13 @@ class ContainerViewController: UIViewController {
         view.addSubview(centerNavigationController.view)
         addChildViewController(centerNavigationController)
         
+        if centerViewController.titleOfViewController.text == "Devices" {
+            centerViewController.btnRefreshDevices.enabled = true
+            centerViewController.btnRefreshDevices.hidden = false
+        } else {
+            centerViewController.btnRefreshDevices.enabled = false
+            centerViewController.btnRefreshDevices.hidden = true
+        }
         centerNavigationController.didMoveToParentViewController(self)
         
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
@@ -268,14 +275,16 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
             }else{
                 NSNotificationCenter.defaultCenter().postNotificationName("stopTimer", object: self, userInfo: nil)
             }
+            if menuItem.title == "Devices" {
+                centerViewControllerSecond.btnRefreshDevices.enabled = true
+                centerViewControllerSecond.btnRefreshDevices.hidden = false
+            } else {
+                centerViewControllerSecond.btnRefreshDevices.enabled = false
+                centerViewControllerSecond.btnRefreshDevices.hidden = true
+            }
             menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
             centerViewControllerSecond.Container.addSubview(menuItem.viewController!.view)
-//            menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
-//            menuItem.viewController!.view.hidden = false
             centerViewControllerSecond.titleOfViewController.text = menuItem.title
-//                    view.addSubview(centerNavigationController.view)
-//                    addChildViewController(centerNavigationController)
-//                    centerNavigationController.didMoveToParentViewController(self)
             
         }
         self.toggleLeftPanel()

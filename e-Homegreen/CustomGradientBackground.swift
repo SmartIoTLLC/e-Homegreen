@@ -34,7 +34,7 @@ class CustomGradientBackground: UIView {
             path.addClip()
             path.lineWidth = 2
             
-            UIColor.lightGrayColor().setStroke()
+            UIColor.darkGrayColor().setStroke()
         }
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorOne , colorTwo]

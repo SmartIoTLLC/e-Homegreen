@@ -254,10 +254,10 @@ extension ConnectionsViewController: UITableViewDataSource {
                 cell.add3.layer.borderWidth = 0.5
                 cell.buttonGatewayScan.layer.borderWidth = 0.5
             }
-            cell.add1.layer.borderColor = UIColor.whiteColor().CGColor
-            cell.add2.layer.borderColor = UIColor.whiteColor().CGColor
-            cell.add3.layer.borderColor = UIColor.whiteColor().CGColor
-            cell.buttonGatewayScan.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.add1.layer.borderColor = UIColor.darkGrayColor().CGColor
+            cell.add2.layer.borderColor = UIColor.darkGrayColor().CGColor
+            cell.add3.layer.borderColor = UIColor.darkGrayColor().CGColor
+            cell.buttonGatewayScan.layer.borderColor = UIColor.darkGrayColor().CGColor
             cell.buttonGatewayScan.layer.cornerRadius = 5
             cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.buttonGatewayScan.tag = indexPath.section
@@ -372,7 +372,7 @@ class GatewayCell: UITableViewCell {
         path.addClip()
         path.lineWidth = 2
         
-        UIColor.lightGrayColor().setStroke()
+        UIColor.darkGrayColor().setStroke()
         
         
         

@@ -14,7 +14,7 @@ import CoreData
     optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String)
 }
 
-class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     //    var table:UITableView = UITableView()
     //
@@ -37,7 +37,7 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
+        self.delegate = self
         self.pagingEnabled = true
         self.bounces = false
         self.showsVerticalScrollIndicator = false
@@ -182,14 +182,20 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
             categoryButton.enabled = true
         }
     }
-    
+    func scrollViewDidScrollToTop(scrollView: UIScrollView) {
+        print("111")
+    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        print(scrollView.frame)
+        print(self.locationButton.frame)
+    }
     var popoverVC:PopOverViewController = PopOverViewController()
     func goFilter(sender:UIButton) {
         let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
         let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
         let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
         customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category)
-        self.setContentOffset(CGPointMake(0, self.parentViewController!.view.frame.size.height - 2), animated: false)
+        self.setContentOffset(CGPointMake(0, self.parentViewController!.view.frame.size.height - 2), animated: true)
     }
     var choosedGateway:Gateway?
     func returnGatewayForName(gatewayName:String) -> Gateway? {
@@ -352,17 +358,23 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         
         if point.y < self.frame.size.height + 40 && point.y > self.frame.size.height{
             if point.x < frame.size.width/2 - 30 || point.x > frame.size.width/2 + 30 {
+                print("111")
                 return nil
             }
             
         }
-        
         if point.y > self.frame.size.height + 30 {
-            //            if point.x < 100 || point.x > 150 {
+            print("222")
             return nil
-            //            }
             
         }
+//        if self.frame   (0, self.parentViewController!.view.frame.size.height - 2)
+        print("333")
+        print(point)
+        
+        let result = super.hitTest(point, withEvent: event)
+        print(result?.frame)
+        print(self.frame)
         
         return super.hitTest(point, withEvent: event)
     }

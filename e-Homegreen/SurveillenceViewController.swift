@@ -132,14 +132,13 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         }
         
         if surveillance[indexPath.row].lastDate != nil {
-            let date = "\(surveillance[indexPath.row].lastDate!)"
-            cell.lblTime.text = date.removeCharsFromEnd(5)
-        }else{
+            let formatter = NSDateFormatter()
+            formatter.timeZone = NSTimeZone.localTimeZone()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            cell.lblTime.text = formatter.stringFromDate(surveillance[indexPath.row].lastDate!)
+        } else {
             cell.lblTime.text = ""
         }
-        
-        
-        
         cell.layer.cornerRadius = 5
         
         return cell
@@ -156,7 +155,6 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
         showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
-        
     }
     
     func fetchSurveillance () {

@@ -16,6 +16,10 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController {
     
+    @IBAction func btnRefreshDevices(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName("btnRefreshDevicesClicked", object: self, userInfo: nil)
+    }
+    @IBOutlet weak var btnRefreshDevices: UIButton!
     @IBOutlet weak var titleOfViewController: UILabel!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var Container: UIView!

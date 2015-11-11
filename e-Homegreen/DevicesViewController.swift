@@ -37,6 +37,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: "btnRefreshDevicesClicked", object: nil)
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -719,6 +720,20 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         saveChanges()
     }
+    func refreshVisibleDevicesInScrollView () {
+        if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+            for indexPath in indexPaths {
+                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+                    if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+                        let minutes = (hourValue * 60 + minuteValue) * 60
+                        updateDeviceStatus (indexPathRow: indexPath.row)
+                    }
+                } else {
+                    updateDeviceStatus (indexPathRow: indexPath.row)
+                }
+            }
+        }
+    }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         print("scrollViewDidEndDragging willDecelerate \(decelerate)")
         if !decelerate {
@@ -812,7 +827,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current)) A"
+            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
             cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.labelRunningTime.text = devices[indexPath.row].runningTime
@@ -884,7 +899,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.curtainImage.userInteractionEnabled = true
             
             cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current)) A"
+            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
             cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
@@ -944,7 +959,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current)) A"
+            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
             cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
             cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
