@@ -45,6 +45,7 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         locationSearchText = LocalSearchParametar.getLocalParametar("Events")
         updateEventsList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: "refreshEventListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -97,6 +98,10 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         }
         eventCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+    }
+    
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -201,6 +206,8 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
         var address:[UInt8] = []
         if events[indexPath.row].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if events[indexPath.row].isLocalcast.boolValue {
+            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), UInt8(Int(events[indexPath.row].address))]
         }

@@ -19,6 +19,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnType: UIButton!
@@ -76,7 +77,22 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         devAddressOne.text = "\(gateway!.addressOne)"
         devAddressTwo.text = "\(gateway!.addressTwo)"
         
+        broadcastSwitch.tag = 100
+        broadcastSwitch.on = false
+        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.on = false
+        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            localcastSwitch.on = false
+        } else if sender.tag == 200 {
+            broadcastSwitch.on = false
+        }
     }
     
     func refreshTimerList() {
@@ -154,7 +170,8 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                 timer.timerName = timerName
                 timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
                 timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
-                timer.isBroadcast = NSNumber(bool: false)
+                timer.isBroadcast = broadcastSwitch.on
+                timer.isLocalcast = localcastSwitch.on
                 timer.address = address
                 timer.type = type
                 if btnZone.titleLabel?.text != "--" {
@@ -296,6 +313,7 @@ extension ScanTimerViewController: UITableViewDataSource {
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
         btnType.setTitle("\(timers[indexPath.row].type)", forState: UIControlState.Normal)
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
+        localcastSwitch.on = timers[indexPath.row].isLocalcast.boolValue
         if let _ = timers[indexPath.row].timeZone {
             btnZone.titleLabel?.text = "\(timers[indexPath.row].timeZone)"
         } else {

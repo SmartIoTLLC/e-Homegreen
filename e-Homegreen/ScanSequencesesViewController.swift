@@ -19,6 +19,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var editCycle: UITextField!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
@@ -78,13 +79,26 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
+        broadcastSwitch.tag = 100
+        broadcastSwitch.on = false
+        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.on = false
+        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
         devAddressOne.text = "\(gateway!.addressOne)"
         devAddressTwo.text = "\(gateway!.addressTwo)"
         
         // Do any additional setup after loading the view.
     }
     
-    
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            localcastSwitch.on = false
+        } else if sender.tag == 200 {
+            broadcastSwitch.on = false
+        }
+    }
     
     func refreshSequenceList() {
         updateSequenceList()
@@ -217,7 +231,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                 sequence.address = address
                 sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                sequence.isBroadcast = NSNumber(bool: broadcastSwitch.on)
+                sequence.isBroadcast = broadcastSwitch.on
+                sequence.isLocalcast = localcastSwitch.on
                 sequence.sequenceCycles = cycles
                 if btnZone.titleLabel?.text != "--" {
                     sequence.sequenceZone = btnZone.titleLabel!.text!
@@ -282,6 +297,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
         editCycle.text = "\(sequences[indexPath.row].sequenceCycles)"
         broadcastSwitch.on = sequences[indexPath.row].isBroadcast.boolValue
+        localcastSwitch.on = sequences[indexPath.row].isLocalcast.boolValue
         if let _ = sequences[indexPath.row].sequenceZone {
             btnZone.titleLabel?.text = "\(sequences[indexPath.row].sequenceZone)"
         } else {

@@ -19,6 +19,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     
@@ -72,13 +73,26 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
+        broadcastSwitch.tag = 100
+        broadcastSwitch.on = false
+        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.on = false
+        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
         devAddressOne.text = "\(gateway!.addressOne)"
         devAddressTwo.text = "\(gateway!.addressTwo)"
         
         // Do any additional setup after loading the view.
     }
     
-    
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            localcastSwitch.on = false
+        } else if sender.tag == 200 {
+            broadcastSwitch.on = false
+        }
+    }
     
     func refreshSceneList() {
         updateSceneList()
@@ -218,7 +232,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                 scene.sceneName = sceneName
                 scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                scene.isBroadcast = NSNumber(bool: false)
+                scene.isBroadcast = broadcastSwitch.on
+                scene.isLocalcast = localcastSwitch.on
                 if btnZone.titleLabel?.text != "--" {
                     scene.sceneZone = btnZone.titleLabel!.text!
                 }
@@ -287,6 +302,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         nameEdit.text = "\(scenes[indexPath.row].sceneName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
         broadcastSwitch.on = scenes[indexPath.row].isBroadcast.boolValue
+        localcastSwitch.on = scenes[indexPath.row].isLocalcast.boolValue
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             imageSceneOne.image = sceneImage
         }

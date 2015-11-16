@@ -16,6 +16,7 @@ extension Scene {
 
     @NSManaged var address: NSNumber
     @NSManaged var isBroadcast: NSNumber
+    @NSManaged var isLocalcast: NSNumber
     @NSManaged var sceneId: NSNumber
     @NSManaged var sceneImageOne: NSData
     @NSManaged var sceneImageTwo: NSData

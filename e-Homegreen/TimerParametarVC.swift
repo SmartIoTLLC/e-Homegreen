@@ -22,6 +22,8 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var isBroadcast: UISwitch!
+    @IBOutlet weak var isLocalcast: UISwitch!
+    
     var isPresenting: Bool = true
     
     init(point:CGPoint){
@@ -40,18 +42,38 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        isBroadcast.tag = 100
         isBroadcast.on = timer!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
+        isLocalcast.on = timer!.isLocalcast.boolValue
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
     func changeValue (sender:UISwitch){
-        if sender.on == true {
-            timer?.isBroadcast = true
-        } else {
-            timer?.isBroadcast = false
+        if sender.tag == 100 {
+            if sender.on == true {
+                timer?.isBroadcast = true
+                timer?.isLocalcast = false
+                isLocalcast.on = false
+            } else {
+                timer?.isBroadcast = false
+                timer?.isLocalcast = false
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                timer?.isLocalcast = true
+                timer?.isBroadcast = false
+                isBroadcast.on = false
+            } else {
+                timer?.isLocalcast = false
+                timer?.isBroadcast = false
+                isBroadcast.on = false
+            }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListtNotification", object: self, userInfo: nil)

@@ -16,6 +16,7 @@ extension Sequence {
 
     @NSManaged var address: NSNumber
     @NSManaged var isBroadcast: NSNumber
+    @NSManaged var isLocalcast: NSNumber
     @NSManaged var sequenceCycles: NSNumber
     @NSManaged var sequenceId: NSNumber
     @NSManaged var sequenceImageOne: NSData

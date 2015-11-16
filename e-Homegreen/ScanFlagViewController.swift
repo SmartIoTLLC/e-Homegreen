@@ -19,6 +19,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     
@@ -74,10 +75,25 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         devAddressOne.text = "\(gateway!.addressOne)"
         devAddressTwo.text = "\(gateway!.addressTwo)"
-
+        
+        broadcastSwitch.tag = 100
+        broadcastSwitch.on = false
+        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.on = false
+        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
         // Do any additional setup after loading the view.
     }
-
+    
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            localcastSwitch.on = false
+        } else if sender.tag == 200 {
+            broadcastSwitch.on = false
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -205,7 +221,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                 flag.flagName = flagName
                 flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                flag.isBroadcast = NSNumber(bool: false)
+                flag.isBroadcast = broadcastSwitch.on
+                flag.isLocalcast = localcastSwitch.on
                 flag.address = address
                 if btnZone.titleLabel?.text != "--" {
                     flag.flagZone = btnZone.titleLabel!.text!
@@ -265,6 +282,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         nameEdit.text = "\(flags[indexPath.row].flagName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
         broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
+        localcastSwitch.on = flags[indexPath.row].isLocalcast.boolValue
         if let _ = flags[indexPath.row].flagZone {
             btnZone.titleLabel?.text = "\(flags[indexPath.row].flagZone)"
         } else {

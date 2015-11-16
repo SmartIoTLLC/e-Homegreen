@@ -97,8 +97,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     var fromAddress:Int?
     var toAddress:Int?
     
-    
-    
     func checkIfGatewayDidGetDevice (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
             updateDeviceList()
@@ -166,10 +164,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
-        let number:Int = Int(address[2])
-        pbFD?.lblHowMuchOf.text = "\(number)/\(toAddress!)"
-        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(number)/Float(toAddress!)*100)
-        pbFD?.progressView.progress = Float(number)/Float(toAddress!)
+        var number:Int = Int(address[2])
+        number = number - fromAddress! + 1
+        let howMuchOf = toAddress!-fromAddress!+1
+        pbFD?.lblHowMuchOf.text = "\(number)/\(howMuchOf)"
+        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(number)/Float(howMuchOf)*100)
+        pbFD?.progressView.progress = Float(number)/Float(howMuchOf)
     }
     
     func setProgressBarParametarsForFindingNames (var index:Int) {
@@ -214,7 +214,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         if let deviceIndex = timer.userInfo as? Int {
             print("HELLO 2 \(deviceIndex)")
             print("HELLO 2 \(index)")
-            if index != 0 || deviceIndex < index {
+            if (index != 0 || deviceIndex < index) && deviceIndex <= toAddress {
+//            if index != 0 || deviceIndex < toAddress {
                 timesRepeatedCounter += 1
                 if timesRepeatedCounter < 4 {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
@@ -233,12 +234,16 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     }
                 }
             } else {
-                print("MATICUUU KADA CEMO DA KRENEMO KUCI!")
                 if index == 0 {
                     timesRepeatedCounter += 1
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
                     sendCommandForFindingName(index: 0)
                 } else {
+                    //   Najverovatnije je index veci od toAddress
+                    index = 0
+                    timesRepeatedCounter = 0
+                    deviceNameTimer?.invalidate()
+                    pbFN?.dissmissProgressBar()
                     print("VELIKI PROBLEM ANGAZUJ SVE LJDUE IZ FIRME I OKUPI VELIKI BRAIN TRUST, SNAGU I NADU NASE FIRME!")
                 }
             }
@@ -355,7 +360,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \((fromAddress!-toAddress!)+1)")
 //                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
                         self.presentViewController(pbFN!, animated: true, completion: nil)
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: 0, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
                         sendCommandForFindingName(index: index)
                     }
                 }

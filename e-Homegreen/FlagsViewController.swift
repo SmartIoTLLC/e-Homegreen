@@ -46,6 +46,7 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
         refreshFlagList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshFlagList", name: "refreshFlagListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -98,6 +99,10 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         }
         flagsCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+    }
+    
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -202,6 +207,8 @@ extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegat
             var address:[UInt8] = []
             if flags[indexPath.row].isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
+            } else if flags[indexPath.row].isLocalcast.boolValue {
+                address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), 0xFF]
             } else {
                 address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), UInt8(Int(flags[indexPath.row].address))]
             }
@@ -238,7 +245,7 @@ extension FlagsViewController: UICollectionViewDataSource {
             let location = gestureRecognizer.locationInView(flagsCollectionView)
             if let index = flagsCollectionView.indexPathForItemAtPoint(location){
                 let cell = flagsCollectionView.cellForItemAtIndexPath(index)
-//                showFlagParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - flagsCollectionView.contentOffset.y), timer: flags[tag])
+                showFlagParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - flagsCollectionView.contentOffset.y), flag: flags[tag])
             }
         }
     }

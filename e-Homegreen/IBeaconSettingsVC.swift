@@ -39,7 +39,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+//    2B162531-FD29-4758-85B4-555A6DFF00FF
     func endEditingNow(){
         editMajor.resignFirstResponder()
         editMinor.resignFirstResponder()
@@ -60,7 +60,6 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
@@ -122,12 +121,33 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             editMajor.text = "\(iBeacon!.major!)"
             editMinor.text = "\(iBeacon!.minor!)"
         }
+        editUUID.text = "2B162531-FD29-4758-85B4-555A6DFF00FF"
+        editUUID.tag = 2
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
 
         // Do any additional setup after loading the view.
     }
-    
+//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        print(textField.tag)
+//        if textField.tag == 2 {
+//            if string.characters.count == 0 {
+//                return true
+//            }
+//            let expression:String = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+//            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+//            let regex = try! NSRegularExpression(pattern: expression, options: .CaseInsensitive)
+//            print(NSMakeRange(0, newString.characters.count))
+//            let matchCount = regex.numberOfMatchesInString(newString,options: NSMatchingOptions(),range: NSMakeRange(0, newString.characters.count))
+//            regex.
+//            print(regex.numberOfMatchesInString("2B162531-FD29-4758-85B4-555A6DFF00FF",options: NSMatchingOptions(),range: NSMakeRange(0, "2B162531-FD29-4758-85B4-555A6DFF00FF".characters.count)))
+//            if matchCount == 0 {
+//                return false
+//            }
+//        }
+//        
+//        return true
+//    }
     func handleTap(gesture:UITapGestureRecognizer){
         self.dismissViewControllerAnimated(true, completion: nil)
     }

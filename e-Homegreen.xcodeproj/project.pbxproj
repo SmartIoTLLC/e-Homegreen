@@ -1120,7 +1120,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = E2X3LN769S;
+						DevelopmentTeam = 2JR589G8SK;
 					};
 					73E206BD1B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -1529,9 +1529,9 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.universal";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7067b2e2-0cfc-4273-aae0-d7600280bad5";
+				PROVISIONING_PROFILE = "3bd46259-c92b-401b-91c0-d44e1ea083b2";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 			};
@@ -1542,7 +1542,7 @@
 			baseConfigurationReference = 170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1552,9 +1552,9 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.universal";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7067b2e2-0cfc-4273-aae0-d7600280bad5";
+				PROVISIONING_PROFILE = "3bd46259-c92b-401b-91c0-d44e1ea083b2";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 			};

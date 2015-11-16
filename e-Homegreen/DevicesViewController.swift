@@ -38,6 +38,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         //        commonConstruct()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: "btnRefreshDevicesClicked", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -60,6 +61,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         updateDeviceList()
         //        fetchDevicesInBackground()
+    }
+    
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
     }
     
     var appDel:AppDelegate!
@@ -100,9 +105,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         request.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
+        let predicateNull = NSPredicate(format: "categoryId != 0")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         
         if locationSearch != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
@@ -143,9 +149,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
+        let predicateNull = NSPredicate(format: "categoryId != 0")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         if locationSearch != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
             predicateArray.append(locationPredicate)
@@ -168,6 +175,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
             devices = fetResults!
+            for device in devices {
+                print("TSDVM \(device.categoryId)")
+            }
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
@@ -176,17 +186,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     override func viewDidAppear(animated: Bool) {
-        if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-            for indexPath in indexPaths {
-                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                    if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(60)) >= 0 {
-                        updateDeviceStatus (indexPathRow: indexPath.row)
-                    }
-                } else {
-                    updateDeviceStatus (indexPathRow: indexPath.row)
-                }
-            }
-        }
+        refreshVisibleDevicesInScrollView()
     }
     
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
@@ -444,6 +444,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
             deviceCollectionView.reloadData()
         }
+        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     
@@ -723,14 +724,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     func refreshVisibleDevicesInScrollView () {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
             for indexPath in indexPaths {
-                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                    if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
-                        let minutes = (hourValue * 60 + minuteValue) * 60
-                        updateDeviceStatus (indexPathRow: indexPath.row)
-                    }
-                } else {
-                    updateDeviceStatus (indexPathRow: indexPath.row)
-                }
+                updateDeviceStatus (indexPathRow: indexPath.row)
             }
         }
     }
@@ -941,11 +935,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.name.text = devices[indexPath.row].name
             cell.name.tag = indexPath.row
             if devices[indexPath.row].currentValue == 255 {
-                cell.image.image = UIImage(named: "applianceon")
+                cell.image.image = UIImage(named: "12 Appliance - Power - 01")
                 cell.onOffLabel.text = "ON"
             }
             if devices[indexPath.row].currentValue == 0{
-                cell.image.image = UIImage(named: "applianceoff")
+                cell.image.image = UIImage(named: "12 Appliance - Power - 00")
                 cell.onOffLabel.text = "OFF"
             }
             cell.onOffLabel.tag = indexPath.row

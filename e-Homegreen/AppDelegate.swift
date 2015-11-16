@@ -64,6 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //   Configuring data for first time
         let defaults = NSUserDefaults.standardUserDefaults()
+        
+        startIBeacon()
+        
         let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
             preloadData()
@@ -362,12 +365,40 @@ extension AppDelegate: CLLocationManagerDelegate {
         print("Location manager failed: \(error.description)")
     }
     
+    func returnZoneWithIBeacon (iBeacon:IBeacon) -> Zone? {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicateOne = NSPredicate(format: "iBeacon == %@", iBeacon)
+        fetchRequest.predicate = predicateOne
+        do {
+            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            return fetResults![0]
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+    }
+    
     func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
         
         for beacon in beacons {
             for item in iBeacons {
                 if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercaseString == beacon.proximityUUID.UUIDString){
                     print(item.name)
+                    let zone = returnZoneWithIBeacon(item)
+                    if zone != nil {
+                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
+                        for filter in filterArray {
+                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
+                            if zone!.level == 0 {
+                                filterParametars[1] = "\(zone!.id)"
+                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                            } else {
+                                filterParametars[2] = "\(zone!.id)"
+                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                            }
+                            NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+                        }
+                    }
                 }
             }
         }

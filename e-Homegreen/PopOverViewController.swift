@@ -143,6 +143,22 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return
         }
+        
+        if whatToFetch == "IBeacon" {
+            let fetchRequest = NSFetchRequest(entityName: "IBeacon")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [IBeacon]
+                for item in results {
+                    tableList.append(TableList(name: item.name!, id: -1))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        
     }
     
     enum PopOver: Int {
@@ -153,6 +169,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case Scenes = 5
         case ScanGateway = 6
         case ScanTimerType = 7
+        case iBeacon = 8
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -173,6 +190,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList = chooseList
         } else if indexTab == PopOver.ScanTimerType.rawValue {
             tableList = chooseTimerTypeList
+        } else if indexTab == PopOver.iBeacon.rawValue {
+            updateDeviceList("IBeacon")
         }
     }
     

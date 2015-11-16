@@ -22,6 +22,8 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var isBroadcast: UISwitch!
+    @IBOutlet weak var isLocalcast: UISwitch!
+    
     var isPresenting: Bool = true
     
     init(point:CGPoint){
@@ -40,18 +42,38 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        isBroadcast.tag = 100
         isBroadcast.on = scene!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
+        isLocalcast.on = scene!.isLocalcast.boolValue
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
     func changeValue (sender:UISwitch){
-        if sender.on == true {
-            scene?.isBroadcast = true
-        } else {
-            scene?.isBroadcast = false
+        if sender.tag == 100 {
+            if sender.on == true {
+                scene?.isBroadcast = true
+                scene?.isLocalcast = false
+                isLocalcast.on = false
+            } else {
+                scene?.isBroadcast = false
+                scene?.isLocalcast = false
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                scene?.isLocalcast = true
+                scene?.isBroadcast = false
+                isBroadcast.on = false
+            } else {
+                scene?.isLocalcast = false
+                scene?.isBroadcast = false
+                isBroadcast.on = false
+            }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)

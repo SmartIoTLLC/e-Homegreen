@@ -585,7 +585,7 @@ class IncomingHandler: NSObject {
             if byteArray[7] == 0x02 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setValue("Disarm", forKey: "EHGSecuritySeczurityMode")
+                    defaults.setValue("Disarm", forKey: "EHGSecuritySecurityMode")
                 case 0x01:
                     defaults.setValue("Away", forKey: "EHGSecuritySecurityMode")
                 case 0x02:
@@ -619,6 +619,7 @@ class IncomingHandler: NSObject {
                 default: break
                 }
             }
+            print("EHGSecuritySeczurityMode - \(defaults.valueForKey("EHGSecuritySecurityMode")) *** EHGSecurityAlarmState - \(defaults.valueForKey("EHGSecurityAlarmState")) *** EHGSecurityPanic - \(defaults.boolForKey("EHGSecurityPanic"))")
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
         }
     }

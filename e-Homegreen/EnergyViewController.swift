@@ -40,6 +40,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
@@ -82,6 +83,10 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
+    }
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -101,9 +106,10 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
+        let predicateNull = NSPredicate(format: "categoryId != 0")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         //        fetchRequest.predicate = predicate
         
         if locationSearch != "All" {

@@ -96,6 +96,10 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
+    }
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -207,6 +211,8 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
         var address:[UInt8] = []
         if sequences[indexPath.row].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if sequences[indexPath.row].isLocalcast.boolValue {
+            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
         }

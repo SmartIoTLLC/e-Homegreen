@@ -16,6 +16,7 @@ extension Timer {
 
     @NSManaged var address: NSNumber
     @NSManaged var isBroadcast: NSNumber
+    @NSManaged var isLocalcast: NSNumber
     @NSManaged var timerId: NSNumber
     @NSManaged var timerImageOne: NSData
     @NSManaged var timerImageTwo: NSData

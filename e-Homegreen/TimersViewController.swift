@@ -45,6 +45,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
         refreshTimerList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -93,6 +94,11 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         timersCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
+    
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
+    }
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -196,6 +202,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
@@ -207,6 +215,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
@@ -218,6 +228,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
@@ -229,6 +241,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }

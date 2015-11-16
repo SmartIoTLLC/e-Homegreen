@@ -32,6 +32,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     @IBOutlet weak var broadcastSwitch: UISwitch!
     
     
+    
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
     var locationSearchText = ["", "", "", ""]
@@ -191,6 +192,10 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     
+    func refreshLocalParametars () {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
+    }
+    
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
@@ -223,6 +228,8 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
         var address:[UInt8] = []
         if scenes[indexPath.row].isBroadcast.boolValue {
             address = [0xFF, 0xFF, 0xFF]
+        } else if scenes[indexPath.row].isLocalcast.boolValue {
+            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), 0xFF]
         } else {
             address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
         }

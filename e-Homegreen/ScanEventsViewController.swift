@@ -19,6 +19,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     @IBOutlet weak var devAddressTwo: UITextField!
     @IBOutlet weak var devAddressThree: UITextField!
     @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     
@@ -75,7 +76,23 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         devAddressOne.text = "\(gateway!.addressOne)"
         devAddressTwo.text = "\(gateway!.addressTwo)"
         
+        
+        broadcastSwitch.tag = 100
+        broadcastSwitch.on = false
+        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.on = false
+        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            localcastSwitch.on = false
+        } else if sender.tag == 200 {
+            broadcastSwitch.on = false
+        }
     }
     
     func refreshEventList() {
@@ -99,12 +116,6 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
-//        if let results = fetResults {
-//            events = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     
     func saveChanges() {
@@ -216,7 +227,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                 event.eventName = sceneName
                 event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
                 event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                event.isBroadcast = NSNumber(bool: false)
+                event.isBroadcast = broadcastSwitch.on
+                event.isLocalcast = localcastSwitch.on
                 if btnZone.titleLabel?.text != "--" {
                     event.eventZone = btnZone.titleLabel!.text!
                 }
@@ -275,6 +287,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         nameEdit.text = "\(events[indexPath.row].eventName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
         broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
+        localcastSwitch.on = events[indexPath.row].isLocalcast.boolValue
         if let _ = events[indexPath.row].eventZone {
             btnZone.titleLabel?.text = "\(events[indexPath.row].eventZone)"
         } else {

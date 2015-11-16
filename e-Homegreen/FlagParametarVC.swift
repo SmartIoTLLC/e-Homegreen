@@ -21,6 +21,8 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var isBroadcast: UISwitch!
+    @IBOutlet weak var isLocalcast: UISwitch!
+    
     var isPresenting: Bool = true
     
     init(point:CGPoint){
@@ -39,18 +41,38 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        isBroadcast.tag = 100
         isBroadcast.on = flag!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
+        isLocalcast.on = flag!.isLocalcast.boolValue
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
     func changeValue (sender:UISwitch){
-        if sender.on == true {
-            flag?.isBroadcast = true
-        } else {
-            flag?.isBroadcast = false
+        if sender.tag == 100 {
+            if sender.on == true {
+                flag?.isBroadcast = true
+                flag?.isLocalcast = false
+                isLocalcast.on = false
+            } else {
+                flag?.isBroadcast = false
+                flag?.isLocalcast = false
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                flag?.isLocalcast = true
+                flag?.isBroadcast = false
+                isBroadcast.on = false
+            } else {
+                flag?.isLocalcast = false
+                flag?.isBroadcast = false
+                isBroadcast.on = false
+            }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListtNotification", object: self, userInfo: nil)
@@ -160,7 +182,7 @@ extension FlagParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showTimerParametar(point:CGPoint, flag:Flag) {
+    func showFlagParametar(point:CGPoint, flag:Flag) {
         let fp = FlagParametarVC(point: point)
         fp.flag = flag
         self.view.window?.rootViewController?.presentViewController(fp, animated: true, completion: nil)

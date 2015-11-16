@@ -9,12 +9,13 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
     var zones:[Zone] = []
     var gateway:Gateway?
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var importZoneTableView: UITableView!
     override func viewDidLoad() {
@@ -32,6 +33,10 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
     }
     
     func backURL(strText: String) {
@@ -145,8 +150,51 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate {
         saveChanges()
         importZoneTableView.reloadData()
     }
-
+    
+    func chooseGateway (gestureRecognizer:UIGestureRecognizer) {
+        if let tag = gestureRecognizer.view?.tag {
+            choosedIndex = tag
+            let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+            popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+            popoverVC.modalPresentationStyle = .Popover
+            popoverVC.preferredContentSize = CGSizeMake(300, 200)
+            popoverVC.delegate = self
+            popoverVC.indexTab = 8
+            popoverVC.filterGateway = zones[tag].gateway
+            if let popoverController = popoverVC.popoverPresentationController {
+                popoverController.delegate = self
+                popoverController.permittedArrowDirections = .Any
+                popoverController.sourceView = gestureRecognizer.view! as UIView
+                popoverController.sourceRect = gestureRecognizer.view!.bounds
+                popoverController.backgroundColor = UIColor.lightGrayColor()
+                self.parentViewController!.presentViewController(popoverVC, animated: true, completion: nil)
+            }
+        }
+    }
+    var choosedIndex = -1
+    func saveText(text: String, id: Int) {
+        if choosedIndex != -1 {
+            beacon = returniBeaconWithName(text)
+            zones[choosedIndex].iBeacon = beacon
+            saveChanges()
+            importZoneTableView.reloadData()
+        }
+    }
+    var beacon:IBeacon?
+    func returniBeaconWithName(name:String) -> IBeacon? {
+        let fetchRequest = NSFetchRequest(entityName: "IBeacon")
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [IBeacon]
+            return results[0]
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return nil
+    }
 }
+
 extension ImportZoneViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -154,8 +202,8 @@ extension ImportZoneViewController: UITableViewDelegate {
     }
     
 }
+
 extension ImportZoneViewController: UITableViewDataSource {
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
@@ -165,6 +213,12 @@ extension ImportZoneViewController: UITableViewDataSource {
             cell.switchVisible.on = zones[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.btnZonePicker.setTitle("Choose iBeacon", forState: UIControlState.Normal)
+            if let iBeaconName = zones[indexPath.row].iBeacon?.name {
+                cell.btnZonePicker.setTitle(iBeaconName, forState: UIControlState.Normal)
+            }
+            cell.btnZonePicker.tag = indexPath.row
+            cell.btnZonePicker.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "chooseGateway:"))
             return cell
         }
         
@@ -187,5 +241,6 @@ class ImportZoneTableViewCell: UITableViewCell {
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var switchEnable: UISwitch!
     @IBOutlet weak var switchVisible: UISwitch!
+    @IBOutlet weak var btnZonePicker: CustomGradientButton!
     
 }

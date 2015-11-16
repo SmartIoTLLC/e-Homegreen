@@ -14,7 +14,7 @@ import CoreData
     optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String)
 }
 
-class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
+class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     //    var table:UITableView = UITableView()
     //
@@ -81,10 +81,10 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         if level != "All" {
             levelText = "\(returnZoneWithId(Int(level)!))"
         }
-        if level != "All" {
+        if zone != "All" {
             zoneText = "\(returnZoneWithId(Int(level)!))"
         }
-        if level != "All" {
+        if category != "All" {
             categoryText = "\(returnCategoryWithId(Int(category)!))"
         }
         let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
@@ -182,12 +182,14 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
             categoryButton.enabled = true
         }
     }
-    func scrollViewDidScrollToTop(scrollView: UIScrollView) {
-        print("111")
-    }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        print(scrollView.frame)
-        print(self.locationButton.frame)
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        print("Ovo je mozda odgovor na sve sto sam mislio da je opproblem: \(scrollView.contentOffset)")
+        if scrollView.contentOffset.y > 0.0 {
+            let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
+            let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
+            let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
+            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category)
+        }
     }
     var popoverVC:PopOverViewController = PopOverViewController()
     func goFilter(sender:UIButton) {
@@ -358,24 +360,14 @@ class PullDownView: UIScrollView,PopOverIndexDelegate, UIPopoverPresentationCont
         
         if point.y < self.frame.size.height + 40 && point.y > self.frame.size.height{
             if point.x < frame.size.width/2 - 30 || point.x > frame.size.width/2 + 30 {
-                print("111")
                 return nil
             }
             
         }
         if point.y > self.frame.size.height + 30 {
-            print("222")
             return nil
             
         }
-//        if self.frame   (0, self.parentViewController!.view.frame.size.height - 2)
-        print("333")
-        print(point)
-        
-        let result = super.hitTest(point, withEvent: event)
-        print(result?.frame)
-        print(self.frame)
-        
         return super.hitTest(point, withEvent: event)
     }
     /*

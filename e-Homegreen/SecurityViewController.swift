@@ -43,13 +43,14 @@ class SecurityViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotificiation", object: nil)
         refreshSecurity()
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
         lblAlarmState.text = "Alarm state: \(alarmState!)"
         
+        refreshSecurityAlarmStateAndSecurityMode()
         
     }
     
@@ -100,7 +101,6 @@ class SecurityViewController: CommonViewController {
     }
     func refreshSecurity () {
         updateSecurityList()
-        refreshSecurityAlarmStateAndSecurityMode()
         let defaults = NSUserDefaults.standardUserDefaults()
         let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
         lblAlarmState.text = "Alarm state: \(alarmState!)"
@@ -254,7 +254,6 @@ extension SecurityViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
-        //        let gradient:CAGradientLayer = CAGradientLayer()
         cell.securityTitle.text = "\(securities[indexPath.row].name)"
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
