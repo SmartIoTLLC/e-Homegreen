@@ -22,10 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func removeItem(item: IBeacon){
-        stopMonitoringItem(item)
+    func stopiBeacons() {
+        for item in iBeacons {
+            stopMonitoringItem(item)
+        }
     }
-    
     func startMonitoringItem(item: IBeacon) {
         let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
         locationManager.startMonitoringForRegion(beaconRegion)
@@ -37,18 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.stopMonitoringForRegion(beaconRegion)
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
-    
-    func startIBeacon(){
-        fetchIBeacons()
-        loadItems()
-    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
-        
-        startIBeacon()
         
         UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
@@ -64,8 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //   Configuring data for first time
         let defaults = NSUserDefaults.standardUserDefaults()
-        
-        startIBeacon()
         
         let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
@@ -92,19 +84,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All"])
-            
-            LocalSearchParametar.setLocalIds("Devices", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Scenes", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Events", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Sequences", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Timers", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Flags", parametar: ["All","All","All"])
-            LocalSearchParametar.setLocalIds("Energy", parametar: ["All","All","All"])
         }
         
-        checkIfThereISGatewayWithExistingSSID()
-        
+        setFilterBySSIDOrByiBeaconAgain()
         return true
+    }
+    func setFilterBySSIDOrByiBeaconAgain () {
+        fetchIBeacons()
+        loadItems()
+        NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
+    }
+    func setFilterBySSIDOrByiBeacon () {
+        checkIfThereISGatewayWithExistingSSID()
+        var beacon:IBeacon?
+        for item in iBeacons {
+            if beacon == nil {
+                beacon = item
+            }
+            if beacon?.accuracy > item.accuracy {
+                beacon = item
+            }
+        }
+        if beacon != nil && beacon!.accuracy != 10000 {
+            let zone = returnZoneWithIBeacon(beacon!)
+            if zone != nil {
+                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy)")
+                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
+                for filter in filterArray {
+                    var filterParametars = LocalSearchParametar.getLocalParametar(filter)
+                    if zone!.level == 0 {
+                        filterParametars[0] = zone!.gateway.name
+                        filterParametars[1] = "\(zone!.id)"
+                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                    } else {
+                        filterParametars[0] = zone!.gateway.name
+                        filterParametars[2] = "\(zone!.id)"
+                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                    }
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+                }
+            }
+        }
+        for item in iBeacons {
+            item.accuracy = 10000
+        }
+        beacon = nil
+        stopiBeacons()
     }
     func preloadData () {
         print(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
@@ -124,21 +149,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fetchGateways()
             for gateway in gateways {
                 if gateway.ssid == ssid {
-                    LocalSearchParametar.setLocalParametar("Devices", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Scenes", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Events", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Sequences", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Timers", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Flags", parametar: [gateway.name,"All","All","All"])
-                    LocalSearchParametar.setLocalParametar("Energy", parametar: [gateway.name,"All","All","All"])
-                    
-                    LocalSearchParametar.setLocalIds("Devices", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Scenes", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Events", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Sequences", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Timers", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Flags", parametar: ["All","All","All"])
-                    LocalSearchParametar.setLocalIds("Energy", parametar: ["All","All","All"])
+                    let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
+                    for filter in filterArray {
+                        var filterParametars = LocalSearchParametar.getLocalParametar(filter)
+                        filterParametars[0] = "\(gateway.name)"
+                        filterParametars[1] = "All"
+                        filterParametars[2] = "All"
+                        filterParametars[3] = "All"
+                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+                    }
                     break
                 }
             }
@@ -189,24 +209,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-//        if let results = fetResults {
-//            gateways = results
-//        } else {
-//            print("Nije htela...")
-//        }
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-            for item in self.gateways {
-                item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
-            }
+        for item in self.gateways {
+            item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
+        }
         do {
-            //            dispatch_async(dispatch_get_main_queue(), {
             try self.managedObjectContext!.save()
         } catch let error1 as NSError {
             error = error1
         }
-//            })
-//        })
     }
     func returnIpAddress (url:String) -> String {
         print("123")
@@ -371,38 +381,24 @@ extension AppDelegate: CLLocationManagerDelegate {
         fetchRequest.predicate = predicateOne
         do {
             let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            return fetResults![0]
+            if fetResults?.count != 0 {
+                return fetResults![0]
+            }
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
             abort()
         }
+        return nil
     }
     
     func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
-        
         for beacon in beacons {
             for item in iBeacons {
                 if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercaseString == beacon.proximityUUID.UUIDString){
-                    print(item.name)
-                    let zone = returnZoneWithIBeacon(item)
-                    if zone != nil {
-                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
-                        for filter in filterArray {
-                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-                            if zone!.level == 0 {
-                                filterParametars[1] = "\(zone!.id)"
-                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-                            } else {
-                                filterParametars[2] = "\(zone!.id)"
-                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-                            }
-                            NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
-                        }
-                    }
+                    item.accuracy = beacon.accuracy
                 }
             }
         }
-        
     }
 }
 

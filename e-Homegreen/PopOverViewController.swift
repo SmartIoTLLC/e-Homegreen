@@ -192,6 +192,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList = chooseTimerTypeList
         } else if indexTab == PopOver.iBeacon.rawValue {
             updateDeviceList("IBeacon")
+            tableList.insert(TableList(name: "No iBeacon", id: -1), atIndex: 0)
         }
     }
     

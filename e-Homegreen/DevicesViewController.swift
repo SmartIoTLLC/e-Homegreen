@@ -65,6 +65,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     func refreshLocalParametars () {
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
+        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        fetchDevicesInBackground()
+        deviceCollectionView.reloadData()
     }
     
     var appDel:AppDelegate!
@@ -187,6 +191,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     override func viewDidAppear(animated: Bool) {
         refreshVisibleDevicesInScrollView()
+        appDel.setFilterBySSIDOrByiBeaconAgain()
     }
     
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
@@ -1114,8 +1119,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                     if devices[indexPath.row].currentValue == 1 {
                         cell.sensorImage.image = UIImage(named: "sensor_motion")
                         cell.sensorState.text = "Motion"
-                    } else {
+                    } else if devices[indexPath.row].currentValue == 0 {
                         cell.sensorImage.image = UIImage(named: "sensor_idle")
+                        cell.sensorState.text = "Motion"
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_third")
                         cell.sensorState.text = "Idle"
                     }
                 case 8:

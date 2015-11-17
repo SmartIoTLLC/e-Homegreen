@@ -187,8 +187,6 @@ class IncomingHandler: NSObject {
     }
     func saveChanges() {
         do {
-//            let mergePolicy = NSMergePolicy(mergeType: NSMergePolicyType.MergeByPropertyStoreTrumpMergePolicyType)
-//            appDel.managedObjectContext!.mergePolicy = mergePolicy
             try appDel.managedObjectContext!.save()
         } catch let error1 as NSError {
             error = error1

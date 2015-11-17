@@ -94,6 +94,7 @@
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
+		73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */; };
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; };
@@ -307,6 +308,7 @@
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
+		73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
@@ -492,7 +494,7 @@
 			name = "Device info and settings";
 			sourceTree = "<group>";
 		};
-		736265DD1B4A47FE0078C11D /* Bussiness Logic */ = {
+		736265DD1B4A47FE0078C11D /* BL */ = {
 			isa = PBXGroup;
 			children = (
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
@@ -509,7 +511,7 @@
 				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
 				E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */,
 			);
-			name = "Bussiness Logic";
+			name = BL;
 			sourceTree = "<group>";
 		};
 		7372EB221BC3F76C0097806D /* TimerXIB */ = {
@@ -606,11 +608,11 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
-				E76B57651BBD1DAC00A70F69 /* UI */,
-				73E2390E1B97145D00CB38ED /* NSMOModel */,
-				736265DD1B4A47FE0078C11D /* Bussiness Logic */,
-				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
+				E76B57651BBD1DAC00A70F69 /* UI */,
+				73E2390E1B97145D00CB38ED /* Model */,
+				736265DD1B4A47FE0078C11D /* BL */,
+				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				73ECD4A21B332A6F00767740 /* Common.swift */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
@@ -649,7 +651,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		73E2390E1B97145D00CB38ED /* NSMOModel */ = {
+		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
@@ -676,7 +678,7 @@
 				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
 				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
 			);
-			name = NSMOModel;
+			name = Model;
 			sourceTree = "<group>";
 		};
 		73E6CDB61BC56421003A5F55 /* FlagXIB */ = {
@@ -780,6 +782,7 @@
 				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
 				E76B57661BBD1DB900A70F69 /* Button */,
+				73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -1348,6 +1351,7 @@
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
+				73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */,
 				E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */,
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,

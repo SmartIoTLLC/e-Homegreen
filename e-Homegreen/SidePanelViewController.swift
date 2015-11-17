@@ -18,7 +18,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var menuCollectionView: UICollectionView!
     var delegate: SidePanelViewControllerDelegate?
-    private var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var menuItems: Array<MenuItem>!
     var menuList:[NSString] = []
   
@@ -47,7 +47,12 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         menuItems.insert(pom, atIndex: toIndexPath.item)
         
     }
-    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 8
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 8
+    }
     func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 //        var pom = menuItems[fromIndexPath.item]
         if indexPath.item == (menuItems.count - 1) {
@@ -110,16 +115,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-
+        collectionView.cellForItemAtIndexPath(indexPath)?.bouncingEffectOnTouch(1)
         let selectedMenuItem = menuItems[indexPath.row]
-        
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()
-        
-        
-        
-        
-        
         delegate?.menuItemSelected(selectedMenuItem)
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -127,16 +126,14 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return CGSize(width: 90, height: 90)
+        return CGSize(width: 88, height: 88)
     }
 }
 
 extension SidePanelViewController: UICollectionViewDataSource {
-
-//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        return 1
-//    }
-    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return menuItems.count
     }
@@ -151,10 +148,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
             cell.layer.insertSublayer(gradient, atIndex: 0)
         }
         cell.configureForMenu(menuItems[indexPath.row])
-//        cell.configureForMenu(Menu.allMenuItems()[indexPath.row])
         cell.layer.cornerRadius = 5
-//        cell.layer.borderColor = UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 1).CGColor
-//        cell.layer.borderWidth = 1
         return cell
     }
 }

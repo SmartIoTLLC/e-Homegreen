@@ -61,6 +61,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
         updateSceneList()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: "refreshSceneListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     func refreshSceneList () {

@@ -65,9 +65,13 @@ class ContainerViewController: UIViewController {
         if centerViewController.titleOfViewController.text == "Devices" {
             centerViewController.btnRefreshDevices.enabled = true
             centerViewController.btnRefreshDevices.hidden = false
+            centerViewController.btnSearchIBeacon.enabled = true
+            centerViewController.btnSearchIBeacon.hidden = false
         } else {
             centerViewController.btnRefreshDevices.enabled = false
             centerViewController.btnRefreshDevices.hidden = true
+            centerViewController.btnSearchIBeacon.enabled = false
+            centerViewController.btnSearchIBeacon.hidden = true
         }
         centerNavigationController.didMoveToParentViewController(self)
         
@@ -144,9 +148,10 @@ extension ContainerViewController: CenterViewControllerDelegate {
             
             animateCenterPanelXPosition(targetPosition: 0) { finished in
                 self.currentState = .LeftPanelCollapsed
-                
-                self.leftViewController!.view.removeFromSuperview()
-                self.leftViewController = nil;
+                if self.leftViewController != nil {
+                    self.leftViewController!.view.removeFromSuperview()
+                    self.leftViewController = nil;
+                }
             }
         }
     }
@@ -266,10 +271,10 @@ private extension UIStoryboard {
 }
 extension ContainerViewController: SidePanelViewControllerDelegate {
     func menuItemSelected(menuItem: MenuItem) {
-        if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {            
-//            centerViewController.Container.viewWithTag(<#T##tag: Int##Int#>)
-//            addChildViewController(menuItem.viewController!)
-//            menuItem.viewController!.didMoveToParentViewController(self)
+        if let centerViewControllerSecond = self.centerNavigationController as? CenterViewController {
+            //   ***
+            centerViewControllerSecond.prepareForSegue123(menuItem)
+            //   ***
             if menuItem.title == "Surveillance"{
                 NSNotificationCenter.defaultCenter().postNotificationName("runTimer", object: self, userInfo: nil)
             }else{
@@ -278,12 +283,14 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
             if menuItem.title == "Devices" {
                 centerViewControllerSecond.btnRefreshDevices.enabled = true
                 centerViewControllerSecond.btnRefreshDevices.hidden = false
+                centerViewControllerSecond.btnSearchIBeacon.enabled = true
+                centerViewControllerSecond.btnSearchIBeacon.hidden = false
             } else {
                 centerViewControllerSecond.btnRefreshDevices.enabled = false
                 centerViewControllerSecond.btnRefreshDevices.hidden = true
+                centerViewControllerSecond.btnSearchIBeacon.enabled = false
+                centerViewControllerSecond.btnSearchIBeacon.hidden = true
             }
-            menuItem.viewController!.view.frame = CGRectMake(0, 0, centerViewControllerSecond.Container.frame.size.width, centerViewControllerSecond.Container.frame.size.height)
-            centerViewControllerSecond.Container.addSubview(menuItem.viewController!.view)
             centerViewControllerSecond.titleOfViewController.text = menuItem.title
             
         }

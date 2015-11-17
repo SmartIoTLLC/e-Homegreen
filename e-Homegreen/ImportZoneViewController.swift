@@ -173,9 +173,13 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     var choosedIndex = -1
     func saveText(text: String, id: Int) {
-        if choosedIndex != -1 {
+        if choosedIndex != -1 && text != "No iBeacon" {
             beacon = returniBeaconWithName(text)
             zones[choosedIndex].iBeacon = beacon
+            saveChanges()
+            importZoneTableView.reloadData()
+        } else if text == "No iBeacon" {
+            zones[choosedIndex].iBeacon = nil
             saveChanges()
             importZoneTableView.reloadData()
         }
@@ -193,14 +197,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
         return nil
     }
-}
-
-extension ImportZoneViewController: UITableViewDelegate {
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
-    
 }
 
 extension ImportZoneViewController: UITableViewDataSource {

@@ -16,15 +16,41 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController {
     
+    
+    @IBAction func btnSearchIBeacon(sender: AnyObject) {
+        (UIApplication.sharedApplication().delegate as! AppDelegate).setFilterBySSIDOrByiBeaconAgain()
+        btnSearchIBeacon.rotateAndEmphase(3)
+    }
     @IBAction func btnRefreshDevices(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().postNotificationName("btnRefreshDevicesClicked", object: self, userInfo: nil)
+        btnRefreshDevices.rotate(1)
     }
     @IBOutlet weak var btnRefreshDevices: UIButton!
+    @IBOutlet weak var toggleLeftPanel: UIButton!
+    @IBOutlet weak var btnSearchIBeacon: UIButton!
     @IBOutlet weak var titleOfViewController: UILabel!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var greenView: UIView!
     @IBOutlet weak var redView: UIView!
+    var fromViewController:UIViewController?
+    func prepareForSegue123 (sender: AnyObject?) {
+        if let menuItem = sender as? MenuItem {
+            let toViewController = menuItem.viewController!
+            if toViewController != fromViewController {
+                self.addChildViewController(menuItem.viewController!)
+                self.transitionFromViewController(fromViewController!, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
+                    self.fromViewController?.removeFromParentViewController()
+                    toViewController.didMoveToParentViewController(self)
+                    toViewController.view.frame = self.Container.bounds
+                    self.fromViewController = toViewController
+                })
+            } else {
+                fromViewController?.viewWillAppear(true)
+                fromViewController?.viewDidAppear(true)
+            }
+        }
+    }
     override func viewDidLoad() {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -48,7 +74,10 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendingSignal", name: "didSendMessageToGateway", object: nil)
 
         
-        MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view.frame = CGRectMake(0, 0, self.Container.frame.size.width, self.Container.frame.size.height)
+        MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view.frame = self.Container.bounds
+        self.addChildViewController(MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!))
+        MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).didMoveToParentViewController(self)
+        self.fromViewController = MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!)
         self.Container.addSubview(MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view)
         
     }
@@ -87,6 +116,7 @@ class CenterViewController: UIViewController {
     }
     var delegate: CenterViewControllerDelegate?
     @IBAction func btnScreenMode(sender: AnyObject) {
+        btnScreenMode.bouncingEffectOnTouch(1)
         if UIApplication.sharedApplication().statusBarHidden {
             UIApplication.sharedApplication().statusBarHidden = false
             btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
@@ -99,6 +129,7 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var btnScreenMode: UIButton!
   // MARK: Button actions
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
+        toggleLeftPanel.bouncingEffectOnTouch(1)
         delegate?.toggleLeftPanel?()
     }
 

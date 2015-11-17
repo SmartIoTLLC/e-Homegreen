@@ -120,9 +120,6 @@ class IBeaconSettingsViewController: UIViewController,UIViewControllerTransition
         fetchIBeacons()
         iBeaconTableView.reloadData()
     }
-    
-
-
 }
 
 extension IBeaconSettingsViewController: UITableViewDataSource {
@@ -139,17 +136,6 @@ extension IBeaconSettingsViewController: UITableViewDataSource {
         cell.textLabel?.text = "dads"
         return cell
     }
-    
-//    func changeValue(sender:UISwitch){
-//        if sender.on == true {
-//            surveillance[sender.tag].isVisible = true
-//        }else {
-//            surveillance[sender.tag].isVisible = false
-//        }
-//        saveChanges()
-//        surveillanceTableView.reloadData()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
-//    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -198,13 +184,10 @@ extension IBeaconSettingsViewController: UITableViewDelegate {
         
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            let itemToRemove = iBeacons[indexPath.section]
             
-            appDel.removeItem(itemToRemove)
             appDel.managedObjectContext?.deleteObject(iBeacons[indexPath.section])
             saveChanges()
             refreshIBeaconList()
-            appDel.startIBeacon()
 
         }
         

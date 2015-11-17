@@ -176,26 +176,25 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         if editName.text == "" || editUUID.text == "" || editMinor.text == "" || editMajor.text == ""{
            
         } else {
-            if uuidRegex.numberOfMatchesInString(editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.characters.count)) > 0{
-                if iBeacon == nil{
-                    let iBeaconNew = NSEntityDescription.insertNewObjectForEntityForName("IBeacon", inManagedObjectContext: appDel.managedObjectContext!) as! IBeacon
-                    iBeaconNew.name = editName.text!
-                    iBeaconNew.uuid = editUUID.text!
-                    iBeaconNew.major = Int(editMajor.text!)!
-                    iBeaconNew.minor = Int(editMinor.text!)!
-                    saveChanges()
-                }else{
-                    iBeacon!.name = editName.text!
-                    iBeacon!.uuid = editUUID.text!
-                    iBeacon!.major = Int(editMajor.text!)!
-                    iBeacon!.minor = Int(editMinor.text!)!
-                    
-                    saveChanges()
+            if let minor = UInt16(editMinor.text!), let major = UInt16(editMajor.text!) {
+                if uuidRegex.numberOfMatchesInString(editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.characters.count)) > 0{
+                    if iBeacon == nil{
+                        let iBeaconNew = NSEntityDescription.insertNewObjectForEntityForName("IBeacon", inManagedObjectContext: appDel.managedObjectContext!) as! IBeacon
+                        iBeaconNew.name = editName.text!
+                        iBeaconNew.uuid = editUUID.text!
+                        iBeaconNew.major = NSNumber(unsignedShort: major)
+                        iBeaconNew.minor =  NSNumber(unsignedShort: minor)
+                        saveChanges()
+                    } else {
+                        iBeacon!.name = editName.text!
+                        iBeacon!.uuid = editUUID.text!
+                        iBeacon!.major =  NSNumber(unsignedShort: major)
+                        iBeacon!.minor = NSNumber(unsignedShort: minor)
+                        saveChanges()
+                    }
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 }
-                
-                self.dismissViewControllerAnimated(true, completion: nil)
             }
-            
         }
     }
     
@@ -208,9 +207,6 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             abort()
         }
         NSNotificationCenter.defaultCenter().postNotificationName("refreshIBeaconList", object: self, userInfo: nil)
-        appDel.startIBeacon()
-        
-        appDel.establishAllConnections()
     }
     
     func keyboardWillShow(notification: NSNotification) {
