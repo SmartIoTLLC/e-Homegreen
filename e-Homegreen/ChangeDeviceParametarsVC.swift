@@ -9,20 +9,23 @@
 import UIKit
 import CoreData
 
-class ChangeDeviceParametarsVC: UIViewController {
+class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
-    @IBOutlet weak var lblCategory:UILabel!
-    @IBOutlet weak var lblZone:UILabel!
     @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var btnLevel: UIButton!
+    @IBOutlet weak var btnZone: UIButton!
+    @IBOutlet weak var btnCategory: UIButton!
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     var device:Device?
     var appDel:AppDelegate!
+    
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     var isPresenting: Bool = true
     
@@ -41,6 +44,86 @@ class ChangeDeviceParametarsVC: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func saveText (text : String, id:Int) {
+        //  Ovde je text zapravo ID
+        print("\(text) \(id)")
+        if text != "All" {
+            if id == 2 {
+                if let levelId = Int(returnZoneIdWithName(text)) {
+                    device?.parentZoneId = levelId
+                }
+                btnLevel.setTitle(text, forState: UIControlState.Normal)
+            } else if id == 3 {
+                if let zoneId = Int(returnZoneIdWithName(text)) {
+                    device?.zoneId = zoneId
+                }
+                btnZone.setTitle(text, forState: UIControlState.Normal)
+            } else if id == 4 {
+                if let categoryId = Int(returnCategoryIdWithName(text)) {
+                    device?.categoryId = categoryId
+                }
+                btnCategory.setTitle(text, forState: UIControlState.Normal)
+            }
+        }
+    }
+    
+    @IBAction func btnLevel (sender: AnyObject) {
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 12
+        popoverVC.filterGateway = device?.gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
+    @IBAction func btnZone (sender: AnyObject) {
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 13
+        popoverVC.filterGateway = device?.gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func btnCategory (sender: AnyObject) {
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 14
+        popoverVC.filterGateway = device?.gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
     @IBAction func btnSave(sender: AnyObject) {
         device!.name = txtFieldName.text!
         saveChanges()
@@ -62,8 +145,9 @@ class ChangeDeviceParametarsVC: UIViewController {
         txtFieldName.text = device!.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device!.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device!.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device!.address))):"
         lblChannel.text = "\(device!.channel)"
-        lblZone.text = "\(returnZoneWithId(Int(device!.zoneId)))"
-        lblCategory .text = "\(returnCategoryWithId(Int(device!.categoryId)))"
+        btnLevel.setTitle("\(returnZoneWithId(Int(device!.parentZoneId)))", forState: UIControlState.Normal)
+        btnZone.setTitle("\(returnZoneWithId(Int(device!.zoneId)))", forState: UIControlState.Normal)
+        btnCategory.setTitle("\(returnCategoryWithId(Int(device!.categoryId)))", forState: UIControlState.Normal)
         txtFieldName.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }
@@ -105,6 +189,42 @@ class ChangeDeviceParametarsVC: UIViewController {
                 return "\(fetResults![0].name)"
             } else {
                 return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnZoneIdWithName (name:String) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].id)"
+            } else {
+                return "\(name)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnCategoryIdWithName(name:String) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].id)"
+            } else {
+                return "\(name)"
             }
         } catch _ as NSError {
             print("Unresolved error")

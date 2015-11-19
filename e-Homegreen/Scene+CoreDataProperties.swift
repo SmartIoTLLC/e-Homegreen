@@ -21,6 +21,7 @@ extension Scene {
     @NSManaged var sceneImageOne: NSData
     @NSManaged var sceneImageTwo: NSData
     @NSManaged var sceneName: String
+    @NSManaged var entityLevel: String?
     @NSManaged var sceneZone: String?
     @NSManaged var sceneCategory: String?
     @NSManaged var gateway: Gateway

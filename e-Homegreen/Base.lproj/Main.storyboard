@@ -155,6 +155,16 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1419,21 +1429,21 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywZ-tD-DM2">
-                                                <rect key="frame" x="6" y="71" width="39" height="22"/>
+                                                <rect key="frame" x="6" y="111" width="39" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVo-ub-VgH">
-                                                <rect key="frame" x="65" y="39" width="70" height="20"/>
+                                                <rect key="frame" x="65" y="38" width="70" height="20"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="861-H5-mSd" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="92" y="101" width="218" height="31"/>
+                                                <rect key="frame" x="92" y="141" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -1446,7 +1456,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MgX-sB-rng">
-                                                <rect key="frame" x="6" y="105" width="71" height="22"/>
+                                                <rect key="frame" x="6" y="145" width="71" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1475,7 +1485,7 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Flag ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyv-KZ-cmu">
-                                                <rect key="frame" x="6" y="142" width="42" height="16"/>
+                                                <rect key="frame" x="6" y="182" width="42" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1492,7 +1502,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Flag Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYz-W6-3SX">
-                                                <rect key="frame" x="107" y="142" width="62" height="16"/>
+                                                <rect key="frame" x="107" y="182" width="62" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1508,7 +1518,7 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fNn-Kw-zcS">
-                                                <rect key="frame" x="57" y="135" width="40" height="30"/>
+                                                <rect key="frame" x="57" y="175" width="40" height="30"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="eWw-iH-QT7"/>
@@ -1517,13 +1527,13 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0Q-Eg-N32">
-                                                <rect key="frame" x="179" y="135" width="131" height="30"/>
+                                                <rect key="frame" x="179" y="175" width="131" height="30"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HUS-7p-W7x" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="92" y="66" width="218" height="31"/>
+                                                <rect key="frame" x="92" y="106" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -1536,7 +1546,7 @@
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="16 Flag - Flag - 01" translatesAutoresizingMaskIntoConstraints="NO" id="hWN-Gp-fIR">
-                                                <rect key="frame" x="260" y="173" width="50" height="50"/>
+                                                <rect key="frame" x="260" y="213" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="A0h-a0-BLP"/>
@@ -1544,7 +1554,7 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="16 Flag - Flag - 00" translatesAutoresizingMaskIntoConstraints="NO" id="Qje-dZ-jJ7">
-                                                <rect key="frame" x="202" y="173" width="50" height="50"/>
+                                                <rect key="frame" x="202" y="213" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Ho5-a4-YXF"/>
@@ -1552,7 +1562,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8A0-ZJ-haS">
-                                                <rect key="frame" x="6" y="183" width="45" height="30"/>
+                                                <rect key="frame" x="6" y="223" width="45" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1568,7 +1578,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tgx-oa-9OI">
-                                                <rect key="frame" x="61" y="183" width="75" height="30"/>
+                                                <rect key="frame" x="61" y="223" width="75" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1584,7 +1594,7 @@
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-YJ-ncy">
-                                                <rect key="frame" x="0.0" y="236" width="320" height="312"/>
+                                                <rect key="frame" x="0.0" y="276" width="320" height="272"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1661,7 +1671,7 @@
                                                 </connections>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Localcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiN-Dm-foQ">
-                                                <rect key="frame" x="193" y="39" width="65" height="20"/>
+                                                <rect key="frame" x="193" y="38" width="65" height="20"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1671,6 +1681,29 @@
                                                 <rect key="frame" x="139" y="32" width="51" height="31"/>
                                                 <animations/>
                                             </switch>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7e7-5o-F5p">
+                                                <rect key="frame" x="6" y="76" width="71" height="22"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="71" id="RDJ-sS-Pgc"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xa5-9B-v02" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="92" y="71" width="218" height="31"/>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="--">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="YJk-2a-b9t" eventType="touchUpInside" id="KEa-EH-tTw"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1682,6 +1715,7 @@
                                             <constraint firstItem="aiN-Dm-foQ" firstAttribute="leading" secondItem="c56-D7-5m4" secondAttribute="trailing" constant="5" id="7tS-Oj-FXe"/>
                                             <constraint firstItem="7K3-eq-nls" firstAttribute="top" secondItem="AM0-r3-4e9" secondAttribute="top" constant="4" id="7yp-42-Dcb"/>
                                             <constraint firstItem="HUS-7p-W7x" firstAttribute="width" secondItem="861-H5-mSd" secondAttribute="width" id="8BO-iB-1dM"/>
+                                            <constraint firstItem="Xa5-9B-v02" firstAttribute="leading" secondItem="HUS-7p-W7x" secondAttribute="leading" id="ANW-vS-QYP"/>
                                             <constraint firstItem="fNn-Kw-zcS" firstAttribute="centerY" secondItem="AYz-W6-3SX" secondAttribute="centerY" id="BcO-bg-dlx"/>
                                             <constraint firstItem="861-H5-mSd" firstAttribute="leading" secondItem="MgX-sB-rng" secondAttribute="trailing" constant="15" id="CbU-sL-2wS"/>
                                             <constraint firstItem="CNg-YJ-ncy" firstAttribute="top" secondItem="Qje-dZ-jJ7" secondAttribute="bottom" constant="13" id="GaS-R7-CVg"/>
@@ -1707,23 +1741,27 @@
                                             <constraint firstItem="wyv-KZ-cmu" firstAttribute="top" secondItem="MgX-sB-rng" secondAttribute="bottom" constant="15" id="cSc-Ry-LfC"/>
                                             <constraint firstItem="MgX-sB-rng" firstAttribute="top" secondItem="ywZ-tD-DM2" secondAttribute="bottom" constant="12" id="d7W-Da-vja"/>
                                             <constraint firstItem="8po-CM-XFg" firstAttribute="centerY" secondItem="dVo-ub-VgH" secondAttribute="centerY" id="dsr-fX-WEb"/>
+                                            <constraint firstItem="7e7-5o-F5p" firstAttribute="centerY" secondItem="Xa5-9B-v02" secondAttribute="centerY" id="gKy-v2-vD9"/>
                                             <constraint firstItem="dVo-ub-VgH" firstAttribute="leading" secondItem="8po-CM-XFg" secondAttribute="trailing" constant="10" id="gQt-BZ-DkV"/>
                                             <constraint firstItem="hWN-Gp-fIR" firstAttribute="leading" secondItem="Qje-dZ-jJ7" secondAttribute="trailing" constant="8" id="hP8-Xo-Q3o"/>
                                             <constraint firstAttribute="trailing" secondItem="861-H5-mSd" secondAttribute="trailing" constant="10" id="iAG-0d-arn"/>
+                                            <constraint firstItem="Xa5-9B-v02" firstAttribute="width" secondItem="HUS-7p-W7x" secondAttribute="width" id="iYJ-BD-mn7"/>
                                             <constraint firstItem="8A0-ZJ-haS" firstAttribute="top" secondItem="wyv-KZ-cmu" secondAttribute="bottom" constant="25" id="jAY-Wf-Yoz"/>
                                             <constraint firstItem="kxh-aA-jf0" firstAttribute="leading" secondItem="7K3-eq-nls" secondAttribute="trailing" constant="9" id="lOd-3d-UvH"/>
                                             <constraint firstAttribute="bottom" secondItem="CNg-YJ-ncy" secondAttribute="bottom" id="lzg-vl-IvJ"/>
                                             <constraint firstItem="MgX-sB-rng" firstAttribute="centerY" secondItem="861-H5-mSd" secondAttribute="centerY" id="nVj-Ed-rkz"/>
                                             <constraint firstItem="8A0-ZJ-haS" firstAttribute="centerY" secondItem="Tgx-oa-9OI" secondAttribute="centerY" id="oC3-mv-v7p"/>
                                             <constraint firstItem="aiN-Dm-foQ" firstAttribute="top" secondItem="dVo-ub-VgH" secondAttribute="top" id="ofJ-FN-Efh"/>
+                                            <constraint firstItem="7e7-5o-F5p" firstAttribute="leading" secondItem="8po-CM-XFg" secondAttribute="leading" id="ovI-Ry-MXi"/>
                                             <constraint firstItem="HUS-7p-W7x" firstAttribute="centerY" secondItem="ywZ-tD-DM2" secondAttribute="centerY" id="pbX-0q-XcV"/>
                                             <constraint firstItem="Tgx-oa-9OI" firstAttribute="leading" secondItem="8A0-ZJ-haS" secondAttribute="trailing" constant="10" id="pii-6i-WM3"/>
                                             <constraint firstItem="wyv-KZ-cmu" firstAttribute="leading" secondItem="MgX-sB-rng" secondAttribute="leading" id="rPy-Ax-NEC"/>
                                             <constraint firstItem="ms2-Pb-xC1" firstAttribute="leading" secondItem="rl3-HZ-P22" secondAttribute="trailing" constant="10" id="rjm-I8-9tm"/>
                                             <constraint firstItem="8A0-ZJ-haS" firstAttribute="leading" secondItem="wyv-KZ-cmu" secondAttribute="leading" id="tyt-7k-ock"/>
+                                            <constraint firstItem="7e7-5o-F5p" firstAttribute="top" secondItem="8po-CM-XFg" secondAttribute="bottom" constant="12" id="wTc-7B-5DH"/>
                                             <constraint firstItem="kxh-aA-jf0" firstAttribute="centerY" secondItem="7K3-eq-nls" secondAttribute="centerY" constant="0.5" id="yEZ-TQ-fXQ"/>
                                             <constraint firstItem="8po-CM-XFg" firstAttribute="top" secondItem="7K3-eq-nls" secondAttribute="bottom" constant="8" symbolic="YES" id="zX5-cZ-Vaw"/>
-                                            <constraint firstItem="ywZ-tD-DM2" firstAttribute="top" secondItem="8po-CM-XFg" secondAttribute="bottom" constant="8" symbolic="YES" id="zrE-ku-fqa"/>
+                                            <constraint firstItem="ywZ-tD-DM2" firstAttribute="top" secondItem="8po-CM-XFg" secondAttribute="bottom" constant="48" id="zrE-ku-fqa"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1751,6 +1789,7 @@
                         <outlet property="IDedit" destination="fNn-Kw-zcS" id="PWA-LU-Dx2"/>
                         <outlet property="broadcastSwitch" destination="8po-CM-XFg" id="dOu-QD-l4U"/>
                         <outlet property="btnCategory" destination="861-H5-mSd" id="ECS-un-UYv"/>
+                        <outlet property="btnLevel" destination="Xa5-9B-v02" id="yMc-Ng-ahL"/>
                         <outlet property="btnZone" destination="HUS-7p-W7x" id="VWJ-RL-gzN"/>
                         <outlet property="devAddressOne" destination="kxh-aA-jf0" id="bug-OB-sKA"/>
                         <outlet property="devAddressThree" destination="ms2-Pb-xC1" id="RPt-P2-xbo"/>
@@ -1764,7 +1803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PWQ-6n-IK0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2609" y="793"/>
+            <point key="canvasLocation" x="-2610" y="793"/>
         </scene>
         <!--Scan Timer View Controller-->
         <scene sceneID="iAa-Zz-wId">
@@ -1785,7 +1824,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peK-q4-Kls">
-                                                <rect key="frame" x="8" y="72" width="39" height="22"/>
+                                                <rect key="frame" x="8" y="112" width="39" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1799,14 +1838,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="15 Timer - CLock - 01" translatesAutoresizingMaskIntoConstraints="NO" id="tGG-te-wUY">
-                                                <rect key="frame" x="262" y="174" width="50" height="50"/>
+                                                <rect key="frame" x="262" y="214" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="J5W-cO-xa3"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPk-M6-q3d">
-                                                <rect key="frame" x="8" y="106" width="71" height="22"/>
+                                                <rect key="frame" x="8" y="146" width="71" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1822,7 +1861,7 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eoy-cW-3Ir" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="171" width="150" height="31"/>
+                                                <rect key="frame" x="8" y="211" width="150" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1843,7 +1882,7 @@
                                                 <animations/>
                                             </switch>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="15 Timer - CLock - 00" translatesAutoresizingMaskIntoConstraints="NO" id="Iaf-D7-xK1">
-                                                <rect key="frame" x="202" y="174" width="50" height="50"/>
+                                                <rect key="frame" x="202" y="214" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="vj3-Sh-3Gr"/>
@@ -1859,14 +1898,14 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Timer ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0p0-k7-V31">
-                                                <rect key="frame" x="8" y="143" width="51" height="16"/>
+                                                <rect key="frame" x="8" y="183" width="51" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VRf-z7-Y6B">
-                                                <rect key="frame" x="63" y="214" width="75" height="30"/>
+                                                <rect key="frame" x="63" y="254" width="75" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1892,7 +1931,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Timer Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqH-oR-70Z">
-                                                <rect key="frame" x="119" y="143" width="71" height="16"/>
+                                                <rect key="frame" x="119" y="183" width="71" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1908,7 +1947,7 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nmk-tC-ADC">
-                                                <rect key="frame" x="69" y="136" width="40" height="30"/>
+                                                <rect key="frame" x="69" y="176" width="40" height="30"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="6mC-7g-OSO"/>
@@ -1917,13 +1956,13 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7uU-tR-xoc">
-                                                <rect key="frame" x="200" y="136" width="112" height="30"/>
+                                                <rect key="frame" x="200" y="176" width="112" height="30"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnD-vg-mri">
-                                                <rect key="frame" x="8" y="214" width="45" height="30"/>
+                                                <rect key="frame" x="8" y="254" width="45" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1939,7 +1978,7 @@
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EIJ-fx-OQB">
-                                                <rect key="frame" x="0.0" y="254" width="320" height="314"/>
+                                                <rect key="frame" x="0.0" y="294" width="320" height="274"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2016,7 +2055,7 @@
                                                 </connections>
                                             </tableView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eb3-1o-xCw" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="67" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2030,7 +2069,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEs-xQ-Adf" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="101" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="141" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2053,11 +2092,35 @@
                                                 <rect key="frame" x="163" y="33" width="51" height="31"/>
                                                 <animations/>
                                             </switch>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i09-u3-qgQ">
+                                                <rect key="frame" x="8" y="77" width="62" height="22"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="62" id="wqN-qo-NPU"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8x-Yl-f3G" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="73" width="218" height="31"/>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="--">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="vTZ-Oh-4tp" eventType="touchUpInside" id="B1t-mH-UGH"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="YPk-M6-q3d" firstAttribute="top" secondItem="peK-q4-Kls" secondAttribute="bottom" constant="12" id="1bM-Mf-qee"/>
+                                            <constraint firstItem="e8x-Yl-f3G" firstAttribute="leading" secondItem="Eb3-1o-xCw" secondAttribute="leading" id="3pK-a8-bWP"/>
                                             <constraint firstAttribute="trailing" secondItem="EIJ-fx-OQB" secondAttribute="trailing" id="5Gh-7J-oDR"/>
                                             <constraint firstItem="Eb3-1o-xCw" firstAttribute="width" secondItem="xEs-xQ-Adf" secondAttribute="width" id="5tn-4s-lx1"/>
                                             <constraint firstItem="7uU-tR-xoc" firstAttribute="trailing" secondItem="xEs-xQ-Adf" secondAttribute="trailing" id="88W-zd-7ES"/>
@@ -2070,20 +2133,23 @@
                                             <constraint firstItem="LnD-vg-mri" firstAttribute="leading" secondItem="eoy-cW-3Ir" secondAttribute="leading" id="K4i-dg-iPJ"/>
                                             <constraint firstItem="eoy-cW-3Ir" firstAttribute="leading" secondItem="0p0-k7-V31" secondAttribute="leading" id="MR7-Gt-DRK"/>
                                             <constraint firstItem="dDs-FS-g4r" firstAttribute="leading" secondItem="fqa-5z-Dxl" secondAttribute="leading" id="NyW-gM-UDU"/>
-                                            <constraint firstItem="peK-q4-Kls" firstAttribute="top" secondItem="dDs-FS-g4r" secondAttribute="bottom" constant="8" symbolic="YES" id="OF1-P8-JH3"/>
+                                            <constraint firstItem="peK-q4-Kls" firstAttribute="top" secondItem="dDs-FS-g4r" secondAttribute="bottom" constant="48" id="OF1-P8-JH3"/>
                                             <constraint firstItem="Iaf-D7-xK1" firstAttribute="width" secondItem="Iaf-D7-xK1" secondAttribute="height" multiplier="1:1" id="OJ3-pN-PQU"/>
                                             <constraint firstAttribute="trailing" secondItem="xEs-xQ-Adf" secondAttribute="trailing" constant="8" id="Qxx-AI-P7y"/>
                                             <constraint firstItem="fqa-5z-Dxl" firstAttribute="leading" secondItem="dKn-Uh-AZs" secondAttribute="leading" constant="8" id="Tin-K0-79r"/>
                                             <constraint firstItem="tGG-te-wUY" firstAttribute="leading" secondItem="Iaf-D7-xK1" secondAttribute="trailing" constant="10" id="V4F-3C-TbY"/>
                                             <constraint firstItem="7GJ-Mi-9l7" firstAttribute="leading" secondItem="Fba-ca-JRs" secondAttribute="trailing" constant="10" id="VZc-fE-mGn"/>
                                             <constraint firstItem="sCC-FB-ylv" firstAttribute="leading" secondItem="7GJ-Mi-9l7" secondAttribute="trailing" constant="10" id="ZBA-df-oFW"/>
+                                            <constraint firstItem="e8x-Yl-f3G" firstAttribute="width" secondItem="Eb3-1o-xCw" secondAttribute="width" id="ZVK-nG-GzL"/>
                                             <constraint firstItem="87S-cB-yje" firstAttribute="leading" secondItem="dDs-FS-g4r" secondAttribute="trailing" constant="10" id="ZgI-U6-Z11"/>
                                             <constraint firstItem="nmk-tC-ADC" firstAttribute="centerY" secondItem="tqH-oR-70Z" secondAttribute="centerY" id="afP-ad-EkS"/>
                                             <constraint firstItem="7GJ-Mi-9l7" firstAttribute="centerY" secondItem="Fba-ca-JRs" secondAttribute="centerY" id="al6-Ox-YD0"/>
                                             <constraint firstItem="Eb3-1o-xCw" firstAttribute="centerX" secondItem="xEs-xQ-Adf" secondAttribute="centerX" id="bTY-It-dNH"/>
+                                            <constraint firstItem="i09-u3-qgQ" firstAttribute="leading" secondItem="dDs-FS-g4r" secondAttribute="leading" id="cNn-sD-vwI"/>
                                             <constraint firstItem="xEs-xQ-Adf" firstAttribute="leading" secondItem="YPk-M6-q3d" secondAttribute="trailing" constant="15" id="dNl-c0-4Zs"/>
                                             <constraint firstItem="LnD-vg-mri" firstAttribute="top" secondItem="eoy-cW-3Ir" secondAttribute="bottom" constant="12" id="dWG-Ax-bNW"/>
                                             <constraint firstItem="Iaf-D7-xK1" firstAttribute="centerY" secondItem="tGG-te-wUY" secondAttribute="centerY" id="eoD-Il-iCZ"/>
+                                            <constraint firstItem="e8x-Yl-f3G" firstAttribute="centerY" secondItem="i09-u3-qgQ" secondAttribute="centerY" id="fCY-WE-3a0"/>
                                             <constraint firstItem="VRf-z7-Y6B" firstAttribute="leading" secondItem="LnD-vg-mri" secondAttribute="trailing" constant="10" id="fxx-X1-mnX"/>
                                             <constraint firstItem="7uU-tR-xoc" firstAttribute="centerY" secondItem="tqH-oR-70Z" secondAttribute="centerY" id="gt2-dX-NrD"/>
                                             <constraint firstItem="eoy-cW-3Ir" firstAttribute="top" secondItem="0p0-k7-V31" secondAttribute="bottom" constant="12" id="hOf-fr-wx3"/>
@@ -2102,6 +2168,7 @@
                                             <constraint firstItem="0p0-k7-V31" firstAttribute="leading" secondItem="YPk-M6-q3d" secondAttribute="leading" id="t6i-zm-3HH"/>
                                             <constraint firstItem="YPk-M6-q3d" firstAttribute="centerY" secondItem="xEs-xQ-Adf" secondAttribute="centerY" id="uwt-nR-aIC"/>
                                             <constraint firstItem="fqa-5z-Dxl" firstAttribute="top" secondItem="dKn-Uh-AZs" secondAttribute="top" constant="4" id="wtf-Sm-ki3"/>
+                                            <constraint firstItem="i09-u3-qgQ" firstAttribute="top" secondItem="dDs-FS-g4r" secondAttribute="bottom" constant="13" id="wz2-UL-Fux"/>
                                             <constraint firstItem="Fba-ca-JRs" firstAttribute="leading" secondItem="fqa-5z-Dxl" secondAttribute="trailing" constant="9" id="yTa-oS-2aW"/>
                                             <constraint firstItem="dDs-FS-g4r" firstAttribute="centerY" secondItem="87S-cB-yje" secondAttribute="centerY" id="zX5-re-sUW"/>
                                         </constraints>
@@ -2131,6 +2198,7 @@
                         <outlet property="IDedit" destination="nmk-tC-ADC" id="Pgj-sx-jYE"/>
                         <outlet property="broadcastSwitch" destination="dDs-FS-g4r" id="Kc8-mu-Kh0"/>
                         <outlet property="btnCategory" destination="xEs-xQ-Adf" id="ph9-7t-dMI"/>
+                        <outlet property="btnLevel" destination="e8x-Yl-f3G" id="RMg-Qf-nwI"/>
                         <outlet property="btnType" destination="eoy-cW-3Ir" id="Jhu-bo-5P3"/>
                         <outlet property="btnZone" destination="Eb3-1o-xCw" id="Z06-Mb-4ML"/>
                         <outlet property="devAddressOne" destination="Fba-ca-JRs" id="Qme-xh-tnj"/>
@@ -2214,14 +2282,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avK-sx-U12">
-                                                <rect key="frame" x="8" y="78" width="39" height="22"/>
+                                                <rect key="frame" x="8" y="112" width="39" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qrM-oS-ZOn" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="108" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="142" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2234,14 +2302,14 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJA-Jj-W38">
-                                                <rect key="frame" x="8" y="112" width="71" height="22"/>
+                                                <rect key="frame" x="8" y="146" width="71" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="17 Event - Up Down - 01" translatesAutoresizingMaskIntoConstraints="NO" id="wbS-Xv-cOo">
-                                                <rect key="frame" x="262" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="262" y="219" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Iui-FF-xA3"/>
@@ -2249,7 +2317,7 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="17 Event - Up Down - 00" translatesAutoresizingMaskIntoConstraints="NO" id="6Cu-DI-PyL">
-                                                <rect key="frame" x="204" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="204" y="219" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="6Cu-DI-PyL" secondAttribute="height" multiplier="1:1" id="8vs-22-3Ca"/>
@@ -2257,21 +2325,21 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Event ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBG-aS-inY">
-                                                <rect key="frame" x="8" y="154" width="50" height="16"/>
+                                                <rect key="frame" x="8" y="188" width="50" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Event Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhu-bs-j89">
-                                                <rect key="frame" x="126" y="154" width="70" height="16"/>
+                                                <rect key="frame" x="126" y="188" width="70" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zze-0l-51k">
-                                                <rect key="frame" x="76" y="147" width="40" height="30"/>
+                                                <rect key="frame" x="76" y="181" width="40" height="30"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="HGS-R7-BdN"/>
@@ -2280,13 +2348,13 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QIc-cq-4tR">
-                                                <rect key="frame" x="206" y="147" width="106" height="30"/>
+                                                <rect key="frame" x="206" y="181" width="106" height="30"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s1A-ZQ-mQf">
-                                                <rect key="frame" x="8" y="195" width="45" height="30"/>
+                                                <rect key="frame" x="8" y="229" width="45" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2302,7 +2370,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dH-yZ-3aK">
-                                                <rect key="frame" x="63" y="195" width="75" height="30"/>
+                                                <rect key="frame" x="63" y="229" width="75" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2318,7 +2386,7 @@
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="S0a-Bw-C55">
-                                                <rect key="frame" x="3" y="248" width="317" height="320"/>
+                                                <rect key="frame" x="3" y="282" width="317" height="286"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2395,7 +2463,7 @@
                                                 </connections>
                                             </tableView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TWm-sf-5j3" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="73" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2418,6 +2486,29 @@
                                                 <rect key="frame" x="145" y="33" width="51" height="31"/>
                                                 <animations/>
                                             </switch>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hF7-u1-j4U">
+                                                <rect key="frame" x="8" y="77" width="59" height="22"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="59" id="sA2-b8-SSb"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syS-YP-Mdi" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="72" width="218" height="31"/>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="--">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="HK0-7P-3Sm" eventType="touchUpInside" id="De0-vE-s1I"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -2431,14 +2522,17 @@
                                             <constraint firstAttribute="trailing" secondItem="QIc-cq-4tR" secondAttribute="trailing" constant="8" id="4Yk-ne-Sfk"/>
                                             <constraint firstItem="hhu-bs-j89" firstAttribute="leading" secondItem="Zze-0l-51k" secondAttribute="trailing" constant="10" id="5CF-6V-nWX"/>
                                             <constraint firstItem="NQE-Sd-Eje" firstAttribute="leading" secondItem="3M2-2w-Fh7" secondAttribute="trailing" constant="9" id="6Ad-Qz-M1m"/>
+                                            <constraint firstItem="hF7-u1-j4U" firstAttribute="leading" secondItem="OQs-Vi-noK" secondAttribute="leading" id="8SX-3I-OIz"/>
                                             <constraint firstAttribute="trailing" secondItem="S0a-Bw-C55" secondAttribute="trailing" id="9uf-4s-cgc"/>
                                             <constraint firstItem="lss-su-e6a" firstAttribute="centerY" secondItem="OQs-Vi-noK" secondAttribute="centerY" id="DJz-5A-RHL"/>
+                                            <constraint firstItem="hF7-u1-j4U" firstAttribute="top" secondItem="OQs-Vi-noK" secondAttribute="bottom" constant="14" id="EeF-lO-3xg"/>
                                             <constraint firstItem="S0a-Bw-C55" firstAttribute="top" secondItem="6Cu-DI-PyL" secondAttribute="bottom" constant="13" id="Ems-EC-x1I"/>
                                             <constraint firstItem="OQs-Vi-noK" firstAttribute="leading" secondItem="3M2-2w-Fh7" secondAttribute="leading" id="F1E-WC-DzF"/>
                                             <constraint firstItem="Zze-0l-51k" firstAttribute="centerY" secondItem="hBG-aS-inY" secondAttribute="centerY" id="GQ2-zd-Ox2"/>
                                             <constraint firstItem="CwX-Gv-o9r" firstAttribute="leading" secondItem="EWh-o5-QVJ" secondAttribute="trailing" constant="10" id="Iz6-lj-KtW"/>
                                             <constraint firstItem="QIc-cq-4tR" firstAttribute="centerY" secondItem="hhu-bs-j89" secondAttribute="centerY" id="JhF-Vq-aJr"/>
                                             <constraint firstItem="qrM-oS-ZOn" firstAttribute="leading" secondItem="TWm-sf-5j3" secondAttribute="leading" id="ON0-yb-za4"/>
+                                            <constraint firstItem="syS-YP-Mdi" firstAttribute="leading" secondItem="TWm-sf-5j3" secondAttribute="leading" id="PEL-fd-bbL"/>
                                             <constraint firstItem="wbS-Xv-cOo" firstAttribute="trailing" secondItem="QIc-cq-4tR" secondAttribute="trailing" id="Rwl-ui-dYB"/>
                                             <constraint firstItem="Zze-0l-51k" firstAttribute="leading" secondItem="hBG-aS-inY" secondAttribute="trailing" constant="18" id="S4z-cg-FPr"/>
                                             <constraint firstItem="hBG-aS-inY" firstAttribute="leading" secondItem="rJA-Jj-W38" secondAttribute="leading" id="Sov-pB-ZU7"/>
@@ -2450,13 +2544,15 @@
                                             <constraint firstItem="EWh-o5-QVJ" firstAttribute="centerY" secondItem="CwX-Gv-o9r" secondAttribute="centerY" id="da2-eg-zaw"/>
                                             <constraint firstItem="wbS-Xv-cOo" firstAttribute="leading" secondItem="6Cu-DI-PyL" secondAttribute="trailing" constant="8" id="de8-6r-etn"/>
                                             <constraint firstItem="rJA-Jj-W38" firstAttribute="top" secondItem="avK-sx-U12" secondAttribute="bottom" constant="12" id="eFc-Ez-mkE"/>
+                                            <constraint firstItem="syS-YP-Mdi" firstAttribute="width" secondItem="TWm-sf-5j3" secondAttribute="width" id="fJ5-8S-Vyd"/>
                                             <constraint firstItem="EWh-o5-QVJ" firstAttribute="centerY" secondItem="NQE-Sd-Eje" secondAttribute="centerY" id="hQK-mK-tta"/>
                                             <constraint firstAttribute="bottom" secondItem="S0a-Bw-C55" secondAttribute="bottom" id="hwr-37-qtg"/>
                                             <constraint firstItem="OQs-Vi-noK" firstAttribute="top" secondItem="3M2-2w-Fh7" secondAttribute="bottom" constant="8" symbolic="YES" id="kWf-Pj-hvf"/>
                                             <constraint firstItem="s1A-ZQ-mQf" firstAttribute="centerY" secondItem="8dH-yZ-3aK" secondAttribute="centerY" id="lXK-h1-d28"/>
-                                            <constraint firstItem="avK-sx-U12" firstAttribute="top" secondItem="OQs-Vi-noK" secondAttribute="bottom" constant="14" id="ljZ-Vt-MMH"/>
+                                            <constraint firstItem="avK-sx-U12" firstAttribute="top" secondItem="OQs-Vi-noK" secondAttribute="bottom" constant="48" id="ljZ-Vt-MMH"/>
                                             <constraint firstItem="TWm-sf-5j3" firstAttribute="centerY" secondItem="avK-sx-U12" secondAttribute="centerY" id="mTM-7y-exD"/>
                                             <constraint firstItem="s1A-ZQ-mQf" firstAttribute="top" secondItem="hBG-aS-inY" secondAttribute="bottom" constant="25" id="meZ-pc-jh4"/>
+                                            <constraint firstItem="syS-YP-Mdi" firstAttribute="centerY" secondItem="hF7-u1-j4U" secondAttribute="centerY" id="mjl-aO-Y8y"/>
                                             <constraint firstItem="hBG-aS-inY" firstAttribute="top" secondItem="rJA-Jj-W38" secondAttribute="bottom" constant="20" id="nm2-PJ-nJ0"/>
                                             <constraint firstItem="qrM-oS-ZOn" firstAttribute="width" secondItem="TWm-sf-5j3" secondAttribute="width" id="nnT-8j-FR0"/>
                                             <constraint firstItem="NQE-Sd-Eje" firstAttribute="centerY" secondItem="3M2-2w-Fh7" secondAttribute="centerY" constant="0.5" id="vmP-pf-oO7"/>
@@ -2492,6 +2588,7 @@
                         <outlet property="IDedit" destination="Zze-0l-51k" id="WWX-rg-lVp"/>
                         <outlet property="broadcastSwitch" destination="OQs-Vi-noK" id="EDr-YO-Q3j"/>
                         <outlet property="btnCategory" destination="qrM-oS-ZOn" id="CdK-9M-S9D"/>
+                        <outlet property="btnLevel" destination="syS-YP-Mdi" id="zT6-o9-WXq"/>
                         <outlet property="btnZone" destination="TWm-sf-5j3" id="SLZ-2c-0mI"/>
                         <outlet property="devAddressOne" destination="NQE-Sd-Eje" id="M9M-fX-mFx"/>
                         <outlet property="devAddressThree" destination="CwX-Gv-o9r" id="veL-rk-Nqh"/>
@@ -2590,14 +2687,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYr-sW-GBN">
-                                                <rect key="frame" x="8" y="78" width="39" height="22"/>
+                                                <rect key="frame" x="8" y="112" width="39" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wef-qp-Xeq" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="108" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="142" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2610,34 +2707,34 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8P-U6-VXC">
-                                                <rect key="frame" x="8" y="112" width="71" height="22"/>
+                                                <rect key="frame" x="8" y="146" width="71" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sequences ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uvi-2S-TWu">
-                                                <rect key="frame" x="8" y="154" width="80" height="16"/>
+                                                <rect key="frame" x="8" y="188" width="80" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="upK-gK-fM3">
-                                                <rect key="frame" x="257" y="148" width="55" height="30"/>
+                                                <rect key="frame" x="257" y="182" width="55" height="30"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sequences Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsi-X3-HZY">
-                                                <rect key="frame" x="148" y="154" width="99" height="16"/>
+                                                <rect key="frame" x="148" y="188" width="99" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rTW-M0-GrN">
-                                                <rect key="frame" x="98" y="147" width="40" height="30"/>
+                                                <rect key="frame" x="98" y="181" width="40" height="30"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="VkE-gr-c4c"/>
@@ -2646,14 +2743,14 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="Cr3-aw-7MD">
-                                                <rect key="frame" x="262" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="262" y="219" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="aNo-pl-Mj0"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="Swk-ob-hAi">
-                                                <rect key="frame" x="202" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="202" y="219" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Swk-ob-hAi" secondAttribute="height" multiplier="1:1" id="Bzs-Qz-W1p"/>
@@ -2661,7 +2758,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czW-7T-U3M" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="63" y="195" width="75" height="30"/>
+                                                <rect key="frame" x="63" y="229" width="75" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2677,7 +2774,7 @@
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qtg-Dz-cNk">
-                                                <rect key="frame" x="0.0" y="248" width="320" height="320"/>
+                                                <rect key="frame" x="0.0" y="282" width="320" height="286"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2754,7 +2851,7 @@
                                                 </connections>
                                             </tableView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-FH-Dld" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="73" width="218" height="31"/>
+                                                <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2766,8 +2863,18 @@
                                                     <action selector="btnZoneAction:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="Qu4-iB-fyj"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pg5-ll-rsa">
+                                                <rect key="frame" x="8" y="76" width="63" height="22"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="63" id="D7j-R0-O7G"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFE-r9-S0X" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="195" width="45" height="30"/>
+                                                <rect key="frame" x="8" y="229" width="45" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2793,12 +2900,26 @@
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uu3-Dh-aBz" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="72" width="218" height="31"/>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="--">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="OZe-Hk-ecw" eventType="touchUpInside" id="vaR-qB-WOa"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="upK-gK-fM3" firstAttribute="leading" secondItem="dsi-X3-HZY" secondAttribute="trailing" constant="10" id="0I0-dm-j6L"/>
                                             <constraint firstItem="50B-lV-lnL" firstAttribute="leading" secondItem="HsX-0s-pgW" secondAttribute="leading" constant="8" id="10d-dM-Odi"/>
+                                            <constraint firstItem="Pg5-ll-rsa" firstAttribute="leading" secondItem="ifZ-om-sOq" secondAttribute="leading" id="25A-EO-qpl"/>
                                             <constraint firstAttribute="bottom" secondItem="qtg-Dz-cNk" secondAttribute="bottom" id="2BZ-h7-EN7"/>
                                             <constraint firstItem="G8P-U6-VXC" firstAttribute="top" secondItem="uYr-sW-GBN" secondAttribute="bottom" constant="12" id="2Qg-eD-Ncw"/>
                                             <constraint firstItem="uYr-sW-GBN" firstAttribute="leading" secondItem="ifZ-om-sOq" secondAttribute="leading" id="47U-GM-fz1"/>
@@ -2813,6 +2934,7 @@
                                             <constraint firstItem="Xg9-SD-1FX" firstAttribute="leading" secondItem="ifZ-om-sOq" secondAttribute="trailing" constant="5" id="GCZ-Kk-F7b"/>
                                             <constraint firstItem="ifZ-om-sOq" firstAttribute="leading" secondItem="50B-lV-lnL" secondAttribute="leading" id="GFA-lU-4PA"/>
                                             <constraint firstItem="rTW-M0-GrN" firstAttribute="centerY" secondItem="uvi-2S-TWu" secondAttribute="centerY" id="ITY-VF-uOk"/>
+                                            <constraint firstItem="uu3-Dh-aBz" firstAttribute="centerY" secondItem="Pg5-ll-rsa" secondAttribute="centerY" id="KNb-Rm-4SY"/>
                                             <constraint firstAttribute="trailing" secondItem="Wef-qp-Xeq" secondAttribute="trailing" constant="8" id="LYu-t4-rJr"/>
                                             <constraint firstItem="IFE-r9-S0X" firstAttribute="centerY" secondItem="czW-7T-U3M" secondAttribute="centerY" id="N7y-wt-PHD"/>
                                             <constraint firstItem="G3K-Bj-CGe" firstAttribute="centerY" secondItem="E5a-aL-k7V" secondAttribute="centerY" constant="2" id="OCk-5s-nkO"/>
@@ -2821,7 +2943,7 @@
                                             <constraint firstItem="Cr3-aw-7MD" firstAttribute="trailing" secondItem="upK-gK-fM3" secondAttribute="trailing" id="Qpy-J1-kQE"/>
                                             <constraint firstItem="50B-lV-lnL" firstAttribute="top" secondItem="HsX-0s-pgW" secondAttribute="top" constant="4" id="RSs-qh-2M8"/>
                                             <constraint firstItem="ifZ-om-sOq" firstAttribute="centerY" secondItem="Xg9-SD-1FX" secondAttribute="centerY" id="RuX-eU-OtG"/>
-                                            <constraint firstItem="uYr-sW-GBN" firstAttribute="top" secondItem="ifZ-om-sOq" secondAttribute="bottom" constant="14" id="Tmn-Vq-VBO"/>
+                                            <constraint firstItem="uYr-sW-GBN" firstAttribute="top" secondItem="ifZ-om-sOq" secondAttribute="bottom" constant="48" id="Tmn-Vq-VBO"/>
                                             <constraint firstItem="qtg-Dz-cNk" firstAttribute="leading" secondItem="HsX-0s-pgW" secondAttribute="leading" id="Tsu-Kf-PFS"/>
                                             <constraint firstAttribute="trailing" secondItem="qtg-Dz-cNk" secondAttribute="trailing" id="VfF-hh-9Au"/>
                                             <constraint firstItem="gad-yZ-FqM" firstAttribute="leading" secondItem="48s-NI-fpz" secondAttribute="trailing" constant="10" id="YfS-Ab-QzP"/>
@@ -2831,6 +2953,7 @@
                                             <constraint firstItem="Wef-qp-Xeq" firstAttribute="centerY" secondItem="G8P-U6-VXC" secondAttribute="centerY" id="avj-uf-bFB"/>
                                             <constraint firstItem="48s-NI-fpz" firstAttribute="centerY" secondItem="50B-lV-lnL" secondAttribute="centerY" constant="0.5" id="b9S-wa-pRG"/>
                                             <constraint firstItem="UKF-Lz-gZq" firstAttribute="top" secondItem="ifZ-om-sOq" secondAttribute="top" id="bll-NI-UiG"/>
+                                            <constraint firstItem="uu3-Dh-aBz" firstAttribute="leading" secondItem="p8M-FH-Dld" secondAttribute="leading" id="cHw-FL-6jp"/>
                                             <constraint firstItem="rTW-M0-GrN" firstAttribute="centerY" secondItem="dsi-X3-HZY" secondAttribute="centerY" id="cvl-e1-3Br"/>
                                             <constraint firstItem="4b3-9J-e0r" firstAttribute="leading" secondItem="gad-yZ-FqM" secondAttribute="trailing" constant="10" id="dIC-sb-up2"/>
                                             <constraint firstItem="Iol-4h-u6y" firstAttribute="leading" secondItem="UKF-Lz-gZq" secondAttribute="trailing" constant="5" id="e43-rG-4BH"/>
@@ -2842,6 +2965,8 @@
                                             <constraint firstItem="Wef-qp-Xeq" firstAttribute="leading" secondItem="p8M-FH-Dld" secondAttribute="leading" id="lOn-VG-AS3"/>
                                             <constraint firstItem="IFE-r9-S0X" firstAttribute="leading" secondItem="uvi-2S-TWu" secondAttribute="leading" id="ldo-Vr-mEf"/>
                                             <constraint firstItem="upK-gK-fM3" firstAttribute="centerY" secondItem="dsi-X3-HZY" secondAttribute="centerY" constant="0.5" id="mRD-Hb-2tp"/>
+                                            <constraint firstItem="Pg5-ll-rsa" firstAttribute="top" secondItem="ifZ-om-sOq" secondAttribute="bottom" constant="12" id="mzE-6b-2gj"/>
+                                            <constraint firstItem="uu3-Dh-aBz" firstAttribute="width" secondItem="p8M-FH-Dld" secondAttribute="width" id="nbG-0O-fAK"/>
                                             <constraint firstItem="Wef-qp-Xeq" firstAttribute="leading" secondItem="G8P-U6-VXC" secondAttribute="trailing" constant="15" id="qut-p1-qGd"/>
                                             <constraint firstAttribute="trailing" secondItem="G3K-Bj-CGe" secondAttribute="trailing" constant="8" id="tDy-P7-oy9"/>
                                             <constraint firstItem="Iol-4h-u6y" firstAttribute="top" secondItem="Xg9-SD-1FX" secondAttribute="top" id="tQx-Sn-yzy"/>
@@ -2876,6 +3001,7 @@
                         <outlet property="IDedit" destination="rTW-M0-GrN" id="vuV-46-cNr"/>
                         <outlet property="broadcastSwitch" destination="ifZ-om-sOq" id="ea4-Lu-aYp"/>
                         <outlet property="btnCategory" destination="Wef-qp-Xeq" id="ape-id-YOB"/>
+                        <outlet property="btnLevel" destination="uu3-Dh-aBz" id="r6G-iy-QZv"/>
                         <outlet property="btnZone" destination="p8M-FH-Dld" id="sqi-Vd-RKW"/>
                         <outlet property="devAddressOne" destination="48s-NI-fpz" id="a7D-uF-yVa"/>
                         <outlet property="devAddressThree" destination="4b3-9J-e0r" id="Mm9-YY-dwE"/>
@@ -2948,25 +3074,25 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pM5-cL-sYR">
-                                                <rect key="frame" x="8" y="33" width="51" height="31"/>
+                                                <rect key="frame" x="8" y="32" width="51" height="31"/>
                                                 <animations/>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Broadcast" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHY-iw-HH8">
-                                                <rect key="frame" x="67" y="39" width="70" height="20"/>
+                                                <rect key="frame" x="67" y="38" width="70" height="20"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CoR-4S-Mec">
-                                                <rect key="frame" x="8" y="78" width="39" height="22"/>
+                                                <rect key="frame" x="8" y="111" width="39" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gh5-nz-raz" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="108" width="220" height="31"/>
+                                                <rect key="frame" x="94" y="141" width="220" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -2979,34 +3105,34 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hV0-2N-Hbi">
-                                                <rect key="frame" x="8" y="112" width="71" height="22"/>
+                                                <rect key="frame" x="8" y="145" width="71" height="22"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Dk-8x-My2">
-                                                <rect key="frame" x="202" y="148" width="112" height="30"/>
+                                                <rect key="frame" x="202" y="181" width="112" height="30"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Scene Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dec-qe-g1a">
-                                                <rect key="frame" x="120" y="154" width="72" height="16"/>
+                                                <rect key="frame" x="120" y="187" width="72" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Scene ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxd-lR-ygI">
-                                                <rect key="frame" x="8" y="154" width="52" height="16"/>
+                                                <rect key="frame" x="8" y="187" width="52" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ukc-GY-gNv">
-                                                <rect key="frame" x="70" y="147" width="40" height="30"/>
+                                                <rect key="frame" x="70" y="180" width="40" height="30"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="PJy-4x-Q6P"/>
@@ -3015,14 +3141,14 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Scene - All On - 01" translatesAutoresizingMaskIntoConstraints="NO" id="QJu-pT-ilp">
-                                                <rect key="frame" x="264" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="264" y="218" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="y7f-Hg-rK5"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Scene - All On - 00" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-ec-5oW">
-                                                <rect key="frame" x="204" y="185" width="50" height="50"/>
+                                                <rect key="frame" x="204" y="218" width="50" height="50"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="g0F-ec-5oW" secondAttribute="height" multiplier="1:1" id="WeX-iP-cPf"/>
@@ -3030,7 +3156,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ks5-nD-X53" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="63" y="195" width="75" height="30"/>
+                                                <rect key="frame" x="63" y="228" width="75" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -3046,7 +3172,7 @@
                                                 </connections>
                                             </button>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GZv-RV-Mbr">
-                                                <rect key="frame" x="0.0" y="248" width="320" height="320"/>
+                                                <rect key="frame" x="0.0" y="281" width="320" height="287"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -3122,8 +3248,15 @@
                                                     <outlet property="delegate" destination="azm-bF-cJq" id="3pm-Yb-Bgl"/>
                                                 </connections>
                                             </tableView>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3W-VM-Vjf" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="73" width="220" height="31"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oju-zG-Pzp">
+                                                <rect key="frame" x="8" y="78" width="41" height="22"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yFi-Sm-b0w" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="72" width="220" height="31"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -3132,11 +3265,11 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="btnZoneAction:" destination="azm-bF-cJq" eventType="touchUpInside" id="TuU-vq-RpQ"/>
+                                                    <action selector="btnLevel:" destination="azm-bF-cJq" eventType="touchUpInside" id="9Yb-A8-1Ar"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qJr-nv-lnQ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="195" width="45" height="30"/>
+                                                <rect key="frame" x="8" y="228" width="45" height="30"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -3162,11 +3295,25 @@
                                                 <rect key="frame" x="158" y="33" width="51" height="31"/>
                                                 <animations/>
                                             </switch>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3W-VM-Vjf" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="107" width="220" height="31"/>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="--">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnZoneAction:" destination="azm-bF-cJq" eventType="touchUpInside" id="TuU-vq-RpQ"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="WK0-kH-AnI" firstAttribute="leading" secondItem="dhA-5T-9mW" secondAttribute="trailing" constant="10" id="1cq-aM-OJz"/>
+                                            <constraint firstItem="yFi-Sm-b0w" firstAttribute="centerY" secondItem="oju-zG-Pzp" secondAttribute="centerY" constant="-1.5" id="3fH-4S-sRg"/>
                                             <constraint firstItem="g0F-ec-5oW" firstAttribute="width" secondItem="g0F-ec-5oW" secondAttribute="height" multiplier="1:1" id="3k0-jK-nq6"/>
                                             <constraint firstItem="5Dk-8x-My2" firstAttribute="leading" secondItem="Dec-qe-g1a" secondAttribute="trailing" constant="10" id="4DS-0i-F3V"/>
                                             <constraint firstItem="g0F-ec-5oW" firstAttribute="centerY" secondItem="QJu-pT-ilp" secondAttribute="centerY" id="5vY-Hw-To8"/>
@@ -3175,12 +3322,13 @@
                                             <constraint firstItem="FAV-d6-zsk" firstAttribute="centerY" secondItem="kzo-bI-wc9" secondAttribute="centerY" constant="0.5" id="7j7-MS-AFC"/>
                                             <constraint firstAttribute="trailing" secondItem="5Dk-8x-My2" secondAttribute="trailing" constant="6" id="C7A-B7-eqy"/>
                                             <constraint firstItem="Gh5-nz-raz" firstAttribute="width" secondItem="q3W-VM-Vjf" secondAttribute="width" id="CAo-FQ-wGI"/>
-                                            <constraint firstItem="CoR-4S-Mec" firstAttribute="top" secondItem="pM5-cL-sYR" secondAttribute="bottom" constant="14" id="DdA-tr-EVc"/>
+                                            <constraint firstItem="CoR-4S-Mec" firstAttribute="top" secondItem="pM5-cL-sYR" secondAttribute="bottom" constant="48" id="DdA-tr-EVc"/>
                                             <constraint firstItem="Ukc-GY-gNv" firstAttribute="centerY" secondItem="Dec-qe-g1a" secondAttribute="centerY" id="FWh-Yw-O94"/>
                                             <constraint firstItem="QJu-pT-ilp" firstAttribute="width" secondItem="QJu-pT-ilp" secondAttribute="height" multiplier="1:1" id="Ncu-ad-aRn"/>
                                             <constraint firstItem="GZv-RV-Mbr" firstAttribute="leading" secondItem="bq9-zE-V2c" secondAttribute="leading" id="O6V-se-Iu3"/>
                                             <constraint firstItem="hV0-2N-Hbi" firstAttribute="top" secondItem="CoR-4S-Mec" secondAttribute="bottom" constant="12" id="OXQ-Wd-woL"/>
                                             <constraint firstItem="dhA-5T-9mW" firstAttribute="leading" secondItem="FAV-d6-zsk" secondAttribute="trailing" constant="10" id="Orh-Tj-dWO"/>
+                                            <constraint firstItem="oju-zG-Pzp" firstAttribute="leading" secondItem="pM5-cL-sYR" secondAttribute="leading" id="QFW-BI-qn7"/>
                                             <constraint firstItem="HHY-iw-HH8" firstAttribute="leading" secondItem="pM5-cL-sYR" secondAttribute="trailing" constant="10" id="RqE-Ht-ihO"/>
                                             <constraint firstItem="pM5-cL-sYR" firstAttribute="centerY" secondItem="HHY-iw-HH8" secondAttribute="centerY" id="Sn4-N0-rSH"/>
                                             <constraint firstItem="Ukc-GY-gNv" firstAttribute="centerY" secondItem="Gxd-lR-ygI" secondAttribute="centerY" id="Sqo-Dj-xVS"/>
@@ -3191,6 +3339,8 @@
                                             <constraint firstItem="5Dk-8x-My2" firstAttribute="centerY" secondItem="Dec-qe-g1a" secondAttribute="centerY" constant="0.5" id="Y66-yT-HNP"/>
                                             <constraint firstItem="hV0-2N-Hbi" firstAttribute="leading" secondItem="CoR-4S-Mec" secondAttribute="leading" id="bQL-fK-Obx"/>
                                             <constraint firstAttribute="trailing" secondItem="Gh5-nz-raz" secondAttribute="trailing" constant="6" id="bta-57-sxU"/>
+                                            <constraint firstItem="yFi-Sm-b0w" firstAttribute="leading" secondItem="q3W-VM-Vjf" secondAttribute="leading" id="cjo-ae-FYp"/>
+                                            <constraint firstItem="yFi-Sm-b0w" firstAttribute="width" secondItem="q3W-VM-Vjf" secondAttribute="width" id="dbP-LH-VIx"/>
                                             <constraint firstItem="qJr-nv-lnQ" firstAttribute="leading" secondItem="Gxd-lR-ygI" secondAttribute="leading" id="fKe-k2-4ai"/>
                                             <constraint firstItem="Ukc-GY-gNv" firstAttribute="leading" secondItem="Gxd-lR-ygI" secondAttribute="trailing" constant="10" id="gWc-pF-Xot"/>
                                             <constraint firstItem="QJu-pT-ilp" firstAttribute="leading" secondItem="g0F-ec-5oW" secondAttribute="trailing" constant="10" id="hHO-wK-Y3Y"/>
@@ -3205,6 +3355,7 @@
                                             <constraint firstItem="Dec-qe-g1a" firstAttribute="leading" secondItem="Ukc-GY-gNv" secondAttribute="trailing" constant="10" id="udN-Ug-73Q"/>
                                             <constraint firstAttribute="trailing" secondItem="GZv-RV-Mbr" secondAttribute="trailing" id="uhT-pd-1wd"/>
                                             <constraint firstItem="QJu-pT-ilp" firstAttribute="trailing" secondItem="5Dk-8x-My2" secondAttribute="trailing" id="vDx-RL-hgQ"/>
+                                            <constraint firstItem="oju-zG-Pzp" firstAttribute="top" secondItem="pM5-cL-sYR" secondAttribute="bottom" constant="15" id="w0n-7M-TIZ"/>
                                             <constraint firstItem="q3W-VM-Vjf" firstAttribute="centerY" secondItem="CoR-4S-Mec" secondAttribute="centerY" id="xAq-Ur-pdT"/>
                                             <constraint firstItem="kzo-bI-wc9" firstAttribute="leading" secondItem="bq9-zE-V2c" secondAttribute="leading" constant="8" id="xV7-z9-d9Q"/>
                                             <constraint firstItem="pM5-cL-sYR" firstAttribute="top" secondItem="kzo-bI-wc9" secondAttribute="bottom" constant="8" symbolic="YES" id="xbL-c4-din"/>
@@ -3238,6 +3389,7 @@
                         <outlet property="IDedit" destination="Ukc-GY-gNv" id="90d-7s-TQB"/>
                         <outlet property="broadcastSwitch" destination="pM5-cL-sYR" id="HnE-VS-xGY"/>
                         <outlet property="btnCategory" destination="Gh5-nz-raz" id="iUZ-MG-IBW"/>
+                        <outlet property="btnLevel" destination="yFi-Sm-b0w" id="NIi-jl-ogK"/>
                         <outlet property="btnZone" destination="q3W-VM-Vjf" id="Cba-30-c1o"/>
                         <outlet property="devAddressOne" destination="FAV-d6-zsk" id="nSF-4S-vT4"/>
                         <outlet property="devAddressThree" destination="WK0-kH-AnI" id="iP4-iE-fx4"/>
@@ -3251,7 +3403,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eUR-va-B6D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1240" y="793"/>
+            <point key="canvasLocation" x="-1225" y="793"/>
         </scene>
         <!--Scan View Controller-->
         <scene sceneID="o6F-QH-2aN">
@@ -5929,7 +6081,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqT-RP-2Wj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1575" y="700"/>
+            <point key="canvasLocation" x="1579" y="793"/>
         </scene>
         <!--Security View Controller-->
         <scene sceneID="TbZ-vD-RZX">
@@ -6116,7 +6268,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-39-ETr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1225" y="678"/>
+            <point key="canvasLocation" x="1233" y="793"/>
         </scene>
         <!--Menu Settings View Controller-->
         <scene sceneID="W2z-Xi-ZB3">
@@ -6474,7 +6626,7 @@
         <image name="receive indicator" width="30" height="30"/>
         <image name="refesh screen" width="96" height="96"/>
         <image name="right" width="120" height="120"/>
-        <image name="search iBeacon" width="54" height="54"/>
+        <image name="search iBeacon" width="200" height="200"/>
         <image name="send indicator" width="30" height="30"/>
     </resources>
 </document>

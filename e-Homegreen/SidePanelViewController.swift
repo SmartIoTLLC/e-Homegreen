@@ -115,7 +115,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.cellForItemAtIndexPath(indexPath)?.bouncingEffectOnTouch(1)
+        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
         let selectedMenuItem = menuItems[indexPath.row]
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()

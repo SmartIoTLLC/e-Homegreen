@@ -21,6 +21,7 @@ extension Flag {
     @NSManaged var flagImageTwo: NSData
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber
+    @NSManaged var entityLevel: String?
     @NSManaged var flagZone: String?
     @NSManaged var flagCategory: String?
     @NSManaged var address: NSNumber

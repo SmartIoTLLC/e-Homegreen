@@ -19,7 +19,7 @@ class CenterViewController: UIViewController {
     
     @IBAction func btnSearchIBeacon(sender: AnyObject) {
         (UIApplication.sharedApplication().delegate as! AppDelegate).setFilterBySSIDOrByiBeaconAgain()
-        btnSearchIBeacon.rotateAndEmphase(3)
+        btnSearchIBeacon.bouncingEffectOnTouch(1)
     }
     @IBAction func btnRefreshDevices(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().postNotificationName("btnRefreshDevicesClicked", object: self, userInfo: nil)
@@ -116,7 +116,7 @@ class CenterViewController: UIViewController {
     }
     var delegate: CenterViewControllerDelegate?
     @IBAction func btnScreenMode(sender: AnyObject) {
-        btnScreenMode.bouncingEffectOnTouch(1)
+        btnScreenMode.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {
             UIApplication.sharedApplication().statusBarHidden = false
             btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
@@ -129,7 +129,7 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var btnScreenMode: UIButton!
   // MARK: Button actions
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
-        toggleLeftPanel.bouncingEffectOnTouch(1)
+        toggleLeftPanel.collapseInReturnToNormal(1)
         delegate?.toggleLeftPanel?()
     }
 

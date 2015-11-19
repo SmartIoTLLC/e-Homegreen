@@ -22,6 +22,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var flagTableView: UITableView!
     
@@ -106,6 +107,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     
     func saveText(text: String, id: Int) {
         switch id {
+        case 2:
+            btnLevel.setTitle(text, forState: UIControlState.Normal)
         case 3:
             btnZone.setTitle(text, forState: UIControlState.Normal)
         case 4:
@@ -171,13 +174,12 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         return true
     }
     
-    @IBAction func btnZoneAction(sender: AnyObject) {
-        
+    @IBAction func btnLevel(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 3
+        popoverVC.indexTab = 12
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -186,17 +188,15 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
         }
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 4
+        popoverVC.indexTab = 14
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -205,7 +205,23 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
+        }
+    }
+    
+    @IBAction func btnZoneAction(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 13
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
     
@@ -216,24 +232,29 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     @IBAction func btnAdd(sender: AnyObject) {
         if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if flagId <= 32767 && address <= 255 {
-                let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
-                flag.flagId = flagId
-                flag.flagName = flagName
-                flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                flag.isBroadcast = broadcastSwitch.on
-                flag.isLocalcast = localcastSwitch.on
-                flag.address = address
-                if btnZone.titleLabel?.text != "--" {
-                    flag.flagZone = btnZone.titleLabel!.text!
+                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                    let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
+                    flag.flagId = flagId
+                    flag.flagName = flagName
+                    flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    flag.isBroadcast = broadcastSwitch.on
+                    flag.isLocalcast = localcastSwitch.on
+                    flag.address = address
+                    if btnLevel.titleLabel?.text != "--" {
+                        flag.entityLevel = btnLevel.titleLabel!.text!
+                    }
+                    if btnZone.titleLabel?.text != "--" {
+                        flag.flagZone = btnZone.titleLabel!.text!
+                    }
+                    if btnCategory.titleLabel?.text != "--" {
+                        flag.flagCategory = btnCategory.titleLabel!.text!
+                    }
+                    flag.gateway = gateway!
+                    saveChanges()
+                    refreshFlagList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
                 }
-                if btnCategory.titleLabel?.text != "--" {
-                    flag.flagCategory = btnCategory.titleLabel!.text!
-                }
-                flag.gateway = gateway!
-                saveChanges()
-                refreshFlagList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
             }
         }
     }
@@ -283,6 +304,11 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
         broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = flags[indexPath.row].isLocalcast.boolValue
+        if let level = flags[indexPath.row].entityLevel {
+            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        } else {
+            btnLevel.titleLabel?.text = "--"
+        }
         if let _ = flags[indexPath.row].flagZone {
             btnZone.titleLabel?.text = "\(flags[indexPath.row].flagZone)"
         } else {

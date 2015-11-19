@@ -782,7 +782,6 @@
 				E76B576A1BBD245400A70F69 /* ScrollView */,
 				E76B57671BBD1E7100A70F69 /* View */,
 				E76B57661BBD1DB900A70F69 /* Button */,
-				73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -802,6 +801,7 @@
 		E76B57671BBD1E7100A70F69 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */,
 				E79FD4E91BCE43B600CA17DB /* ChatBubbleData.swift */,
 				E79FD4ED1BCE43D600CA17DB /* Util.swift */,
 				E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */,
@@ -1546,7 +1546,7 @@
 			baseConfigurationReference = 170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

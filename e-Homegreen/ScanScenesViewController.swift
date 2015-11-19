@@ -22,6 +22,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var sceneTableView: UITableView!
     
@@ -115,12 +116,6 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-//        if let results = fetResults {
-//            scenes = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     
     func saveChanges() {
@@ -173,6 +168,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     
     func saveText(text: String, id: Int) {
         switch id {
+        case 2:
+            btnLevel.setTitle(text, forState: UIControlState.Normal)
         case 3:
             btnZone.setTitle(text, forState: UIControlState.Normal)
         case 4:
@@ -181,13 +178,12 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         }
     }
     
-    @IBAction func btnCategoryAction(sender: AnyObject) {
-        
+    @IBAction func btnLevel(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 4
+        popoverVC.indexTab = 12
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -196,18 +192,32 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
         }
     }
     
-    
-    @IBAction func btnZoneAction(sender: AnyObject) {
-        
+    @IBAction func btnCategoryAction(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 3
+        popoverVC.indexTab = 14
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)            
+        }
+    }
+    
+    @IBAction func btnZoneAction(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 13
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -216,7 +226,6 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
         }
     }
     
@@ -227,23 +236,28 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-                scene.sceneId = sceneId
-                scene.sceneName = sceneName
-                scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                scene.isBroadcast = broadcastSwitch.on
-                scene.isLocalcast = localcastSwitch.on
-                if btnZone.titleLabel?.text != "--" {
-                    scene.sceneZone = btnZone.titleLabel!.text!
+                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                    let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                    scene.sceneId = sceneId
+                    scene.sceneName = sceneName
+                    scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    scene.isBroadcast = broadcastSwitch.on
+                    scene.isLocalcast = localcastSwitch.on
+                    if btnLevel.titleLabel?.text != "--" {
+                        scene.entityLevel = btnLevel.titleLabel!.text!
+                    }
+                    if btnZone.titleLabel?.text != "--" {
+                        scene.sceneZone = btnZone.titleLabel!.text!
+                    }
+                    if btnCategory.titleLabel?.text != "--" {
+                        scene.sceneCategory = btnCategory.titleLabel!.text!
+                    }
+                    scene.gateway = gateway!
+                    saveChanges()
+                    refreshSceneList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
                 }
-                if btnCategory.titleLabel?.text != "--" {
-                    scene.sceneCategory = btnCategory.titleLabel!.text!
-                }
-                scene.gateway = gateway!
-                saveChanges()
-                refreshSceneList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
             }
         }
     }
@@ -303,6 +317,21 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
         broadcastSwitch.on = scenes[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = scenes[indexPath.row].isLocalcast.boolValue
+        if let level = scenes[indexPath.row].entityLevel {
+            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        } else {
+            btnLevel.titleLabel?.text = "--"
+        }
+        if let zone = scenes[indexPath.row].sceneZone {
+            btnZone.setTitle(zone, forState: UIControlState.Normal)
+        } else {
+            btnZone.titleLabel?.text = "--"
+        }
+        if let category = scenes[indexPath.row].sceneCategory {
+            btnCategory.setTitle(category, forState: UIControlState.Normal)
+        } else {
+            btnCategory.titleLabel?.text = "--"
+        }
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             imageSceneOne.image = sceneImage
         }

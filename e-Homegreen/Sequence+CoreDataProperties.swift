@@ -22,6 +22,7 @@ extension Sequence {
     @NSManaged var sequenceImageOne: NSData
     @NSManaged var sequenceImageTwo: NSData
     @NSManaged var sequenceName: String
+    @NSManaged var entityLevel: String?
     @NSManaged var sequenceZone: String?
     @NSManaged var sequenceCategory: String?
     @NSManaged var gateway: Gateway

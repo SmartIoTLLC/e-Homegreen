@@ -44,6 +44,7 @@
     </entity>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -56,6 +57,7 @@
     </entity>
     <entity name="Flag" representedClassName=".Flag" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -99,6 +101,7 @@
     </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sceneCategory" optional="YES" attributeType="String" syncable="YES"/>
@@ -119,6 +122,7 @@
     </entity>
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sequenceCategory" optional="YES" attributeType="String" syncable="YES"/>
@@ -148,6 +152,7 @@
     </entity>
     <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timerCategory" optional="YES" attributeType="String" syncable="YES"/>
@@ -172,15 +177,15 @@
     <elements>
         <element name="Category" positionX="-9" positionY="144" width="128" height="120"/>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
-        <element name="Event" positionX="-9" positionY="171" width="128" height="195"/>
-        <element name="Flag" positionX="-18" positionY="135" width="128" height="210"/>
+        <element name="Event" positionX="-9" positionY="171" width="128" height="210"/>
+        <element name="Flag" positionX="-18" positionY="135" width="128" height="225"/>
         <element name="Gateway" positionX="-63" positionY="54" width="128" height="360"/>
         <element name="IBeacon" positionX="-18" positionY="135" width="128" height="120"/>
-        <element name="Scene" positionX="-54" positionY="135" width="128" height="195"/>
+        <element name="Scene" positionX="-54" positionY="135" width="128" height="210"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="135"/>
-        <element name="Sequence" positionX="-27" positionY="162" width="128" height="210"/>
+        <element name="Sequence" positionX="-27" positionY="162" width="128" height="225"/>
         <element name="Surveilence" positionX="-18" positionY="135" width="128" height="255"/>
-        <element name="Timer" positionX="9" positionY="180" width="128" height="225"/>
+        <element name="Timer" positionX="9" positionY="180" width="128" height="240"/>
         <element name="Zone" positionX="-18" positionY="135" width="128" height="150"/>
     </elements>
 </model>

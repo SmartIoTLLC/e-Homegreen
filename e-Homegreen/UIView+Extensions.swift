@@ -44,10 +44,23 @@ extension UIView {
     }
     func bouncingEffectOnTouch (times:Float) {
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        //        scaleAnimation.values = [0.5,1.0,1.5,2.0,2.5,2.0,2.2,1.8,1.6,1]
-        //        scaleAnimation.values = [1.0, 0.7, 0.8, 1.0, 1.4, 1.0]
-        scaleAnimation.values = [1.0, 0.7, 1.4, 1.0]
-        //        scaleAnimation.timingFunctions = [0.1,1.0,0.1,1]
+        scaleAnimation.values = [1.0, 0.7, 1.5, 1.0]
+        scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        scaleAnimation.repeatCount = times
+        scaleAnimation.duration = 1
+        layer.addAnimation(scaleAnimation, forKey: "bouncingEffectOnTouch")
+    }
+    func collapseInReturnToNormal (times:Float) {
+        let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        scaleAnimation.values = [1.0, 0.7, 1.0]
+        scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        scaleAnimation.repeatCount = times
+        scaleAnimation.duration = 1
+        layer.addAnimation(scaleAnimation, forKey: "bouncingEffectOnTouch")
+    }
+    func collapseInReturnToNormalMenu (times:Float) {
+        let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        scaleAnimation.values = [1.0, 0.5, 1.0]
         scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         scaleAnimation.repeatCount = times
         scaleAnimation.duration = 1

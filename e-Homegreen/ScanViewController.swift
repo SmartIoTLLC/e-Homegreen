@@ -224,31 +224,23 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     @IBAction func backButton(sender: UIStoryboardSegue) {
         self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
-    
-    
-    
-
-    
     var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBAction func btnScenes(sender: AnyObject) {
-        
-            senderButton = sender as? UIButton
-            
-            popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-            popoverVC.modalPresentationStyle = .Popover
-            popoverVC.preferredContentSize = CGSizeMake(300, 200)
-            popoverVC.delegate = self
-            popoverVC.indexTab = 6
-            if let popoverController = popoverVC.popoverPresentationController {
-                popoverController.delegate = self
-                popoverController.permittedArrowDirections = .Any
-                popoverController.sourceView = sender as? UIView
-                popoverController.sourceRect = sender.bounds
-                popoverController.backgroundColor = UIColor.lightGrayColor()
-                presentViewController(popoverVC, animated: true, completion: nil)
-                
-            }
+        senderButton = sender as? UIButton
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 6
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
     }
     
     @available(iOS 8.0, *)

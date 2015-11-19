@@ -82,7 +82,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             levelText = "\(returnZoneWithId(Int(level)!))"
         }
         if zone != "All" {
-            zoneText = "\(returnZoneWithId(Int(level)!))"
+            zoneText = "\(returnZoneWithId(Int(zone)!))"
         }
         if category != "All" {
             categoryText = "\(returnCategoryWithId(Int(category)!))"

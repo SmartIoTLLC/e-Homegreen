@@ -23,6 +23,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnType: UIButton!
+    @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var timerTableView: UITableView!
     
@@ -165,25 +166,30 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
-                let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
-                timer.timerId = timerId
-                timer.timerName = timerName
-                timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
-                timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
-                timer.isBroadcast = broadcastSwitch.on
-                timer.isLocalcast = localcastSwitch.on
-                timer.address = address
-                timer.type = type
-                if btnZone.titleLabel?.text != "--" {
-                    timer.timeZone = btnZone.titleLabel!.text!
+                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                    let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
+                    timer.timerId = timerId
+                    timer.timerName = timerName
+                    timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
+                    timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+                    timer.isBroadcast = broadcastSwitch.on
+                    timer.isLocalcast = localcastSwitch.on
+                    timer.address = address
+                    timer.type = type
+                    if btnLevel.titleLabel?.text != "--" {
+                        timer.entityLevel = btnLevel.titleLabel!.text!
+                    }
+                    if btnZone.titleLabel?.text != "--" {
+                        timer.timeZone = btnZone.titleLabel!.text!
+                    }
+                    if btnCategory.titleLabel?.text != "--" {
+                        timer.timerCategory = btnCategory.titleLabel!.text!
+                    }
+                    timer.gateway = gateway!
+                    saveChanges()
+                    refreshTimerList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
                 }
-                if btnCategory.titleLabel?.text != "--" {
-                    timer.timerCategory = btnCategory.titleLabel!.text!
-                }
-                timer.gateway = gateway!
-                saveChanges()
-                refreshTimerList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
             }
         }
     }
@@ -202,12 +208,31 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
             NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
         }
     }
+    
+    @IBAction func btnLevel(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 12
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+            
+        }
+    }
+    
     @IBAction func btnZone(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 3
+        popoverVC.indexTab = 13
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -226,7 +251,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 4
+        popoverVC.indexTab = 14
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -264,6 +289,8 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     
     func saveText(text: String, id: Int) {
         switch id {
+        case 2:
+            btnLevel.setTitle(text, forState: UIControlState.Normal)
         case 3:
             btnZone.setTitle(text, forState: UIControlState.Normal)
         case 4:
@@ -291,6 +318,21 @@ extension ScanTimerViewController: UITableViewDataSource {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(timers[indexPath.row].timerId)"
             cell.labelName.text = timers[indexPath.row].timerName
+            if let level = timers[indexPath.row].entityLevel {
+                btnLevel.setTitle(level, forState: UIControlState.Normal)
+            } else {
+                btnLevel.titleLabel?.text = "--"
+            }
+            if let zone = timers[indexPath.row].timeZone {
+                btnZone.setTitle(zone, forState: UIControlState.Normal)
+            } else {
+                btnZone.titleLabel?.text = "--"
+            }
+            if let category = timers[indexPath.row].timerCategory {
+                btnCategory.setTitle(category, forState: UIControlState.Normal)
+            } else {
+                btnCategory.titleLabel?.text = "--"
+            }
             if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
                 cell.imageOne.image = timerImage
             }

@@ -427,6 +427,7 @@ class IncomingHandler: NSObject {
                         device.voltage = 0
                         device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                         device.currentValue = 0
+                        device.runningTime = "00:00:00,0s"
                         device.mode = "AUTO"
                         device.modeState = "Off"
                         device.speed = "AUTO"

@@ -62,8 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
             preloadData()
-            defaults.setValue(0, forKey: "hourRefresh")
-            defaults.setValue(1, forKey: "minRefresh")
+            defaults.setValue(1, forKey: "hourRefresh")
+            defaults.setValue(0, forKey: "minRefresh")
             defaults.setBool(true, forKey: "EHGisPreloaded")
             defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
             //        Idle, Trobule, Alert, alarm
@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setFilterBySSIDOrByiBeaconAgain () {
         fetchIBeacons()
         loadItems()
-        NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
     }
     func setFilterBySSIDOrByiBeacon () {
         checkIfThereISGatewayWithExistingSSID()

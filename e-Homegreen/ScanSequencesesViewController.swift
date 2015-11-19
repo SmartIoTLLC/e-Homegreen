@@ -23,6 +23,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     @IBOutlet weak var editCycle: UITextField!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var sequencesTableView: UITableView!
     
@@ -121,12 +122,6 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//        if let results = fetResults {
-//            sequences = results
-//        } else {
-//            print("Nije htela...")
-//        }
     }
     func saveChanges() {
         do {
@@ -178,6 +173,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     
     func saveText(text: String, id: Int) {
         switch id {
+        case 2:
+            btnLevel.setTitle(text, forState: UIControlState.Normal)
         case 3:
             btnZone.setTitle(text, forState: UIControlState.Normal)
         case 4:
@@ -186,12 +183,12 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         }
     }
     
-    @IBAction func btnCategoryAction(sender: AnyObject) {
+    @IBAction func btnLevel(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 4
+        popoverVC.indexTab = 12
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -200,7 +197,23 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
+        }
+    }
+    
+    @IBAction func btnCategoryAction(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 14
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
     
@@ -209,7 +222,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 3
+        popoverVC.indexTab = 13
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -218,32 +231,36 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
         }
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
             if sceneId <= 32767 && address <= 255 {
-                let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
-                sequence.sequenceId = sceneId
-                sequence.sequenceName = sceneName
-                sequence.address = address
-                sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                sequence.isBroadcast = broadcastSwitch.on
-                sequence.isLocalcast = localcastSwitch.on
-                sequence.sequenceCycles = cycles
-                if btnZone.titleLabel?.text != "--" {
-                    sequence.sequenceZone = btnZone.titleLabel!.text!
+                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                    let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
+                    sequence.sequenceId = sceneId
+                    sequence.sequenceName = sceneName
+                    sequence.address = address
+                    sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    sequence.isBroadcast = broadcastSwitch.on
+                    sequence.isLocalcast = localcastSwitch.on
+                    sequence.sequenceCycles = cycles
+                    if btnLevel.titleLabel?.text != "--" {
+                        sequence.entityLevel = btnLevel.titleLabel!.text!
+                    }
+                    if btnZone.titleLabel?.text != "--" {
+                        sequence.sequenceZone = btnZone.titleLabel!.text!
+                    }
+                    if btnCategory.titleLabel?.text != "--" {
+                        sequence.sequenceCategory = btnCategory.titleLabel!.text!
+                    }
+                    sequence.gateway = gateway!
+                    saveChanges()
+                    refreshSequenceList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
                 }
-                if btnCategory.titleLabel?.text != "--" {
-                    sequence.sequenceCategory = btnCategory.titleLabel!.text!
-                }
-                sequence.gateway = gateway!
-                saveChanges()
-                refreshSequenceList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
             }
         }
     }
@@ -275,6 +292,21 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(sequences[indexPath.row].sequenceId)"
             cell.labelName.text = "\(sequences[indexPath.row].sequenceName)"
+            if let level = sequences[indexPath.row].entityLevel {
+                btnLevel.setTitle(level, forState: UIControlState.Normal)
+            } else {
+                btnLevel.titleLabel?.text = "--"
+            }
+            if let zone = sequences[indexPath.row].sequenceZone {
+                btnZone.setTitle(zone, forState: UIControlState.Normal)
+            } else {
+                btnZone.titleLabel?.text = "--"
+            }
+            if let category = sequences[indexPath.row].sequenceCategory {
+                btnCategory.setTitle(category, forState: UIControlState.Normal)
+            } else {
+                btnCategory.titleLabel?.text = "--"
+            }
             if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
                 cell.imageOne.image = sceneImage
             }

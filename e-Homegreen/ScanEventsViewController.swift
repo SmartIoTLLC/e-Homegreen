@@ -22,6 +22,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     @IBOutlet weak var localcastSwitch: UISwitch!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var eventTableView: UITableView!
     
@@ -167,13 +168,12 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func btnZoneAction(sender: AnyObject) {
-        
+    @IBAction func btnLevel(sender: AnyObject) {
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 3
+        popoverVC.indexTab = 12
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -182,17 +182,15 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
         }
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        
         popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 4
+        popoverVC.indexTab = 14
         popoverVC.filterGateway = gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -201,12 +199,30 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-            
+        }
+    }
+    
+    @IBAction func btnZoneAction(sender: AnyObject) {
+        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 13
+        popoverVC.filterGateway = gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
     
     func saveText(text: String, id: Int) {
         switch id {
+        case 2:
+            btnLevel.setTitle(text, forState: UIControlState.Normal)
         case 3:
             btnZone.setTitle(text, forState: UIControlState.Normal)
         case 4:
@@ -222,23 +238,28 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-                event.eventId = sceneId
-                event.eventName = sceneName
-                event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                event.isBroadcast = broadcastSwitch.on
-                event.isLocalcast = localcastSwitch.on
-                if btnZone.titleLabel?.text != "--" {
-                    event.eventZone = btnZone.titleLabel!.text!
+                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                    let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
+                    event.eventId = sceneId
+                    event.eventName = sceneName
+                    event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    event.isBroadcast = broadcastSwitch.on
+                    event.isLocalcast = localcastSwitch.on
+                    if btnLevel.titleLabel?.text != "--" {
+                        event.entityLevel = btnLevel.titleLabel!.text!
+                    }
+                    if btnZone.titleLabel?.text != "--" {
+                        event.eventZone = btnZone.titleLabel!.text!
+                    }
+                    if btnCategory.titleLabel?.text != "--" {
+                        event.eventCategory = btnCategory.titleLabel!.text!
+                    }
+                    event.gateway = gateway!
+                    saveChanges()
+                    refreshEventList()
+                    NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
                 }
-                if btnCategory.titleLabel?.text != "--" {
-                    event.eventCategory = btnCategory.titleLabel!.text!
-                }
-                event.gateway = gateway!
-                saveChanges()
-                refreshEventList()
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
             }
         }
     }
@@ -266,6 +287,21 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(events[indexPath.row].eventId)"
             cell.labelName.text = "\(events[indexPath.row].eventName)"
+            if let level = events[indexPath.row].entityLevel {
+                btnLevel.setTitle(level, forState: UIControlState.Normal)
+            } else {
+                btnLevel.titleLabel?.text = "--"
+            }
+            if let zone = events[indexPath.row].eventZone {
+                btnZone.setTitle(zone, forState: UIControlState.Normal)
+            } else {
+                btnZone.titleLabel?.text = "--"
+            }
+            if let category = events[indexPath.row].eventCategory {
+                btnCategory.setTitle(category, forState: UIControlState.Normal)
+            } else {
+                btnCategory.titleLabel?.text = "--"
+            }
             if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
                 cell.imageOne.image = sceneImage
             }

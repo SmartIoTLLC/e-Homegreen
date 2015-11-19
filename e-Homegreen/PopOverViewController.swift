@@ -97,7 +97,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
                 for item in results {
-                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: "\(item.id)", id: 2))
+                    tableList.append(TableList(name: item.name, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -117,7 +119,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
                 for item in results {
-                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: "\(item.id)", id: 3))
+                    tableList.append(TableList(name: item.name, id: 2))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -136,7 +140,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
                 for item in results {
-                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
+                    //                    tableList.append(TableList(name: "\(item.id)", id: 4))
+                    tableList.append(TableList(name: item.name, id: 4))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -170,6 +176,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case ScanGateway = 6
         case ScanTimerType = 7
         case iBeacon = 8
+        case LevelsPick = 12
+        case ZonesPick = 13
+        case CategoriesPick = 14
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -184,6 +193,12 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if indexTab == PopOver.Categories.rawValue {
             updateDeviceList("Category")
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
+        } else if indexTab == PopOver.LevelsPick.rawValue {
+            updateDeviceList("Level")
+        } else if indexTab == PopOver.ZonesPick.rawValue {
+            updateDeviceList("Zone")
+        } else if indexTab == PopOver.CategoriesPick.rawValue {
+            updateDeviceList("Category")
         } else if indexTab == PopOver.Scenes.rawValue {
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.ScanGateway.rawValue {
