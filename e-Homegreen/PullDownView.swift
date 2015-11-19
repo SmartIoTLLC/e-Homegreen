@@ -65,11 +65,11 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         grayBottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         self.addSubview(grayBottomLine)
     }
-    var locationButton:UIButton = UIButton()
-    var levelButton:UIButton = UIButton()
-    var zoneButton:UIButton = UIButton()
-    var categoryButton:UIButton = UIButton()
-    var goButton:UIButton = UIButton()
+    var locationButton:CustomGradientButton = CustomGradientButton()
+    var levelButton:CustomGradientButton = CustomGradientButton()
+    var zoneButton:CustomGradientButton = CustomGradientButton()
+    var categoryButton:CustomGradientButton = CustomGradientButton()
+    var goButton:CustomGradientButton = CustomGradientButton()
     
     func drawMenu(locationText:String, level:String, zone:String, category:String){
         var levelText = "All"
@@ -107,66 +107,66 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         categoryLabel.textColor = UIColor.whiteColor()
         self.addSubview(categoryLabel)
         
-        locationButton = UIButton(frame: CGRectMake(110, 30, 150, 40))
-        locationButton.backgroundColor = UIColor.grayColor()
+        locationButton = CustomGradientButton(frame: CGRectMake(110, 30, 150, 40))
+//        locationButton.backgroundColor = UIColor.grayColor()
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.setTitle(locationText, forState: UIControlState.Normal)
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        locationButton.layer.cornerRadius = 5
-        locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        locationButton.layer.borderWidth = 1
+//        locationButton.layer.cornerRadius = 5
+//        locationButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        locationButton.layer.borderWidth = 1
         locationButton.tag = 1
         locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(locationButton)
         
-        levelButton = UIButton(frame: CGRectMake(110, 80, 150, 40))
-        levelButton.backgroundColor = UIColor.grayColor()
+        levelButton = CustomGradientButton(frame: CGRectMake(110, 80, 150, 40))
+//        levelButton.backgroundColor = UIColor.grayColor()
         levelButton.titleLabel?.tintColor = UIColor.whiteColor()
         levelButton.setTitle(levelText, forState: UIControlState.Normal)
         levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        levelButton.layer.cornerRadius = 5
-        levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        levelButton.layer.borderWidth = 1
+//        levelButton.layer.cornerRadius = 5
+//        levelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        levelButton.layer.borderWidth = 1
         levelButton.tag = 2
         levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(levelButton)
         
-        zoneButton = UIButton(frame: CGRectMake(110, 130, 150, 40))
-        zoneButton.backgroundColor = UIColor.grayColor()
+        zoneButton = CustomGradientButton(frame: CGRectMake(110, 130, 150, 40))
+//        zoneButton.backgroundColor = UIColor.grayColor()
         zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
         zoneButton.setTitle(zoneText, forState: UIControlState.Normal)
         zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        zoneButton.layer.cornerRadius = 5
-        zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        zoneButton.layer.borderWidth = 1
+//        zoneButton.layer.cornerRadius = 5
+//        zoneButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        zoneButton.layer.borderWidth = 1
         zoneButton.tag = 3
         zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(zoneButton)
         
-        categoryButton = UIButton(frame: CGRectMake(110, 180, 150, 40))
-        categoryButton.backgroundColor = UIColor.grayColor()
+        categoryButton = CustomGradientButton(frame: CGRectMake(110, 180, 150, 40))
+//        categoryButton.backgroundColor = UIColor.grayColor()
         categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
         categoryButton.setTitle(categoryText, forState: UIControlState.Normal)
         categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        categoryButton.layer.cornerRadius = 5
-        categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        categoryButton.layer.borderWidth = 1
+//        categoryButton.layer.cornerRadius = 5
+//        categoryButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        categoryButton.layer.borderWidth = 1
         categoryButton.tag = 4
         categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButton)
         
-        goButton = UIButton(frame: CGRectMake(55, 250, 150, 40))
-        goButton.backgroundColor = UIColor.grayColor()
+        goButton = CustomGradientButton(frame: CGRectMake(55, 250, 150, 40))
+//        goButton.backgroundColor = UIColor.grayColor()
         goButton.titleLabel?.tintColor = UIColor.whiteColor()
         goButton.setTitle("Go", forState: UIControlState.Normal)
         goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        goButton.layer.cornerRadius = 5
-        goButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        goButton.layer.borderWidth = 1
+//        goButton.layer.cornerRadius = 5
+//        goButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        goButton.layer.borderWidth = 1
         goButton.tag = 4
         goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
         goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)

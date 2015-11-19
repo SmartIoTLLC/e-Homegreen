@@ -447,6 +447,7 @@ class IncomingHandler: NSObject {
                         device.runningTime = ""
                         device.currentValue = 0
                         device.current = 0
+                        device.runningTime = "00:00:00,0s"
                         device.amp = ""
                         device.runningTime = ""
                         device.type = name
