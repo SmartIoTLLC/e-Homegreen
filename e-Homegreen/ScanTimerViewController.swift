@@ -75,8 +75,8 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         imageTimerTwo.tag = 2
         imageTimerTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
-        devAddressOne.text = "\(gateway!.addressOne)"
-        devAddressTwo.text = "\(gateway!.addressTwo)"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
@@ -163,6 +163,10 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         // Dispose of any resources that can be recreated.
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
@@ -200,9 +204,12 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
             IDedit.text = ""
             nameEdit.text = ""
             devAddressThree.text = ""
-            btnZone.titleLabel?.text = "--"
-            btnCategory.titleLabel?.text = "--"
-            btnType.titleLabel?.text = "--"
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
+            broadcastSwitch.on = false
+            localcastSwitch.on = false
+            btnType.setTitle("--", forState: UIControlState.Normal)
             saveChanges()
             refreshTimerList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
@@ -300,12 +307,6 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         default: break
         }
     }
-    
-    
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
-    
 }
 extension ScanTimerViewController: UITableViewDelegate {
     
@@ -318,21 +319,6 @@ extension ScanTimerViewController: UITableViewDataSource {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(timers[indexPath.row].timerId)"
             cell.labelName.text = timers[indexPath.row].timerName
-            if let level = timers[indexPath.row].entityLevel {
-                btnLevel.setTitle(level, forState: UIControlState.Normal)
-            } else {
-                btnLevel.titleLabel?.text = "--"
-            }
-            if let zone = timers[indexPath.row].timeZone {
-                btnZone.setTitle(zone, forState: UIControlState.Normal)
-            } else {
-                btnZone.titleLabel?.text = "--"
-            }
-            if let category = timers[indexPath.row].timerCategory {
-                btnCategory.setTitle(category, forState: UIControlState.Normal)
-            } else {
-                btnCategory.titleLabel?.text = "--"
-            }
             if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
                 cell.imageOne.image = timerImage
             }
@@ -356,15 +342,20 @@ extension ScanTimerViewController: UITableViewDataSource {
         btnType.setTitle("\(timers[indexPath.row].type)", forState: UIControlState.Normal)
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = timers[indexPath.row].isLocalcast.boolValue
-        if let _ = timers[indexPath.row].timeZone {
-            btnZone.titleLabel?.text = "\(timers[indexPath.row].timeZone)"
+        if let level = timers[indexPath.row].entityLevel {
+            btnLevel.setTitle(level, forState: UIControlState.Normal)
         } else {
-            btnZone.titleLabel?.text = "--"
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
         }
-        if let _ = timers[indexPath.row].timerCategory {
-            btnCategory.titleLabel?.text = "\(timers[indexPath.row].timerCategory)"
+        if let zone = timers[indexPath.row].timeZone {
+            btnZone.setTitle(zone, forState: UIControlState.Normal)
         } else {
-            btnCategory.titleLabel?.text = "--"
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+        }
+        if let category = timers[indexPath.row].timerCategory {
+            btnCategory.setTitle(category, forState: UIControlState.Normal)
+        } else {
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
         }
         if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
             imageTimerOne.image = timerImage

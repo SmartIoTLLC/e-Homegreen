@@ -87,8 +87,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         
-        devAddressOne.text = "\(gateway!.addressOne)"
-        devAddressTwo.text = "\(gateway!.addressTwo)"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         // Do any additional setup after loading the view.
     }
@@ -234,6 +234,10 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         }
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
             if sceneId <= 32767 && address <= 255 {
@@ -274,16 +278,16 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             appDel.managedObjectContext!.deleteObject(sequence)
             IDedit.text = ""
             nameEdit.text = ""
-            btnZone.titleLabel?.text = "--"
-            btnCategory.titleLabel?.text = "--"
+            devAddressThree.text = ""
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
+            broadcastSwitch.on = false
+            localcastSwitch.on = false
             saveChanges()
             refreshSequenceList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
         }
-    }
-        
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -292,21 +296,6 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(sequences[indexPath.row].sequenceId)"
             cell.labelName.text = "\(sequences[indexPath.row].sequenceName)"
-            if let level = sequences[indexPath.row].entityLevel {
-                btnLevel.setTitle(level, forState: UIControlState.Normal)
-            } else {
-                btnLevel.titleLabel?.text = "--"
-            }
-            if let zone = sequences[indexPath.row].sequenceZone {
-                btnZone.setTitle(zone, forState: UIControlState.Normal)
-            } else {
-                btnZone.titleLabel?.text = "--"
-            }
-            if let category = sequences[indexPath.row].sequenceCategory {
-                btnCategory.setTitle(category, forState: UIControlState.Normal)
-            } else {
-                btnCategory.titleLabel?.text = "--"
-            }
             if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -330,15 +319,20 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         editCycle.text = "\(sequences[indexPath.row].sequenceCycles)"
         broadcastSwitch.on = sequences[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = sequences[indexPath.row].isLocalcast.boolValue
+        if let level = sequences[indexPath.row].entityLevel {
+            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        } else {
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+        }
         if let _ = sequences[indexPath.row].sequenceZone {
             btnZone.titleLabel?.text = "\(sequences[indexPath.row].sequenceZone)"
         } else {
-            btnZone.titleLabel?.text = "--"
+            btnZone.setTitle("--", forState: UIControlState.Normal)
         }
         if let _ = sequences[indexPath.row].sequenceCategory {
             btnCategory.titleLabel?.text = "\(sequences[indexPath.row].sequenceCategory)"
         } else {
-            btnCategory.titleLabel?.text = "--"
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
         }
         if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
             imageSceneOne.image = sceneImage

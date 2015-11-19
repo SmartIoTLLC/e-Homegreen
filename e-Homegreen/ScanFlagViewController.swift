@@ -74,8 +74,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
-        devAddressOne.text = "\(gateway!.addressOne)"
-        devAddressTwo.text = "\(gateway!.addressTwo)"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
@@ -229,6 +229,10 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         return .None
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if flagId <= 32767 && address <= 255 {
@@ -264,16 +268,16 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             appDel.managedObjectContext!.deleteObject(flag)
             IDedit.text = ""
             nameEdit.text = ""
-            btnZone.titleLabel?.text = "--"
-            btnCategory.titleLabel?.text = "--"
+            devAddressThree.text = ""
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
+            broadcastSwitch.on = false
+            localcastSwitch.on = false
             saveChanges()
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
         }
-    }
-    
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

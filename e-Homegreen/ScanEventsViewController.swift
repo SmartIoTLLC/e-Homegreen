@@ -74,9 +74,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
-        devAddressOne.text = "\(gateway!.addressOne)"
-        devAddressTwo.text = "\(gateway!.addressTwo)"
-        
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
@@ -235,6 +234,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         return .None
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
@@ -269,16 +272,16 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             appDel.managedObjectContext!.deleteObject(event)
             IDedit.text = ""
             nameEdit.text = ""
-            btnZone.titleLabel?.text = "--"
-            btnCategory.titleLabel?.text = "--"
+            devAddressThree.text = ""
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
+            broadcastSwitch.on = false
+            localcastSwitch.on = false
             saveChanges()
             refreshEventList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
         }
-    }
-        
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -287,21 +290,6 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(events[indexPath.row].eventId)"
             cell.labelName.text = "\(events[indexPath.row].eventName)"
-            if let level = events[indexPath.row].entityLevel {
-                btnLevel.setTitle(level, forState: UIControlState.Normal)
-            } else {
-                btnLevel.titleLabel?.text = "--"
-            }
-            if let zone = events[indexPath.row].eventZone {
-                btnZone.setTitle(zone, forState: UIControlState.Normal)
-            } else {
-                btnZone.titleLabel?.text = "--"
-            }
-            if let category = events[indexPath.row].eventCategory {
-                btnCategory.setTitle(category, forState: UIControlState.Normal)
-            } else {
-                btnCategory.titleLabel?.text = "--"
-            }
             if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -324,15 +312,20 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
         broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = events[indexPath.row].isLocalcast.boolValue
-        if let _ = events[indexPath.row].eventZone {
-            btnZone.titleLabel?.text = "\(events[indexPath.row].eventZone)"
+        if let level = events[indexPath.row].entityLevel {
+            btnLevel.setTitle(level, forState: UIControlState.Normal)
         } else {
-            btnZone.titleLabel?.text = "--"
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
         }
-        if let _ = events[indexPath.row].eventCategory {
-            btnCategory.titleLabel?.text = "\(events[indexPath.row].eventCategory)"
+        if let zone = events[indexPath.row].eventZone {
+            btnZone.setTitle(zone, forState: UIControlState.Normal)
         } else {
-            btnCategory.titleLabel?.text = "--"
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+        }
+        if let category = events[indexPath.row].eventCategory {
+            btnCategory.setTitle(category, forState: UIControlState.Normal)
+        } else {
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
         }
         if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
             imageSceneOne.image = sceneImage

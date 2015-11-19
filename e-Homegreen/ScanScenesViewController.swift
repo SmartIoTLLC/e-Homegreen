@@ -81,8 +81,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         
-        devAddressOne.text = "\(gateway!.addressOne)"
-        devAddressTwo.text = "\(gateway!.addressTwo)"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         // Do any additional setup after loading the view.
     }
@@ -233,6 +233,10 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         return .None
     }
     
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
@@ -267,16 +271,16 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             appDel.managedObjectContext!.deleteObject(scene)
             IDedit.text = ""
             nameEdit.text = ""
-            btnZone.titleLabel?.text = "--"
-            btnCategory.titleLabel?.text = "--"
+            devAddressThree.text = ""
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
+            btnZone.setTitle("--", forState: UIControlState.Normal)
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
+            broadcastSwitch.on = false
+            localcastSwitch.on = false
             saveChanges()
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
         }
-    }
-    
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -285,16 +289,6 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
             cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
-            if let _ = scenes[indexPath.row].sceneZone {
-                btnZone.titleLabel?.text = "\(scenes[indexPath.row].sceneZone)"
-            } else {
-                btnZone.titleLabel?.text = "--"
-            }
-            if let _ = scenes[indexPath.row].sceneCategory {
-                btnCategory.titleLabel?.text = "\(scenes[indexPath.row].sceneCategory)"
-            } else {
-                btnCategory.titleLabel?.text = "--"
-            }
             if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -320,17 +314,17 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         if let level = scenes[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         } else {
-            btnLevel.titleLabel?.text = "--"
+            btnLevel.setTitle("--", forState: UIControlState.Normal)
         }
         if let zone = scenes[indexPath.row].sceneZone {
             btnZone.setTitle(zone, forState: UIControlState.Normal)
         } else {
-            btnZone.titleLabel?.text = "--"
+            btnZone.setTitle("--", forState: UIControlState.Normal)
         }
         if let category = scenes[indexPath.row].sceneCategory {
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         } else {
-            btnCategory.titleLabel?.text = "--"
+            btnCategory.setTitle("--", forState: UIControlState.Normal)
         }
         if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
             imageSceneOne.image = sceneImage
