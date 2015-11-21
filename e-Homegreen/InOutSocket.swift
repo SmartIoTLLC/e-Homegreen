@@ -42,13 +42,16 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+        if filterContext != nil {
+            print(filterContext)
+        }
         print("INOUT SOCKET incoming message: \(address.convertToBytes())")
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
         if let hostHost = host as? String {
             print("\(hostHost) \(hostPort) \(data.convertToBytes())")
-            IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
+            _ = IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
         }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
@@ -81,7 +84,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     func sendByte(ip:String, arrayByte: [UInt8]) {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
-        socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 0)
+        socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 1)
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {

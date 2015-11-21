@@ -51,16 +51,23 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         //
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
+    }
+    override func viewDidAppear(animated: Bool) {
+        addObservers()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
-        
+    }    
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCdidFindNameForDevice", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCDidFindDevice", object: nil)
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

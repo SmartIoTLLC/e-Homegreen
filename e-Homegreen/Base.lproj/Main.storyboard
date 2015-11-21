@@ -5600,7 +5600,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="2iY-it-mkU"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <state key="normal" title="CANCEL">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5612,7 +5612,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Etr-xL-ZIH"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <state key="normal" title="PAUSE">
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>

@@ -55,13 +55,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for scene in gateway!.scenes {
-            scenes.append(scene as! Scene)
-        }
-        refreshSceneList()
+        updateSceneList()
         
-//        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-//        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         
@@ -100,7 +95,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         sceneTableView.reloadData()
     }
     
-    func updateSceneList () {
+    func updateSceneList() {
         let fetchRequest = NSFetchRequest(entityName: "Scene")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)

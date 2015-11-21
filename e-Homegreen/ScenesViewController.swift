@@ -60,15 +60,31 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
         updateSceneList()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: "refreshSceneListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-    func refreshSceneList () {
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
+    }
+    func refreshSceneList() {
         updateSceneList()
         scenesCollectionView.reloadData()
     }
-    
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+        refreshSceneList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: "refreshSceneListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshSceneListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -129,12 +145,6 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         } catch  {
             
         }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-//        if let results = fetResults {
-//            scenes = results
-//        } else {
-//            
-//        }
         
     }
     func saveChanges() {
@@ -192,11 +202,6 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         scenesCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
-    }
-    
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
@@ -210,17 +215,6 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -238,7 +232,6 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
         if sceneId >= 0 && sceneId <= 255 {
             SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         }
-//        scenesCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -269,13 +262,6 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellLabel.addGestureRecognizer(longPress)
         
         cell.getImagesFrom(scenes[indexPath.row])
-//        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-//            cell.sceneCellImageView.image = sceneImage
-//        }
-//        
-//        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
-//            cell.sceneCellImageView.highlightedImage = sceneImage
-//        }
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor

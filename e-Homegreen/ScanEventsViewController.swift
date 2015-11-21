@@ -55,10 +55,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for event in gateway!.events {
-            events.append(event as! Event)
-        }
-        refreshEventList()
+        updateEventList()
         
 //        devAddressOne.inputAccessoryView = keyboardDoneButtonView
 //        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
@@ -100,7 +97,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         eventTableView.reloadData()
     }
     
-    func updateEventList () {
+    func updateEventList() {
         let fetchRequest = NSFetchRequest(entityName: "Event")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)

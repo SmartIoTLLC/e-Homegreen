@@ -42,6 +42,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        cyclesTextField.text = "\(sequence!.sequenceCycles)"
         isBroadcast.tag = 100
         isBroadcast.on = sequence!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
@@ -88,6 +89,12 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     }
     
     func dismissViewController () {
+        if cyclesTextField.text != "" {
+            if let cycles = Int(cyclesTextField.text!) {
+                sequence?.sequenceCycles = cycles
+                saveChanges()
+            }
+        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

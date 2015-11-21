@@ -57,16 +57,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for sequenceFromGateway in gateway!.sequences {
-            if let sequence = sequenceFromGateway as? Sequence {
-                sequences.append(sequence)
-                print(sequences.count)
-            }
-        }
-        refreshSequenceList()
+        updateSequenceList()
         
-//        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-//        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         editCycle.inputAccessoryView = keyboardDoneButtonView
@@ -106,7 +98,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         sequencesTableView.reloadData()
     }
     
-    func updateSequenceList () {
+    func updateSequenceList() {
         let fetchRequest = NSFetchRequest(entityName: "Sequence")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)

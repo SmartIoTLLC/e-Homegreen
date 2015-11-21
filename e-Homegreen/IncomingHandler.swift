@@ -17,7 +17,9 @@ class IncomingHandler: NSObject {
     var error:NSError? = nil
     var host:String = ""
     var port:UInt16 = 0
-    
+    deinit {
+        print("UPRAVO SE GASIM - class IncomingHandler: NSObject")
+    }
     init (byteArrayToHandle: [UInt8], host:String, port:UInt16) {
         super.init()
         NSNotificationCenter.defaultCenter().postNotificationName("didReceiveMessageFromGateway", object: self, userInfo: nil)
@@ -535,10 +537,10 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         
     }
-    //  0x00 Waiting
-    //  0x01 Started
-    //  0xF0 Elapsed
-    //  0xEE Suspend
+    //  0x00 Waiting = 0
+    //  0x01 Started = 1
+    //  0xF0 Elapsed = 240
+    //  0xEE Suspend = 238
     //  informacije o parametrima kanala
     func ackTimerStatus (byteArray:[UInt8]){
         print("AOOO")

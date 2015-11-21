@@ -56,10 +56,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for timer in gateway!.timers {
-            timers.append(timer as! Timer)
-        }
-//        refreshTimerList()
+        updateTimerList()
         
         devAddressOne.inputAccessoryView = keyboardDoneButtonView
         devAddressTwo.inputAccessoryView = keyboardDoneButtonView
@@ -101,7 +98,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         timerTableView.reloadData()
     }
     
-    func updateTimerList () {
+    func updateTimerList() {
         let fetchRequest = NSFetchRequest(entityName: "Timer")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)

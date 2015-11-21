@@ -35,8 +35,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        //        commonConstruct()
-        addObservers()
+        
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -44,7 +43,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        //                pullDown.scrollsToTop = false
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
@@ -52,10 +50,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         deviceCollectionView.delegate = self
         // Do any additional setup after loading the view.
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        locationSearch = locationSearchText[0]
-        zoneSearch = locationSearchText[1]
-        levelSearch = locationSearchText[2]
-        categorySearch = locationSearchText[3]
+        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
         
         updateDeviceList()
     }
@@ -64,14 +59,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         refreshVisibleDevicesInScrollView()
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
-    override func viewWillAppear(animated: Bool) {
-        
-    }
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
-    }
-    override func viewDidDisappear(animated: Bool) {
-        
     }
     func refreshLocalParametars () {
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")

@@ -55,13 +55,8 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        for flag in gateway!.flags {
-            flags.append(flag as! Flag)
-        }
-//        refreshEventList()
+        updateFlagList()
         
-        //        devAddressOne.inputAccessoryView = keyboardDoneButtonView
-        //        devAddressTwo.inputAccessoryView = keyboardDoneButtonView
         devAddressThree.inputAccessoryView = keyboardDoneButtonView
         IDedit.inputAccessoryView = keyboardDoneButtonView
         
@@ -117,7 +112,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         }
     }
     
-    func updateFlagList () {
+    func updateFlagList() {
         let fetchRequest = NSFetchRequest(entityName: "Flag")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)

@@ -46,10 +46,31 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
         updateSequencesList()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: "refreshSequenceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-    
+    func refreshSequenceList() {
+        updateSequencesList()
+        sequenceCollectionView.reloadData()
+    }
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
+    }
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+        refreshSequenceList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: "refreshSequenceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshSequenceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     override func viewWillLayoutSubviews() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -95,15 +116,9 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         sequenceCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
@@ -118,12 +133,6 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         textField.resignFirstResponder()
         return true
     }
-    func refreshSequenceList () {
-        updateSequencesList()
-        sequenceCollectionView.reloadData()
-    }
-    
-    
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -223,7 +232,6 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
         } else {
             SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
         }
-        sequenceCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -258,14 +266,6 @@ extension SequencesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
-//        //2
-//        //        let flickrPhoto = photoForIndexPath(indexPath)
-//        let gradient:CAGradientLayer = CAGradientLayer()
-//        gradient.frame = cell.bounds
-//        gradient.colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-//        cell.layer.insertSublayer(gradient, atIndex: 0)
-//        //        cell.backgroundColor = UIColor.lightGrayColor()
-//        //3
         cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
@@ -273,39 +273,37 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.sequenceTitle.userInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
         
-        if let sequenceImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
-            cell.sequenceImageView.image = sequenceImage
-        }
-        
-        if let sequenceImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
-            cell.sequenceImageView.highlightedImage = sequenceImage
-        }
+        cell.getImagesFrom(sequences[indexPath.row])
         
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
         cell.sequenceButton.addGestureRecognizer(tap)
         cell.sequenceButton.tag = indexPath.row
         
-//        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImage) {
-//            cell.sceneCellImageView.image = sceneImage
-//        }
-        //        cell.sceneCellLabel.image = "\()"
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
     }
     
-    func tapStop (gestureRecognizer:UITapGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        if let sequenceId = sequences[tag].sequenceId as? Int {
+    func tapStop (gesture:UITapGestureRecognizer) {
+        //   Take cell from touched point
+        let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
+        let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
+        if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? EventsCollectionViewCell {
+            //   Take tag from touced vies
+            let tag = gesture.view!.tag
+            let sequenceId = Int(sequences[tag].sequenceId)
             var address:[UInt8] = []
             if sequences[tag].isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
+            } else if sequences[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), 0xFF]
             } else {
                 address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), UInt8(Int(sequences[tag].address))]
             }
+            //  0xEF = 239, stops it?
             SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
-            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
+            cell.commandSentChangeImage()
         }
     }
 }
@@ -318,61 +316,55 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var sequenceButton: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
-//    func getImagesFrom(scene:Scene) {
-//        if let sceneImage = UIImage(data: scene.sceneImageOne) {
-//            imageOne = sceneImage
-//        }
-//        
-//        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
-//            imageTwo = sceneImage
-//        }
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                sceneCellImageView.image = imageTwo
-//                setNeedsDisplay()
-//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//        }
-//    }
-//    func changeImageToNormal () {
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
-    override func drawRect(rect: CGRect) {
+    func getImagesFrom(sequence:Sequence) {
+        if let sequenceImage = UIImage(data: sequence.sequenceImageOne) {
+            imageOne = sequenceImage
+        }
         
+        if let sequenceImage = UIImage(data: sequence.sequenceImageTwo) {
+            imageTwo = sequenceImage
+        }
+        sequenceImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override var highlighted: Bool {
+        willSet(newValue) {
+            if newValue {
+                sequenceImageView.image = imageTwo
+                setNeedsDisplay()
+                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+            }
+        }
+        didSet {
+            print("highlighted = \(highlighted)")
+        }
+    }
+    func commandSentChangeImage() {
+        sequenceImageView.image = imageTwo
+        setNeedsDisplay()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+    }
+    func changeImageToNormal () {
+        sequenceImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override func drawRect(rect: CGRect) {        
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        
         UIColor.lightGrayColor().setStroke()
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
-    
-    
 }

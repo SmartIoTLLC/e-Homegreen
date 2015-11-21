@@ -49,7 +49,29 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-    
+    func refreshFlagList() {
+        updateFlagsList()
+        flagsCollectionView.reloadData()
+    }
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
+    }
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+        refreshFlagList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshFlagList", name: "refreshFlagListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshFlagListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -100,11 +122,6 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         flagsCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -118,13 +135,6 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         textField.resignFirstResponder()
         return true
     }
-    func refreshFlagList () {
-        updateFlagsList()
-        flagsCollectionView.reloadData()
-    }
-    
-    
-    
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -259,13 +269,7 @@ extension FlagsViewController: UICollectionViewDataSource {
         cell.flagTitle.userInteractionEnabled = true
         cell.flagTitle.addGestureRecognizer(longPress)
         
-        if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
-            cell.flagImageView.image = flagImage
-        }
-        
-        if let flagImage = UIImage(data: flags[indexPath.row].flagImageTwo) {
-            cell.flagImageView.highlightedImage = flagImage
-        }
+        cell.getImagesFrom(flags[indexPath.row])
         
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
         cell.flagButton.tag = indexPath.row
@@ -284,18 +288,17 @@ extension FlagsViewController: UICollectionViewDataSource {
     
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
-        if let flagId = flags[tag].flagId as? Int {
-            var address:[UInt8] = []
-            if flags[tag].isBroadcast.boolValue {
-                address = [0xFF, 0xFF, 0xFF]
-            } else {
-                address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
-            }
-            if flags[tag].setState.boolValue {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
-            } else {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
-            }
+        let flagId = Int(flags[tag].flagId)
+        var address:[UInt8] = []
+        if flags[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else {
+            address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
+        }
+        if flags[tag].setState.boolValue {
+            SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+        } else {
+            SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
         }
     }
 }
@@ -306,33 +309,20 @@ class FlagCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var flagButton: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
-//    func getImagesFrom(flags:Scene) {
-//        if let sceneImage = UIImage(data: scene.sceneImageOne) {
-//            imageOne = sceneImage
-//        }
-//        
-//        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
-//            imageTwo = sceneImage
-//        }
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                sceneCellImageView.image = imageTwo
-//                setNeedsDisplay()
-//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//        }
-//    }
-//    func changeImageToNormal () {
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
+    func getImagesFrom(flag:Flag) {
+        if let flagImage = UIImage(data: flag.flagImageOne) {
+            imageOne = flagImage
+        }
+        if let flagImage = UIImage(data: flag.flagImageTwo) {
+            imageTwo = flagImage
+        }
+        if flag.setState.boolValue {
+            flagImageView.image = imageTwo
+        } else {
+            flagImageView.image = imageOne
+        }
+        setNeedsDisplay()
+    }
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,

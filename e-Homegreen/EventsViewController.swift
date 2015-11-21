@@ -44,11 +44,31 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Events")
         updateEventsList()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: "refreshEventListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-    
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+    }
+    func refreshEventsList() {
+        updateEventsList()
+        eventCollectionView.reloadData()
+    }
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+        updateEventsList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: "refreshEventListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshEventListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -99,11 +119,6 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         eventCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -112,12 +127,6 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
-    
-    func refreshEventsList () {
-        updateEventsList()
-        eventCollectionView.reloadData()
-    }
-    
     
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
@@ -215,7 +224,6 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
         if eventId >= 0 && eventId <= 255 {
             SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
         }
-        eventCollectionView.reloadData()
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -241,17 +249,13 @@ extension EventsViewController: UICollectionViewDataSource {
         cell.eventTitle.text = "\(events[indexPath.row].eventName)"
         cell.eventTitle.tag = indexPath.row
         cell.eventTitle.userInteractionEnabled = true
-        
+        cell.getImagesFrom(events[indexPath.row])
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.eventTitle.addGestureRecognizer(longPress)
         
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
             cell.eventImageView.image = eventImage
-        }
-        
-        if let eventImage = UIImage(data: events[indexPath.row].eventImageTwo) {
-            cell.eventImageView.highlightedImage = eventImage
         }
         
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
@@ -264,16 +268,24 @@ extension EventsViewController: UICollectionViewDataSource {
         return cell
     }
     
-    func tapCancel (gestureRecognizer:UITapGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        if let eventId = events[tag].eventId as? Int {
+    func tapCancel (gesture:UITapGestureRecognizer) {
+        //   Take cell from touched point
+        let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: eventCollectionView)
+        let indexPath = eventCollectionView.indexPathForItemAtPoint(pointInTable!)
+        if let cell = eventCollectionView.cellForItemAtIndexPath(indexPath!) as? EventsCollectionViewCell {
+            //   Take tag from touced vies
+            let tag = gesture.view!.tag
+            let eventId = Int(events[tag].eventId)
             var address:[UInt8] = []
             if events[tag].isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
+            } else if events[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), 0xFF]
             } else {
                 address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
             }
             SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+            cell.commandSentChangeImage()
         }
     }
     
@@ -287,10 +299,7 @@ extension EventsViewController: UICollectionViewDataSource {
             }
         }
     }
-    
 }
-
-
 class EventsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventImageView: UIImageView!
@@ -319,6 +328,11 @@ class EventsCollectionViewCell: UICollectionViewCell {
         didSet {
             print("highlighted = \(highlighted)")
         }
+    }
+    func commandSentChangeImage () {
+        eventImageView.image = imageTwo
+        setNeedsDisplay()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
     }
     func changeImageToNormal () {
         eventImageView.image = imageOne

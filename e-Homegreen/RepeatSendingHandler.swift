@@ -83,4 +83,7 @@ class RepeatSendingHandler: NSObject {
             abort()
         }
     }
+    deinit {
+        print("UPRAVO SE GASIM - class RepeatSendingHandler: NSObject")
+    }
 }

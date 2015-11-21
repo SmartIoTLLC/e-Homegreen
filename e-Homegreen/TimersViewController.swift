@@ -44,11 +44,31 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
         refreshTimerList()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-    
+    func refreshTimerList() {
+        updateTimersList()
+        timersCollectionView.reloadData()
+    }
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
+    }
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+        refreshTimerList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshTimerListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     override func viewWillLayoutSubviews() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -94,11 +114,6 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         timersCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
-    
-    func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -117,12 +132,6 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         textField.resignFirstResponder()
         return true
     }
-    func refreshTimerList () {
-        updateTimersList()
-        timersCollectionView.reloadData()
-    }
-    
-    
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -208,6 +217,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
+        changeImageInCell(button)
     }
     
     func pressedStart (button:UIButton) {
@@ -221,6 +231,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
+        changeImageInCell(button)
     }
     
     func pressedResume (button:UIButton) {
@@ -234,6 +245,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
+        changeImageInCell(button)
     }
     
     func pressedCancel (button:UIButton) {
@@ -247,6 +259,14 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
+        changeImageInCell(button)
+    }
+    func changeImageInCell(button:UIButton) {
+        let pointInTable = button.convertPoint(button.bounds.origin, toView: timersCollectionView)
+        let indexPath = timersCollectionView.indexPathForItemAtPoint(pointInTable)
+        if let cell = timersCollectionView.cellForItemAtIndexPath(indexPath!) as? TimerCollectionViewCell {
+            cell.commandSentChangeImage()
+        }
     }
 }
 
@@ -308,21 +328,21 @@ extension TimersViewController: UICollectionViewDataSource {
         cell.timerTitle.userInteractionEnabled = true
         cell.timerTitle.addGestureRecognizer(longPress)
         
-        if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
-            cell.timerImageView.image = timerImage
-        }
+        cell.getImagesFrom(timers[indexPath.row])
         
-        if let timerImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
-            cell.timerImageView.highlightedImage = timerImage
-        }
         cell.timerButton.tag = indexPath.row
         cell.timerButtonLeft.tag = indexPath.row
         cell.timerButtonRight.tag = indexPath.row
-//        cell.timerButton.buttonW = UIButtonType.Custom
-//        cell.timerButton.buttonType = UIButtonType.Custom
-//        cell.timerButton.buttonType = UIButtonType.Custom
         print(timers[indexPath.row].type)
         if timers[indexPath.row].type == "Countdown" {
+            //   ===   Default   ===
+            cell.timerButton.hidden = false
+            cell.timerButtonLeft.hidden = true
+            cell.timerButtonRight.hidden = true
+            cell.timerButton.enabled = true
+            cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
+            cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
+            //   ===================
             if timers[indexPath.row].timerState == 1 {
                 cell.timerButton.hidden = true
                 cell.timerButtonLeft.hidden = false
@@ -355,6 +375,7 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonLeft.hidden = true
                 cell.timerButtonRight.hidden = true
                 cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
+//                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
                 cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.timerButton.enabled = false
             } else {
@@ -366,9 +387,6 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButton.enabled = true
             }
         }
-//        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
-//        cell.timerButton.addGestureRecognizer(tap)
-//        cell.timerButton.tag = indexPath.row
         
         // cancel start pause resume
         //
@@ -377,20 +395,6 @@ extension TimersViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
-    }
-    
-    func tapStop (gestureRecognizer:UITapGestureRecognizer) {
-//        let tag = gestureRecognizer.view!.tag
-//        if let sequenceId = sequences[tag].sequenceId as? Int {
-//            var address:[UInt8] = []
-//            if timers[tag].isBroadcast.boolValue {
-//                address = [0xFF, 0xFF, 0xFF]
-//            } else {
-//                address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
-//            }
-//            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
-//            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
-//        }
     }
 }
 
@@ -404,60 +408,42 @@ class TimerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timerButtonRight: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
-//    func getImagesFrom(scene:Scene) {
-//        if let sceneImage = UIImage(data: scene.sceneImageOne) {
-//            imageOne = sceneImage
-//        }
-//        
-//        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
-//            imageTwo = sceneImage
-//        }
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                sceneCellImageView.image = imageTwo
-//                setNeedsDisplay()
-//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//        }
-//    }
-//    func changeImageToNormal () {
-//        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-//    }
+    func getImagesFrom(timer:Timer) {
+        if let timerImage = UIImage(data: timer.timerImageOne) {
+            imageOne = timerImage
+        }
+        if let timerImage = UIImage(data: timer.timerImageTwo) {
+            imageTwo = timerImage
+        }
+        timerImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    func commandSentChangeImage () {
+        timerImageView.image = imageTwo
+        setNeedsDisplay()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+    }
+    func changeImageToNormal () {
+        timerImageView.image = imageOne
+        setNeedsDisplay()
+    }
     override func drawRect(rect: CGRect) {
-        
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        
         UIColor.lightGrayColor().setStroke()
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
-    
 }
