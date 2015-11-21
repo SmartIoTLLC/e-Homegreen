@@ -214,7 +214,8 @@ class ChatHandler {
             let predicateNull = NSPredicate(format: "categoryId != 0")
             let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
             let predicateTwo = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
-            var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+            let predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+            fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
                 devices = fetResults!

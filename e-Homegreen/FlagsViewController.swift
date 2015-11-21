@@ -304,7 +304,35 @@ class FlagCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var flagTitle: UILabel!
     @IBOutlet weak var flagImageView: UIImageView!
     @IBOutlet weak var flagButton: UIButton!
-    
+    var imageOne:UIImage?
+    var imageTwo:UIImage?
+//    func getImagesFrom(flags:Scene) {
+//        if let sceneImage = UIImage(data: scene.sceneImageOne) {
+//            imageOne = sceneImage
+//        }
+//        
+//        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
+//            imageTwo = sceneImage
+//        }
+//        sceneCellImageView.image = imageOne
+//        setNeedsDisplay()
+//    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                sceneCellImageView.image = imageTwo
+//                setNeedsDisplay()
+//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//        }
+//    }
+//    func changeImageToNormal () {
+//        sceneCellImageView.image = imageOne
+//        setNeedsDisplay()
+//    }
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,

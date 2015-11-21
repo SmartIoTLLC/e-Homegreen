@@ -120,7 +120,7 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
-                var number = Int(byteArray[6+5*Int(device.channel)])
+//                var number = Int(byteArray[6+5*Int(device.channel)])
                 print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
                 device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
             }
@@ -216,12 +216,13 @@ class IncomingHandler: NSObject {
                 devices[i].roomTemperature = Int(byteArray[15+13*(channel-1)])
                 devices[i].humidity = Int(byteArray[16+13*(channel-1)])
                 devices[i].current = Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])
+                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                NSNotificationCenter.defaultCenter().postNotificationName("repeatSendingHandlerNotification", object: self, userInfo: data)
             }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("testTestTest123", object: self, userInfo: nil)
     }
     func ackDimmerGetRunningTime (byteArray:[UInt8]) {
         fetchDevices()
@@ -493,11 +494,12 @@ class IncomingHandler: NSObject {
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
+                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                NSNotificationCenter.defaultCenter().postNotificationName("repeatSendingHandlerNotification", object: self, userInfo: data)
             }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("testTestTest123", object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[UInt8]){

@@ -36,9 +36,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         //        commonConstruct()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: "btnRefreshDevicesClicked", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+        addObservers()
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
@@ -60,15 +58,39 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         categorySearch = locationSearchText[3]
         
         updateDeviceList()
-        //        fetchDevicesInBackground()
     }
-    
+    override func viewDidAppear(animated: Bool) {
+        addObservers()
+        refreshVisibleDevicesInScrollView()
+        appDel.setFilterBySSIDOrByiBeaconAgain()
+    }
+    override func viewWillAppear(animated: Bool) {
+        
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    override func viewDidDisappear(animated: Bool) {
+        
+    }
     func refreshLocalParametars () {
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
         fetchDevicesInBackground()
         deviceCollectionView.reloadData()
+    }
+    
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: "btnRefreshDevicesClicked", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "btnRefreshDevicesClicked", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
     }
     
     var appDel:AppDelegate!
@@ -189,11 +211,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        refreshVisibleDevicesInScrollView()
-        appDel.setFilterBySSIDOrByiBeaconAgain()
-    }
-    
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
@@ -232,7 +249,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 longTouchOldValue = 0
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
                 })
                 timer.invalidate()
                 deviceInControlMode = false
@@ -256,7 +273,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 longTouchOldValue = 0
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                     dispatch_async(dispatch_get_main_queue(), {
-                        RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
                     })
                 })
                 timer.invalidate()
@@ -270,25 +287,29 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
         }
     }
-    func refreshDevice(gestureRecognizer:UITapGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        // Light
-        if devices[tag].type == "Dimmer" {
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-            SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
-        }
-        // Appliance?
-        if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-            SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
-        }
-        // Curtain?
-        if devices[tag].type == "curtainsRS485" {
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-            SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+    func refreshDevice(sender:AnyObject) {
+        if let button = sender as? UIButton {
+            print(button.highlighted)
+//            button.highlighted = !button.highlighted
+            let tag = button.tag
+            // Light
+            if devices[tag].type == "Dimmer" {
+                let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+            }
+            // Appliance?
+            if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
+                let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+            }
+            // Curtain?
+            if devices[tag].type == "curtainsRS485" {
+                let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+            }
         }
     }
     func oneTap(gestureRecognizer:UITapGestureRecognizer) {
@@ -296,45 +317,37 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Light
         if devices[tag].type == "Dimmer" {
             var setDeviceValue:UInt8 = 0
-            if devices[tag].currentValue == 100 {
+            if Int(devices[tag].currentValue) > 0 {
                 setDeviceValue = UInt8(0)
             } else {
                 setDeviceValue = UInt8(100)
             }
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, runningTime: 0x00), gateway: devices[tag].gateway)
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: setDeviceValue, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway)
             let deviceCurrentValue = Int(devices[tag].currentValue)
             devices[tag].currentValue = Int(setDeviceValue)
-            
-            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
             })
         }
         // Appliance?
         if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag!].gateway)
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway)
             let deviceCurrentValue = Int(devices[tag].currentValue)
-            if devices[tag].currentValue == 255 {
+            if Int(devices[tag].currentValue) > 0 {
                 devices[tag].currentValue = 0
             } else {
                 devices[tag].currentValue = 255
             }
-            //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: 0xF1, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: 0xF1, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
-            //            })
         }
         // Curtain?
         if devices[tag].type == "curtainsRS485" {
             var setDeviceValue:UInt8 = 0
-            if devices[tag].currentValue == 100 {
+            if Int(devices[tag].currentValue) > 0 {
                 setDeviceValue = UInt8(0)
             } else {
                 setDeviceValue = UInt8(100)
@@ -342,13 +355,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             let deviceCurrentValue = Int(devices[tag].currentValue)
             devices[tag].currentValue = Int(setDeviceValue)
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            //            SendingHandler.sendCommand(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(devices[tag].channel)), value: setDeviceValue), gateway: devices[tag].gateway)
-            //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: setDeviceValue), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: setDeviceValue), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
-            //            })
-            
         }
         
         deviceCollectionView.reloadData()
@@ -398,11 +407,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     UIView.setAnimationsEnabled(true)
             })
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        print("override func viewWillAppear(animated: Bool) {print(")
     }
     
     override func viewWillLayoutSubviews() {
@@ -548,7 +552,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "Dimmer" {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -556,7 +560,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "curtainsRS485" {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -573,7 +577,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "Dimmer" {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
             //            })
         }
@@ -581,7 +585,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].type == "curtainsRS485" {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
             //            })
         }
@@ -869,7 +873,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(tap)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
-                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+//                let tap = UITapGestureRecognizer(target: self, action: "refreshDevice:")
+                cell.btnRefresh.userInteractionEnabled = true
+//                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
             } else {
                 cell.disabledCellView.hidden = false
@@ -920,7 +927,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.curtainName.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
-                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+//                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
             } else {
                 cell.disabledCellView.hidden = false
@@ -979,7 +987,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.onOffLabel.addGestureRecognizer(tap1)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
-                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+//                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
             } else {
                 cell.disabledCellView.hidden = false

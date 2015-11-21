@@ -164,7 +164,6 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
-            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -3615,14 +3614,13 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Phf-5w-hK3" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Phf-5w-hK3" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="231" y="72" width="75" height="34"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="75" id="PCe-ud-egB"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="16"/>
                                                     <state key="normal" title="Database">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -5809,43 +5807,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJT-8T-ham" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O0v-Na-ZdS" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="13" y="2" width="294" height="39"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxu-2m-X62">
-                                                            <rect key="frame" x="0.0" y="7" width="294" height="25"/>
-                                                            <animations/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
                                                     <animations/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="mxu-2m-X62" secondAttribute="trailing" id="2o6-YK-ABf"/>
-                                                        <constraint firstItem="mxu-2m-X62" firstAttribute="leading" secondItem="bJT-8T-ham" secondAttribute="leading" id="uMm-TL-TKY"/>
-                                                        <constraint firstItem="mxu-2m-X62" firstAttribute="top" secondItem="bJT-8T-ham" secondAttribute="top" constant="7" id="wlY-ar-8C4"/>
-                                                        <constraint firstAttribute="bottom" secondItem="mxu-2m-X62" secondAttribute="bottom" constant="7" id="x8k-qb-ktt"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <state key="normal" title="Button">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="bJT-8T-ham" firstAttribute="leading" secondItem="K6e-Sd-TM1" secondAttribute="leadingMargin" constant="5" id="VhE-Df-jJi"/>
-                                                <constraint firstItem="bJT-8T-ham" firstAttribute="top" secondItem="K6e-Sd-TM1" secondAttribute="topMargin" constant="-6" id="YzL-P4-8R3"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="bJT-8T-ham" secondAttribute="trailing" constant="5" id="ZFq-YB-htf"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="bJT-8T-ham" secondAttribute="bottom" constant="-6" id="d2I-wo-uS0"/>
+                                                <constraint firstItem="O0v-Na-ZdS" firstAttribute="top" secondItem="K6e-Sd-TM1" secondAttribute="top" constant="2" id="IOm-H4-6l2"/>
+                                                <constraint firstAttribute="trailing" secondItem="O0v-Na-ZdS" secondAttribute="trailing" constant="13" id="Tzw-8p-Tso"/>
+                                                <constraint firstItem="O0v-Na-ZdS" firstAttribute="leading" secondItem="K6e-Sd-TM1" secondAttribute="leading" constant="13" id="ljc-eQ-Zwe"/>
+                                                <constraint firstAttribute="bottom" secondItem="O0v-Na-ZdS" secondAttribute="bottom" constant="2" id="o7l-gO-Tzw"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="tableCellTitle" destination="mxu-2m-X62" id="MrO-OO-fL5"/>
+                                            <outlet property="settingsButton" destination="O0v-Na-ZdS" id="4eG-9S-Hk5"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="delayRefreshStatus" rowHeight="90" id="Sj7-PC-jRm" customClass="SettingsRefreshDelayTableViewCell" customModule="e_Homegreen" customModuleProvider="target">

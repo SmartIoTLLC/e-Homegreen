@@ -62,8 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let isPreloaded = defaults.boolForKey("EHGisPreloaded")
         if !isPreloaded {
             preloadData()
-            defaults.setValue(1, forKey: "hourRefresh")
-            defaults.setValue(0, forKey: "minRefresh")
+            defaults.setValue(0, forKey: "hourRefresh")
+            defaults.setValue(10, forKey: "minRefresh")
             defaults.setBool(true, forKey: "EHGisPreloaded")
             defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
             //        Idle, Trobule, Alert, alarm

@@ -402,7 +402,35 @@ class TimerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timerButton: UIButton!
     @IBOutlet weak var timerButtonLeft: UIButton!
     @IBOutlet weak var timerButtonRight: UIButton!
-    
+    var imageOne:UIImage?
+    var imageTwo:UIImage?
+//    func getImagesFrom(scene:Scene) {
+//        if let sceneImage = UIImage(data: scene.sceneImageOne) {
+//            imageOne = sceneImage
+//        }
+//        
+//        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
+//            imageTwo = sceneImage
+//        }
+//        sceneCellImageView.image = imageOne
+//        setNeedsDisplay()
+//    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                sceneCellImageView.image = imageTwo
+//                setNeedsDisplay()
+//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//        }
+//    }
+//    func changeImageToNormal () {
+//        sceneCellImageView.image = imageOne
+//        setNeedsDisplay()
+//    }
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,

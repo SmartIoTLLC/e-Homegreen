@@ -117,7 +117,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings" || settingArray[indexPath.section] == "iBeacon settings"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
-            cell.tableCellTitle.text = settingArray[indexPath.section]
+            cell.settingsButton.tag = indexPath.section
+            cell.settingsButton.addTarget(self, action: "didTouchSettingButton:", forControlEvents: .TouchUpInside)
+            cell.settingsButton.setTitle(settingArray[indexPath.section], forState: .Normal)
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             
@@ -170,35 +172,41 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
 
         }
     }
-    
+    func didTouchSettingButton (sender:AnyObject) {
+        if let view = sender as? UIButton {
+            let tag = view.tag
+            self.settingsTableView.userInteractionEnabled = false
+            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
+            if tag == 0 {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("menuSettings", sender: self)
+                })
+            }
+            if tag == 1 {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("connectionSettings", sender: self)
+                })
+            }
+            if tag == 4 {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("surveillanceSettings", sender: self)
+                })
+            }
+            if tag == 5 {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("securitySettings", sender: self)
+                })
+            }
+            if tag == 6 {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("iBeaconSettings", sender: self)
+                })
+            }
+
+        }
+    }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
-            dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("menuSettings", sender: self)
-            })
-        }
-        if indexPath.section == 1 {
-            dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("connectionSettings", sender: self)
-            })
-        }
-        if indexPath.section == 4 {
-            dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("surveillanceSettings", sender: self)
-            })
-        }
-        if indexPath.section == 5 {
-            dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("securitySettings", sender: self)
-            })
-        }
-        if indexPath.section == 6 {
-            dispatch_async(dispatch_get_main_queue(),{
-                self.performSegueWithIdentifier("iBeaconSettings", sender: self)
-            })
-        }
-        self.settingsTableView.userInteractionEnabled = false
-        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
+        
     }
     func update(){
         self.settingsTableView.userInteractionEnabled = true
@@ -211,7 +219,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
 
 class SettinsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var tableCellTitle: UILabel!
+    @IBOutlet weak var settingsButton: CustomGradientButton!
 }
 
 class SettingsRefreshDelayTableViewCell: UITableViewCell {

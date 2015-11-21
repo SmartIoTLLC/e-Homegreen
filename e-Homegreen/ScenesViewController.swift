@@ -238,7 +238,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
         if sceneId >= 0 && sceneId <= 255 {
             SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         }
-        scenesCollectionView.reloadData()
+//        scenesCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -268,13 +268,14 @@ extension ScenesViewController: UICollectionViewDataSource {
         longPress.minimumPressDuration = 0.5
         cell.sceneCellLabel.addGestureRecognizer(longPress)
         
-        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-            cell.sceneCellImageView.image = sceneImage
-        }
-        
-        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
-            cell.sceneCellImageView.highlightedImage = sceneImage
-        }
+        cell.getImagesFrom(scenes[indexPath.row])
+//        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
+//            cell.sceneCellImageView.image = sceneImage
+//        }
+//        
+//        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
+//            cell.sceneCellImageView.highlightedImage = sceneImage
+//        }
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
@@ -300,35 +301,52 @@ class SceneCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var sceneCellLabel: UILabel!
     @IBOutlet weak var sceneCellImageView: UIImageView!
-    
-    override func drawRect(rect: CGRect) {
+    var imageOne:UIImage?
+    var imageTwo:UIImage?
+    func getImagesFrom(scene:Scene) {
+        if let sceneImage = UIImage(data: scene.sceneImageOne) {
+            imageOne = sceneImage
+        }
         
+        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
+            imageTwo = sceneImage
+        }
+        sceneCellImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override var highlighted: Bool {
+        willSet(newValue) {
+            if newValue {
+                sceneCellImageView.image = imageTwo
+                setNeedsDisplay()
+                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+            }
+        }
+        didSet {
+            print("highlighted = \(highlighted)")
+        }
+    }
+    func changeImageToNormal () {
+        sceneCellImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override func drawRect(rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        
         UIColor.lightGrayColor().setStroke()
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
-    
-    
 }

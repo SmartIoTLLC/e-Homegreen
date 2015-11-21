@@ -274,7 +274,6 @@ extension EventsViewController: UICollectionViewDataSource {
                 address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
             }
             SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
-            //        RepeatSendingHandler(byteArray: <#[UInt8]#>, gateway: <#Gateway#>, notificationName: <#String#>, device: <#Device#>, oldValue: <#Int#>)
         }
     }
     
@@ -293,39 +292,55 @@ extension EventsViewController: UICollectionViewDataSource {
 
 
 class EventsCollectionViewCell: UICollectionViewCell {
-    
     @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventImageView: UIImageView!
     @IBOutlet weak var eventButton: UIButton!
-    
-    override func drawRect(rect: CGRect) {
+    var imageOne:UIImage?
+    var imageTwo:UIImage?
+    func getImagesFrom(event:Event) {
+        if let eventImage = UIImage(data: event.eventImageOne) {
+            imageOne = eventImage
+        }
         
+        if let eventImage = UIImage(data: event.eventImageTwo) {
+            imageTwo = eventImage
+        }
+        eventImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override var highlighted: Bool {
+        willSet(newValue) {
+            if newValue {
+                eventImageView.image = imageTwo
+                setNeedsDisplay()
+                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+            }
+        }
+        didSet {
+            print("highlighted = \(highlighted)")
+        }
+    }
+    func changeImageToNormal () {
+        eventImageView.image = imageOne
+        setNeedsDisplay()
+    }
+    override func drawRect(rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        
         UIColor.lightGrayColor().setStroke()
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
-    
-    
 }

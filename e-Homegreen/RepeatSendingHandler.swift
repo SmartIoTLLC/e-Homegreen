@@ -39,13 +39,20 @@ class RepeatSendingHandler: NSObject {
         sendCommand()
         
 //        didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification", name: "testTestTest123", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification:", name: "repeatSendingHandlerNotification", object: nil)
     }
     
-    func didGetResponseNotification () {
-        didGetResponse = true
-        didGetResponseTimer!.invalidate()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "testTestTest123", object: nil)
+    //   Did get response from gateway
+    func didGetResponseNotification (notification:NSNotification) {
+        if let info = notification.userInfo! as? [String:Device] {
+            if let deviceInfo = info["deviceDidReceiveSignalFromGateway"] {
+                if device.objectID == deviceInfo.objectID {
+                    didGetResponse = true
+                    didGetResponseTimer!.invalidate()
+                    NSNotificationCenter.defaultCenter().removeObserver(self, name: "repeatSendingHandlerNotification", object: nil)
+                }
+            }
+        }
     }
     var firstTime:Bool = false
     func sendCommand () {
@@ -61,7 +68,7 @@ class RepeatSendingHandler: NSObject {
                 didGetResponseTimer!.invalidate()
                 device.currentValue = deviceOldValue
                 saveChanges()
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: "testTestTest123", object: nil)
+                NSNotificationCenter.defaultCenter().removeObserver(self, name: "repeatSendingHandlerNotification", object: nil)
                 NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self)
             }
         }

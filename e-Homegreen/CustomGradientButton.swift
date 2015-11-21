@@ -44,8 +44,10 @@ class CustomGradientButton: UIButton {
     }
     
     override var highlighted: Bool {
+        
         willSet(newValue) {
-            print("changing from \(selected) to \(newValue)")
+//            print("changing from \(selected) to \(newValue)")
+//            print("highlighted = \(highlighted)")
             if newValue {
                 colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
                 colorTwo = UIColor.lightGrayColor().CGColor
@@ -53,11 +55,18 @@ class CustomGradientButton: UIButton {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo
             }
-            setNeedsDisplay()
         }
         
         didSet {
-            print("selected=\(selected)")
+            print("highlighted = \(highlighted)")
+//            if highlighted {
+//                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+//                colorTwo = UIColor.lightGrayColor().CGColor
+//            } else {
+//                colorOne = defaultColorOne
+//                colorTwo = defaultColorTwo
+//            }
+            setNeedsDisplay()
         }
     }
     
@@ -76,6 +85,7 @@ class CustomGradientButton: UIButton {
         
         didSet {
             print("selected=\(selected)")
+            
         }
     }
     
