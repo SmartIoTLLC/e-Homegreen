@@ -25,53 +25,37 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanFlagsViewController: ScanFlagViewController!
     
     
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    var choosedTab:ChoosedTab = .Devices
+//    var appDel:AppDelegate!
+//    var error:NSError? = nil
+//    var choosedTab:ChoosedTab = .Devices
     var senderButton:UIButton?
     
-    enum ChoosedTab {
-        case Devices, Scenes, Events, Sequences, Zones, Categories
-        func returnStringDescription() -> String {
-            switch self {
-            case .Devices:
-                return ""
-            case .Scenes:
-                return "Scene"
-            case .Events:
-                return "Event"
-            case .Sequences:
-                return "Sequence"
-            case .Zones:
-                return "Zones"
-            case .Categories:
-                return "Categories"
-            }
-        }
-    }
-
-//    @IBOutlet weak var imageHeight: NSLayoutConstraint!
-    
-
-    
+//    enum ChoosedTab {
+//        case Devices, Scenes, Events, Sequences, Zones, Categories
+//        func returnStringDescription() -> String {
+//            switch self {
+//            case .Devices:
+//                return ""
+//            case .Scenes:
+//                return "Scene"
+//            case .Events:
+//                return "Event"
+//            case .Sequences:
+//                return "Sequence"
+//            case .Zones:
+//                return "Zones"
+//            case .Categories:
+//                return "Categories"
+//            }
+//        }
+//    }
     
     var isPresenting:Bool = true
     var gateway:Gateway?
-    var choosedTabArray:[AnyObject] = []
-    var progressBar:ProgressBarVC?
-    
-//    @IBOutlet weak var deviceTableView: UITableView!
-
-    
-    func endEditingNow(){
-//        rangeFrom.resignFirstResponder()
-//        rangeTo.resignFirstResponder()
-
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -118,105 +102,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    func updateSceneList () {
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let fetchRequest = NSFetchRequest(entityName: "Scene")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-            choosedTabArray = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-//        if let results = fetResults {
-//            choosedTabArray = results
-//        } else {
-//            print("Nije htela...")
-//        }
-    }
-    func updateListFetchingFromCD (entity:String, entityId:String, entityName:String) {
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let fetchRequest = NSFetchRequest(entityName: entity)
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: entityId, ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: entityName, ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
-        switch entity {
-        case "Scene":
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-                choosedTabArray = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        case "Event":
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
-                choosedTabArray = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        case "Sequence":
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-                choosedTabArray = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        case "Zones":
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-                choosedTabArray = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        case "Categories":
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-                choosedTabArray = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        
-        default:
-            print("")
-        }
-    }
-    func refreshSceneList() {
-//        updateSceneList()
-        updateListFetchingFromCD(choosedTab.returnStringDescription(), entityId: "\(choosedTab.returnStringDescription().lowercaseString)Id", entityName: "\(choosedTab.returnStringDescription().lowercaseString)Name")
-//        sceneTableView.reloadData()
-    }
-    
     @IBAction func backButton(sender: UIStoryboardSegue) {
         self.performSegueWithIdentifier("scanUnwind", sender: self)
     }
@@ -244,148 +129,47 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         return .None
     }
 //    if let menuItem = sender as? MenuItem {
-//        let toViewController = menuItem.viewController!
-//        if toViewController != fromViewController {
-//            self.addChildViewController(menuItem.viewController!)
-//            self.transitionFromViewController(fromViewController!, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
-//                self.fromViewController?.removeFromParentViewController()
-//                toViewController.didMoveToParentViewController(self)
-//                toViewController.view.frame = self.Container.bounds
-//                self.fromViewController = toViewController
-//            })
-//        } else {
-//            fromViewController?.viewWillAppear(true)
-//            fromViewController?.viewDidAppear(true)
-//        }
+
 //    }
     
     func saveText(text: String, id: Int) {
         print(Array(text.characters.reverse()))
         senderButton?.setTitle(text, forState: .Normal)
-        if text == "Devices" {
-            choosedTab = .Devices
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(scanDeviceViewController)
-            scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanDeviceViewController.view)
-            scanDeviceViewController.didMoveToParentViewController(self)
-            oldController!.view.hidden = true
-            
-            scanDeviceViewController.view.hidden = false
+        var toViewController:UIViewController = UIViewController()
+        switch text {
+        case "Devices":
+            toViewController = scanDeviceViewController
+        case "Scenes":
+            toViewController = scanSceneViewController
+        case "Events":
+            toViewController = scanEventsViewController
+        case "Sequences":
+            toViewController = scanSequencesViewController
+        case "Zones":
+            toViewController = importZoneViewController
+        case "Categories":
+            toViewController = importCategoryViewController
+        case "Timers":
+            toViewController = scanTimersViewController
+        case "Flag":
+            toViewController = scanFlagsViewController
+        default: break
         }
-        if text == "Scenes" {
-            choosedTab = .Scenes
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(scanSceneViewController)
-            scanSceneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanSceneViewController.view)
-            scanSceneViewController.didMoveToParentViewController(self)
-            oldController!.view.hidden = true
-            
-            scanSceneViewController.view.hidden = false
-        }
-        if text == "Events" {
-            
-            let oldController = childViewControllers.last
-            oldController!.view.hidden = true
-            
-            scanEventsViewController.view.hidden = false
-            
-            self.addChildViewController(scanEventsViewController)
-            scanEventsViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanEventsViewController.view)
-            scanEventsViewController.didMoveToParentViewController(self)
-            
-            choosedTab = .Events
-        }
-        if text == "Sequences" {
-            choosedTab = .Sequences
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(scanSequencesViewController)
-            scanSequencesViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanSequencesViewController.view)
-            scanSequencesViewController.didMoveToParentViewController(self)
-            
-            oldController!.view.hidden = true
-            
-            scanSequencesViewController.view.hidden = false
-        }
-        if text == "Zones" {
-            choosedTab = .Categories
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(importZoneViewController)
-            importZoneViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(importZoneViewController.view)
-            importZoneViewController.didMoveToParentViewController(self)
-            
-            oldController!.view.hidden = true
-            
-            importZoneViewController.view.hidden = false
-        }
-        if text == "Categories" {
-            choosedTab = .Zones
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(importCategoryViewController)
-            importCategoryViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(importCategoryViewController.view)
-            importCategoryViewController.didMoveToParentViewController(self)
-            
-            oldController!.view.hidden = true
-            
-            importCategoryViewController.view.hidden = false
-        }
-        if text == "Timers" {
-            choosedTab = .Zones
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(scanTimersViewController)
-            scanTimersViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanTimersViewController.view)
-            scanTimersViewController.didMoveToParentViewController(self)
-            
-            oldController!.view.hidden = true
-            
-            scanTimersViewController.view.hidden = false
-        }
-        if text == "Flag" {
-            choosedTab = .Zones
-            
-            let oldController = childViewControllers.last
-            
-            self.addChildViewController(scanFlagsViewController)
-            scanFlagsViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
-            container.addSubview(scanFlagsViewController.view)
-            scanFlagsViewController.didMoveToParentViewController(self)
-            
-            oldController!.view.hidden = true
-            
-            scanFlagsViewController.view.hidden = false
+        let fromViewController = childViewControllers.last!
+        if toViewController != fromViewController {
+            self.addChildViewController(toViewController)
+            self.transitionFromViewController(fromViewController, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
+                fromViewController.removeFromParentViewController()
+                toViewController.didMoveToParentViewController(self)
+                toViewController.view.frame = self.container.bounds
+            })
+        } else {
+            childViewControllers.last!.viewWillAppear(true)
+            childViewControllers.last!.viewDidAppear(true)
         }
     }
-    
-    
-
-    
-    // ======================= *** TABLE VIEW *** =======================
     
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)
     }
-    
-
 }
-
-
-
-
