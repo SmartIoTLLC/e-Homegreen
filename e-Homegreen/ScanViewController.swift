@@ -101,10 +101,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         // Do any additional setup after loading the view.
     }
     
-
-    
-
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -247,6 +243,21 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
+//    if let menuItem = sender as? MenuItem {
+//        let toViewController = menuItem.viewController!
+//        if toViewController != fromViewController {
+//            self.addChildViewController(menuItem.viewController!)
+//            self.transitionFromViewController(fromViewController!, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
+//                self.fromViewController?.removeFromParentViewController()
+//                toViewController.didMoveToParentViewController(self)
+//                toViewController.view.frame = self.Container.bounds
+//                self.fromViewController = toViewController
+//            })
+//        } else {
+//            fromViewController?.viewWillAppear(true)
+//            fromViewController?.viewDidAppear(true)
+//        }
+//    }
     
     func saveText(text: String, id: Int) {
         print(Array(text.characters.reverse()))

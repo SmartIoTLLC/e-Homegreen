@@ -316,13 +316,13 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         } else {
             btnLevel.setTitle("--", forState: UIControlState.Normal)
         }
-        if let _ = sequences[indexPath.row].sequenceZone {
-            btnZone.titleLabel?.text = "\(sequences[indexPath.row].sequenceZone)"
+        if let zone = sequences[indexPath.row].sequenceZone {
+            btnZone.setTitle(zone, forState: UIControlState.Normal)
         } else {
             btnZone.setTitle("--", forState: UIControlState.Normal)
         }
-        if let _ = sequences[indexPath.row].sequenceCategory {
-            btnCategory.titleLabel?.text = "\(sequences[indexPath.row].sequenceCategory)"
+        if let category = sequences[indexPath.row].sequenceCategory {
+            btnCategory.setTitle(category, forState: UIControlState.Normal)
         } else {
             btnCategory.setTitle("--", forState: UIControlState.Normal)
         }

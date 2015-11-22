@@ -278,13 +278,13 @@ extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 128
-//    }
-    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footer = UIView()
+        footer.backgroundColor = UIColor.clearColor()
+        return footer
+    }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 5
+        return 10
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -373,25 +373,16 @@ class GatewayCell: UITableViewCell {
         path.lineWidth = 2
         
         UIColor.darkGrayColor().setStroke()
-        
-        
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
     

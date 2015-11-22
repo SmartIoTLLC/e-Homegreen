@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.stopMonitoringForRegion(beaconRegion)
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         locationManager.requestAlwaysAuthorization()
@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if beacon != nil && beacon!.accuracy != 10000 {
             let zone = returnZoneWithIBeacon(beacon!)
             if zone != nil {
-                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy)")
+                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.gateway.name) A POKAZUJE OVAj GATEWAY: \(zone?.gateway.name)")
                 let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
                 for filter in filterArray {
                     var filterParametars = LocalSearchParametar.getLocalParametar(filter)

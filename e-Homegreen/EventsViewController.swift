@@ -172,6 +172,10 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        if levelSearch != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
+            predicateArray.append(levelPredicate)
+        }
         if zoneSearch != "All" {
             let zonePredicate = NSPredicate(format: "eventZone == %@", returnZoneWithId(Int(zoneSearch)!))
             predicateArray.append(zonePredicate)

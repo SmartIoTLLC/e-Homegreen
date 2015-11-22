@@ -280,10 +280,21 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 saveChanges()
             }
         }
+//        if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
+//            for categoryJSON in categoriesJSON {
+//                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+//                (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), gateway)
+//                saveChanges()
+//            }
+//        }
         if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
             for categoryJSON in categoriesJSON {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), gateway)
+                if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), gateway)
+                } else {
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), gateway)
+                }
                 saveChanges()
             }
         }
@@ -409,8 +420,6 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
-            
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.alpha = 0
@@ -418,8 +427,7 @@ extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-        }
-        
+        }        
     }
 }
 

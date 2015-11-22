@@ -19,7 +19,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security settings", "iBeacon settings"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
             hourRefresh = hour
@@ -115,7 +115,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security settings" || settingArray[indexPath.section] == "iBeacon settings"{
+        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security" || settingArray[indexPath.section] == "iBeacon"{
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.settingsButton.tag = indexPath.section
             cell.settingsButton.addTarget(self, action: "didTouchSettingButton:", forControlEvents: .TouchUpInside)

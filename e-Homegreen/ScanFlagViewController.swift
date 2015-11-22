@@ -306,17 +306,17 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         if let level = flags[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         } else {
-            btnLevel.titleLabel?.text = "--"
+            btnLevel.setTitle("--", forState: .Normal)
         }
-        if let _ = flags[indexPath.row].flagZone {
-            btnZone.titleLabel?.text = "\(flags[indexPath.row].flagZone)"
+        if let zone = flags[indexPath.row].flagZone {
+            btnZone.setTitle(zone, forState: .Normal)
         } else {
-            btnZone.titleLabel?.text = "--"
+            btnZone.setTitle("--", forState: .Normal)
         }
-        if let _ = flags[indexPath.row].flagCategory {
-            btnCategory.titleLabel?.text = "\(flags[indexPath.row].flagCategory)"
+        if let category = flags[indexPath.row].flagCategory {
+            btnCategory.setTitle(category, forState: .Normal)
         } else {
-            btnCategory.titleLabel?.text = "--"
+            btnCategory.setTitle("--", forState: .Normal)
         }
         if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
             imageSceneOne.image = flagImage

@@ -9,8 +9,10 @@
 import UIKit
 import CoreData
 
+typealias Byte = UInt8
+
 class IncomingHandler: NSObject {
-    var byteArray:[UInt8]!
+    var byteArray:[Byte]!
     var appDel:AppDelegate!
     var devices:[Device] = []
     var gateways:[Gateway] = []
@@ -20,7 +22,7 @@ class IncomingHandler: NSObject {
     deinit {
         print("UPRAVO SE GASIM - class IncomingHandler: NSObject")
     }
-    init (byteArrayToHandle: [UInt8], host:String, port:UInt16) {
+    init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
         NSNotificationCenter.defaultCenter().postNotificationName("didReceiveMessageFromGateway", object: self, userInfo: nil)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -115,10 +117,10 @@ class IncomingHandler: NSObject {
         }
     }
     
-    func refreshSecurityStatus (byteArray:[UInt8]) {
+    func refreshSecurityStatus (byteArray:[Byte]) {
         
     }
-    func ackChannelWarnings (byteArray:[UInt8]) {
+    func ackChannelWarnings (byteArray:[Byte]) {
         fetchDevices()
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
@@ -196,7 +198,7 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
-    func ackACstatus (byteArray:[UInt8]) {
+    func ackACstatus (byteArray:[Byte]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
@@ -226,7 +228,7 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    func ackDimmerGetRunningTime (byteArray:[UInt8]) {
+    func ackDimmerGetRunningTime (byteArray:[Byte]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
@@ -246,7 +248,7 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    func bytesToUInt(byteArray: [UInt8]) -> UInt {
+    func bytesToUInt(byteArray: [Byte]) -> UInt {
         assert(byteArray.count <= 4)
         var result: UInt = 0
         for idx in 0..<(byteArray.count) {
@@ -256,7 +258,7 @@ class IncomingHandler: NSObject {
         return result
     }
     
-    func returnRunningTime (runningTimeByteArray:[UInt8]) -> String {
+    func returnRunningTime (runningTimeByteArray:[Byte]) -> String {
         print(runningTimeByteArray)
         let x = Int(bytesToUInt(runningTimeByteArray))
 //        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
@@ -274,28 +276,31 @@ class IncomingHandler: NSObject {
     }
     
     //  informacije o imenima uredjaja na MULTISENSORU
-    func ackADICmdGetInterfaceName (byteArray:[UInt8]) {
-        fetchDevices()
-        var string:String = ""
-        for var j = 9; j < byteArray.count-2; j++ {
-            string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-        }
-        for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-//                var channel = Int(devices[i].channel)
-                if string != "" {
-                    devices[i].name = string
-                } else {
-                    devices[i].name = "Unknown"
-                }
-                let data = ["deviceIndexForFoundName":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+    func ackADICmdGetInterfaceName (byteArray:[Byte]) {
+        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
+        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+            fetchDevices()
+            var string:String = ""
+            for var j = 9; j < byteArray.count-2; j++ {
+                string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
             }
+            for var i = 0; i < devices.count; i++ {
+                if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+//                var channel = Int(devices[i].channel)
+                    if string != "" {
+                        devices[i].name = string
+                    } else {
+                        devices[i].name = "Unknown"
+                    }
+                    let data = ["deviceIndexForFoundName":i]
+                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+                }
+            }
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    func ackADICmdGetInterfaceParametar (byteArray:[UInt8]) {
+    func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
@@ -313,42 +318,45 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
-    func ackACParametar (byteArray:[UInt8]) {
-        fetchDevices()
-        var string:String = ""
-        for var i = 9; i < byteArray.count-2; i++ {
-            string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
-        }
-        for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-                var string:String = ""
-                for var j = 42; j < byteArray.count-2; j++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-                }
-                if string != "" {
-                    devices[i].name = string
-                } else {
-                    devices[i].name = "Unknown"
-                }
-                devices[i].zoneId = Int(byteArray[33])
-                devices[i].parentZoneId = Int(byteArray[34])
-                devices[i].categoryId = Int(byteArray[32])
-//                devices[i].enabled = ""
-//                if byteArray[22] == 0x01 {
-//                    devices[i].isEnabled = NSNumber(bool: true)
-//                } else {
-//                    devices[i].isEnabled = NSNumber(bool: false)
-//                }
-                let data = ["deviceIndexForFoundName":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+    func ackACParametar (byteArray:[Byte]) {
+        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
+        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+            fetchDevices()
+            var string:String = ""
+            for var i = 9; i < byteArray.count-2; i++ {
+                string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
             }
+            for var i = 0; i < devices.count; i++ {
+                if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+                    var string:String = ""
+                    for var j = 42; j < byteArray.count-2; j++ {
+                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                    }
+                    if string != "" {
+                        devices[i].name = string
+                    } else {
+                        devices[i].name = "Unknown"
+                    }
+                    devices[i].zoneId = Int(byteArray[33])
+                    devices[i].parentZoneId = Int(byteArray[34])
+                    devices[i].categoryId = Int(byteArray[32])
+//                    devices[i].enabled = ""
+//                    if byteArray[22] == 0x01 {
+//                        devices[i].isEnabled = NSNumber(bool: true)
+//                    } else {
+//                        devices[i].isEnabled = NSNumber(bool: false)
+//                    }
+                    let data = ["deviceIndexForFoundName":i]
+                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+                }
+            }
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
-    func ackADICmdGetInterfaceStatus (byteArray:[UInt8]) {
+    func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
         print("Uslo je u ackADICmdGetInterfaceStatus")
         self.fetchDevices()
         print("proslo je fetchDevices")
@@ -370,7 +378,7 @@ class IncomingHandler: NSObject {
         }
     }
     //  informacije o novim uredjajima
-    func acknowledgementAboutNewDevices (byteArray:[UInt8]) {
+    func acknowledgementAboutNewDevices (byteArray:[Byte]) {
         var deviceExists = false
         if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
             if devices != [] {
@@ -469,7 +477,7 @@ class IncomingHandler: NSObject {
         }
     }
     //  informacije o stanjima na uredjajima
-    func ackonowledgementAboutChannelState (byteArray:[UInt8]) {
+    func ackonowledgementAboutChannelState (byteArray:[Byte]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
@@ -486,7 +494,7 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     //  informacije o stanjima na uredjajima
-    func ackonowledgementAboutChannelsState (byteArray:[UInt8]) {
+    func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
         fetchDevices()
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
@@ -504,37 +512,40 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
-    func acknowledgementAboutChannelParametar (byteArray:[UInt8]){
-        fetchDevices()
-        for var i = 0; i < devices.count; i++ {
-            if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-                var string:String = ""
-                for var j = 8+47; j < byteArray.count-2; j++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+    func acknowledgementAboutChannelParametar (byteArray:[Byte]){
+        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
+        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+            fetchDevices()
+            for var i = 0; i < devices.count; i++ {
+                if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+                    var string:String = ""
+                    for var j = 8+47; j < byteArray.count-2; j++ {
+                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                    }
+                    if string != "" {
+                        devices[i].name = string
+                    } else {
+                        devices[i].name = "Unknown"
+                    }
+                    devices[i].overrideControl1 = Int(byteArray[23])
+                    devices[i].overrideControl2 = Int(byteArray[24])
+                    devices[i].overrideControl3 = Int(byteArray[25])
+                    devices[i].zoneId = Int(byteArray[9])
+                    devices[i].parentZoneId = Int(byteArray[10])
+                    devices[i].categoryId = Int(byteArray[8])
+                    if byteArray[22] == 0x01 {
+                        devices[i].isEnabled = NSNumber(bool: true)
+                    } else {
+                        devices[i].isEnabled = NSNumber(bool: false)
+                        devices[i].isVisible = NSNumber(bool: false)
+                    }
+                    let data = ["deviceIndexForFoundName":i]
+                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
                 }
-                if string != "" {
-                    devices[i].name = string
-                } else {
-                    devices[i].name = "Unknown"
-                }
-                devices[i].overrideControl1 = Int(byteArray[23])
-                devices[i].overrideControl2 = Int(byteArray[24])
-                devices[i].overrideControl3 = Int(byteArray[25])
-                devices[i].zoneId = Int(byteArray[9])
-                devices[i].parentZoneId = Int(byteArray[10])
-                devices[i].categoryId = Int(byteArray[8])
-                if byteArray[22] == 0x01 {
-                    devices[i].isEnabled = NSNumber(bool: true)
-                } else {
-                    devices[i].isEnabled = NSNumber(bool: false)
-                    devices[i].isVisible = NSNumber(bool: false)
-                }
-                let data = ["deviceIndexForFoundName":i]
-                NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
             }
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         
     }
     //  0x00 Waiting = 0
@@ -542,7 +553,7 @@ class IncomingHandler: NSObject {
     //  0xF0 Elapsed = 240
     //  0xEE Suspend = 238
     //  informacije o parametrima kanala
-    func ackTimerStatus (byteArray:[UInt8]){
+    func ackTimerStatus (byteArray:[Byte]){
         print("AOOO")
         print(byteArray)
         fetchEntities("Timer")
@@ -558,7 +569,7 @@ class IncomingHandler: NSObject {
         }
     }
     //  informacije o parametrima kanala
-    func ackFlagStatus (byteArray:[UInt8]){
+    func ackFlagStatus (byteArray:[Byte]){
         print("AOOO 2")
         print(byteArray)
         fetchEntities("Flag")
@@ -579,11 +590,11 @@ class IncomingHandler: NSObject {
         }
         
     }
-    func securityFeedbackHandler (byteArray:[UInt8]) {
+    func securityFeedbackHandler (byteArray:[Byte]) {
         print("AOOO 3")
         print(byteArray)
         fetchEntities("Security")
-        let address = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+        let address = [Byte(Int(securities[0].addressOne)), Byte(Int(securities[0].addressTwo)), Byte(Int(securities[0].addressThree))]
         if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
             let defaults = NSUserDefaults.standardUserDefaults()
             if byteArray[7] == 0x02 {

@@ -27,7 +27,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         rangeFrom.resignFirstResponder()
         rangeTo.resignFirstResponder()
     }
-    
+    deinit {
+        print("deinit - ScanDevicesViewController.swift")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,6 +67,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
     }    
     func removeObservers() {
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCDidFindDevice", object: nil)
@@ -206,6 +210,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     timesRepeatedCounter = 0
                     deviceNameTimer?.invalidate()
                     pbFN?.dissmissProgressBar()
+                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
                 } else {
                     index = deviceIndex + 1
                     timesRepeatedCounter = 0
@@ -233,6 +238,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         timesRepeatedCounter = 0
                         deviceNameTimer?.invalidate()
                         pbFN?.dissmissProgressBar()
+                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
                     } else {
                         index = deviceIndex + 1
                         timesRepeatedCounter = 0
@@ -251,6 +257,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     timesRepeatedCounter = 0
                     deviceNameTimer?.invalidate()
                     pbFN?.dissmissProgressBar()
+                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
                     print("VELIKI PROBLEM ANGAZUJ SVE LJDUE IZ FIRME I OKUPI VELIKI BRAIN TRUST, SNAGU I NADU NASE FIRME!")
                 }
             }
@@ -355,6 +362,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     @IBAction func findNames(sender: AnyObject) {
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NameAndParametarsForDeviceRequested")
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
                 if numberTwo >= numberOne {
