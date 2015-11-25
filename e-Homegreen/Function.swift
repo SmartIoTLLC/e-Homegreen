@@ -9,13 +9,13 @@
 import UIKit
 
 class Function {
-    static func getLightRelayStatus (address:[UInt8]) -> [UInt8] {
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getLightRelayStatus (address:[Byte]) -> [Byte] {
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -28,17 +28,17 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setLightRelayStatus (address:[UInt8], channel:UInt8, value:UInt8, delay:Int, runningTime:Int, skipLevel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        let delayOne = UInt8((delay / 0x100) % 0x100)
-        let delayTwo = UInt8(delay % 0x100)
-        let runtimeOne = UInt8((runningTime / 0x100) % 0x100)
-        let runtimeTwo = UInt8(runningTime % 0x100)
+    static func setLightRelayStatus (address:[Byte], channel:Byte, value:Byte, delay:Int, runningTime:Int, skipLevel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        let delayOne = Byte((delay / 0x100) % 0x100)
+        let delayTwo = Byte(delay % 0x100)
+        let runtimeOne = Byte((runningTime / 0x100) % 0x100)
+        let runtimeTwo = Byte(runningTime % 0x100)
         messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -51,13 +51,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func searchForDevices (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func searchForDevices (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0x00]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -70,13 +70,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func zoneControl (zone:UInt8, value:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func zoneControl (zone:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0x01, 0x00, 0x00, 0x02, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, zone]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = 0xFF
         message[3] = 0xFF
         message[4] = 0xFF
@@ -90,13 +90,13 @@ class Function {
         return message
     }
     // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
-    static func getWarnings (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getWarnings (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = []
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -110,11 +110,11 @@ class Function {
         return message
     }
     // da li treba da bude prazan ili bar jedan 0x00 u messageInfo?
-    static func getRunningTime (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = [0x00]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func getRunningTime (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = [0x00]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -127,13 +127,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setCurtainStatus (address:[UInt8], channel:UInt8, value:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setCurtainStatus (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -147,13 +147,13 @@ class Function {
         return message
     }
     // AC
-    static func getACStatus (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getACStatus (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -166,13 +166,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACStatus (address:[UInt8], channel:UInt8, status:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setACStatus (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, status, 0x00, 0x00]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -185,13 +185,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACmode (address:[UInt8], channel:UInt8, value:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setACmode (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -204,13 +204,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACSpeed (address:[UInt8], channel:UInt8, value:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setACSpeed (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -223,13 +223,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACSetPoint (address:[UInt8], channel:UInt8, coolingSetPoint:UInt8, heatingSetPoint:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setACSetPoint (address:[Byte], channel:Byte, coolingSetPoint:Byte, heatingSetPoint:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, coolingSetPoint, heatingSetPoint]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -242,13 +242,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACEnergySaving (address:[UInt8], channel:UInt8, status:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func setACEnergySaving (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, status]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -261,82 +261,10 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func runEvent (address:[UInt8], id:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = [id, 0xFF]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x10
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func cancelEvent (address:[UInt8], id:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = [id, 0xEF]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x10
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setScene (address:[UInt8], id:Int) -> [UInt8]{
-        let numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-        let numberTwo:UInt8 = UInt8(id % 0x100)
-        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[0]
-        message[4] = address[0]
-        message[5] = 0x03
-        message[6] = 0x07
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setSequence (address:[UInt8], id:Int, cycle:UInt8) -> [UInt8]{
-        let numberOne:UInt8 = UInt8((id / 0x100) % 0x100)
-        let numberTwo:UInt8 = UInt8(id % 0x100)
-        var messageInfo:[UInt8] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x03
-        message[6] = 0x07
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setSensorState (address:[UInt8], channel:UInt8, status:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        var s:UInt8 = 0x00
+    static func setSensorState (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        var s:Byte = 0x00
         if status == 0xFF {
             s = 0x80
         }
@@ -344,9 +272,9 @@ class Function {
             s = 0x7F
         }
         messageInfo = [channel, s]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -359,13 +287,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSensorState (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getSensorState (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -378,13 +306,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSensorEna (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getSensorEna (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -397,13 +325,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func sensorEnabled (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func sensorEnabled (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, 0x80]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -416,13 +344,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func sensorDisabled (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func sensorDisabled (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, 0x7F]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -435,13 +363,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getChannelName (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getChannelName (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -454,13 +382,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getModuleName (address:[UInt8]) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getModuleName (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = []
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -473,13 +401,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getACName (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getACName (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel, 0x01]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -492,13 +420,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSensorName (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getSensorName (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -511,13 +439,13 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSensorZone (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func getSensorZone (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
         messageInfo = [channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -530,14 +458,14 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func sendIRLibrary (address:[UInt8], channel:UInt8, ir_id:UInt8, times:UInt8, interval:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        //messageInfo = [channel * 64 + times, interval, UInt8(ir_id / 0x100), UInt8((ir_id / 0x100) % 0x100)]
+    static func sendIRLibrary (address:[Byte], channel:Byte, ir_id:Byte, times:Byte, interval:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        //messageInfo = [channel * 64 + times, interval, Byte(ir_id / 0x100), Byte((ir_id / 0x100) % 0x100)]
         messageInfo = [] //  resi ovo
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -551,14 +479,14 @@ class Function {
         return message
     }
     
-    static func sendSerialLibrary (address:[UInt8], channel:UInt8, serialId:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
-        //messageInfo = [UInt8((serialId / 0x100) % 0x100), UInt8(serialId % 0x100), channel]
+    static func sendSerialLibrary (address:[Byte], channel:Byte, serialId:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        //messageInfo = [Byte((serialId / 0x100) % 0x100), Byte(serialId % 0x100), channel]
         messageInfo = [] //  resi ovo
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -572,14 +500,14 @@ class Function {
         return message
     }
     
-    static func resetRunningTime (address:[UInt8], channel:UInt8) -> [UInt8]{
-        var messageInfo:[UInt8] = []
-        var message:[UInt8] = []
+    static func resetRunningTime (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
 //        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
         messageInfo = [channel]
-        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -592,15 +520,15 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-//    static func refreshSecurityMode () -> [UInt8]{
-//        var messageInfo:[UInt8] = []
-//        var message:[UInt8] = []
+//    static func refreshSecurityMode () -> [Byte]{
+//        var messageInfo:[Byte] = []
+//        var message:[Byte] = []
 //        messageInfo = [0x02, 0x00]
-//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+//        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
 //        message[0] = 0xAA
-//        message[1] = UInt8(messageInfo.count)
-//        message[2] = UInt8(id1Address)
-//        message[3] = UInt8(id2Address)
+//        message[1] = Byte(messageInfo.count)
+//        message[2] = Byte(id1Address)
+//        message[3] = Byte(id2Address)
 //        message[4] = 0xFE
 //        message[5] = 0x05
 //        message[6] = 0x0C
@@ -613,15 +541,15 @@ class Function {
 //        message[message.count-1] = 0x10
 //        return message
 //    }
-//    static func sendKeySecurity (key:UInt8) -> [UInt8]{
-//        var messageInfo:[UInt8] = []
-//        var message:[UInt8] = []
+//    static func sendKeySecurity (key:Byte) -> [Byte]{
+//        var messageInfo:[Byte] = []
+//        var message:[Byte] = []
 //        messageInfo = [0x01, key]
-//        message = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+//        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
 //        message[0] = 0xAA
-//        message[1] = UInt8(messageInfo.count)
-//        message[2] = UInt8(id1Address)
-//        message[3] = UInt8(id2Address)
+//        message[1] = Byte(messageInfo.count)
+//        message[2] = Byte(id1Address)
+//        message[3] = Byte(id2Address)
 //        message[4] = 0xFE
 //        message[5] = 0x05
 //        message[6] = 0x11
@@ -634,21 +562,31 @@ class Function {
 //        message[message.count-1] = 0x10
 //        return message
 //    }
-    
+    static func getChkByte (byteArray byteArray:[Byte]) -> Byte {
+        var chk:Int = 0
+        for var i = 1; i <= byteArray.count-3; i++ {
+            let number = "\(byteArray[i])"
+            
+            chk = chk + Int(number)!
+        }
+        chk = chk%256
+        return Byte(chk)
+    }
+}
+extension Function {
     //   **************************************************************************************
-    //   ************************************   SECURITY   ************************************
+    //   **************************************   FLAG   **************************************
     //   **************************************************************************************
-    
-    static func refreshSecurityMode (address:[UInt8]) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x02, 0x00]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func setFlag (address:[Byte], id:Byte, command:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [id, command]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
         message[5] = 0x05
-        message[6] = 0x0C
+        message[6] = 0x07
         var i = 0
         for byte in messageInfo {
             message[7+i] = byte
@@ -658,17 +596,16 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    //   1, 2, 3, 4, 5, 6, 7, 8, 9, 0B (star), 1A (hash)
-    static func sendKeySecurity (address:[UInt8], key:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x01, key]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func refreshFlagStatus (address:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = [0xFF]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
         message[5] = 0x05
-        message[6] = 0x11
+        message[6] = 0x06
         var i = 0
         for byte in messageInfo {
             message[7+i] = byte
@@ -678,88 +615,103 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func getCurrentSecurityMode (address:[UInt8]) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x02, 0x00]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+}
+extension Function {
+    //   **************************************************************************************
+    //   **************************************   EVENT   *************************************
+    //   **************************************************************************************
+    static func runEvent (address:[Byte], id:Byte) -> [Byte]{
+        var messageInfo:[Byte] = [id, 0xFF]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
         message[5] = 0x05
-        message[6] = 0x11
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        message[6] = 0x10
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-    static func changeSecurityMode (address:[UInt8], mode:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x02, mode]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func cancelEvent (address:[Byte], id:Byte) -> [Byte]{
+        var messageInfo:[Byte] = [id, 0xEF]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
         message[5] = 0x05
-        message[6] = 0x11
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        message[6] = 0x10
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-    static func getCurrentAlarmState (address:[UInt8]) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x03, 0x00]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+}
+extension Function {
+    //   **************************************************************************************
+    //   *************************************   SEQUENCE   ***********************************
+    //   **************************************************************************************
+    static func setSequence (address:[Byte], id:Int, cycle:Byte) -> [Byte]{
+        let numberOne:Byte = Byte((id / 0x100) % 0x100)
+        let numberTwo:Byte = Byte(id % 0x100)
+        var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x11
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        message[5] = 0x03
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-    static func setPanic (address:[UInt8], panic:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [0x04, panic]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+}
+extension Function {
+    //   **************************************************************************************
+    //   **************************************   SCENE   *************************************
+    //   **************************************************************************************
+    static func setScene (address:[Byte], id:Int) -> [Byte]{
+        let numberOne:Byte = Byte((id / 0x100) % 0x100)
+        let numberTwo:Byte = Byte(id % 0x100)
+        var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x11
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
+        message[3] = address[0]
+        message[4] = address[0]
+        message[5] = 0x03
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
     }
-//    ===========================   Timer   ===========================
-    static func getTimerParametar (address:[UInt8], id:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [id]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+}
+extension Function {
+    //   **************************************************************************************
+    //   **************************************   TIMER   *************************************
+    //   **************************************************************************************
+    static func getTimerParametar (address:[Byte], id:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [id]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -775,11 +727,11 @@ class Function {
         return message
     }
     // 01 is Start, EF is Cancel, EE is Pause, ED is Resume
-    static func getCancelTimerStatus (address:[UInt8], id:UInt8, command:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [id, command]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func getCancelTimerStatus(address:[Byte], id:Byte, command:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [id, command]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -794,18 +746,16 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-//    ===========================   Timer   ===========================
-    
-    static func setFlag (address:[UInt8], id:UInt8, command:UInt8) -> [UInt8]{
-        let messageInfo:[UInt8] = [id, command]
-        var message:[UInt8] = [UInt8](count: messageInfo.count+9, repeatedValue: 0)
+    static func refreshTimerStatus(address:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = [0xFF]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = UInt8(messageInfo.count)
+        message[1] = Byte(messageInfo.count)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
         message[5] = 0x05
-        message[6] = 0x07
+        message[6] = 0x17
         var i = 0
         for byte in messageInfo {
             message[7+i] = byte
@@ -815,15 +765,126 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+}
+extension Function {
+    //   **************************************************************************************
+    //   ************************************   SECURITY   ************************************
+    //   **************************************************************************************
     
-    static func getChkByte (byteArray byteArray:[UInt8]) -> UInt8 {
-        var chk:Int = 0
-        for var i = 1; i <= byteArray.count-3; i++ {
-            let number = "\(byteArray[i])"
-            
-            chk = chk + Int(number)!
+    static func refreshSecurityMode (address:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = [0x02, 0x00]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x0C
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
         }
-        chk = chk%256
-        return UInt8(chk)
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
     }
+    //   1, 2, 3, 4, 5, 6, 7, 8, 9, 0B (star), 1A (hash)
+    static func sendKeySecurity (address:[Byte], key:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [0x01, key]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func getCurrentSecurityMode (address:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = [0x02, 0x00]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func changeSecurityMode (address:[Byte], mode:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [0x02, mode]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func getCurrentAlarmState (address:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = [0x03, 0x00]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setPanic (address:[Byte], panic:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [0x04, panic]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x11
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+
 }

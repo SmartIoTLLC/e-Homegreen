@@ -46,7 +46,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        
+        deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
         // Do any additional setup after loading the view.
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
@@ -788,6 +788,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             
+            cell.getDevice(devices[indexPath.row])
             cell.typeOfLight.text = devices[indexPath.row].name
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
@@ -861,11 +862,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-                cell.btnRefresh.tag = indexPath.row
-//                let tap = UITapGestureRecognizer(target: self, action: "refreshDevice:")
-                cell.btnRefresh.userInteractionEnabled = true
-//                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
+//                cell.btnRefresh.tag = indexPath.row
+////                let tap = UITapGestureRecognizer(target: self, action: "refreshDevice:")
+//                cell.btnRefresh.userInteractionEnabled = true
+////                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
+//                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
             } else {
                 cell.disabledCellView.hidden = false
@@ -938,13 +939,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.name.tag = indexPath.row
             if devices[indexPath.row].currentValue == 255 {
                 cell.image.image = UIImage(named: "12 Appliance - Power - 01")
-                cell.onOffLabel.text = "ON"
+                cell.onOff.setTitle("ON", forState: .Normal)
             }
             if devices[indexPath.row].currentValue == 0{
                 cell.image.image = UIImage(named: "12 Appliance - Power - 00")
-                cell.onOffLabel.text = "OFF"
+                cell.onOff.setTitle("OFF", forState: .Normal)
             }
-            cell.onOffLabel.tag = indexPath.row
+            cell.onOff.tag = indexPath.row
             
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
@@ -972,8 +973,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.name.addGestureRecognizer(longPress)
                 cell.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
                 let tap1:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-                cell.onOffLabel.userInteractionEnabled = true
-                cell.onOffLabel.addGestureRecognizer(tap1)
+                cell.onOff.userInteractionEnabled = true
+                cell.onOff.addGestureRecognizer(tap1)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
 //                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
@@ -1077,9 +1078,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             if devices[indexPath.row].isEnabled.boolValue {
                 cell.climateName.userInteractionEnabled = true
                 cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
-                longPress.minimumPressDuration = 0.5
-                cell.climateName.addGestureRecognizer(longPress)
+//                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+//                longPress.minimumPressDuration = 0.5
+//                cell.climateName.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.disabledCellView.hidden = true
             } else {
@@ -1223,13 +1224,21 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var lightSlider: UISlider!
     
     @IBOutlet weak var disabledCellView: UIView!
-    
+    var device:Device?
+    func getDevice (device:Device) {
+        self.device = device
+    }
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
-    @IBOutlet weak var btnRefresh: UIButton!
+//    @IBOutlet weak var btnRefresh: UIButton!
+    @IBAction func btnRefresh(sender: AnyObject) {
+        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: device!.gateway)
+        SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: device!.gateway)
+    }
     
 }
 //Appliance on/off
@@ -1238,7 +1247,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var onOffLabel: UILabel!
+    @IBOutlet weak var onOff: UIButton!
     
     @IBOutlet weak var disabledCellView: UIView!
     

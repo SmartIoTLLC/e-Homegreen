@@ -64,6 +64,8 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let grayBottomLine = UIView(frame:CGRectMake(0, frame.size.height-2, frame.size.width, 2))
         grayBottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         self.addSubview(grayBottomLine)
+        
+        self.delaysContentTouches = false
     }
     var locationButton:CustomGradientButton = CustomGradientButton()
     var levelButton:CustomGradientButton = CustomGradientButton()

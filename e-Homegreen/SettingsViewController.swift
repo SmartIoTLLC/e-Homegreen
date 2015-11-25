@@ -28,7 +28,16 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         if let min = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
             minRefresh = min
         }
-
+        
+        
+        // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
+        settingsTableView.delaysContentTouches = false
+        // Not a permanent solution as Apple can deside to change view hierarchy inf the future
+        for currentView in settingsTableView.subviews {
+            if let view = currentView as? UIScrollView {
+                (currentView as! UIScrollView).delaysContentTouches = false
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -205,9 +214,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
 
         }
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//    }
     func update(){
         self.settingsTableView.userInteractionEnabled = true
     }

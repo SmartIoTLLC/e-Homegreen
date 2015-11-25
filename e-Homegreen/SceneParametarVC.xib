@@ -21,26 +21,34 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1XU-nd-9JR" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="200" y="172" width="200" height="256"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aii-Yc-x2x" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="56" y="205" width="89" height="38"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="SET">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9Q-uZ-PRa">
-                            <rect key="frame" x="52" y="64" width="97" height="21"/>
+                            <rect key="frame" x="52" y="46" width="97" height="21"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ppg-Dv-ZQn">
-                            <rect key="frame" x="76" y="93" width="51" height="31"/>
+                            <rect key="frame" x="76" y="75" width="51" height="31"/>
                             <animations/>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Localcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUv-68-B95">
-                            <rect key="frame" x="52" y="132" width="97" height="21"/>
+                            <rect key="frame" x="52" y="114" width="97" height="21"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lNw-0Y-edy">
-                            <rect key="frame" x="76" y="161" width="51" height="31"/>
+                            <rect key="frame" x="76" y="143" width="51" height="31"/>
                             <animations/>
                         </switch>
                     </subviews>

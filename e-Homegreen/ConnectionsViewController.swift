@@ -75,6 +75,14 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         fetchGateways()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: "refreshDeviceListNotification", object: nil)
         
+        // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
+        gatewayTableView.delaysContentTouches = false
+        // Not a permanent solution as Apple can deside to change view hierarchy inf the future
+        for currentView in gatewayTableView.subviews {
+            if let view = currentView as? UIScrollView {
+                (currentView as! UIScrollView).delaysContentTouches = false
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -224,7 +232,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
-
             cell.backgroundColor = UIColor.clearColor()
             cell.lblGatewayName.text = gateways[indexPath.section].name
             

@@ -81,9 +81,16 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
-        
+//        let swipeDismiss = UISwipeGestureRecognizer(target: self, action: "userSwiped:")
+//        swipeDismiss.direction = UISwipeGestureRecognizerDirection.Right
+//        self.view.addGestureRecognizer(swipeDismiss)
         // Do any additional setup after loading the view.
     }
+    
+//    func userSwiped (gesture:UISwipeGestureRecognizer) {
+////        self.performSegueWithIdentifier("scanUnwind", sender: self)
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

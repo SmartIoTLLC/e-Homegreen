@@ -43,6 +43,14 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         IDedit.resignFirstResponder()
     }
     
+    func resignFirstRespondersOnTextFields() {
+        IDedit.resignFirstResponder()
+        nameEdit.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -151,7 +159,9 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         textField.resignFirstResponder()
         return true
     }
-    
+    override func viewDidAppear(animated: Bool) {
+        resignFirstRespondersOnTextFields()
+    }
     override func viewWillAppear(animated: Bool) {
         
     }
@@ -256,6 +266,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                     saveChanges()
                     refreshSceneList()
                     NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+                    resignFirstRespondersOnTextFields()
                 }
             }
         }
@@ -275,6 +286,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             saveChanges()
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+            resignFirstRespondersOnTextFields()
         }
     }
     

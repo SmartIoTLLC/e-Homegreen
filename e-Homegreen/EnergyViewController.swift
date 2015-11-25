@@ -27,8 +27,8 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var locationSearchText = ["", "", "", ""]
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
-        updateDeviceList()
         LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        refreshLocalParametars()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,20 +83,33 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     
-    func refreshLocalParametars () {
+    func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
+        updateDeviceList()
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
     
-    func updateDeviceList () {
+    func updateDeviceList() {
         sumAmp = 0
         sumPow = 0
         let fetchRequest = NSFetchRequest(entityName: "Device")

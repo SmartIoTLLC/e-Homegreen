@@ -1,19 +1,19 @@
 //
-//  CustomGradientButton.swift
+//  CustomGradientButtonWhite.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 9/30/15.
+//  Created by Vladimir on 11/24/15.
 //  Copyright © 2015 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
 @IBDesignable
-class CustomGradientButton: UIButton {
-    var defaultColorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-    var defaultColorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-    var colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-    var colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+class CustomGradientButtonWhite: UIButton {
+    var defaultColorOne = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
+    var defaultColorTwo = UIColor.lightGrayColor().CGColor
+    var colorOne = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
+    var colorTwo = UIColor.lightGrayColor().CGColor
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
@@ -22,8 +22,8 @@ class CustomGradientButton: UIButton {
         path.addClip()
         path.lineWidth = 2
         
-        UIColor.darkGrayColor().setStroke()
-    
+        UIColor.lightGrayColor().setStroke()
+        
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorOne , colorTwo]
         
@@ -39,20 +39,17 @@ class CustomGradientButton: UIButton {
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
-        self.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        self.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.backgroundColor = UIColor.clearColor()
     }
     
     override var highlighted: Bool {
         
         willSet(newValue) {
-//            print("changing from \(selected) to \(newValue)")
-//            print("highlighted = \(highlighted)")
             if newValue {
-                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                colorTwo = UIColor.blackColor().CGColor
+                colorOne = UIColor.darkGrayColor().CGColor
+                colorTwo = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
             } else {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo
@@ -61,13 +58,13 @@ class CustomGradientButton: UIButton {
         
         didSet {
             print("highlighted = \(highlighted)")
-//            if highlighted {
-//                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-//                colorTwo = UIColor.lightGrayColor().CGColor
-//            } else {
-//                colorOne = defaultColorOne
-//                colorTwo = defaultColorTwo
-//            }
+            //            if highlighted {
+            //                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+            //                colorTwo = UIColor.lightGrayColor().CGColor
+            //            } else {
+            //                colorOne = defaultColorOne
+            //                colorTwo = defaultColorTwo
+            //            }
             setNeedsDisplay()
         }
     }
@@ -76,8 +73,8 @@ class CustomGradientButton: UIButton {
         willSet(newValue) {
             print("changing from \(selected) to \(newValue)")
             if newValue {
-                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                colorTwo = UIColor.blackColor().CGColor
+                colorOne = UIColor.darkGrayColor().CGColor
+                colorTwo = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
             } else {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo

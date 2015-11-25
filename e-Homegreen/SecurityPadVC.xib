@@ -20,7 +20,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2B-69-I9L" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="143" y="118" width="314" height="365"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjA-C0-F1e">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JjA-C0-F1e">
                             <rect key="frame" x="0.0" y="0.0" width="314" height="365"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mje-zN-uXZ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">

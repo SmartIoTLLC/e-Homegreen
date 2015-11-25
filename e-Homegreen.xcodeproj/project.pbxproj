@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
+		731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */; };
+		731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */; };
 		733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F65441BCFABA8001BE004 /* ChatHandler.swift */; };
 		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
 		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
@@ -39,6 +41,7 @@
 		7372EB401BC410800097806D /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB301BC410800097806D /* Gateway.swift */; };
 		7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */; };
 		7372EB421BC410800097806D /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB321BC410800097806D /* Sequence.swift */; };
+		737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */; };
 		738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD051B9EF79F005D183F /* DataImporter.swift */; };
 		738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */; };
 		738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */; };
@@ -219,6 +222,8 @@
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultisensorParametarVC.swift; sourceTree = "<group>"; };
+		731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultisensorParametarVC.xib; sourceTree = "<group>"; };
 		733F65441BCFABA8001BE004 /* ChatHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHandler.swift; sourceTree = "<group>"; };
 		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
 		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
@@ -249,6 +254,7 @@
 		7372EB301BC410800097806D /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sequence+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB321BC410800097806D /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientButtonWhite.swift; sourceTree = "<group>"; };
 		738BFD051B9EF79F005D183F /* DataImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityPadVC.swift; sourceTree = "<group>"; };
 		738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityPadVC.xib; sourceTree = "<group>"; };
@@ -790,6 +796,7 @@
 			isa = PBXGroup;
 			children = (
 				E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */,
+				737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */,
 				E7F5FC191BB9744200071982 /* CustomButton.swift */,
 				E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */,
 				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
@@ -870,6 +877,8 @@
 				E79AEBBB1B70D1FC00410E2D /* DigitalInput.xib */,
 				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
 				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
+				731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */,
+				731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */,
 			);
 			name = "Device Parametars";
 			sourceTree = "<group>";
@@ -1212,6 +1221,7 @@
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
 				E79AEBB11B70B77D00410E2D /* AccessParametarVC.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
+				731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
@@ -1313,6 +1323,7 @@
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
+				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */,
@@ -1348,6 +1359,7 @@
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
+				731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,

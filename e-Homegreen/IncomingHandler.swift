@@ -460,7 +460,6 @@ class IncomingHandler: NSObject {
                         device.current = 0
                         device.runningTime = "00:00:00,0s"
                         device.amp = ""
-                        device.runningTime = ""
                         device.type = name
                         device.voltage = 0
                         device.temperature = 0
@@ -530,8 +529,13 @@ class IncomingHandler: NSObject {
                     devices[i].overrideControl1 = Int(byteArray[23])
                     devices[i].overrideControl2 = Int(byteArray[24])
                     devices[i].overrideControl3 = Int(byteArray[25])
-                    devices[i].zoneId = Int(byteArray[9])
-                    devices[i].parentZoneId = Int(byteArray[10])
+                    if Int(byteArray[10]) == 0 {
+                        devices[i].zoneId = 0
+                        devices[i].parentZoneId = Int(byteArray[9])
+                    } else {
+                        devices[i].zoneId = Int(byteArray[9])
+                        devices[i].parentZoneId = Int(byteArray[10])
+                    }
                     devices[i].categoryId = Int(byteArray[8])
                     if byteArray[22] == 0x01 {
                         devices[i].isEnabled = NSNumber(bool: true)

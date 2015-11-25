@@ -63,6 +63,17 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
         
         // Do any additional setup after loading the view.
+        
+    }
+    @IBOutlet weak var controlValleryVoice: UIButton!
+    @IBAction func controlValleryVOice(sender: AnyObject) {
+        if isValeryVoiceOn {
+            controlValleryVoice.setImage(UIImage(named: "mute"), forState: .Normal)
+            isValeryVoiceOn = false
+        } else {
+            controlValleryVoice.setImage(UIImage(named: "unmute"), forState: .Normal)
+            isValeryVoiceOn = true
+        }
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

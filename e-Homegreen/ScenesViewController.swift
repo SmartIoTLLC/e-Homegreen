@@ -233,7 +233,7 @@ extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelega
             address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
         }
         let sceneId = Int(scenes[indexPath.row].sceneId)
-        if sceneId >= 0 && sceneId <= 255 {
+        if sceneId >= 0 && sceneId <= 32767 {
             SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
         }
     }
