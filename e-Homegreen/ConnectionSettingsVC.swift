@@ -158,10 +158,17 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         // Default gateway address
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         if gatewayIndex == -1 {
+            name.text = ""
             addressFirst.text = returnThreeCharactersForByte(1)
             addressSecond.text = returnThreeCharactersForByte(0)
             addressThird.text = returnThreeCharactersForByte(0)
-            txtDescription.text = ""
+            txtDescription.text = "G-ADP-01"
+            localIP.text = "192.168.0.181"
+            localPort.text = "5101"
+            localSSID.text = ""
+            ipHost.text = "192.168.0.181"
+            port.text = "5101"
+            
         } else {
             fetchGateways()
             ipHost.text = "\(gateways[gatewayIndex].remoteIp)"

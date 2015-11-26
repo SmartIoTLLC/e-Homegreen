@@ -274,7 +274,10 @@ extension FlagsViewController: UICollectionViewDataSource {
         cell.flagTitle.addGestureRecognizer(longPress)
         
         cell.getImagesFrom(flags[indexPath.row])
-        
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setFlag:")
+        cell.flagImageView.tag = indexPath.row
+        cell.flagImageView.userInteractionEnabled = true
+        cell.flagImageView.addGestureRecognizer(set)
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
         cell.flagButton.tag = indexPath.row
         cell.flagButton.addGestureRecognizer(tap)
@@ -288,6 +291,26 @@ extension FlagsViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
+    }
+    
+    func setFlag (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            if let flagId = flags[tag].flagId as? Int {
+                var address:[UInt8] = []
+                if flags[tag].isBroadcast.boolValue {
+                    address = [0xFF, 0xFF, 0xFF]
+                } else if flags[tag].isLocalcast.boolValue {
+                    address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), 0xFF]
+                } else {
+                    address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
+                }
+                if flags[tag].setState.boolValue {
+                    SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+                } else {
+                    SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
+                }
+            }
+        }
     }
     
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {

@@ -227,52 +227,106 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)
     }
+    @IBAction func btnEdit(sender: AnyObject) {
+        
+    }
     
     @IBAction func btnAdd(sender: AnyObject) {
         if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if flagId <= 32767 && address <= 255 {
-                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                    let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
-                    flag.flagId = flagId
-                    flag.flagName = flagName
-                    flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                    flag.isBroadcast = broadcastSwitch.on
-                    flag.isLocalcast = localcastSwitch.on
-                    flag.address = address
-                    if btnLevel.titleLabel?.text != "--" {
-                        flag.entityLevel = btnLevel.titleLabel!.text!
+                var itExists = false
+                var existingFlag:Flag?
+                for flag in flags {
+                    if flag.flagId == flagId && flag.address != address {
+                        itExists = true
+                        existingFlag = flag
                     }
-                    if btnZone.titleLabel?.text != "--" {
-                        flag.flagZone = btnZone.titleLabel!.text!
+                }
+                if !itExists {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
+                        flag.flagId = flagId
+                        flag.flagName = flagName
+                        flag.address = address
+                        flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        flag.isBroadcast = broadcastSwitch.on
+                        flag.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            flag.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            flag.flagZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            flag.flagCategory = btnCategory.titleLabel!.text!
+                        }
+                        flag.gateway = gateway!
+                        saveChanges()
+                        refreshFlagList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
                     }
-                    if btnCategory.titleLabel?.text != "--" {
-                        flag.flagCategory = btnCategory.titleLabel!.text!
+                } else {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        existingFlag!.flagId = flagId
+                        existingFlag!.flagName = flagName
+                        existingFlag!.address = address
+                        existingFlag!.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        existingFlag!.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        existingFlag!.isBroadcast = broadcastSwitch.on
+                        existingFlag!.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            existingFlag!.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            existingFlag!.flagZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            existingFlag!.flagCategory = btnCategory.titleLabel!.text!
+                        }
+                        existingFlag!.gateway = gateway!
+                        saveChanges()
+                        refreshFlagList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
                     }
-                    flag.gateway = gateway!
-                    saveChanges()
-                    refreshFlagList()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
                 }
             }
         }
+        resignFirstRespondersOnTextFields()
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let flag = selected as? Flag {
-            appDel.managedObjectContext!.deleteObject(flag)
-            IDedit.text = ""
-            nameEdit.text = ""
-            devAddressThree.text = ""
-            btnLevel.setTitle("--", forState: UIControlState.Normal)
-            btnZone.setTitle("--", forState: UIControlState.Normal)
-            btnCategory.setTitle("--", forState: UIControlState.Normal)
-            broadcastSwitch.on = false
-            localcastSwitch.on = false
+//        if let flag = selected as? Flag {
+//            appDel.managedObjectContext!.deleteObject(flag)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            devAddressThree.text = ""
+//            btnLevel.setTitle("--", forState: UIControlState.Normal)
+//            btnZone.setTitle("--", forState: UIControlState.Normal)
+//            btnCategory.setTitle("--", forState: UIControlState.Normal)
+//            broadcastSwitch.on = false
+//            localcastSwitch.on = false
+//            saveChanges()
+//            refreshFlagList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+//        }
+        if flags.count != 0 {
+            for flag in flags {
+                appDel.managedObjectContext!.deleteObject(flag)
+            }
             saveChanges()
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
         }
+        resignFirstRespondersOnTextFields()
+    }
+    
+    func resignFirstRespondersOnTextFields() {
+        IDedit.resignFirstResponder()
+        nameEdit.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -281,6 +335,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(flags[indexPath.row].flagId)"
             cell.labelName.text = "\(flags[indexPath.row].flagName)"
+            cell.address.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(flags[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
             if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
                 cell.imageOne.image = flagImage
             }
@@ -329,6 +384,37 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return flags.count
     }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.flagTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(flags[indexPath.row])
+            saveChanges()
+            refreshFlagList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+        }
+        
+    }
 
 }
 
@@ -338,6 +424,6 @@ class FlagCell:UITableViewCell{
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
-    
+    @IBOutlet weak var address: UILabel!
     
 }

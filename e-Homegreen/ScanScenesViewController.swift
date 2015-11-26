@@ -241,53 +241,98 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)
     }
+    @IBAction func btnEdit(sender: AnyObject) {
+    }
     
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                    let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-                    scene.sceneId = sceneId
-                    scene.sceneName = sceneName
-                    scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                    scene.isBroadcast = broadcastSwitch.on
-                    scene.isLocalcast = localcastSwitch.on
-                    if btnLevel.titleLabel?.text != "--" {
-                        scene.entityLevel = btnLevel.titleLabel!.text!
+                var itExists = false
+                var existingScene:Scene?
+                for scene in scenes {
+                    if scene.sceneId == sceneId && scene.address != address {
+                        itExists = true
+                        existingScene = scene
                     }
-                    if btnZone.titleLabel?.text != "--" {
-                        scene.sceneZone = btnZone.titleLabel!.text!
+                }
+                if !itExists {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+                        scene.sceneId = sceneId
+                        scene.sceneName = sceneName
+                        scene.address = address
+                        scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        scene.isBroadcast = broadcastSwitch.on
+                        scene.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            scene.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            scene.sceneZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            scene.sceneCategory = btnCategory.titleLabel!.text!
+                        }
+                        scene.gateway = gateway!
+                        saveChanges()
+                        refreshSceneList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
                     }
-                    if btnCategory.titleLabel?.text != "--" {
-                        scene.sceneCategory = btnCategory.titleLabel!.text!
+                } else {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        existingScene!.sceneId = sceneId
+                        existingScene!.sceneName = sceneName
+                        existingScene!.address = address
+                        existingScene!.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        existingScene!.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        existingScene!.isBroadcast = broadcastSwitch.on
+                        existingScene!.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            existingScene!.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            existingScene!.sceneZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            existingScene!.sceneCategory = btnCategory.titleLabel!.text!
+                        }
+                        existingScene!.gateway = gateway!
+                        saveChanges()
+                        refreshSceneList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
                     }
-                    scene.gateway = gateway!
-                    saveChanges()
-                    refreshSceneList()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
-                    resignFirstRespondersOnTextFields()
                 }
             }
         }
+        resignFirstRespondersOnTextFields()
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let scene = selected as? Scene {
-            appDel.managedObjectContext!.deleteObject(scene)
-            IDedit.text = ""
-            nameEdit.text = ""
-            devAddressThree.text = ""
-            btnLevel.setTitle("--", forState: UIControlState.Normal)
-            btnZone.setTitle("--", forState: UIControlState.Normal)
-            btnCategory.setTitle("--", forState: UIControlState.Normal)
-            broadcastSwitch.on = false
-            localcastSwitch.on = false
+//        if let scene = selected as? Scene {
+//            appDel.managedObjectContext!.deleteObject(scene)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            devAddressThree.text = ""
+//            btnLevel.setTitle("--", forState: UIControlState.Normal)
+//            btnZone.setTitle("--", forState: UIControlState.Normal)
+//            btnCategory.setTitle("--", forState: UIControlState.Normal)
+//            broadcastSwitch.on = false
+//            localcastSwitch.on = false
+//            saveChanges()
+//            refreshSceneList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+//            resignFirstRespondersOnTextFields()
+//        }
+        if scenes.count != 0 {
+            for scene in scenes {
+                appDel.managedObjectContext!.deleteObject(scene)
+            }
             saveChanges()
             refreshSceneList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
-            resignFirstRespondersOnTextFields()
         }
+        resignFirstRespondersOnTextFields()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -296,6 +341,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
             cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
+            cell.address.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
             if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -344,7 +390,37 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return scenes.count
     }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.sceneTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(scenes[indexPath.row])
+            saveChanges()
+            refreshSceneList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+        }
+        
+    }
 }
 
 class SceneCell:UITableViewCell{
@@ -353,6 +429,7 @@ class SceneCell:UITableViewCell{
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
+    @IBOutlet weak var address: UILabel!
     
     
 }

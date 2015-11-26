@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccessParametarVC: UIViewController {
+class AccessParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var backView: UIView!
     
@@ -45,11 +45,19 @@ class AccessParametarVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         
+//        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+//        tapGesture.delegate = self
+//        self.view.addGestureRecognizer(tapGesture)
+        
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
     }
-
+    
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

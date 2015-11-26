@@ -143,7 +143,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         self.view.backgroundColor = UIColor.clearColor()
         
         txtFieldName.text = device!.name
-        lblAddress.text = "\(returnThreeCharactersForByte(Int(device!.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device!.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device!.address))):"
+        lblAddress.text = "\(returnThreeCharactersForByte(Int(device!.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device!.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device!.address)))"
         lblChannel.text = "\(device!.channel)"
         btnLevel.setTitle("\(returnZoneWithId(Int(device!.parentZoneId)))", forState: UIControlState.Normal)
         btnZone.setTitle("\(returnZoneWithId(Int(device!.zoneId)))", forState: UIControlState.Normal)

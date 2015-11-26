@@ -230,32 +230,68 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         return String(format: "%03d",number)
     }
     
+    @IBAction func btnEdit(sender: AnyObject) {
+    }
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
             if sceneId <= 32767 && address <= 255 {
-                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                    let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
-                    sequence.sequenceId = sceneId
-                    sequence.sequenceName = sceneName
-                    sequence.address = address
-                    sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                    sequence.isBroadcast = broadcastSwitch.on
-                    sequence.isLocalcast = localcastSwitch.on
-                    sequence.sequenceCycles = cycles
-                    if btnLevel.titleLabel?.text != "--" {
-                        sequence.entityLevel = btnLevel.titleLabel!.text!
+                var itExists = false
+                var existingSequence:Sequence?
+                for sequence in sequences {
+                    if sequence.sequenceId == sceneId && sequence.address != address {
+                        itExists = true
+                        existingSequence = sequence
                     }
-                    if btnZone.titleLabel?.text != "--" {
-                        sequence.sequenceZone = btnZone.titleLabel!.text!
+                }
+                if !itExists {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
+                        sequence.sequenceId = sceneId
+                        sequence.sequenceName = sceneName
+                        sequence.address = address
+                        sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        sequence.isBroadcast = broadcastSwitch.on
+                        sequence.isLocalcast = localcastSwitch.on
+                        sequence.sequenceCycles = cycles
+                        if btnLevel.titleLabel?.text != "--" {
+                            sequence.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            sequence.sequenceZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            sequence.sequenceCategory = btnCategory.titleLabel!.text!
+                        }
+                        sequence.gateway = gateway!
+                        saveChanges()
+                        refreshSequenceList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
                     }
-                    if btnCategory.titleLabel?.text != "--" {
-                        sequence.sequenceCategory = btnCategory.titleLabel!.text!
+                } else {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        existingSequence!.sequenceId = sceneId
+                        existingSequence!.sequenceName = sceneName
+                        existingSequence!.address = address
+                        existingSequence!.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        existingSequence!.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        existingSequence!.isBroadcast = broadcastSwitch.on
+                        existingSequence!.isLocalcast = localcastSwitch.on
+                        existingSequence!.sequenceCycles = cycles
+                        if btnLevel.titleLabel?.text != "--" {
+                            existingSequence!.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            existingSequence!.sequenceZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            existingSequence!.sequenceCategory = btnCategory.titleLabel!.text!
+                        }
+                        existingSequence!.gateway = gateway!
+                        saveChanges()
+                        refreshSequenceList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
                     }
-                    sequence.gateway = gateway!
-                    saveChanges()
-                    refreshSequenceList()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
                 }
             }
         }
@@ -266,20 +302,38 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let sequence = selected as? Sequence {
-            appDel.managedObjectContext!.deleteObject(sequence)
-            IDedit.text = ""
-            nameEdit.text = ""
-            devAddressThree.text = ""
-            btnLevel.setTitle("--", forState: UIControlState.Normal)
-            btnZone.setTitle("--", forState: UIControlState.Normal)
-            btnCategory.setTitle("--", forState: UIControlState.Normal)
-            broadcastSwitch.on = false
-            localcastSwitch.on = false
+//        if let sequence = selected as? Sequence {
+//            appDel.managedObjectContext!.deleteObject(sequence)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            devAddressThree.text = ""
+//            btnLevel.setTitle("--", forState: UIControlState.Normal)
+//            btnZone.setTitle("--", forState: UIControlState.Normal)
+//            btnCategory.setTitle("--", forState: UIControlState.Normal)
+//            broadcastSwitch.on = false
+//            localcastSwitch.on = false
+//            saveChanges()
+//            refreshSequenceList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+//        }
+        if sequences.count != 0 {
+            for sequence in sequences {
+                appDel.managedObjectContext!.deleteObject(sequence)
+            }
             saveChanges()
             refreshSequenceList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+            resignFirstRespondersOnTextFields()
+            
         }
+    }
+    
+    func resignFirstRespondersOnTextFields() {
+        IDedit.resignFirstResponder()
+        nameEdit.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -288,6 +342,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(sequences[indexPath.row].sequenceId)"
             cell.labelName.text = "\(sequences[indexPath.row].sequenceName)"
+            cell.address.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequences[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
             if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -337,6 +392,37 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sequences.count
     }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.sequencesTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(sequences[indexPath.row])
+            saveChanges()
+            refreshSequenceList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+        }
+        
+    }
 
 }
 
@@ -346,6 +432,6 @@ class SequencesCell:UITableViewCell{
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
-    
+    @IBOutlet weak var address: UILabel!
     
 }

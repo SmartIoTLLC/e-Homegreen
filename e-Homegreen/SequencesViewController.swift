@@ -221,21 +221,21 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var address:[UInt8] = []
-        if sequences[indexPath.row].isBroadcast.boolValue {
-            address = [0xFF, 0xFF, 0xFF]
-        } else if sequences[indexPath.row].isLocalcast.boolValue {
-            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), 0xFF]
-        } else {
-            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
-        }
-        if let cycles = sequences[indexPath.row].sequenceCycles as? Int {
-            if cycles >= 0 && cycles <= 255 {
-                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
-            }
-        } else {
-            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
-        }
+//        var address:[UInt8] = []
+//        if sequences[indexPath.row].isBroadcast.boolValue {
+//            address = [0xFF, 0xFF, 0xFF]
+//        } else if sequences[indexPath.row].isLocalcast.boolValue {
+//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), 0xFF]
+//        } else {
+//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
+//        }
+//        if let cycles = sequences[indexPath.row].sequenceCycles as? Int {
+//            if cycles >= 0 && cycles <= 255 {
+//                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
+//            }
+//        } else {
+//            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
+//        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -276,7 +276,10 @@ extension SequencesViewController: UICollectionViewDataSource {
         longPress.minimumPressDuration = 0.5
         cell.sequenceTitle.userInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
-        
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setSequence:")
+        cell.sequenceImageView.tag = indexPath.row
+        cell.sequenceImageView.userInteractionEnabled = true
+        cell.sequenceImageView.addGestureRecognizer(set)
         cell.getImagesFrom(sequences[indexPath.row])
         
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
@@ -288,7 +291,25 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.layer.borderWidth = 0.5
         return cell
     }
-    
+    func setSequence (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            var address:[UInt8] = []
+            if sequences[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if sequences[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), UInt8(Int(sequences[tag].address))]
+            }
+            if let cycles = sequences[tag].sequenceCycles as? Int {
+                if cycles >= 0 && cycles <= 255 {
+                    SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
+                }
+            } else {
+                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: 0x00), gateway: sequences[tag].gateway)
+            }
+        }
+    }
     func tapStop (gesture:UITapGestureRecognizer) {
         //   Take cell from touched point
         let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)

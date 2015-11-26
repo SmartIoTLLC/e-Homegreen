@@ -164,53 +164,106 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         return String(format: "%03d",number)
     }
     
+    @IBAction func btnEdit(sender: AnyObject) {
+    }
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
-                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                    let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
-                    timer.timerId = timerId
-                    timer.timerName = timerName
-                    timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
-                    timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
-                    timer.isBroadcast = broadcastSwitch.on
-                    timer.isLocalcast = localcastSwitch.on
-                    timer.address = address
-                    timer.type = type
-                    if btnLevel.titleLabel?.text != "--" {
-                        timer.entityLevel = btnLevel.titleLabel!.text!
+                var itExists = false
+                var existingTimer:Timer?
+                for timer in timers {
+                    if timer.timerId == timerId && timer.address != address {
+                        itExists = true
+                        existingTimer = timer
                     }
-                    if btnZone.titleLabel?.text != "--" {
-                        timer.timeZone = btnZone.titleLabel!.text!
+                }
+                if !itExists {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
+                        timer.timerId = timerId
+                        timer.timerName = timerName
+                        timer.address = address
+                        timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
+                        timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+                        timer.isBroadcast = broadcastSwitch.on
+                        timer.isLocalcast = localcastSwitch.on
+                        timer.type = type
+                        if btnLevel.titleLabel?.text != "--" {
+                            timer.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            timer.timeZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            timer.timerCategory = btnCategory.titleLabel!.text!
+                        }
+                        timer.gateway = gateway!
+                        saveChanges()
+                        refreshTimerList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
                     }
-                    if btnCategory.titleLabel?.text != "--" {
-                        timer.timerCategory = btnCategory.titleLabel!.text!
+                } else {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        existingTimer!.timerId = timerId
+                        existingTimer!.timerName = timerName
+                        existingTimer!.address = address
+                        existingTimer!.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
+                        existingTimer!.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+                        existingTimer!.isBroadcast = broadcastSwitch.on
+                        existingTimer!.isLocalcast = localcastSwitch.on
+                        existingTimer!.type = type
+                        if btnLevel.titleLabel?.text != "--" {
+                            existingTimer!.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            existingTimer!.timeZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            existingTimer!.timerCategory = btnCategory.titleLabel!.text!
+                        }
+                        existingTimer!.gateway = gateway!
+                        saveChanges()
+                        refreshTimerList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
                     }
-                    timer.gateway = gateway!
-                    saveChanges()
-                    refreshTimerList()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
                 }
             }
         }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let timer = selected as? Timer {
-            appDel.managedObjectContext!.deleteObject(timer)
-            IDedit.text = ""
-            nameEdit.text = ""
-            devAddressThree.text = ""
-            btnLevel.setTitle("--", forState: UIControlState.Normal)
-            btnZone.setTitle("--", forState: UIControlState.Normal)
-            btnCategory.setTitle("--", forState: UIControlState.Normal)
-            broadcastSwitch.on = false
-            localcastSwitch.on = false
-            btnType.setTitle("--", forState: UIControlState.Normal)
+//        if let timer = selected as? Timer {
+//            appDel.managedObjectContext!.deleteObject(timer)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            devAddressThree.text = ""
+//            btnLevel.setTitle("--", forState: UIControlState.Normal)
+//            btnZone.setTitle("--", forState: UIControlState.Normal)
+//            btnCategory.setTitle("--", forState: UIControlState.Normal)
+//            broadcastSwitch.on = false
+//            localcastSwitch.on = false
+//            btnType.setTitle("--", forState: UIControlState.Normal)
+//            saveChanges()
+//            refreshTimerList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+//        }
+        if timers.count != 0 {
+            for timer in timers {
+                appDel.managedObjectContext!.deleteObject(timer)
+            }
             saveChanges()
             refreshTimerList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+            resignFirstRespondersOnTextFields()
         }
+    }
+    
+    func resignFirstRespondersOnTextFields() {
+        IDedit.resignFirstResponder()
+        nameEdit.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
@@ -316,6 +369,7 @@ extension ScanTimerViewController: UITableViewDataSource {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(timers[indexPath.row].timerId)"
             cell.labelName.text = timers[indexPath.row].timerName
+            cell.address.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
             if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
                 cell.imageOne.image = timerImage
             }
@@ -365,6 +419,37 @@ extension ScanTimerViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return timers.count
     }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.timerTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(timers[indexPath.row])
+            saveChanges()
+            refreshTimerList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+        }
+        
+    }
     
 }
 
@@ -374,6 +459,6 @@ class TimerCell:UITableViewCell{
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
-    
+    @IBOutlet weak var address: UILabel!
     
 }

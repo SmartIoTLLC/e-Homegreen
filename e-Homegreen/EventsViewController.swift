@@ -216,18 +216,18 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
 extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var address:[UInt8] = []
-        if events[indexPath.row].isBroadcast.boolValue {
-            address = [0xFF, 0xFF, 0xFF]
-        } else if events[indexPath.row].isLocalcast.boolValue {
-            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), 0xFF]
-        } else {
-            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), UInt8(Int(events[indexPath.row].address))]
-        }
-        let eventId = Int(events[indexPath.row].eventId)
-        if eventId >= 0 && eventId <= 255 {
-            SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
-        }
+//        var address:[UInt8] = []
+//        if events[indexPath.row].isBroadcast.boolValue {
+//            address = [0xFF, 0xFF, 0xFF]
+//        } else if events[indexPath.row].isLocalcast.boolValue {
+//            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), 0xFF]
+//        } else {
+//            address = [UInt8(Int(events[indexPath.row].gateway.addressOne)), UInt8(Int(events[indexPath.row].gateway.addressTwo)), UInt8(Int(events[indexPath.row].address))]
+//        }
+//        let eventId = Int(events[indexPath.row].eventId)
+//        if eventId >= 0 && eventId <= 255 {
+//            SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[indexPath.row].gateway)
+//        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -257,7 +257,10 @@ extension EventsViewController: UICollectionViewDataSource {
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.eventTitle.addGestureRecognizer(longPress)
-        
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setEvent:")
+        cell.eventImageView.tag = indexPath.row
+        cell.eventImageView.userInteractionEnabled = true
+        cell.eventImageView.addGestureRecognizer(set)
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
             cell.eventImageView.image = eventImage
         }
@@ -271,7 +274,22 @@ extension EventsViewController: UICollectionViewDataSource {
         cell.layer.borderWidth = 0.5
         return cell
     }
-    
+    func setEvent (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            var address:[UInt8] = []
+            if events[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if events[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
+            }
+            let eventId = Int(events[tag].eventId)
+            if eventId >= 0 && eventId <= 255 {
+                SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+            }
+        }
+    }
     func tapCancel (gesture:UITapGestureRecognizer) {
         //   Take cell from touched point
         let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: eventCollectionView)

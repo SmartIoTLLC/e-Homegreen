@@ -224,18 +224,18 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
 extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var address:[UInt8] = []
-        if scenes[indexPath.row].isBroadcast.boolValue {
-            address = [0xFF, 0xFF, 0xFF]
-        } else if scenes[indexPath.row].isLocalcast.boolValue {
-            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), 0xFF]
-        } else {
-            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
-        }
-        let sceneId = Int(scenes[indexPath.row].sceneId)
-        if sceneId >= 0 && sceneId <= 32767 {
-            SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
-        }
+//        var address:[UInt8] = []
+//        if scenes[indexPath.row].isBroadcast.boolValue {
+//            address = [0xFF, 0xFF, 0xFF]
+//        } else if scenes[indexPath.row].isLocalcast.boolValue {
+//            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), 0xFF]
+//        } else {
+//            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
+//        }
+//        let sceneId = Int(scenes[indexPath.row].sceneId)
+//        if sceneId >= 0 && sceneId <= 32767 {
+//            SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
+//        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -249,11 +249,9 @@ extension ScenesViewController: UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return scenes.count
     }
-    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
         
@@ -263,16 +261,48 @@ extension ScenesViewController: UICollectionViewDataSource {
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
-        cell.sceneCellLabel.addGestureRecognizer(longPress)
-        
         cell.getImagesFrom(scenes[indexPath.row])
-        
+        cell.sceneCellLabel.addGestureRecognizer(longPress)
+        cell.sceneCellImageView.tag = indexPath.row
+        cell.sceneCellImageView.userInteractionEnabled = true
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
+        cell.sceneCellImageView.addGestureRecognizer(set)
+        let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
+        cell.btnSet.addGestureRecognizer(setTwo)
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
     }
-    
+    func setScene (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            var address:[UInt8] = []
+            if scenes[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if scenes[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(scenes[tag].gateway.addressOne)), UInt8(Int(scenes[tag].gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(scenes[tag].gateway.addressOne)), UInt8(Int(scenes[tag].gateway.addressTwo)), UInt8(Int(scenes[tag].address))]
+            }
+            let sceneId = Int(scenes[tag].sceneId)
+            if sceneId >= 0 && sceneId <= 32767 {
+                SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
+            }
+//            UIView.setAnimationsEnabled(false)
+//            self.scenesCollectionView.performBatchUpdates({
+//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//                let cell = self.scenesCollectionView.cellForItemAtIndexPath(indexPath)
+//                self.scenesCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                }, completion:  {(completed: Bool) -> Void in
+//                    UIView.setAnimationsEnabled(true)
+//            })
+//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//            let cell = self.scenesCollectionView.cellForItemAtIndexPath(indexPath)
+//            if let cell = cell as? SceneCollectionCell {
+//                cell.sceneCellImageView.image =
+//            }
+        }
+    }
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
@@ -282,10 +312,8 @@ extension ScenesViewController: UICollectionViewDataSource {
                 showSceneParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - scenesCollectionView.contentOffset.y), scene: scenes[tag])
             }
         }
-        
     }
 }
-
 
 class SceneCollectionCell: UICollectionViewCell {
     
@@ -319,6 +347,10 @@ class SceneCollectionCell: UICollectionViewCell {
     func changeImageToNormal () {
         sceneCellImageView.image = imageOne
         setNeedsDisplay()
+    }
+    @IBOutlet weak var btnSet: CustomGradientButtonWhite!
+    @IBAction func btnSet(sender: AnyObject) {
+        
     }
     override func drawRect(rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,

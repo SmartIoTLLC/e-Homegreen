@@ -425,7 +425,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.lblRow.text = "\(indexPath.row+1)."
             cell.lblDesc.text = "\(devices[indexPath.row].name)"
             cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
-            cell.lblType.text = "Type: \(devices[indexPath.row].type)"
+            cell.lblType.text = "Control Type: \(devices[indexPath.row].type)"
             cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
             cell.lblZone.text = "Zone: \(returnZoneWithId(Int(devices[indexPath.row].zoneId))) Level: \(returnZoneWithId(Int(devices[indexPath.row].parentZoneId)))"
             cell.lblCategory.text = "Category: \(returnCategoryWithId(Int(devices[indexPath.row].categoryId)))"

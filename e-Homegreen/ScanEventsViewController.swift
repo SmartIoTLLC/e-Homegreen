@@ -235,50 +235,103 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         return String(format: "%03d",number)
     }
     
+    @IBOutlet weak var btnEdit: CustomGradientButtonWhite!
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                if btnLevel.titleLabel!.text != "--" && btnZone.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                    let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-                    event.eventId = sceneId
-                    event.eventName = sceneName
-                    event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                    event.isBroadcast = broadcastSwitch.on
-                    event.isLocalcast = localcastSwitch.on
-                    if btnLevel.titleLabel?.text != "--" {
-                        event.entityLevel = btnLevel.titleLabel!.text!
+                var itExists = false
+                var existingEvent:Event?
+                for event in events {
+                    if event.eventId == sceneId && event.address != address {
+                        itExists = true
+                        existingEvent = event
                     }
-                    if btnZone.titleLabel?.text != "--" {
-                        event.eventZone = btnZone.titleLabel!.text!
+                }
+                if !itExists {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
+                        event.eventId = sceneId
+                        event.eventName = sceneName
+                        event.address = address
+                        event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        event.isBroadcast = broadcastSwitch.on
+                        event.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            event.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            event.eventZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            event.eventCategory = btnCategory.titleLabel!.text!
+                        }
+                        event.gateway = gateway!
+                        saveChanges()
+                        refreshEventList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
                     }
-                    if btnCategory.titleLabel?.text != "--" {
-                        event.eventCategory = btnCategory.titleLabel!.text!
+                } else {
+                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
+                        existingEvent!.eventId = sceneId
+                        existingEvent!.eventName = sceneName
+                        existingEvent!.address = address
+                        existingEvent!.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                        existingEvent!.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                        existingEvent!.isBroadcast = broadcastSwitch.on
+                        existingEvent!.isLocalcast = localcastSwitch.on
+                        if btnLevel.titleLabel?.text != "--" {
+                            existingEvent!.entityLevel = btnLevel.titleLabel!.text!
+                        }
+                        if btnZone.titleLabel?.text != "--" {
+                            existingEvent!.eventZone = btnZone.titleLabel!.text!
+                        }
+                        if btnCategory.titleLabel?.text != "--" {
+                            existingEvent!.eventCategory = btnCategory.titleLabel!.text!
+                        }
+                        existingEvent!.gateway = gateway!
+                        saveChanges()
+                        refreshEventList()
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
                     }
-                    event.gateway = gateway!
-                    saveChanges()
-                    refreshEventList()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
                 }
             }
         }
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-        if let event = selected as? Event {
-            appDel.managedObjectContext!.deleteObject(event)
-            IDedit.text = ""
-            nameEdit.text = ""
-            devAddressThree.text = ""
-            btnLevel.setTitle("--", forState: UIControlState.Normal)
-            btnZone.setTitle("--", forState: UIControlState.Normal)
-            btnCategory.setTitle("--", forState: UIControlState.Normal)
-            broadcastSwitch.on = false
-            localcastSwitch.on = false
+//        if let event = selected as? Event {
+//            appDel.managedObjectContext!.deleteObject(event)
+//            IDedit.text = ""
+//            nameEdit.text = ""
+//            devAddressThree.text = ""
+//            btnLevel.setTitle("--", forState: UIControlState.Normal)
+//            btnZone.setTitle("--", forState: UIControlState.Normal)
+//            btnCategory.setTitle("--", forState: UIControlState.Normal)
+//            broadcastSwitch.on = false
+//            localcastSwitch.on = false
+//            saveChanges()
+//            refreshEventList()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+//        }
+        if events.count != 0 {
+            for event in events {
+                appDel.managedObjectContext!.deleteObject(event)
+            }
             saveChanges()
             refreshEventList()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+            resignFirstRespondersOnTextFields()
+            
         }
+    }
+    
+    func resignFirstRespondersOnTextFields() {
+        IDedit.resignFirstResponder()
+        nameEdit.resignFirstResponder()
+        devAddressOne.resignFirstResponder()
+        devAddressTwo.resignFirstResponder()
+        devAddressThree.resignFirstResponder()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -287,6 +340,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(events[indexPath.row].eventId)"
             cell.labelName.text = "\(events[indexPath.row].eventName)"
+            cell.address.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
             if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
                 cell.imageOne.image = sceneImage
             }
@@ -335,6 +389,37 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.count
     }
+    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                self.tableView(self.eventTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            // Here needs to be deleted even devices that are from gateway that is going to be deleted
+            appDel.managedObjectContext?.deleteObject(events[indexPath.row])
+            saveChanges()
+            refreshEventList()
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+        }
+        
+    }
 
 }
 
@@ -344,6 +429,6 @@ class EventsCell:UITableViewCell{
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
-    
+    @IBOutlet weak var address: UILabel!
     
 }

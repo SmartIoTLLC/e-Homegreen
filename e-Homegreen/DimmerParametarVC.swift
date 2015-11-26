@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DimmerParametarVC: UIViewController, UITextFieldDelegate {
+class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var backView: UIView!
     
@@ -35,6 +35,8 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var lblLevel: UILabel!
     @IBOutlet weak var lblZone: UILabel!
     @IBOutlet weak var lblCategory: UILabel!
+    @IBOutlet weak var deviceAddress: UILabel!
+    @IBOutlet weak var deviceChannel: UILabel!
     
     
     init(point:CGPoint){
@@ -78,13 +80,59 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate {
         editSkipState.text = "\(devices[indexPathRow].skipState)"
         overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(devices[indexPathRow].parentZoneId)"
-        lblZone.text = "\(devices[indexPathRow].zoneId)"
-        lblCategory.text = "\(devices[indexPathRow].categoryId)"
+        lblLevel.text = "\(returnZoneWithId(Int(devices[indexPathRow].parentZoneId)))"
+        lblZone.text = "\(returnZoneWithId(Int(devices[indexPathRow].zoneId)))"
+        lblCategory.text = "\(returnCategoryWithId(Int(devices[indexPathRow].categoryId)))"
+        deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
+        deviceChannel.text = "\(devices[indexPathRow].channel)"
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
         
         self.view.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
+    }
+    
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func returnZoneWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnCategoryWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
     }
     
     func returnThreeCharactersForByte (number:Int) -> String {
@@ -219,6 +267,7 @@ extension UIViewController {
         let ad = DimmerParametarVC(point: point)
         ad.indexPathRow = indexPathRow
         ad.devices = devices
+//        ad.device = device
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }
