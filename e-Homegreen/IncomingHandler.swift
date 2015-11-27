@@ -302,17 +302,28 @@ class IncomingHandler: NSObject {
     }
     func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
         fetchDevices()
-        for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-                devices[i].zoneId = Int(byteArray[9])
-                devices[i].parentZoneId = Int(byteArray[10])
-                devices[i].categoryId = Int(byteArray[8])
-//                devices[i].enabled = ""
-//                if byteArray[22] == 0x01 {
-//                    devices[i].isEnabled = NSNumber(bool: true)
-//                } else {
-//                    devices[i].isEnabled = NSNumber(bool: false)
-//                }
+        print(byteArray.count)
+        print(byteArray.count)
+        print(byteArray)
+        print("Multisensor - \(byteArray[11]) - \(byteArray[7])")
+        print(byteArray[11])
+        print(byteArray[22])
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
+                device.zoneId = Int(byteArray[9])
+                device.parentZoneId = Int(byteArray[10])
+                device.categoryId = Int(byteArray[8])
+                var interfaceParametar:[Byte] = []
+                for var i = 7; i < byteArray.count-2; i++ {
+                    interfaceParametar.append(byteArray[i])
+                }
+                device.interfaceParametar = interfaceParametar
+                if byteArray[11] >= 0x80 {
+                    device.isEnabled = NSNumber(bool: true)
+                } else {
+                    device.isEnabled = NSNumber(bool: false)
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName("refreshInterfaceParametar", object: self, userInfo: nil)
             }
         }
         saveChanges()
@@ -357,22 +368,13 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
-        print("Uslo je u ackADICmdGetInterfaceStatus")
         self.fetchDevices()
-        print("proslo je fetchDevices")
-        print("Ovde printa broj device-ova sa self\(self.devices.count)")
-        print("Ovde printa broj device-ova bez self \(devices.count)")
         print(byteArray)
         for var i = 0; i < self.devices.count; i++ {
-            print("proslo je for var i = 0; i < self.devices.count; i++ {")
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
-                print("self.devices[i].gateway.addressOne")
                 let channel = Int(self.devices[i].channel)
-                print("osluskuj 1")
                 self.devices[i].currentValue = Int(byteArray[7+channel])
-                print("osluskuj 2")
             }
-            print("proslo je self.devices[i].gateway.addressOne")
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
         }

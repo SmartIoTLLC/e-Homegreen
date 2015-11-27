@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MultisensorParametarVC: UIViewController {
     
@@ -19,7 +20,7 @@ class MultisensorParametarVC: UIViewController {
     var isPresenting: Bool = true
     
     init(point:CGPoint){
-        super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
+        super.init(nibName: "MultisensorParametarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
@@ -36,23 +37,63 @@ class MultisensorParametarVC: UIViewController {
         //        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
-        
         self.view.backgroundColor = UIColor.clearColor()
         // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshParametar", name: "refreshInterfaceParametar", object: nil)
+        
+        isEnabled.on = device!.isEnabled.boolValue
+        print("AAA")
+        print(device!.objectID)
+        print(device!.type)
+        print(device!.interfaceParametar)
+        print("AAA")
     }
-
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver("refreshInterfaceParametar")
+    }
+    func refreshParametar() {
+        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        print(device!.interfaceParametar[4])
+        if isEnabled.on == true {
+            if device!.interfaceParametar[4] >= 0x80 {
+                
+            } else {
+                device!.interfaceParametar[4] = device!.interfaceParametar[4] + 0x80
+            }
+        } else {
+            if device!.interfaceParametar[4] >= 0x80 {
+                device!.interfaceParametar[4] = device!.interfaceParametar[4] - 0x80
+            } else {
+                
+            }
+        }
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "sendCommandToSetInterfaceParametar", userInfo: nil, repeats: false)
+        SendingHandler.sendCommand(byteArray: Function.setInterfaceParametar(address, interfaceParametar: device!.interfaceParametar), gateway: device!.gateway)
+    }
+    //  This command was necessary because the gateway didn't send response sometimes
+    func sendCommandToSetInterfaceParametar () {
+        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func returnSomeObject () -> Device? {
+        do {
+            let fetResults = try appDel.managedObjectContext!.objectWithID(device!.objectID) as? Device
+            return fetResults!
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return nil
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func btnSet(sender: AnyObject) {
-        if isEnabled.on {
-            // tu saljes komandu
-        } else {
-            // tu saljes komandu
-        }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
     }
     
     func saveChanges() {
@@ -74,14 +115,14 @@ class MultisensorParametarVC: UIViewController {
     
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
 extension MultisensorParametarVC : UIViewControllerAnimatedTransitioning {
     

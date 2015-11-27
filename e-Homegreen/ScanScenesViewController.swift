@@ -250,7 +250,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                 var itExists = false
                 var existingScene:Scene?
                 for scene in scenes {
-                    if scene.sceneId == sceneId && scene.address != address {
+                    if scene.sceneId == sceneId && scene.address == address {
                         itExists = true
                         existingScene = scene
                     }

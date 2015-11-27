@@ -42,42 +42,58 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        isBroadcast.tag = 100
+//        isBroadcast.tag = 100
         isBroadcast.on = scene!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-        isLocalcast.tag = 200
+//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+//        isLocalcast.tag = 200
         isLocalcast.on = scene!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
-    func changeValue (sender:UISwitch){
-        if sender.tag == 100 {
-            if sender.on == true {
-                scene?.isBroadcast = true
-                scene?.isLocalcast = false
-                isLocalcast.on = false
-            } else {
-                scene?.isBroadcast = false
-                scene?.isLocalcast = false
-                isLocalcast.on = false
-            }
-        } else if sender.tag == 200 {
-            if sender.on == true {
-                scene?.isLocalcast = true
-                scene?.isBroadcast = false
-                isBroadcast.on = false
-            } else {
-                scene?.isLocalcast = false
-                scene?.isBroadcast = false
-                isBroadcast.on = false
-            }
+    @IBAction func btnSave(sender: AnyObject) {
+        if isBroadcast.on {
+            scene?.isBroadcast = true
+        } else {
+            scene?.isBroadcast = false
+        }
+        if isLocalcast.on {
+            scene?.isLocalcast = true
+        } else {
+            scene?.isLocalcast = false
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
+
+//    func changeValue (sender:UISwitch){
+//        if sender.tag == 100 {
+//            if sender.on == true {
+//                scene?.isBroadcast = true
+//                scene?.isLocalcast = false
+//                isLocalcast.on = false
+//            } else {
+//                scene?.isBroadcast = false
+//                scene?.isLocalcast = false
+//                isLocalcast.on = false
+//            }
+//        } else if sender.tag == 200 {
+//            if sender.on == true {
+//                scene?.isLocalcast = true
+//                scene?.isBroadcast = false
+//                isBroadcast.on = false
+//            } else {
+//                scene?.isLocalcast = false
+//                scene?.isBroadcast = false
+//                isBroadcast.on = false
+//            }
+//        }
+//        saveChanges()
+//        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+//    }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)

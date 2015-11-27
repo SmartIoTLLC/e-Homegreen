@@ -172,7 +172,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                 var itExists = false
                 var existingTimer:Timer?
                 for timer in timers {
-                    if timer.timerId == timerId && timer.address != address {
+                    if timer.timerId == timerId && timer.address == address {
                         itExists = true
                         existingTimer = timer
                     }

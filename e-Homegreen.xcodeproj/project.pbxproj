@@ -92,11 +92,14 @@
 		73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */; };
 		73EE52E51BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */; };
 		73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E41BC532D200E76BC3 /* Surveilence.swift */; };
+		73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */; };
+		73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */; };
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
+		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
 		73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */; };
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
@@ -309,11 +312,14 @@
 		73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressBarVC.xib; sourceTree = "<group>"; };
 		73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73EE52E41BC532D200E76BC3 /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
+		73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveilenceUrlsVC.swift; sourceTree = "<group>"; };
+		73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveilenceUrlsVC.xib; sourceTree = "<group>"; };
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
+		73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
 		73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
@@ -948,6 +954,8 @@
 				E7FB6A201B9D95D50016246B /* CameraVC.xib */,
 				E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */,
 				E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */,
+				73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */,
+				73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */,
 			);
 			name = SurveillanceXIB;
 			sourceTree = "<group>";
@@ -1008,6 +1016,7 @@
 			children = (
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
+				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -1174,6 +1183,7 @@
 				E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */,
 				E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */,
 				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
+				73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
@@ -1347,6 +1357,7 @@
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
+				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
@@ -1378,6 +1389,7 @@
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
+				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,

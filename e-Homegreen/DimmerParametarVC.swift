@@ -85,6 +85,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         lblCategory.text = "\(returnCategoryWithId(Int(devices[indexPathRow].categoryId)))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
+        enableSwitch.on = devices[indexPathRow].isEnabled.boolValue
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self

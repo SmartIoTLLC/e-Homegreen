@@ -38,7 +38,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
-        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+        } else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
             collectionViewCellSize = CGSize(width: 118, height: 144)
         }
         
@@ -218,7 +218,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 if devices[index.row].type == "curtainsRS485" {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
                 }
-                
+                if devices[index.row].type == "sensor" {
+                    showMultisensorParametar(CGPoint(x: self.view.center.x, y: self.view.center.y), device: devices[index.row])
+                }
             }
         }
     }
@@ -783,39 +785,96 @@ extension DevicesViewController: UICollectionViewDataSource {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         isScrolling = true
     }
+    
+    func returnZoneWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnCategoryWithId(id:Int) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name)"
+            } else {
+                return "\(id)"
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
+    }
+    
+    func returnNameForDeviceAccordingToFilter (device:Device) -> String {
+//        locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3]
+        if locationSearchText[0] != "All" {
+            if locationSearchText[1] != "All" {
+                if locationSearchText[2] != "All" {
+                    return "\(device.name)"
+                } else {
+                    return "\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
+                }
+            } else {
+                return "\(returnZoneWithId(Int(device.parentZoneId)))\\\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
+            }
+        } else {
+            return "\(device.gateway.name)\\\(returnZoneWithId(Int(device.parentZoneId)))\\\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
+        }
+    }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             
             cell.getDevice(devices[indexPath.row])
-            cell.typeOfLight.text = devices[indexPath.row].name
+            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
-            if deviceValue == 0 {
-                cell.picture.image = UIImage(named: "lightBulb")
-            } else if deviceValue > 0 && deviceValue < 0.1 {
-                cell.picture.image = UIImage(named: "lightBulb1")
-            } else if deviceValue >= 0.1 && deviceValue < 0.2 {
-                cell.picture.image = UIImage(named: "lightBulb2")
-            } else if deviceValue >= 0.2 && deviceValue < 0.3 {
-                cell.picture.image = UIImage(named: "lightBulb3")
-            } else if deviceValue >= 0.3 && deviceValue < 0.4 {
-                cell.picture.image = UIImage(named: "lightBulb4")
-            } else if deviceValue >= 0.4 && deviceValue < 0.5 {
-                cell.picture.image = UIImage(named: "lightBulb5")
-            } else if deviceValue >= 0.5 && deviceValue < 0.6 {
-                cell.picture.image = UIImage(named: "lightBulb6")
-            } else if deviceValue >= 0.6 && deviceValue < 0.7 {
-                cell.picture.image = UIImage(named: "lightBulb7")
-            } else if deviceValue >= 0.7 && deviceValue < 0.8 {
-                cell.picture.image = UIImage(named: "lightBulb8")
-            } else if deviceValue >= 0.8 && deviceValue < 0.9 {
-                cell.picture.image = UIImage(named: "lightBulb9")
+            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
+                cell.picture.image = image
             } else {
-                cell.picture.image = UIImage(named: "lightBulb10")
+                if deviceValue == 0 {
+                    cell.picture.image = UIImage(named: "lightBulb")
+                } else if deviceValue > 0 && deviceValue < 0.1 {
+                    cell.picture.image = UIImage(named: "lightBulb1")
+                } else if deviceValue >= 0.1 && deviceValue < 0.2 {
+                    cell.picture.image = UIImage(named: "lightBulb2")
+                } else if deviceValue >= 0.2 && deviceValue < 0.3 {
+                    cell.picture.image = UIImage(named: "lightBulb3")
+                } else if deviceValue >= 0.3 && deviceValue < 0.4 {
+                    cell.picture.image = UIImage(named: "lightBulb4")
+                } else if deviceValue >= 0.4 && deviceValue < 0.5 {
+                    cell.picture.image = UIImage(named: "lightBulb5")
+                } else if deviceValue >= 0.5 && deviceValue < 0.6 {
+                    cell.picture.image = UIImage(named: "lightBulb6")
+                } else if deviceValue >= 0.6 && deviceValue < 0.7 {
+                    cell.picture.image = UIImage(named: "lightBulb7")
+                } else if deviceValue >= 0.7 && deviceValue < 0.8 {
+                    cell.picture.image = UIImage(named: "lightBulb8")
+                } else if deviceValue >= 0.8 && deviceValue < 0.9 {
+                    cell.picture.image = UIImage(named: "lightBulb9")
+                } else {
+                    cell.picture.image = UIImage(named: "lightBulb10")
+                }
             }
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
@@ -874,21 +933,24 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            
+            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
-            if deviceValue >= 0 && deviceValue < 0.2 {
-                cell.curtainImage.image = UIImage(named: "curtain0")
-                
-            } else if deviceValue >= 0.2 && deviceValue < 0.4 {
-                cell.curtainImage.image = UIImage(named: "curtain1")
-            } else if deviceValue >= 0.4 && deviceValue < 0.6 {
-                cell.curtainImage.image = UIImage(named: "curtain2")
-            } else if deviceValue >= 0.6 && deviceValue < 0.8 {
-                cell.curtainImage.image = UIImage(named: "curtain3")
+            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
+                cell.curtainImage.image = image
             } else {
-                cell.curtainImage.image = UIImage(named: "curtain4")
+                if deviceValue >= 0 && deviceValue < 0.2 {
+                    cell.curtainImage.image = UIImage(named: "curtain0")
+                } else if deviceValue >= 0.2 && deviceValue < 0.4 {
+                    cell.curtainImage.image = UIImage(named: "curtain1")
+                } else if deviceValue >= 0.4 && deviceValue < 0.6 {
+                    cell.curtainImage.image = UIImage(named: "curtain2")
+                } else if deviceValue >= 0.6 && deviceValue < 0.8 {
+                    cell.curtainImage.image = UIImage(named: "curtain3")
+                } else {
+                    cell.curtainImage.image = UIImage(named: "curtain4")
+                }
             }
             cell.curtainName.userInteractionEnabled = true
             cell.curtainSlider.value = Float(deviceValue)
@@ -935,14 +997,22 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            cell.name.text = devices[indexPath.row].name
+            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.name.tag = indexPath.row
-            if devices[indexPath.row].currentValue == 255 {
-                cell.image.image = UIImage(named: "12 Appliance - Power - 01")
-                cell.onOff.setTitle("ON", forState: .Normal)
+            let deviceValue = Double(devices[indexPath.row].currentValue)/255
+            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
+                cell.image.image = image
+            } else {
+                if devices[indexPath.row].currentValue == 255 {
+                    cell.image.image = UIImage(named: "applianceon")
+                }
+                if devices[indexPath.row].currentValue == 0{
+                    cell.image.image = UIImage(named: "applianceoff")
+                }
             }
-            if devices[indexPath.row].currentValue == 0{
-                cell.image.image = UIImage(named: "12 Appliance - Power - 00")
+            if devices[indexPath.row].currentValue == 255 {
+                cell.onOff.setTitle("ON", forState: .Normal)
+            } else if devices[indexPath.row].currentValue == 0 {
                 cell.onOff.setTitle("OFF", forState: .Normal)
             }
             cell.onOff.tag = indexPath.row
@@ -989,7 +1059,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
-            cell.climateName.text = devices[indexPath.row].name
+            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
             
@@ -1092,54 +1162,99 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             
             cell.sensorTitle.userInteractionEnabled = true
-            cell.sensorTitle.text = devices[indexPath.row].name
+            cell.sensorTitle.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.sensorTitle.tag = indexPath.row
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
                 case 1:
-                    cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+//                    cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
                 case 2:
-                    cell.sensorImage.image = UIImage(named: "sensor")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 3:
-                    cell.sensorImage.image = UIImage(named: "sensor")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 4:
-                    cell.sensorImage.image = UIImage(named: "sensor")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)%"
                 case 5:
-                    cell.sensorImage.image = UIImage(named: "sensor_temperature")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_temperature")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
                 case 6:
-                    cell.sensorImage.image = UIImage(named: "sensor_brightness")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_brightness")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) LUX"
                 case 7:
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue), motionSensor: true) {
+                        cell.sensorImage.image = image
+                    } else {
+                        if devices[indexPath.row].currentValue == 1 {
+                            cell.sensorImage.image = UIImage(named: "sensor_motion")
+                        } else if devices[indexPath.row].currentValue == 0 {
+                            cell.sensorImage.image = UIImage(named: "sensor_idle")
+                        } else {
+                            cell.sensorImage.image = UIImage(named: "sensor_third")
+                        }
+                    }
                     if devices[indexPath.row].currentValue == 1 {
-                        cell.sensorImage.image = UIImage(named: "sensor_motion")
                         cell.sensorState.text = "Motion"
                     } else if devices[indexPath.row].currentValue == 0 {
-                        cell.sensorImage.image = UIImage(named: "sensor_idle")
                         cell.sensorState.text = "Motion"
                     } else {
-                        cell.sensorImage.image = UIImage(named: "sensor_third")
                         cell.sensorState.text = "Idle"
                     }
                 case 8:
-                    cell.sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
+                    } else {
+                        cell.sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                    }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 9:
-                    if devices[indexPath.row].currentValue == 1 {
-                        cell.sensorImage.image = UIImage(named: "tamper_on")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
                     } else {
-                        cell.sensorImage.image = UIImage(named: "tamper_off")
+                        if devices[indexPath.row].currentValue == 1 {
+                            cell.sensorImage.image = UIImage(named: "tamper_on")
+                        } else {
+                            cell.sensorImage.image = UIImage(named: "tamper_off")
+                        }
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 10:
-                    if devices[indexPath.row].currentValue == 1 {
-                        cell.sensorImage.image = UIImage(named: "sensor_noise")
+                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                        cell.sensorImage.image = image
                     } else {
-                        cell.sensorImage.image = UIImage(named: "sensor_no_noise")
+                        if devices[indexPath.row].currentValue == 1 {
+                            cell.sensorImage.image = UIImage(named: "sensor_noise")
+                        } else {
+                            cell.sensorImage.image = UIImage(named: "sensor_no_noise")
+                        }
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
@@ -1200,10 +1315,16 @@ extension DevicesViewController: UICollectionViewDataSource {
             if devices[indexPath.row].isEnabled.boolValue {
                 let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
                 longPress.minimumPressDuration = 0.5
-                cell.sensorTitle.addGestureRecognizer(longPress)
+//                cell.sensorTitle.addGestureRecognizer(longPress)
+                cell.backView.tag = indexPath.row
+                cell.backView.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.disabledCellView.hidden = true
             } else {
+                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+                longPress.minimumPressDuration = 0.5
+                cell.disabledCellView.tag = indexPath.row
+                cell.disabledCellView.addGestureRecognizer(longPress)
                 cell.disabledCellView.hidden = false
             }
             return cell

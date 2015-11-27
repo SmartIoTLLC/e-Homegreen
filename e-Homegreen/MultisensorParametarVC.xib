@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultisensorParametarVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
-                <outlet property="btnSet" destination="lo5-na-OX4" id="9Hb-X2-pCL"/>
                 <outlet property="isEnabled" destination="a2G-Xa-2za" id="ORD-pj-Tsi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

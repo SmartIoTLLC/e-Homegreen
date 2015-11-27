@@ -43,58 +43,79 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         cyclesTextField.text = "\(sequence!.sequenceCycles)"
-        isBroadcast.tag = 100
+//        isBroadcast.tag = 100
         isBroadcast.on = sequence!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-        isLocalcast.tag = 200
+//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+//        isLocalcast.tag = 200
         isLocalcast.on = sequence!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         cyclesTextField.delegate = self
         // Do any additional setup after loading the view.
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if let cycles = Int(cyclesTextField.text!) {
-            sequence?.sequenceCycles = cycles
-            saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-        }
+        textField.resignFirstResponder()
+//        if let cycles = Int(cyclesTextField.text!) {
+//            sequence?.sequenceCycles = cycles
+//            saveChanges()
+//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+//        }
         return true
     }
     
-    func changeValue (sender:UISwitch){
-        if sender.tag == 100 {
-            if sender.on == true {
-                sequence?.isBroadcast = true
-                sequence?.isLocalcast = false
-                isLocalcast.on = false
-            } else {
-                sequence?.isBroadcast = false
-                sequence?.isLocalcast = false
-                isLocalcast.on = false
-            }
-        } else if sender.tag == 200 {
-            if sender.on == true {
-                sequence?.isLocalcast = true
-                sequence?.isBroadcast = false
-                isBroadcast.on = false
-            } else {
-                sequence?.isLocalcast = false
-                sequence?.isBroadcast = false
-                isBroadcast.on = false
+//    func changeValue (sender:UISwitch){
+//        if sender.tag == 100 {
+//            if sender.on == true {
+//                sequence?.isBroadcast = true
+//                sequence?.isLocalcast = false
+//                isLocalcast.on = false
+//            } else {
+//                sequence?.isBroadcast = false
+//                sequence?.isLocalcast = false
+//                isLocalcast.on = false
+//            }
+//        } else if sender.tag == 200 {
+//            if sender.on == true {
+//                sequence?.isLocalcast = true
+//                sequence?.isBroadcast = false
+//                isBroadcast.on = false
+//            } else {
+//                sequence?.isLocalcast = false
+//                sequence?.isBroadcast = false
+//                isBroadcast.on = false
+//            }
+//        }
+//        saveChanges()
+//        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+//    }
+    
+    func dismissViewController () {
+//        if cyclesTextField.text != "" {
+//            if let cycles = Int(cyclesTextField.text!) {
+//                sequence?.sequenceCycles = cycles
+//                saveChanges()
+//            }
+//        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func btnSave(sender: AnyObject) {
+        if isBroadcast.on {
+            sequence?.isBroadcast = true
+        } else {
+            sequence?.isBroadcast = false
+        }
+        if isLocalcast.on {
+            sequence?.isLocalcast = true
+        } else {
+            sequence?.isLocalcast = false
+        }
+        if cyclesTextField.text != "" {
+            if let cycles = Int(cyclesTextField.text!) {
+                sequence?.sequenceCycles = cycles
             }
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-    }
-    
-    func dismissViewController () {
-        if cyclesTextField.text != "" {
-            if let cycles = Int(cyclesTextField.text!) {
-                sequence?.sequenceCycles = cycles
-                saveChanges()
-            }
-        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

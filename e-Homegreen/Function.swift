@@ -767,6 +767,49 @@ extension Function {
     }
 }
 extension Function {
+    
+    static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [channel]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x02
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    
+    static func setInterfaceParametar (address:[Byte], interfaceParametar:[Byte]) -> [Byte]{
+        let messageInfo:[Byte] = interfaceParametar
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x03
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    
+}
+extension Function {
     //   **************************************************************************************
     //   ************************************   SECURITY   ************************************
     //   **************************************************************************************

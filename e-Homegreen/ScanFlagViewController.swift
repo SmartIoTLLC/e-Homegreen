@@ -237,7 +237,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                 var itExists = false
                 var existingFlag:Flag?
                 for flag in flags {
-                    if flag.flagId == flagId && flag.address != address {
+                    if flag.flagId == flagId && flag.address == address {
                         itExists = true
                         existingFlag = flag
                     }

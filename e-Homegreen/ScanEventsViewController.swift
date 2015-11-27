@@ -242,7 +242,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                 var itExists = false
                 var existingEvent:Event?
                 for event in events {
-                    if event.eventId == sceneId && event.address != address {
+                    if event.eventId == sceneId && event.address == address {
                         itExists = true
                         existingEvent = event
                     }

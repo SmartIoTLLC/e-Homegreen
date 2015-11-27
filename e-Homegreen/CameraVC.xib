@@ -90,46 +90,43 @@
                                 <action selector="exitButton:" destination="-1" eventType="touchUpInside" id="yKo-F2-mv4"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUq-XT-d4M">
-                            <rect key="frame" x="8" y="562" width="104" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUq-XT-d4M" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="8" y="562" width="100" height="30"/>
                             <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="104" id="hmV-r3-BoJ"/>
+                                <constraint firstAttribute="width" constant="100" id="hmV-r3-BoJ"/>
                             </constraints>
-                            <state key="normal" title="AUTO SPAN">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="AUTO PAN">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="btnAutoSpan:" destination="-1" eventType="touchUpInside" id="RZk-fL-apI"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbm-Gc-rRw">
-                            <rect key="frame" x="273" y="562" width="54" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zj2-Ex-yk4" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="250" y="562" width="100" height="30"/>
                             <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="54" id="0an-tf-b5a"/>
+                                <constraint firstAttribute="width" constant="100" id="4T1-62-lEU"/>
+                            </constraints>
+                            <state key="normal" title="HOME">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbm-Gc-rRw" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="492" y="562" width="100" height="30"/>
+                            <animations/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="0an-tf-b5a"/>
                             </constraints>
                             <state key="normal" title="STOP">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="btnStop:" destination="-1" eventType="touchUpInside" id="89c-Os-f5a"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zj2-Ex-yk4">
-                            <rect key="frame" x="436" y="562" width="156" height="30"/>
-                            <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="156" id="4T1-62-lEU"/>
-                            </constraints>
-                            <state key="normal" title="PRESET SEQUENCE">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="btnPresetSequence:" destination="-1" eventType="touchUpInside" id="Yiy-jF-AUi"/>
                             </connections>
                         </button>
                     </subviews>
@@ -137,7 +134,6 @@
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="6QJ-za-RtQ" secondAttribute="bottom" id="1fz-6D-rNv"/>
-                        <constraint firstItem="Zbm-Gc-rRw" firstAttribute="centerX" secondItem="AHq-ao-muM" secondAttribute="centerX" id="4eC-0m-BnT"/>
                         <constraint firstItem="6QJ-za-RtQ" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="9tA-0A-Oal"/>
                         <constraint firstItem="5aT-Kn-woU" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" constant="10" id="C1D-KC-SEM"/>
                         <constraint firstItem="xFe-Xn-ttb" firstAttribute="top" secondItem="rM0-a5-W0S" secondAttribute="bottom" id="Hi7-c9-Ysd"/>
@@ -152,16 +148,17 @@
                         <constraint firstAttribute="bottom" secondItem="xFe-Xn-ttb" secondAttribute="bottom" id="XAx-KC-Ymg"/>
                         <constraint firstAttribute="trailing" secondItem="6QJ-za-RtQ" secondAttribute="trailing" id="XMG-o1-ci4"/>
                         <constraint firstAttribute="bottom" secondItem="zj2-Ex-yk4" secondAttribute="bottom" constant="8" id="Z3S-hk-n4t"/>
+                        <constraint firstAttribute="trailing" secondItem="Zbm-Gc-rRw" secondAttribute="trailing" constant="8" id="aJX-Fv-7LM"/>
                         <constraint firstItem="rM0-a5-W0S" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" id="b9n-7f-Ifm"/>
                         <constraint firstAttribute="trailing" secondItem="5aT-Kn-woU" secondAttribute="trailing" constant="10" id="buH-VN-Wmc"/>
                         <constraint firstAttribute="trailing" secondItem="xFe-Xn-ttb" secondAttribute="trailing" id="cwy-ej-6tR"/>
                         <constraint firstItem="rM0-a5-W0S" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="eCE-7x-561"/>
                         <constraint firstAttribute="bottom" secondItem="0pl-og-EBU" secondAttribute="bottom" id="f42-Ik-ZV3"/>
                         <constraint firstItem="YjC-Rz-VHS" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="hQz-8r-Cpq"/>
+                        <constraint firstItem="zj2-Ex-yk4" firstAttribute="centerX" secondItem="AHq-ao-muM" secondAttribute="centerX" id="hjF-9D-Kkn"/>
                         <constraint firstItem="0pl-og-EBU" firstAttribute="top" secondItem="AHq-ao-muM" secondAttribute="top" id="kos-H9-STR"/>
                         <constraint firstAttribute="trailing" secondItem="rM0-a5-W0S" secondAttribute="trailing" id="pOw-0w-pAE"/>
                         <constraint firstItem="0pl-og-EBU" firstAttribute="width" secondItem="YjC-Rz-VHS" secondAttribute="width" id="pUx-2E-U0M"/>
-                        <constraint firstAttribute="trailing" secondItem="zj2-Ex-yk4" secondAttribute="trailing" constant="8" id="xPx-85-nog"/>
                         <constraint firstAttribute="trailing" secondItem="0pl-og-EBU" secondAttribute="trailing" id="xQy-oU-T8v"/>
                         <constraint firstAttribute="bottom" secondItem="uUq-XT-d4M" secondAttribute="bottom" constant="8" id="xpp-o5-qZn"/>
                     </constraints>

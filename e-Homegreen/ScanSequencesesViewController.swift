@@ -238,7 +238,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                 var itExists = false
                 var existingSequence:Sequence?
                 for sequence in sequences {
-                    if sequence.sequenceId == sceneId && sequence.address != address {
+                    if sequence.sequenceId == sceneId && sequence.address == address {
                         itExists = true
                         existingSequence = sequence
                     }
