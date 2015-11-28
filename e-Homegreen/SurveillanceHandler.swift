@@ -28,14 +28,12 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
         var urlMain = ""
         if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
             urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-            url = NSURL(string: "/dms?nowprofileid=3")!
             
         }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-            url = NSURL(string: "/dms?nowprofileid=3")!
         }
         var urlExtension = ""
-        if surv.urlGetImage == "" {urlExtension = "/dms?nowprofileid=3"} else {urlExtension = surv.urlGetImage!}
+        if surv.urlGetImage == "" {urlExtension = "/dms?nowprofileid=2"} else {urlExtension = surv.urlGetImage!}
         url = NSURL(string: "\(urlMain)\(urlExtension)")!
         
         let request = NSMutableURLRequest(URL: url)

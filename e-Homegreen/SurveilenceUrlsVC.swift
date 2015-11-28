@@ -36,7 +36,7 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     
     var isPresenting: Bool = true
     
-    var surv:Surveilence!
+    var surv:Surveilence?
     var appDel:AppDelegate!
     var error:NSError? = nil
     
@@ -65,6 +65,9 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         txtGetImage.delegate = self
         txtMoveLeft.delegate = self
         txtMoveRight.delegate = self
@@ -87,16 +90,16 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         txtStopPresetSequence.placeholder = stopPresetSequence
         txtHome.placeholder = home
         
-        txtGetImage.text = surv.urlGetImage
-        txtMoveLeft.text = surv.urlMoveLeft
-        txtMoveRight.text = surv.urlMoveRight
-        txtMoveUp.text = surv.urlMoveUp
-        txtMoveDown.text = surv.urlMoveDown
-        txtAutoPan.text = surv.urlAutoPan
-        txtStopAutoPan.text = surv.urlAutoPanStop
-        txtPresetSequence.text = surv.urlPresetSequence
-        txtStopPresetSequence.text = surv.urlPresetSequenceStop
-        txtHome.text = surv.urlGetImage
+        txtGetImage.text = surv!.urlGetImage
+        txtMoveLeft.text = surv!.urlMoveLeft
+        txtMoveRight.text = surv!.urlMoveRight
+        txtMoveUp.text = surv!.urlMoveUp
+        txtMoveDown.text = surv!.urlMoveDown
+        txtAutoPan.text = surv!.urlAutoPan
+        txtStopAutoPan.text = surv!.urlAutoPanStop
+        txtPresetSequence.text = surv!.urlPresetSequence
+        txtStopPresetSequence.text = surv!.urlPresetSequenceStop
+        txtHome.text = surv!.urlHome
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
@@ -144,6 +147,38 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnSave(sender: AnyObject) {
+        print(txtGetImage.text)
+        print(surv!.urlGetImage)
+        print(txtGetImage.text!)
+        print(surv!.urlGetImage!)
+        print(surv!.objectID)
+        print(surv!.name)
+        print(surv!.urlGetImage)
+        print(surv!.urlGetImage)
+        print(surv!.urlGetImage)
+        print(surv!.urlGetImage)
+        if txtGetImage.text != "" {surv!.urlGetImage! = txtGetImage.text!}
+        if txtMoveRight.text != "" {surv!.urlMoveRight! = txtMoveRight.text!}
+        if txtMoveLeft.text != "" {surv!.urlMoveLeft! = txtMoveLeft.text!}
+        if txtMoveUp.text != "" {surv!.urlMoveUp! = txtMoveUp.text!}
+        if txtMoveDown.text != "" {surv!.urlMoveDown! = txtMoveDown.text!}
+        if txtAutoPan.text != "" {surv!.urlAutoPan! = txtAutoPan.text!}
+        if txtStopAutoPan.text != "" {surv!.urlAutoPanStop! = txtStopAutoPan.text!}
+        if txtPresetSequence.text != "" {surv!.urlPresetSequence! = txtPresetSequence.text!}
+        if txtStopPresetSequence.text != "" {surv!.urlPresetSequenceStop! = txtStopPresetSequence.text!}
+        if txtHome.text != "" {surv!.urlHome! = txtHome.text!}
+//        txtGetImage.resignFirstResponder()
+//        txtMoveLeft.resignFirstResponder()
+//        txtMoveRight.resignFirstResponder()
+//        txtMoveUp.resignFirstResponder()
+//        txtMoveDown.resignFirstResponder()
+//        txtAutoPan.resignFirstResponder()
+//        txtStopAutoPan.resignFirstResponder()
+//        txtPresetSequence.resignFirstResponder()
+//        txtStopPresetSequence.resignFirstResponder()
+//        txtHome.resignFirstResponder()
+        print(surv!)
+        saveChanges()
         resignFirstResponder()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -231,7 +266,7 @@ extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showCameraUrls (point:CGPoint, surveillance:Surveilence) {
         let scu = SurveilenceUrlsVC(point: point, surv: surveillance)
-        scu.surv = surveillance
+//        scu.surv = surveillance
         self.presentViewController(scu, animated: true, completion: nil)
     }
 }
