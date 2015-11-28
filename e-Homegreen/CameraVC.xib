@@ -9,6 +9,9 @@
             <connections>
                 <outlet property="backView" destination="AHq-ao-muM" id="uZY-ou-Ifs"/>
                 <outlet property="bottomButtom" destination="xFe-Xn-ttb" id="2ZM-23-opc"/>
+                <outlet property="btnAutoPan" destination="uUq-XT-d4M" id="DAW-Bl-WHw"/>
+                <outlet property="btnPresetSequence" destination="Zbm-Gc-rRw" id="QeM-x0-Vgp"/>
+                <outlet property="btnhome" destination="zj2-Ex-yk4" id="xTx-OS-Vru"/>
                 <outlet property="image" destination="6QJ-za-RtQ" id="DXP-Lq-wQo"/>
                 <outlet property="leftButton" destination="YjC-Rz-VHS" id="tGz-wG-7zv"/>
                 <outlet property="rightButton" destination="0pl-og-EBU" id="cGd-6q-5MN"/>
@@ -91,17 +94,18 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUq-XT-d4M" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="8" y="562" width="100" height="30"/>
+                            <rect key="frame" x="8" y="562" width="165" height="30"/>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="hmV-r3-BoJ"/>
+                                <constraint firstAttribute="width" constant="165" id="hmV-r3-BoJ"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="AUTO PAN">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="btnAutoSpan:" destination="-1" eventType="touchUpInside" id="RZk-fL-apI"/>
+                                <action selector="btnAutoPan:" destination="-1" eventType="touchUpInside" id="e33-bF-tLy"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zj2-Ex-yk4" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
@@ -111,22 +115,27 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="100" id="4T1-62-lEU"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="HOME">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnHome:" destination="-1" eventType="touchUpInside" id="Pwu-yc-Yfl"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbm-Gc-rRw" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="492" y="562" width="100" height="30"/>
+                            <rect key="frame" x="428" y="562" width="165" height="30"/>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="0an-tf-b5a"/>
+                                <constraint firstAttribute="width" constant="165" id="0an-tf-b5a"/>
                             </constraints>
-                            <state key="normal" title="STOP">
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="PRESET SEQUENCE">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="btnStop:" destination="-1" eventType="touchUpInside" id="89c-Os-f5a"/>
+                                <action selector="btnPresetSequence:" destination="-1" eventType="touchUpInside" id="7QV-x8-dnT"/>
                             </connections>
                         </button>
                     </subviews>
@@ -148,7 +157,7 @@
                         <constraint firstAttribute="bottom" secondItem="xFe-Xn-ttb" secondAttribute="bottom" id="XAx-KC-Ymg"/>
                         <constraint firstAttribute="trailing" secondItem="6QJ-za-RtQ" secondAttribute="trailing" id="XMG-o1-ci4"/>
                         <constraint firstAttribute="bottom" secondItem="zj2-Ex-yk4" secondAttribute="bottom" constant="8" id="Z3S-hk-n4t"/>
-                        <constraint firstAttribute="trailing" secondItem="Zbm-Gc-rRw" secondAttribute="trailing" constant="8" id="aJX-Fv-7LM"/>
+                        <constraint firstAttribute="trailing" secondItem="Zbm-Gc-rRw" secondAttribute="trailing" constant="7" id="aJX-Fv-7LM"/>
                         <constraint firstItem="rM0-a5-W0S" firstAttribute="leading" secondItem="AHq-ao-muM" secondAttribute="leading" id="b9n-7f-Ifm"/>
                         <constraint firstAttribute="trailing" secondItem="5aT-Kn-woU" secondAttribute="trailing" constant="10" id="buH-VN-Wmc"/>
                         <constraint firstAttribute="trailing" secondItem="xFe-Xn-ttb" secondAttribute="trailing" id="cwy-ej-6tR"/>

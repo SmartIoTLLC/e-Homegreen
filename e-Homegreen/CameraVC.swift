@@ -18,6 +18,12 @@ class CameraVC: UIViewController {
     @IBOutlet weak var rightButton: CustomButton!
     @IBOutlet weak var topButton: TopButton!
     @IBOutlet weak var bottomButtom: BottomButton!
+    @IBOutlet weak var btnAutoPan: CustomGradientButtonWhite!
+    @IBOutlet weak var btnhome: CustomGradientButtonWhite!
+    @IBOutlet weak var btnPresetSequence: CustomGradientButtonWhite!
+    
+    var isAutoPanStop = false
+    var isPresetSequenceStop = false
     
     var surv:Surveilence!
     var point:CGPoint?
@@ -73,17 +79,37 @@ class CameraVC: UIViewController {
     }
     
     
-    @IBAction func btnAutoSpan(sender: AnyObject) {
-        moveCam.autoSpan(surv)
+//    @IBAction func btnAutoSpan(sender: AnyObject) {
+//        moveCam.autoSpan(surv)
+//    }
+//    
+//    @IBAction func btnStop(sender: AnyObject) {
+//        moveCam.stop(surv)
+//    }
+//    
+//    @IBAction func btnPresetSequence(sender: AnyObject) {
+//        moveCam.presetSequence(surv)
+//    }
+    
+    @IBAction func btnAutoPan(sender: AnyObject) {
+        var title = ""
+        if isAutoPanStop { title = "AUTO PAN" } else { title = "STOP" }
+        btnAutoPan.setTitle(title, forState: .Normal)
+        moveCam.autoPan(surv, isStopNecessary: isAutoPanStop)
+        isAutoPanStop = !isAutoPanStop
     }
     
-    @IBAction func btnStop(sender: AnyObject) {
-        moveCam.stop(surv)
+    @IBAction func btnHome(sender: AnyObject) {
+//        moveCam.stop(surv)
+        moveCam.home(surv)
     }
-    
     
     @IBAction func btnPresetSequence(sender: AnyObject) {
-        moveCam.presetSequence(surv)
+        var title = ""
+        if isPresetSequenceStop { title = "PRESET SEQUENCE" } else { title = "STOP" }
+        isPresetSequenceStop = !isPresetSequenceStop
+        btnPresetSequence.setTitle(title, forState: .Normal)
+        moveCam.presetSequence(surv, isStopNecessary: isPresetSequenceStop)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {

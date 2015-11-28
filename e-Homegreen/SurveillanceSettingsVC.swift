@@ -39,6 +39,8 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
     var error:NSError? = nil
     var surv:Surveilence?
     
+    var isNew = false
+    
     init(surv: Surveilence?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
         self.surv = surv
@@ -136,9 +138,11 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             editPortRemote.text = "\(surv!.port!)"
             editUserName.text = surv?.username
             editPassword.text = surv?.password
-            editName.text = surv?.name
+            if isNew {editName.text = ""} else {editName.text = surv?.name}
+//            editName.text = surv?.name
             if surv?.location != nil{
-                editLocation.text = surv?.location
+                if isNew {editLocation.text = ""} else {editLocation.text = surv?.location}
+//                editLocation.text = surv?.location
             }
             if surv?.localIp != nil{
                 editIPLocal.text = surv?.localIp
@@ -200,7 +204,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             
             
         } else {
-            if surv == nil{
+            if surv == nil || isNew{
                 let surveillance = NSEntityDescription.insertNewObjectForEntityForName("Surveilence", inManagedObjectContext: appDel.managedObjectContext!) as! Surveilence
                 surveillance.ip = editIPRemote.text!
                 surveillance.port = Int(editPortRemote.text!)!
@@ -208,7 +212,16 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surveillance.password = editPassword.text!
                 surveillance.isVisible = true
                 surveillance.name = editName.text!
-                
+                surveillance.urlHome = ""
+                surveillance.urlMoveUp = ""
+                surveillance.urlMoveRight = ""
+                surveillance.urlMoveLeft = ""
+                surveillance.urlMoveDown = ""
+                surveillance.urlAutoPan = ""
+                surveillance.urlAutoPanStop = ""
+                surveillance.urlPresetSequence = ""
+                surveillance.urlPresetSequenceStop = ""
+                surveillance.urlGetImage = ""
                 if editLocation.text != ""{
                     surveillance.location = editLocation.text!
                 }
@@ -227,7 +240,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
                 surveillance.autSpanStep = 1
                 surveillance.dwellTime = 15
                 saveChanges()
-            }else{
+            }else if surv != nil || !isNew{
                 surv!.ip = editIPRemote.text!
                 surv!.port = Int(editPortRemote.text!)!
                 surv!.username = editUserName.text!
@@ -363,11 +376,8 @@ extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
                     transitionContext.completeTransition(completed)
             })
         }
-        
     }
 }
-
-
 
 extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
     
@@ -387,8 +397,9 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSurveillanceSettings(surv: Surveilence?) {
+    func showSurveillanceSettings(surv: Surveilence?, isNew:Bool) {
         let connSettVC = SurveillanceSettingsVC(surv: surv)
+        connSettVC.isNew = isNew
         self.presentViewController(connSettVC, animated: true, completion: nil)
     }
 }

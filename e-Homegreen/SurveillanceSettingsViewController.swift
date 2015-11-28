@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SurveillanceSettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
+class SurveillanceSettingsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var surveillanceTableView: UITableView!
@@ -28,21 +28,38 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
+        let lgpr = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+        lgpr.minimumPressDuration =  1.0
+        lgpr.delegate = self
+        self.surveillanceTableView.addGestureRecognizer(lgpr)
         
         fetchSurveillance()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
-
+    
+    func handleLongPress (gesture:UILongPressGestureRecognizer) {
+        let p = gesture.locationInView(self.surveillanceTableView)
+        let indexPath = self.surveillanceTableView.indexPathForRowAtPoint(p)
+        if let index = indexPath?.section {
+            showSurveillanceSettings(surveillance[index], isNew: true)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     @IBAction func btnAddNewCamera(sender: AnyObject) {
-        showSurveillanceSettings(nil)
+        showSurveillanceSettings(nil, isNew:false)
     }
     
+    @IBAction func btnUrls(sender: AnyObject) {
+        if let button = sender as? UIButton {
+            showCameraUrls(CGPoint(x: button.frame.origin.x, y: button.frame.origin.y), surveillance: surveillance[button.tag])
+        }
+    }
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -135,6 +152,7 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
             
             cell.switchVisible.tag = indexPath.section
             cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.btnUrl.tag = indexPath.section
             if surveillance[indexPath.section].isVisible == true {
                 cell.switchVisible.on = true
             }else{
@@ -180,7 +198,7 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
         
         dispatch_async(dispatch_get_main_queue(),{
-            self.showSurveillanceSettings(self.surveillance[indexPath.section])
+            self.showSurveillanceSettings(self.surveillance[indexPath.section], isNew: false)
         })
     }
     
@@ -224,6 +242,7 @@ class SurvCell: UITableViewCell{
     @IBOutlet weak var lblID: UILabel!
     @IBOutlet weak var lblPort: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
+    @IBOutlet weak var btnUrl: CustomGradientButton!
     
     override func drawRect(rect: CGRect) {
         
@@ -235,11 +254,8 @@ class SurvCell: UITableViewCell{
         
         UIColor.lightGrayColor().setStroke()
         
-        
-        
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]

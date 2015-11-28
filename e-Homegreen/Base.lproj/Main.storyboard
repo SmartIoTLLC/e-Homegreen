@@ -353,8 +353,8 @@
                                             <action selector="backButton:" destination="rly-Zt-L69" eventType="touchUpInside" id="RE6-wR-2Hr"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Surveillance settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-Vc-R20">
-                                        <rect key="frame" x="73" y="32" width="175" height="22"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Surveillance settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-Vc-R20">
+                                        <rect key="frame" x="75" y="31" width="171" height="23"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -389,7 +389,7 @@
                                     <constraint firstItem="krw-oE-FvZ" firstAttribute="centerY" secondItem="eyb-Vc-R20" secondAttribute="centerY" id="oUa-Dn-Ibh"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zd6-cQ-Cef">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zd6-cQ-Cef">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -402,26 +402,26 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fXe-64-R9F">
-                                                    <rect key="frame" x="263" y="24" width="51" height="31"/>
+                                                    <rect key="frame" x="266" y="5" width="51" height="31"/>
                                                     <animations/>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Visible" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOq-OV-rAo">
-                                                    <rect key="frame" x="215" y="31" width="43" height="17"/>
+                                                    <rect key="frame" x="218" y="12" width="43" height="17"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PORT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="228-Uq-CSG">
-                                                    <rect key="frame" x="8" y="38" width="193" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PORT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="228-Uq-CSG">
+                                                    <rect key="frame" x="8" y="53" width="193" height="19"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8J4-j9-YlZ">
-                                                    <rect key="frame" x="8" y="8" width="193" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8J4-j9-YlZ">
+                                                    <rect key="frame" x="8" y="8" width="193" height="21"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="193" id="X5n-25-2f2"/>
@@ -430,24 +430,39 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVD-M0-Rj1" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="266" y="44" width="49" height="31"/>
+                                                    <animations/>
+                                                    <state key="normal" title="URLs">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="btnUrls:" destination="a0L-WE-uyG" eventType="touchUpInside" id="7XT-uM-J4x"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="hOq-OV-rAo" firstAttribute="centerY" secondItem="fXe-64-R9F" secondAttribute="centerY" id="7Oy-qs-rrk"/>
+                                                <constraint firstAttribute="trailing" secondItem="UVD-M0-Rj1" secondAttribute="trailing" constant="5" id="AZ0-Q4-jR6"/>
                                                 <constraint firstItem="fXe-64-R9F" firstAttribute="leading" secondItem="hOq-OV-rAo" secondAttribute="trailing" constant="5" id="F8J-6C-T4R"/>
                                                 <constraint firstItem="228-Uq-CSG" firstAttribute="width" secondItem="8J4-j9-YlZ" secondAttribute="width" id="HFb-Ul-nLI"/>
                                                 <constraint firstItem="8J4-j9-YlZ" firstAttribute="leading" secondItem="W45-AG-ur2" secondAttribute="leading" constant="8" id="K6s-nL-MIr"/>
-                                                <constraint firstAttribute="trailing" secondItem="fXe-64-R9F" secondAttribute="trailing" constant="8" id="T6z-PI-VWc"/>
+                                                <constraint firstItem="UVD-M0-Rj1" firstAttribute="height" secondItem="fXe-64-R9F" secondAttribute="height" id="LrJ-EO-eAI"/>
+                                                <constraint firstItem="UVD-M0-Rj1" firstAttribute="width" secondItem="fXe-64-R9F" secondAttribute="width" id="MUd-n8-HP4"/>
+                                                <constraint firstAttribute="trailing" secondItem="fXe-64-R9F" secondAttribute="trailing" constant="5" id="T6z-PI-VWc"/>
                                                 <constraint firstItem="8J4-j9-YlZ" firstAttribute="top" secondItem="W45-AG-ur2" secondAttribute="top" constant="8" id="TzV-Gc-dT4"/>
+                                                <constraint firstItem="fXe-64-R9F" firstAttribute="top" secondItem="W45-AG-ur2" secondAttribute="top" constant="5" id="Yuv-Ix-Hac"/>
+                                                <constraint firstAttribute="bottom" secondItem="UVD-M0-Rj1" secondAttribute="bottom" constant="5" id="fqG-of-tWa"/>
                                                 <constraint firstItem="228-Uq-CSG" firstAttribute="leading" secondItem="8J4-j9-YlZ" secondAttribute="leading" id="g13-yz-xKK"/>
-                                                <constraint firstItem="228-Uq-CSG" firstAttribute="top" secondItem="8J4-j9-YlZ" secondAttribute="bottom" constant="10" id="ggE-7k-Rbw"/>
-                                                <constraint firstItem="fXe-64-R9F" firstAttribute="centerY" secondItem="W45-AG-ur2" secondAttribute="centerY" id="hOA-aW-9pr"/>
+                                                <constraint firstItem="228-Uq-CSG" firstAttribute="top" secondItem="8J4-j9-YlZ" secondAttribute="bottom" constant="24" id="ggE-7k-Rbw"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="btnUrl" destination="UVD-M0-Rj1" id="MRe-t8-RQh"/>
                                             <outlet property="lblID" destination="8J4-j9-YlZ" id="Yfk-TS-gIu"/>
                                             <outlet property="lblPort" destination="228-Uq-CSG" id="dW1-Xt-Fxz"/>
                                             <outlet property="switchVisible" destination="fXe-64-R9F" id="Iyn-h9-Evw"/>

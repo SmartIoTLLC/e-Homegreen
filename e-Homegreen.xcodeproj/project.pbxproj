@@ -90,8 +90,6 @@
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
 		73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */; };
 		73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */; };
-		73EE52E51BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */; };
-		73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EE52E41BC532D200E76BC3 /* Surveilence.swift */; };
 		73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */; };
 		73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */; };
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
@@ -100,6 +98,8 @@
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
+		73FD2E5D1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E5B1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift */; };
+		73FD2E5E1C0A0A1E00B9F11A /* Surveilence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E5C1C0A0A1E00B9F11A /* Surveilence.swift */; };
 		73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */; };
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
@@ -310,8 +310,6 @@
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
 		73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBarVC.swift; sourceTree = "<group>"; };
 		73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressBarVC.xib; sourceTree = "<group>"; };
-		73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		73EE52E41BC532D200E76BC3 /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveilenceUrlsVC.swift; sourceTree = "<group>"; };
 		73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveilenceUrlsVC.xib; sourceTree = "<group>"; };
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -320,6 +318,8 @@
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
+		73FD2E5B1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveilence+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73FD2E5C1C0A0A1E00B9F11A /* Surveilence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveilence.swift; sourceTree = "<group>"; };
 		73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		E3AFD136AEC4526FF7C887E1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
@@ -683,12 +683,12 @@
 				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
 				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
 				7372EB321BC410800097806D /* Sequence.swift */,
-				73EE52E31BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift */,
-				73EE52E41BC532D200E76BC3 /* Surveilence.swift */,
 				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
 				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
 				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
 				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
+				73FD2E5B1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift */,
+				73FD2E5C1C0A0A1E00B9F11A /* Surveilence.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1296,7 +1296,6 @@
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				7372EB381BC410800097806D /* Flag.swift in Sources */,
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
-				73EE52E51BC532D200E76BC3 /* Surveilence+CoreDataProperties.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
@@ -1358,7 +1357,6 @@
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
-				73EE52E61BC532D200E76BC3 /* Surveilence.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */,
@@ -1384,6 +1382,7 @@
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
+				73FD2E5D1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
@@ -1391,6 +1390,7 @@
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
+				73FD2E5E1C0A0A1E00B9F11A /* Surveilence.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
