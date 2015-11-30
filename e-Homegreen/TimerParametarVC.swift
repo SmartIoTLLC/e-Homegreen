@@ -42,12 +42,12 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-//        isBroadcast.tag = 100
+        isBroadcast.tag = 100
         isBroadcast.on = timer!.isBroadcast.boolValue
-//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-//        isLocalcast.tag = 200
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
         isLocalcast.on = timer!.isLocalcast.boolValue
-//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
@@ -69,31 +69,21 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-//    func changeValue (sender:UISwitch){
-//        if sender.tag == 100 {
-//            if sender.on == true {
-//                timer?.isBroadcast = true
-//                timer?.isLocalcast = false
-//                isLocalcast.on = false
-//            } else {
-//                timer?.isBroadcast = false
-//                timer?.isLocalcast = false
-//                isLocalcast.on = false
-//            }
-//        } else if sender.tag == 200 {
-//            if sender.on == true {
-//                timer?.isLocalcast = true
-//                timer?.isBroadcast = false
-//                isBroadcast.on = false
-//            } else {
-//                timer?.isLocalcast = false
-//                timer?.isBroadcast = false
-//                isBroadcast.on = false
-//            }
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListtNotification", object: self, userInfo: nil)
-//    }
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            if sender.on == true {
+                isLocalcast.on = false
+            } else {
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                isBroadcast.on = false
+            } else {
+                isBroadcast.on = false
+            }
+        }
+    }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)

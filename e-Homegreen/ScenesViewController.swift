@@ -300,7 +300,15 @@ extension ScenesViewController: UICollectionViewDataSource {
 //            if let cell = cell as? SceneCollectionCell {
 //                cell.sceneCellImageView.image =
 //            }
+            let tag = gesture.view!.tag
+            let location = gesture.locationInView(scenesCollectionView)
+            if let index = scenesCollectionView.indexPathForItemAtPoint(location){
+                if let cell = scenesCollectionView.cellForItemAtIndexPath(index) as? SceneCollectionCell {
+                    cell.changeImageForOneSecond()
+                }
+            }
         }
+        
     }
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
@@ -331,21 +339,28 @@ class SceneCollectionCell: UICollectionViewCell {
         sceneCellImageView.image = imageOne
         setNeedsDisplay()
     }
-    override var highlighted: Bool {
-        willSet(newValue) {
-            if newValue {
-                sceneCellImageView.image = imageTwo
-                setNeedsDisplay()
-                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-            }
-        }
-        didSet {
-            print("highlighted = \(highlighted)")
-        }
+    func changeImageForOneSecond() {
+        sceneCellImageView.image = imageTwo
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
     }
+    func changeImageBack() {
+        sceneCellImageView.image = imageOne
+    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                sceneCellImageView.image = imageTwo
+//                setNeedsDisplay()
+//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//        }
+//    }
     func changeImageToNormal () {
         sceneCellImageView.image = imageOne
-        setNeedsDisplay()
+//        setNeedsDisplay()
     }
     @IBOutlet weak var btnSet: CustomGradientButtonWhite!
     @IBAction func btnSet(sender: AnyObject) {

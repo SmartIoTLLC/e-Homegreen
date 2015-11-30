@@ -43,12 +43,12 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         cyclesTextField.text = "\(sequence!.sequenceCycles)"
-//        isBroadcast.tag = 100
+        isBroadcast.tag = 100
         isBroadcast.on = sequence!.isBroadcast.boolValue
-//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-//        isLocalcast.tag = 200
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
         isLocalcast.on = sequence!.isLocalcast.boolValue
-//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         cyclesTextField.delegate = self
         // Do any additional setup after loading the view.
@@ -63,31 +63,21 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         return true
     }
     
-//    func changeValue (sender:UISwitch){
-//        if sender.tag == 100 {
-//            if sender.on == true {
-//                sequence?.isBroadcast = true
-//                sequence?.isLocalcast = false
-//                isLocalcast.on = false
-//            } else {
-//                sequence?.isBroadcast = false
-//                sequence?.isLocalcast = false
-//                isLocalcast.on = false
-//            }
-//        } else if sender.tag == 200 {
-//            if sender.on == true {
-//                sequence?.isLocalcast = true
-//                sequence?.isBroadcast = false
-//                isBroadcast.on = false
-//            } else {
-//                sequence?.isLocalcast = false
-//                sequence?.isBroadcast = false
-//                isBroadcast.on = false
-//            }
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
-//    }
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            if sender.on == true {
+                isLocalcast.on = false
+            } else {
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                isBroadcast.on = false
+            } else {
+                isBroadcast.on = false
+            }
+        }
+    }
     
     func dismissViewController () {
 //        if cyclesTextField.text != "" {

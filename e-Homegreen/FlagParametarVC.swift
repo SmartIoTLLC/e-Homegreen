@@ -41,12 +41,12 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-//        isBroadcast.tag = 100
+        isBroadcast.tag = 100
         isBroadcast.on = flag!.isBroadcast.boolValue
-//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-//        isLocalcast.tag = 200
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
         isLocalcast.on = flag!.isLocalcast.boolValue
-//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
@@ -68,31 +68,21 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-//    func changeValue (sender:UISwitch){
-//        if sender.tag == 100 {
-//            if sender.on == true {
-//                flag?.isBroadcast = true
-//                flag?.isLocalcast = false
-//                isLocalcast.on = false
-//            } else {
-//                flag?.isBroadcast = false
-//                flag?.isLocalcast = false
-//                isLocalcast.on = false
-//            }
-//        } else if sender.tag == 200 {
-//            if sender.on == true {
-//                flag?.isLocalcast = true
-//                flag?.isBroadcast = false
-//                isBroadcast.on = false
-//            } else {
-//                flag?.isLocalcast = false
-//                flag?.isBroadcast = false
-//                isBroadcast.on = false
-//            }
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListtNotification", object: self, userInfo: nil)
-//    }
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            if sender.on == true {
+                isLocalcast.on = false
+            } else {
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                isBroadcast.on = false
+            } else {
+                isBroadcast.on = false
+            }
+        }
+    }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)

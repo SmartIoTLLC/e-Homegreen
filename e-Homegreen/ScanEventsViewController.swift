@@ -340,6 +340,9 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(events[indexPath.row].eventId)"
             cell.labelName.text = "\(events[indexPath.row].eventName)"
+            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne)))")
+            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo)))")
+            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))")
             cell.address.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
             if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
                 cell.imageOne.image = sceneImage

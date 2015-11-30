@@ -288,6 +288,11 @@ extension EventsViewController: UICollectionViewDataSource {
             if eventId >= 0 && eventId <= 255 {
                 SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
             }
+            let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: eventCollectionView)
+            let indexPath = eventCollectionView.indexPathForItemAtPoint(pointInTable!)
+            if let cell = eventCollectionView.cellForItemAtIndexPath(indexPath!) as? EventsCollectionViewCell {
+                cell.commandSentChangeImage()
+            }
         }
     }
     func tapCancel (gesture:UITapGestureRecognizer) {
@@ -339,18 +344,18 @@ class EventsCollectionViewCell: UICollectionViewCell {
         eventImageView.image = imageOne
         setNeedsDisplay()
     }
-    override var highlighted: Bool {
-        willSet(newValue) {
-            if newValue {
-                eventImageView.image = imageTwo
-                setNeedsDisplay()
-                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-            }
-        }
-        didSet {
-            print("highlighted = \(highlighted)")
-        }
-    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                eventImageView.image = imageTwo
+//                setNeedsDisplay()
+//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//        }
+//    }
     func commandSentChangeImage () {
         eventImageView.image = imageTwo
         setNeedsDisplay()

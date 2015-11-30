@@ -350,6 +350,15 @@ class FlagCollectionViewCell: UICollectionViewCell {
         }
         setNeedsDisplay()
     }
+    func commandSentChangeImage () {
+        flagImageView.image = imageTwo
+        setNeedsDisplay()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+    }
+    func changeImageToNormal () {
+        flagImageView.image = imageOne
+        setNeedsDisplay()
+    }
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,

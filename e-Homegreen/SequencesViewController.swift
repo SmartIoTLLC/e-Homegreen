@@ -308,13 +308,18 @@ extension SequencesViewController: UICollectionViewDataSource {
             } else {
                 SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: 0x00), gateway: sequences[tag].gateway)
             }
+            let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
+            let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
+            if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? SequenceCollectionViewCell {
+                cell.commandSentChangeImage()
+            }
         }
     }
     func tapStop (gesture:UITapGestureRecognizer) {
         //   Take cell from touched point
         let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
         let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
-        if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? EventsCollectionViewCell {
+        if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? SequenceCollectionViewCell {
             //   Take tag from touced vies
             let tag = gesture.view!.tag
             let sequenceId = Int(sequences[tag].sequenceId)
@@ -352,18 +357,18 @@ class SequenceCollectionViewCell: UICollectionViewCell {
         sequenceImageView.image = imageOne
         setNeedsDisplay()
     }
-    override var highlighted: Bool {
-        willSet(newValue) {
-            if newValue {
-                sequenceImageView.image = imageTwo
-                setNeedsDisplay()
-                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-            }
-        }
-        didSet {
-            print("highlighted = \(highlighted)")
-        }
-    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                sequenceImageView.image = imageTwo
+//                setNeedsDisplay()
+//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//        }
+//    }
     func commandSentChangeImage() {
         sequenceImageView.image = imageTwo
         setNeedsDisplay()

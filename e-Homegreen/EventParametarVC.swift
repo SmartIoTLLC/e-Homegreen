@@ -41,42 +41,32 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-//        isBroadcast.tag = 100
+        isBroadcast.tag = 100
         isBroadcast.on = event!.isBroadcast.boolValue
-//        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-//        isLocalcast.tag = 200
+        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.tag = 200
         isLocalcast.on = event!.isLocalcast.boolValue
-//        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.
     }
     
-//    func changeValue (sender:UISwitch){
-//        if sender.tag == 100 {
-//            if sender.on == true {
-//                event?.isBroadcast = true
-//                event?.isLocalcast = false
-//                isLocalcast.on = false
-//            } else {
-//                event?.isBroadcast = false
-//                event?.isLocalcast = false
-//                isLocalcast.on = false
-//            }
-//        } else if sender.tag == 200 {
-//            if sender.on == true {
-//                event?.isLocalcast = true
-//                event?.isBroadcast = false
-//                isBroadcast.on = false
-//            } else {
-//                event?.isLocalcast = false
-//                event?.isBroadcast = false
-//                isBroadcast.on = false
-//            }
-//        }
-//        saveChanges()
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
-//    }
+    func changeValue (sender:UISwitch){
+        if sender.tag == 100 {
+            if sender.on == true {
+                isLocalcast.on = false
+            } else {
+                isLocalcast.on = false
+            }
+        } else if sender.tag == 200 {
+            if sender.on == true {
+                isBroadcast.on = false
+            } else {
+                isBroadcast.on = false
+            }
+        }
+    }
     
     @IBAction func btnSave(sender: AnyObject) {
         if isBroadcast.on {

@@ -50,6 +50,9 @@
                             <state key="normal" title="SAVE">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="e3Q-j5-H3Y"/>
+                            </connections>
                         </button>
                     </subviews>
                     <animations/>
