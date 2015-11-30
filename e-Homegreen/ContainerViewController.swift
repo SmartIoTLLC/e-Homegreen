@@ -275,11 +275,11 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
             //   ***
             centerViewControllerSecond.prepareForSegue123(menuItem)
             //   ***
-            if menuItem.title == "Surveillance"{
-                NSNotificationCenter.defaultCenter().postNotificationName("runTimer", object: self, userInfo: nil)
-            }else{
-                NSNotificationCenter.defaultCenter().postNotificationName("stopTimer", object: self, userInfo: nil)
-            }
+//            if menuItem.title == "Surveillance"{
+//                NSNotificationCenter.defaultCenter().postNotificationName("runTimer", object: self, userInfo: nil)
+//            }else{
+//                NSNotificationCenter.defaultCenter().postNotificationName("stopTimer", object: self, userInfo: nil)
+//            }
             if menuItem.title == "Devices" {
                 centerViewControllerSecond.btnRefreshDevices.enabled = true
                 centerViewControllerSecond.btnRefreshDevices.hidden = false

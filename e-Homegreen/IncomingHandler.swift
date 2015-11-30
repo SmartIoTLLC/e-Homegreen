@@ -514,7 +514,6 @@ class IncomingHandler: NSObject {
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[Byte]){
-        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
         if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
             fetchDevices()
             for var i = 0; i < devices.count; i++ {
@@ -545,6 +544,9 @@ class IncomingHandler: NSObject {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
                     }
+                    devices[i].curtainGroupID = Int(byteArray[27])
+//                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
+                    devices[i].curtainControlMode = Int(byteArray[28])
                     let data = ["deviceIndexForFoundName":i]
                     NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
                 }

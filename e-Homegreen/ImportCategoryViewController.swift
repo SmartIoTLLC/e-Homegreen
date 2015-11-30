@@ -49,19 +49,38 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
     }
     
     func backURL(strText: String) {
+//        First - Delete all categories
         for var item = 0; item < categories.count; item++ {
             if categories[item].gateway.objectID == gateway!.objectID {
                 appDel.managedObjectContext!.deleteObject(categories[item])
             }
         }
-        if let categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
+//        Second - Take default categories from bundle
+        let categoriesJSONBundle = DataImporter.createCategoriesFromFileFromNSBundle()
+//        Third - Add new zones and edit zones from bundle if needed
+        if var categoriesJSON = DataImporter.createCategoriesFromFile(strText) {
             if categoriesJSON.count != 0 {
+                for categoryJsonBundle in categoriesJSONBundle! {
+                    var isExisting = false
+                    for categoryJSON in categoriesJSON {
+                        if categoryJsonBundle.id == categoryJSON.id {
+                            isExisting = true
+                        }
+                    }
+                    if !isExisting {
+                        categoriesJSON.append(categoryJsonBundle)
+                    }
+                }
                 for categoryJSON in categoriesJSON {
                     let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                     category.id = categoryJSON.id
                     category.name = categoryJSON.name
                     category.categoryDescription = categoryJSON.description
-                    category.isVisible = NSNumber(bool: true)
+                    if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
+                        category.isVisible = NSNumber(bool: false)
+                    } else {
+                        category.isVisible = NSNumber(bool: true)
+                    }
                     category.gateway = gateway!
                     saveChanges()
                 }

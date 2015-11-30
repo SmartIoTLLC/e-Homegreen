@@ -139,14 +139,14 @@ extension SidePanelViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
-        if cell.gradientLayer == nil {
-            let gradient:CAGradientLayer = CAGradientLayer()
-            gradient.frame = cell.bounds
-            gradient.colors = [UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor, UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor]
-            gradient.locations = [0.0, 1.0]
-            cell.gradientLayer = gradient
-            cell.layer.insertSublayer(gradient, atIndex: 0)
-        }
+//        if cell.gradientLayer == nil {
+//            let gradient:CAGradientLayer = CAGradientLayer()
+//            gradient.frame = cell.bounds
+//            gradient.colors = [UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor, UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor]
+//            gradient.locations = [0.0, 1.0]
+//            cell.gradientLayer = gradient
+//            cell.layer.insertSublayer(gradient, atIndex: 0)
+//        }
         cell.configureForMenu(menuItems[indexPath.row])
         cell.layer.cornerRadius = 5
         return cell
@@ -158,9 +158,51 @@ class MenuItemCell: UICollectionViewCell {
     @IBOutlet weak var menuItemName: UILabel!
     var gradientLayer: CAGradientLayer?
     
+    var colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
+    var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
     func configureForMenu (menuItem:MenuItem) {
         menuItemImageView.image = menuItem.image
         menuItemName.text = menuItem.title
     }
     
+    
+    override var highlighted: Bool {
+        
+        willSet(newValue) {
+            if newValue {
+                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
+                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+            } else {
+                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
+                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
+            }
+        }
+        
+        didSet {
+            print("highlighted = \(highlighted)")
+            setNeedsDisplay()
+        }
+    }
+    
+    
+    override func drawRect(rect: CGRect) {
+//        let path = UIBezierPath(roundedRect: rect,
+//            byRoundingCorners: UIRectCorner.AllCorners,
+//            cornerRadii: CGSize(width: 5.0, height: 5.0))
+//        path.addClip()
+//        path.lineWidth = 2
+//        UIColor.lightGrayColor().setStroke()
+        let context = UIGraphicsGetCurrentContext()
+//        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        let colors = [ colorOne, colorTwo]
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+//        path.stroke()
+    }
 }

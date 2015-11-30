@@ -14,3 +14,9 @@ class Common: NSObject {
     var screenHeight:CGFloat! = UIScreen.mainScreen().bounds.size.height
     
 }
+
+enum InputError: ErrorType {
+    case InputMissing
+    //  For zone and category id
+    case IdIncorrect
+}

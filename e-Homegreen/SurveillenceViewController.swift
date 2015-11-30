@@ -42,12 +42,27 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshCameraListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: "runTimer", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: "stopTimer", object: nil)
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        addObservers()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers () {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: "runTimer", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: "stopTimer", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
+    }
+    
+    func removeObservers () {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "runTimer", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "stopTimer", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshSurveillanceList", object: nil)
+    }
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.width == 568{

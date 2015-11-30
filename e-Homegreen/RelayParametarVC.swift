@@ -154,23 +154,23 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         }
     }
     
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeightConstraint.constant = 250
-            }else if self.view.frame.size.height == 375{
-                backViewHeightConstraint.constant = 300
-            }else if self.view.frame.size.height == 414{
-                backViewHeightConstraint.constant = 350
-            }else{
-                backViewHeightConstraint.constant = 400
-            }
-        }else{
-            
-            backViewHeightConstraint.constant = 400
-            
-        }
-    }
+//    override func viewWillLayoutSubviews() {
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            if self.view.frame.size.height == 320{
+//                backViewHeightConstraint.constant = 250
+//            }else if self.view.frame.size.height == 375{
+//                backViewHeightConstraint.constant = 300
+//            }else if self.view.frame.size.height == 414{
+//                backViewHeightConstraint.constant = 350
+//            }else{
+//                backViewHeightConstraint.constant = 400
+//            }
+//        }else{
+//            
+//            backViewHeightConstraint.constant = 400
+//            
+//        }
+//    }
     
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

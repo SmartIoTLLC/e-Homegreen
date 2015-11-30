@@ -54,7 +54,6 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        //                pullDown.scrollsToTop = false
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)

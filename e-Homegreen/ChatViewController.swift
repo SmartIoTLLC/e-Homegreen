@@ -15,7 +15,7 @@ struct ChatItem {
     var type:BubbleDataType
 }
 
-class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDelegate {
+class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDelegate, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
@@ -24,6 +24,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     @IBOutlet weak var viewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var chatTextView: UITextView!
+    var pullDown = PullDownView()
     
     //    var appDel:AppDelegate!
     //    var devices:[Device] = []
@@ -64,6 +65,78 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         
         // Do any additional setup after loading the view.
         
+        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
+        //                pullDown.scrollsToTop = false
+        self.view.addSubview(pullDown)
+        
+        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+        
+    }
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+    }
+    
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    var locationSearch:String = "All"
+    var zoneSearch:String = "All"
+    var levelSearch:String = "All"
+    var categorySearch:String = "All"
+    var locationSearchText = ["", "", "", ""]
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        chatTableView.reloadData()
+        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+    }
+    override func viewWillLayoutSubviews() {
+        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+            
+        } else {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+        }
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            layout = "Landscape"
+        }else{
+            layout = "Portrait"
+        }
+        chatTableView.reloadData()
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
@@ -124,50 +197,12 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         }
     }
     
-    
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            layout = "Landscape"
-        }else{
-            layout = "Portrait"
-        }
-        chatTableView.reloadData()
-    }
-    
     @IBAction func sendBtnAction(sender: AnyObject) {
         if  chatTextView.text != ""{
             chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
-            
             calculateHeight()
             chatTableView.reloadData()
-            
             findCommand((chatTextView.text?.lowercaseString)!)
-//            if let _ = findCommand((chatTextView.text?.lowercaseString)!) {
-//                showSuggestion().delegate = self
-//            }else{
-//                if chatTextView.text?.lowercaseString == "tell me a joke"{
-//                    let joke = TellMeAJokeHandler()
-//                    joke.getJokeCompletion({ (result) -> Void in
-//                        dispatch_async(dispatch_get_main_queue(),{
-//                            self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
-//                        })
-//                    })
-//                }else{
-//                    let answ = AnswersHandler()
-//                    answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
-//                        if result != ""{
-//                            dispatch_async(dispatch_get_main_queue(),{
-//                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
-//                            })
-//                        }else{
-//                            dispatch_async(dispatch_get_main_queue(),{
-//                            self.refreshChatListWithAnswer("Wrong question!!!", isValeryVoiceOn:true)
-//                            })
-//                        }
-//                        
-//                    })
-//                }
-//            }
             chatTextView.text = ""
             chatTextView.resignFirstResponder()
         }
@@ -316,7 +351,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                         let joke = TellMeAJokeHandler()
                         joke.getJokeCompletion({ (result) -> Void in
                             dispatch_async(dispatch_get_main_queue(),{
-                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
+                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
                             })
                         })
                     } else if command == 16 {
@@ -324,11 +359,11 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                         answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
                             if result != ""{
                                 dispatch_async(dispatch_get_main_queue(),{
-                                    self.refreshChatListWithAnswer(result, isValeryVoiceOn:true)
+                                    self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
                                 })
                             }else{
                                 dispatch_async(dispatch_get_main_queue(),{
-                                    self.refreshChatListWithAnswer("Wrong question!!!", isValeryVoiceOn:true)
+                                    self.refreshChatListWithAnswer("Wrong question!!!", isValeryVoiceOn:self.isValeryVoiceOn)
                                 })
                             }
                             
@@ -359,11 +394,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
         let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-        
         self.bottomConstraint.constant = keyboardFrame.size.height
-        
         UIView.animateWithDuration(duration,
             delay: 0,
             options: UIViewAnimationOptions.CurveLinear,
@@ -376,15 +408,12 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        
         var info = notification.userInfo!
         let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-        
         self.bottomConstraint.constant = 0
         if chatTextView.text.isEmpty{
             viewHeight.constant = 49
         }
-        
         UIView.animateWithDuration(duration,
             delay: 0,
             options: UIViewAnimationOptions.CurveLinear,
@@ -410,30 +439,34 @@ extension ChatViewController: UITableViewDelegate {
 
 extension ChatViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        //        if let cell = tableView.dequeueReusableCellWithIdentifier("chatCommandCell") as? ChatCommandCell {
-        //
-        //            var chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
-        //            var chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5)
-        //
-        //            cell.backgroundColor = UIColor.clearColor()
-        //
-        //            cell.contentView.addSubview(chatBubbleMine)
-        //            return cell
-        //        }
-        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        
         let chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
         let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
-        
+        chatBubbleMine.tag = indexPath.row
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longPress:")
+        longPress.minimumPressDuration = 1.0
+        chatBubbleMine.addGestureRecognizer(tap)
+        chatBubbleMine.addGestureRecognizer(longPress)
         cell.backgroundColor = UIColor.clearColor()
-        
         cell.contentView.addSubview(chatBubbleMine)
-        
         return cell
     }
-    
+    func oneTap (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            self.chatTextView.text = chatList[tag].text
+        }
+    }
+    func longPress (gesture:UIGestureRecognizer) {
+        if let tag = gesture.view?.tag {
+            if gesture.state == UIGestureRecognizerState.Began {
+                chatList.append(ChatItem(text: chatList[tag].text, type: .Mine))
+                calculateHeight()
+                chatTableView.reloadData()
+                findCommand(chatList[tag].text.lowercaseString)
+            }
+        }
+    }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return rowHeight[indexPath.row]
     }

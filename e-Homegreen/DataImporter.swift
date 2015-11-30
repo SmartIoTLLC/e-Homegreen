@@ -17,9 +17,13 @@ class DataImporter {
             print("Postoji.")
             data = NSData(contentsOfFile: filePath)
             let jsonError: NSError?
+//            ”
             
             do {
-                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
+                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
+                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
                 print(file["Zones"])
                 if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                     var zones:[ZoneJSON] = []
@@ -51,7 +55,10 @@ class DataImporter {
                 let jsonError: NSError?
                 
                 do {
-                    let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                    var string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
+                    let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
+                    let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
                     print(file["Zones"])
                     if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                         var zones:[ZoneJSON] = []
@@ -84,12 +91,22 @@ class DataImporter {
             let jsonError: NSError?
             
             do {
-                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
+                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
+                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
                 print(file["Categories"])
                 if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                     var categories:[CategoryJSON] = []
                     for category in categoriesDictionary {
-                        categories.append(CategoryJSON(dictionary: category)!)
+                        do {
+                            let categoryJson = try CategoryJSON.createCategory(category)
+                            categories.append(categoryJson)
+                        } catch InputError.InputMissing {
+                            return nil
+                        } catch InputError.IdIncorrect {
+                            return nil
+                        }
                     }
                     return categories
                 }
@@ -117,12 +134,22 @@ class DataImporter {
                 let jsonError: NSError?
                 
                 do {
-                    let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                    var string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
+                    let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
+                    let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
                     print(file["Categories"])
                     if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                         var categories:[CategoryJSON] = []
                         for category in categoriesDictionary {
-                            categories.append(CategoryJSON(dictionary: category)!)
+                            do {
+                                let categoryJson = try CategoryJSON.createCategory(category)
+                                categories.append(categoryJson)
+                            } catch InputError.InputMissing {
+                                return nil
+                            } catch InputError.IdIncorrect {
+                                return nil
+                            }
                         }
                         return categories
                     }
@@ -151,7 +178,10 @@ class DataImporter {
             let jsonError: NSError?
             
             do {
-                let file = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
+                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
+                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
                 print(file["Securities"])
                 if let securitiesDictionary = file["Securities"] as? [JSONDictionary] {
                     var securities:[SecurityJSON] = []
@@ -207,20 +237,44 @@ struct CategoryJSON {
     let description:String
 }
 
+//class func createCategoriesFromFileFromNSBundle () throws -> [CategoryJSON]? {
+//    
+//}
 extension CategoryJSON {
-    init?(dictionary:JSONDictionary) {
-        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-            if id == "" {id = "0"}
-            if let idInt = Int(id) {
-                self.id = idInt
-                self.name = name
-                self.description = description
-                return
-            }
+    static func createCategory(dictionary:JSONDictionary) throws -> CategoryJSON {
+        guard var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String else {
+            throw InputError.InputMissing
         }
-        return nil
+        if id == "" {id = "0"}
+        guard let idInt = Int(id) else {
+            throw InputError.IdIncorrect
+        }
+//        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+//            if id == "" {id = "0"}
+//            if let idInt = Int(id) {
+//                self.id = idInt
+//                self.name = name
+//                self.description = description
+//                return
+//            }
+//        }
+        return CategoryJSON(id: idInt, name: name, description: description)
     }
 }
+//extension CategoryJSON {
+//    init?(dictionary:JSONDictionary) throws {
+//        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
+//            if id == "" {id = "0"}
+//            if let idInt = Int(id) {
+//                self.id = idInt
+//                self.name = name
+//                self.description = description
+//                return
+//            }
+//        }
+//        return nil
+//    }
+//}
 
 struct SecurityJSON {
     let name:String

@@ -511,6 +511,7 @@
 			children = (
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				733C15701B5A825400554FD1 /* Device info and settings */,
+				73ECD4A21B332A6F00767740 /* Common.swift */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
 				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
 				736265E21B4A483E0078C11D /* Function.swift */,
@@ -574,7 +575,7 @@
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
-				E7FB6A1A1B9D95370016246B /* Surveillence */,
+				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
 				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
@@ -625,7 +626,6 @@
 				73E2390E1B97145D00CB38ED /* Model */,
 				736265DD1B4A47FE0078C11D /* BL */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
-				73ECD4A21B332A6F00767740 /* Common.swift */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
@@ -1078,14 +1078,6 @@
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 			);
 			name = ScanViewController;
-			sourceTree = "<group>";
-		};
-		E7FB6A1A1B9D95370016246B /* Surveillence */ = {
-			isa = PBXGroup;
-			children = (
-				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
-			);
-			name = Surveillence;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

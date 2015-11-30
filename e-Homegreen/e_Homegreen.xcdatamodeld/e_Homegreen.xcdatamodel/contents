@@ -16,6 +16,8 @@
         <attribute name="coolTemperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="current" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="currentValue" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="curtainControlMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="curtainGroupID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="heatTemperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="humidity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -186,7 +188,7 @@
     </entity>
     <elements>
         <element name="Category" positionX="-9" positionY="144" width="128" height="120"/>
-        <element name="Device" positionX="-63" positionY="-18" width="128" height="540"/>
+        <element name="Device" positionX="-63" positionY="-18" width="128" height="570"/>
         <element name="Event" positionX="-9" positionY="171" width="128" height="210"/>
         <element name="Flag" positionX="-18" positionY="135" width="128" height="225"/>
         <element name="Gateway" positionX="-63" positionY="54" width="128" height="360"/>

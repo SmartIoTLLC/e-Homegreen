@@ -40,13 +40,28 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     
     func backURL(strText: String) {
+//        First - Delete all zones
         for var item = 0; item < zones.count; item++ {
             if zones[item].gateway.objectID == gateway!.objectID {
                 appDel.managedObjectContext!.deleteObject(zones[item])
             }
         }
-        if let zonesJSON = DataImporter.createZonesFromFile(strText) {
+//        Second - Take default zones from bundle
+        let zonesJSONBundle = DataImporter.createZonesFromFileFromNSBundle()
+//        Third - Add new zones and edit zones from bundle if needed
+        if var zonesJSON = DataImporter.createZonesFromFile(strText) {
             if zonesJSON.count != 0 {
+                for zoneJsonBundle in zonesJSONBundle! {
+                    var isExisting = false
+                    for zoneJSON in zonesJSON {
+                        if zoneJsonBundle.id == zoneJSON.id {
+                            isExisting = true
+                        }
+                    }
+                    if !isExisting {
+                        zonesJSON.append(zoneJsonBundle)
+                    }
+                }
                 for zoneJSON in zonesJSON {
                     let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                     zone.id = zoneJSON.id

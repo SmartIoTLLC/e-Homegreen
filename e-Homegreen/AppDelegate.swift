@@ -84,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All"])
         }
         
         setFilterBySSIDOrByiBeaconAgain()
@@ -109,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let zone = returnZoneWithIBeacon(beacon!)
             if zone != nil {
                 print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.gateway.name) A POKAZUJE OVAj GATEWAY: \(zone?.gateway.name)")
-                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
+                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
                 for filter in filterArray {
                     var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                     if zone!.level == 0 {
@@ -149,15 +150,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fetchGateways()
             for gateway in gateways {
                 if gateway.ssid == ssid {
-                    let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy"]
+                    let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
                     for filter in filterArray {
                         var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-                        filterParametars[0] = "\(gateway.name)"
-                        filterParametars[1] = "All"
-                        filterParametars[2] = "All"
-                        filterParametars[3] = "All"
-                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+//                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
+                        if filterParametars[0] != "\(gateway.name)" {
+                            filterParametars[0] = "\(gateway.name)"
+                            filterParametars[1] = "All"
+                            filterParametars[2] = "All"
+                            filterParametars[3] = "All"
+                            LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                            NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+                        }
                     }
                     break
                 }

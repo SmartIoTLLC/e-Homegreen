@@ -52,7 +52,7 @@ class CustomGradientButton: UIButton {
 //            print("highlighted = \(highlighted)")
             if newValue {
                 colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                colorTwo = UIColor.blackColor().CGColor
+                colorTwo = UIColor.lightGrayColor().CGColor
             } else {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo

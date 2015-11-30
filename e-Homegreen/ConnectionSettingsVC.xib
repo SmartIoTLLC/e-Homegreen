@@ -57,7 +57,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2be-un-Lim">
                     <rect key="frame" x="150" y="60" width="300" height="480"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-SA-jbj">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-SA-jbj">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="480"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
@@ -345,6 +345,7 @@
                 <constraint firstAttribute="centerY" secondItem="2be-un-Lim" secondAttribute="centerY" id="Mkq-Us-vY8"/>
                 <constraint firstAttribute="centerX" secondItem="2be-un-Lim" secondAttribute="centerX" id="SbU-5I-7L9"/>
             </constraints>
+            <point key="canvasLocation" x="422" y="364"/>
         </view>
     </objects>
 </document>
