@@ -19,12 +19,12 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     @IBOutlet weak var menuCollectionView: UICollectionView!
     var delegate: SidePanelViewControllerDelegate?
     private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    var menuItems: Array<MenuItem>!
+    var menuItems: [MenuItem]!
     var menuList:[NSString] = []
   
     struct CollectionView {
         struct CellIdentifiers {
-        static let MenuCell = "MenuItemCell"
+            static let MenuCell = "MenuItemCell"
         }
     }
   
@@ -36,6 +36,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     override func viewWillAppear(animated: Bool) {
         menuList.removeAll(keepCapacity: false)
+//        menuList = []
     }
 
     
@@ -88,8 +89,8 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 
     
     override func viewWillDisappear(animated: Bool) {
-        for items in menuItems{
-            menuList.append(items.title!)
+        for item in menuItems{
+            menuList.append(item.title!)
         }
         NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -115,7 +116,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
+//        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
         let selectedMenuItem = menuItems[indexPath.row]
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -139,16 +140,8 @@ extension SidePanelViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
-//        if cell.gradientLayer == nil {
-//            let gradient:CAGradientLayer = CAGradientLayer()
-//            gradient.frame = cell.bounds
-//            gradient.colors = [UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor, UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor]
-//            gradient.locations = [0.0, 1.0]
-//            cell.gradientLayer = gradient
-//            cell.layer.insertSublayer(gradient, atIndex: 0)
-//        }
         cell.configureForMenu(menuItems[indexPath.row])
-        cell.layer.cornerRadius = 5
+//        cell.layer.cornerRadius = 5
         return cell
     }
 }
@@ -156,7 +149,7 @@ class MenuItemCell: UICollectionViewCell {
     
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
-    var gradientLayer: CAGradientLayer?
+//    var gradientLayer: CAGradientLayer?
     
     var colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
     var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
@@ -167,7 +160,6 @@ class MenuItemCell: UICollectionViewCell {
     
     
     override var highlighted: Bool {
-        
         willSet(newValue) {
             if newValue {
                 colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
@@ -177,21 +169,22 @@ class MenuItemCell: UICollectionViewCell {
                 colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
             }
         }
-        
         didSet {
             print("highlighted = \(highlighted)")
             setNeedsDisplay()
         }
     }
-    
-    
     override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
 //        let path = UIBezierPath(roundedRect: rect,
 //            byRoundingCorners: UIRectCorner.AllCorners,
 //            cornerRadii: CGSize(width: 5.0, height: 5.0))
 //        path.addClip()
 //        path.lineWidth = 2
 //        UIColor.lightGrayColor().setStroke()
+        
+        
+        
         let context = UIGraphicsGetCurrentContext()
 //        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         let colors = [ colorOne, colorTwo]
@@ -203,6 +196,9 @@ class MenuItemCell: UICollectionViewCell {
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        
+        
+        
 //        path.stroke()
     }
 }

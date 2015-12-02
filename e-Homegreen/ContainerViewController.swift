@@ -116,6 +116,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
         if (leftViewController == nil) {
             leftViewController = UIStoryboard.leftViewController()
 //            leftViewController!.menuItems = Menu.allMenuItems()
+            leftViewController!.menuItems = []
             leftViewController!.menuItems = MenuViewControllers.sharedInstance.allMenuItems1()
             addChildSidePanelController(leftViewController!)
         }
@@ -123,7 +124,6 @@ extension ContainerViewController: CenterViewControllerDelegate {
     
     func addChildSidePanelController(sidePanelController: SidePanelViewController) {
         sidePanelController.delegate = self
-        
         view.insertSubview(sidePanelController.view, atIndex: 0)
         
         addChildViewController(sidePanelController)

@@ -23,11 +23,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
-    @IBOutlet weak var redView: UIView!
-    @IBOutlet weak var greenView: UIView!
-    
-    var myView:Array<UIView> = []
-    var mySecondView:Array<UIView> = []
     var timer:NSTimer = NSTimer()
     
     var locationSearchText = ["", "", "", ""]
@@ -203,7 +198,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let sortDescriptorFive = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour,sortDescriptorFive]
         
-        let predicateNull = NSPredicate(format: "categoryId != 0")
+        let predicateNull = NSPredicate(format: "categoryId != 0") // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
@@ -228,14 +223,15 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-            devices = fetResults!
+//            devices = fetResults!
+            devices = fetResults!.map({$0})
 //            for device in devices {
 //                device.cellTitle = returnNameForDeviceAccordingToFilter(device)
 //            }
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+//            abort()
         }
     }
     
