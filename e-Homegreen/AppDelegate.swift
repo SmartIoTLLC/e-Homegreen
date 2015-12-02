@@ -122,10 +122,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         filterParametars[2] = "\(zone!.id)"
                         LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
                 }
             }
         }
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
         for item in iBeacons {
             item.accuracy = 10000
         }

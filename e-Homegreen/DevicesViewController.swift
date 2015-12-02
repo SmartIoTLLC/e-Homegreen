@@ -199,8 +199,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let sortDescriptorFour = NSSortDescriptor(key: "curtainGroupID", ascending: true)
+        let sortDescriptorFive = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour,sortDescriptorFive]
         
         let predicateNull = NSPredicate(format: "categoryId != 0")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
@@ -907,8 +908,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             
             cell.getDevice(devices[indexPath.row])
-//            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            cell.typeOfLight.text = devices[indexPath.row].name
+            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.typeOfLight.text = devices[indexPath.row].name
 //            cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
@@ -998,8 +999,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-//            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            cell.curtainName.text = devices[indexPath.row].name
+            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.curtainName.text = devices[indexPath.row].name
 //            cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
@@ -1064,8 +1065,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-//            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            cell.name.text = devices[indexPath.row].name
+            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.name.text = devices[indexPath.row].name
 //            cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue)/255
@@ -1128,8 +1129,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
-//            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            cell.climateName.text = devices[indexPath.row].name
+            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.climateName.text = devices[indexPath.row].name
 //            cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
@@ -1233,8 +1234,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             
             cell.sensorTitle.userInteractionEnabled = true
-//            cell.sensorTitle.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            cell.sensorTitle.text = devices[indexPath.row].name
+            cell.sensorTitle.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.sensorTitle.text = devices[indexPath.row].name
 //            cell.sensorTitle.text = devices[indexPath.row].cellTitle
             cell.sensorTitle.tag = indexPath.row
             if devices[indexPath.row].numberOfDevices == 10 {

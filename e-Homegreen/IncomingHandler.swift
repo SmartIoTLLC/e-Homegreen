@@ -544,9 +544,10 @@ class IncomingHandler: NSObject {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
                     }
-                    devices[i].curtainGroupID = Int(byteArray[27])
+//                    devices[i].allowCurtainMode = Int(byteArray[33])
+                    devices[i].curtainGroupID = Int(byteArray[34])
 //                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
-                    devices[i].curtainControlMode = Int(byteArray[28])
+                    devices[i].curtainControlMode = Int(byteArray[35])
                     let data = ["deviceIndexForFoundName":i]
                     NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
                 }
