@@ -50,6 +50,7 @@
 		738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */; };
 		738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DECAB1BBBEA6300D6B834 /* Security.swift */; };
 		738DECB11BBBFC1100D6B834 /* Security.json in Resources */ = {isa = PBXBuildFile; fileRef = 738DECB01BBBFC1100D6B834 /* Security.json */; };
+		739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */; };
 		73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */; };
 		73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */; };
 		73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */; };
@@ -266,6 +267,7 @@
 		738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Security+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		738DECAB1BBBEA6300D6B834 /* Security.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 		738DECB01BBBFC1100D6B834 /* Security.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Security.json; sourceTree = "<group>"; };
+		7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
 		73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSearchParametar.swift; sourceTree = "<group>"; };
 		73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendingHandler.swift; sourceTree = "<group>"; };
 		73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSocket.swift; sourceTree = "<group>"; };
@@ -1014,6 +1016,7 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
+				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
@@ -1280,6 +1283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
+				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Common.swift in Sources */,

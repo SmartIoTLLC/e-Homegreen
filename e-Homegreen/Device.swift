@@ -51,6 +51,8 @@ class Device: NSManagedObject {
     var opening:Bool = true
     var on:Bool = false
     var info:Bool = false
+    
+    var cellTitle:String = ""
 
 
 }

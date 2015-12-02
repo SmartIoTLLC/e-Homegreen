@@ -66,7 +66,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
-        fetchDevicesInBackground()
+        updateDeviceList()
+//        fetchDevicesInBackground()
         deviceCollectionView.reloadData()
     }
     
@@ -86,31 +87,67 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var devices:[Device] = []
     var error:NSError? = nil
     var inte = 0
+//    func fetchDevicesInBackground () {
+//        inte++
+//        print("fetchDevicesInBackground \(inte)")
+//        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+//        backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
+//        backgroundContext.performBlock{[weak self] in
+//            do {
+//                let devices = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [Device]
+//                let mainContext = self!.appDel.managedObjectContext
+//                
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    print(devices.count)
+//                    self!.devices = devices
+////                    self!.devices = []
+////                    for device in devices {
+////                        let device = mainContext!.objectWithID(deviceId) as! Device
+////                        self!.appDel.managedObjectContext?.refreshObject(device, mergeChanges: true)
+////                        self!.devices.append(device)
+////                    }
+////                for device in self!.devices {
+////                    device.cellTitle = self!.returnNameForDeviceAccordingToFilter(device)
+////                }
+//                    if !self!.isScrolling {
+//                        self!.deviceCollectionView.reloadData()
+//                    }
+//                })
+//            } catch let error as NSError {
+//                print("Unresolved error \(error), \(error.userInfo)")
+//                abort()
+//            }
+//        }
+//    }
     func fetchDevicesInBackground () {
-        inte++
-        print("fetchDevicesInBackground \(inte)")
-        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
-        backgroundContext.performBlock{[weak self] in
-            do {
-                let devicesIds = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [NSManagedObjectID]
-                let mainContext = self!.appDel.managedObjectContext
-                dispatch_async(dispatch_get_main_queue(), {
-                    self!.devices = []
-                    for deviceId in devicesIds {
-                        let device = mainContext!.objectWithID(deviceId) as! Device
-                        self!.appDel.managedObjectContext?.refreshObject(device, mergeChanges: true)
-                        self!.devices.append(device)
-                    }
-                    if !self!.isScrolling {
-                        self!.deviceCollectionView.reloadData()
-                    }
-                })
-            } catch let error as NSError {
-                print("Unresolved error \(error), \(error.userInfo)")
-                abort()
-            }
-        }
+//        inte++
+//        print("fetchDevicesInBackground \(inte)")
+//        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+//        backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
+//        backgroundContext.performBlock{[weak self] in
+//            do {
+//                let devicesIds = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [NSManagedObjectID]
+//                let mainContext = self!.appDel.managedObjectContext
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    self!.devices = []
+//                    for deviceId in devicesIds {
+//                        let device = mainContext!.objectWithID(deviceId) as! Device
+//                        self!.appDel.managedObjectContext?.refreshObject(device, mergeChanges: true)
+//                        self!.devices.append(device)
+//                    }
+//                    //                for device in self!.devices {
+//                    //                    device.cellTitle = self!.returnNameForDeviceAccordingToFilter(device)
+//                    //                }
+//                    if !self!.isScrolling {
+//                        self!.deviceCollectionView.reloadData()
+//                    }
+//                })
+//            } catch let error as NSError {
+//                print("Unresolved error \(error), \(error.userInfo)")
+//                abort()
+//            }
+//        }
+        deviceCollectionView.reloadData()
     }
     func deviceBackgroundFetch () -> NSFetchRequest {
         let request = NSFetchRequest(entityName: "Device")
@@ -150,6 +187,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        updateDeviceList()
         fetchDevicesInBackground()
         deviceCollectionView.reloadData()
         LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
@@ -190,9 +228,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
             devices = fetResults!
-            for device in devices {
-                print("TSDVM \(device.categoryId)")
-            }
+//            for device in devices {
+//                device.cellTitle = returnNameForDeviceAccordingToFilter(device)
+//            }
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
@@ -367,13 +405,27 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 }
             }
             devices[tag].currentValue = Int(deviceValue*100)
-            UIView.setAnimationsEnabled(false)
-            self.deviceCollectionView.performBatchUpdates({
-                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                }, completion:  {(completed: Bool) -> Void in
-                    UIView.setAnimationsEnabled(true)
-            })
+//            UIView.setAnimationsEnabled(false)
+//            self.deviceCollectionView.performBatchUpdates({
+//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                }, completion:  {(completed: Bool) -> Void in
+//                    UIView.setAnimationsEnabled(true)
+//            })
+//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//            let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as! DeviceCollectionCell
+//            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+//            cell.setNeedsDisplay()
+            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+            if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
+                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.lightSlider.value = Float(deviceValue)
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
+                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.curtainSlider.value = Float(deviceValue)
+                cell.setNeedsDisplay()
+            }
         }
     }
     
@@ -390,13 +442,23 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 }
             }
             devices[tag].currentValue = Int(deviceValue*100)
-            UIView.setAnimationsEnabled(false)
-            self.deviceCollectionView.performBatchUpdates({
-                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                }, completion:  {(completed: Bool) -> Void in
-                    UIView.setAnimationsEnabled(true)
-            })
+//            UIView.setAnimationsEnabled(false)
+//            self.deviceCollectionView.performBatchUpdates({
+//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                }, completion:  {(completed: Bool) -> Void in
+//                    UIView.setAnimationsEnabled(true)
+//            })
+            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+            if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
+                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.lightSlider.value = Float(deviceValue)
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
+                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.curtainSlider.value = Float(deviceValue)
+                cell.setNeedsDisplay()
+            }
         }
     }
     
@@ -519,30 +581,58 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
             let sliderOldValue = slider.value*100
+            print("Eee \(sliderOldValue)")
             let pt = gesture.locationInView(slider)
+            print("Eee \(pt)")
             let percentage = pt.x/slider.bounds.size.width
+            print("Eee \(percentage)")
             let delta = Float(percentage) * Float(slider.maximumValue - slider.minimumValue)
+            print("Eee \(delta)")
             let value = round((slider.minimumValue + delta)*100)
+            print("Eee \(value)")
+            if !((value/100) >= 0 && (value/100) <= 100) {
+                return
+            }
             slider.setValue(value/100, animated: true)
             let tag = slider.tag
             devices[tag].currentValue = Int(value)
-            UIView.setAnimationsEnabled(false)
-            self.deviceCollectionView.performBatchUpdates({
-                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-                }, completion:  {(completed: Bool) -> Void in
-                    UIView.setAnimationsEnabled(true)
-            })
+            print("Eee \(value)")
+//            UIView.setAnimationsEnabled(false)
+//            self.deviceCollectionView.performBatchUpdates({
+//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//                }, completion:  {(completed: Bool) -> Void in
+//                    UIView.setAnimationsEnabled(true)
+//            })
+//            changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
+//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+//            let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as! DeviceCollectionCell
+//            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+//            cell.setNeedsDisplay()
+            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+            if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
+                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
+                cell.lightSlider.value = slider.value
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
+                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
+                cell.curtainSlider.value = slider.value
+                cell.setNeedsDisplay()
+            }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
         }
     }
     func changeSliderValueWithTag(tag:Int, withOldValue:Int) {
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        print(devices[tag])
         deviceInControlMode = false
         //   Dimmer
         if devices[tag].type == "Dimmer" {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
+                    print(self.devices[tag])
+                    print("\(self.devices[tag].currentValue)")
+                    print("\(Int(self.devices[tag].currentValue))")
                     _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
@@ -596,13 +686,23 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].opening = true
         }
         
-        UIView.setAnimationsEnabled(false)
-        self.deviceCollectionView.performBatchUpdates({
-            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-            }, completion:  {(completed: Bool) -> Void in
-                UIView.setAnimationsEnabled(true)
-        })
+//        UIView.setAnimationsEnabled(false)
+        //        self.deviceCollectionView.performBatchUpdates({
+        let deviceValue = sender.value
+        let indexPath = NSIndexPath(forItem: tag, inSection: 0)
+        if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
+            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+            cell.lightSlider.value = deviceValue
+            cell.setNeedsDisplay()
+        } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
+            cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+            cell.curtainSlider.value = deviceValue
+            cell.setNeedsDisplay()
+        }
+//            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
+//            }, completion:  {(completed: Bool) -> Void in
+//                UIView.setAnimationsEnabled(true)
+//        })
     }
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
@@ -625,6 +725,21 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var deviceInControlMode = false
+    func returnNameForDeviceAccordingToFilter (device:Device) -> String {
+        if locationSearchText[0] != "All" {
+            if locationSearchText[1] != "All" {
+                if locationSearchText[2] != "All" {
+                    return "\(device.name)"
+                } else {
+                    return "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+                }
+            } else {
+                return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+            }
+        } else {
+            return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+        }
+    }
 }
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -786,65 +901,15 @@ extension DevicesViewController: UICollectionViewDataSource {
         isScrolling = true
     }
     
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnNameForDeviceAccordingToFilter (device:Device) -> String {
-//        locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3]
-        if locationSearchText[0] != "All" {
-            if locationSearchText[1] != "All" {
-                if locationSearchText[2] != "All" {
-                    return "\(device.name)"
-                } else {
-                    return "\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
-                }
-            } else {
-                return "\(returnZoneWithId(Int(device.parentZoneId)))\\\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
-            }
-        } else {
-            return "\(device.gateway.name)\\\(returnZoneWithId(Int(device.parentZoneId)))\\\(returnZoneWithId(Int(device.zoneId)))\\\(device.name)"
-        }
-    }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         if devices[indexPath.row].type == "Dimmer" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             
             cell.getDevice(devices[indexPath.row])
-            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+            cell.typeOfLight.text = devices[indexPath.row].name
+//            cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
@@ -933,7 +998,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+            cell.curtainName.text = devices[indexPath.row].name
+//            cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
@@ -997,7 +1064,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+            cell.name.text = devices[indexPath.row].name
+//            cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue)/255
             if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
@@ -1059,7 +1128,9 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "hvac" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
-            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+            cell.climateName.text = devices[indexPath.row].name
+//            cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
             
@@ -1162,7 +1233,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             
             cell.sensorTitle.userInteractionEnabled = true
-            cell.sensorTitle.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.sensorTitle.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+            cell.sensorTitle.text = devices[indexPath.row].name
+//            cell.sensorTitle.text = devices[indexPath.row].cellTitle
             cell.sensorTitle.tag = indexPath.row
             if devices[indexPath.row].numberOfDevices == 10 {
                 switch devices[indexPath.row].channel {
@@ -1175,17 +1248,17 @@ extension DevicesViewController: UICollectionViewDataSource {
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
                 case 2:
-                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
-                        cell.sensorImage.image = image
+                    if devices[indexPath.row].currentValue == 0 {
+                        cell.sensorImage.image = UIImage(named: "applianceoff")
                     } else {
-                        cell.sensorImage.image = UIImage(named: "sensor")
+                        cell.sensorImage.image = UIImage(named: "applianceon")
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 3:
-                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
-                        cell.sensorImage.image = image
+                    if devices[indexPath.row].currentValue == 0 {
+                        cell.sensorImage.image = UIImage(named: "applianceoff")
                     } else {
-                        cell.sensorImage.image = UIImage(named: "sensor")
+                        cell.sensorImage.image = UIImage(named: "applianceon")
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue)"
                 case 4:
@@ -1203,23 +1276,19 @@ extension DevicesViewController: UICollectionViewDataSource {
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) C"
                 case 6:
-                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue)/255, motionSensor: false) {
+                    if let image = ImageHandler.returnPictures(2, deviceValue: Double(devices[indexPath.row].currentValue)/100, motionSensor: false) {
                         cell.sensorImage.image = image
                     } else {
                         cell.sensorImage.image = UIImage(named: "sensor_brightness")
                     }
                     cell.sensorState.text = "\(devices[indexPath.row].currentValue) LUX"
                 case 7:
-                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: Double(devices[indexPath.row].currentValue), motionSensor: true) {
-                        cell.sensorImage.image = image
+                    if devices[indexPath.row].currentValue == 1 {
+                        cell.sensorImage.image = UIImage(named: "sensor_motion")
+                    } else if devices[indexPath.row].currentValue == 0 {
+                        cell.sensorImage.image = UIImage(named: "sensor_idle")
                     } else {
-                        if devices[indexPath.row].currentValue == 1 {
-                            cell.sensorImage.image = UIImage(named: "sensor_motion")
-                        } else if devices[indexPath.row].currentValue == 0 {
-                            cell.sensorImage.image = UIImage(named: "sensor_idle")
-                        } else {
-                            cell.sensorImage.image = UIImage(named: "sensor_third")
-                        }
+                        cell.sensorImage.image = UIImage(named: "sensor_third")
                     }
                     if devices[indexPath.row].currentValue == 1 {
                         cell.sensorState.text = "Motion"

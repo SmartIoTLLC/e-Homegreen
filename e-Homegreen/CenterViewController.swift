@@ -83,7 +83,7 @@ class CenterViewController: UIViewController {
     }
     
     func sendingSignal() {
-        dispatch_async(dispatch_get_main_queue(), {
+//        dispatch_async(dispatch_get_main_queue(), {
             self.greenView.hidden = false
             self.greenView.alpha = 1
             UIView.animateWithDuration(1, animations: {() -> Void in
@@ -91,11 +91,11 @@ class CenterViewController: UIViewController {
                 }, completion: {(finished:Bool) -> Void in
                     self.greenView.hidden = finished
             })
-        })
+//        })
     }
     
     func incomingSignal() {
-        dispatch_async(dispatch_get_main_queue(), {
+//        dispatch_async(dispatch_get_main_queue(), {
             self.redView.hidden = false
             self.redView.alpha = 1
             UIView.animateWithDuration(1, animations: {() -> Void in
@@ -103,7 +103,7 @@ class CenterViewController: UIViewController {
                 }, completion: {(finished:Bool) -> Void in
                     self.redView.hidden = finished
             })
-        })
+//        })
     }
     
     func imageFromLayer (layer:CALayer) -> UIImage {

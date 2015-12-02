@@ -257,33 +257,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         disconnectAllConnections()
         fetchGateways()
         if gateways != [] {
-            for var i = 0; i < gateways.count; i++ {
+            for gateway in gateways {
                 if inOutSockets != [] {
                     var foundRemote:Bool = false
                     var foundLocal:Bool = false
-                    for var j = 0; j < inOutSockets.count; j++ {
-                        if inOutSockets[j].port == UInt16(Int(gateways[i].localPort)) {
+                    for inOutSocket in inOutSockets {
+                        if inOutSocket.port == UInt16(Int(gateway.localPort)) {
                             foundLocal = true
                         }
-                        if inOutSockets[j].port == UInt16(Int(gateways[i].remotePort)) {
+                        if inOutSocket.port == UInt16(Int(gateway.remotePort)) {
                             foundRemote = true
                         }
                     }
                     if !foundLocal {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort))))
                     }
                     if !foundRemote {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort))))
                     }
                 } else {
-                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
-                    if inOutSockets[0].port != UInt16(Int(gateways[i].remotePort)) {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort))))
+                    if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) {
+                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort))))
                     }
                 }
             }
         }
     }
+//    func establishAllConnections () {
+//        disconnectAllConnections()
+//        fetchGateways()
+//        if gateways != [] {
+//            for var i = 0; i < gateways.count; i++ {
+//                if inOutSockets != [] {
+//                    var foundRemote:Bool = false
+//                    var foundLocal:Bool = false
+//                    for var j = 0; j < inOutSockets.count; j++ {
+//                        if inOutSockets[j].port == UInt16(Int(gateways[i].localPort)) {
+//                            foundLocal = true
+//                        }
+//                        if inOutSockets[j].port == UInt16(Int(gateways[i].remotePort)) {
+//                            foundRemote = true
+//                        }
+//                    }
+//                    if !foundLocal {
+//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
+//                    }
+//                    if !foundRemote {
+//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+//                    }
+//                } else {
+//                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
+//                    if inOutSockets[0].port != UInt16(Int(gateways[i].remotePort)) {
+//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
+//                    }
+//                }
+//            }
+//        }
+//    }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         establishAllConnections()
