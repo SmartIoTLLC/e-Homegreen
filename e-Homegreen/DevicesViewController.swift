@@ -47,9 +47,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
         updateDeviceList()
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
+        adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
     override func viewDidAppear(animated: Bool) {
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
         deviceCollectionView.reloadData()
         addObservers()
         refreshVisibleDevicesInScrollView()
@@ -185,8 +186,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         updateDeviceList()
-        fetchDevicesInBackground()
         deviceCollectionView.reloadData()
+        fetchDevicesInBackground()
         LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
     }
     
@@ -389,64 +390,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func updateCells() {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
             for indexPath in indexPaths {
+                print(indexPath.row)
                 if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                    cell.lightSlider.continuous = true
-                    let deviceValue = Double(devices[indexPath.row].currentValue) / 100
-                    if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
-                        cell.picture.image = image
-                    } else {
-                        if deviceValue == 0 {
-                            cell.picture.image = UIImage(named: "lightBulb")
-                        } else if deviceValue > 0 && deviceValue < 0.1 {
-                            cell.picture.image = UIImage(named: "lightBulb1")
-                        } else if deviceValue >= 0.1 && deviceValue < 0.2 {
-                            cell.picture.image = UIImage(named: "lightBulb2")
-                        } else if deviceValue >= 0.2 && deviceValue < 0.3 {
-                            cell.picture.image = UIImage(named: "lightBulb3")
-                        } else if deviceValue >= 0.3 && deviceValue < 0.4 {
-                            cell.picture.image = UIImage(named: "lightBulb4")
-                        } else if deviceValue >= 0.4 && deviceValue < 0.5 {
-                            cell.picture.image = UIImage(named: "lightBulb5")
-                        } else if deviceValue >= 0.5 && deviceValue < 0.6 {
-                            cell.picture.image = UIImage(named: "lightBulb6")
-                        } else if deviceValue >= 0.6 && deviceValue < 0.7 {
-                            cell.picture.image = UIImage(named: "lightBulb7")
-                        } else if deviceValue >= 0.7 && deviceValue < 0.8 {
-                            cell.picture.image = UIImage(named: "lightBulb8")
-                        } else if deviceValue >= 0.8 && deviceValue < 0.9 {
-                            cell.picture.image = UIImage(named: "lightBulb9")
-                        } else {
-                            cell.picture.image = UIImage(named: "lightBulb10")
-                        }
-                    }
-                    cell.lightSlider.value = Float(deviceValue)
-                    cell.picture.tag = indexPath.row
-                    cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
-                    cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
-                    cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-                    cell.labelRunningTime.text = devices[indexPath.row].runningTime
-                    if devices[indexPath.row].info {
-                        cell.infoView.hidden = false
-                        cell.backView.hidden = true
-                    }else {
-                        cell.infoView.hidden = true
-                        cell.backView.hidden = false
-                    }
-                    if devices[indexPath.row].warningState == 0 {
-                        cell.backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                    } else if devices[indexPath.row].warningState == 1 {
-                        // Uppet state
-                        cell.backView.colorTwo = UIColor.redColor().CGColor
-                    } else if devices[indexPath.row].warningState == 2 {
-                        // Lower state
-                        cell.backView.colorTwo = UIColor.blueColor().CGColor
-                    }
-                    // If device is enabled add all interactions
-                    if devices[indexPath.row].isEnabled.boolValue {
-                        cell.disabledCellView.hidden = true
-                    } else {
-                        cell.disabledCellView.hidden = false
-                    }
+                    refreshDevice(devices[indexPath.row])
                     cell.setNeedsDisplay()
                 } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                     let deviceValue = Double(devices[indexPath.row].currentValue) / 100
@@ -822,6 +768,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
         }
     }
+    
+//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+//        return 1
+//    }
+//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+//        return 1
+//    }
     func adjustScrollInsetsPullDownViewAndBackgroudImage() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -834,6 +787,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
+            print(self.view.frame.size.width)
+            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -855,6 +810,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
+            print(self.view.frame.size.width)
+            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -871,7 +828,54 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
+//        fetchEntities("Flag")
+//        fetchEntities("Timer")
+//        fetchEntities("Security")
     }
+//    var timers:[Timer] = []
+//    var flags:[Flag] = []
+//    var securities:[Security] = []
+//    func fetchEntities (whatToFetch:String) {
+//        if whatToFetch == "Flag" {
+//            let fetchRequest = NSFetchRequest(entityName: "Flag")
+//            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
+//            fetchRequest.sortDescriptors = [sortDescriptors]
+//            do {
+//                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
+//                print(results.count)
+//                flags = results
+//            } catch let catchedError as NSError {
+//                error = catchedError
+//            }
+//            return
+//        }
+//        
+//        if whatToFetch == "Timer" {
+//            let fetchRequest = NSFetchRequest(entityName: "Timer")
+//            let sortDescriptors = NSSortDescriptor(key: "timerName", ascending: true)
+//            fetchRequest.sortDescriptors = [sortDescriptors]
+//            do {
+//                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
+//                timers = results
+//            } catch let catchedError as NSError {
+//                error = catchedError
+//            }
+//            return
+//        }
+//        if whatToFetch == "Security" {
+//            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+//            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+//            fetchRequest.sortDescriptors = [sortDescriptorTwo]
+//            do {
+//                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+//                securities = fetResults!
+//            } catch let error1 as NSError {
+//                error = error1
+//                print("Unresolved error \(error), \(error!.userInfo)")
+//                abort()
+//            }
+//        }
+//    }
 //    override func viewWillLayoutSubviews() {
 //        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
 //        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {

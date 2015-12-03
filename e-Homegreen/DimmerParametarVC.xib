@@ -295,6 +295,7 @@
                                 <constraint firstItem="xLm-2L-qp2" firstAttribute="leading" secondItem="jG2-v4-n51" secondAttribute="leading" constant="2" id="cTr-jP-OiQ"/>
                                 <constraint firstItem="2P8-io-Kub" firstAttribute="centerY" secondItem="Nh4-ug-iV5" secondAttribute="centerY" id="dDg-D1-8wA"/>
                                 <constraint firstItem="QQH-2z-wPU" firstAttribute="trailing" secondItem="0fP-bf-0PB" secondAttribute="trailing" id="fR6-Kd-Lsg"/>
+                                <constraint firstAttribute="bottom" secondItem="cTT-DK-0Td" secondAttribute="bottom" constant="8" id="gKH-pb-Aq7"/>
                                 <constraint firstAttribute="bottom" secondItem="cTT-DK-0Td" secondAttribute="bottom" constant="12" id="gdm-2D-Bqf"/>
                                 <constraint firstItem="kv6-Zm-I9c" firstAttribute="width" secondItem="gvP-qk-BrT" secondAttribute="width" id="hAA-fx-qH8"/>
                                 <constraint firstItem="Nh4-ug-iV5" firstAttribute="bottom" secondItem="4yB-gN-tXw" secondAttribute="top" constant="-15" id="hzT-b6-3Iv"/>
@@ -317,6 +318,11 @@
                                 <constraint firstItem="Gqi-4E-QhC" firstAttribute="top" secondItem="etx-jy-to2" secondAttribute="bottom" constant="17" id="zPo-qo-A1u"/>
                                 <constraint firstItem="adc-e2-Phf" firstAttribute="top" secondItem="4yB-gN-tXw" secondAttribute="bottom" constant="15" id="zqO-j4-Dvn"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="gdm-2D-Bqf"/>
+                                </mask>
+                            </variation>
                         </scrollView>
                     </subviews>
                     <animations/>
