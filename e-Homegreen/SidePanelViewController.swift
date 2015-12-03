@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 protocol SidePanelViewControllerDelegate {
-  func menuItemSelected(menuItem: MenuItem)
+    optional func menuItemSelected(menuItem: MenuItem)
 }
 
 class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
@@ -27,7 +27,11 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
             static let MenuCell = "MenuItemCell"
         }
     }
-  
+    
+    deinit {
+        print("deinit - class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //(red: 47/255, green: 47/255, blue: 47/255, alpha: 1)
@@ -120,13 +124,12 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
         let selectedMenuItem = menuItems[indexPath.row]
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()
-        delegate?.menuItemSelected(selectedMenuItem)
+        delegate?.menuItemSelected!(selectedMenuItem)
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         return CGSize(width: 88, height: 88)
     }
 }
@@ -141,7 +144,7 @@ extension SidePanelViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
         cell.configureForMenu(menuItems[indexPath.row])
-//        cell.layer.cornerRadius = 5
+        cell.layer.cornerRadius = 5
         return cell
     }
 }

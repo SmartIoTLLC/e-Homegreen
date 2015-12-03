@@ -48,11 +48,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nyw-ia-m1i" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="145" y="70" width="310" height="460"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gkQ-Iv-MrB">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkQ-Iv-MrB">
                             <rect key="frame" x="0.0" y="0.0" width="310" height="460"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relay Parametar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WaJ-gF-KYl">
-                                    <rect key="frame" x="0.0" y="8" width="310" height="24.5"/>
+                                    <rect key="frame" x="0.0" y="8" width="310" height="25"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="310" id="ps0-UX-WuZ"/>
@@ -62,7 +62,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delay:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTO-wo-Lao">
-                                    <rect key="frame" x="10" y="126" width="50.5" height="22"/>
+                                    <rect key="frame" x="10" y="126" width="51" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -76,35 +76,35 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Override Controller ID:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msb-XP-mrO">
-                                    <rect key="frame" x="10" y="210" width="181.5" height="22"/>
+                                    <rect key="frame" x="10" y="210" width="182" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0B-Te-mWc">
-                                    <rect key="frame" x="10" y="378" width="77.5" height="22"/>
+                                    <rect key="frame" x="10" y="378" width="78" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hiV-bj-hxk">
-                                    <rect key="frame" x="10" y="294" width="47.5" height="22"/>
+                                    <rect key="frame" x="10" y="294" width="48" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQK-rv-3na">
-                                    <rect key="frame" x="10" y="336" width="45.5" height="22"/>
+                                    <rect key="frame" x="10" y="336" width="46" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ipu-H9-jCo">
-                                    <rect key="frame" x="10" y="252" width="52.5" height="22"/>
+                                    <rect key="frame" x="10" y="252" width="53" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -205,7 +205,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000:000:000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P2O-rB-qAc">
-                                    <rect key="frame" x="180" y="51" width="120" height="20.5"/>
+                                    <rect key="frame" x="180" y="51" width="120" height="21"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="120" id="wTz-rg-bx2"/>
@@ -215,7 +215,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQa-Mk-9BV">
-                                    <rect key="frame" x="193" y="89" width="107" height="20.5"/>
+                                    <rect key="frame" x="193" y="89" width="107" height="21"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="107" id="bdJ-gd-aIP"/>

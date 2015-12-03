@@ -10,6 +10,9 @@ import UIKit
 
 //@objc
 class Menu {
+    deinit {
+        print("deinit - class Menu {")
+    }
     let title: String
     let image: UIImage?
     let viewController: UIViewController

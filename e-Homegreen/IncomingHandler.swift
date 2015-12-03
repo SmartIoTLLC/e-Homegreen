@@ -320,8 +320,10 @@ class IncomingHandler: NSObject {
                 device.interfaceParametar = interfaceParametar
                 if byteArray[11] >= 0x80 {
                     device.isEnabled = NSNumber(bool: true)
+                    device.isVisible = NSNumber(bool: true)
                 } else {
                     device.isEnabled = NSNumber(bool: false)
+                    device.isVisible = NSNumber(bool: false)
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName("refreshInterfaceParametar", object: self, userInfo: nil)
             }
@@ -690,7 +692,5 @@ class IncomingHandler: NSObject {
                 abort()
             }
         }
-    }
-    func fetchSecurity () {
     }
 }

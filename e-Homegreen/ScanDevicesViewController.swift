@@ -179,14 +179,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         number = number - fromAddress! + 1
         let howMuchOf = toAddress!-fromAddress!+1
         pbFD?.lblHowMuchOf.text = "\(number)/\(howMuchOf)"
-        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(number)/Float(howMuchOf)*100)
+        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(number)/Float(howMuchOf)*100) + " %"
         pbFD?.progressView.progress = Float(number)/Float(howMuchOf)
     }
     
     func setProgressBarParametarsForFindingNames (var index:Int) {
         index = index - fromAddress! + 1
         pbFN?.lblHowMuchOf.text = "\(index)/\(toAddress!-fromAddress!+1)"
-        pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f %", Float(index)/Float(toAddress!-fromAddress!+1)*100)
+        pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(toAddress!-fromAddress!+1)*100) + " %"
         pbFN?.progressView.progress = Float(index)/Float(toAddress!-fromAddress!+1)
     }
     
@@ -229,7 +229,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if (index != 0 || deviceIndex < index) && deviceIndex <= toAddress {
 //            if index != 0 || deviceIndex < toAddress {
                 timesRepeatedCounter += 1
-                if timesRepeatedCounter < 4 {
+                if timesRepeatedCounter < 3 {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
                     sendCommandForFindingName(index: deviceIndex)
                 } else {
@@ -263,7 +263,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
     }
-    
     func sendCommandForFindingName (index index:Int) {
         setProgressBarParametarsForFindingNames(index)
 //        index = index - 1
@@ -365,15 +364,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NameAndParametarsForDeviceRequested")
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
-                if numberTwo >= numberOne {
-                    fromAddress = numberOne - 1
-                    toAddress = numberTwo - 1
-                    if devices.count != 0 {
-                        print("HELLO 1")
+                if devices.count != 0 {
+                    if numberTwo >= numberOne  && numberTwo <= devices.count && numberOne >= 0 {
+                        fromAddress = numberOne - 1
+                        toAddress = numberTwo - 1
                         index = fromAddress!
                         timesRepeatedCounter = 0
                         pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \((fromAddress!-toAddress!)+1)")
-//                        pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \(devices.count)")
                         self.presentViewController(pbFN!, animated: true, completion: nil)
                         deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
                         sendCommandForFindingName(index: index)

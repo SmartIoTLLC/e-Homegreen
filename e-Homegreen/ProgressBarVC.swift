@@ -42,7 +42,7 @@ class ProgressBarVC: UIViewController {
         progressBarView.layer.cornerRadius = 10
         progressView.progress = percentage
         lblTitle.text = progressBarTitle
-        lblPercentage.text = String.localizedStringWithFormat("%.01f %", percentage)
+        lblPercentage.text = String.localizedStringWithFormat("%.01f", percentage) + " %"
         lblHowMuchOf.text = howMuchOf
 
         // Do any additional setup after loading the view.

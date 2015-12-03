@@ -121,11 +121,9 @@ extension ContainerViewController: CenterViewControllerDelegate {
             addChildSidePanelController(leftViewController!)
         }
     }
-    
     func addChildSidePanelController(sidePanelController: SidePanelViewController) {
         sidePanelController.delegate = self
         view.insertSubview(sidePanelController.view, atIndex: 0)
-        
         addChildViewController(sidePanelController)
         sidePanelController.didMoveToParentViewController(self)
     }

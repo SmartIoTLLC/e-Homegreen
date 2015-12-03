@@ -86,6 +86,8 @@
 		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
 		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
 		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
+		73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */; };
+		73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
 		73ECD4A31B332A6F00767740 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Common.swift */; };
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
@@ -187,8 +189,6 @@
 		E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */; };
 		E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */; };
 		E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */; };
-		E7E1A8261B3804F1008D8713 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8221B3804F1008D8713 /* OpenEars.framework */; };
-		E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A8231B3804F1008D8713 /* Slt.framework */; };
 		E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E242111B68B35400CEAB9A /* CellParametarVC.swift */; };
 		E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E242121B68B35400CEAB9A /* CellParametarVC.xib */; };
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
@@ -307,6 +307,8 @@
 		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
 		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
 		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
+		73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCells.swift; sourceTree = "<group>"; };
+		73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceCollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
 		73ECD4A21B332A6F00767740 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
@@ -419,8 +421,6 @@
 		E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
 		E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
-		E7E1A8221B3804F1008D8713 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
-		E7E1A8231B3804F1008D8713 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		E7E242111B68B35400CEAB9A /* CellParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellParametarVC.swift; sourceTree = "<group>"; };
 		E7E242121B68B35400CEAB9A /* CellParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellParametarVC.xib; sourceTree = "<group>"; };
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -452,10 +452,8 @@
 			files = (
 				E79309BE1BC571770009EFB1 /* QuartzCore.framework in Frameworks */,
 				E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */,
-				E7E1A8271B3804F1008D8713 /* Slt.framework in Frameworks */,
 				E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */,
 				E7E1A81C1B3804D0008D8713 /* AVFoundation.framework in Frameworks */,
-				E7E1A8261B3804F1008D8713 /* OpenEars.framework in Frameworks */,
 				3F277F957EC64F51D01216DB /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1017,9 +1015,11 @@
 			isa = PBXGroup;
 			children = (
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
+				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
-				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
+				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
+				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -1039,8 +1039,6 @@
 				E7E1A81B1B3804D0008D8713 /* AVFoundation.framework */,
 				E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */,
 				E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */,
-				E7E1A8221B3804F1008D8713 /* OpenEars.framework */,
-				E7E1A8231B3804F1008D8713 /* Slt.framework */,
 			);
 			name = Framework;
 			path = ../Framework;
@@ -1304,12 +1302,14 @@
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
+				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
+				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
@@ -1566,7 +1566,7 @@
 			baseConfigurationReference = 170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
