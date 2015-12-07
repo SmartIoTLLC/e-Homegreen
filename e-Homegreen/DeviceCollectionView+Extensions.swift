@@ -147,8 +147,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
             cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            //            cell.typeOfLight.text = devices[indexPath.row].name
-            //            cell.typeOfLight.text = devices[indexPath.row].cellTitle
+                        cell.typeOfLight.text = devices[indexPath.row].name
+//            print(devices[indexPath.row].cellTitle)
+//                        cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
@@ -240,8 +241,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
             cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            //            cell.curtainName.text = devices[indexPath.row].name
-            //            cell.curtainName.text = devices[indexPath.row].cellTitle
+                        cell.curtainName.text = devices[indexPath.row].name
+//                        cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
@@ -308,8 +309,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            //            cell.name.text = devices[indexPath.row].name
-            //            cell.name.text = devices[indexPath.row].cellTitle
+                        cell.name.text = devices[indexPath.row].name
+//                        cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue)/255
             if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
@@ -374,8 +375,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
             cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-            //            cell.climateName.text = devices[indexPath.row].name
-            //            cell.climateName.text = devices[indexPath.row].cellTitle
+                        cell.climateName.text = devices[indexPath.row].name
+//                        cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
             

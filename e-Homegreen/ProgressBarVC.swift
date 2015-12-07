@@ -8,7 +8,12 @@
 
 import UIKit
 
+@objc protocol ProgressBarDelegate {
+    func progressBarDidPressedExit()
+}
+
 class ProgressBarVC: UIViewController {
+    var delegate:ProgressBarDelegate?
     
     @IBOutlet weak var progressBarView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
@@ -34,12 +39,15 @@ class ProgressBarVC: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    @IBAction func btnExit(sender: AnyObject) {
+        delegate?.progressBarDidPressedExit()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.clearColor()
+//        self.view.backgroundColor = UIColor.clearColor()
         progressBarView.layer.borderWidth = 1
         progressBarView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        progressBarView.layer.cornerRadius = 10
+        progressBarView.layer.cornerRadius = 5
         progressView.progress = percentage
         lblTitle.text = progressBarTitle
         lblPercentage.text = String.localizedStringWithFormat("%.01f", percentage) + " %"

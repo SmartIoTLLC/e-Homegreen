@@ -20,7 +20,12 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7O9-Om-wYA">
+                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sZx-OY-IHc">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7O9-Om-wYA" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                     <rect key="frame" x="163" y="234" width="274" height="132"/>
                     <subviews>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dZW-sd-tIV">
@@ -29,32 +34,41 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="258" id="oCq-pQ-ds8"/>
                             </constraints>
-                            <color key="progressTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="progressTintColor" red="0.074190784728123751" green="0.64898969240837712" blue="9.3983190479168284e-05" alpha="1" colorSpace="calibratedRGB"/>
                         </progressView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="percentage" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Wk-aI-mPB">
-                            <rect key="frame" x="8" y="103" width="88" height="21"/>
+                            <rect key="frame" x="8" y="103.5" width="87.5" height="20.5"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIq-aB-Sr4">
-                            <rect key="frame" x="224" y="103" width="42" height="21"/>
+                            <rect key="frame" x="224" y="103.5" width="42" height="20.5"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbU-cP-Zi6">
-                            <rect key="frame" x="8" y="8" width="70" height="21"/>
+                            <rect key="frame" x="8" y="8" width="70" height="20.5"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eb6-PN-zQO">
+                            <rect key="frame" x="231" y="8" width="35" height="35"/>
+                            <animations/>
+                            <inset key="contentEdgeInsets" minX="3" minY="3" maxX="3" maxY="3"/>
+                            <state key="normal" image="exit"/>
+                            <connections>
+                                <action selector="btnExit:" destination="-1" eventType="touchUpInside" id="7SP-Rp-JRT"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="JbU-cP-Zi6" firstAttribute="top" secondItem="7O9-Om-wYA" secondAttribute="top" constant="8" id="2gW-Et-nV0"/>
                         <constraint firstAttribute="bottom" secondItem="mIq-aB-Sr4" secondAttribute="bottom" constant="8" id="AhY-Bo-lid"/>
@@ -67,15 +81,25 @@
                         <constraint firstAttribute="width" constant="274" id="lUz-no-ukJ"/>
                         <constraint firstAttribute="trailing" secondItem="mIq-aB-Sr4" secondAttribute="trailing" constant="8" id="tt0-F6-3jO"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <animations/>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="7O9-Om-wYA" secondAttribute="centerX" id="Tdr-3R-bRK"/>
-                <constraint firstAttribute="centerY" secondItem="7O9-Om-wYA" secondAttribute="centerY" id="dOE-GX-RZn"/>
+                <constraint firstItem="sZx-OY-IHc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="89w-8i-pol"/>
+                <constraint firstAttribute="bottom" secondItem="sZx-OY-IHc" secondAttribute="bottom" id="Pok-wk-GYh"/>
+                <constraint firstItem="sZx-OY-IHc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eDE-NN-fWY"/>
+                <constraint firstItem="7O9-Om-wYA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ghM-as-6p8"/>
+                <constraint firstAttribute="trailing" secondItem="sZx-OY-IHc" secondAttribute="trailing" id="muF-cP-QZb"/>
+                <constraint firstItem="7O9-Om-wYA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="u3u-5R-Pyw"/>
             </constraints>
-            <point key="canvasLocation" x="302" y="351"/>
+            <point key="canvasLocation" x="369" y="417"/>
         </view>
     </objects>
+    <resources>
+        <image name="exit" width="100" height="100"/>
+    </resources>
 </document>

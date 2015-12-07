@@ -67,7 +67,7 @@ extension UIView {
         layer.addAnimation(scaleAnimation, forKey: "bouncingEffectOnTouch")
     }
     func fadeIn (times:Float) {
-        var animation = CABasicAnimation(keyPath: "opacity")
+        let animation = CABasicAnimation(keyPath: "opacity")
         animation.duration = 1
         animation.fromValue = NSNumber(float: 0.0)
         animation.toValue = NSNumber(float: 1.0)
@@ -75,7 +75,7 @@ extension UIView {
         layer.addAnimation(animation, forKey: "fadeIn")
     }
     func fadeOut (times:Float) {
-        var animation = CABasicAnimation(keyPath: "opacity")
+        let animation = CABasicAnimation(keyPath: "opacity")
         animation.duration = 0.5
         animation.fromValue = NSNumber(float: 1.0)
         animation.toValue = NSNumber(float: 0.0)

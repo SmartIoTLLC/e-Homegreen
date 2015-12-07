@@ -114,7 +114,27 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 //        }
 //    }
     
-  
+//    init() {
+//        NSNotificationCenter.defaultCenter().addObserverForName(
+//            UIApplicationDidReceiveMemoryWarningNotification,
+//            object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+////                self.images.removeAll(keepCapacity: false)
+//        }
+//    }
+//    
+//    deinit {
+//        NSNotificationCenter.defaultCenter().removeObserver(self,
+//            name: UIApplicationDidReceiveMemoryWarningNotification,
+//            object: nil)
+//    }
+//    cell.heartToggleHandler = { isStarred in
+//    self.collectionView.reloadItemsAtIndexPaths([ indexPath ])
+//    }
+//    cell.heartToggleHandler = { [weak self] isStarred in
+//    if let strongSelf = self {
+//    strongSelf.collectionView.reloadItemsAtIndexPaths([ indexPath ])
+//    }
+//    }
 }
 
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -146,6 +166,8 @@ extension SidePanelViewController: UICollectionViewDataSource {
         cell.configureForMenu(menuItems[indexPath.row])
         cell.layer.cornerRadius = 5
         return cell
+//        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
+//        return cell
     }
 }
 class MenuItemCell: UICollectionViewCell {
@@ -197,7 +219,7 @@ class MenuItemCell: UICollectionViewCell {
             colors,
             colorLocations)
         let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        let endPoint = CGPoint(x:0, y:bounds.height)
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
         
         

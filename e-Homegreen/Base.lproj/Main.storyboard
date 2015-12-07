@@ -433,6 +433,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVD-M0-Rj1" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="266" y="44" width="49" height="31"/>
                                                     <animations/>
+                                                    <gestureRecognizers/>
                                                     <state key="normal" title="URLs">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -498,6 +499,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xrg-Gw-TzH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="sLP-ar-STK"/>
             </objects>
             <point key="canvasLocation" x="-363" y="148"/>
         </scene>
@@ -588,6 +590,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e home logo" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
                                 <rect key="frame" x="8" y="20" width="184" height="42"/>
                                 <animations/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="8vh-UT-Z3y"/>
                                     <constraint firstAttribute="width" constant="184" id="TaG-AY-7aV"/>

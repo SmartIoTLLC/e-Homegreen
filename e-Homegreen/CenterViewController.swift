@@ -137,7 +137,7 @@ class CenterViewController: UIViewController {
 
 extension CenterViewController: SidePanelViewControllerDelegate {
   func menuItemSelected(menuItem: MenuItem) {
-    Container.addSubview(menuItem.viewController!.view)
+//    Container.addSubview(menuItem.viewController!.view)
 //    delegate?.collapseSidePanels?()
   }
 }

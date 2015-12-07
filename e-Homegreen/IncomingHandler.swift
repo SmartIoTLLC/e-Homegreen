@@ -396,7 +396,7 @@ class IncomingHandler: NSObject {
             }
             if !deviceExists {
                 for var i=1 ; i<=channel ; i++ {
-                    if channel == 10 && name == "sensor" {
+                    if channel == 10 && name == "sensor" && i > 1 {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])
@@ -413,7 +413,7 @@ class IncomingHandler: NSObject {
                         device.isVisible = false
                         device.isEnabled = false
                         saveChanges()
-                    } else if channel == 6 && name == "sensor" {
+                    } else if channel == 6 && name == "sensor" && i > 1 {
                         let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                         device.name = "Unknown"
                         device.address = Int(byteArray[4])

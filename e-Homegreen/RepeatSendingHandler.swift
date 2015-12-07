@@ -14,6 +14,7 @@ class RepeatSendingHandler: NSObject {
     var byteArray: [UInt8]!
     var gateway: Gateway!
     var repeatCounter:Int = 1
+    var delay:Double = 0
     
     var device:Device!
     var deviceOldValue:Int!
@@ -35,6 +36,7 @@ class RepeatSendingHandler: NSObject {
         self.gateway = gateway
         self.device = device
         self.deviceOldValue = oldValue
+        self.delay = Double(device.delay) + 1
         
         sendCommand()
         
@@ -61,7 +63,7 @@ class RepeatSendingHandler: NSObject {
                 SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                 repeatCounter += 1
                 if !firstTime {
-                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
+                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
                     firstTime = true
                 }
             } else {

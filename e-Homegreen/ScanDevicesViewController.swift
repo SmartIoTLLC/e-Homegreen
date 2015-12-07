@@ -9,13 +9,13 @@
 import UIKit
 import CoreData
 
-class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ProgressBarDelegate {
     
     @IBOutlet weak var rangeFrom: UITextField!
     @IBOutlet weak var rangeTo: UITextField!
     
     @IBOutlet weak var deviceTableView: UITableView!
-    var loader : ViewControllerUtils = ViewControllerUtils()
+//    var loader : ViewControllerUtils = ViewControllerUtils()
     
     
     var appDel:AppDelegate!
@@ -192,7 +192,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     
     func hideActivityIndicator () {
         pbFD?.dissmissProgressBar()
-        loader.hideActivityIndicator()
+//        loader.hideActivityIndicator()
     }
     
     // ======================= *** FINDING NAMES FOR DEVICE *** =======================
@@ -299,6 +299,21 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             abort()
         }
     }
+    func progressBarDidPressedExit() {
+        //   For finding names
+        index = 0
+        timesRepeatedCounter = 0
+        deviceNameTimer?.invalidate()
+        pbFN?.dissmissProgressBar()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+        
+        //   For finding devices
+        searchForDeviceWithId = 0
+        timesRepeatedCounter = 0
+        searchDeviceTimer?.invalidate()
+        hideActivityIndicator()
+    }
+    
     
     // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
     
@@ -334,13 +349,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     timesRepeatedCounter = 0
                     
                     pbFD = ProgressBarVC(title: "Finding devices", percentage: Float(fromAddress!)/Float(toAddress!), howMuchOf: "1 / \(toAddress!-fromAddress!+1)")
+                    pbFD?.delegate = self
                     self.presentViewController(pbFD!, animated: true, completion: nil)
                     
-                    if let parentVC = self.parentViewController {
-                        loader.showActivityIndicator(parentVC.view)
-                    }else{
-                        loader.showActivityIndicator(self.view)
-                    }
+//                    if let parentVC = self.parentViewController {
+//                        loader.showActivityIndicator(parentVC.view)
+//                    }else{
+//                        loader.showActivityIndicator(self.view)
+//                    }
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
@@ -371,6 +387,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         index = fromAddress!
                         timesRepeatedCounter = 0
                         pbFN = ProgressBarVC(title: "Finding names", percentage: 0.0, howMuchOf: "0 / \((fromAddress!-toAddress!)+1)")
+                        pbFN?.delegate = self
                         self.presentViewController(pbFN!, animated: true, completion: nil)
                         deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
                         sendCommandForFindingName(index: index)
