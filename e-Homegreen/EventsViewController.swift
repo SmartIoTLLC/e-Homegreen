@@ -62,11 +62,11 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: "refreshEventListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: NotificationKey.RefreshEvent, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshEventListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshEvent, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     override func didReceiveMemoryWarning() {

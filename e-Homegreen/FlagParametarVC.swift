@@ -64,7 +64,7 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
             flag?.isLocalcast = false
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListtNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

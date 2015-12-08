@@ -24,7 +24,9 @@ enum InputError: ErrorType {
     case InputMissing
     case IdIncorrect
 }
-
+struct ReuseIdentifier {
+    "settingsCell"
+}
 struct UserDefaults {
     static let IsScaningDevice = "kDevicesFromGatewayRequested"
     static let IsScaningDeviceName = "kDevicesFromGatewayRequested"
@@ -39,24 +41,58 @@ struct UserDefaults {
         static let AddressThree = "EHGSecurityAddressThree"
         static let IsPanic = "EHGSecurityPanic"
     }
+//    "firstBool"
+//    "menu"
+//    "firstItem"
 }
 
 struct NotificationKey {
     static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"
     static let DidFindDeviceName = "kPLCdidFindNameForDevice"
+    static let DidRefreshDeviceInfo = "btnRefreshDevicesClicked"
+    static let DidReceiveDataForRepeatSendingHandler = "repeatSendingHandlerNotification"
+    
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"
     static let RefreshInterface = "refreshInterfaceParametar"
     static let RefreshClimate = "refreshClimateController"
     static let RefreshSecurity = "refreshSecurityNotificiation"
+    static let RefreshSequence = "refreshSequenceListNotification"
+    static let RefreshEvent = "refreshEventListNotification"
+    static let RefreshScene = "refreshSceneListNotification"
+    static let RefreshSurveillance = "refreshSurveillanceListNotification"
+    
+    struct Surveillance {
+        static let Refresh = "refreshSurveillanceListNotification"
+        static let Run = "runTimer"
+        static let Stop = "stopTimer"
+    }
+    
+    struct Gateway {
+        static let Refresh = "updateGatewayListNotification"
+        static let DidReceiveData = "didReceiveMessageFromGateway"
+        static let DidSendData = "didSendMessageToGateway"
+    }
+    
     static let RefreshFilter = "kRefreshLocalParametarsNotification"
+    
+    static let RefreshIBeacon = "refreshIBeaconList"
 }
 
 struct SegueIdentifier {
     static let some = ""
+//    "menuSettings"
+//    "connectionSettings"
+//    "surveillanceSettings"
+//    "securitySettings"
+//    "iBeaconSettings"
 }
 
 struct Colors {
-    
+    static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
+    static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+    static let LightGrayColor = UIColor.lightGrayColor().CGColor
+    static let VeryLightGrayColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
+    static let DarkGrayColor = UIColor.darkGrayColor().CGColor
 }

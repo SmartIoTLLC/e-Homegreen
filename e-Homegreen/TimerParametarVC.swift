@@ -65,7 +65,7 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
             timer?.isLocalcast = false
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListtNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

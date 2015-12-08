@@ -64,11 +64,11 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: "refreshSequenceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: NotificationKey.RefreshSequence, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshSequenceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSequence, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     override func viewWillLayoutSubviews() {

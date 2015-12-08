@@ -22,7 +22,7 @@ class CenterViewController: UIViewController {
         btnSearchIBeacon.bouncingEffectOnTouch(1)
     }
     @IBAction func btnRefreshDevices(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName("btnRefreshDevicesClicked", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidRefreshDeviceInfo, object: self, userInfo: nil)
         btnRefreshDevices.rotate(1)
     }
     @IBOutlet weak var btnRefreshDevices: UIButton!
@@ -70,8 +70,8 @@ class CenterViewController: UIViewController {
                 titleOfViewController.text = "Settings"
             }
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "incomingSignal", name: "didReceiveMessageFromGateway", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendingSignal", name: "didSendMessageToGateway", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "incomingSignal", name: NotificationKey.Gateway.DidReceiveData, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendingSignal", name: NotificationKey.Gateway.DidSendData, object: nil)
 
         
         MenuViewControllers.sharedInstance.getViewController(titleOfViewController.text!).view.frame = self.Container.bounds

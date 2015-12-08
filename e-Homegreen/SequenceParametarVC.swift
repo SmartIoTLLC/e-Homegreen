@@ -58,7 +58,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
 //        if let cycles = Int(cyclesTextField.text!) {
 //            sequence?.sequenceCycles = cycles
 //            saveChanges()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
 //        }
         return true
     }
@@ -105,7 +105,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

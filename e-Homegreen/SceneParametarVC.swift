@@ -65,7 +65,7 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
             scene?.isLocalcast = false
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 

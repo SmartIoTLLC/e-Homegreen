@@ -29,11 +29,13 @@ class IBeaconSettingsViewController: UIViewController,UIViewControllerTransition
         
         fetchIBeacons()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshIBeaconList", name: "refreshIBeaconList", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshIBeaconList", name: NotificationKey.RefreshIBeacon, object: nil)
 
         // Do any additional setup after loading the view.
     }
-
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshIBeacon, object: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

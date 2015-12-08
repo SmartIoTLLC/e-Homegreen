@@ -12,12 +12,12 @@ import UIKit
 class CustomGradientBackground: UIView {
     
     @IBInspectable var isHeader: Bool = true
-    var colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor {
+    var colorOne = Colors.DarkGray {
         didSet {
             setNeedsDisplay()
         }
     }
-    var colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor {
+    var colorTwo = Colors.MediumGray {
         didSet {
             setNeedsDisplay()
         }

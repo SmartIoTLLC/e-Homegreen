@@ -24,7 +24,7 @@ class IncomingHandler: NSObject {
     }
     init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
-        NSNotificationCenter.defaultCenter().postNotificationName("didReceiveMessageFromGateway", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidReceiveData, object: self, userInfo: nil)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         self.host = host
         self.port = port
@@ -221,7 +221,7 @@ class IncomingHandler: NSObject {
                 devices[i].humidity = Int(byteArray[16+13*(channel-1)])
                 devices[i].current = Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])
                 let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                NSNotificationCenter.defaultCenter().postNotificationName("repeatSendingHandlerNotification", object: self, userInfo: data)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveDataForRepeatSendingHandler, object: self, userInfo: data)
             }
         }
         saveChanges()
@@ -510,7 +510,7 @@ class IncomingHandler: NSObject {
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
                 let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                NSNotificationCenter.defaultCenter().postNotificationName("repeatSendingHandlerNotification", object: self, userInfo: data)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveDataForRepeatSendingHandler, object: self, userInfo: data)
             }
         }
         saveChanges()

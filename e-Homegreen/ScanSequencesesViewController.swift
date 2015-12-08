@@ -266,7 +266,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                         sequence.gateway = gateway!
                         saveChanges()
                         refreshSequenceList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
                     }
                 } else {
                     if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
@@ -290,7 +290,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                         existingSequence!.gateway = gateway!
                         saveChanges()
                         refreshSequenceList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
                     }
                 }
             }
@@ -314,7 +314,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
 //            localcastSwitch.on = false
 //            saveChanges()
 //            refreshSequenceList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
 //        }
         if sequences.count != 0 {
             for sequence in sequences {
@@ -322,7 +322,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             }
             saveChanges()
             refreshSequenceList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
             resignFirstRespondersOnTextFields()
             
         }
@@ -419,7 +419,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
             appDel.managedObjectContext?.deleteObject(sequences[indexPath.row])
             saveChanges()
             refreshSequenceList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSequenceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
         }
         
     }

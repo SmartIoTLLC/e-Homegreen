@@ -336,7 +336,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("updateGatewayListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.Refresh, object: self, userInfo: nil)
         appDel.establishAllConnections()
     }
     

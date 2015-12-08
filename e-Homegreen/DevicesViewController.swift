@@ -98,13 +98,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: "btnRefreshDevicesClicked", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "btnRefreshDevicesClicked", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     
@@ -290,9 +290,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
         }
-        
         if devices[tag].type == "curtainsRS485" {
-            
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true

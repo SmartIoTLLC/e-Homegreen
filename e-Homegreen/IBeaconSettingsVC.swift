@@ -206,7 +206,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshIBeaconList", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
     }
     
     func keyboardWillShow(notification: NSNotification) {

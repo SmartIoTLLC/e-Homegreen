@@ -10,10 +10,10 @@ import UIKit
 
 @IBDesignable
 class CustomGradientButton: UIButton {
-    var defaultColorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-    var defaultColorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-    var colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-    var colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+    var defaultColorOne = Colors.MediumGray
+    var defaultColorTwo = Colors.DarkGray
+    var colorOne = Colors.MediumGray
+    var colorTwo = Colors.DarkGray
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
@@ -51,8 +51,8 @@ class CustomGradientButton: UIButton {
 //            print("changing from \(selected) to \(newValue)")
 //            print("highlighted = \(highlighted)")
             if newValue {
-                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                colorTwo = UIColor.lightGrayColor().CGColor
+                colorOne = Colors.DarkGray
+                colorTwo = Colors.LightGrayColor
             } else {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo
@@ -76,8 +76,8 @@ class CustomGradientButton: UIButton {
         willSet(newValue) {
             print("changing from \(selected) to \(newValue)")
             if newValue {
-                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-                colorTwo = UIColor.blackColor().CGColor
+                colorOne = Colors.DarkGray
+                colorTwo = Colors.DarkGray
             } else {
                 colorOne = defaultColorOne
                 colorTwo = defaultColorTwo

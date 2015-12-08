@@ -80,7 +80,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
             event?.isLocalcast = false
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

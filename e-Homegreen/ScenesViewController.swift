@@ -77,11 +77,11 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: "refreshSceneListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: NotificationKey.RefreshScene, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshSceneListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshScene, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     func returnZoneWithId(id:Int) -> String {

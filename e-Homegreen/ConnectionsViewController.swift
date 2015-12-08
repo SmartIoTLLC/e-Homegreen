@@ -29,7 +29,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
         self.showConnectionSettings(-1)
         
     }
@@ -100,7 +100,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     func updateNewGatewayList () {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "updateGatewayListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Gateway.Refresh, object: nil)
         fetchGateways()
     }
     
@@ -320,7 +320,7 @@ extension ConnectionsViewController: UITableViewDataSource {
 
 extension ConnectionsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
         
         dispatch_async(dispatch_get_main_queue(),{
             self.showConnectionSettings(indexPath.section)

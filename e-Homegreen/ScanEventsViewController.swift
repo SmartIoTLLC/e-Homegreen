@@ -269,7 +269,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                         event.gateway = gateway!
                         saveChanges()
                         refreshEventList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
                     }
                 } else {
                     if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
@@ -292,7 +292,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                         existingEvent!.gateway = gateway!
                         saveChanges()
                         refreshEventList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
                     }
                 }
             }
@@ -312,7 +312,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
 //            localcastSwitch.on = false
 //            saveChanges()
 //            refreshEventList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
 //        }
         if events.count != 0 {
             for event in events {
@@ -320,7 +320,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             }
             saveChanges()
             refreshEventList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
             resignFirstRespondersOnTextFields()
             
         }
@@ -419,7 +419,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             appDel.managedObjectContext?.deleteObject(events[indexPath.row])
             saveChanges()
             refreshEventList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshEventListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
         }
         
     }

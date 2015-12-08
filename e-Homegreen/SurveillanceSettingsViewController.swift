@@ -34,7 +34,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
         self.surveillanceTableView.addGestureRecognizer(lgpr)
         
         fetchSurveillance()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: "refreshSurveillanceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: NotificationKey.RefreshSurveillance, object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -174,7 +174,7 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
         }
         saveChanges()
         surveillanceTableView.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -195,8 +195,7 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: "updateGatewayListNotification", object: nil)
-        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)        
         dispatch_async(dispatch_get_main_queue(),{
             self.showSurveillanceSettings(self.surveillance[indexPath.section], isNew: false)
         })
@@ -229,7 +228,7 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
             appDel.managedObjectContext?.deleteObject(surveillance[indexPath.section])
             saveChanges()
             refreshSurveillanceList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSurveillanceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
 
         }
         

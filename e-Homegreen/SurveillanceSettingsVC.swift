@@ -332,8 +332,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        NSNotificationCenter.defaultCenter().postNotificationName("refreshCameraListNotification", object: self, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshSurveillanceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
         
         appDel.establishAllConnections()
     }

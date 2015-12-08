@@ -277,7 +277,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                         scene.gateway = gateway!
                         saveChanges()
                         refreshSceneList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
                     }
                 } else {
                     if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
@@ -300,7 +300,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                         existingScene!.gateway = gateway!
                         saveChanges()
                         refreshSceneList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
                     }
                 }
             }
@@ -321,7 +321,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
 //            localcastSwitch.on = false
 //            saveChanges()
 //            refreshSceneList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
 //            resignFirstRespondersOnTextFields()
 //        }
         if scenes.count != 0 {
@@ -330,7 +330,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             }
             saveChanges()
             refreshSceneList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
         }
         resignFirstRespondersOnTextFields()
     }
@@ -417,7 +417,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
             appDel.managedObjectContext?.deleteObject(scenes[indexPath.row])
             saveChanges()
             refreshSceneList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSceneListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
         }
         
     }
