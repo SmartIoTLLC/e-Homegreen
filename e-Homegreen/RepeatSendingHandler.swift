@@ -71,7 +71,7 @@ class RepeatSendingHandler: NSObject {
                 device.currentValue = deviceOldValue
                 saveChanges()
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: "repeatSendingHandlerNotification", object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
             }
         }
     }

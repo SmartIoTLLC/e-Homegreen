@@ -35,7 +35,7 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        address = [UInt8(defaults.integerForKey("EHGSecurityAddressOne")), UInt8(defaults.integerForKey("EHGSecurityAddressTwo")), UInt8(defaults.integerForKey("EHGSecurityAddressThree"))]
+        address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)

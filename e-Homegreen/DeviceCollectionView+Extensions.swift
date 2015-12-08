@@ -90,7 +90,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                     for indexPath in indexPaths {
                         if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                            if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+                            if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
                                 let minutes = (hourValue * 60 + minuteValue) * 60
                                 if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
                                     updateDeviceStatus (indexPathRow: indexPath.row)
@@ -117,7 +117,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {
                     if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+                        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
                             let minutes = (hourValue * 60 + minuteValue) * 60
                             if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
                                 updateDeviceStatus (indexPathRow: indexPath.row)
@@ -147,9 +147,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
             cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-                        cell.typeOfLight.text = devices[indexPath.row].name
+//                        cell.typeOfLight.text = devices[indexPath.row].name
 //            print(devices[indexPath.row].cellTitle)
-//                        cell.typeOfLight.text = devices[indexPath.row].cellTitle
+                        cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
@@ -241,8 +241,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "curtainsRS485" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
             cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-                        cell.curtainName.text = devices[indexPath.row].name
-//                        cell.curtainName.text = devices[indexPath.row].cellTitle
+//                        cell.curtainName.text = devices[indexPath.row].name
+                        cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue) / 100
@@ -309,8 +309,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-                        cell.name.text = devices[indexPath.row].name
-//                        cell.name.text = devices[indexPath.row].cellTitle
+//                        cell.name.text = devices[indexPath.row].name
+                        cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue = Double(devices[indexPath.row].currentValue)/255
             if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
@@ -375,8 +375,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
             cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-                        cell.climateName.text = devices[indexPath.row].name
-//                        cell.climateName.text = devices[indexPath.row].cellTitle
+//                        cell.climateName.text = devices[indexPath.row].name
+                        cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
             
@@ -479,7 +479,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         } else if devices[indexPath.row].type == "sensor" {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
-            devices[indexPath.row].cellTitle = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {

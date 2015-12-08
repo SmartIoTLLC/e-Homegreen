@@ -200,7 +200,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                         timer.gateway = gateway!
                         saveChanges()
                         refreshTimerList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
                     }
                 } else {
                     if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
@@ -224,7 +224,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                         existingTimer!.gateway = gateway!
                         saveChanges()
                         refreshTimerList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
                     }
                 }
             }
@@ -245,7 +245,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
 //            btnType.setTitle("--", forState: UIControlState.Normal)
 //            saveChanges()
 //            refreshTimerList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
 //        }
         if timers.count != 0 {
             for timer in timers {
@@ -253,7 +253,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
             }
             saveChanges()
             refreshTimerList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
             resignFirstRespondersOnTextFields()
         }
     }
@@ -446,7 +446,7 @@ extension ScanTimerViewController: UITableViewDataSource {
             appDel.managedObjectContext?.deleteObject(timers[indexPath.row])
             saveChanges()
             refreshTimerList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
         }
         
     }

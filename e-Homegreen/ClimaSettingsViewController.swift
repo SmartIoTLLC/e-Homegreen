@@ -64,7 +64,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         onOffButton.clipsToBounds = true
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: "refreshClimateController", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: NotificationKey.RefreshClimate, object: nil)
         
         
         getACState()
@@ -73,6 +73,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         
         // Do any additional setup after loading the view.
+    }
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshClimate)
     }
     var device:Device!
     func updateDevice () {

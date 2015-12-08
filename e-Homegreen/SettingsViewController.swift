@@ -21,11 +21,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         
         settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon"]
         
-        if let hour = NSUserDefaults.standardUserDefaults().valueForKey("hourRefresh") as? Int {
+        if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
         }
         
-        if let min = NSUserDefaults.standardUserDefaults().valueForKey("minRefresh") as? Int {
+        if let min = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
             minRefresh = min
         }
         
@@ -86,7 +86,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 hourRefresh = 0
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
+            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
             NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh < 59 {
@@ -95,7 +95,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 minRefresh = 0
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
+            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
         
@@ -109,7 +109,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 hourRefresh = 23
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: "hourRefresh")
+            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
             NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh > 0 {
@@ -118,7 +118,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 minRefresh = 59
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: "minRefresh")
+            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }

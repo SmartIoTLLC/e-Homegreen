@@ -264,7 +264,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                         flag.gateway = gateway!
                         saveChanges()
                         refreshFlagList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
                     }
                 } else {
                     if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
@@ -287,7 +287,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                         existingFlag!.gateway = gateway!
                         saveChanges()
                         refreshFlagList()
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
                     }
                 }
             }
@@ -308,7 +308,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
 //            localcastSwitch.on = false
 //            saveChanges()
 //            refreshFlagList()
-//            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
 //        }
         if flags.count != 0 {
             for flag in flags {
@@ -316,7 +316,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             }
             saveChanges()
             refreshFlagList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
         }
         resignFirstRespondersOnTextFields()
     }
@@ -411,7 +411,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             appDel.managedObjectContext?.deleteObject(flags[indexPath.row])
             saveChanges()
             refreshFlagList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
         }
         
     }

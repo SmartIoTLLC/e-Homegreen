@@ -127,7 +127,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBAction func btnSave(sender: AnyObject) {
         device!.name = txtFieldName.text!
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

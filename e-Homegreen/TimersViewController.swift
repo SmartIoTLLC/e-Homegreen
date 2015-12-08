@@ -62,12 +62,12 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: "refreshTimerListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: "refreshLocalParametarsNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: NotificationKey.RefreshTimer, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshTimerListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshLocalParametarsNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshTimer, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     override func viewWillLayoutSubviews() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
@@ -89,7 +89,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
             if self.view.frame.size.width == 320{
@@ -109,7 +109,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
+            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         timersCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])

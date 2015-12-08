@@ -27,7 +27,7 @@ class CommonViewController: UIViewController {
     }
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
-        backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-44)
+        backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-44)
         self.view.insertSubview(backgroundImageView, atIndex: 0)
         
 //        view.addSubview(backgroundImageView)

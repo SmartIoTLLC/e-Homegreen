@@ -43,11 +43,11 @@ class SecurityViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: "refreshSecurityNotificiation", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: NotificationKey.RefreshSecurity, object: nil)
         refreshSecurity()
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
+        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
         lblAlarmState.text = "Alarm state: \(alarmState!)"
         
         refreshSecurityAlarmStateAndSecurityMode()
@@ -102,7 +102,7 @@ class SecurityViewController: CommonViewController {
     func refreshSecurity () {
         updateSecurityList()
         let defaults = NSUserDefaults.standardUserDefaults()
-        let alarmState = defaults.valueForKey("EHGSecurityAlarmState")
+        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
         lblAlarmState.text = "Alarm state: \(alarmState!)"
         securityCollectionView.reloadData()
     }
@@ -306,7 +306,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         default: break
         }
         let defaults = NSUserDefaults.standardUserDefaults()
-        if let securityMode = defaults.valueForKey("EHGSecuritySecurityMode") as? String {
+        if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
             if securities[indexPath.row].name == securityMode {
                 switch securityMode {
                 case "Away":
@@ -324,7 +324,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             }
         }
         if securities[indexPath.row].name == "Panic" {
-            if defaults.boolForKey("EHGSecurityPanic") {
+            if defaults.boolForKey(UserDefaults.Security.IsPanic) {
                 cell.securityImageView.image = UIImage(named: "panic")
             } else {
                 cell.securityImageView.image = UIImage(named: "inactivepanic")

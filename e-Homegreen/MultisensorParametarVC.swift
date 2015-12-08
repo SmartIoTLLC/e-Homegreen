@@ -39,7 +39,7 @@ class MultisensorParametarVC: UIViewController {
         self.view.tag = 1
         self.view.backgroundColor = UIColor.clearColor()
         // Do any additional setup after loading the view.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshParametar", name: "refreshInterfaceParametar", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshParametar", name: NotificationKey.RefreshInterface, object: nil)
         
         isEnabled.on = device!.isEnabled.boolValue
         print("AAA")
@@ -49,7 +49,7 @@ class MultisensorParametarVC: UIViewController {
         print("AAA")
     }
     override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver("refreshInterfaceParametar")
+        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshInterface)
     }
     func refreshParametar() {
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]

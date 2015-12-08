@@ -154,9 +154,9 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBAction func btnSave(sender: AnyObject) {
         if addOne.text != "" && addTwo.text != "" && addThree.text != "" {
             if let addressOne = Int(addOne.text!), let addressTwo = Int(addTwo.text!), let addressThree = Int(addThree.text!) {
-                defaults.setObject(addressOne, forKey: "EHGSecurityAddressOne")
-                defaults.setObject(addressTwo, forKey: "EHGSecurityAddressTwo")
-                defaults.setObject(addressThree, forKey: "EHGSecurityAddressThree")
+                defaults.setObject(addressOne, forKey: UserDefaults.Security.AddressOne)
+                defaults.setObject(addressTwo, forKey: UserDefaults.Security.AddressTwo)
+                defaults.setObject(addressThree, forKey: UserDefaults.Security.AddressThree)
                 for security in securities! {
                     security.addressOne = addressOne
                     security.addressTwo = addressTwo

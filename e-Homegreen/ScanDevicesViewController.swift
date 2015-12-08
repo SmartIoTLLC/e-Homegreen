@@ -29,7 +29,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     deinit {
         print("deinit - ScanDevicesViewController.swift")
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,16 +62,16 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: "PLCdidFindNameForDevice", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: "PLCDidFindDevice", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: NotificationKey.DidFindDeviceName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: NotificationKey.DidFindDevice, object: nil)
     }    
     func removeObservers() {
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "DevicesFromGatewayRequested")
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshDeviceListNotification", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCdidFindNameForDevice", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCDidFindDevice", object: nil)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDevice)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidFindDeviceName, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidFindDevice, object: nil)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -158,26 +158,30 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     func deviceReceivedFromPLC (notification:NSNotification) {
-        if toAddress >= (searchForDeviceWithId!+1) {
-            timesRepeatedCounter = 0
-            searchForDeviceWithId = searchForDeviceWithId! + 1
-            searchDeviceTimer?.invalidate()
-            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
-            let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
-            setProgressBarParametarsForSearchingDevices(address)
-            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
-        } else {
-            dismissScaningControls()
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            if toAddress >= (searchForDeviceWithId!+1) {
+                timesRepeatedCounter = 0
+                searchForDeviceWithId = searchForDeviceWithId! + 1
+                searchDeviceTimer?.invalidate()
+                searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
+                setProgressBarParametarsForSearchingDevices(address)
+                SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
+            } else {
+                dismissScaningControls()
+            }
         }
     }
     
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
-        var number:Int = Int(address[2])
-        number = number - fromAddress! + 1
+        print(address)
+        var index:Int = Int(address[2])
+        index = index - fromAddress! + 1
         let howMuchOf = toAddress!-fromAddress!+1
-        pbFD?.lblHowMuchOf.text = "\(number)/\(howMuchOf)"
-        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(number)/Float(howMuchOf)*100) + " %"
-        pbFD?.progressView.progress = Float(number)/Float(howMuchOf)
+        print("Int(address[2]): \(address[2]) var number:Int: \(index) let howMuchOf: \(howMuchOf)")
+        pbFD?.lblHowMuchOf.text = "\(index)/\(howMuchOf)"
+        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
+        pbFD?.progressView.progress = Float(index)/Float(howMuchOf)
     }
     
     func setProgressBarParametarsForFindingNames (var index:Int) {
@@ -193,13 +197,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         //   For finding names
         index = 0
         deviceNameTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
         pbFN?.dissmissProgressBar()
         
         //   For finding devices
         searchForDeviceWithId = 0
         searchDeviceTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "DevicesFromGatewayRequested")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDevice)
         pbFD?.dissmissProgressBar()
     }
     // ======================= *** FINDING NAMES FOR DEVICE *** =======================
@@ -305,7 +309,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             devices[sender.tag].isEnabled = NSNumber(bool: false)
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
     }
     
     func changeValueVisible (sender:UISwitch) {
@@ -315,7 +319,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             devices[sender.tag].isVisible = NSNumber(bool: false)
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
     }
     
     var pbFD:ProgressBarVC?
@@ -328,7 +332,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     toAddress = numberTwo
                     searchForDeviceWithId = numberOne
                     timesRepeatedCounter = 0
-                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "DevicesFromGatewayRequested")
+                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDevice)
                     pbFD = ProgressBarVC(title: "Finding devices", percentage: Float(fromAddress!)/Float(toAddress!), howMuchOf: "1 / \(toAddress!-fromAddress!+1)")
                     pbFD?.delegate = self
                     self.presentViewController(pbFD!, animated: true, completion: nil)
@@ -348,11 +352,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     
     @IBAction func findNames(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NameAndParametarsForDeviceRequested")
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
         if rangeFrom.text != "" && rangeTo.text != "" {
             if let numberOne = Int(rangeFrom.text!), let numberTwo = Int(rangeTo.text!) {
                 if devices.count != 0 {
@@ -466,7 +470,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
             saveChanges()
             updateDeviceList()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
         
     }

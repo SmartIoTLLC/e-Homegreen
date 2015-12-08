@@ -130,7 +130,7 @@ class IncomingHandler: NSObject {
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func fetchDevices () {
         // OVDE ISKACE BUD NA ANY
@@ -225,8 +225,8 @@ class IncomingHandler: NSObject {
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshClimateController", object: self, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshClimate, object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func ackDimmerGetRunningTime (byteArray:[Byte]) {
         fetchDevices()
@@ -246,7 +246,7 @@ class IncomingHandler: NSObject {
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func bytesToUInt(byteArray: [Byte]) -> UInt {
         assert(byteArray.count <= 4)
@@ -277,8 +277,8 @@ class IncomingHandler: NSObject {
     
     //  informacije o imenima uredjaja na MULTISENSORU
     func ackADICmdGetInterfaceName (byteArray:[Byte]) {
-        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
-        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             fetchDevices()
             var string:String = ""
             for var j = 9; j < byteArray.count-2; j++ {
@@ -293,11 +293,11 @@ class IncomingHandler: NSObject {
                         devices[i].name = "Unknown"
                     }
                     let data = ["deviceIndexForFoundName":i]
-                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
             saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
@@ -325,15 +325,15 @@ class IncomingHandler: NSObject {
                     device.isEnabled = NSNumber(bool: false)
                     device.isVisible = NSNumber(bool: false)
                 }
-                NSNotificationCenter.defaultCenter().postNotificationName("refreshInterfaceParametar", object: self, userInfo: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshInterface, object: self, userInfo: nil)
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func ackACParametar (byteArray:[Byte]) {
-        print(NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested"))
-        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             fetchDevices()
             var string:String = ""
             for var i = 9; i < byteArray.count-2; i++ {
@@ -360,11 +360,11 @@ class IncomingHandler: NSObject {
 //                        devices[i].isEnabled = NSNumber(bool: false)
 //                    }
                     let data = ["deviceIndexForFoundName":i]
-                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
             saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     
@@ -378,12 +378,12 @@ class IncomingHandler: NSObject {
                 self.devices[i].currentValue = Int(byteArray[7+channel])
             }
             self.saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
-        if NSUserDefaults.standardUserDefaults().boolForKey("DevicesFromGatewayRequested") {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
             if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
                 if devices != [] {
@@ -474,9 +474,9 @@ class IncomingHandler: NSObject {
                             device.skipState = 0
                             saveChanges()
                         }
-                        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName("PLCDidFindDevice", object: self, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: nil)
                 }
             }
         }
@@ -496,7 +496,7 @@ class IncomingHandler: NSObject {
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
@@ -514,11 +514,11 @@ class IncomingHandler: NSObject {
             }
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[Byte]){
-        if NSUserDefaults.standardUserDefaults().boolForKey("NameAndParametarsForDeviceRequested") {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             fetchDevices()
             for var i = 0; i < devices.count; i++ {
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
@@ -553,11 +553,11 @@ class IncomingHandler: NSObject {
 //                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
                     devices[i].curtainControlMode = Int(byteArray[35])
                     let data = ["deviceIndexForFoundName":i]
-                    NSNotificationCenter.defaultCenter().postNotificationName("PLCdidFindNameForDevice", object: self, userInfo: data)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
             saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
         
     }
@@ -576,7 +576,7 @@ class IncomingHandler: NSObject {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(i) {
                         item.timerState = NSNumber(integer: Int(byteArray[7+i]))
                     saveChanges()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshTimerListNotification", object: self, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
                 }
             }
         }
@@ -597,7 +597,7 @@ class IncomingHandler: NSObject {
                         item.setState = NSNumber(bool: true)
                     }
                     saveChanges()
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshFlagListNotification", object: self, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
                 }
             }
         }
@@ -613,42 +613,42 @@ class IncomingHandler: NSObject {
             if byteArray[7] == 0x02 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setValue("Disarm", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Disarm", forKey: UserDefaults.Security.SecurityMode)
                 case 0x01:
-                    defaults.setValue("Away", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Away", forKey: UserDefaults.Security.SecurityMode)
                 case 0x02:
-                    defaults.setValue("Nigth", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Nigth", forKey: UserDefaults.Security.SecurityMode)
                 case 0x03:
-                    defaults.setValue("Day", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Day", forKey: UserDefaults.Security.SecurityMode)
                 case 0x04:
-                    defaults.setValue("Vacation", forKey: "EHGSecuritySecurityMode")
+                    defaults.setValue("Vacation", forKey: UserDefaults.Security.SecurityMode)
                 default: break
                 }
             }
             if byteArray[7] == 0x03 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setValue("Idle", forKey: "EHGSecurityAlarmState")
+                    defaults.setValue("Idle", forKey: UserDefaults.Security.AlarmState)
                 case 0x01:
-                    defaults.setValue("Trouble", forKey: "EHGSecurityAlarmState")
+                    defaults.setValue("Trouble", forKey: UserDefaults.Security.AlarmState)
                 case 0x02:
-                    defaults.setValue("Alert", forKey: "EHGSecurityAlarmState")
+                    defaults.setValue("Alert", forKey: UserDefaults.Security.AlarmState)
                 case 0x03:
-                    defaults.setValue("Alarm", forKey: "EHGSecurityAlarmState")
+                    defaults.setValue("Alarm", forKey: UserDefaults.Security.AlarmState)
                 default: break
                 }
             }
             if byteArray[7] == 0x04 {
                 switch byteArray[8] {
                 case 0x00:
-                    defaults.setBool(true, forKey: "EHGSecurityPanic")
+                    defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
                 case 0x01:
-                    defaults.setBool(false, forKey: "EHGSecurityPanic")
+                    defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
                 default: break
                 }
             }
-            print("EHGSecuritySeczurityMode - \(defaults.valueForKey("EHGSecuritySecurityMode")) *** EHGSecurityAlarmState - \(defaults.valueForKey("EHGSecurityAlarmState")) *** EHGSecurityPanic - \(defaults.boolForKey("EHGSecurityPanic"))")
-            NSNotificationCenter.defaultCenter().postNotificationName("refreshSecurityNotificiation", object: self, userInfo: nil)
+            print("EHGSecuritySeczurityMode - \(defaults.valueForKey(UserDefaults.Security.SecurityMode)) *** EHGSecurityAlarmState - \(defaults.valueForKey(UserDefaults.Security.AlarmState)) *** EHGSecurityPanic - \(defaults.boolForKey(UserDefaults.Security.IsPanic))")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSecurity, object: self, userInfo: nil)
         }
     }
     var timers:[Timer] = []

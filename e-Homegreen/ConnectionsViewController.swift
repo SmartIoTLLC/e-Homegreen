@@ -73,7 +73,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         // Do any additional setup after loading the view.
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         fetchGateways()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: "refreshDeviceListNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: NotificationKey.RefreshDevice, object: nil)
         
         // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
         gatewayTableView.delaysContentTouches = false
@@ -131,7 +131,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     func commonConstruct() {
         backgroundImageView.image = UIImage(named: "Background")
-        backgroundImageView.frame = CGRectMake(0, 64, Common().screenWidth , Common().screenHeight-64)
+        backgroundImageView.frame = CGRectMake(0, 64, Common.screenWidth , Common.screenHeight-64)
         self.view.insertSubview(backgroundImageView, atIndex: 0)
     }
     
@@ -205,7 +205,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
         saveChanges()
         gatewayTableView.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     
     func saveChanges() {

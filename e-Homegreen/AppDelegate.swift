@@ -59,23 +59,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //   Configuring data for first time
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        let isPreloaded = defaults.boolForKey("EHGisPreloaded")
+        let isPreloaded = defaults.boolForKey(UserDefaults.IsPreloaded)
         if !isPreloaded {
             preloadData()
-            defaults.setValue(0, forKey: "hourRefresh")
-            defaults.setValue(10, forKey: "minRefresh")
-            defaults.setBool(true, forKey: "EHGisPreloaded")
-            defaults.setObject("Idle", forKey: "EHGSecurityAlarmState")
+            defaults.setValue(0, forKey: UserDefaults.RefreshDelayHours)
+            defaults.setValue(10, forKey: UserDefaults.RefreshDelayMinutes)
+            defaults.setBool(true, forKey: UserDefaults.IsPreloaded)
+            defaults.setObject("Idle", forKey: UserDefaults.Security.AlarmState)
             //        Idle, Trobule, Alert, alarm
-            defaults.setObject("Disarm", forKey: "EHGSecuritySecurityMode")
+            defaults.setObject("Disarm", forKey: UserDefaults.Security.SecurityMode)
             //        Disarm, Away, Night, Day, Vacation
-            defaults.setObject(1, forKey: "EHGSecurityAddressOne")
+            defaults.setObject(1, forKey: UserDefaults.Security.AddressOne)
             //        No Panic, Panic
-            defaults.setObject(0, forKey: "EHGSecurityAddressTwo")
+            defaults.setObject(0, forKey: UserDefaults.Security.AddressTwo)
             //        No Panic, Panic
-            defaults.setObject(254, forKey: "EHGSecurityAddressThree")
+            defaults.setObject(254, forKey: UserDefaults.Security.AddressThree)
             //        No Panic, Panic
-            defaults.setBool(false, forKey: "EHGSecurityPanic")
+            defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
             
             LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All"])
@@ -125,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
         for item in iBeacons {
             item.accuracy = 10000
         }
@@ -160,7 +160,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             filterParametars[2] = "All"
                             filterParametars[3] = "All"
                             LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-                            NSNotificationCenter.defaultCenter().postNotificationName("refreshLocalParametarsNotification", object: self, userInfo: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
                         }
                     }
                     break
