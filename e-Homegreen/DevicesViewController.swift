@@ -434,17 +434,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 }
             }
             devices[tag].currentValue = Int(deviceValue*100)
-//            UIView.setAnimationsEnabled(false)
-//            self.deviceCollectionView.performBatchUpdates({
-//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-//                }, completion:  {(completed: Bool) -> Void in
-//                    UIView.setAnimationsEnabled(true)
-//            })
-//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//            let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as! DeviceCollectionCell
-//            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
-//            cell.setNeedsDisplay()
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                 cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
@@ -471,13 +460,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 }
             }
             devices[tag].currentValue = Int(deviceValue*100)
-//            UIView.setAnimationsEnabled(false)
-//            self.deviceCollectionView.performBatchUpdates({
-//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-//                }, completion:  {(completed: Bool) -> Void in
-//                    UIView.setAnimationsEnabled(true)
-//            })
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                 cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
@@ -598,55 +580,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            }
 //        }
 //    }
-//    override func viewWillLayoutSubviews() {
-//        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.width == 568{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-//            }else if self.view.frame.size.width == 667{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-//            }
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-////            deviceCollectionView.reloadData()
-//            deviceCollectionView.setNeedsLayout()
-//            
-//        } else {
-//            if self.view.frame.size.width == 320{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }else if self.view.frame.size.width == 375{
-//                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common().screenWidth , Common().screenHeight-64)
-////            deviceCollectionView.reloadData()
-//            deviceCollectionView.setNeedsLayout()
-//        }
-//        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-//        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
-//    }
     
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
@@ -729,18 +662,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             slider.setValue(value/100, animated: true)
             let tag = slider.tag
             devices[tag].currentValue = Int(value)
-//            UIView.setAnimationsEnabled(false)
-//            self.deviceCollectionView.performBatchUpdates({
-//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//                self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-//                }, completion:  {(completed: Bool) -> Void in
-//                    UIView.setAnimationsEnabled(true)
-//            })
-//            changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
-//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//            let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as! DeviceCollectionCell
-//            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
-//            cell.setNeedsDisplay()
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                 cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)

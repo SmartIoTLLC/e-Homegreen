@@ -311,7 +311,135 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!
     @IBOutlet weak var sensorState: UILabel!
-    
+    var device:Device!
+    func populateCellWithData(sensorDevice:Device, tag:Int) {
+        device = sensorDevice
+        sensorTitle.userInteractionEnabled = true
+        sensorTitle.text = device.cellTitle
+        sensorTitle.tag = tag
+        if device.numberOfDevices == 10 {
+            switch device.channel {
+            case 1:
+                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
+                    sensorImage.image = image
+                } else {
+                    sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                }
+                sensorState.text = "\(device.currentValue) C"
+            case 2:
+                if device.currentValue == 0 {
+                    sensorImage.image = UIImage(named: "applianceoff")
+                } else {
+                    sensorImage.image = UIImage(named: "applianceon")
+                }
+                sensorState.text = "\(device.currentValue)"
+            case 3:
+                if device.currentValue == 0 {
+                    sensorImage.image = UIImage(named: "applianceoff")
+                } else {
+                    sensorImage.image = UIImage(named: "applianceon")
+                }
+                sensorState.text = "\(device.currentValue)"
+            case 4:
+                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
+                    sensorImage.image = image
+                } else {
+                    sensorImage.image = UIImage(named: "sensor")
+                }
+                sensorState.text = "\(device.currentValue)%"
+            case 5:
+                sensorImage.image = UIImage(named: "sensor_temperature")
+                sensorState.text = "\(device.currentValue) C"
+            case 6:
+                if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
+                    sensorImage.image = image
+                } else {
+                    sensorImage.image = UIImage(named: "sensor_brightness")
+                }
+                sensorState.text = "\(device.currentValue) LUX"
+            case 7:
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "sensor_motion")
+                } else if device.currentValue == 0 {
+                    sensorImage.image = UIImage(named: "sensor_idle")
+                } else {
+                    sensorImage.image = UIImage(named: "sensor_third")
+                }
+                if device.currentValue == 1 {
+                    sensorState.text = "Motion"
+                } else if device.currentValue == 0 {
+                    sensorState.text = "Idle"
+                } else {
+                    sensorState.text = ""
+                }
+            case 8:
+                sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                sensorState.text = "\(device.currentValue)"
+            case 9:
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "tamper_on")
+                } else {
+                    sensorImage.image = UIImage(named: "tamper_off")
+                }
+                sensorState.text = "\(device.currentValue)"
+            case 10:
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "sensor_noise")
+                } else {
+                    sensorImage.image = UIImage(named: "sensor_no_noise")
+                }
+                sensorState.text = "\(device.currentValue)"
+                sensorState.text = "\(device.currentValue)"
+            default:
+                sensorState.text = "..."
+            }
+        }
+        if device.numberOfDevices == 6 {
+            switch device.channel {
+            case 1:
+                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                sensorState.text = "\(device.currentValue) C"
+            case 2:
+                sensorImage.image = UIImage(named: "sensor")
+                sensorState.text = "\(device.currentValue)"
+            case 3:
+                sensorImage.image = UIImage(named: "sensor")
+                sensorState.text = "\(device.currentValue)"
+            case 4:
+                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                sensorState.text = "\(device.currentValue) C"
+            case 5:
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "sensor_motion")
+                    sensorState.text = "Motion"
+                } else {
+                    sensorImage.image = UIImage(named: "sensor_idle")
+                    sensorState.text = "Idle"
+                }
+            case 6:
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "tamper_on")
+                } else {
+                    sensorImage.image = UIImage(named: "tamper_off")
+                }
+                sensorState.text = "\(device.currentValue)"
+            default:
+                sensorState.text = "..."
+            }
+        }
+        labelID.text = "\(tag + 1)"
+        labelName.text = "\(device.name)"
+        labelCategory.text = "\(device.categoryId)"
+        labelLevel.text = "\(device.parentZoneId)"
+        labelZone.text = "\(device.zoneId)"
+        if device.info {
+            infoView.hidden = false
+            backView.hidden = true
+        }else {
+            infoView.hidden = true
+            backView.hidden = false
+        }
+    }
     func refreshDevice(device:Device) {
         if device.numberOfDevices == 10 {
             switch device.channel {
@@ -344,11 +472,7 @@ class MultiSensorCell: UICollectionViewCell {
                 }
                 sensorState.text = "\(device.currentValue)%"
             case 5:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_temperature")
-                }
+                sensorImage.image = UIImage(named: "sensor_temperature")
                 sensorState.text = "\(device.currentValue) C"
             case 6:
                 if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
@@ -368,39 +492,26 @@ class MultiSensorCell: UICollectionViewCell {
                 if device.currentValue == 1 {
                     sensorState.text = "Motion"
                 } else if device.currentValue == 0 {
-                    sensorState.text = "Motion"
-                } else {
                     sensorState.text = "Idle"
+                } else {
+                    sensorState.text = ""
                 }
             case 8:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_ir_receiver")
-                }
+                sensorImage.image = UIImage(named: "sensor_ir_receiver")
                 sensorState.text = "\(device.currentValue)"
             case 9:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "tamper_on")
                 } else {
-                    if device.currentValue == 1 {
-                        sensorImage.image = UIImage(named: "tamper_on")
-                    } else {
-                        sensorImage.image = UIImage(named: "tamper_off")
-                    }
+                    sensorImage.image = UIImage(named: "tamper_off")
                 }
                 sensorState.text = "\(device.currentValue)"
             case 10:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
+                if device.currentValue == 1 {
+                    sensorImage.image = UIImage(named: "sensor_noise")
                 } else {
-                    if device.currentValue == 1 {
-                        sensorImage.image = UIImage(named: "sensor_noise")
-                    } else {
-                        sensorImage.image = UIImage(named: "sensor_no_noise")
-                    }
+                    sensorImage.image = UIImage(named: "sensor_no_noise")
                 }
-                sensorState.text = "\(device.currentValue)"
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."

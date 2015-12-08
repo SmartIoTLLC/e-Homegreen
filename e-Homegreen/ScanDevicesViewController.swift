@@ -68,6 +68,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }    
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "DevicesFromGatewayRequested")
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "refreshDeviceListNotification", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCdidFindNameForDevice", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "PLCDidFindDevice", object: nil)
@@ -114,7 +115,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if (timesRepeatedCounter + 1) != 4 {
                 timesRepeatedCounter = timesRepeatedCounter + 1
                 var deviceFound = false
-                // OVDE JE PUKLO JEDNOM!!!
                 if devices.count > 0 {
                     for i in 0...devices.count-1 {
                         if Int(devices[i].address) == index {
@@ -133,7 +133,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         setProgressBarParametarsForSearchingDevices(address)
                         SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
                     } else {
-                        hideActivityIndicator()
+                        dismissScaningControls()
                     }
                 } else {
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
@@ -151,7 +151,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
                 } else {
-                    hideActivityIndicator()
+                    dismissScaningControls()
                 }
             }
         }
@@ -167,10 +167,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             setProgressBarParametarsForSearchingDevices(address)
             SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
         } else {
-            searchForDeviceWithId = 0
-            timesRepeatedCounter = 0
-            searchDeviceTimer?.invalidate()
-            hideActivityIndicator()
+            dismissScaningControls()
         }
     }
     
@@ -189,12 +186,22 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(toAddress!-fromAddress!+1)*100) + " %"
         pbFN?.progressView.progress = Float(index)/Float(toAddress!-fromAddress!+1)
     }
-    
-    func hideActivityIndicator () {
+    func dismissScaningControls() {
+        
+        timesRepeatedCounter = 0
+        
+        //   For finding names
+        index = 0
+        deviceNameTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+        pbFN?.dissmissProgressBar()
+        
+        //   For finding devices
+        searchForDeviceWithId = 0
+        searchDeviceTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "DevicesFromGatewayRequested")
         pbFD?.dissmissProgressBar()
-//        loader.hideActivityIndicator()
     }
-    
     // ======================= *** FINDING NAMES FOR DEVICE *** =======================
     
     var deviceNameTimer:NSTimer?
@@ -206,11 +213,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         if let info = notification.userInfo! as? [String:Int] {
             if let deviceIndex = info["deviceIndexForFoundName"] {
                 if deviceIndex == toAddress! {
-                    index = 0
-                    timesRepeatedCounter = 0
-                    deviceNameTimer?.invalidate()
-                    pbFN?.dissmissProgressBar()
-                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+                    dismissScaningControls()
                 } else {
                     index = deviceIndex + 1
                     timesRepeatedCounter = 0
@@ -224,21 +227,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     
     func checkIfDeviceDidGetName (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
-            print("HELLO 2 \(deviceIndex)")
-            print("HELLO 2 \(index)")
             if (index != 0 || deviceIndex < index) && deviceIndex <= toAddress {
-//            if index != 0 || deviceIndex < toAddress {
                 timesRepeatedCounter += 1
                 if timesRepeatedCounter < 3 {
                     deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
                     sendCommandForFindingName(index: deviceIndex)
                 } else {
                     if index == devices.count - 1 {
-                        index = 0
-                        timesRepeatedCounter = 0
-                        deviceNameTimer?.invalidate()
-                        pbFN?.dissmissProgressBar()
-                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+                        dismissScaningControls()
                     } else {
                         index = deviceIndex + 1
                         timesRepeatedCounter = 0
@@ -253,11 +249,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     sendCommandForFindingName(index: 0)
                 } else {
                     //   Najverovatnije je index veci od toAddress
-                    index = 0
-                    timesRepeatedCounter = 0
-                    deviceNameTimer?.invalidate()
-                    pbFN?.dissmissProgressBar()
-                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
+                    dismissScaningControls()
                     print("VELIKI PROBLEM ANGAZUJ SVE LJDUE IZ FIRME I OKUPI VELIKI BRAIN TRUST, SNAGU I NADU NASE FIRME!")
                 }
             }
@@ -300,18 +292,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
     func progressBarDidPressedExit() {
-        //   For finding names
-        index = 0
-        timesRepeatedCounter = 0
-        deviceNameTimer?.invalidate()
-        pbFN?.dissmissProgressBar()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NameAndParametarsForDeviceRequested")
-        
-        //   For finding devices
-        searchForDeviceWithId = 0
-        timesRepeatedCounter = 0
-        searchDeviceTimer?.invalidate()
-        hideActivityIndicator()
+        dismissScaningControls()
     }
     
     
@@ -347,16 +328,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     toAddress = numberTwo
                     searchForDeviceWithId = numberOne
                     timesRepeatedCounter = 0
-                    
+                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "DevicesFromGatewayRequested")
                     pbFD = ProgressBarVC(title: "Finding devices", percentage: Float(fromAddress!)/Float(toAddress!), howMuchOf: "1 / \(toAddress!-fromAddress!+1)")
                     pbFD?.delegate = self
                     self.presentViewController(pbFD!, animated: true, completion: nil)
-                    
-//                    if let parentVC = self.parentViewController {
-//                        loader.showActivityIndicator(parentVC.view)
-//                    }else{
-//                        loader.showActivityIndicator(self.view)
-//                    }
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)

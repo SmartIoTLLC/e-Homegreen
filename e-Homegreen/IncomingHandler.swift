@@ -383,99 +383,101 @@ class IncomingHandler: NSObject {
     }
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
-        var deviceExists = false
-        if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
-            if devices != [] {
-                for device in devices {
-                    if device.address == Int(byteArray[4]) {
-                        deviceExists = true
+        if NSUserDefaults.standardUserDefaults().boolForKey("DevicesFromGatewayRequested") {
+            var deviceExists = false
+            if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
+                if devices != [] {
+                    for device in devices {
+                        if device.address == Int(byteArray[4]) {
+                            deviceExists = true
+                        }
                     }
+                } else {
+                    deviceExists = false
                 }
-            } else {
-                deviceExists = false
-            }
-            if !deviceExists {
-                for var i=1 ; i<=channel ; i++ {
-                    if channel == 10 && name == "sensor" && i > 1 {
-                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = "Unknown"
-                        device.address = Int(byteArray[4])
-                        device.channel = i
-                        device.numberOfDevices = channel
-                        device.runningTime = ""
-                        device.currentValue = 0
-                        device.current = 0
-                        device.amp = ""
-                        device.type = name
-                        device.voltage = 0
-                        device.temperature = 0
-                        device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                        device.isVisible = false
-                        device.isEnabled = false
-                        saveChanges()
-                    } else if channel == 6 && name == "sensor" && i > 1 {
-                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = "Unknown"
-                        device.address = Int(byteArray[4])
-                        device.channel = i
-                        device.numberOfDevices = channel
-                        device.runningTime = ""
-                        device.currentValue = 0
-                        device.current = 0
-                        device.amp = ""
-                        device.type = name
-                        device.voltage = 0
-                        device.temperature = 0
-                        device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                        device.isVisible = false
-                        device.isEnabled = false
-                        saveChanges()
-                    } else if name == "hvac" {
-                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = "Unknown"
-                        device.address = Int(byteArray[4])
-                        device.channel = i
-                        device.numberOfDevices = channel
-                        device.runningTime = ""
-                        device.amp = ""
-                        device.type = name
-                        device.voltage = 0
-                        device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                        device.currentValue = 0
-                        device.runningTime = "00:00:00,0s"
-                        device.mode = "AUTO"
-                        device.modeState = "Off"
-                        device.speed = "AUTO"
-                        device.speedState = "Off"
-                        device.coolTemperature = 0
-                        device.heatTemperature = 0
-                        device.roomTemperature = 0
-                        device.humidity = 0
-                        device.current = 0
-                        saveChanges()
-                    } else {
-                        let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                        device.name = "Unknown"
-                        device.address = Int(byteArray[4])
-                        device.channel = i
-                        device.numberOfDevices = channel
-                        device.runningTime = ""
-                        device.currentValue = 0
-                        device.current = 0
-                        device.runningTime = "00:00:00,0s"
-                        device.amp = ""
-                        device.type = name
-                        device.voltage = 0
-                        device.temperature = 0
-                        device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                        device.delay = 0
-                        device.runtime = 0
-                        device.skipState = 0
-                        saveChanges()
+                if !deviceExists {
+                    for var i=1 ; i<=channel ; i++ {
+                        if channel == 10 && name == "sensor" && i > 1 {
+                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.currentValue = 0
+                            device.current = 0
+                            device.amp = ""
+                            device.type = name
+                            device.voltage = 0
+                            device.temperature = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.isVisible = false
+                            device.isEnabled = false
+                            saveChanges()
+                        } else if channel == 6 && name == "sensor" && i > 1 {
+                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.currentValue = 0
+                            device.current = 0
+                            device.amp = ""
+                            device.type = name
+                            device.voltage = 0
+                            device.temperature = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.isVisible = false
+                            device.isEnabled = false
+                            saveChanges()
+                        } else if name == "hvac" {
+                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.amp = ""
+                            device.type = name
+                            device.voltage = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.currentValue = 0
+                            device.runningTime = "00:00:00,0s"
+                            device.mode = "AUTO"
+                            device.modeState = "Off"
+                            device.speed = "AUTO"
+                            device.speedState = "Off"
+                            device.coolTemperature = 0
+                            device.heatTemperature = 0
+                            device.roomTemperature = 0
+                            device.humidity = 0
+                            device.current = 0
+                            saveChanges()
+                        } else if name != "hvac" && name != "sensor" {
+                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.currentValue = 0
+                            device.current = 0
+                            device.runningTime = "00:00:00,0s"
+                            device.amp = ""
+                            device.type = name
+                            device.voltage = 0
+                            device.temperature = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.delay = 0
+                            device.runtime = 0
+                            device.skipState = 0
+                            saveChanges()
+                        }
+                        NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName("refreshDeviceListNotification", object: self, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName("PLCDidFindDevice", object: self, userInfo: nil)
                 }
-                NSNotificationCenter.defaultCenter().postNotificationName("PLCDidFindDevice", object: self, userInfo: nil)
             }
         }
     }
