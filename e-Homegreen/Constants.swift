@@ -25,12 +25,12 @@ enum InputError: ErrorType {
     case IdIncorrect
 }
 struct ReuseIdentifier {
-    "settingsCell"
+//    "settingsCell"
 }
 struct UserDefaults {
-    static let IsScaningDevice = "kDevicesFromGatewayRequested"
-    static let IsScaningDeviceName = "kDevicesFromGatewayRequested"
-    static let IsPreloaded = "kDevicesFromGatewayRequested"
+    static let IsScaningDevice = "PLCDidFindDevice"
+    static let IsScaningDeviceName = "PLCdidFindNameForDevice"
+    static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
     struct Security {
@@ -40,10 +40,10 @@ struct UserDefaults {
         static let AddressTwo = "EHGSecurityAddressTwo"
         static let AddressThree = "EHGSecurityAddressThree"
         static let IsPanic = "EHGSecurityPanic"
+//        "firstBool"
+//        "menu"
+//        "firstItem"
     }
-//    "firstBool"
-//    "menu"
-//    "firstItem"
 }
 
 struct NotificationKey {

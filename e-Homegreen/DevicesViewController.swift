@@ -790,6 +790,5 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         } else {
             return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
         }
-        return ""
     }
 }

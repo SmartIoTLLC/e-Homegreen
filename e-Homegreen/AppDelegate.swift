@@ -133,7 +133,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         stopiBeacons()
     }
     func preloadData () {
-        print(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
         let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
         for securityJSON in importedData! {
             let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: managedObjectContext!) as! Security
