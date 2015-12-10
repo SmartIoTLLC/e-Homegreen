@@ -43,7 +43,6 @@ class SecurityViewController: CommonViewController {
         
         // Do any additional setup after loading the view.
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: NotificationKey.RefreshSecurity, object: nil)
         refreshSecurity()
         
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -52,6 +51,13 @@ class SecurityViewController: CommonViewController {
         
         refreshSecurityAlarmStateAndSecurityMode()
         
+    }
+    override func viewDidAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: NotificationKey.RefreshSecurity, object: nil)
+        refreshSecurity()
+    }
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
     }
     
     override func viewWillLayoutSubviews() {
@@ -99,7 +105,7 @@ class SecurityViewController: CommonViewController {
         }
         securities = tempSecurities
     }
-    func refreshSecurity () {
+    func refreshSecurity() {
         updateSecurityList()
         let defaults = NSUserDefaults.standardUserDefaults()
         let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
@@ -127,6 +133,7 @@ class SecurityViewController: CommonViewController {
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
             securities = fetResults!
+            print(securities.count)
             reorganizeSecurityArray()
         } catch let error1 as NSError {
             error = error1

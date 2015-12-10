@@ -69,7 +69,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
 //        devices[indexPathRow].overrideControl3
         
         editDelay.text = "\(devices[indexPathRow].delay)"
-        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
+//        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
         lblLevel.text = "\(returnZoneWithId(Int(devices[indexPathRow].parentZoneId)))"
         lblZone.text = "\(returnZoneWithId(Int(devices[indexPathRow].zoneId)))"

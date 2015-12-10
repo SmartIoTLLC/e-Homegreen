@@ -768,6 +768,8 @@ extension Function {
 }
 extension Function {
     
+    
+    
     static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -788,8 +790,8 @@ extension Function {
         return message
     }
     
-    static func setInterfaceParametar (address:[Byte], interfaceParametar:[Byte]) -> [Byte]{
-        let messageInfo:[Byte] = interfaceParametar
+    static func setInterfaceParametar (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [channel, isEnabled]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)

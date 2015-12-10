@@ -427,6 +427,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
             cell.isVisibleSwitch.tag = indexPath.row
             cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
+            if devices[indexPath.row].type == "sensor" {
+                cell.isEnabledSwitch.enabled = false
+            } else {
+                cell.isEnabledSwitch.enabled = true
+            }
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

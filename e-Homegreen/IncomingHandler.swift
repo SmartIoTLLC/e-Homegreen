@@ -9,8 +9,6 @@
 import UIKit
 import CoreData
 
-typealias Byte = UInt8
-
 class IncomingHandler: NSObject {
     var byteArray:[Byte]!
     var appDel:AppDelegate!
@@ -101,6 +99,9 @@ class IncomingHandler: NSObject {
                         self.securityFeedbackHandler(self.byteArray)
                     }
                     
+                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x03 {
+                        self.ackInterfaceEnableStatus(self.byteArray)
+                    }
                     
                     if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
                         self.ackADICmdGetInterfaceName(self.byteArray)
@@ -300,24 +301,32 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
+    func ackInterfaceEnableStatus (byteArray: [Byte]) {
+        fetchDevices()
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
+                if byteArray[8] >= 0x80 {
+                    device.isEnabled = NSNumber(bool: true)
+                } else {
+                    device.isEnabled = NSNumber(bool: false)
+                }
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+    }
     func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
         fetchDevices()
-        print(byteArray.count)
-        print(byteArray.count)
-        print(byteArray)
-        print("Multisensor - \(byteArray[11]) - \(byteArray[7])")
-        print(byteArray[11])
-        print(byteArray[22])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
                 device.categoryId = Int(byteArray[8])
-                var interfaceParametar:[Byte] = []
-                for var i = 7; i < byteArray.count-2; i++ {
-                    interfaceParametar.append(byteArray[i])
-                }
-                device.interfaceParametar = interfaceParametar
+//                var interfaceParametar:[Byte] = []
+//                for var i = 7; i < byteArray.count-2; i++ {
+//                    interfaceParametar.append(byteArray[i])
+//                }
+//                device.interfaceParametar = interfaceParametar
                 if byteArray[11] >= 0x80 {
                     device.isEnabled = NSNumber(bool: true)
                     device.isVisible = NSNumber(bool: true)

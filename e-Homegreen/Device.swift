@@ -46,7 +46,7 @@ class Device: NSManagedObject {
     @NSManaged var gateway: Gateway
     @NSManaged var curtainGroupID: NSNumber
     @NSManaged var curtainControlMode: NSNumber
-    var interfaceParametar:[UInt8] = []
+//    var interfaceParametar:[UInt8] = []
     var warningState:Int = 0
     var opening:Bool = true
     var on:Bool = false

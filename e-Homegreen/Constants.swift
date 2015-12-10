@@ -13,6 +13,8 @@ struct Common {
     static let screenHeight:CGFloat! = UIScreen.mainScreen().bounds.size.height
 }
 
+typealias Byte = UInt8
+
 //struct MainScreenSize {
 //    static let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
 //    static let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
@@ -96,3 +98,7 @@ struct Colors {
     static let VeryLightGrayColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
     static let DarkGrayColor = UIColor.darkGrayColor().CGColor
 }
+
+//dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5, dispatch_get_main_queue()) {
+
+//UIApplication.sharedApplication().idleTimerDisabled = true

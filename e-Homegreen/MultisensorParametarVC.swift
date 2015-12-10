@@ -39,53 +39,54 @@ class MultisensorParametarVC: UIViewController {
         self.view.tag = 1
         self.view.backgroundColor = UIColor.clearColor()
         // Do any additional setup after loading the view.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshParametar", name: NotificationKey.RefreshInterface, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshParametar", name: NotificationKey.RefreshInterface, object: nil)
         
         isEnabled.on = device!.isEnabled.boolValue
-        print("AAA")
-        print(device!.objectID)
-        print(device!.type)
-        print(device!.interfaceParametar)
-        print("AAA")
     }
     override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshInterface)
+//        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshInterface)
     }
-    func refreshParametar() {
-        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
-        print(device!.interfaceParametar[4])
-        if isEnabled.on == true {
-            if device!.interfaceParametar[4] >= 0x80 {
-                
-            } else {
-                device!.interfaceParametar[4] = device!.interfaceParametar[4] + 0x80
-            }
-        } else {
-            if device!.interfaceParametar[4] >= 0x80 {
-                device!.interfaceParametar[4] = device!.interfaceParametar[4] - 0x80
-            } else {
-                
-            }
-        }
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "sendCommandToSetInterfaceParametar", userInfo: nil, repeats: false)
-        SendingHandler.sendCommand(byteArray: Function.setInterfaceParametar(address, interfaceParametar: device!.interfaceParametar), gateway: device!.gateway)
-    }
+//    func refreshParametar() {
+//        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+//        var isEnabledByte:Byte = 0x00
+//        if isEnabled.on == true {
+//            if device!.isEnabled.boolValue {
+//                
+//            } else {
+//                
+//            }
+//            if device!.isEnabled.boolValue>= 0x80 {
+//                
+//            } else {
+//                isEnabledByte = isEnabledByte + 0x80
+//            }
+//        } else {
+//            if isEnabledByte >= 0x80 {
+//                isEnabledByte = isEnabledByte - 0x80
+//            } else {
+//                
+//            }
+//        }
+//        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "sendCommandToSetInterfaceParametar", userInfo: nil, repeats: false)
+////        SendingHandler.sendCommand(byteArray: Function.setInterfaceParametar(address, interfaceParametar: device!.interfaceParametar), gateway: device!.gateway)
+//        SendingHandler.sendCommand(byteArray: Function.setInterfaceParametar(address, channel: UInt8(Int(device!.channel)), isEnabled: isEnabledByte), gateway: device!.gateway)
+//    }
     //  This command was necessary because the gateway didn't send response sometimes
-    func sendCommandToSetInterfaceParametar () {
-        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
-        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    func returnSomeObject () -> Device? {
-        do {
-            let fetResults = try appDel.managedObjectContext!.objectWithID(device!.objectID) as? Device
-            return fetResults!
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return nil
-    }
+//    func sendCommandToSetInterfaceParametar () {
+//        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+//        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
+//    func returnSomeObject() -> Device? {
+//        do {
+//            let fetResults = try appDel.managedObjectContext!.objectWithID(device!.objectID) as? Device
+//            return fetResults!
+//        } catch _ as NSError {
+//            print("Unresolved error")
+//            abort()
+//        }
+//        return nil
+//    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -93,7 +94,15 @@ class MultisensorParametarVC: UIViewController {
     
     @IBAction func btnSet(sender: AnyObject) {
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
-        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
+//        SendingHandler.sendCommand(byteArray: Function.getInterfaceParametar(address, channel: UInt8(Int(device!.channel))), gateway: device!.gateway)
+        var isEnabledByte:Byte = 0x00
+        if isEnabled.on == true {
+            isEnabledByte = 0x80
+        } else {
+            isEnabledByte = 0x00
+        }
+        SendingHandler.sendCommand(byteArray: Function.setInterfaceParametar(address, channel: UInt8(Int(device!.channel)), isEnabled: isEnabledByte), gateway: device!.gateway)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func saveChanges() {

@@ -460,15 +460,15 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.infoView.hidden = true
                 cell.backView.hidden = false
             }
+            cell.imageOnOff.tag = indexPath.row
+            cell.imageOnOff.userInteractionEnabled = true
+            cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"setACPowerStatus:"))
+            cell.climateName.userInteractionEnabled = true
+            cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
-                cell.climateName.userInteractionEnabled = true
-                cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-                //                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
-                //                longPress.minimumPressDuration = 0.5
-                //                cell.climateName.addGestureRecognizer(longPress)
-                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
@@ -481,21 +481,18 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
+            let longPressOne:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPressOne.minimumPressDuration = 0.5
+            let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPressTwo.minimumPressDuration = 0.5
+            cell.disabledCellView.tag = indexPath.row
+            cell.sensorTitle.addGestureRecognizer(longPressOne)
+            cell.disabledCellView.addGestureRecognizer(longPressTwo)
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             if devices[indexPath.row].isEnabled.boolValue {
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
-                longPress.minimumPressDuration = 0.5
-                //                sensorTitle.addGestureRecognizer(longPress)
-//                cell.backView.tag = indexPath.row
-//                cell.backView.addGestureRecognizer(longPress)
-                cell.sensorTitle.addGestureRecognizer(longPress)
-                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
-                longPress.minimumPressDuration = 0.5
-                cell.disabledCellView.tag = indexPath.row
-                cell.disabledCellView.addGestureRecognizer(longPress)
                 cell.disabledCellView.hidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }

@@ -68,9 +68,9 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
         self.view.addSubview(pullDown)
-        
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
         
     }
     func refreshLocalParametars() {
@@ -85,6 +85,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     
     override func viewDidAppear(animated: Bool) {
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
         refreshLocalParametars()
         addObservers()
     }
@@ -102,11 +103,15 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         chatTableView.reloadData()
         LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
     }
-    override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
+    }
+    func adjustScrollInsetsPullDownViewAndBackgroudImage() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
+            print(self.view.frame.size.width)
+            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -120,6 +125,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         } else {
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
+            print(self.view.frame.size.width)
+            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -138,6 +145,42 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         chatTableView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
     }
+//    override func viewWillLayoutSubviews() {
+//        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            var rect = self.pullDown.frame
+//            pullDown.removeFromSuperview()
+//            rect.size.width = self.view.frame.size.width
+//            rect.size.height = self.view.frame.size.height
+//            pullDown.frame = rect
+//            pullDown = PullDownView(frame: rect)
+//            pullDown.customDelegate = self
+//            self.view.addSubview(pullDown)
+//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+//            //  This is from viewcontroller superclass:
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            
+//        } else {
+//            var rect = self.pullDown.frame
+//            pullDown.removeFromSuperview()
+//            rect.size.width = self.view.frame.size.width
+//            rect.size.height = self.view.frame.size.height
+//            pullDown.frame = rect
+//            pullDown = PullDownView(frame: rect)
+//            pullDown.customDelegate = self
+//            self.view.addSubview(pullDown)
+//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+//            //  This is from viewcontroller superclass:
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//        }
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            layout = "Landscape"
+//        }else{
+//            layout = "Portrait"
+//        }
+//        chatTableView.reloadData()
+//        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+//    }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
         if isValeryVoiceOn {

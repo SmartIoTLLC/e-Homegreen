@@ -68,7 +68,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
                     zone.name = zoneJSON.name
                     zone.zoneDescription = zoneJSON.description
                     zone.level = zoneJSON.level
-                    zone.isVisible = NSNumber(bool: true)
+                    if zoneJSON.id == 254 || zoneJSON.id == 255 {
+                        zone.isVisible = NSNumber(bool: false)
+                    } else {
+                        zone.isVisible = NSNumber(bool: true)
+                    }
                     zone.gateway = gateway!
                     saveChanges()
                 }
@@ -106,7 +110,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-                (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), gateway)
+                if zoneJSON.id == 254 || zoneJSON.id == 255 {
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), gateway)
+                } else {
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), gateway)
+                }
                 saveChanges()
             }
         }

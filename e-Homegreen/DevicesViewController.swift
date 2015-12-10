@@ -237,7 +237,16 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            abort()
         }
     }
-    
+    func setACPowerStatus(gesture:UIGestureRecognizer) {
+        let tag = gesture.view!.tag
+        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        if devices[tag].currentValue == 0x00 {
+            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0xFF), gateway: devices[tag].gateway)
+        }
+        if devices[tag].currentValue == 0xFF {
+            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0x00), gateway: devices[tag].gateway)
+        }
+    }
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {

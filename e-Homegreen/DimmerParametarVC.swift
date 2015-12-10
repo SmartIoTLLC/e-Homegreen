@@ -78,7 +78,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editDelay.text = "\(devices[indexPathRow].delay)"
         editRunTime.text = "\(devices[indexPathRow].runtime)"
         editSkipState.text = "\(devices[indexPathRow].skipState)"
-        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
+//        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
         lblLevel.text = "\(returnZoneWithId(Int(devices[indexPathRow].parentZoneId)))"
         lblZone.text = "\(returnZoneWithId(Int(devices[indexPathRow].zoneId)))"
