@@ -358,7 +358,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                                 self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
                             })
                         })
-                    } else if command == 16 {
+                    } else if command == 21 {
                         let answ = AnswersHandler()
                         answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
                             if result != ""{

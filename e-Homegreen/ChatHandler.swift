@@ -26,6 +26,12 @@ class ChatHandler {
     let FILTER = "filter"
     let FAILED = "failed"
     
+    let LIST_DEVICE = "list_device"
+    let LIST_SCENE = "list_scene"
+    let LIST_EVENTS = "list_event"
+    let LIST_SEQUENCE = "list_sequence"
+    
+    let LIST_COMMANDS = "list_commands"
     
     let TURN_ON_DEVICE = 0
     let TURN_OFF_DEVICE = 1
@@ -39,7 +45,6 @@ class ChatHandler {
     let SET_ZONE = 7
     
     let TELL_ME_JOKE = 8
-    let ANSWER_ME = 16
     
     let SET_SCENE = 9
     let RUN_EVENT = 10
@@ -50,6 +55,15 @@ class ChatHandler {
     let STOP_SEQUENCE = 14
     
     let BEST_DEVELOPER = 15
+    
+    let LIST_DEVICE_IN_ZONE = 16
+    let LIST_SCENE_IN_ZONE = 17
+    let LIST_EVENTS_IN_ZONE = 18
+    let LIST_SEQUENCE_IN_ZONE = 19
+    
+    let LIST_ALL_COMMANDS = 20
+    
+    let ANSWER_ME = 21
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -128,7 +142,7 @@ class ChatHandler {
             fetchEntities("Device")
             var returnItems:[Device] = []
             for item in devices {
-                if message.containsString(item.name.lowercaseString) {
+                if message.containsString(item.name.lowercaseString) || message.containsString("\(item.name.lowercaseString)s") {
                     returnItems.append(item)
                 }
             }
@@ -137,7 +151,7 @@ class ChatHandler {
             fetchEntities("Scene")
             var returnItems:[Scene] = []
             for item in scenes {
-                if message.containsString(item.sceneName.lowercaseString) {
+                if message.containsString(item.sceneName.lowercaseString) || message.containsString("\(item.sceneName.lowercaseString)s") {
                     returnItems.append(item)
                 }
             }
@@ -146,7 +160,7 @@ class ChatHandler {
             fetchEntities("Event")
             var returnItems:[Event] = []
             for item in events {
-                if message.containsString(item.eventName.lowercaseString) {
+                if message.containsString(item.eventName.lowercaseString) || message.containsString("\(item.eventName.lowercaseString)s") {
                     returnItems.append(item)
                 }
             }
@@ -155,7 +169,7 @@ class ChatHandler {
             fetchEntities("Sequence")
             var returnItems:[Sequence] = []
             for item in sequences {
-                if message.containsString(item.sequenceName.lowercaseString) {
+                if message.containsString(item.sequenceName.lowercaseString) || message.containsString("\(item.sequenceName .lowercaseString)s") {
                     returnItems.append(item)
                 }
             }
@@ -228,6 +242,33 @@ class ChatHandler {
     }
     
     func setValues () {
+        
+//        public static Map<Integer, String> nameOfControl = new HashMap<>();
+//        
+//        static {
+//            nameOfControl.put(TURN_ON_DEVICE, "turn on");
+//            nameOfControl.put(TURN_OFF_DEVICE, "turn off");
+//            nameOfControl.put(DIM_DEVICE, "diming");
+//            nameOfControl.put(CURRENT_TIME, "get current time");
+//            nameOfControl.put(HOW_ARE_YOU, "ask how are you");
+//            nameOfControl.put(SET_LOCATION, "set location");
+//            nameOfControl.put(SET_LEVEL, "set level");
+//            nameOfControl.put(SET_ZONE, "set zone");
+//            nameOfControl.put(TELL_ME_JOKE, "tell some joke");
+//            nameOfControl.put(RUN_EVENT, "run event");
+//            nameOfControl.put(START_SEQUENCE, "start sequence");
+//            nameOfControl.put(I_LOVE_YOU, "say i love you");
+//            nameOfControl.put(CANCEL_EVENT, "cancel event");
+//            nameOfControl.put(STOP_SEQUENCE, "stop sequence");
+//            nameOfControl.put(BEST_DEVELOPER, "ask who is best developer");
+//            nameOfControl.put(LIST_DEVICE_IN_ZONE, "list devices");
+//            nameOfControl.put(LIST_SCENE_IN_ZONE, "list scenes");
+//            nameOfControl.put(LIST_EVENTS_IN_ZONE, "list events");
+//            nameOfControl.put(LIST_SEQUENCE_IN_ZONE, "list sequences");
+//            nameOfControl.put(LIST_ALL_COMMANDS, "list all commands");
+//            nameOfControl.put(SET_SCENE, "set scene");
+//        }
+        
         typeOfControl = [TURN_ON_DEVICE: CONTROL_DEVICE,
             TURN_OFF_DEVICE: CONTROL_DEVICE,
             DIM_DEVICE: CONTROL_DEVICE,
@@ -245,6 +286,11 @@ class ChatHandler {
             CANCEL_EVENT: CONTROL_EVENT,
             START_SEQUENCE: CONTROL_SEQUENCE,
             STOP_SEQUENCE: CONTROL_SEQUENCE,
+            LIST_DEVICE_IN_ZONE:LIST_DEVICE,
+            LIST_SCENE_IN_ZONE:LIST_SCENE,
+            LIST_EVENTS_IN_ZONE:LIST_EVENTS,
+            LIST_SEQUENCE_IN_ZONE:LIST_SEQUENCE,
+            LIST_ALL_COMMANDS:LIST_COMMANDS,
             -1: FAILED]
         
         CHAT_COMMANDS["set location"] = SET_LOCATION
@@ -270,9 +316,12 @@ class ChatHandler {
         CHAT_COMMANDS["start"] = TURN_ON_DEVICE
         CHAT_COMMANDS["lock"] = TURN_ON_DEVICE
         CHAT_COMMANDS["occupy"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["switch on"] = TURN_ON_DEVICE
         
         CHAT_COMMANDS["turn of"] = TURN_OFF_DEVICE
         CHAT_COMMANDS["turn off"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["switch off"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["switch of"] = TURN_OFF_DEVICE
         CHAT_COMMANDS["close"] = TURN_OFF_DEVICE
         CHAT_COMMANDS["deactivate"] = TURN_OFF_DEVICE
         CHAT_COMMANDS["empty"] = TURN_OFF_DEVICE
@@ -283,14 +332,28 @@ class ChatHandler {
         
         CHAT_COMMANDS["dim"] = DIM_DEVICE
         
-        CHAT_COMMANDS["set scene"] = SET_SCENE
+        CHAT_COMMANDS["set"] = SET_SCENE
+//        CHAT_COMMANDS["set scene"] = SET_SCENE
         
-        CHAT_COMMANDS["run event"] = RUN_EVENT
+        CHAT_COMMANDS["run"] = RUN_EVENT
+//        CHAT_COMMANDS["run event"] = RUN_EVENT
         CHAT_COMMANDS["cancel event"] = CANCEL_EVENT
         
         CHAT_COMMANDS["start sequence"] = START_SEQUENCE
         CHAT_COMMANDS["stop sequence"] = STOP_SEQUENCE
         
+        /**
+        * Commands for listing
+        * */
+        CHAT_COMMANDS["list device"] = LIST_DEVICE_IN_ZONE
+        CHAT_COMMANDS["list devices"] = LIST_DEVICE_IN_ZONE
+        CHAT_COMMANDS["list scene"] = LIST_SCENE_IN_ZONE
+        CHAT_COMMANDS["list scenes"] = LIST_SCENE_IN_ZONE
+        CHAT_COMMANDS["list event"] = LIST_EVENTS_IN_ZONE
+        CHAT_COMMANDS["list events"] = LIST_EVENTS_IN_ZONE
+        CHAT_COMMANDS["list sequence"] = LIST_SEQUENCE_IN_ZONE
+        CHAT_COMMANDS["list sequences"] = LIST_SEQUENCE_IN_ZONE
+
         /**
         * Commands to chat with Valery
         * */
@@ -313,7 +376,62 @@ class ChatHandler {
         CHAT_COMMANDS["what do"] = ANSWER_ME
         
         CHAT_COMMANDS["love you"] = I_LOVE_YOU
-        CHAT_COMMANDS["best developer android"] = BEST_DEVELOPER
+        CHAT_COMMANDS["best developer ios"] = BEST_DEVELOPER
         CHAT_COMMANDS["answer"] = BEST_DEVELOPER
+        
+        /**
+        * List commands
+        * */
+        CHAT_COMMANDS["list commands"] = LIST_ALL_COMMANDS
+        CHAT_COMMANDS["list command"] = LIST_ALL_COMMANDS
+        CHAT_COMMANDS["what can i say"] = LIST_ALL_COMMANDS
+        CHAT_COMMANDS["what is my options"] = LIST_ALL_COMMANDS
+    }
+    func getAnswerCommand(command:String) -> String  {
+        var answer = ""
+        switch command {
+        case "turn on":
+            answer = "turned on"
+        case "open":
+            answer = "opened"
+        case "activate":
+            answer = "activated"
+        case "fill":
+            answer = "filled"
+        case "insert":
+            answer = "inserted"
+        case "start":
+            answer = "started"
+        case "lock":
+            answer = "locked"
+        case "occupy":
+            answer = "occupied"
+        case "switch on":
+            answer = "switched on"
+        case "turn off":
+            answer = "turned off"
+        case "turn of":
+            answer = "turned off"
+        case "switch off":
+            answer = "switched off"
+        case "switch of":
+            answer = "switched off"
+        case "close":
+            answer = "closed"
+        case "deactivate":
+            answer = "deactivated"
+        case "empty":
+            answer = "emptied"
+        case "remove":
+            answer = "removed"
+        case "stop":
+            answer = "stoped"
+        case "unlock":
+            answer = "unlocked"
+        case "vacate":
+            answer = "vacated"
+        default: break
+        }
+        return answer
     }
 }

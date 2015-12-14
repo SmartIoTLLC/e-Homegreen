@@ -54,6 +54,7 @@
 		73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */; };
 		73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */; };
 		73C4C9021C19E3BB0047CBD5 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73C4C9001C19E3BB0047CBD5 /* Database.storyboard */; };
+		73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D592E71C1EC08400E206ED /* ChatInfo.swift */; };
 		73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */; };
 		73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */; };
 		73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */; };
@@ -272,6 +273,7 @@
 		73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSearchParametar.swift; sourceTree = "<group>"; };
 		73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendingHandler.swift; sourceTree = "<group>"; };
 		73C4C9011C19E3BB0047CBD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Database.storyboard; sourceTree = "<group>"; };
+		73D592E71C1EC08400E206ED /* ChatInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInfo.swift; sourceTree = "<group>"; };
 		73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSocket.swift; sourceTree = "<group>"; };
 		73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeviceSuggestionVC.swift; sourceTree = "<group>"; };
 		73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatDeviceSuggestionVC.xib; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 			children = (
 				736F17D91B3AE87E003A6A02 /* ChatViewController.swift */,
 				733F65441BCFABA8001BE004 /* ChatHandler.swift */,
+				73D592E71C1EC08400E206ED /* ChatInfo.swift */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -1387,6 +1390,7 @@
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
+				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
