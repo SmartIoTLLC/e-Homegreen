@@ -80,9 +80,9 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editSkipState.text = "\(devices[indexPathRow].skipState)"
 //        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(returnZoneWithId(Int(devices[indexPathRow].parentZoneId)))"
-        lblZone.text = "\(returnZoneWithId(Int(devices[indexPathRow].zoneId)))"
-        lblCategory.text = "\(returnCategoryWithId(Int(devices[indexPathRow].categoryId)))"
+        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), gateway: devices[indexPathRow].gateway))"
+        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), gateway: devices[indexPathRow].gateway))"
+        lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPathRow].categoryId), gateway: devices[indexPathRow].gateway))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
         enableSwitch.on = devices[indexPathRow].isEnabled.boolValue

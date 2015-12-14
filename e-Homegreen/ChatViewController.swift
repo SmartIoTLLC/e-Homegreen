@@ -67,6 +67,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
@@ -140,42 +142,6 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         chatTableView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
-//    override func viewWillLayoutSubviews() {
-//        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-//            
-//        } else {
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-//        }
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            layout = "Landscape"
-//        }else{
-//            layout = "Portrait"
-//        }
-//        chatTableView.reloadData()
-//        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
-//    }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
         if isValeryVoiceOn {

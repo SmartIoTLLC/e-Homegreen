@@ -553,8 +553,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
             cell.lblType.text = "Control Type: \(devices[indexPath.row].type)"
             cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
-            cell.lblZone.text = "Zone: \(returnZoneWithId(Int(devices[indexPath.row].zoneId))) Level: \(returnZoneWithId(Int(devices[indexPath.row].parentZoneId)))"
-            cell.lblCategory.text = "Category: \(returnCategoryWithId(Int(devices[indexPath.row].categoryId)))"
+            cell.lblZone.text = "Zone: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), gateway: devices[indexPath.row].gateway)) Level: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), gateway: devices[indexPath.row].gateway))"
+            cell.lblCategory.text = "Category: \(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), gateway: devices[indexPath.row].gateway))"
             cell.isEnabledSwitch.tag = indexPath.row
             cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
             cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue

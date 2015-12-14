@@ -31,7 +31,9 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateEventsList()
         eventCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Events", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])    }
+        LocalSearchParametar.setLocalParametar("Events", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +50,10 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
     }
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        updateEventsList()
+        eventCollectionView.reloadData()
     }
     func refreshEventsList() {
         updateEventsList()
@@ -175,16 +181,28 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+//        if levelSearch != "All" {
+//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
+//            predicateArray.append(levelPredicate)
+//        }
+//        if zoneSearch != "All" {
+//            let zonePredicate = NSPredicate(format: "eventZone == %@", returnZoneWithId(Int(zoneSearch)!))
+//            predicateArray.append(zonePredicate)
+//        }
+//        if categorySearch != "All" {
+//            let categoryPredicate = NSPredicate(format: "eventCategory == %@", returnCategoryWithId(Int(categorySearch)!))
+//            predicateArray.append(categoryPredicate)
+//        }
         if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
         }
         if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "eventZone == %@", returnZoneWithId(Int(zoneSearch)!))
+            let zonePredicate = NSPredicate(format: "eventZone == %@", zoneSearchName)
             predicateArray.append(zonePredicate)
         }
         if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "eventCategory == %@", returnCategoryWithId(Int(categorySearch)!))
+            let categoryPredicate = NSPredicate(format: "eventCategory == %@", categorySearchName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)

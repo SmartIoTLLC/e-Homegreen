@@ -39,6 +39,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         updateSceneList()
         scenesCollectionView.reloadData()
         LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
 //        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
     }
     override func viewDidLoad() {
@@ -63,6 +64,10 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     }
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        updateSceneList()
+        scenesCollectionView.reloadData()
     }
     func refreshSceneList() {
         updateSceneList()
@@ -128,16 +133,28 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+//        if levelSearch != "All" {
+//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
+//            predicateArray.append(levelPredicate)
+//        }
+//        if zoneSearch != "All" {
+//            let zonePredicate = NSPredicate(format: "sceneZone == %@", returnZoneWithId(Int(zoneSearch)!))
+//            predicateArray.append(zonePredicate)
+//        }
+//        if categorySearch != "All" {
+//            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", returnCategoryWithId(Int(categorySearch)!))
+//            predicateArray.append(categoryPredicate)
+//        }
         if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
         }
         if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "sceneZone == %@", returnZoneWithId(Int(zoneSearch)!))
+            let zonePredicate = NSPredicate(format: "sceneZone == %@", zoneSearchName)
             predicateArray.append(zonePredicate)
         }
         if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", returnCategoryWithId(Int(categorySearch)!))
+            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", categorySearchName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)

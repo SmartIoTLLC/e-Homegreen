@@ -29,6 +29,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
         refreshLocalParametars()
     }
     override func viewDidLoad() {
@@ -87,6 +88,8 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
         updateDeviceList()
     }
     
@@ -131,21 +134,43 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         //        fetchRequest.predicate = predicate
         
+//        if locationSearch != "All" {
+//            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+//            predicateArray.append(locationPredicate)
+//        }
+//        if levelSearch != "All" {
+//            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
+//            predicateArray.append(levelPredicate)
+//        }
+//        if zoneSearch != "All" {
+//            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
+//            predicateArray.append(zonePredicate)
+//        }
+//        if categorySearch != "All" {
+//            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
+//            predicateArray.append(categoryPredicate)
+//        }
         if locationSearch != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
             predicateArray.append(locationPredicate)
         }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-            predicateArray.append(levelPredicate)
+            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate, levelPredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         if zoneSearch != "All" {
             let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-            predicateArray.append(zonePredicate)
+            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate, zonePredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         if categorySearch != "All" {
             let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-            predicateArray.append(categoryPredicate)
+            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, categoryPredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate

@@ -163,8 +163,10 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     func returnZoneWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
@@ -181,8 +183,10 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     func returnCategoryWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
@@ -199,8 +203,10 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     func returnZoneIdWithName (name:String) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "name == %@", name)
-        fetchRequest.predicate = predicate
+        let predicateOne = NSPredicate(format: "name == %@", name)
+        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
@@ -217,8 +223,10 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     func returnCategoryIdWithName(name:String) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "name == %@", name)
-        fetchRequest.predicate = predicate
+        let predicateOne = NSPredicate(format: "name == %@", name)
+        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
