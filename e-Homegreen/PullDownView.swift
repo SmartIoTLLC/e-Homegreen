@@ -81,16 +81,16 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             choosedGateway = returnGatewayForName(locationText)
         }
         if level != "All" {
-            levelText = "\(returnZoneWithId(Int(level)!))"
-//            levelText = "\(level)"
+//            levelText = "\(returnZoneWithId(Int(level)!))"
+            levelText = "\(level)"
         }
         if zone != "All" {
-            zoneText = "\(returnZoneWithId(Int(zone)!))"
-//            zoneText = "\(zone)"
+//            zoneText = "\(returnZoneWithId(Int(zone)!))"
+            zoneText = "\(zone)"
         }
         if category != "All" {
-            categoryText = "\(returnCategoryWithId(Int(category)!))"
-//            categoryText = "\(category)"
+//            categoryText = "\(returnCategoryWithId(Int(category)!))"
+            categoryText = "\(category)"
         }
         let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
         locationLabel.text = "Location"

@@ -26,15 +26,6 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     @IBOutlet weak var chatTextView: UITextView!
     var pullDown = PullDownView()
     
-    //    var appDel:AppDelegate!
-    //    var devices:[Device] = []
-    //    var scenes:[Scene] = []
-    //    var securities:[Security] = []
-    //    var timers:[Timer] = []
-    //    var sequences:[Sequence] = []
-    //    var flags:[Flag] = []
-    //    var error:NSError? = nil
-    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var chatList:[ChatItem] = []
@@ -70,6 +61,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         self.view.addSubview(pullDown)
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
     }
@@ -97,11 +89,14 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
-    var locationSearchText = ["", "", "", ""]
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
+    var locationSearchText = ["", "", "", "", "", "", ""]
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         chatTableView.reloadData()
-        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -143,7 +138,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             layout = "Portrait"
         }
         chatTableView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
 //    override func viewWillLayoutSubviews() {
 //        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)

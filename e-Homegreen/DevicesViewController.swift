@@ -46,7 +46,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         // Do any additional setup after loading the view.
 //        LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
+//        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
@@ -89,8 +90,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     func refreshLocalParametars () {
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
         updateDeviceList()
 //        fetchDevicesInBackground()
         deviceCollectionView.reloadData()
@@ -564,7 +565,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             deviceCollectionView.reloadData()
         }
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()

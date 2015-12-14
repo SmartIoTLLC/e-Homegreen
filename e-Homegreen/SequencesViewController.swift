@@ -26,12 +26,12 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
     private let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var locationSearchText = ["", "", "", ""]
+    var locationSearchText = ["", "", "", "", "", "", ""]
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateSequencesList()
         sequenceCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Sequences", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        LocalSearchParametar.setLocalParametar("Sequences", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +46,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
         updateSequencesList()
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshSequenceList() {
@@ -114,7 +115,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         sequenceCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -123,6 +124,9 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

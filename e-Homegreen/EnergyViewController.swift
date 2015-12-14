@@ -24,10 +24,11 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var sumAmp:Float = 0
     var sumPow:Float = 0
     
-    var locationSearchText = ["", "", "", ""]
+    var locationSearchText = ["", "", "", "", "", "", ""]
+
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
-        LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+        LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
         refreshLocalParametars()
     }
     override func viewDidLoad() {
@@ -44,6 +45,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
 
@@ -80,7 +82,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     
     func refreshLocalParametars() {
@@ -104,10 +106,14 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
+    
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
     
     func updateDeviceList() {
         sumAmp = 0

@@ -25,12 +25,12 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
     
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
-    var locationSearchText = ["", "", "", ""]
+    var locationSearchText = ["", "", "", "", "", "", ""]
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateFlagsList()
         flagsCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Flags", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        LocalSearchParametar.setLocalParametar("Flags", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +45,7 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
         refreshFlagList()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshFlagList", name: NotificationKey.RefreshFlag, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshFlagList() {
@@ -120,7 +119,7 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         flagsCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -130,6 +129,9 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()

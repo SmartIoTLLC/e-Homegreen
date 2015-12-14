@@ -21,8 +21,6 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     
 //    var table:UITableView = UITableView()
     
-    var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
-    var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
     var appDel:AppDelegate!
     var scenes:[Scene] = []
     var error:NSError? = nil
@@ -35,12 +33,12 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
-    var locationSearchText = ["", "", "", ""]
+    var locationSearchText = ["", "", "", "", "", "", ""]
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateSceneList()
         scenesCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
 //        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
     }
     override func viewDidLoad() {
@@ -60,6 +58,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
         updateSceneList()
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshLocalParametars() {
@@ -204,12 +203,15 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         scenesCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[1], zone: locationSearchText[2], category: locationSearchText[3])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
