@@ -25,7 +25,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         updateTimersList()
         timersCollectionView.reloadData()

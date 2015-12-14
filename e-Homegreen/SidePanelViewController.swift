@@ -40,6 +40,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     override func viewWillAppear(animated: Bool) {
         menuList.removeAll(keepCapacity: false)
+        menuCollectionView.userInteractionEnabled = true
 //        menuList = []
     }
 
@@ -145,6 +146,7 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
         NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
         NSUserDefaults.standardUserDefaults().synchronize()
         delegate?.menuItemSelected!(selectedMenuItem)
+        collectionView.userInteractionEnabled = false
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets

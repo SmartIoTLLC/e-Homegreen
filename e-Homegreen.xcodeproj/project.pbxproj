@@ -53,6 +53,7 @@
 		739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */; };
 		73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */; };
 		73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */; };
+		73C4C9021C19E3BB0047CBD5 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73C4C9001C19E3BB0047CBD5 /* Database.storyboard */; };
 		73D6A9901B5FF2CD003388B7 /* TestSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */; };
 		73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */; };
 		73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */; };
@@ -270,6 +271,7 @@
 		7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
 		73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSearchParametar.swift; sourceTree = "<group>"; };
 		73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendingHandler.swift; sourceTree = "<group>"; };
+		73C4C9011C19E3BB0047CBD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Database.storyboard; sourceTree = "<group>"; };
 		73D6A98F1B5FF2CD003388B7 /* TestSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSocket.swift; sourceTree = "<group>"; };
 		73DA61F81BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeviceSuggestionVC.swift; sourceTree = "<group>"; };
 		73DA61F91BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatDeviceSuggestionVC.xib; sourceTree = "<group>"; };
@@ -628,6 +630,7 @@
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
+				73C4C9001C19E3BB0047CBD5 /* Database.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
@@ -1228,6 +1231,7 @@
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
+				73C4C9021C19E3BB0047CBD5 /* Database.storyboard in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
 				E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */,
 			);
@@ -1435,6 +1439,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		73C4C9001C19E3BB0047CBD5 /* Database.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				73C4C9011C19E3BB0047CBD5 /* Base */,
+			);
+			name = Database.storyboard;
+			sourceTree = "<group>";
+		};
 		73E206B21B2EEFFE0008B002 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1551,7 +1563,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1574,7 +1586,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";

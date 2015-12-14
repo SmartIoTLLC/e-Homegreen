@@ -25,7 +25,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var timer:NSTimer = NSTimer()
     
-    var locationSearchText = ["", "", "", ""]
+    var locationSearchText = ["", "", "", "", "", "", ""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
         // Do any additional setup after loading the view.
+//        LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
         updateDeviceList()
@@ -59,7 +60,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
-    
     func batchUpdate (device:Device) {
         let batch = NSBatchUpdateRequest(entityName: "Device")
         batch.propertiesToUpdate = ["stateUpdatedAt":NSDate()]
@@ -182,16 +182,36 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         return request
     }
-    
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
-        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
         locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
         updateDeviceList()
         deviceCollectionView.reloadData()
         fetchDevicesInBackground()
     }
-    
+//    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+//        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
+//        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+//        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
+//        updateDeviceList()
+//        deviceCollectionView.reloadData()
+//        fetchDevicesInBackground()
+//    }
+    var gateways:[Gateway]?
+    func updateGateways(gatewayName:String, zone:Zone) {
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let sortDescriptorOne = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            gateways = fetResults!.map({$0})
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            //            abort()
+        }
+    }
     func updateDeviceList () {
         print("ovde je uslo")
         let fetchRequest = NSFetchRequest(entityName: "Device")
@@ -212,16 +232,24 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             predicateArray.append(locationPredicate)
         }
         if levelSearch != "All" {
+//            DatabaseHandler.returnZoneWithId(<#T##id: Int##Int#>, gateway: <#T##Gateway#>)
+//            DatabaseHandler.returnZoneIdWithName(<#T##name: String##String#>, gateway: <#T##Gateway#>)
             let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-            predicateArray.append(levelPredicate)
+            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate, levelPredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         if zoneSearch != "All" {
             let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-            predicateArray.append(zonePredicate)
+            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate, zonePredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         if categorySearch != "All" {
             let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-            predicateArray.append(categoryPredicate)
+            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, categoryPredicateTwo])
+            predicateArray.append(copmpoundPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate        
@@ -593,6 +621,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var zoneSearch:String = "All"
     var levelSearch:String = "All"
     var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None

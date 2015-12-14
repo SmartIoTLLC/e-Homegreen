@@ -44,6 +44,18 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     @IBOutlet weak var lblClimateName: UILabel!
     @IBOutlet weak var settingsView: UIView!
     var appDel:AppDelegate!
+    
+    init(device: Device){
+        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
+        self.device = device
+        transitioningDelegate = self
+        modalPresentationStyle = UIModalPresentationStyle.Custom
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,8 +67,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         btnModeSetUp()
         btnFanSetUp()
         
-        lblCool.text = "\(coolTemperature)"
-        lblHeat.text = "\(heatTemperature)"
+        lblCool.text = "\(device.coolTemperature)"
+        lblHeat.text = "\(device.heatTemperature)"
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
         
@@ -116,8 +128,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
         }
         
-        lblCool.text = "\(device.coolTemperature)"
-        lblHeat.text = "\(device.heatTemperature)"
+//        lblCool.text = "\(device.coolTemperature)"
+//        lblHeat.text = "\(device.heatTemperature)"
         
 //        lblConsumption.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         lblConsumption.text = "\(Float(device.current) * 0.01)" + " W"
@@ -401,15 +413,15 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         }
     }
     
-    init(){
-        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    init(){
+//        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
+//        transitioningDelegate = self
+//        modalPresentationStyle = UIModalPresentationStyle.Custom
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -553,7 +565,7 @@ extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showClimaSettings(indexPathRow: Int, devices:[Device]) {
-        let ad = ClimaSettingsViewController()
+        let ad = ClimaSettingsViewController(device: devices[indexPathRow])
         ad.indexPathRow = indexPathRow
         ad.devices = devices
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)

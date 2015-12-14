@@ -73,7 +73,7 @@ class DatabaseHandler: NSObject {
         }
         return ""
     }
-    func returnZoneIdWithName (name:String, gateway:Gateway) -> String {
+    class func returnZoneIdWithName (name:String, gateway:Gateway) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "name == %@", name)
         let predicateTwo = NSPredicate(format: "gateway.objectID == %@", gateway.objectID)

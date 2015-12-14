@@ -25,7 +25,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var sumPow:Float = 0
     
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
         refreshLocalParametars()

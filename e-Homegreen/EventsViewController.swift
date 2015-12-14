@@ -27,7 +27,7 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         updateEventsList()
         eventCollectionView.reloadData()

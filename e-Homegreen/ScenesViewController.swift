@@ -36,11 +36,12 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         updateSceneList()
         scenesCollectionView.reloadData()
         LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+//        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
     }
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -27,7 +27,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         updateSequencesList()
         sequenceCollectionView.reloadData()

@@ -11,7 +11,7 @@ import CoreData
 
 @objc protocol PullDownViewDelegate
 {
-    optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String)
+    optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
 }
 
 class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
@@ -82,12 +82,15 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
         if level != "All" {
             levelText = "\(returnZoneWithId(Int(level)!))"
+//            levelText = "\(level)"
         }
         if zone != "All" {
             zoneText = "\(returnZoneWithId(Int(zone)!))"
+//            zoneText = "\(zone)"
         }
         if category != "All" {
             categoryText = "\(returnCategoryWithId(Int(category)!))"
+//            categoryText = "\(category)"
         }
         let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
         locationLabel.text = "Location"
@@ -190,7 +193,10 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
             let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
             let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
-            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category)
+            let levelName = "\(levelButton.titleLabel!.text!)"
+            let zoneName = "\(zoneButton.titleLabel!.text!)"
+            let categoryName = "\(categoryButton.titleLabel!.text!)"
+            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
         }
     }
     var popoverVC:PopOverViewController = PopOverViewController()
@@ -198,7 +204,10 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
         let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
         let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
-        customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category)
+        let levelName = "\(levelButton.titleLabel!.text!)"
+        let zoneName = "\(zoneButton.titleLabel!.text!)"
+        let categoryName = "\(categoryButton.titleLabel!.text!)"
+        customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
         print(self.parentViewController!.parentViewController!)
         self.setContentOffset(CGPointMake(0, self.frame.size.height - 2), animated: true)
     }

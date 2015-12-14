@@ -47,11 +47,29 @@ struct UserDefaults {
 //        "firstItem"
     }
 }
-
+class FilterParametars {
+    let gatewayName:String
+    let levelId:Int
+    let levelName:String
+    let zoneId:Int
+    let zoneName:String
+    let categoryId:Int
+    let categoryName:String
+    init(gatewayName:String,levelId:Int,levelName:String, zoneId:Int, zoneName:String, categoryId:Int, categoryName:String) {
+        self.gatewayName = gatewayName
+        self.levelId = levelId
+        self.levelName = levelName
+        self.zoneId = zoneId
+        self.zoneName = zoneName
+        self.categoryId = categoryId
+        self.categoryName = categoryName
+    }
+}
 struct NotificationKey {
     static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"
     static let DidFindDeviceName = "kPLCdidFindNameForDevice"
+    static let DidFindSensorParametar = "kPLCDidFindSensorParametar"
     static let DidRefreshDeviceInfo = "btnRefreshDevicesClicked"
     static let DidReceiveDataForRepeatSendingHandler = "repeatSendingHandlerNotification"
     
@@ -92,13 +110,18 @@ struct SegueIdentifier {
 }
 
 struct Colors {
-    static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
+    static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor    //   #262626
     static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
     static let LightGrayColor = UIColor.lightGrayColor().CGColor
     static let VeryLightGrayColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
     static let DarkGrayColor = UIColor.darkGrayColor().CGColor
+    static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).CGColor    //   #5bb7e5
+    static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).CGColor    //   #fb5757
 }
+//extension for UIColor
 
-//dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5, dispatch_get_main_queue()) {
+//dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+//
+//}
 
 //UIApplication.sharedApplication().idleTimerDisabled = true

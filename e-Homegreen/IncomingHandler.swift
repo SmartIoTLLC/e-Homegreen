@@ -294,6 +294,7 @@ class IncomingHandler: NSObject {
                         devices[i].name = "Unknown"
                     }
                     let data = ["deviceIndexForFoundName":i]
+                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
@@ -317,6 +318,7 @@ class IncomingHandler: NSObject {
     }
     func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
         fetchDevices()
+        var counter = 0
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
                 device.zoneId = Int(byteArray[9])
@@ -334,8 +336,12 @@ class IncomingHandler: NSObject {
                     device.isEnabled = NSNumber(bool: false)
                     device.isVisible = NSNumber(bool: false)
                 }
+                let data = ["sensorIndexForFoundParametar":counter]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshInterface, object: self, userInfo: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindSensorParametar, object: self, userInfo: data)
+                
             }
+            counter = counter + 1
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
@@ -347,6 +353,7 @@ class IncomingHandler: NSObject {
             var string:String = ""
             for var i = 9; i < byteArray.count-2; i++ {
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
+                print(string)
             }
             for var i = 0; i < devices.count; i++ {
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
@@ -369,6 +376,7 @@ class IncomingHandler: NSObject {
 //                        devices[i].isEnabled = NSNumber(bool: false)
 //                    }
                     let data = ["deviceIndexForFoundName":i]
+                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
@@ -485,7 +493,8 @@ class IncomingHandler: NSObject {
                         }
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: nil)
+                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
                 }
             }
         }
@@ -562,6 +571,7 @@ class IncomingHandler: NSObject {
 //                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
                     devices[i].curtainControlMode = Int(byteArray[35])
                     let data = ["deviceIndexForFoundName":i]
+                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }

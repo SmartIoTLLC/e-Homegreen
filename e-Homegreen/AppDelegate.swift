@@ -77,16 +77,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //        No Panic, Panic
             defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
             
-            LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Events", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Sequences", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Events", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Sequences", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
         }
-        
+    
         setFilterBySSIDOrByiBeaconAgain()
         return true
     }
@@ -148,6 +148,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let ssid = UIDevice.currentDevice().SSID {
             fetchGateways()
             for gateway in gateways {
+                print(gateway.ssid)
+                print(ssid)
                 if gateway.ssid == ssid {
                     let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
                     for filter in filterArray {
@@ -158,6 +160,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             filterParametars[1] = "All"
                             filterParametars[2] = "All"
                             filterParametars[3] = "All"
+                            filterParametars[4] = "All"
+                            filterParametars[5] = "All"
+                            filterParametars[6] = "All"
                             LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
                             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
                         }

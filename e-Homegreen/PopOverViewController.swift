@@ -69,15 +69,30 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     func updateDeviceList (whatToFetch:String) {
         if whatToFetch == "Gateway" {
             let fetchRequest = NSFetchRequest(entityName: "Gateway")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
-            fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.sortDescriptors = [sortDescriptor]
             fetchRequest.predicate = compoundPredicate
+//            fetchRequest.returnsDistinctResults = true
+//            fetchRequest.returnsObjectsAsFaults = false
+//            fetchRequest.propertiesToFetch = ["name"]
+//            fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
-                for item in results {
-                    tableList.append(TableList(name: item.name, id: -1))
+//                let distinct = NSSet(array: results.valueForKeyPath("name") as [String])
+//                With Swift 2.0 I prefer
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+//                let distinct = NSSet(array: results.sort { $0.name < $1.name })
+//                let distinct2 = distinct.sort { $0 < $1 }
+                print(distinct)
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                print(distinctSorted)
+//                let distinct2 = distinct.sortedArrayUsingDescriptors([sortDescriptor])
+//                let distinct = results.map { String($0.name) }
+//                NSLog("\(distinct)")
+                for item in distinctSorted {
+                    tableList.append(TableList(name: item, id: -1))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -90,16 +105,18 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level != %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                for item in results {
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
                     //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
                     //                    tableList.append(TableList(name: "\(item.id)", id: 2))
-                    tableList.append(TableList(name: item.name, id: 3))
+                    tableList.append(TableList(name: item, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -112,16 +129,18 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                for item in results {
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
                     //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
                     //                    tableList.append(TableList(name: "\(item.id)", id: 3))
-                    tableList.append(TableList(name: item.name, id: 2))
+                    tableList.append(TableList(name: item, id: 2))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -133,16 +152,18 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Category")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", filterGateway!)
+            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-                for item in results {
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
                     //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
                     //                    tableList.append(TableList(name: "\(item.id)", id: 4))
-                    tableList.append(TableList(name: item.name, id: 4))
+                    tableList.append(TableList(name: item, id: 4))
                 }
             } catch let catchedError as NSError {
                 error = catchedError

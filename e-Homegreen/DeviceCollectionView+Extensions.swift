@@ -200,11 +200,11 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
             } else if devices[indexPath.row].warningState == 1 {
                 // Uppet state
-                cell.backView.colorTwo = UIColor.redColor().CGColor
+                cell.backView.colorTwo = Colors.DirtyRedColor
                 
             } else if devices[indexPath.row].warningState == 2 {
                 // Lower state
-                cell.backView.colorTwo = UIColor.blueColor().CGColor
+                cell.backView.colorTwo = Colors.DirtyBlueColor
             }
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {

@@ -98,7 +98,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     var levelSearch:String = "All"
     var categorySearch:String = "All"
     var locationSearchText = ["", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
         chatTableView.reloadData()
         LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])

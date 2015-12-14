@@ -65,10 +65,10 @@ class DeviceCollectionCell: UICollectionViewCell {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
         } else if device.warningState == 1 {
             // Uppet state
-            backView.colorTwo = UIColor.redColor().CGColor
+            backView.colorTwo = Colors.DirtyRedColor
         } else if device.warningState == 2 {
             // Lower state
-            backView.colorTwo = UIColor.blueColor().CGColor
+            backView.colorTwo = Colors.DirtyBlueColor
         }
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
