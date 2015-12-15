@@ -145,6 +145,10 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
 //            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", returnCategoryWithId(Int(categorySearch)!))
 //            predicateArray.append(categoryPredicate)
 //        }
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
@@ -286,6 +290,7 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellImageView.userInteractionEnabled = true
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
         cell.sceneCellImageView.addGestureRecognizer(set)
+        cell.btnSet.tag = indexPath.row
         let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
         cell.btnSet.addGestureRecognizer(setTwo)
         cell.layer.cornerRadius = 5

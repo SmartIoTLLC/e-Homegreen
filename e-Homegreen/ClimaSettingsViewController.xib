@@ -343,12 +343,6 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQT-MG-PaU" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="128" y="226" width="54" height="30"/>
-                                    <state key="normal" title="SET">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="41D-1M-c0S" firstAttribute="leading" secondItem="vSv-Q3-65i" secondAttribute="trailing" constant="10" id="1EM-Gl-N2X"/>

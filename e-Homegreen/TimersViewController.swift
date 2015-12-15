@@ -198,6 +198,10 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
 //            let categoryPredicate = NSPredicate(format: "timerCategory == %@", returnCategoryWithId(Int(categorySearch)!))
 //            predicateArray.append(categoryPredicate)
 //        }
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)

@@ -98,7 +98,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         chatTableView.reloadData()
-        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        LocalSearchParametar.setLocalParametar("Chat", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -231,6 +231,18 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             let dimValue = handler.getValueForDim(message, withDeviceName: device.name)
             sendCommand(command, forDevice: device, withDimming: dimValue)
         }
+        if let scene = object as? Scene {
+            let command = handler.getCommand(message)
+            setCommand(command, object:scene)
+        }
+        if let sequence = object as? Sequence {
+            let command = handler.getCommand(message)
+            setCommand(command, object:sequence)
+        }
+        if let event = object as? Event {
+            let command = handler.getCommand(message)
+            setCommand(command, object:event)
+        }
     }
     func setCommand(command:Int, object:AnyObject) {
         //   Set scene
@@ -238,6 +250,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if let scene = object as? Scene {
                 let address = [UInt8(Int(scene.gateway.addressOne)),UInt8(Int(scene.gateway.addressTwo)),UInt8(Int(scene.address))]
                 SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
+                refreshChatListWithAnswer("scene was set", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
         //   Run event
@@ -245,6 +258,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
                 SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+                refreshChatListWithAnswer("event was ran", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
         //   Cancel event
@@ -252,6 +266,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
                 SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+                refreshChatListWithAnswer("event was canceled", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
         //   Start sequence
@@ -259,6 +274,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
                 SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: UInt8(Int(sequence.sequenceCycles))), gateway: sequence.gateway)
+                refreshChatListWithAnswer("sequence was started", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
         //   Stop sequence
@@ -266,6 +282,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
                 SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
+                refreshChatListWithAnswer("sequence was stopped", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
     }
@@ -327,13 +344,13 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                         sendCommand(command, forDevice: device, withDimming: helper.getValueForDim(message, withDeviceName: device.name))
                     }
                     if let scene = itemsArray[0] as? Scene {
-                        
+                        setCommand(command, object:scene)
                     }
                     if let sequence = itemsArray[0] as? Sequence {
-                        
+                        setCommand(command, object:sequence)
                     }
                     if let event = itemsArray[0] as? Event {
-                        
+                        setCommand(command, object:event)
                     }
                 } else if itemsArray.count > 1{
                     //   There are more devices than just a one
@@ -367,25 +384,37 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                                 })
                             }else{
                                 dispatch_async(dispatch_get_main_queue(),{
-                                    self.refreshChatListWithAnswer("Wrong question!!!", isValeryVoiceOn:self.isValeryVoiceOn)
+                                    self.refreshChatListWithAnswer(self.questionNotUnderstandable(), isValeryVoiceOn:self.isValeryVoiceOn)
                                 })
                             }
                             
                         })
                     } else {
-                        refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+//                        refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+                        refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
                     }
                 }
             } else {
                 //   Sorry but there are no devices with that name
                 //   Maybe new command?
-                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+//                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+                refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
             }
         } else {
-            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+//            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
+            refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
         }
     }
-    
+    func questionNotUnderstandable() -> String {
+        let array = ["I didn't understand that.", "Please be more specific.", "You were saying...", "Sorry, I didn't get that. ", "I'm not sure I understand.", "I'm afraid I don't know the answer to that.", "I don't know what do you want.", "Command is not clear."]
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count {
+            return array[randomIndex]
+        } else {
+            return array[4]
+        }
+    }
+
     func calculateHeight(){
         rowHeight = []
         for item in chatList{

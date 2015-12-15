@@ -86,6 +86,37 @@ class ChatHandler {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
     }
+    func getAllZoneNames() ->[Zone] {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicateOne
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            return results
+        } catch let catchedError as NSError {
+            error = catchedError
+            return []
+        }
+    }
+//    func getCommandScope(message:String) -> ChatScope {
+//        let message = " " + message + " "
+//        if message.containsString(" in ") {
+//            // ima kljucnu rec in
+//            let zones = getAllZoneNames()
+//            for zone in zones {
+//                if message.containsString(zone.name) {
+//                    // Nadjeno je ime
+//                    // zone.name VRATI IME ZA ZONU
+//                    fetchEntitiesWithoutFilter(<#T##whatToFetch: String##String#>, inZoneId: <#T##Int#>, inZoneName: <#T##String#>)
+//                }
+//            }
+//            // Nije nadjen ni jedan zone
+//            // VRATI ODGOVOR DA JE KOMANDA NEJASNA
+//        } else {
+//            // trazi filter
+//        }
+////        abc
+//    }
     func getCommand (message:String) -> Int {
         var listOfCommands:[Int:Int] = [:]
         let message = " " + message + " "
@@ -181,22 +212,63 @@ class ChatHandler {
     }
     
     func fetchEntities (whatToFetch:String) {
-        if whatToFetch == "Flag" {
-            let fetchRequest = NSFetchRequest(entityName: "Flag")
+        let locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
+        if whatToFetch == "Scene" {
+            let fetchRequest = NSFetchRequest(entityName: "Scene")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            var predicateArray:[NSPredicate] = [predicateOne]
+            if locationSearchText[0] != "All" {
+                let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+                predicateArray.append(locationPredicate)
+            }
+            if locationSearchText[4] != "All" {
+                let levelPredicate = NSPredicate(format: "entityLevel == %@", locationSearchText[4])
+                predicateArray.append(levelPredicate)
+            }
+            if locationSearchText[5] != "All" {
+                let zonePredicate = NSPredicate(format: "sceneZone == %@", locationSearchText[5])
+                predicateArray.append(zonePredicate)
+            }
+            if locationSearchText[6] != "All" {
+                let categoryPredicate = NSPredicate(format: "sceneCategory == %@", locationSearchText[6])
+                predicateArray.append(categoryPredicate)
+            }
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
             do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Scene]
                 print(results.count)
-                flags = results
+                scenes = results
             } catch let catchedError as NSError {
                 error = catchedError
             }
             return
         }
-        if whatToFetch == "Timer" {
-            let fetchRequest = NSFetchRequest(entityName: "Timer")
+        if whatToFetch == "Event" {
+            let fetchRequest = NSFetchRequest(entityName: "Event")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            var predicateArray:[NSPredicate] = [predicateOne]
+            if locationSearchText[0] != "All" {
+                let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+                predicateArray.append(locationPredicate)
+            }
+            if locationSearchText[4] != "All" {
+                let levelPredicate = NSPredicate(format: "entityLevel == %@", locationSearchText[4])
+                predicateArray.append(levelPredicate)
+            }
+            if locationSearchText[5] != "All" {
+                let zonePredicate = NSPredicate(format: "eventZone == %@", locationSearchText[5])
+                predicateArray.append(zonePredicate)
+            }
+            if locationSearchText[6] != "All" {
+                let categoryPredicate = NSPredicate(format: "eventCategory == %@", locationSearchText[6])
+                predicateArray.append(categoryPredicate)
+            }
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
             do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
-                timers = results
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Event]
+                events = results
             } catch let catchedError as NSError {
                 error = catchedError
             }
@@ -204,6 +276,26 @@ class ChatHandler {
         }
         if whatToFetch == "Sequence" {
             let fetchRequest = NSFetchRequest(entityName: "Sequence")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            var predicateArray:[NSPredicate] = [predicateOne]
+            if locationSearchText[0] != "All" {
+                let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+                predicateArray.append(locationPredicate)
+            }
+            if locationSearchText[4] != "All" {
+                let levelPredicate = NSPredicate(format: "entityLevel == %@", locationSearchText[4])
+                predicateArray.append(levelPredicate)
+            }
+            if locationSearchText[5] != "All" {
+                let zonePredicate = NSPredicate(format: "sequenceZone == %@", locationSearchText[5])
+                predicateArray.append(zonePredicate)
+            }
+            if locationSearchText[6] != "All" {
+                let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", locationSearchText[6])
+                predicateArray.append(categoryPredicate)
+            }
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Sequence]
                 sequences = results
@@ -212,23 +304,107 @@ class ChatHandler {
             }
             return
         }
-        if whatToFetch == "Security" {
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
+        if whatToFetch == "Device" {
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+            let predicateNull = NSPredicate(format: "categoryId != 0")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
+            var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+            if locationSearchText[0] != "All" {
+                let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+                predicateArray.append(locationPredicate)
+            }
+            if locationSearchText[1] != "All" {
+                let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(locationSearchText[1])!))
+                let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", locationSearchText[4])
+                let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate, levelPredicateTwo])
+                predicateArray.append(copmpoundPredicate)
+            }
+            if locationSearchText[2] != "All" {
+                let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(locationSearchText[2])!))
+                let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", locationSearchText[5])
+                let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate, zonePredicateTwo])
+                predicateArray.append(copmpoundPredicate)
+            }
+            if locationSearchText[3] != "All" {
+                let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(locationSearchText[3])!))
+                let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", locationSearchText[6])
+                let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, categoryPredicateTwo])
+                predicateArray.append(copmpoundPredicate)
+            }
+            fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-                securities = fetResults!
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+                devices = fetResults!
             } catch let error1 as NSError {
                 error = error1
                 print("Unresolved error \(error), \(error!.userInfo)")
                 abort()
             }
         }
+    }
+    func fetchEntitiesWithoutFilter (whatToFetch:String, inZoneId:Int, inZoneName:String) {
+        if whatToFetch == "Scene" {
+            let fetchRequest = NSFetchRequest(entityName: "Scene")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "entityLevel == %@", inZoneName)
+            let predicateThree = NSPredicate(format: "sceneZone == %@", inZoneName)
+            let orCompoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo, predicateThree])
+            let predicateArray:[NSPredicate] = [predicateOne, orCompoundPredicate]
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Scene]
+                print(results.count)
+                scenes = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Event" {
+            let fetchRequest = NSFetchRequest(entityName: "Event")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "entityLevel == %@", inZoneName)
+            let predicateThree = NSPredicate(format: "eventZone == %@", inZoneName)
+            let orCompoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo, predicateThree])
+            let predicateArray:[NSPredicate] = [predicateOne, orCompoundPredicate]
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Event]
+                events = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Sequence" {
+            let fetchRequest = NSFetchRequest(entityName: "Sequence")
+            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "entityLevel == %@", inZoneName)
+            let predicateThree = NSPredicate(format: "sequenceZone == %@", inZoneName)
+            let orCompoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo, predicateThree])
+            let predicateArray:[NSPredicate] = [predicateOne, orCompoundPredicate]
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Sequence]
+                sequences = results
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
         if whatToFetch == "Device" {
             let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
             let predicateNull = NSPredicate(format: "categoryId != 0")
             let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
             let predicateTwo = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
-            let predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+            let predicateThree = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: inZoneId))
+            let predicateFour = NSPredicate(format: "zoneId == %@", NSNumber(integer: inZoneId))
+            let orCompoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateThree, predicateFour])
+            let predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo, orCompoundPredicate]
             fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]

@@ -13,13 +13,26 @@ import CoreData
 {
     optional func saveText (strText : String)
     optional func saveText (text : String, id:Int)
+    optional func saveText (text : String, gateway:Gateway)
     optional func clickedOnGatewayWithIndex (index : Int)
     optional func clickedOnGatewayWithObjectID(objectId:String)
 }
 
-struct TableList {
+class TableList {
     var name:String
     var id:Int
+    init(name: String, id:Int) {
+        self.name = name
+        self.id = id
+    }
+}
+class SecurityFeedback {
+    var name:String
+    var gateway:Gateway
+    init(name: String, gateway:Gateway) {
+        self.name = name
+        self.gateway = gateway
+    }
 }
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -43,7 +56,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Hourly", id: 7),
         TableList(name: "Minutely", id: 7),
         TableList(name: "Countdown", id: 7)]
-    var tableList:[TableList] = []
+    var tableList:[AnyObject] = []
     
     var appDel:AppDelegate!
     var devices:[Device] = []
@@ -250,6 +263,21 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return
         }
+        if whatToFetch == "Security" {
+            let fetchRequest = NSFetchRequest(entityName: "Gateway")
+            let sortDescriptorOne = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptorTwo = NSSortDescriptor(key: "gatewayDescription", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
+                for item in results {
+                    tableList.append(SecurityFeedback(name: "\(item.name) \(item.gatewayDescription)", gateway: item))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
         
     }
     
@@ -265,6 +293,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case LevelsPick = 12
         case ZonesPick = 13
         case CategoriesPick = 14
+        case SecurityGateways = 15
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -294,6 +323,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if indexTab == PopOver.iBeacon.rawValue {
             updateDeviceList("IBeacon")
             tableList.insert(TableList(name: "No iBeacon", id: -1), atIndex: 0)
+        } else if indexTab == PopOver.SecurityGateways.rawValue {
+            updateDeviceList("Security")
         }
     }
     
@@ -304,7 +335,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
-            cell.tableItem.text = tableList[indexPath.row].name
+            if let list = tableList as? [TableList] {
+                cell.tableItem.text = list[indexPath.row].name
+            } else if let list = tableList as? [SecurityFeedback] {
+                cell.tableItem.text = list[indexPath.row].name
+            }
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -313,7 +348,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-            delegate?.saveText!(tableList[indexPath.row].name, id: tableList[indexPath.row].id)
+        if let list = tableList as? [TableList] {
+            delegate?.saveText!(list[indexPath.row].name, id: list[indexPath.row].id)
+        } else if let list = tableList as? [SecurityFeedback] {
+            delegate?.saveText!(list[indexPath.row].name, gateway: list[indexPath.row].gateway)
+        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

@@ -193,6 +193,10 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
 //            let categoryPredicate = NSPredicate(format: "eventCategory == %@", returnCategoryWithId(Int(categorySearch)!))
 //            predicateArray.append(categoryPredicate)
 //        }
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
@@ -278,17 +282,17 @@ extension EventsViewController: UICollectionViewDataSource {
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
         cell.eventTitle.addGestureRecognizer(longPress)
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setEvent:")
         cell.eventImageView.tag = indexPath.row
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setEvent:")
         cell.eventImageView.userInteractionEnabled = true
         cell.eventImageView.addGestureRecognizer(set)
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
             cell.eventImageView.image = eventImage
         }
         
+        cell.eventButton.tag = indexPath.row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
         cell.eventButton.addGestureRecognizer(tap)
-        cell.eventButton.tag = indexPath.row
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor

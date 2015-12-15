@@ -232,23 +232,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2m-76-YQQ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="85" y="181" width="150" height="31"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="31" id="SJ0-el-QSa"/>
-                                    <constraint firstAttribute="width" constant="150" id="nhx-3b-cnq"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                <state key="normal" title="Choose gateway">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnChooseGateway:" destination="lMK-jO-vIT" eventType="touchUpInside" id="RY4-dT-d70"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose gateway:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAX-tl-RZV">
-                                <rect key="frame" x="88" y="160" width="144" height="21"/>
+                                <rect key="frame" x="88" y="161" width="144" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -266,6 +251,21 @@
                                 <connections>
                                     <action selector="btnRemove:" destination="XzH-Hh-Erq" eventType="touchUpInside" id="4lk-JW-pv6"/>
                                     <action selector="btnSave:" destination="lMK-jO-vIT" eventType="touchUpInside" id="fHh-OL-lFi"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2m-76-YQQ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                <rect key="frame" x="55" y="181" width="210" height="31"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="SJ0-el-QSa"/>
+                                    <constraint firstAttribute="width" constant="210" id="nhx-3b-cnq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <state key="normal" title="Choose gateway">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnChooseGateway:" destination="lMK-jO-vIT" eventType="touchUpInside" id="RY4-dT-d70"/>
                                 </connections>
                             </button>
                         </subviews>

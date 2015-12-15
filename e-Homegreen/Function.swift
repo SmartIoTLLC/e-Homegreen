@@ -691,8 +691,8 @@ extension Function {
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)
         message[2] = address[0]
-        message[3] = address[0]
-        message[4] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
         message[5] = 0x03
         message[6] = 0x07
         for i in 0...messageInfo.count - 1 {

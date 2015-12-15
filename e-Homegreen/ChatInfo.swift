@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+struct ChatScopeAnswer {
+    let zoneName:String
+    let chatScope:ChatScope
+}
+
+enum ChatScope {
+    case ZoneFound
+    case DidNotFindZone
+    case UseFilter
+}

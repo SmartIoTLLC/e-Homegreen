@@ -198,6 +198,10 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
 //            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", returnCategoryWithId(Int(categorySearch)!))
 //            predicateArray.append(categoryPredicate)
 //        }
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
@@ -303,10 +307,9 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.sequenceImageView.addGestureRecognizer(set)
         cell.getImagesFrom(sequences[indexPath.row])
         
+        cell.sequenceButton.tag = indexPath.row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
         cell.sequenceButton.addGestureRecognizer(tap)
-        cell.sequenceButton.tag = indexPath.row
-        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

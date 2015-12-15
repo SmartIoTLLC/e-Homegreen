@@ -33,14 +33,16 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-        height.constant = CGFloat(60 * listOfDevice.count + 5)
+//        if Common.screenHeight-60 > CGFloat(60 * listOfDevice.count + 5) {
+//            height.constant = CGFloat(60 * listOfDevice.count + 5)
+//        } else {
+//            height.constant = Common.screenHeight-60
+//        }
         
         sugestionTableView.registerNib(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
 
         // Do any additional setup after loading the view.
     }
-    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(sugestionTableView){
             return false
@@ -162,17 +164,17 @@ extension UIViewController {
         }
         if let anyObjects = objects as? [Scene] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Device: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                suggVC.listOfDevice.append("Scene: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
             }
         }
         if let anyObjects = objects as? [Sequence] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Device: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                suggVC.listOfDevice.append("Sequence: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
             }
         }
         if let anyObjects = objects as? [Event] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Device: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                suggVC.listOfDevice.append("Event: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
             }
         }
         self.presentViewController(suggVC, animated: true, completion: nil)

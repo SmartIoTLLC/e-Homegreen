@@ -57,7 +57,10 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         addThree.text = returnThreeCharactersForByte(Int(securities![0].addressThree))
 
         transitioningDelegate = self
-        btnChooseGateway.setTitle(securities![0].gateway?.name , forState: UIControlState.Normal)
+        
+        if let gateway = securities![0].gateway {
+            btnChooseGateway.setTitle("\(gateway.name) \(gateway.gatewayDescription)" , forState: UIControlState.Normal)
+        }
         
         
         // Do any additional setup after loading the view.
@@ -95,10 +98,11 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         // Dispose of any resources that can be recreated.
     }
     var pickedGatewayName:String = ""
-    func saveText(text: String, id: Int) {
-        pickedGatewayName = text
+    var pickedGateway:Gateway?
+    func saveText(text: String, gateway: Gateway) {
+        pickedGateway = gateway
         btnChooseGateway.setTitle(text , forState: UIControlState.Normal)
-        fetchGateways()
+//        fetchGateways()
     }
     
     func saveChanges() {
@@ -115,8 +119,9 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         var error:NSError?
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicateOne = NSPredicate(format: "name == %@", pickedGatewayName)
-        let predicateTwo = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
+        let predicateTwo = NSPredicate(format: "name == %@", pickedGatewayName)
+        let predicateThree = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
         fetchRequest.predicate = compoundPredicate
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -135,7 +140,7 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 1
+        popoverVC.indexTab = 15
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -154,16 +159,26 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
     @IBAction func btnSave(sender: AnyObject) {
         if addOne.text != "" && addTwo.text != "" && addThree.text != "" {
             if let addressOne = Int(addOne.text!), let addressTwo = Int(addTwo.text!), let addressThree = Int(addThree.text!) {
-                defaults.setObject(addressOne, forKey: UserDefaults.Security.AddressOne)
-                defaults.setObject(addressTwo, forKey: UserDefaults.Security.AddressTwo)
-                defaults.setObject(addressThree, forKey: UserDefaults.Security.AddressThree)
-                for security in securities! {
-                    security.addressOne = addressOne
-                    security.addressTwo = addressTwo
-                    security.addressThree = addressThree
+                if let gateway = pickedGateway {
+                    defaults.setObject(addressOne, forKey: UserDefaults.Security.AddressOne)
+                    defaults.setObject(addressTwo, forKey: UserDefaults.Security.AddressTwo)
+                    defaults.setObject(addressThree, forKey: UserDefaults.Security.AddressThree)
+                    for security in securities! {
+                        security.addressOne = addressOne
+                        security.addressTwo = addressTwo
+                        security.addressThree = addressThree
+                    }
+                    saveChanges()
+//                    saveGatewayToSecurities()
+//                    fetchSecurity()
+//                    fetchGateways()
+                    if securities!.count > 0 {
+                        for security in securities! {
+                            security.gateway = gateway
+                        }
+                        saveChanges()
+                    }
                 }
-                saveChanges()
-                saveGatewayToSecurities()
             }
         }
     }

@@ -198,6 +198,10 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
 //            let categoryPredicate = NSPredicate(format: "flagCategory == %@", returnCategoryWithId(Int(categorySearch)!))
 //            predicateArray.append(categoryPredicate)
 //        }
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
         if levelSearch != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
