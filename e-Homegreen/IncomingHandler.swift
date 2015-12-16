@@ -402,7 +402,12 @@ class IncomingHandler: NSObject {
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
-            if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
+            print(byteArray[7])
+            print(byteArray[8])
+            print(DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name)
+            print(DeviceInfo().deviceChannel[byteArray[7]]?.name)
+//            if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
+            if let channel = DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 if devices != [] {
                     for device in devices {
                         if device.address == Int(byteArray[4]) {

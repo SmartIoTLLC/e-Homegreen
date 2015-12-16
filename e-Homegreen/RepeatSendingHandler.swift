@@ -56,15 +56,25 @@ class RepeatSendingHandler: NSObject {
             }
         }
     }
-    var firstTime:Bool = false
+    var isFirstTime:Bool = true
     func sendCommand () {
         if !didGetResponse {
             if repeatCounter <= 4 {
+                if repeatCounter > 1 {
+                    self.delay = 1
+                }
                 SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                 repeatCounter += 1
-                if !firstTime {
+//                if !firstTime {
+//                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
+//                    firstTime = true
+//                }
+                if isFirstTime {
                     didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "sendCommand", userInfo: nil, repeats: true)
-                    firstTime = true
+                    isFirstTime = false
+                } else {
+                    didGetResponseTimer.invalidate()
+                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "sendCommand", userInfo: nil, repeats: false)
                 }
             } else {
                 didGetResponseTimer!.invalidate()
