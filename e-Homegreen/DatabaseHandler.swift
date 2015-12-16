@@ -73,6 +73,7 @@ class DatabaseHandler: NSObject {
         }
         return ""
     }
+    
     class func returnZoneIdWithName (name:String, gateway:Gateway) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "name == %@", name)
@@ -92,5 +93,23 @@ class DatabaseHandler: NSObject {
             abort()
         }
         return ""
+    }
+    
+    class func returnZoneIdWithName (name:String) -> Int {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return Int(fetResults![0].id)
+            } else {
+                return -1
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return -1
     }
 }

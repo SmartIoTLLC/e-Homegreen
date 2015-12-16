@@ -99,6 +99,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         chatTableView.reloadData()
         LocalSearchParametar.setLocalParametar("Chat", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -244,9 +245,9 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             setCommand(command, object:event)
         }
     }
-    func setCommand(command:Int, object:AnyObject) {
+    func setCommand(command:ChatCommand, object:AnyObject) {
         //   Set scene
-        if command == 9 {
+        if command == .SetScene {
             if let scene = object as? Scene {
                 let address = [UInt8(Int(scene.gateway.addressOne)),UInt8(Int(scene.gateway.addressTwo)),UInt8(Int(scene.address))]
                 SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
@@ -254,7 +255,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
         //   Run event
-        if command == 10 {
+        if command == .RunEvent {
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
                 SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
@@ -262,7 +263,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
         //   Cancel event
-        if command == 13 {
+        if command == .CancelEvent {
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
                 SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
@@ -270,7 +271,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
         //   Start sequence
-        if command == 11 {
+        if command == .StartSequence {
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
                 SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: UInt8(Int(sequence.sequenceCycles))), gateway: sequence.gateway)
@@ -278,7 +279,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
         //   Stop sequence
-        if command == 14 {
+        if command == .StopSequence {
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
                 SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
@@ -286,8 +287,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
     }
-    func sendCommand(command:Int, forDevice device:Device, withDimming dimValue:Int) {
-        if command == 0 {
+    func sendCommand(command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
+        if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.type == "Dimmer" {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
@@ -302,7 +303,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
             refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
-        } else if command == 1 {
+        } else if command == .TurnOffDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.type == "Dimmer" {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
@@ -317,7 +318,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
             refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
-        } else if command == 2 {
+        } else if command == .DimDevice {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
                 if device.type == "Dimmer" {
@@ -329,90 +330,319 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
     }
+    
     func findCommand(message:String) {
         let helper = ChatHandler()
         let command = helper.getCommand(message) // treba
         let typeOfControl = helper.getTypeOfControl(command)
         let itemsArray = helper.getItemByName(typeOfControl, message: message) // treba
-        if command != -1 {
+        if let zone:Zone = helper.getLevel(message) {
+            print(zone.name)
+        }
+        if command != .Failed {
             if typeOfControl == "" {
                 
             }
-            if itemsArray.count >= 0 {
-                if itemsArray.count == 1 {
-                    if let device = itemsArray[0] as? Device {
-                        sendCommand(command, forDevice: device, withDimming: helper.getValueForDim(message, withDeviceName: device.name))
-                    }
-                    if let scene = itemsArray[0] as? Scene {
-                        setCommand(command, object:scene)
-                    }
-                    if let sequence = itemsArray[0] as? Sequence {
-                        setCommand(command, object:sequence)
-                    }
-                    if let event = itemsArray[0] as? Event {
-                        setCommand(command, object:event)
-                    }
-                } else if itemsArray.count > 1{
-                    //   There are more devices than just a one
-                    if let devices = itemsArray as? [Device] {
-                        showSuggestion(devices, message: message).delegate = self
-                    }
-                    if let scenes = itemsArray as? [Scene] {
-                        showSuggestion(scenes, message: message).delegate = self
-                    }
-                    if let sequences = itemsArray as? [Sequence] {
-                        showSuggestion(sequences, message: message).delegate = self
-                    }
-                    if let events = itemsArray as? [Event] {
-                        showSuggestion(events, message: message).delegate = self
-                    }
-                } else {
-                    //   Ther are no devices with that name
-                    if command == 8 {
-                        let joke = TellMeAJokeHandler()
-                        joke.getJokeCompletion({ (result) -> Void in
-                            dispatch_async(dispatch_get_main_queue(),{
-                                self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
-                            })
-                        })
-                    } else if command == 21 {
-                        let answ = AnswersHandler()
-                        answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
-                            if result != ""{
-                                dispatch_async(dispatch_get_main_queue(),{
-                                    self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
-                                })
-                            }else{
-                                dispatch_async(dispatch_get_main_queue(),{
-                                    self.refreshChatListWithAnswer(self.questionNotUnderstandable(), isValeryVoiceOn:self.isValeryVoiceOn)
-                                })
-                            }
-                            
-                        })
+            if command == .TurnOnDevice || command == .TurnOffDevice || command == .DimDevice || command == .SetScene || command == .RunEvent || command == .StartSequence || command == .CancelEvent || command == .StopSequence {
+                if itemsArray.count >= 0 {
+                    if itemsArray.count == 1 {
+                        if let device = itemsArray[0] as? Device {
+                            sendCommand(command, forDevice: device, withDimming: helper.getValueForDim(message, withDeviceName: device.name))
+                        }
+                        if let scene = itemsArray[0] as? Scene {
+                            setCommand(command, object:scene)
+                        }
+                        if let sequence = itemsArray[0] as? Sequence {
+                            setCommand(command, object:sequence)
+                        }
+                        if let event = itemsArray[0] as? Event {
+                            setCommand(command, object:event)
+                        }
+                    } else if itemsArray.count > 1{
+                        //   There are more devices than just a one
+                        if let devices = itemsArray as? [Device] {
+                            showSuggestion(devices, message: message).delegate = self
+                        }
+                        if let scenes = itemsArray as? [Scene] {
+                            showSuggestion(scenes, message: message).delegate = self
+                        }
+                        if let sequences = itemsArray as? [Sequence] {
+                            showSuggestion(sequences, message: message).delegate = self
+                        }
+                        if let events = itemsArray as? [Event] {
+                            showSuggestion(events, message: message).delegate = self
+                        }
                     } else {
-//                        refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
-                        refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
+                        //   Ther are no devices with that name
+//                        refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
+                        refreshChatListWithAnswer("Couldn't find something to control...", isValeryVoiceOn: isValeryVoiceOn)
                     }
                 }
+            } else if command == .TellMeJoke {
+                let joke = TellMeAJokeHandler()
+                joke.getJokeCompletion({ (result) -> Void in
+                    dispatch_async(dispatch_get_main_queue(),{
+                        self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
+                    })
+                })
+            } else if command == .CurrentTime {
+                dispatch_async(dispatch_get_main_queue(),{
+                    let date = NSDate()
+                    let formatter = NSDateFormatter()
+                    formatter.timeZone = NSTimeZone.localTimeZone()
+                    formatter.dateFormat = "HH:mm:ss"
+                    self.refreshChatListWithAnswer("It is \(formatter.stringFromDate(date))", isValeryVoiceOn:self.isValeryVoiceOn)
+                })
+            } else if command == .HowAreYou {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.refreshChatListWithAnswer(self.answerOnHowAreYou(), isValeryVoiceOn:self.isValeryVoiceOn)
+                })
+            } else if command == .ILoveYou {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.refreshChatListWithAnswer(self.answerOnILoveYou(), isValeryVoiceOn:self.isValeryVoiceOn)
+                })
+            } else if command == .BestDeveloper {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.refreshChatListWithAnswer("One whose work you don't notice!", isValeryVoiceOn:self.isValeryVoiceOn)
+                })
+            } else if command == .ListAllCommands {
+                var answer = "These are all commands:\n"
+                for command in helper.CHAT_COMMANDS.keys {
+                    answer = answer + "\(command) for \(helper.CHAT_COMMANDS[command]!.rawValue.lowercaseString)\n"
+                }
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.refreshChatListWithAnswer(answer, isValeryVoiceOn:self.isValeryVoiceOn)
+                })
+            } else if command == .SetLocation {
+                let location = helper.getLocation(message)
+                if location != "" {
+                    LocalSearchParametar.setLocalParametar("Chat", parametar: [location, "All", "All", "All", "All", "All", "All"])
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                    refreshChatListWithAnswer("Location was set.", isValeryVoiceOn: isValeryVoiceOn)
+                } else {
+                    refreshChatListWithAnswer("There is no known location with that name.", isValeryVoiceOn: isValeryVoiceOn)
+                }
+            } else if command == .SetLevel {
+                
+            } else if command == .SetZone {
+//                if locationSearchText[0] == "All" {
+//                    //  set zone if all
+//                    if let zone:Zone = helper.getZone(message, isLevel: false, gateways: nil) {
+//                        print(zone.name)
+//                        print(zone.gateway.name)
+//                    }
+//                } else {
+//                    //  set zone if name
+//                    let gateways = helper.getGateways(locationSearchText[0])
+//                    if let zone:Zone = helper.getZone(message, isLevel: false, gateways: gateways) {
+//                        print(zone.name)
+//                        print(zone.gateway.name)
+//                    }
+//                }
+//                dispatch_async(dispatch_get_main_queue(),{
+//                    self.refreshChatListWithAnswer("One whose work you don't notice!", isValeryVoiceOn:self.isValeryVoiceOn)
+//                })
+            } else if command == .ListDeviceInZone {
+                let zone = helper.getZone(message)
+                if zone == "" {
+                    if locationSearchText[0] != "All" {
+                        if locationSearchText[2] != "All" {
+                            // There is
+                            let devices = helper.returnAllDevices(locationSearchText, onlyZoneName: "")
+                            if devices.count != 0 {
+                                var answer = "These are all devices in \(locationSearchText[5]):\n"
+                                for device in devices {
+                                    answer = answer + "\(device.name)\n"
+                                }
+                                refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                            } else {
+                                refreshChatListWithAnswer("There are no devices in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                            }
+                        } else {
+                            // There is no zone but there is location (there could be more locations)
+                            refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        }
+                    } else {
+                        // There is no location
+                        refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        // testiraj zone!
+                    }
+                } else {
+                    // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
+                    let devices = helper.returnAllDevices(locationSearchText, onlyZoneName: zone)
+                    if devices.count != 0 {
+                        var answer = "These are all devices in \(zone):\n"
+                        for device in devices {
+                            answer = answer + "\(device.name)\n"
+                        }
+                        refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                    } else {
+                        refreshChatListWithAnswer("There are no devices in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                    }
+                }
+            } else if command == .ListSceneInZone {
+                let zone = helper.getZone(message)
+                if zone == "" {
+                    if locationSearchText[0] != "All" {
+                        if locationSearchText[2] != "All" {
+                            // There is
+                            let devices = helper.returnAllScenes(locationSearchText, onlyZoneName: "")
+                            if devices.count != 0 {
+                                var answer = "These are all devices in \(locationSearchText[5]):\n"
+                                for device in devices {
+                                    answer = answer + "\(device.sceneName)\n"
+                                }
+                                refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                            } else {
+                                refreshChatListWithAnswer("There are no scenes in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                            }
+                        } else {
+                            // There is no zone but there is location (there could be more locations)
+                            refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        }
+                    } else {
+                        // There is no location
+                        refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        // testiraj zone!
+                    }
+                } else {
+                    // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
+                    let devices = helper.returnAllScenes(locationSearchText, onlyZoneName: zone)
+                    if devices.count != 0 {
+                        var answer = "These are all scenes in \(zone):\n"
+                        for device in devices {
+                            answer = answer + "\(device.sceneName)\n"
+                        }
+                        refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                    } else {
+                        refreshChatListWithAnswer("There are no scenes in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                    }
+                }
+            } else if command == .ListEventsInZone {
+                let zone = helper.getZone(message)
+                if zone == "" {
+                    if locationSearchText[0] != "All" {
+                        if locationSearchText[2] != "All" {
+                            // There is
+                            let devices = helper.returnAllEvents(locationSearchText, onlyZoneName: "")
+                            if devices.count != 0 {
+                                var answer = "These are all events in \(locationSearchText[5]):\n"
+                                for device in devices {
+                                    answer = answer + "\(device.eventName)\n"
+                                }
+                                refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                            } else {
+                                refreshChatListWithAnswer("There are no events in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                            }
+                        } else {
+                            // There is no zone but there is location (there could be more locations)
+                            refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        }
+                    } else {
+                        // There is no location
+                        refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        // testiraj zone!
+                    }
+                } else {
+                    // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
+                    let devices = helper.returnAllEvents(locationSearchText, onlyZoneName: zone)
+                    if devices.count != 0 {
+                        var answer = "These are all events in \(zone):\n"
+                        for device in devices {
+                            answer = answer + "\(device.eventName)\n"
+                        }
+                        refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                    } else {
+                        refreshChatListWithAnswer("There are no events in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                    }
+                }
+            } else if command == .ListSequenceInZone {
+                let zone = helper.getZone(message)
+                if zone == "" {
+                    if locationSearchText[0] != "All" {
+                        if locationSearchText[2] != "All" {
+                            // There is
+                            let devices = helper.returnAllSequences(locationSearchText, onlyZoneName: "")
+                            if devices.count != 0 {
+                                var answer = "These are all sequences in \(zone):\n"
+                                for (index, device) in devices.enumerate() {
+                                    print(index)
+                                    answer = answer + "\(device.sequenceName)\n"
+                                }
+                                refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                            } else {
+                                refreshChatListWithAnswer("There are no sequences in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                            }
+                        } else {
+                            // There is no zone but there is location (there could be more locations)
+                            refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        }
+                    } else {
+                        // There is no location
+                        refreshChatListWithAnswer("Please specify zone.", isValeryVoiceOn: isValeryVoiceOn)
+                        // testiraj zone!
+                    }
+                } else {
+                    // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
+                    let devices = helper.returnAllSequences(locationSearchText, onlyZoneName: zone)
+                    if devices.count != 0 {
+                        var answer = "These are all sequences in \(zone):\n"
+                        for device in devices {
+                            answer = answer + "\(device.sequenceName)\n"
+                        }
+                        refreshChatListWithAnswer(answer, isValeryVoiceOn: isValeryVoiceOn)
+                    } else {
+                        refreshChatListWithAnswer("There are no sequences in zone.", isValeryVoiceOn: isValeryVoiceOn)
+                    }
+                }
+            } else if command == .AnswerMe {
+                let answ = AnswersHandler()
+                answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
+                    if result != ""{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
+                        })
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.refreshChatListWithAnswer(self.questionNotUnderstandable(), isValeryVoiceOn:self.isValeryVoiceOn)
+                        })
+                    }
+                    
+                })
             } else {
                 //   Sorry but there are no devices with that name
                 //   Maybe new command?
-//                refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
                 refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
             }
         } else {
-//            refreshChatListWithAnswer("Please specify what do you want me to do.", isValeryVoiceOn: isValeryVoiceOn)
             refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
         }
     }
+    
     func questionNotUnderstandable() -> String {
         let array = ["I didn't understand that.", "Please be more specific.", "You were saying...", "Sorry, I didn't get that. ", "I'm not sure I understand.", "I'm afraid I don't know the answer to that.", "I don't know what do you want.", "Command is not clear."]
         let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
         if randomIndex < array.count {
             return array[randomIndex]
-        } else {
-            return array[4]
         }
+        return "I'm not sure I understand."
+    }
+    func answerOnILoveYou() -> String {
+        let array = ["\u{1f60d}", "I love you too \u{1f60d}", "\u{1f618}", "I love myself too \u{2764}", "\u{2764}"]
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count {
+            return array[randomIndex]
+        } else {
+            return ""
+        }
+    }
+    func answerOnHowAreYou() -> String {
+        let array = ["I'm fine, thank you for asking.", "You are so kind.", "I am happy.", "I have a doubt... I don't know if I am just fine or super fine.", "You are more important!", "I am asking you!", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}"]
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count {
+            return array[randomIndex]
+        }
+        return "\u{1f601}"
     }
 
     func calculateHeight(){

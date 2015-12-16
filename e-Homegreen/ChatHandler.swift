@@ -14,6 +14,7 @@ import CoreData
 //    let device:[Device]
 //    let dimValue:Int?
 //}
+
 class ChatHandler {
     
     let SYSTEM_NAME = "Valery"
@@ -33,37 +34,7 @@ class ChatHandler {
     
     let LIST_COMMANDS = "list_commands"
     
-    let TURN_ON_DEVICE = 0
-    let TURN_OFF_DEVICE = 1
-    let DIM_DEVICE = 2
-    
-    let CURRENT_TIME = 3
-    let HOW_ARE_YOU = 4
-    
-    let SET_LOCATION = 5
-    let SET_LEVEL = 6
-    let SET_ZONE = 7
-    
-    let TELL_ME_JOKE = 8
-    
-    let SET_SCENE = 9
-    let RUN_EVENT = 10
-    let START_SEQUENCE = 11
-    let I_LOVE_YOU = 12
-    
-    let CANCEL_EVENT = 13
-    let STOP_SEQUENCE = 14
-    
-    let BEST_DEVELOPER = 15
-    
-    let LIST_DEVICE_IN_ZONE = 16
-    let LIST_SCENE_IN_ZONE = 17
-    let LIST_EVENTS_IN_ZONE = 18
-    let LIST_SEQUENCE_IN_ZONE = 19
-    
-    let LIST_ALL_COMMANDS = 20
-    
-    let ANSWER_ME = 21
+
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -76,16 +47,35 @@ class ChatHandler {
     var flags:[Flag] = []
     var events:[Event] = []
     
-    var typeOfControl:[Int:String] = [:]
+    var typeOfControl:[ChatCommand:String] = [:]
     
-    let CHAT_ANSWERS:[String:Int] = [:]
-    var CHAT_COMMANDS:[String:Int] = [:]
-
+    let CHAT_ANSWERS:[String:ChatCommand] = [:]
+    var CHAT_COMMANDS:[String:ChatCommand] = [:]
+//    var chat:[String:ChantCommands] = [:]
+//    var chatChatChat:[ChantCommands:String] = [:]
+//    var something:[Int:Int] = [:]
     init () {
         setValues()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
     }
+//    func setSetSet () {
+//        let string = ""
+//        chat[""] = ChantCommands.TurnOnDevice
+//        chatChatChat[ChantCommands.TurnOnDevice] = ""
+//        for command in chat.keys {
+//            var numberOfMatchWords = 0
+//            let commandWords = command.componentsSeparatedByString(" ")
+//            for word in commandWords {
+//                if string.containsString(" " + word + " ") {
+//                    numberOfMatchWords++
+//                }
+//            }
+//            if numberOfMatchWords == commandWords.count {
+//                something[numberOfMatchWords] = chat[command]?.rawValue
+//            }
+//        }
+//    }
     func getAllZoneNames() ->[Zone] {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
@@ -117,8 +107,8 @@ class ChatHandler {
 //        }
 ////        abc
 //    }
-    func getCommand (message:String) -> Int {
-        var listOfCommands:[Int:Int] = [:]
+    func getCommand (message:String) -> ChatCommand {
+        var listOfCommands:[Int:ChatCommand] = [:]
         let message = " " + message + " "
         for command in CHAT_COMMANDS.keys {
             var numberOfMatchWords = 0
@@ -134,16 +124,15 @@ class ChatHandler {
         }
         if listOfCommands.count != 0 {
             return listOfCommands[listOfCommands.keys.maxElement()!]!
-            //            return listOfCommands.keys.maxElement()!
         } else {
-            return -1
+            return .Failed
         }
-        return -1
+        return .Failed
     }
     
-    func getTypeOfControl(index:Int)->String {
+    func getTypeOfControl(chatCommand:ChatCommand)->String {
         //        return typeOfControl[getCommand(message)]!
-        return typeOfControl[index]!
+        return typeOfControl[chatCommand]!
     }
     
     func getValueForDim(message:String, withDeviceName:String) -> Int {
@@ -205,12 +194,269 @@ class ChatHandler {
                 }
             }
             return returnItems
-        default:
-            return []
-            break
+        default: break
         }
+        return []
     }
-    
+    // return first zone found in scope
+    func getLocation(message:String) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicate = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
+            let words = message.componentsSeparatedByString(" ")
+            var maxElement:[Int:String] = [:]
+            for gateway in results {
+                let gatewayNameWords = gateway.name.componentsSeparatedByString(" ")
+                var counter = 0
+                for word in words {
+                    for gatewayWord in gatewayNameWords {
+//                        if word.lowercaseString == gatewayWord.lowercaseString {
+//                            counter++
+//                        }
+                        if word.lowercaseString == gatewayWord.lowercaseString || "\(word.lowercaseString)s" == "\(gatewayWord.lowercaseString)s" {
+                            counter++
+                        }
+                    }
+                }
+                if counter > 0 && counter <= gatewayNameWords.count && (counter/gatewayNameWords.count) == 1 {
+                    maxElement[counter] = gateway.name
+                }
+            }
+            if maxElement.keys.count > 0 {
+                return maxElement[maxElement.keys.maxElement()!]!
+            } else {
+                return ""
+            }
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return ""
+    }
+    // return first zone found in scope
+    func getZone(message:String) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        fetchRequest.predicate = predicate
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let words = message.componentsSeparatedByString(" ")
+            var maxElement:[Int:String] = [:]
+            for zone in results {
+                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                var counter = 0
+                for word in words {
+                    for zoneWord in zoneNameWords {
+                        if word.lowercaseString == zoneWord.lowercaseString {
+                            counter++
+                        }
+                    }
+                }
+                if counter > 0 && counter <= zoneNameWords.count && (counter/zoneNameWords.count) == 1 {
+                    maxElement[counter] = zone.name
+                }
+            }
+            if maxElement.keys.count > 0 {
+                return maxElement[maxElement.keys.maxElement()!]!
+            } else {
+                return ""
+            }
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return ""
+    }
+    //
+    func returnAllDevices(locationSearchText:[String], onlyZoneName:String) -> [Device] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        let predicateNull = NSPredicate(format: "categoryId != 0")
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        let predicateTwo = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+            predicateArray.append(locationPredicate)
+        }
+        if onlyZoneName == "" {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(locationSearchText[2])!))
+            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", locationSearchText[5])
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne, zonePredicateTwo])
+            predicateArray.append(copmpoundPredicate)
+        } else {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: DatabaseHandler.returnZoneIdWithName(onlyZoneName)))
+            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", onlyZoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne, zonePredicateTwo])
+            predicateArray.append(copmpoundPredicate)
+        }
+        fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    //
+    func returnAllEvents(locationSearchText:[String], onlyZoneName:String) -> [Event] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicate]
+        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+            predicateArray.append(locationPredicate)
+        }
+        if onlyZoneName == "" {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "eventZone == %@", locationSearchText[5])
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        } else {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "eventZone == %@", onlyZoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        }
+        fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    //
+    func returnAllScenes(locationSearchText:[String], onlyZoneName:String) -> [Scene] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicate]
+        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+            predicateArray.append(locationPredicate)
+        }
+        if onlyZoneName == "" {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "sceneZone == %@", locationSearchText[5])
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        } else {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "sceneZone == %@", onlyZoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        }
+        fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    //
+    func returnAllSequences(locationSearchText:[String], onlyZoneName:String) -> [Sequence] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Sequence")
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicate]
+        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+            predicateArray.append(locationPredicate)
+        }
+        if onlyZoneName == "" {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "sequenceZone == %@", locationSearchText[5])
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        } else {
+            //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
+            let zonePredicateOne = NSPredicate(format: "sequenceZone == %@", onlyZoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
+            predicateArray.append(copmpoundPredicate)
+        }
+        fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    // return first zone found in scope
+    func getGateways(name:String) -> [Gateway] {
+//        let fetchRequest = NSFetchRequest(entityName: "Gateway")
+//        let predicateOne = NSPredicate(format: "name == %@", name)
+//        let predicateTwo = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, predicateTwo])
+//        do {
+//            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
+//            return results
+//        }
+//        } catch let catchedError as NSError {
+//            error = catchedError
+//        }
+        return []
+    }
+    // return first zone found in scope
+    func getZone(message:String, isLevel:Bool, gateways:[Gateway]?) -> Zone? {
+        let zones:[Zone]?
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        if let gateway = gateways {
+            
+        }
+        if isLevel {
+            let predicate = NSPredicate(format: "level == %@", NSNumber(integer: 0))
+            fetchRequest.predicate = predicate
+        } else {
+            let predicate = NSPredicate(format: "level != %@", NSNumber(integer: 0))
+            fetchRequest.predicate = predicate
+        }
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            zones = results
+            for zone in zones! {
+                print("\(zone.name)")
+                if message.containsString("\(zone.name.lowercaseString)") {
+                    return zone
+                }
+            }
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return nil
+    }
+    // return first level found in scope
+    func getLevel(message:String) -> Zone? {
+        let zones:[Zone]?
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            zones = results
+            for zone in zones! {
+                print(zone.level)
+                print(zone.id)
+                if message.containsString(" \(zone.name) ") && zone.level != NSNumber(integer: 0) {
+                    return zone
+                }
+            }
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return nil
+    }
     func fetchEntities (whatToFetch:String) {
         let locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
         if whatToFetch == "Scene" {
@@ -419,149 +665,131 @@ class ChatHandler {
     
     func setValues () {
         
-//        public static Map<Integer, String> nameOfControl = new HashMap<>();
-//        
-//        static {
-//            nameOfControl.put(TURN_ON_DEVICE, "turn on");
-//            nameOfControl.put(TURN_OFF_DEVICE, "turn off");
-//            nameOfControl.put(DIM_DEVICE, "diming");
-//            nameOfControl.put(CURRENT_TIME, "get current time");
-//            nameOfControl.put(HOW_ARE_YOU, "ask how are you");
-//            nameOfControl.put(SET_LOCATION, "set location");
-//            nameOfControl.put(SET_LEVEL, "set level");
-//            nameOfControl.put(SET_ZONE, "set zone");
-//            nameOfControl.put(TELL_ME_JOKE, "tell some joke");
-//            nameOfControl.put(RUN_EVENT, "run event");
-//            nameOfControl.put(START_SEQUENCE, "start sequence");
-//            nameOfControl.put(I_LOVE_YOU, "say i love you");
-//            nameOfControl.put(CANCEL_EVENT, "cancel event");
-//            nameOfControl.put(STOP_SEQUENCE, "stop sequence");
-//            nameOfControl.put(BEST_DEVELOPER, "ask who is best developer");
-//            nameOfControl.put(LIST_DEVICE_IN_ZONE, "list devices");
-//            nameOfControl.put(LIST_SCENE_IN_ZONE, "list scenes");
-//            nameOfControl.put(LIST_EVENTS_IN_ZONE, "list events");
-//            nameOfControl.put(LIST_SEQUENCE_IN_ZONE, "list sequences");
-//            nameOfControl.put(LIST_ALL_COMMANDS, "list all commands");
-//            nameOfControl.put(SET_SCENE, "set scene");
-//        }
+        typeOfControl = [.TurnOnDevice: CONTROL_DEVICE, // control device
+            .TurnOffDevice: CONTROL_DEVICE,
+            .DimDevice: CONTROL_DEVICE,
+            .CurrentTime: CHAT, // chat
+            .HowAreYou: CHAT,
+            .TellMeJoke: CHAT,
+            .ILoveYou: CHAT,
+            .AnswerMe: CHAT,
+            .BestDeveloper: CHAT,
+            .SetLocation: FILTER, // filter
+            .SetLevel: FILTER,
+            .SetZone: FILTER,
+            .SetScene: CONTROL_SCENE, // control scene
+            .RunEvent: CONTROL_EVENT, // control event
+            .CancelEvent: CONTROL_EVENT,
+            .StartSequence: CONTROL_SEQUENCE, // control sequence
+            .StopSequence: CONTROL_SEQUENCE,
+            .ListDeviceInZone:LIST_DEVICE, // list device
+            .ListSceneInZone:LIST_SCENE, // list scene
+            .ListEventsInZone:LIST_EVENTS, // list events
+            .ListSequenceInZone:LIST_SEQUENCE, // list sequence
+            .ListAllCommands:LIST_COMMANDS, // list commands
+            .Failed: FAILED] // command not found
         
-        typeOfControl = [TURN_ON_DEVICE: CONTROL_DEVICE,
-            TURN_OFF_DEVICE: CONTROL_DEVICE,
-            DIM_DEVICE: CONTROL_DEVICE,
-            CURRENT_TIME: CHAT,
-            HOW_ARE_YOU: CHAT,
-            SET_LOCATION: FILTER,
-            SET_LEVEL: FILTER,
-            SET_ZONE: FILTER,
-            TELL_ME_JOKE: CHAT,
-            I_LOVE_YOU: CHAT,
-            ANSWER_ME: CHAT,
-            BEST_DEVELOPER: CHAT,
-            SET_SCENE: CONTROL_SCENE,
-            RUN_EVENT: CONTROL_EVENT,
-            CANCEL_EVENT: CONTROL_EVENT,
-            START_SEQUENCE: CONTROL_SEQUENCE,
-            STOP_SEQUENCE: CONTROL_SEQUENCE,
-            LIST_DEVICE_IN_ZONE:LIST_DEVICE,
-            LIST_SCENE_IN_ZONE:LIST_SCENE,
-            LIST_EVENTS_IN_ZONE:LIST_EVENTS,
-            LIST_SEQUENCE_IN_ZONE:LIST_SEQUENCE,
-            LIST_ALL_COMMANDS:LIST_COMMANDS,
-            -1: FAILED]
+        CHAT_COMMANDS["set location"] = .SetLocation
+        CHAT_COMMANDS["control location"] = .SetLocation
+        CHAT_COMMANDS["select location"] = .SetLocation
         
-        CHAT_COMMANDS["set location"] = SET_LOCATION
-        CHAT_COMMANDS["control location"] = SET_LOCATION
-        CHAT_COMMANDS["select location"] = SET_LOCATION
+        CHAT_COMMANDS["set level"] = .SetLevel
+        CHAT_COMMANDS["control level"] = .SetLevel
+        CHAT_COMMANDS["select level"] = .SetLevel
         
-        CHAT_COMMANDS["set level"] = SET_LEVEL
-        CHAT_COMMANDS["control level"] = SET_LEVEL
-        CHAT_COMMANDS["select level"] = SET_LEVEL
-        
-        CHAT_COMMANDS["set zone"] = SET_ZONE
-        CHAT_COMMANDS["control zone"] = SET_ZONE
-        CHAT_COMMANDS["select zone"] = SET_ZONE
+        CHAT_COMMANDS["set zone"] = .SetZone
+        CHAT_COMMANDS["control zone"] = .SetZone
+        CHAT_COMMANDS["select zone"] = .SetZone
         
         /**
         * Commands to controlling devices
         * */
-        CHAT_COMMANDS["turn on"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["open"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["activate"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["fill"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["insert"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["start"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["lock"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["occupy"] = TURN_ON_DEVICE
-        CHAT_COMMANDS["switch on"] = TURN_ON_DEVICE
+        CHAT_COMMANDS["turn on"] = .TurnOnDevice
+        CHAT_COMMANDS["open"] = .TurnOnDevice
+        CHAT_COMMANDS["activate"] = .TurnOnDevice
+        CHAT_COMMANDS["fill"] = .TurnOnDevice
+        CHAT_COMMANDS["insert"] = .TurnOnDevice
+        CHAT_COMMANDS["start"] = .TurnOnDevice
+        CHAT_COMMANDS["lock"] = .TurnOnDevice
+        CHAT_COMMANDS["occupy"] = .TurnOnDevice
+        CHAT_COMMANDS["switch on"] = .TurnOnDevice
         
-        CHAT_COMMANDS["turn of"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["turn off"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["switch off"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["switch of"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["close"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["deactivate"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["empty"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["remove"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["stop"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["unlock"] = TURN_OFF_DEVICE
-        CHAT_COMMANDS["vacate"] = TURN_OFF_DEVICE
+        CHAT_COMMANDS["turn of"] = .TurnOffDevice
+        CHAT_COMMANDS["turn off"] = .TurnOffDevice
+        CHAT_COMMANDS["switch off"] = .TurnOffDevice
+        CHAT_COMMANDS["switch of"] = .TurnOffDevice
+        CHAT_COMMANDS["close"] = .TurnOffDevice
+        CHAT_COMMANDS["deactivate"] = .TurnOffDevice
+        CHAT_COMMANDS["empty"] = .TurnOffDevice
+        CHAT_COMMANDS["remove"] = .TurnOffDevice
+        CHAT_COMMANDS["stop"] = .TurnOffDevice
+        CHAT_COMMANDS["unlock"] = .TurnOffDevice
+        CHAT_COMMANDS["vacate"] = .TurnOffDevice
         
-        CHAT_COMMANDS["dim"] = DIM_DEVICE
+        CHAT_COMMANDS["dim"] = .DimDevice
         
-        CHAT_COMMANDS["set"] = SET_SCENE
-//        CHAT_COMMANDS["set scene"] = SET_SCENE
+        CHAT_COMMANDS["set"] = .SetScene
+//        CHAT_COMMANDS["set scene"] = .SetScene
         
-        CHAT_COMMANDS["run"] = RUN_EVENT
-//        CHAT_COMMANDS["run event"] = RUN_EVENT
-        CHAT_COMMANDS["cancel event"] = CANCEL_EVENT
+        CHAT_COMMANDS["run"] = .RunEvent
+//        CHAT_COMMANDS["run event"] = .RunEvent
+        CHAT_COMMANDS["cancel event"] = .CancelEvent
         
-        CHAT_COMMANDS["start sequence"] = START_SEQUENCE
-        CHAT_COMMANDS["stop sequence"] = STOP_SEQUENCE
+        CHAT_COMMANDS["start sequence"] = .StartSequence
+        CHAT_COMMANDS["stop sequence"] = .StopSequence
         
         /**
         * Commands for listing
         * */
-        CHAT_COMMANDS["list device"] = LIST_DEVICE_IN_ZONE
-        CHAT_COMMANDS["list devices"] = LIST_DEVICE_IN_ZONE
-        CHAT_COMMANDS["list scene"] = LIST_SCENE_IN_ZONE
-        CHAT_COMMANDS["list scenes"] = LIST_SCENE_IN_ZONE
-        CHAT_COMMANDS["list event"] = LIST_EVENTS_IN_ZONE
-        CHAT_COMMANDS["list events"] = LIST_EVENTS_IN_ZONE
-        CHAT_COMMANDS["list sequence"] = LIST_SEQUENCE_IN_ZONE
-        CHAT_COMMANDS["list sequences"] = LIST_SEQUENCE_IN_ZONE
+        CHAT_COMMANDS["list device"] = .ListDeviceInZone
+        CHAT_COMMANDS["list devices"] = .ListDeviceInZone
+        CHAT_COMMANDS["list scene"] = .ListSceneInZone
+        CHAT_COMMANDS["list scenes"] = .ListSceneInZone
+        CHAT_COMMANDS["list event"] = .ListEventsInZone
+        CHAT_COMMANDS["list events"] = .ListEventsInZone
+        CHAT_COMMANDS["list sequence"] = .ListSequenceInZone
+        CHAT_COMMANDS["list sequences"] = .ListSequenceInZone
 
         /**
         * Commands to chat with Valery
         * */
-        CHAT_COMMANDS["what time is it"] = CURRENT_TIME
-        CHAT_COMMANDS["what is the time"] = CURRENT_TIME
-        CHAT_COMMANDS["what's time"] = CURRENT_TIME
+        CHAT_COMMANDS["what time is it"] = .CurrentTime
+        CHAT_COMMANDS["what is the time"] = .CurrentTime
+        CHAT_COMMANDS["what's time"] = .CurrentTime
+        CHAT_COMMANDS["what time is it?"] = .CurrentTime
+        CHAT_COMMANDS["what is the time?"] = .CurrentTime
+        CHAT_COMMANDS["what's time?"] = .CurrentTime
+        CHAT_COMMANDS["time"] = .CurrentTime
         
-        CHAT_COMMANDS["how are you"] = HOW_ARE_YOU
+        CHAT_COMMANDS["how are you"] = .HowAreYou
+        CHAT_COMMANDS["how are you?"] = .HowAreYou
         
-        CHAT_COMMANDS["tell me joke"] = TELL_ME_JOKE
-        CHAT_COMMANDS["tell joke"] = TELL_ME_JOKE
-        CHAT_COMMANDS["say something funny"] = TELL_ME_JOKE
+        CHAT_COMMANDS["tell me joke"] = .TellMeJoke
+        CHAT_COMMANDS["tell joke"] = .TellMeJoke
+        CHAT_COMMANDS["say something funny"] = .TellMeJoke
         
-        CHAT_COMMANDS["what is"] = ANSWER_ME
-        CHAT_COMMANDS["tell me about"] = ANSWER_ME
-        CHAT_COMMANDS["do i need to"] = ANSWER_ME
-        CHAT_COMMANDS["do i want"] = ANSWER_ME
-        CHAT_COMMANDS["who is"] = ANSWER_ME
-        CHAT_COMMANDS["where is"] = ANSWER_ME
-        CHAT_COMMANDS["what do"] = ANSWER_ME
+        CHAT_COMMANDS["what is"] = .AnswerMe
+        CHAT_COMMANDS["tell me about"] = .AnswerMe
+        CHAT_COMMANDS["do i need to"] = .AnswerMe
+        CHAT_COMMANDS["do i want"] = .AnswerMe
+        CHAT_COMMANDS["who is"] = .AnswerMe
+        CHAT_COMMANDS["where is"] = .AnswerMe
+        CHAT_COMMANDS["what do"] = .AnswerMe
         
-        CHAT_COMMANDS["love you"] = I_LOVE_YOU
-        CHAT_COMMANDS["best developer ios"] = BEST_DEVELOPER
-        CHAT_COMMANDS["answer"] = BEST_DEVELOPER
+        CHAT_COMMANDS["love you"] = .ILoveYou
+        CHAT_COMMANDS["like you"] = .ILoveYou
+        CHAT_COMMANDS["who is best developer"] = .BestDeveloper
+        CHAT_COMMANDS["who is best"] = .BestDeveloper
+//        CHAT_COMMANDS["answer"] = .BestDeveloper
         
         /**
         * List commands
         * */
-        CHAT_COMMANDS["list commands"] = LIST_ALL_COMMANDS
-        CHAT_COMMANDS["list command"] = LIST_ALL_COMMANDS
-        CHAT_COMMANDS["what can i say"] = LIST_ALL_COMMANDS
-        CHAT_COMMANDS["what is my options"] = LIST_ALL_COMMANDS
+        CHAT_COMMANDS["list commands"] = .ListAllCommands
+        CHAT_COMMANDS["list command"] = .ListAllCommands
+        CHAT_COMMANDS["what can i say"] = .ListAllCommands
+        CHAT_COMMANDS["what is my options"] = .ListAllCommands
+        CHAT_COMMANDS["what is my option"] = .ListAllCommands
     }
     func getAnswerCommand(command:String) -> String  {
         var answer = ""

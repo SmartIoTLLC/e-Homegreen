@@ -73,7 +73,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let compoundPred = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predArray)
         batch.predicate = compoundPred
         batch.resultType = .UpdatedObjectIDsResultType
-        
         do {
             let batchResult = try appDel.managedObjectContext!.executeRequest(batch) as? NSBatchUpdateResult
             if let objectIDs = batchResult!.result as? [NSManagedObjectID] {
