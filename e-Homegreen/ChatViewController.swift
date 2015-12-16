@@ -423,25 +423,25 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     refreshChatListWithAnswer("There is no known location with that name.", isValeryVoiceOn: isValeryVoiceOn)
                 }
             } else if command == .SetLevel {
-                
+                if let zone = helper.getZone(message, isLevel: true) {
+                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.gateway.name, "\(zone.id)", "All", "All", "\(zone.name)", "All", "All"])
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                    refreshChatListWithAnswer("Level was set.", isValeryVoiceOn: isValeryVoiceOn)
+                } else {
+                    refreshChatListWithAnswer("You haven't set which level to set.", isValeryVoiceOn: isValeryVoiceOn)
+                }
             } else if command == .SetZone {
-//                if locationSearchText[0] == "All" {
-//                    //  set zone if all
-//                    if let zone:Zone = helper.getZone(message, isLevel: false, gateways: nil) {
-//                        print(zone.name)
-//                        print(zone.gateway.name)
-//                    }
-//                } else {
-//                    //  set zone if name
-//                    let gateways = helper.getGateways(locationSearchText[0])
-//                    if let zone:Zone = helper.getZone(message, isLevel: false, gateways: gateways) {
-//                        print(zone.name)
-//                        print(zone.gateway.name)
-//                    }
-//                }
-//                dispatch_async(dispatch_get_main_queue(),{
-//                    self.refreshChatListWithAnswer("One whose work you don't notice!", isValeryVoiceOn:self.isValeryVoiceOn)
-//                })
+                if let zone = helper.getZone(message, isLevel: false) {
+                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level), gateway: zone.gateway) {
+                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.gateway.name, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                        refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)
+                    } else {
+                        refreshChatListWithAnswer("I'm embarrassed... Couldn't find level for zone...", isValeryVoiceOn: isValeryVoiceOn)
+                    }
+                } else {
+                    refreshChatListWithAnswer("You haven't set zone level to set.", isValeryVoiceOn: isValeryVoiceOn)
+                }
             } else if command == .ListDeviceInZone {
                 let zone = helper.getZone(message)
                 if zone == "" {

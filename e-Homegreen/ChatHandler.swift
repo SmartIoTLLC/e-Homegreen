@@ -267,6 +267,50 @@ class ChatHandler {
         }
         return ""
     }
+    func getZone(message:String, isLevel:Bool) -> Zone? {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicate]
+        if isLevel {
+            let locationPredicate = NSPredicate(format: "level == %@", NSNumber(integer: 0))
+            predicateArray.append(locationPredicate)
+        } else {
+            let locationPredicate = NSPredicate(format: "level != %@", NSNumber(integer: 0))
+            predicateArray.append(locationPredicate)
+        }
+        fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let words = message.componentsSeparatedByString(" ")
+            var maxElement:[Int:Zone] = [:]
+            for zone in results {
+                print(zone.name)
+                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                var counter = 0
+                for word in words {
+                    for zoneWord in zoneNameWords {
+                        if word.lowercaseString == zoneWord.lowercaseString {
+                            counter++
+                        }
+                    }
+                }
+//                if counter > 0 && counter <= zoneNameWords.count && (counter/zoneNameWords.count) == 1 {
+                //  There was a problem with Our Suite 2 2, because it was giving 6 instead of 4... So generaly algorithm should not count already counted word, but i think the result would be the same anyway, except if there is something like Our Suite 2 2 2 2 2 2 2 2 which would count even more... Think about this...
+                if (counter/zoneNameWords.count) >= 1 {
+                    maxElement[counter] = zone
+                    print("\(counter):\(zone.name)")
+                }
+            }
+            if maxElement.keys.count > 0 {
+                return maxElement[maxElement.keys.maxElement()!]!
+            } else {
+                return nil
+            }
+        } catch let catchedError as NSError {
+            error = catchedError
+        }
+        return nil
+    }
     //
     func returnAllDevices(locationSearchText:[String], onlyZoneName:String) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")

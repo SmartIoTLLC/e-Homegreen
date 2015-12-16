@@ -53,6 +53,25 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
+    class func returnLevelWithId(id:Int, gateway:Gateway) -> Zone? {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateArray = [predicateOne, predicateTwo]
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return fetResults![0]
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return nil
+    }
+    
     class func returnCategoryIdWithName(name:String, gateway:Gateway) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicateOne = NSPredicate(format: "name == %@", name)
