@@ -144,33 +144,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             saveContext()
         }
     }
-    func checkIfThereISGatewayWithExistingSSID () {
-        if let ssid = UIDevice.currentDevice().SSID {
-            fetchGateways()
-            for gateway in gateways {
-                print(gateway.ssid)
-                print(ssid)
-                if gateway.ssid == ssid {
-                    let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
-                    for filter in filterArray {
-                        var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-//                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
-                        if filterParametars[0] != "\(gateway.name)" {
-                            filterParametars[0] = "\(gateway.name)"
-                            filterParametars[1] = "All"
-                            filterParametars[2] = "All"
-                            filterParametars[3] = "All"
-                            filterParametars[4] = "All"
-                            filterParametars[5] = "All"
-                            filterParametars[6] = "All"
-                            LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-                            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+    func checkIfThereISGatewayWithExistingSSID() {
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+//            if let ssid = UIDevice.currentDevice().SSID {
+//                self.fetchGateways()
+//                for gateway in self.gateways {
+//                    print(gateway.ssid)
+//                    print(ssid)
+//                    if gateway.ssid == ssid {
+//                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
+//                        for filter in filterArray {
+//                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
+//                            //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
+//                            if filterParametars[0] != "\(gateway.name)" {
+//                                filterParametars[0] = "\(gateway.name)"
+//                                filterParametars[1] = "All"
+//                                filterParametars[2] = "All"
+//                                filterParametars[3] = "All"
+//                                filterParametars[4] = "All"
+//                                filterParametars[5] = "All"
+//                                filterParametars[6] = "All"
+//                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+//                                dispatch_async(dispatch_get_main_queue(), {
+//                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+//                                })
+//                            }
+//                        }
+//                        break
+//                    }
+//                }
+//            } else {
+//                print("Nije nasao ssid.")
+//            }
+//        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+            if let ssid = UIDevice.currentDevice().SSID {
+                fetchGateways()
+                for gateway in gateways {
+                    print(gateway.ssid)
+                    print(ssid)
+                    if gateway.ssid == ssid {
+                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
+                        for filter in filterArray {
+                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
+                            //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
+                            if filterParametars[0] != "\(gateway.name)" {
+                                filterParametars[0] = "\(gateway.name)"
+                                filterParametars[1] = "All"
+                                filterParametars[2] = "All"
+                                filterParametars[3] = "All"
+                                filterParametars[4] = "All"
+                                filterParametars[5] = "All"
+                                filterParametars[6] = "All"
+                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+//                                dispatch_async(dispatch_get_main_queue(), {
+                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+//                                })
+                            }
                         }
+                        break
                     }
-                    break
                 }
             }
-        }
+            else {
+                print("Nije nasao ssid.")
+            }
+//        })
     }
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

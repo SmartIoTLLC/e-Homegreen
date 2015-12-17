@@ -241,9 +241,9 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         return ""
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

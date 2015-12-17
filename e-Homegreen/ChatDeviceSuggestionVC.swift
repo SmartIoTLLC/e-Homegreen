@@ -43,6 +43,10 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
 
         // Do any additional setup after loading the view.
     }
+    override func viewDidAppear(animated: Bool) {
+        print(sugestionTableView.contentSize.height)
+        height.constant = sugestionTableView.contentSize.height
+    }
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(sugestionTableView){
             return false
@@ -153,11 +157,6 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
-    
     func showSuggestion(objects:[AnyObject], message:String) -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
         suggVC.message = message
@@ -188,5 +187,11 @@ extension UIViewController {
         }
         self.presentViewController(suggVC, animated: true, completion: nil)
         return suggVC
+    }
+}
+extension UIViewController {
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
     }
 }

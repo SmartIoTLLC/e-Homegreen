@@ -184,9 +184,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         }
         
     }
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     override func viewWillAppear(animated: Bool) {
         print("")
     }

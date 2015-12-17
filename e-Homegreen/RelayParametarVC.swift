@@ -131,9 +131,9 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         return ""
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     var device:Device?
     func getDeviceAndSave (numberOne:Int) {

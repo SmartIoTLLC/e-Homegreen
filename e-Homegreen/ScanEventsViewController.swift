@@ -231,9 +231,9 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         return .None
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     @IBOutlet weak var btnEdit: CustomGradientButtonWhite!
     @IBAction func btnAdd(sender: AnyObject) {

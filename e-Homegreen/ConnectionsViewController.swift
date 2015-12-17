@@ -217,19 +217,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             abort()
         }
     }
-    func returnThreeCharactersForByte (number:Int) -> String {
-        //        var string = ""
-        //        var numberLength = "\(number)"
-        //        if count(numberLength) == 1 {
-        //            string = "00\(number)"
-        //        } else if count(numberLength) == 2 {
-        //            string = "0\(number)"
-        //        } else {
-        //            string = "\(number)"
-        //        }gateways
-        //        return string
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
 
 }

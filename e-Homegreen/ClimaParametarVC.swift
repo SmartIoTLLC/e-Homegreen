@@ -58,9 +58,9 @@ class ClimaParametarVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

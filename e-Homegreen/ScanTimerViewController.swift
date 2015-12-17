@@ -160,9 +160,9 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         // Dispose of any resources that can be recreated.
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     @IBAction func btnEdit(sender: AnyObject) {
     }

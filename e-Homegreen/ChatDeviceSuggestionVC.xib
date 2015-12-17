@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatDeviceSuggestionVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
+                <outlet property="height" destination="0xa-L7-gYf" id="SP7-sS-deo"/>
                 <outlet property="sugestionTableView" destination="3wH-B2-yA9" id="7Ff-wj-c4w"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -16,9 +17,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3wH-B2-yA9">
-                    <rect key="frame" x="150" y="64" width="300" height="516"/>
+                    <rect key="frame" x="150" y="42" width="300" height="516"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="516" id="0xa-L7-gYf"/>
                         <constraint firstAttribute="width" constant="300" id="Kkp-Z2-iYc"/>
                     </constraints>
                     <connections>
@@ -30,9 +32,9 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="3wH-B2-yA9" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="AZT-4E-HmP"/>
-                <constraint firstItem="3wH-B2-yA9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="G7I-A7-bhP"/>
-                <constraint firstAttribute="bottom" secondItem="3wH-B2-yA9" secondAttribute="bottom" constant="20" id="UGv-tt-nH4"/>
+                <constraint firstItem="3wH-B2-yA9" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="d0n-nB-a9l"/>
             </constraints>
+            <point key="canvasLocation" x="87" y="314"/>
         </view>
     </objects>
 </document>

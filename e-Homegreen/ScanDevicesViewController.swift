@@ -83,9 +83,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         // Dispose of any resources that can be recreated.
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     
     func updateDeviceList () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate

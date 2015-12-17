@@ -176,7 +176,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
 }

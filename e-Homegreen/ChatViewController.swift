@@ -289,7 +289,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     
     func commandWasSent(command:ChatCommand, deviceType:String) -> String {
-        var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", ""]
+        var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", "Consider it done."]
         switch command {
         case .TurnOnDevice:
             if deviceType == "Dimmer" || deviceType == "curtainsRelay" || deviceType == "appliance" {
@@ -366,8 +366,10 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
 //                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
                     refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
                 } else {
-                    refreshChatListWithAnswer("Device is not of type dimmer.", isValeryVoiceOn: isValeryVoiceOn)
+                    refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)
                 }
+            } else {
+                refreshChatListWithAnswer("Couldn't find value to dim device.", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
     }

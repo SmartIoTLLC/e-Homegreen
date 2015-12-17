@@ -224,9 +224,9 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         return .None
     }
     
-    func returnThreeCharactersForByte (number:Int) -> String {
-        return String(format: "%03d",number)
-    }
+//    func returnThreeCharactersForByte (number:Int) -> String {
+//        return String(format: "%03d",number)
+//    }
     @IBAction func btnEdit(sender: AnyObject) {
         
     }
