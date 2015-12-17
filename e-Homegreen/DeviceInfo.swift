@@ -7,7 +7,30 @@
 //
 
 import UIKit
-
+enum setMode:Int {
+    case Auto = 0
+    case Cool
+    case Heat
+    case Fan
+}
+enum modeState:Int {
+    case Off = 0
+    case Cool
+    case Heat
+    case Fan
+}
+enum setSpeed:Int {
+    case Auto = 0
+    case Low
+    case Med
+    case High
+}
+enum speedState:Int {
+    case Off = 0
+    case Low
+    case Med
+    case High
+}
 class DeviceInfo: NSObject {
     let ONE_CHANEL = 1
     let TWO_CHANEL = 2

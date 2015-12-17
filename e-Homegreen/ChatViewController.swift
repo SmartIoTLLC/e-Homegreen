@@ -287,6 +287,44 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             }
         }
     }
+    
+    func commandWasSent(command:ChatCommand, deviceType:String) -> String {
+        var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", ""]
+        switch command {
+        case .TurnOnDevice:
+            if deviceType == "Dimmer" || deviceType == "curtainsRelay" || deviceType == "appliance" {
+                array.append("Device was turned on.")
+            }
+            if deviceType == "curtainsRS485" {
+                array.append("Curtain was turned on.")
+            }
+            if deviceType == "hvac" {
+                array.append("Climate was turned on.")
+                array.append("Hvac was turned on.")
+            }
+        case.TurnOffDevice:
+            if deviceType == "Dimmer" || deviceType == "curtainsRelay" || deviceType == "appliance" {
+                array.append("Device was turned off.")
+            }
+            if deviceType == "curtainsRS485" {
+                array.append("Curtain was turned off.")
+            }
+            if deviceType == "hvac" {
+                array.append("Climate was turned off.")
+                array.append("Hvac was turned off.")
+            }
+        case .DimDevice:
+            if deviceType == "Dimmer" {
+                array.append("Device was dimmed.")
+            }
+        default: break
+        }
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count {
+            return array[randomIndex]
+        }
+        return "\u{1f601}"
+    }
     func sendCommand(command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
         if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -302,7 +340,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if device.type == "hvac" {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
-            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+//            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.type == "Dimmer" {
@@ -317,13 +356,15 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             if device.type == "hvac" {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
-            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+//            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .DimDevice {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
                 if device.type == "Dimmer" {
                     SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
-                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+//                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
+                    refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("Device is not of type dimmer.", isValeryVoiceOn: isValeryVoiceOn)
                 }
@@ -373,9 +414,9 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                             showSuggestion(events, message: message).delegate = self
                         }
                     } else {
-                        //   Ther are no devices with that name
+                        //   Ther are no devices, events, scenes, sequences... with that name
 //                        refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn)
-                        refreshChatListWithAnswer("Couldn't find something to control...", isValeryVoiceOn: isValeryVoiceOn)
+                        refreshChatListWithAnswer(nothingFound(), isValeryVoiceOn: isValeryVoiceOn)
                     }
                 }
             } else if command == .TellMeJoke {
@@ -638,6 +679,14 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     func answerOnHowAreYou() -> String {
         let array = ["I'm fine, thank you for asking.", "You are so kind.", "I am happy.", "I have a doubt... I don't know if I am just fine or super fine.", "You are more important!", "I am asking you!", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}"]
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count {
+            return array[randomIndex]
+        }
+        return "\u{1f601}"
+    }
+    func nothingFound() -> String {
+        let array = ["Couldn't find something to control...", "Nothing found...", "Please be more specific.", "I don't undersrtand."]
         let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
         if randomIndex < array.count {
             return array[randomIndex]

@@ -153,28 +153,37 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
+    
+    func returnThreeCharactersForByte (number:Int) -> String {
+        return String(format: "%03d",number)
+    }
+    
     func showSuggestion(objects:[AnyObject], message:String) -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
         suggVC.message = message
         suggVC.objects = objects
         if let anyObjects = objects as? [Device] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Device: \(anyObject.name) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address) Channel:\(anyObject.channel)")
+                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                suggVC.listOfDevice.append("Device: \(anyObject.name) Location: \(anyObject.gateway.name) Address: \(address) Channel:\(anyObject.channel)")
             }
         }
         if let anyObjects = objects as? [Scene] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Scene: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                suggVC.listOfDevice.append("Scene: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
         if let anyObjects = objects as? [Sequence] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Sequence: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                suggVC.listOfDevice.append("Sequence: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
         if let anyObjects = objects as? [Event] {
             for anyObject in anyObjects {
-                suggVC.listOfDevice.append("Event: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(anyObject.gateway.addressOne):\(anyObject.gateway.addressTwo):\(anyObject.address)")
+                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                suggVC.listOfDevice.append("Event: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
         self.presentViewController(suggVC, animated: true, completion: nil)

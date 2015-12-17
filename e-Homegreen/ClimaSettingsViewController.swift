@@ -8,7 +8,32 @@
 
 import UIKit
 import CoreData
-
+func == (lhs: HvacCommand, rhs: HvacCommand) -> Bool {
+    return lhs.coolTemperature == rhs.coolTemperature && lhs.heatTemperature == rhs.heatTemperature && lhs.fan == rhs.fan && lhs.mode == rhs.mode
+}
+func != (lhs: HvacCommand, rhs: HvacCommand) -> Bool {
+    return lhs.coolTemperature != rhs.coolTemperature || lhs.heatTemperature != rhs.heatTemperature || lhs.fan != rhs.fan || lhs.mode != rhs.mode
+}
+struct HvacCommand {
+    var mode:Mode = .NoMode
+    var fan:Fan = .NoFan
+    var coolTemperature = 0
+    var heatTemperature = 0
+}
+enum Mode {
+    case Cool
+    case Heat
+    case Fan
+    case AUTO
+    case NoMode
+}
+enum Fan {
+    case Low
+    case Med
+    case High
+    case AUTO
+    case NoFan
+}
 class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var indexPathRow: Int = -1
@@ -45,8 +70,47 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     @IBOutlet weak var settingsView: UIView!
     var appDel:AppDelegate!
     var hvacCommand:HvacCommand = HvacCommand()
+    var hvacCommandBefore:HvacCommand = HvacCommand()
     @IBAction func btnSet(sender: AnyObject) {
         print(hvacCommand)
+        if hvacCommand != hvacCommandBefore {
+            NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "setACSetPoint", userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: "setACSpeed", userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: "setACmode", userInfo: nil, repeats: false)
+        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func setACSetPoint () {
+            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+            SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(hvacCommand.coolTemperature), heatingSetPoint: UInt8(hvacCommand.heatTemperature)), gateway: device.gateway)
+    }
+    func setACSpeed () {
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        switch hvacCommand.fan {
+        case .Low:
+            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
+        case .Med:
+            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
+        case .High:
+            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
+        case .AUTO:
+            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
+        default :break
+        }
+    }
+    func setACmode () {
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        switch hvacCommand.mode {
+        case .Cool:
+            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
+        case .Heat:
+            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
+        case .Fan:
+            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
+        case .AUTO:
+            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
+        default :break
+        }
     }
     init(device: Device){
         super.init(nibName: "ClimaSettingsViewController", bundle: nil)
@@ -75,6 +139,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         lblCool.text = "\(device.coolTemperature)"
         lblHeat.text = "\(device.heatTemperature)"
+        coolNumber = Int(device.coolTemperature)
+        heatNumber = Int(device.heatTemperature)
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
         
@@ -82,7 +148,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         onOffButton.clipsToBounds = true
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: NotificationKey.RefreshClimate, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: NotificationKey.RefreshClimate, object: nil)
         
         
         getACState()
@@ -151,6 +217,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         lblTemperature.text = "\(device.roomTemperature) C"
         
         lblClimateName.text = "\(device.name)"
+        hvacCommandBefore = hvacCommand
     }
     var gradientLayerForButon:CAGradientLayer = CAGradientLayer()
     var gradientLayerForButon1:CAGradientLayer = CAGradientLayer()
@@ -453,22 +520,32 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     var timerForTemperatureSetPoint:NSTimer = NSTimer()
     var temperatureNumber = 0
     @IBAction func lowCool(sender: AnyObject) {
-        if Int(device.coolTemperature) >= 1 {
-            temperatureNumber -= 1
-//            timerForTemperatureSetPoint.invalidate()
-//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
-            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
+//        if Int(device.coolTemperature) >= 1 {
+//            temperatureNumber -= 1
+////            timerForTemperatureSetPoint.invalidate()
+////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+//            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
+//            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
+//        }
+        if coolNumber >= 1 {
+            coolNumber -= 1
+            lblCool.text = "\(coolNumber)"
+            hvacCommand.coolTemperature = coolNumber
         }
     }
     
     @IBAction func highCool(sender: AnyObject) {
-        if Int(device.coolTemperature) <= 36 {
-            temperatureNumber += 1
-//            timerForTemperatureSetPoint.invalidate()
-//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
-            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
+//        if Int(device.coolTemperature) <= 36 {
+//            temperatureNumber += 1
+////            timerForTemperatureSetPoint.invalidate()
+////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+//            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
+//            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
+//        }
+        if coolNumber <= 36 {
+            coolNumber += 1
+            lblCool.text = "\(coolNumber)"
+            hvacCommand.coolTemperature = coolNumber
         }
     }
     func coolTemeperatureUpdate (timer:NSTimer) {
@@ -478,23 +555,35 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
+    var heatNumber = 0
+    var coolNumber = 0
     @IBAction func lowHeat(sender: AnyObject) {
-        if Int(device.heatTemperature) >= 1 {
-            temperatureNumber -= 1
-//            timerForTemperatureSetPoint.invalidate()
-//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
-            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
+//        if Int(device.heatTemperature) >= 1 {
+//            temperatureNumber -= 1
+////            timerForTemperatureSetPoint.invalidate()
+////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+//            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
+//            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
+//        }
+        if heatNumber >= 1 {
+            heatNumber -= 1
+            lblHeat.text = "\(heatNumber)"
+            hvacCommand.heatTemperature = heatNumber
         }
     }
     
     @IBAction func highHeat(sender: AnyObject) {
-        if Int(device.heatTemperature) <= 36 {
-            temperatureNumber += 1
-//            timerForTemperatureSetPoint.invalidate()
-//            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
-            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
+//        if Int(device.heatTemperature) <= 36 {
+//            temperatureNumber += 1
+////            timerForTemperatureSetPoint.invalidate()
+////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
+//            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
+//            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
+//        }
+        if heatNumber <= 36 {
+            heatNumber += 1
+            lblHeat.text = "\(heatNumber)"
+            hvacCommand.heatTemperature = heatNumber
         }
     }
     func heatTemeperatureUpdate (timer:NSTimer) {
@@ -571,26 +660,6 @@ extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {
         }
         
     }
-}
-struct HvacCommand {
-    var mode:Mode = .NoMode
-    var fan:Fan = .NoFan
-    var coolTemperature = 0
-    var heatTemperature = 0
-}
-enum Mode {
-    case Cool
-    case Heat
-    case Fan
-    case AUTO
-    case NoMode
-}
-enum Fan {
-    case Low
-    case Med
-    case High
-    case AUTO
-    case NoFan
 }
 extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
     
