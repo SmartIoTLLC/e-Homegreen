@@ -39,6 +39,8 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
 //            height.constant = Common.screenHeight-60
 //        }
         
+        height.constant = sugestionTableView.contentSize.height
+        
         sugestionTableView.registerNib(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
 
         // Do any additional setup after loading the view.
