@@ -28,6 +28,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     @IBOutlet weak var editDelay: UITextField!
     @IBOutlet weak var enableSwitch: UISwitch!
     @IBOutlet weak var overRideID: UILabel!
+    @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
     @IBOutlet weak var lblZone: UILabel!
@@ -68,6 +69,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
 //        devices[indexPathRow].overrideControl2
 //        devices[indexPathRow].overrideControl3
         
+        lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         editDelay.text = "\(devices[indexPathRow].delay)"
 //        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"

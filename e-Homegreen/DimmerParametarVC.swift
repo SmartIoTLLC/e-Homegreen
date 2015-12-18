@@ -31,6 +31,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     @IBOutlet weak var editSkipState: UITextField!
     @IBOutlet weak var enableSwitch: UISwitch!
     @IBOutlet weak var overRideID: UILabel!
+    @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
     @IBOutlet weak var lblZone: UILabel!
@@ -79,6 +80,8 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editRunTime.text = "\(devices[indexPathRow].runtime)"
         editSkipState.text = "\(devices[indexPathRow].skipState)"
 //        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
+        
+        lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
         lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), gateway: devices[indexPathRow].gateway))"
         lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), gateway: devices[indexPathRow].gateway))"

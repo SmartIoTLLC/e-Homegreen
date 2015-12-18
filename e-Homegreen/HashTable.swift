@@ -230,7 +230,7 @@ func == (lhs: DeviceType, rhs:DeviceType) -> Bool {
             rhsSubId = 0x04
         }
     case 0x13:
-        if  rhs.subId > 0x03 {
+        if rhs.subId > 0x03 {
             rhsSubId = 0x03
         }
     case 0x16:

@@ -147,17 +147,18 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
 
             cell.backgroundColor = UIColor.clearColor()
             
-            cell.lblID.text = surveillance[indexPath.section].ip
-            cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
-            
-            cell.switchVisible.tag = indexPath.section
-            cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+//            cell.lblID.text = surveillance[indexPath.section].ip
+//            cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
+            cell.lblLocation.text = "\(surveillance[indexPath.section].location!)"
+            cell.lblName.text = "\(surveillance[indexPath.section].name!)"
+//            cell.switchVisible.tag = indexPath.section
+//            cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
             cell.btnUrl.tag = indexPath.section
-            if surveillance[indexPath.section].isVisible == true {
-                cell.switchVisible.on = true
-            }else{
-                cell.switchVisible.on = false
-            }
+//            if surveillance[indexPath.section].isVisible == true {
+//                cell.switchVisible.on = true
+//            }else{
+//                cell.switchVisible.on = false
+//            }
             
             return cell
         }
@@ -238,9 +239,11 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
 
 class SurvCell: UITableViewCell{
     
-    @IBOutlet weak var lblID: UILabel!
-    @IBOutlet weak var lblPort: UILabel!
-    @IBOutlet weak var switchVisible: UISwitch!
+//    @IBOutlet weak var lblID: UILabel!
+//    @IBOutlet weak var lblPort: UILabel!
+    @IBOutlet weak var lblLocation: UILabel!
+    @IBOutlet weak var lblName: UILabel!
+//    @IBOutlet weak var switchVisible: UISwitch!
     @IBOutlet weak var btnUrl: CustomGradientButton!
     
     override func drawRect(rect: CGRect) {

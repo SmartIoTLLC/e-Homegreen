@@ -205,7 +205,7 @@ class IncomingHandler: NSObject {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+13*(channel-1)])
-                if let mode = DeviceInfo().setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo().modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo().setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo().speedState[Int(byteArray[12+13*(channel-1)])] {
+                if let mode = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] {
                     devices[i].mode = mode
                     devices[i].modeState = modeState
                     devices[i].speed = speed
@@ -404,10 +404,10 @@ class IncomingHandler: NSObject {
             var deviceExists = false
             print(byteArray[7])
             print(byteArray[8])
-            print(DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name)
-            print(DeviceInfo().deviceChannel[byteArray[7]]?.name)
-//            if let channel = DeviceInfo().deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo().deviceChannel[byteArray[7]]?.name {
-            if let channel = DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo().deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+            print(DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name)
+            print(DeviceInfo.deviceChannel[byteArray[7]]?.name)
+//            if let channel = DeviceInfo.deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo.deviceChannel[byteArray[7]]?.name {
+            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 if devices != [] {
                     for device in devices {
                         if device.address == Int(byteArray[4]) {
