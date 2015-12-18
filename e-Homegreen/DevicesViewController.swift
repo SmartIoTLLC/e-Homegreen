@@ -34,7 +34,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
             collectionViewCellSize = CGSize(width: 128, height: 156)
         } else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-            collectionViewCellSize = CGSize(width: 118, height: 144)
+            collectionViewCellSize = CGSize(width: 121, height: 150)
         }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
@@ -50,6 +50,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 3
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 3
     }
     override func viewDidAppear(animated: Bool) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -521,9 +527,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if self.view.frame.size.width == 568{
                 sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
             }else if self.view.frame.size.width == 667{
-                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+                sectionInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            }
+            if self.view.frame.size.width == 667 {
+                collectionViewCellSize = CGSize(width: 129, height: 160)
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
@@ -544,9 +553,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if self.view.frame.size.width == 320{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }else if self.view.frame.size.width == 375{
-                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                sectionInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
             }else{
                 sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            }
+            if self.view.frame.size.width == 375 {
+                collectionViewCellSize = CGSize(width: 121, height: 150)
             }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
