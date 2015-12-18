@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
+class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scroll: UIScrollView!
@@ -157,8 +157,16 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate {
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
-
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

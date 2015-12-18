@@ -60,9 +60,6 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
@@ -125,9 +122,18 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editUUID.tag = 2
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
-
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
         // Do any additional setup after loading the view.
     }
+    
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
 //    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
 //        print(textField.tag)
 //        if textField.tag == 2 {
@@ -148,9 +154,6 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 //        
 //        return true
 //    }
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
