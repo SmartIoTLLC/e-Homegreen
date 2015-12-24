@@ -40,14 +40,14 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     var devices:[Device] = []
     var isPresenting: Bool = true
     
-    @IBOutlet weak var lblConsumption: UILabel!
+//    @IBOutlet weak var lblConsumption: UILabel!
     @IBOutlet weak var lblHumadity: UILabel!
     @IBOutlet weak var lblTemperature: UILabel!
     
     @IBOutlet weak var settingsViewConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var onOffButton: UIButton!
+//    @IBOutlet weak var onOffButton: UIButton!
     
     //Mode button
     @IBOutlet weak var btnCool: UIButton!
@@ -144,8 +144,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
         
-        onOffButton.layer.cornerRadius = 20
-        onOffButton.clipsToBounds = true
+//        onOffButton.layer.cornerRadius = 20
+//        onOffButton.clipsToBounds = true
         
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: NotificationKey.RefreshClimate, object: nil)
@@ -203,16 +203,16 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             pressedAuto()
         }
         if device.currentValue == 255 {
-            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
+//            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
         } else {
-            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
+//            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
         }
         
 //        lblCool.text = "\(device.coolTemperature)"
 //        lblHeat.text = "\(device.heatTemperature)"
         
 //        lblConsumption.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
-        lblConsumption.text = "\(Float(device.current) * 0.01)" + " W"
+//        lblConsumption.text = "\(Float(device.current) * 0.01)" + " W"
         lblHumadity.text = "\(device.humidity) %"
         lblTemperature.text = "\(device.roomTemperature) C"
         

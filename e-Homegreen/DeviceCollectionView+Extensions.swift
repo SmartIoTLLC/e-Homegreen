@@ -12,7 +12,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if devices[indexPath.row].isEnabled.boolValue {
-            if devices[indexPath.row].type == "hvac" {
+            if devices[indexPath.row].type == ControlType.HVAC {
                 showClimaSettings(indexPath.row, devices: devices)
             }
             //            deviceCollectionView.reloadData()
@@ -55,23 +55,23 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
         }
         let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
-        if devices[indexPathRow].type == "Dimmer" {
+        if devices[indexPathRow].type == ControlType.Dimmer {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == "curtainsRelay" || devices[indexPathRow].type == "appliance" {
+        if devices[indexPathRow].type == ControlType.CurtainsRelay || devices[indexPathRow].type == ControlType.Appliance {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == "hvac" {
+        if devices[indexPathRow].type == ControlType.HVAC {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == "sensor" {
+        if devices[indexPathRow].type == ControlType.Sensor {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == "curtainsRS485" {
+        if devices[indexPathRow].type == ControlType.CurtainsRS485 {
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
         saveChanges()
@@ -143,13 +143,13 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        if devices[indexPath.row].type == "Dimmer" {
+        if devices[indexPath.row].type == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
-            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.typeOfLight.text = devices[indexPath.row].name
 //            print(devices[indexPath.row].cellTitle)
-                        cell.typeOfLight.text = devices[indexPath.row].cellTitle
+            cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
@@ -238,9 +238,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-        } else if devices[indexPath.row].type == "curtainsRS485" {
+        } else if devices[indexPath.row].type == ControlType.CurtainsRS485 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.curtainName.text = devices[indexPath.row].name
                         cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
@@ -306,9 +306,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             return cell
-        } else if devices[indexPath.row].type == "curtainsRelay" || devices[indexPath.row].type == "appliance" {
+        } else if devices[indexPath.row].type == ControlType.CurtainsRelay || devices[indexPath.row].type == ControlType.Appliance {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.name.text = devices[indexPath.row].name
                         cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
@@ -371,10 +371,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
             
-        } else if devices[indexPath.row].type == "hvac" {
+        } else if devices[indexPath.row].type == ControlType.HVAC {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
-            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
+//            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.climateName.text = devices[indexPath.row].name
                         cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
@@ -477,7 +477,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
             
-        } else if devices[indexPath.row].type == "sensor" {
+        } else if devices[indexPath.row].type == ControlType.Sensor {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
@@ -486,6 +486,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPressTwo.minimumPressDuration = 0.5
             cell.disabledCellView.tag = indexPath.row
+            cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))

@@ -358,19 +358,20 @@ class MultiSensorCell: UICollectionViewCell {
                 }
                 sensorState.text = "\(device.currentValue) LUX"
             case 7:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "sensor_motion")
-                } else if device.currentValue == 0 {
+                switch device.currentValue {
+                case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_third")
-                }
-                if device.currentValue == 1 {
-                    sensorState.text = "Motion"
-                } else if device.currentValue == 0 {
                     sensorState.text = "Idle"
-                } else {
-                    sensorState.text = ""
+                case DeviceValue.MotionSensor.Motion:
+                    sensorImage.image = UIImage(named: "sensor_motion")
+                    sensorState.text = "Motion"
+                case DeviceValue.MotionSensor.IdleWarning:
+                    sensorImage.image = UIImage(named: "sensor_third")
+                    sensorState.text = "Idle Warning"
+                case DeviceValue.MotionSensor.ResetTimer:
+                    sensorImage.image = UIImage(named: "sensor_third")
+                    sensorState.text = "Reset Timer"
+                default: break
                 }
             case 8:
                 sensorImage.image = UIImage(named: "sensor_ir_receiver")
@@ -427,11 +428,11 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorState.text = "..."
             }
         }
-        labelID.text = "\(tag + 1)"
+        labelID.text = "\(device.channel)"
         labelName.text = "\(device.name)"
-        labelCategory.text = "\(device.categoryId)"
-        labelLevel.text = "\(device.parentZoneId)"
-        labelZone.text = "\(device.zoneId)"
+        labelCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))"
+        labelLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))"
+        labelZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))"
         if device.info {
             infoView.hidden = false
             backView.hidden = true
@@ -482,19 +483,20 @@ class MultiSensorCell: UICollectionViewCell {
                 }
                 sensorState.text = "\(device.currentValue) LUX"
             case 7:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "sensor_motion")
-                } else if device.currentValue == 0 {
+                switch device.currentValue {
+                case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_third")
-                }
-                if device.currentValue == 1 {
-                    sensorState.text = "Motion"
-                } else if device.currentValue == 0 {
                     sensorState.text = "Idle"
-                } else {
-                    sensorState.text = ""
+                case DeviceValue.MotionSensor.Motion:
+                    sensorImage.image = UIImage(named: "sensor_motion")
+                    sensorState.text = "Motion"
+                case DeviceValue.MotionSensor.IdleWarning:
+                    sensorImage.image = UIImage(named: "sensor_third")
+                    sensorState.text = "Idle Warning"
+                case DeviceValue.MotionSensor.ResetTimer:
+                    sensorImage.image = UIImage(named: "sensor_third")
+                    sensorState.text = "Reset Timer"
+                default: break
                 }
             case 8:
                 sensorImage.image = UIImage(named: "sensor_ir_receiver")
@@ -550,7 +552,7 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorState.text = "..."
             }
         }
-        labelID.text = "\(0 + 1)"
+        labelID.text = "\(device.channel)"
         labelName.text = "\(device.name)"
         labelCategory.text = "\(device.categoryId)"
         labelLevel.text = "\(device.parentZoneId)"

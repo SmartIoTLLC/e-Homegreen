@@ -40,8 +40,13 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        
-
+        var defaultMenu = menuItems
+        for (index, item) in defaultMenu.enumerate() {
+            if item.title == "Settings" {
+                defaultMenu.removeAtIndex(index)
+            }
+        }
+        menuItems = defaultMenu
         // Do any additional setup after loading the view.
     }
     
@@ -110,7 +115,6 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("menuSettingsCell") as? MenuSettingsCell {
-            
             cell.menuImage.image = menuItems[indexPath.row].image
             cell.menuLabel.text = menuItems[indexPath.row].title
             cell.menuSwitch.tag = indexPath.row
@@ -120,12 +124,11 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             }else {
                 cell.menuSwitch.on = false
             }
-            
             return cell
-            
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
+        cell.textLabel?.text = ""
+        cell.contentView.backgroundColor = UIColor.clearColor()
         return cell
     }
     
@@ -133,7 +136,6 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         return menuItems.count
     }
     
-
     @IBAction func backButton(sender: AnyObject) {
         for items in menuItems{
             if items.state == true{

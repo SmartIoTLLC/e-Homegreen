@@ -156,7 +156,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clearColor()
             cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-            if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
+            if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.OpenLastScreen) {
                 cell.openLastScreen.on = true
             }else{
                 cell.openLastScreen.on = false
@@ -174,10 +174,10 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func changeValue(sender:UISwitch){
         if sender.on == true {
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstBool")
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.OpenLastScreen)
 
         }else {
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstBool")
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey:UserDefaults.OpenLastScreen)
 
         }
     }

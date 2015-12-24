@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.setValue(0, forKey: UserDefaults.RefreshDelayHours)
             defaults.setValue(10, forKey: UserDefaults.RefreshDelayMinutes)
             defaults.setBool(true, forKey: UserDefaults.IsPreloaded)
+            defaults.setBool(true, forKey: UserDefaults.OpenLastScreen)
             defaults.setObject("Idle", forKey: UserDefaults.Security.AlarmState)
             //        Idle, Trobule, Alert, alarm
             defaults.setObject("Disarm", forKey: UserDefaults.Security.SecurityMode)

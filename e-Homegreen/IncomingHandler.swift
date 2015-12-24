@@ -402,11 +402,6 @@ class IncomingHandler: NSObject {
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
-            print(byteArray[7])
-            print(byteArray[8])
-            print(DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name)
-            print(DeviceInfo.deviceChannel[byteArray[7]]?.name)
-//            if let channel = DeviceInfo.deviceChannel[byteArray[7]]?.channel, let name = DeviceInfo.deviceChannel[byteArray[7]]?.name {
             if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 if devices != [] {
                     for device in devices {
@@ -419,7 +414,7 @@ class IncomingHandler: NSObject {
                 }
                 if !deviceExists {
                     for var i=1 ; i<=channel ; i++ {
-                        if channel == 10 && name == "sensor" && i > 1 {
+                        if channel == 10 && name == ControlType.Sensor && i > 1 {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])
@@ -436,7 +431,7 @@ class IncomingHandler: NSObject {
                             device.isVisible = false
                             device.isEnabled = false
                             saveChanges()
-                        } else if channel == 6 && name == "sensor" && i > 1 {
+                        } else if channel == 6 && name == ControlType.Sensor && i > 1 {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])
@@ -453,7 +448,7 @@ class IncomingHandler: NSObject {
                             device.isVisible = false
                             device.isEnabled = false
                             saveChanges()
-                        } else if name == "hvac" {
+                        } else if name == ControlType.HVAC {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])
@@ -476,7 +471,7 @@ class IncomingHandler: NSObject {
                             device.humidity = 0
                             device.current = 0
                             saveChanges()
-                        } else if name != "hvac" && name != "sensor" {
+                        } else if name != ControlType.HVAC && name != ControlType.Sensor {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])

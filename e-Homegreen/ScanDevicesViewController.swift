@@ -302,19 +302,19 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         print("\(devices[index].address) \(devices[index].type) \(devices[index].channel)")
         setProgressBarParametarsForFindingNames(index)
 //        index = index - 1
-        if devices[index].type == "Dimmer" {
+        if devices[index].type == ControlType.Dimmer {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == "curtainsRelay" || devices[index].type == "appliance" {
+        if devices[index].type == ControlType.CurtainsRelay || devices[index].type == ControlType.Appliance {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == "hvac" {
+        if devices[index].type == ControlType.HVAC {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == "sensor" {
+        if devices[index].type == ControlType.Sensor {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
 //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -322,7 +322,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int, numberInArray:Int) {
         setProgressBarParametarsForFindingSensorParametar(deviceIndex, numberInArray:numberInArray)
-        if devices[deviceIndex].type == "sensor" {
+        if devices[deviceIndex].type == ControlType.Sensor {
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
@@ -410,7 +410,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     func findParametarsForSensor() {
         arrayOfSensorAdresses = []
         for var i = fromAddress!; i<=toAddress; i++ {
-            if devices[i].type == "sensor" {
+            if devices[i].type == ControlType.Sensor {
                 arrayOfSensorAdresses.append(i)
             }
         }
@@ -487,7 +487,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                 if devices.count != 0 {
                     if numberTwo >= numberOne  && numberTwo <= devices.count && numberOne >= 0 {
                         for var i = numberOne-1; i <= numberTwo-1; i++ {
-                            if devices[i].type == "sensor" {
+                            if devices[i].type == ControlType.Sensor {
                                 findSensorParametar = true
                                 break
                             }

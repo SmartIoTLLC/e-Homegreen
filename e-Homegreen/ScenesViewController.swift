@@ -15,7 +15,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SceneCell"
     var pullDown = PullDownView()
     
@@ -47,11 +47,11 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
 //        commonConstruct()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-            collectionViewCellSize = CGSize(width: 128, height: 156)
-        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-            collectionViewCellSize = CGSize(width: 118, height: 144)
-        }
+//        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+//            collectionViewCellSize = CGSize(width: 128, height: 156)
+//        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+//            collectionViewCellSize = CGSize(width: 118, height: 144)
+//        }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         self.view.addSubview(pullDown)
@@ -180,17 +180,22 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
             abort()
         }
     }
-    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
     override func viewWillLayoutSubviews() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.width == 568{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-            }else if self.view.frame.size.width == 667{
-                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            }
+//            if self.view.frame.size.width == 568{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+//            }else if self.view.frame.size.width == 667{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+//            }else{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -204,13 +209,13 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
-            if self.view.frame.size.width == 320{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }else if self.view.frame.size.width == 375{
-                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }
+//            if self.view.frame.size.width == 320{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//            }else if self.view.frame.size.width == 375{
+//                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//            }else{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -223,6 +228,9 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
         scenesCollectionView.reloadData()
         pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
     }

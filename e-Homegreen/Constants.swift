@@ -35,6 +35,7 @@ struct UserDefaults {
     static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
+    static let OpenLastScreen = "EHGIsLastScreenOpened"
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"
@@ -42,7 +43,6 @@ struct UserDefaults {
         static let AddressTwo = "EHGSecurityAddressTwo"
         static let AddressThree = "EHGSecurityAddressThree"
         static let IsPanic = "EHGSecurityPanic"
-//        "firstBool"
 //        "menu"
 //        "firstItem"
     }
@@ -65,6 +65,22 @@ class FilterParametars {
         self.categoryName = categoryName
     }
 }
+struct CellSize {
+    static func calculateCellSize(inout size:CGSize, screenWidth:CGFloat) {
+        var i:CGFloat = 2
+        while i >= 2 {
+            if (screenWidth / i) >= 120 && (screenWidth / i) <= 160 {
+                break
+            }
+            i++
+        }
+        let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
+        size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+    }
+}
+//struct Size {
+//    let cellSize = 0
+//}
 struct NotificationKey {
     static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"
@@ -117,6 +133,20 @@ struct Colors {
     static let DarkGrayColor = UIColor.darkGrayColor().CGColor
     static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).CGColor    //   #5bb7e5
     static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).CGColor    //   #fb5757
+}
+struct DeviceValue {
+    struct MotionSensor {
+        static let Idle = 0x00
+        static let Motion = 0x01
+        static let IdleWarning = 0xFE
+        static let ResetTimer = 0xEF
+    }
+//    enum MotionSensor:Int {
+//        case Idle = 0x00
+//        case Motion = 0x01
+//        case IdleWarning = 0xFE
+//        case ResetTimer = 0xEF
+//    }
 }
 //extension for UIColor
 

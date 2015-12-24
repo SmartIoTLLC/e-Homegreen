@@ -572,7 +572,6 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E73993161BCE9DDA00C74486 /* Dashboard */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
@@ -712,6 +711,7 @@
 			children = (
 				E7AAF7651BBE887000992A18 /* CustomSegue */,
 				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
+				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
 				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
 				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
@@ -741,14 +741,6 @@
 				73D592E71C1EC08400E206ED /* ChatInfo.swift */,
 			);
 			name = Chat;
-			sourceTree = "<group>";
-		};
-		E73993161BCE9DDA00C74486 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
-			);
-			name = Dashboard;
 			sourceTree = "<group>";
 		};
 		E75163F01B4C089300457BED /* Widget */ = {

@@ -11,7 +11,7 @@ import CoreData
 
 class SecurityViewController: CommonViewController {
     
-    private var sectionInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SecurityCell"
     var pullDown = PullDownView()
     
@@ -28,12 +28,6 @@ class SecurityViewController: CommonViewController {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-            collectionViewCellSize = CGSize(width: 128, height: 156)
-        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-            collectionViewCellSize = CGSize(width: 118, height: 144)
-        }
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         //                pullDown.scrollsToTop = false
@@ -59,25 +53,16 @@ class SecurityViewController: CommonViewController {
     override func viewDidDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
     }
-    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.width == 568{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-            }else if self.view.frame.size.width == 667{
-                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            }
-        }else{
-            if self.view.frame.size.width == 320{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }else if self.view.frame.size.width == 375{
-                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }
-        }
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
         securityCollectionView.reloadData()
     }
     
@@ -270,6 +255,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
         switch securities[indexPath.row].name {
         case "Away":
+            cell.setImageForSecuirity(UIImage(named: "inactiveaway")!)
             cell.securityButton.tag = indexPath.row
             cell.securityImageView.image = UIImage(named: "inactiveaway")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
@@ -277,6 +263,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Night":
+            cell.setImageForSecuirity(UIImage(named: "inactivenight")!)
             cell.securityImageView.image = UIImage(named: "inactivenight")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
@@ -284,6 +271,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Day":
+            cell.setImageForSecuirity(UIImage(named: "inactiveday")!)
             cell.securityImageView.image = UIImage(named: "inactiveday")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
@@ -291,6 +279,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Vacation":
+            cell.setImageForSecuirity(UIImage(named: "inactivevacation")!)
             cell.securityImageView.image = UIImage(named: "inactivevacation")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
@@ -298,12 +287,14 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Disarm":
+            cell.setImageForSecuirity(UIImage(named: "inactivedisarm")!)
             cell.securityImageView.image = UIImage(named: "inactivedisarm")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
             let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
             cell.securityButton.addGestureRecognizer(tap)
         case "Panic":
+            cell.setImageForSecuirity(UIImage(named: "inactivepanic")!)
             cell.securityImageView.image = UIImage(named: "inactivepanic")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
@@ -317,14 +308,19 @@ extension SecurityViewController: UICollectionViewDataSource {
             if securities[indexPath.row].name == securityMode {
                 switch securityMode {
                 case "Away":
+                    cell.setImageForSecuirity(UIImage(named: "away")!)
                     cell.securityImageView.image = UIImage(named: "away")
                 case "Night":
+                    cell.setImageForSecuirity(UIImage(named: "night")!)
                     cell.securityImageView.image = UIImage(named: "night")
                 case "Day":
+                    cell.setImageForSecuirity(UIImage(named: "day")!)
                     cell.securityImageView.image = UIImage(named: "day")
                 case "Vacation":
+                    cell.setImageForSecuirity(UIImage(named: "vacation")!)
                     cell.securityImageView.image = UIImage(named: "vacation")
                 case "Disarm":
+                    cell.setImageForSecuirity(UIImage(named: "disarm")!)
                     cell.securityImageView.image = UIImage(named: "disarm")
                 default: break
                 }
@@ -332,8 +328,10 @@ extension SecurityViewController: UICollectionViewDataSource {
         }
         if securities[indexPath.row].name == "Panic" {
             if defaults.boolForKey(UserDefaults.Security.IsPanic) {
+                cell.setImageForSecuirity(UIImage(named: "panic")!)
                 cell.securityImageView.image = UIImage(named: "panic")
             } else {
+                cell.setImageForSecuirity(UIImage(named: "inactivepanic")!)
                 cell.securityImageView.image = UIImage(named: "inactivepanic")
             }
         }
@@ -345,12 +343,13 @@ extension SecurityViewController: UICollectionViewDataSource {
     }
 }
 class SecurityCollectionCell: UICollectionViewCell {
-    
-    
     @IBOutlet weak var securityTitle: UILabel!
     @IBOutlet weak var securityImageView: UIImageView!
     @IBOutlet weak var securityButton: UIButton!
-    
+    func setImageForSecuirity (image:UIImage) {
+        securityImageView.image = image
+        setNeedsDisplay()
+    }
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
@@ -363,7 +362,6 @@ class SecurityCollectionCell: UICollectionViewCell {
         
         let context = UIGraphicsGetCurrentContext()
         let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
@@ -379,6 +377,4 @@ class SecurityCollectionCell: UICollectionViewCell {
         
         path.stroke()
     }
-    
-    
 }

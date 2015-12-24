@@ -56,7 +56,7 @@ class CenterViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
 
         //  Loading device view controller from singleton
-        if NSUserDefaults.standardUserDefaults().boolForKey("firstBool") {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.OpenLastScreen) {
             if let savedValue:String = NSUserDefaults.standardUserDefaults().stringForKey("firstItem"){
                 titleOfViewController.text = savedValue
             }else{

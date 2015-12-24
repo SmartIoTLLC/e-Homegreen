@@ -128,18 +128,18 @@ class MenuViewControllers: NSObject {
     }
     func allMenuItems() -> Array<MenuItem> {
         return [
-            MenuItem (title: "Dashboard", image: UIImage(named: "Dashboard"), viewController: MenuViewControllers.sharedInstance.getViewController("Dashboard"), state: false),
-            MenuItem (title: "Devices", image: UIImage(named: "Devices"), viewController: MenuViewControllers.sharedInstance.getViewController("Devices"), state: false),
-            MenuItem (title: "Scenes", image: UIImage(named: "Scenes"), viewController: MenuViewControllers.sharedInstance.getViewController("Scenes"), state: false),
-            MenuItem (title: "Events", image: UIImage(named: "Events"), viewController: MenuViewControllers.sharedInstance.getViewController("Events"), state: false),
-            MenuItem (title: "Sequences", image: UIImage(named: "Sequences"), viewController: MenuViewControllers.sharedInstance.getViewController("Sequences"), state: false),
-            MenuItem (title: "Timers", image: UIImage(named: "Timers"), viewController: MenuViewControllers.sharedInstance.getViewController("Timers"), state: false),
-            MenuItem (title: "Flags", image: UIImage(named: "Flags"), viewController: MenuViewControllers.sharedInstance.getViewController("Flags"), state: false),
-            MenuItem (title: "Chat", image: UIImage(named: "Chat"), viewController: MenuViewControllers.sharedInstance.getViewController("Chat"), state: false),
-            MenuItem (title: "Security", image: UIImage(named: "Security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: false),
-            MenuItem (title: "Surveillance", image: UIImage(named: "Surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: false),
-            MenuItem (title: "Energy", image: UIImage(named: "Energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: false),
-            MenuItem (title: "Settings", image: UIImage(named: "Settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: false)]
+            MenuItem (title: "Dashboard", image: UIImage(named: "menu_dashboard"), viewController: MenuViewControllers.sharedInstance.getViewController("Dashboard"), state: false),
+            MenuItem (title: "Devices", image: UIImage(named: "menu_devices"), viewController: MenuViewControllers.sharedInstance.getViewController("Devices"), state: false),
+            MenuItem (title: "Scenes", image: UIImage(named: "menu_scenes"), viewController: MenuViewControllers.sharedInstance.getViewController("Scenes"), state: false),
+            MenuItem (title: "Events", image: UIImage(named: "menu_events"), viewController: MenuViewControllers.sharedInstance.getViewController("Events"), state: false),
+            MenuItem (title: "Sequences", image: UIImage(named: "menu_sequences"), viewController: MenuViewControllers.sharedInstance.getViewController("Sequences"), state: false),
+            MenuItem (title: "Timers", image: UIImage(named: "menu_timers"), viewController: MenuViewControllers.sharedInstance.getViewController("Timers"), state: false),
+            MenuItem (title: "Flags", image: UIImage(named: "menu_flags"), viewController: MenuViewControllers.sharedInstance.getViewController("Flags"), state: false),
+            MenuItem (title: "Chat", image: UIImage(named: "menu_chat"), viewController: MenuViewControllers.sharedInstance.getViewController("Chat"), state: false),
+            MenuItem (title: "Security", image: UIImage(named: "menu_security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: false),
+            MenuItem (title: "Surveillance", image: UIImage(named: "menu_surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: false),
+            MenuItem (title: "Energy", image: UIImage(named: "menu_energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: false),
+            MenuItem (title: "Settings", image: UIImage(named: "menu_settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: false)]
     }
     
     func allMenuItems1() -> Array<MenuItem> {

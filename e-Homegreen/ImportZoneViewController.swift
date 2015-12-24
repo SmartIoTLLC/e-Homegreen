@@ -227,12 +227,14 @@ extension ImportZoneViewController: UITableViewDataSource {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.lblName.text = "\(zones[indexPath.row].id). \(zones[indexPath.row].name)"
-            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
-            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
+//            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
+//            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
+            cell.lblLevel.text = ""
+            cell.lblDescription.text = ""
             cell.switchVisible.on = zones[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-            cell.btnZonePicker.setTitle("Choose iBeacon", forState: UIControlState.Normal)
+            cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)
             if let iBeaconName = zones[indexPath.row].iBeacon?.name {
                 cell.btnZonePicker.setTitle(iBeaconName, forState: UIControlState.Normal)
             }

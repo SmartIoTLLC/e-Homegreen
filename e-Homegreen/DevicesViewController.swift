@@ -12,7 +12,7 @@ import AVFoundation
 
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, PullDownViewDelegate {
     
-    var sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var pullDown = PullDownView()
@@ -52,10 +52,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 3
+        return 5
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 3
+        return 5
     }
     override func viewDidAppear(animated: Bool) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -287,19 +287,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index)
-                if devices[index.row].type == "Dimmer" {
+                if devices[index.row].type == ControlType.Dimmer {
                     showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == "hvac" {
+                if devices[index.row].type == ControlType.HVAC {
                     showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+                if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
                     showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == "curtainsRS485" {
+                if devices[index.row].type == ControlType.CurtainsRS485 {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
                 }
-                if devices[index.row].type == "sensor" {
+                if devices[index.row].type == ControlType.Sensor {
                     showMultisensorParametar(CGPoint(x: self.view.center.x, y: self.view.center.y), device: devices[index.row])
                 }
             }
@@ -312,7 +312,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
-        if devices[tag].type == "Dimmer" {
+        if devices[tag].type == ControlType.Dimmer {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
@@ -333,7 +333,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
         }
-        if devices[tag].type == "curtainsRS485" {
+        if devices[tag].type == ControlType.CurtainsRS485 {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
@@ -363,19 +363,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            button.highlighted = !button.highlighted
             let tag = button.tag
             // Light
-            if devices[tag].type == "Dimmer" {
+            if devices[tag].type == ControlType.Dimmer {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Appliance?
-            if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
+            if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Curtain?
-            if devices[tag].type == "curtainsRS485" {
+            if devices[tag].type == ControlType.CurtainsRS485 {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
@@ -385,7 +385,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func oneTap(gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         // Light
-        if devices[tag].type == "Dimmer" {
+        if devices[tag].type == ControlType.Dimmer {
             var setDeviceValue:UInt8 = 0
             var skipLevel:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
@@ -405,7 +405,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            })
         }
         // Appliance?
-        if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
+        if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             let deviceCurrentValue = Int(devices[tag].currentValue)
             var skipLevel:UInt8 = 0
@@ -421,7 +421,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             })
         }
         // Curtain?
-        if devices[tag].type == "curtainsRS485" {
+        if devices[tag].type == ControlType.CurtainsRS485 {
             var setDeviceValue:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
                 setDeviceValue = UInt8(0)
@@ -520,24 +520,56 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
 //        return 2
 //    }
-    
+    func calculateCellSize(inout size:CGSize) {
+        var i:CGFloat = 2
+        while i >= 2 {
+            if (self.view.frame.size.width / i) >= 120 && (self.view.frame.size.width / i) <= 160 {
+                break
+            }
+            i++
+        }
+        let cellWidth = Int(self.view.frame.size.width/i - (2/i + (i*5-5)/i))
+        size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+    }
+    override func viewWillLayoutSubviews() {
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+    }
     func adjustScrollInsetsPullDownViewAndBackgroudImage() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+        print(self.view.frame.size.width)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.width == 568{
-                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-            }else if self.view.frame.size.width == 667{
-                sectionInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            }
-            if self.view.frame.size.width == 667 {
-                collectionViewCellSize = CGSize(width: 129, height: 160)
-            }
+//            if self.view.frame.size.width == 480 { // iPhone 4, 4s
+//                let cellWidth = Int(self.view.frame.size.width/4 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 568 { // iPhone 5, 5s
+//                let cellWidth = Int(self.view.frame.size.width/5 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 667 { // iPhone 6
+//                let cellWidth = Int(self.view.frame.size.width/5 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 736 { // iPhone 6 plus
+//                let cellWidth = Int(self.view.frame.size.width/6 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 1024 { // iPad
+//                let cellWidth = Int(self.view.frame.size.width/8 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 1366 { // iPad Pro
+//                let cellWidth = Int(self.view.frame.size.width/11 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
+//            } else {
+//                collectionViewCellSize = CGSize(width: 10, height: 10)
+//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
+//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-            print(self.view.frame.size.width)
-            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -548,22 +580,56 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             deviceCollectionView.reloadData()
-            
+//            CGRectIn
         } else {
-            if self.view.frame.size.width == 320{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }else if self.view.frame.size.width == 375{
-                sectionInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
-            }else{
-                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            }
-            if self.view.frame.size.width == 375 {
-                collectionViewCellSize = CGSize(width: 121, height: 150)
-            }
+//            if self.view.frame.size.width == 320{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//            }else if self.view.frame.size.width == 375{
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            }else{
+//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//            }
+//            if self.view.frame.size.width == 375 {
+//                let cellWidth = Int(self.view.frame.size.width/3 - 4)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//            }
+//            if self.view.frame.size.width == 320 { // iPhone 4, 4s... iPhone 5, 5s
+//                let cellWidth = Int(self.view.frame.size.width/2 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 375 { // iPhone 6
+//                let cellWidth = Int(self.view.frame.size.width/3 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 414 { // iPhone 6 plus
+//                let cellWidth = Int(self.view.frame.size.width/3 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 768 { // iPad
+//                let cellWidth = Int(self.view.frame.size.width/6 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            } else if self.view.frame.size.width == 1024 {
+//                let cellWidth = Int(self.view.frame.size.width/8 - 5)
+//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
+//            }  else {
+//                collectionViewCellSize = CGSize(width: 10, height: 10)
+//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
+//            }
+//            var i:CGFloat = 2
+//            while i >= 2 {
+//                if (self.view.frame.size.width / i) >= 120 && (self.view.frame.size.width / i) <= 160 {
+//                    break
+//                }
+//                i++
+//            }
+//            let cellWidth = Int(self.view.frame.size.width/i - 5)
+//            collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+//            sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//            print("\(cellWidth):\(collectionViewCellSize):\(sectionInsets)")
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-            print(self.view.frame.size.width)
-            print(self.view.frame.size.height)
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -644,19 +710,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-            if devices[index.row].type == "Dimmer" {
+            if devices[index.row].type == ControlType.Dimmer {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+            } else if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == "sensor" {
+            } else if devices[index.row].type == ControlType.Sensor {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == "hvac" {
+            } else if devices[index.row].type == ControlType.HVAC {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == "curtainsRS485" {
+            } else if devices[index.row].type == ControlType.CurtainsRS485 {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             }
@@ -668,22 +734,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func handleTap2 (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-            if devices[index.row].type == "Dimmer" {
+            if devices[index.row].type == ControlType.Dimmer {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
-                
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].type == "curtainsRelay" || devices[index.row].type == "appliance" {
+            } else if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
-                
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            }
-            else if devices[index.row].type == "sensor" {
+            } else if devices[index.row].type == ControlType.Sensor {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            }else if devices[index.row].type == "hvac" {
+            } else if devices[index.row].type == ControlType.HVAC {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            }else if devices[index.row].type == "curtainsRS485" {
+            } else if devices[index.row].type == ControlType.CurtainsRS485 {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             }
@@ -731,7 +794,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         print(devices[tag])
         deviceInControlMode = false
         //   Dimmer
-        if devices[tag].type == "Dimmer" {
+        if devices[tag].type == ControlType.Dimmer {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                     _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
@@ -739,7 +802,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             })
         }
         //  Curtain
-        if devices[tag].type == "curtainsRS485" {
+        if devices[tag].type == ControlType.CurtainsRS485 {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                     _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
@@ -756,7 +819,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let tag = sender.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         //   Dimmer
-        if devices[tag].type == "Dimmer" {
+        if devices[tag].type == ControlType.Dimmer {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
@@ -764,7 +827,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             //            })
         }
         //  Curtain
-        if devices[tag].type == "curtainsRS485" {
+        if devices[tag].type == ControlType.CurtainsRS485 {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
@@ -808,7 +871,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
         // Appliance?
-        if devices[tag].type == "curtainsRelay" || devices[tag].type == "appliance" {
+        if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
             let oldValue = Int(devices[tag].currentValue)
