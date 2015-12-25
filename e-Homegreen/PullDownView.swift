@@ -32,10 +32,21 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     
     var appDel:AppDelegate!
     
+    var locationButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 30, 150, 40))
+    var levelButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 80, 150, 40))
+    var zoneButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 130, 150, 40))
+    var categoryButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 180, 150, 40))
+    var goButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(55, 250, 150, 40))
+    
+    let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
+    let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+    let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
+    let categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
+    
+    var locationSearch:[String] = []
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         self.delegate = self
         self.pagingEnabled = true
@@ -66,14 +77,61 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         self.addSubview(grayBottomLine)
         
         self.delaysContentTouches = false
+        
+        
+        locationLabel.text = "Location"
+        locationLabel.textColor = UIColor.whiteColor()
+        self.addSubview(locationLabel)
+        
+        levelLabel.text = "Level"
+        levelLabel.textColor = UIColor.whiteColor()
+        self.addSubview(levelLabel)
+        
+        zoneLabel.text = "Zone"
+        zoneLabel.textColor = UIColor.whiteColor()
+        self.addSubview(zoneLabel)
+        
+        categoryLabel.text = "Category"
+        categoryLabel.textColor = UIColor.whiteColor()
+        self.addSubview(categoryLabel)
+        
+        locationButton.titleLabel?.tintColor = UIColor.whiteColor()
+        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        locationButton.tag = 1
+        locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(locationButton)
+        
+        levelButton.titleLabel?.tintColor = UIColor.whiteColor()
+        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        levelButton.tag = 2
+        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(levelButton)
+        
+        zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
+        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        zoneButton.tag = 3
+        zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(zoneButton)
+        
+        categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
+        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        categoryButton.tag = 4
+        categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(categoryButton)
+        
+        goButton.titleLabel?.tintColor = UIColor.whiteColor()
+        goButton.setTitle("Go", forState: UIControlState.Normal)
+        goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(goButton)
     }
-    var locationButton:CustomGradientButton = CustomGradientButton()
-    var levelButton:CustomGradientButton = CustomGradientButton()
-    var zoneButton:CustomGradientButton = CustomGradientButton()
-    var categoryButton:CustomGradientButton = CustomGradientButton()
-    var goButton:CustomGradientButton = CustomGradientButton()
-    
-    func drawMenu(locationText:String, level:String, zone:String, category:String){
+    func drawMenu(locationText:String, level:String, zone:String, category:String, locationSearch:[String]){
+        self.locationSearch = locationSearch
         var levelText = "All"
         var zoneText = "All"
         var categoryText = "All"
@@ -81,98 +139,44 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             choosedGateway = returnGatewayForName(locationText)
         }
         if level != "All" {
-//            levelText = "\(returnZoneWithId(Int(level)!))"
             levelText = "\(level)"
         }
         if zone != "All" {
-//            zoneText = "\(returnZoneWithId(Int(zone)!))"
             zoneText = "\(zone)"
         }
         if category != "All" {
-//            categoryText = "\(returnCategoryWithId(Int(category)!))"
             categoryText = "\(category)"
         }
-        let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
-        locationLabel.text = "Location"
-        locationLabel.textColor = UIColor.whiteColor()
-        self.addSubview(locationLabel)
         
-        let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
-        levelLabel.text = "Level"
-        levelLabel.textColor = UIColor.whiteColor()
-        self.addSubview(levelLabel)
-        
-        let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
-        zoneLabel.text = "Zone"
-        zoneLabel.textColor = UIColor.whiteColor()
-        self.addSubview(zoneLabel)
-        
-        let categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
-        categoryLabel.text = "Category"
-        categoryLabel.textColor = UIColor.whiteColor()
-        self.addSubview(categoryLabel)
-        
-        locationButton = CustomGradientButton(frame: CGRectMake(110, 30, 150, 40))
-        locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.setTitle(locationText, forState: UIControlState.Normal)
-        locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        locationButton.tag = 1
-        locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        self.addSubview(locationButton)
-        
-        levelButton = CustomGradientButton(frame: CGRectMake(110, 80, 150, 40))
-        levelButton.titleLabel?.tintColor = UIColor.whiteColor()
         levelButton.setTitle(levelText, forState: UIControlState.Normal)
-        levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        levelButton.tag = 2
-        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        self.addSubview(levelButton)
-        
-        zoneButton = CustomGradientButton(frame: CGRectMake(110, 130, 150, 40))
-        zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
         zoneButton.setTitle(zoneText, forState: UIControlState.Normal)
-        zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        zoneButton.tag = 3
-        zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        self.addSubview(zoneButton)
-        
-        categoryButton = CustomGradientButton(frame: CGRectMake(110, 180, 150, 40))
-        categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
         categoryButton.setTitle(categoryText, forState: UIControlState.Normal)
-        categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        categoryButton.tag = 4
-        categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
-        categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        self.addSubview(categoryButton)
         
-        goButton = CustomGradientButton(frame: CGRectMake(55, 250, 150, 40))
-        goButton.titleLabel?.tintColor = UIColor.whiteColor()
-        goButton.setTitle("Go", forState: UIControlState.Normal)
-        goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-//        goButton.tag = 4
-        goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
-        goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        self.addSubview(goButton)
-        
-        if locationText == "All" {
-            levelButton.enabled = false
-            zoneButton.enabled = false
-            categoryButton.enabled = false
-        } else {
+        levelButton.enabled = false
+        zoneButton.enabled = false
+        categoryButton.enabled = false
+        levelButton.userInteractionEnabled = false
+        zoneButton.userInteractionEnabled = false
+        categoryButton.userInteractionEnabled = false
+        print("\(locationText), \(levelText), \(zoneText)")
+        if locationText != "All" {
             levelButton.enabled = true
-            zoneButton.enabled = true
+            levelButton.userInteractionEnabled = true
             categoryButton.enabled = true
+            categoryButton.userInteractionEnabled = true
+        }
+        if levelText != "All" {
+            zoneButton.enabled = true
+            zoneButton.userInteractionEnabled = true
         }
     }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         print("Ovo je mozda odgovor na sve sto sam mislio da je opproblem: \(scrollView.contentOffset)")
         if scrollView.contentOffset.y > 0.0 {
-            let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
-            let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
-            let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
+            let level = "\(returnZoneId(levelButton.titleLabel!.text!))"
+            let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
+            let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
             let levelName = "\(levelButton.titleLabel!.text!)"
             let zoneName = "\(zoneButton.titleLabel!.text!)"
             let categoryName = "\(categoryButton.titleLabel!.text!)"
@@ -181,9 +185,9 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     }
     var popoverVC:PopOverViewController = PopOverViewController()
     func goFilter(sender:UIButton) {
-        let level = "\(returnZoneName( levelButton.titleLabel!.text!))"
-        let zone = "\(returnZoneName(zoneButton.titleLabel!.text!))"
-        let category = "\(returnCategoryName(categoryButton.titleLabel!.text!))"
+        let level = "\(returnZoneId( levelButton.titleLabel!.text!))"
+        let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
+        let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
         let levelName = "\(levelButton.titleLabel!.text!)"
         let zoneName = "\(zoneButton.titleLabel!.text!)"
         let categoryName = "\(categoryButton.titleLabel!.text!)"
@@ -225,12 +229,15 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             } else {
                 levelButton.setTitle(text, forState: UIControlState.Normal)
             }
+            zoneButton.setTitle("All", forState: UIControlState.Normal)
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
         case 3:
             if id == -1 {
                 zoneButton.setTitle("All", forState: UIControlState.Normal)
             } else {
                 zoneButton.setTitle(text, forState: UIControlState.Normal)
             }
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
         case 4:
             if id == -1 {
                 categoryButton.setTitle("All", forState: UIControlState.Normal)
@@ -239,18 +246,26 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             }
         default: break
         }
-        if locationButton.titleLabel!.text! == "All" {
-            levelButton.enabled = false
-            zoneButton.enabled = false
-            categoryButton.enabled = false
-        } else {
+        levelButton.enabled = false
+        zoneButton.enabled = false
+        categoryButton.enabled = false
+        levelButton.enabled = false
+        zoneButton.enabled = false
+        categoryButton.enabled = false
+        
+        if locationButton.titleLabel!.text! != "All" {
             levelButton.enabled = true
-            zoneButton.enabled = true
+            levelButton.userInteractionEnabled = true
             categoryButton.enabled = true
+            categoryButton.userInteractionEnabled = true
+        }
+        if levelButton.titleLabel!.text! != "All" {
+            zoneButton.enabled = true
+            zoneButton.userInteractionEnabled = true
         }
     }
     
-    func returnZoneName(name:String) -> String {
+    func returnZoneId(name:String) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
@@ -268,7 +283,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         return ""
     }
     
-    func returnCategoryName(name:String) -> String {
+    func returnCategoryId(name:String) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
@@ -286,7 +301,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         return ""
     }
     
-    func returnZoneWithId(id:Int) -> String {
+    func returnZoneNameWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
         fetchRequest.predicate = predicate
@@ -304,7 +319,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         return ""
     }
     
-    func returnCategoryWithId(id:Int) -> String {
+    func returnCategoryNameWithId(id:Int) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
         fetchRequest.predicate = predicate
@@ -323,6 +338,15 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     }
     
     func menuTable(sender : UIButton){
+        print("\(sender.tag):\(sender.enabled):\(sender)")
+        
+        let level = "\(returnZoneId( levelButton.titleLabel!.text!))"
+        let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
+        let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
+        let levelName = "\(levelButton.titleLabel!.text!)"
+        let zoneName = "\(zoneButton.titleLabel!.text!)"
+        let categoryName = "\(categoryButton.titleLabel!.text!)"
+        locationSearch = ["\(locationButton.titleLabel!.text)", level, zone, category, levelName, zoneName, categoryName]
         senderButton = sender
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
@@ -330,6 +354,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = sender.tag
+        popoverVC.locationSearch = locationSearch
         popoverVC.filterGateway = choosedGateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self

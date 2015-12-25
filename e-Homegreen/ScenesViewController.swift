@@ -65,7 +65,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
         updateSceneList()
         scenesCollectionView.reloadData()
     }
@@ -232,7 +232,7 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         scenesCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
     }
     var locationSearch:String = "All"
     var zoneSearch:String = "All"

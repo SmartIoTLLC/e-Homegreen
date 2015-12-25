@@ -249,9 +249,15 @@ struct DeviceTypeCode {
     let channel:Int
     let name:String
     let MPN:String
+    let productDescrption:String
+    let category:Int
+    let deviceType:String
     init (channel:Int, name:String, MPN:String) {
         self.channel = channel
         self.name = name
         self.MPN = MPN
+        self.productDescrption = ""
+        self.category = 0
+        self.deviceType = ""
     }
 }

@@ -63,6 +63,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var gateways:[Gateway] = []
     var error:NSError? = nil
     var filterGateway:Gateway?
+    var locationSearch:[String] = ["All", "All", "All", "All", "All", "All", "All"]
     
     @IBOutlet weak var table: UITableView!
     
@@ -144,6 +145,96 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
     }
+    func returnSuggestions(whatToFetch:String, gateway:Gateway, locationSearch:[String]) {
+        if whatToFetch == "Level" {
+            let fetchRequest = NSFetchRequest(entityName: "Zone")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            var predicateArray:[NSPredicate] = []
+            let predicateOne = NSPredicate(format: "level == %@", NSNumber(integer: 0))
+            predicateArray.append(predicateOne)
+            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            predicateArray.append(predicateTwo)
+            let predicateThree = NSPredicate(format: "gateway.name == %@", gateway.name)
+            predicateArray.append(predicateThree)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
+                    tableList.append(TableList(name: item, id: 3))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Zone" {
+            let fetchRequest = NSFetchRequest(entityName: "Zone")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "gateway.name == %@", gateway.name)
+            let predicateThree = NSPredicate(format: "level != %@", NSNumber(integer: 0))
+            var predicateArray:[NSPredicate] = []
+            predicateArray.append(predicateOne)
+            predicateArray.append(predicateTwo)
+            predicateArray.append(predicateThree)
+            if let levelId = Int(locationSearch[1]) {
+                let predicate = NSPredicate(format: "level == %@", NSNumber(integer: levelId))
+                predicateArray.append(predicate)
+            }
+            if let levelId = Int(locationSearch[1]) {
+                let predicate = NSPredicate(format: "ANY gateway.zones.level = %@", NSNumber(integer: levelId))
+                predicateArray.append(predicate)
+            }
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
+                    tableList.append(TableList(name: item, id: 2))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        if whatToFetch == "Category" {
+            let fetchRequest = NSFetchRequest(entityName: "Category")
+            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            var predicateArray:[NSPredicate] = []
+            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            predicateArray.append(predicateOne)
+            let predicateTwo = NSPredicate(format: "gateway.name == %@", gateway.name)
+            predicateArray.append(predicateTwo)
+//            if let levelId = Int(locationSearch[1]) {
+//                let predicate = NSPredicate(format: "ANY gateway.zones.level == %@", NSNumber(integer: levelId))
+//                predicateArray.append(predicate)
+//            }
+//            if let zoneId = Int(locationSearch[2]) {
+//                let predicate = NSPredicate(format: "ANY gateway.zones.id == %@", NSNumber(integer: zoneId))
+//                predicateArray.append(predicate)
+//            }
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in distinctSorted {
+                    tableList.append(TableList(name: item, id: 4))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+        }
+    }
     func updateDeviceList (whatToFetch:String) {
         if whatToFetch == "Gateway" {
             let fetchRequest = NSFetchRequest(entityName: "Gateway")
@@ -152,23 +243,12 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
             fetchRequest.sortDescriptors = [sortDescriptor]
             fetchRequest.predicate = compoundPredicate
-//            fetchRequest.returnsDistinctResults = true
-//            fetchRequest.returnsObjectsAsFaults = false
-//            fetchRequest.propertiesToFetch = ["name"]
-//            fetchRequest.resultType = NSFetchRequestResultType.DictionaryResultType
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
-//                let distinct = NSSet(array: results.valueForKeyPath("name") as [String])
-//                With Swift 2.0 I prefer
                 let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-//                let distinct = NSSet(array: results.sort { $0.name < $1.name })
-//                let distinct2 = distinct.sort { $0 < $1 }
                 print(distinct)
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 print(distinctSorted)
-//                let distinct2 = distinct.sortedArrayUsingDescriptors([sortDescriptor])
-//                let distinct = results.map { String($0.name) }
-//                NSLog("\(distinct)")
                 for item in distinctSorted {
                     tableList.append(TableList(name: item, id: -1))
                 }
@@ -192,8 +272,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
-                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
-                    //                    tableList.append(TableList(name: "\(item.id)", id: 2))
                     tableList.append(TableList(name: item, id: 3))
                 }
             } catch let catchedError as NSError {
@@ -216,8 +294,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
-                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
-                    //                    tableList.append(TableList(name: "\(item.id)", id: 3))
                     tableList.append(TableList(name: item, id: 2))
                 }
             } catch let catchedError as NSError {
@@ -239,8 +315,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
-                    //                    tableList.append(TableList(name: item.name, id: Int(item.id)))
-                    //                    tableList.append(TableList(name: "\(item.id)", id: 4))
                     tableList.append(TableList(name: item, id: 4))
                 }
             } catch let catchedError as NSError {
@@ -300,13 +374,16 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             updateDeviceList("Gateway")
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Levels.rawValue {
-            updateDeviceList("Level")
+//            updateDeviceList("Level")
+            returnSuggestions("Level", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Zones.rawValue {
-            updateDeviceList("Zone")
+//            updateDeviceList("Zone")
+            returnSuggestions("Zone", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Categories.rawValue {
-            updateDeviceList("Category")
+//            updateDeviceList("Category")
+            returnSuggestions("Category", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.LevelsPick.rawValue {
             updateDeviceList("Level", withGateway: filterGateway!)

@@ -227,9 +227,10 @@ extension ImportZoneViewController: UITableViewDataSource {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.lblName.text = "\(zones[indexPath.row].id). \(zones[indexPath.row].name)"
-//            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
+            print(zones[indexPath.row].level)
+            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
 //            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
-            cell.lblLevel.text = ""
+//            cell.lblLevel.text = ""
             cell.lblDescription.text = ""
             cell.switchVisible.on = zones[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row

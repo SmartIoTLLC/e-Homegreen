@@ -68,7 +68,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
     }
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
@@ -141,7 +141,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             layout = "Portrait"
         }
         chatTableView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
     }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
