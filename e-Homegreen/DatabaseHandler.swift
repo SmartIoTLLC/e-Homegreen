@@ -19,7 +19,7 @@ class DatabaseHandler: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].name)"
             } else {
@@ -40,7 +40,7 @@ class DatabaseHandler: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].name)"
             } else {
@@ -61,7 +61,7 @@ class DatabaseHandler: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return fetResults![0]
             }
@@ -80,7 +80,7 @@ class DatabaseHandler: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].id)"
             } else {
@@ -101,7 +101,7 @@ class DatabaseHandler: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].id)"
             } else {
@@ -119,7 +119,7 @@ class DatabaseHandler: NSObject {
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).moc!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return Int(fetResults![0].id)
             } else {

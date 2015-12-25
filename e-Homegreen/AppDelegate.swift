@@ -38,8 +38,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.stopMonitoringForRegion(beaconRegion)
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
-    
+//    func refreshDevicesToYesterday () {
+//        var error:NSError?
+//        let fetchRequest = NSFetchRequest(entityName: "Device")
+//        do {
+//            if let devices = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device] {
+//                for device in devices {
+//                    device.stateUpdatedAt = nil
+//                }
+//                saveContext()
+//            }
+//        } catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            abort()
+//        }
+//    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+//        refreshDevicesToYesterday()
         
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
@@ -146,39 +162,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     func checkIfThereISGatewayWithExistingSSID() {
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-//            if let ssid = UIDevice.currentDevice().SSID {
-//                self.fetchGateways()
-//                for gateway in self.gateways {
-//                    print(gateway.ssid)
-//                    print(ssid)
-//                    if gateway.ssid == ssid {
-//                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
-//                        for filter in filterArray {
-//                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-//                            //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
-//                            if filterParametars[0] != "\(gateway.name)" {
-//                                filterParametars[0] = "\(gateway.name)"
-//                                filterParametars[1] = "All"
-//                                filterParametars[2] = "All"
-//                                filterParametars[3] = "All"
-//                                filterParametars[4] = "All"
-//                                filterParametars[5] = "All"
-//                                filterParametars[6] = "All"
-//                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-//                                dispatch_async(dispatch_get_main_queue(), {
-//                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
-//                                })
-//                            }
-//                        }
-//                        break
-//                    }
-//                }
-//            } else {
-//                print("Nije nasao ssid.")
-//            }
-//        })
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             if let ssid = UIDevice.currentDevice().SSID {
                 fetchGateways()
                 for gateway in gateways {
@@ -412,7 +395,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return coordinator
     }()
-
+    lazy var moc:NSManagedObjectContext? = {
+        let coordinator = self.persistentStoreCoordinator
+        if coordinator == nil {
+            return nil
+        }
+        var moc = NSManagedObjectContext()
+        moc.persistentStoreCoordinator = coordinator
+        return moc
+    }()
     lazy var managedObjectContext: NSManagedObjectContext? = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
