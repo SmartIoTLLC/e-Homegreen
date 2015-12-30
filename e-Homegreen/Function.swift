@@ -28,6 +28,25 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+    static func getCurtainStatus (address:[Byte]) -> [Byte] {
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [0xF0]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x03
+        message[6] = 0x06
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
     static func setLightRelayStatus (address:[Byte], channel:Byte, value:Byte, delay:Int, runningTime:Int, skipLevel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -93,7 +112,7 @@ class Function {
     static func getWarnings (address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
-        messageInfo = []
+        messageInfo = [0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)
@@ -383,9 +402,8 @@ class Function {
         return message
     }
     static func getModuleName (address:[Byte]) -> [Byte]{
-        var messageInfo:[Byte] = []
+        var messageInfo:[Byte] = [0x00]
         var message:[Byte] = []
-        messageInfo = []
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)
@@ -462,7 +480,7 @@ class Function {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         //messageInfo = [channel * 64 + times, interval, Byte(ir_id / 0x100), Byte((ir_id / 0x100) % 0x100)]
-        messageInfo = [] //  resi ovo
+        messageInfo = [0x00] //  resi ovo
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)
@@ -483,7 +501,7 @@ class Function {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         //messageInfo = [Byte((serialId / 0x100) % 0x100), Byte(serialId % 0x100), channel]
-        messageInfo = [] //  resi ovo
+        messageInfo = [0x00] //  resi ovo
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count)

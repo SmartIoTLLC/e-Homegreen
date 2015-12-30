@@ -61,7 +61,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         deviceCollectionView.reloadData()
         addObservers()
-        refreshVisibleDevicesInScrollView()
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+            self.refreshVisibleDevicesInScrollView()
+        }
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
     override func viewWillDisappear(animated: Bool) {
@@ -72,7 +74,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         batch.propertiesToUpdate = ["stateUpdatedAt":NSDate()]
         let predOne = NSPredicate(format: "gateway == %@", device.gateway)
         let predFour = NSPredicate(format: "address == %@", device.address)
-        let predFive = NSPredicate(format: "type == %@", device.type)
+        let predFive = NSPredicate(format: "type == %@", device.controlType)
         let predSix = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
         let predSeven = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
         let predArray:[NSPredicate] = [predOne, predFour, predFive, predSix, predSeven]
@@ -287,19 +289,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index)
-                if devices[index.row].type == ControlType.Dimmer {
+                if devices[index.row].controlType == ControlType.Dimmer {
                     showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == ControlType.HVAC {
+                if devices[index.row].controlType == ControlType.Climate {
                     showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
+                if devices[index.row].controlType == ControlType.Relay {
                     showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].type == ControlType.CurtainsRS485 {
+                if devices[index.row].controlType == ControlType.Curtain {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
                 }
-                if devices[index.row].type == ControlType.Sensor {
+                if devices[index.row].controlType == ControlType.Sensor {
                     showMultisensorParametar(CGPoint(x: self.view.center.x, y: self.view.center.y), device: devices[index.row])
                 }
             }
@@ -312,7 +314,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
-        if devices[tag].type == ControlType.Dimmer {
+        if devices[tag].controlType == ControlType.Dimmer {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
@@ -333,7 +335,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 return
             }
         }
-        if devices[tag].type == ControlType.CurtainsRS485 {
+        if devices[tag].controlType == ControlType.Curtain {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
@@ -343,7 +345,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 longTouchOldValue = 0
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                     dispatch_async(dispatch_get_main_queue(), {
-                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
                     })
                 })
                 timer.invalidate()
@@ -363,19 +365,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            button.highlighted = !button.highlighted
             let tag = button.tag
             // Light
-            if devices[tag].type == ControlType.Dimmer {
+            if devices[tag].controlType == ControlType.Dimmer {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Appliance?
-            if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
+            if devices[tag].controlType == ControlType.Relay {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Curtain?
-            if devices[tag].type == ControlType.CurtainsRS485 {
+            if devices[tag].controlType == ControlType.Curtain {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
                 SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
                 SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
@@ -385,7 +387,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func oneTap(gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         // Light
-        if devices[tag].type == ControlType.Dimmer {
+        if devices[tag].controlType == ControlType.Dimmer {
             var setDeviceValue:UInt8 = 0
             var skipLevel:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
@@ -405,7 +407,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            })
         }
         // Appliance?
-        if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
+        if devices[tag].controlType == ControlType.Relay {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             let deviceCurrentValue = Int(devices[tag].currentValue)
             var skipLevel:UInt8 = 0
@@ -421,7 +423,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             })
         }
         // Curtain?
-        if devices[tag].type == ControlType.CurtainsRS485 {
+        if devices[tag].controlType == ControlType.Curtain {
             var setDeviceValue:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
                 setDeviceValue = UInt8(0)
@@ -432,7 +434,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(setDeviceValue)
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: setDeviceValue), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: setDeviceValue), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
         }
 //        deviceCollectionView.reloadData()
@@ -481,7 +483,27 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            cell.curtainImage.image = image
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if deviceValue == 0 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                            } else if deviceValue <= 1/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                            } else if deviceValue <= 2/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                            } else if deviceValue < 3/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                            } else {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                            }
+                        })
+                    }
+                })
                 cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
@@ -507,7 +529,27 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            cell.curtainImage.image = image
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if deviceValue == 0 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                            } else if deviceValue <= 1/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                            } else if deviceValue <= 2/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                            } else if deviceValue < 3/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                            } else {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                            }
+                        })
+                    }
+                })
                 cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
@@ -710,19 +752,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-            if devices[index.row].type == ControlType.Dimmer {
+            if devices[index.row].controlType == ControlType.Dimmer {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
+            } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == ControlType.Sensor {
+            } else if devices[index.row].controlType == ControlType.Sensor {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == ControlType.HVAC {
+            } else if devices[index.row].controlType == ControlType.Climate {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].type == ControlType.CurtainsRS485 {
+            } else if devices[index.row].controlType == ControlType.Curtain {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             }
@@ -734,19 +776,19 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func handleTap2 (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-            if devices[index.row].type == ControlType.Dimmer {
+            if devices[index.row].controlType == ControlType.Dimmer {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].type == ControlType.CurtainsRelay || devices[index.row].type == ControlType.Appliance {
+            } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].type == ControlType.Sensor {
+            } else if devices[index.row].controlType == ControlType.Sensor {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].type == ControlType.HVAC {
+            } else if devices[index.row].controlType == ControlType.Climate {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].type == ControlType.CurtainsRS485 {
+            } else if devices[index.row].controlType == ControlType.Curtain {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             }
@@ -782,7 +824,27 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false) {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            cell.curtainImage.image = image
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if slider.value == 0 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                            } else if slider.value <= 1/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                            } else if slider.value <= 2/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                            } else if slider.value < 3/3 {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                            } else {
+                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                            }
+                        })
+                    }
+                })
                 cell.curtainSlider.value = slider.value
                 cell.setNeedsDisplay()
             }
@@ -794,7 +856,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         print(devices[tag])
         deviceInControlMode = false
         //   Dimmer
-        if devices[tag].type == ControlType.Dimmer {
+        if devices[tag].controlType == ControlType.Dimmer {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                     _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
@@ -802,10 +864,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             })
         }
         //  Curtain
-        if devices[tag].type == ControlType.CurtainsRS485 {
+        if devices[tag].controlType == ControlType.Curtain {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -819,7 +881,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let tag = sender.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         //   Dimmer
-        if devices[tag].type == ControlType.Dimmer {
+        if devices[tag].controlType == ControlType.Dimmer {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
@@ -827,10 +889,10 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             //            })
         }
         //  Curtain
-        if devices[tag].type == ControlType.CurtainsRS485 {
+        if devices[tag].controlType == ControlType.Curtain {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
             //            })
         }
@@ -850,8 +912,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].opening = true
         }
         
-//        UIView.setAnimationsEnabled(false)
-        //        self.deviceCollectionView.performBatchUpdates({
         let deviceValue = sender.value
         let indexPath = NSIndexPath(forItem: tag, inSection: 0)
         if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
@@ -859,19 +919,36 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             cell.lightSlider.value = deviceValue
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-            cell.curtainImage.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        cell.curtainImage.image = image
+                    })
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if deviceValue == 0 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                        } else if deviceValue <= 1/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                        } else if deviceValue <= 2/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                        } else if deviceValue < 3/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                        } else {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                        }
+                    })
+                }
+            })
             cell.curtainSlider.value = deviceValue
             cell.setNeedsDisplay()
         }
-//            self.deviceCollectionView.reloadItemsAtIndexPaths([indexPath])
-//            }, completion:  {(completed: Bool) -> Void in
-//                UIView.setAnimationsEnabled(true)
-//        })
     }
+    
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
         // Appliance?
-        if devices[tag].type == ControlType.CurtainsRelay || devices[tag].type == ControlType.Appliance {
+        if devices[tag].controlType == ControlType.Relay {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
             let oldValue = Int(devices[tag].currentValue)

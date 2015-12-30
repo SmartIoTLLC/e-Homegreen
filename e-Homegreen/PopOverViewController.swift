@@ -64,7 +64,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var error:NSError? = nil
     var filterGateway:Gateway?
     var locationSearch:[String] = ["All", "All", "All", "All", "All", "All", "All"]
-    
+    var device:Device?
     @IBOutlet weak var table: UITableView!
     
     var indexTab: Int = 0
@@ -74,7 +74,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-
+        
         table.layer.cornerRadius = 8
         
         // Do any additional setup after loading the view.
@@ -212,14 +212,14 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             predicateArray.append(predicateOne)
             let predicateTwo = NSPredicate(format: "gateway.name == %@", gateway.name)
             predicateArray.append(predicateTwo)
-//            if let levelId = Int(locationSearch[1]) {
-//                let predicate = NSPredicate(format: "ANY gateway.zones.level == %@", NSNumber(integer: levelId))
-//                predicateArray.append(predicate)
-//            }
-//            if let zoneId = Int(locationSearch[2]) {
-//                let predicate = NSPredicate(format: "ANY gateway.zones.id == %@", NSNumber(integer: zoneId))
-//                predicateArray.append(predicate)
-//            }
+            //            if let levelId = Int(locationSearch[1]) {
+            //                let predicate = NSPredicate(format: "ANY gateway.zones.level == %@", NSNumber(integer: levelId))
+            //                predicateArray.append(predicate)
+            //            }
+            //            if let zoneId = Int(locationSearch[2]) {
+            //                let predicate = NSPredicate(format: "ANY gateway.zones.id == %@", NSNumber(integer: zoneId))
+            //                predicateArray.append(predicate)
+            //            }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
@@ -368,21 +368,22 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case ZonesPick = 13
         case CategoriesPick = 14
         case SecurityGateways = 15
+        case ControlType = 21
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
             updateDeviceList("Gateway")
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Levels.rawValue {
-//            updateDeviceList("Level")
+            //            updateDeviceList("Level")
             returnSuggestions("Level", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Zones.rawValue {
-//            updateDeviceList("Zone")
+            //            updateDeviceList("Zone")
             returnSuggestions("Zone", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Categories.rawValue {
-//            updateDeviceList("Category")
+            //            updateDeviceList("Category")
             returnSuggestions("Category", gateway: filterGateway!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.LevelsPick.rawValue {
@@ -402,9 +403,26 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList.insert(TableList(name: "No iBeacon", id: -1), atIndex: 0)
         } else if indexTab == PopOver.SecurityGateways.rawValue {
             updateDeviceList("Security")
+        } else if indexTab == PopOver.ControlType.rawValue {
+            if let type = device?.type {
+                changeControlType(type)
+            } else {
+                changeControlType("")
+            }
         }
     }
-    
+    func changeControlType (type:String) {
+        switch type  {
+        case ControlType.Dimmer:
+            tableList.append(TableList(name: ControlType.Dimmer, id: 21))
+            tableList.append(TableList(name: ControlType.Relay, id: 21))
+        case ControlType.Relay:
+            tableList.append(TableList(name: ControlType.Relay, id: 21))
+            tableList.append(TableList(name: ControlType.Dimmer, id: 21))
+            tableList.append(TableList(name: ControlType.Curtain, id: 21))
+        default: tableList.append("Not possible")
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

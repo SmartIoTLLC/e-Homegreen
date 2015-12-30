@@ -9,6 +9,13 @@
 import UIKit
 import CoreData
 
+struct EditedDevice {
+    var levelId:Int
+    var zoneId:Int
+    var categoryId:Int
+    var controlType:String
+}
+
 class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     
@@ -16,6 +23,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
     @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var btnControlType: CustomGradientButton!
     @IBOutlet weak var btnLevel: UIButton!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
@@ -24,6 +32,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     var oldPoint:CGPoint?
     var device:Device?
     var appDel:AppDelegate!
+    var editedDevice:EditedDevice?
     
     var popoverVC:PopOverViewController = PopOverViewController()
     
@@ -43,27 +52,46 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     func saveText (text : String, id:Int) {
-        //  Ovde je text zapravo ID
         print("\(text) \(id)")
         if text != "All" {
             if id == 2 {
-                if let levelId = Int(returnZoneIdWithName(text)) {
-                    device?.parentZoneId = levelId
+                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device!.gateway)) {
+                    editedDevice?.levelId = levelId
                 }
                 btnLevel.setTitle(text, forState: UIControlState.Normal)
             } else if id == 3 {
-                if let zoneId = Int(returnZoneIdWithName(text)) {
-                    device?.zoneId = zoneId
+                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device!.gateway)) {
+                    editedDevice?.zoneId = zoneId
                 }
                 btnZone.setTitle(text, forState: UIControlState.Normal)
             } else if id == 4 {
-                if let categoryId = Int(returnCategoryIdWithName(text)) {
-                    device?.categoryId = categoryId
+                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, gateway: device!.gateway)) {
+                    editedDevice?.categoryId = categoryId
                 }
                 btnCategory.setTitle(text, forState: UIControlState.Normal)
+            } else if id == 21 {
+                editedDevice?.controlType = text
+                btnControlType.setTitle(text,forState: UIControlState.Normal)
             }
+        }
+    }
+    @IBAction func changeControlType(sender: AnyObject) {
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 21
+        popoverVC.device = device!
+        popoverVC.filterGateway = device?.gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
     
@@ -125,10 +153,16 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         }
     }
     @IBAction func btnSave(sender: AnyObject) {
-        device!.name = txtFieldName.text!
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if txtFieldName.text != "" {
+            device!.name = txtFieldName.text!
+            device!.parentZoneId = NSNumber(integer: editedDevice!.levelId)
+            device!.zoneId = NSNumber(integer: editedDevice!.zoneId)
+            device!.categoryId = NSNumber(integer: editedDevice!.categoryId)
+            device!.controlType = editedDevice!.controlType
+            saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -145,9 +179,14 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         txtFieldName.text = device!.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device!.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device!.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device!.address)))"
         lblChannel.text = "\(device!.channel)"
-        btnLevel.setTitle("\(returnZoneWithId(Int(device!.parentZoneId)))", forState: UIControlState.Normal)
-        btnZone.setTitle("\(returnZoneWithId(Int(device!.zoneId)))", forState: UIControlState.Normal)
-        btnCategory.setTitle("\(returnCategoryWithId(Int(device!.categoryId)))", forState: UIControlState.Normal)
+        print(device!.parentZoneId)
+        print(device!.zoneId)
+        print(device!.categoryId)
+        print(device!.controlType)
+        btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device!.parentZoneId), gateway: device!.gateway))", forState: UIControlState.Normal)
+        btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device!.zoneId), gateway: device!.gateway))", forState: UIControlState.Normal)
+        btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device!.categoryId), gateway: device!.gateway))", forState: UIControlState.Normal)
+        btnControlType.setTitle("\(device!.controlType)", forState: UIControlState.Normal)
         txtFieldName.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }
@@ -161,85 +200,8 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         }
     }
     
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
     
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
     
-    func returnZoneIdWithName (name:String) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].id)"
-            } else {
-                return "\(name)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryIdWithName(name:String) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway == %@", device!.gateway)
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo])
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].id)"
-            } else {
-                return "\(name)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
     
 //    func returnThreeCharactersForByte (number:Int) -> String {
 //        return String(format: "%03d",number)
@@ -322,6 +284,7 @@ extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device) {
         let cdp = ChangeDeviceParametarsVC(point: point)
         cdp.device = device
+        cdp.editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType)
 //        self.view.window?.rootViewController?.presentViewController(cdp, animated: true, completion: nil)
         self.presentViewController(cdp, animated: true, completion: nil)
     }

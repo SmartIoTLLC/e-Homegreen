@@ -109,6 +109,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         do {
+            print(appDel)
+            print(appDel.managedObjectContext!)
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
             gateways = fetResults!
             refreshGatewayList()

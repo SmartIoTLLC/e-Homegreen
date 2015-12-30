@@ -32,92 +32,104 @@ class IncomingHandler: NSObject {
         if gateways != [] {
             fetchDevices()
             self.byteArray = byteArrayToHandle
-                // Check if byteArray is correct one (check byte also, which is missing)
-                if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
-                    print("Uslo je u incoming handler.")
-                    
-                    //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                    if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
-                        self.acknowledgementAboutNewDevices(self.byteArray)
-                    }
-                    
-                    //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
-                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
-                        self.acknowledgementAboutChannelParametar (self.byteArray)
-                    }
-                    
-                    //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
-                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                        self.ackonowledgementAboutChannelsState(self.byteArray)
-                    }
-//                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
-//                        self.ackonowledgementAboutChannelState(self.byteArray)
-//                    }
-                    
-//            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
-//            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
-//
-//            }
-                    
-                    //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
-                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
-                        self.ackDimmerGetRunningTime(self.byteArray)
-                    }
-                    
-                    //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
-                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
-                        self.ackChannelWarnings(self.byteArray)
-                    }
-                    
-                    //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
-                    if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
-                        self.ackACParametar(self.byteArray)
-                    }
-                    //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
-                    if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
-                        self.ackACstatus(self.byteArray)
-                    }
-                    //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
-                    //
-                    //                }
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
-                        self.ackADICmdGetInterfaceParametar(self.byteArray)
-                    }
-                    // - Ovo je izgleda u redu
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                        self.ackADICmdGetInterfaceStatus(self.byteArray)
-                    }
-//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 { // OVO NE MOZE OVAKO DA BUDE
-//                        self.ackADICmdGetInterfaceStatus(self.byteArray)
-//                    }
-//                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
-//                        
-//                    }
-                    
-                    // - Ovo je izgleda u redu
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
-                        self.securityFeedbackHandler(self.byteArray)
-                    }
-                    
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x03 {
-                        self.ackInterfaceEnableStatus(self.byteArray)
-                    }
-                    
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
-                        self.ackADICmdGetInterfaceName(self.byteArray)
-                    }
-                    
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
-                        self.ackTimerStatus(self.byteArray)
-                    }
-                    
-                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
-                        self.ackFlagStatus(self.byteArray)
-                    }
+            // Check if byteArray is correct one (check byte also, which is missing)
+            if self.byteArray[0] == 0xFC && self.byteArray[self.byteArray.count-1] == 0x10 {
+                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
+                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
+                    self.acknowledgementAboutNewDevices(self.byteArray)
                 }
+            }
+            if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
+                print("Uslo je u incoming handler.")
+                
+                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
+                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
+                    self.acknowledgementAboutNewDevices(self.byteArray)
+                }
+                
+                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x0D {
+                    self.acknowledgementAboutCurtainParametar(self.byteArray)
+                }
+                
+                //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
+                    self.acknowledgementAboutChannelParametar (self.byteArray)
+                }
+                
+                //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
+                    self.ackonowledgementAboutChannelsState(self.byteArray)
+                }
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xF0 { // OVO NE MOZE OVAKO DA BUDE
+                    self.ackonowledgementAboutCurtainState(self.byteArray)
+                }
+                //                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
+                //                        self.ackonowledgementAboutChannelState(self.byteArray)
+                //                    }
+                
+                //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
+                //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
+                //
+                //            }
+                
+                //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
+                    self.ackDimmerGetRunningTime(self.byteArray)
+                }
+                
+                //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
+                    self.ackChannelWarnings(self.byteArray)
+                }
+                
+                //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
+                if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
+                    self.ackACParametar(self.byteArray)
+                }
+                //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
+                if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
+                    self.ackACstatus(self.byteArray)
+                }
+                //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
+                //
+                //                }
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
+                    self.ackADICmdGetInterfaceParametar(self.byteArray)
+                }
+                // - Ovo je izgleda u redu
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
+                    self.ackADICmdGetInterfaceStatus(self.byteArray)
+                }
+                //                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 { // OVO NE MOZE OVAKO DA BUDE
+                //                        self.ackADICmdGetInterfaceStatus(self.byteArray)
+                //                    }
+                //                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+                //
+                //                    }
+                
+                // - Ovo je izgleda u redu
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+                    self.securityFeedbackHandler(self.byteArray)
+                }
+                
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x03 {
+                    self.ackInterfaceEnableStatus(self.byteArray)
+                }
+                
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
+                    self.ackADICmdGetInterfaceName(self.byteArray)
+                }
+                
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
+                    self.ackTimerStatus(self.byteArray)
+                }
+                
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
+                    self.ackFlagStatus(self.byteArray)
+                }
+            }
         }
     }
-    
     func refreshSecurityStatus (byteArray:[Byte]) {
         
     }
@@ -125,7 +137,7 @@ class IncomingHandler: NSObject {
         fetchDevices()
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
-//                var number = Int(byteArray[6+5*Int(device.channel)])
+                //                var number = Int(byteArray[6+5*Int(device.channel)])
                 print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
                 device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
             }
@@ -153,7 +165,7 @@ class IncomingHandler: NSObject {
         }
     }
     func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
-//        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
+        //        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
         // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicateOne = NSPredicate(format: "gateway == %@", gateways[0].objectID)
@@ -241,7 +253,7 @@ class IncomingHandler: NSObject {
                     let channelNumber = Int(devices[i].channel)
                     print(Int(devices[i].channel))
                     devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
-                    print(devices[i].type)
+                    print(devices[i].controlType )
                     print(devices[i].runningTime)
                 }
             }
@@ -262,8 +274,8 @@ class IncomingHandler: NSObject {
     func returnRunningTime (runningTimeByteArray:[Byte]) -> String {
         print(runningTimeByteArray)
         let x = Int(bytesToUInt(runningTimeByteArray))
-//        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
-//        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
+        //        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
+        //        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
         var seconds = x / 10
         let hours = seconds / 3600
         let minutes = (seconds % 3600) / 60
@@ -287,7 +299,7 @@ class IncomingHandler: NSObject {
             }
             for var i = 0; i < devices.count; i++ {
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
-//                var channel = Int(devices[i].channel)
+                    //                var channel = Int(devices[i].channel)
                     if string != "" {
                         devices[i].name = string
                     } else {
@@ -324,11 +336,11 @@ class IncomingHandler: NSObject {
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
                 device.categoryId = Int(byteArray[8])
-//                var interfaceParametar:[Byte] = []
-//                for var i = 7; i < byteArray.count-2; i++ {
-//                    interfaceParametar.append(byteArray[i])
-//                }
-//                device.interfaceParametar = interfaceParametar
+                //                var interfaceParametar:[Byte] = []
+                //                for var i = 7; i < byteArray.count-2; i++ {
+                //                    interfaceParametar.append(byteArray[i])
+                //                }
+                //                device.interfaceParametar = interfaceParametar
                 if byteArray[11] >= 0x80 {
                     device.isEnabled = NSNumber(bool: true)
                     device.isVisible = NSNumber(bool: true)
@@ -369,12 +381,12 @@ class IncomingHandler: NSObject {
                     devices[i].zoneId = Int(byteArray[33])
                     devices[i].parentZoneId = Int(byteArray[34])
                     devices[i].categoryId = Int(byteArray[32])
-//                    devices[i].enabled = ""
-//                    if byteArray[22] == 0x01 {
-//                        devices[i].isEnabled = NSNumber(bool: true)
-//                    } else {
-//                        devices[i].isEnabled = NSNumber(bool: false)
-//                    }
+                    //                    devices[i].enabled = ""
+                    //                    if byteArray[22] == 0x01 {
+                    //                        devices[i].isEnabled = NSNumber(bool: true)
+                    //                    } else {
+                    //                        devices[i].isEnabled = NSNumber(bool: false)
+                    //                    }
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
@@ -398,105 +410,26 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
-    //  informacije o novim uredjajima
-    func acknowledgementAboutNewDevices (byteArray:[Byte]) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
-            var deviceExists = false
-            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
-                if devices != [] {
-                    for device in devices {
-                        if device.address == Int(byteArray[4]) {
-                            deviceExists = true
-                        }
-                    }
+    func acknowledgementAboutCurtainParametar (byteArray:[Byte]) {
+        self.fetchDevices()
+        print(byteArray)
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
+                var string:String = ""
+                for var j = 12; j < byteArray.count-2; j++ {
+                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
+                if string != "" {
+                    device.name = string
                 } else {
-                    deviceExists = false
+                    device.name = "Unknown"
                 }
-                if !deviceExists {
-                    for var i=1 ; i<=channel ; i++ {
-                        if channel == 10 && name == ControlType.Sensor && i > 1 {
-                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                            device.name = "Unknown"
-                            device.address = Int(byteArray[4])
-                            device.channel = i
-                            device.numberOfDevices = channel
-                            device.runningTime = ""
-                            device.currentValue = 0
-                            device.current = 0
-                            device.amp = ""
-                            device.type = name
-                            device.voltage = 0
-                            device.temperature = 0
-                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                            device.isVisible = false
-                            device.isEnabled = false
-                            saveChanges()
-                        } else if channel == 6 && name == ControlType.Sensor && i > 1 {
-                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                            device.name = "Unknown"
-                            device.address = Int(byteArray[4])
-                            device.channel = i
-                            device.numberOfDevices = channel
-                            device.runningTime = ""
-                            device.currentValue = 0
-                            device.current = 0
-                            device.amp = ""
-                            device.type = name
-                            device.voltage = 0
-                            device.temperature = 0
-                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                            device.isVisible = false
-                            device.isEnabled = false
-                            saveChanges()
-                        } else if name == ControlType.HVAC {
-                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                            device.name = "Unknown"
-                            device.address = Int(byteArray[4])
-                            device.channel = i
-                            device.numberOfDevices = channel
-                            device.runningTime = ""
-                            device.amp = ""
-                            device.type = name
-                            device.voltage = 0
-                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                            device.currentValue = 0
-                            device.runningTime = "00:00:00,0s"
-                            device.mode = "AUTO"
-                            device.modeState = "Off"
-                            device.speed = "AUTO"
-                            device.speedState = "Off"
-                            device.coolTemperature = 0
-                            device.heatTemperature = 0
-                            device.roomTemperature = 0
-                            device.humidity = 0
-                            device.current = 0
-                            saveChanges()
-                        } else if name != ControlType.HVAC && name != ControlType.Sensor {
-                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
-                            device.name = "Unknown"
-                            device.address = Int(byteArray[4])
-                            device.channel = i
-                            device.numberOfDevices = channel
-                            device.runningTime = ""
-                            device.currentValue = 0
-                            device.current = 0
-                            device.runningTime = "00:00:00,0s"
-                            device.amp = ""
-                            device.type = name
-                            device.voltage = 0
-                            device.temperature = 0
-                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
-                            device.delay = 0
-                            device.runtime = 0
-                            device.skipState = 0
-                            saveChanges()
-                        }
-                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-                    }
-                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
-                }
+                device.categoryId = Int(byteArray[8])
+                device.zoneId = Int(byteArray[9])
+                device.parentZoneId = Int(byteArray[10])
             }
+            self.saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     //  informacije o stanjima na uredjajima
@@ -523,7 +456,7 @@ class IncomingHandler: NSObject {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
-//                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
+                //                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
@@ -566,9 +499,17 @@ class IncomingHandler: NSObject {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
                     }
-//                    devices[i].allowCurtainMode = Int(byteArray[33])
+                    //                    devices[i].allowCurtainMode = Int(byteArray[33])
+                    //                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
+                    if byteArray[28] == 0x01 {
+                        devices[i].isDimmerModeAllowed = NSNumber(bool: true)
+                        devices[i].controlType = ControlType.Dimmer
+                    }
+                    if byteArray[33] == 0x01 {
+                        devices[i].isCurtainModeAllowed = NSNumber(bool: true)
+                        devices[i].controlType = ControlType.Curtain
+                    }
                     devices[i].curtainGroupID = Int(byteArray[34])
-//                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
                     devices[i].curtainControlMode = Int(byteArray[35])
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
@@ -580,6 +521,7 @@ class IncomingHandler: NSObject {
         }
         
     }
+    
     //  0x00 Waiting = 0
     //  0x01 Started = 1
     //  0xF0 Elapsed = 240
@@ -593,7 +535,7 @@ class IncomingHandler: NSObject {
             print(timers.count)
             for item in timers {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(i) {
-                        item.timerState = NSNumber(integer: Int(byteArray[7+i]))
+                    item.timerState = NSNumber(integer: Int(byteArray[7+i]))
                     saveChanges()
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
                 }

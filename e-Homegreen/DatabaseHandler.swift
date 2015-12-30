@@ -75,7 +75,7 @@ class DatabaseHandler: NSObject {
     class func returnCategoryIdWithName(name:String, gateway:Gateway) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway.objectID == %@", gateway.objectID)
+        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
@@ -96,7 +96,7 @@ class DatabaseHandler: NSObject {
     class func returnZoneIdWithName (name:String, gateway:Gateway) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway.objectID == %@", gateway.objectID)
+        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate

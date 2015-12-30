@@ -22,9 +22,59 @@ typealias Byte = UInt8
 //    static let SCREEN_MIN_LENGTH = min(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
 //}
 
+//enum InputError: ErrorType {
+//    case InputMissing
+//    case IdIncorrect
+//}
 enum InputError: ErrorType {
+    case NotConvertibleToInt
+    case FromBiggerThanTo
+    case NotPositiveNumbers
     case InputMissing
     case IdIncorrect
+    case NumbersAreNegative
+    case NothingToSearchFor
+    case OutOfRange
+}
+extension InputError: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case NotConvertibleToInt: return "Not convertible to number."
+        case FromBiggerThanTo: return "From is bigger then to."
+        case NotPositiveNumbers: return "Numbers must be positive."
+        case InputMissing: return "Missing input."
+        case IdIncorrect: return "Id is incorrect."
+        case NumbersAreNegative: return "Numbers cab't be negative."
+        case NothingToSearchFor: return "There is nothing to search for."
+        case OutOfRange: return "Search range is out of range."
+        }
+    }
+}
+//  0x00 Waiting = 0
+//  0x01 Started = 1
+//  0xF0 Elapsed = 240
+//  0xEE Suspend = 238
+struct CurtainControlMode {
+    static let NC = 0x01
+    static let NO = 0x02
+    static let NCAndReset = 0x03
+    static let NOAndReset = 0x04
+}
+struct CurtainControlModes {
+//    static let Close = 0x01
+//    static let Open = 0x02
+//    static let Reverse = 0x03
+//    static let Stop = 0x04
+    static let Open = 0xFF
+    static let Close = 0x00
+    static let Toggle = 0xF1
+    static let Stop = 0xEF
+}
+struct SomethingSomethingSomething {
+    static let Waiting = 0x00
+    static let Started = 0x01
+    static let Elapsed = 0xF0
+    static let Suspend = 0xEE
 }
 struct ReuseIdentifier {
 //    "settingsCell"
@@ -32,6 +82,7 @@ struct ReuseIdentifier {
 struct UserDefaults {
     static let IsScaningDevice = "PLCDidFindDevice"
     static let IsScaningDeviceName = "PLCdidFindNameForDevice"
+    static let IsScaningSensorParametars = "PLCDidFindSensorParametar"
     static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
@@ -155,3 +206,23 @@ struct DeviceValue {
 //}
 
 //UIApplication.sharedApplication().idleTimerDisabled = true
+
+extension NSDate {
+    
+    static func yesterDay() -> NSDate {
+        
+        let today: NSDate = NSDate()
+        
+        let daysToAdd:Int = -1
+        
+        // Set up date components
+        let dateComponents: NSDateComponents = NSDateComponents()
+        dateComponents.day = daysToAdd
+        
+        // Create a calendar
+        let gregorianCalendar: NSCalendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
+        let yesterDayDate: NSDate = gregorianCalendar.dateByAddingComponents(dateComponents, toDate: today, options:NSCalendarOptions(rawValue: 0))!
+        
+        return yesterDayDate
+    }
+}

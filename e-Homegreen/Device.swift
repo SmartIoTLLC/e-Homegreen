@@ -23,6 +23,8 @@ class Device: NSManagedObject {
     @NSManaged var heatTemperature: NSNumber
     @NSManaged var humidity: NSNumber
     @NSManaged var isEnabled: NSNumber
+    @NSManaged var isDimmerModeAllowed: NSNumber
+    @NSManaged var isCurtainModeAllowed: NSNumber
     @NSManaged var mode: String
     @NSManaged var modeState: String
     @NSManaged var name: String
@@ -40,6 +42,7 @@ class Device: NSManagedObject {
     @NSManaged var stateUpdatedAt: NSDate?
     @NSManaged var temperature: NSNumber
     @NSManaged var type: String
+    @NSManaged var controlType: String
     @NSManaged var voltage: NSNumber
     @NSManaged var zoneId: NSNumber
     @NSManaged var isVisible: NSNumber

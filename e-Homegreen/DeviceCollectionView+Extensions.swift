@@ -12,7 +12,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if devices[indexPath.row].isEnabled.boolValue {
-            if devices[indexPath.row].type == ControlType.HVAC {
+            if devices[indexPath.row].controlType == ControlType.Climate {
                 showClimaSettings(indexPath.row, devices: devices)
             }
             //            deviceCollectionView.reloadData()
@@ -55,29 +55,30 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
         }
         let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
-        if devices[indexPathRow].type == ControlType.Dimmer {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+        if devices[indexPathRow].controlType == ControlType.Dimmer {
+            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == ControlType.CurtainsRelay || devices[indexPathRow].type == ControlType.Appliance {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+        if devices[indexPathRow].controlType == ControlType.Relay {
+            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == ControlType.HVAC {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+        if devices[indexPathRow].controlType == ControlType.Climate {
+            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == ControlType.Sensor {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].type)---\(devices[indexPathRow].stateUpdatedAt)")
+        if devices[indexPathRow].controlType == ControlType.Sensor {
+            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].type == ControlType.CurtainsRS485 {
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+        if devices[indexPathRow].controlType == ControlType.Curtain {
+            SendingHandler.sendCommand(byteArray: Function.getCurtainStatus(address), gateway: devices[indexPathRow].gateway)
         }
         saveChanges()
     }
     func refreshVisibleDevicesInScrollView () {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+            print(indexPaths.count)
             for indexPath in indexPaths {
                 updateDeviceStatus (indexPathRow: indexPath.row)
             }
@@ -143,7 +144,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        if devices[indexPath.row].type == ControlType.Dimmer {
+        if devices[indexPath.row].controlType == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
 //            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
@@ -153,7 +154,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
-            let deviceValue = Double(devices[indexPath.row].currentValue) / 100
+            let deviceValue:Double = {
+                if Double(devices[indexPath.row].currentValue) > 100 {
+                    return Double(devices[indexPath.row].currentValue) / 255
+                } else {
+                    return Double(devices[indexPath.row].currentValue) / 100
+                }
+            }()
             if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
                 cell.picture.image = image
             } else {
@@ -238,37 +245,56 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-        } else if devices[indexPath.row].type == ControlType.CurtainsRS485 {
+        } else if devices[indexPath.row].type == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
 //            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.curtainName.text = devices[indexPath.row].name
-                        cell.curtainName.text = devices[indexPath.row].cellTitle
+            cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
-            let deviceValue = Double(devices[indexPath.row].currentValue) / 100
-            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
-                cell.curtainImage.image = image
-            } else {
-                if deviceValue >= 0 && deviceValue < 0.2 {
-                    cell.curtainImage.image = UIImage(named: "curtain0")
-                } else if deviceValue >= 0.2 && deviceValue < 0.4 {
-                    cell.curtainImage.image = UIImage(named: "curtain1")
-                } else if deviceValue >= 0.4 && deviceValue < 0.6 {
-                    cell.curtainImage.image = UIImage(named: "curtain2")
-                } else if deviceValue >= 0.6 && deviceValue < 0.8 {
-                    cell.curtainImage.image = UIImage(named: "curtain3")
+            let deviceValue:Double = {
+                if Double(devices[indexPath.row].currentValue) > 100 {
+                    return Double(devices[indexPath.row].currentValue) / 255
                 } else {
-                    cell.curtainImage.image = UIImage(named: "curtain4")
+                    return Double(devices[indexPath.row].currentValue) / 100
                 }
-            }
+            }()
+            print(devices[indexPath.row].categoryId)
+            print(deviceValue)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+                if let image = ImageHandler.returnPictures(Int(self.devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        cell.curtainImage.image = image
+                    })
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if deviceValue == 0 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                        } else if deviceValue <= 1/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                        } else if deviceValue <= 2/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                        } else if deviceValue < 3/3 {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                        } else {
+                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                        }
+                    })
+                }
+            })
             cell.curtainName.userInteractionEnabled = true
             cell.curtainSlider.value = Float(deviceValue)
             cell.curtainImage.userInteractionEnabled = true
             
-            cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
-            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
-            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+//            cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
+//            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
+//            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
+//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address)))"
+            cell.lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), gateway: devices[indexPath.row].gateway))"
+            cell.lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), gateway: devices[indexPath.row].gateway))"
+            cell.lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), gateway: devices[indexPath.row].gateway))"
+
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
@@ -287,9 +313,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 longPress.minimumPressDuration = 0.5
                 cell.curtainName.addGestureRecognizer(longPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-                cell.btnRefresh.tag = indexPath.row
+//                cell.btnRefresh.tag = indexPath.row
                 //                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
+//                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
@@ -306,13 +332,19 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             return cell
-        } else if devices[indexPath.row].type == ControlType.CurtainsRelay || devices[indexPath.row].type == ControlType.Appliance {
+        } else if devices[indexPath.row].controlType == ControlType.Relay {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
 //            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.name.text = devices[indexPath.row].name
                         cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
-            let deviceValue = Double(devices[indexPath.row].currentValue)/255
+            let deviceValue:Double = {
+                if Double(devices[indexPath.row].currentValue) == 100 {
+                    return Double(devices[indexPath.row].currentValue)/100
+                } else {
+                    return Double(devices[indexPath.row].currentValue)/255
+                }
+            }()
             if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
                 cell.image.image = image
             } else {
@@ -323,7 +355,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                     cell.image.image = UIImage(named: "applianceoff")
                 }
             }
-            if devices[indexPath.row].currentValue == 255 {
+            if deviceValue == 1 {
                 cell.onOff.setTitle("ON", forState: .Normal)
             } else if devices[indexPath.row].currentValue == 0 {
                 cell.onOff.setTitle("OFF", forState: .Normal)
@@ -371,7 +403,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
             
-        } else if devices[indexPath.row].type == ControlType.HVAC {
+        } else if devices[indexPath.row].controlType == ControlType.Climate {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             
 //            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
@@ -477,7 +509,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
             
-        } else if devices[indexPath.row].type == ControlType.Sensor {
+        } else if devices[indexPath.row].controlType == ControlType.Sensor {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
@@ -500,7 +532,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("dafaultCell", forIndexPath: indexPath) as! DefaultCell
+            cell.defaultLabel.text = "type:\(devices[indexPath.row].type) controlType:\(devices[indexPath.row].controlType)"
             return cell
         }
     }

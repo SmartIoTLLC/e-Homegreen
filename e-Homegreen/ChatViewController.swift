@@ -292,24 +292,24 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", "Consider it done."]
         switch command {
         case .TurnOnDevice:
-            if deviceType == ControlType.Dimmer || deviceType == ControlType.CurtainsRelay || deviceType == ControlType.Appliance {
+            if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay {
                 array.append("Device was turned on.")
             }
-            if deviceType == ControlType.CurtainsRS485 {
+            if deviceType == ControlType.Curtain {
                 array.append("Curtain was turned on.")
             }
-            if deviceType == ControlType.HVAC {
+            if deviceType == ControlType.Climate {
                 array.append("Climate was turned on.")
                 array.append("Hvac was turned on.")
             }
         case.TurnOffDevice:
-            if deviceType == ControlType.Dimmer || deviceType == ControlType.CurtainsRelay || deviceType == ControlType.Appliance {
+            if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay {
                 array.append("Device was turned off.")
             }
-            if deviceType == ControlType.CurtainsRS485 {
+            if deviceType == ControlType.Curtain {
                 array.append("Curtain was turned off.")
             }
-            if deviceType == ControlType.HVAC {
+            if deviceType == ControlType.Climate {
                 array.append("Climate was turned off.")
                 array.append("Hvac was turned off.")
             }
@@ -328,43 +328,43 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     func sendCommand(command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
         if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            if device.type == ControlType.Dimmer {
+            if device.controlType == ControlType.Dimmer {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.CurtainsRelay || device.type == ControlType.Appliance {
+            if device.controlType == ControlType.Relay {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.CurtainsRS485 {
+            if device.controlType == ControlType.Curtain {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.HVAC {
+            if device.controlType == ControlType.Climate {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
 //            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
-            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
+            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            if device.type == ControlType.Dimmer {
+            if device.controlType == ControlType.Dimmer {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.CurtainsRelay || device.type == ControlType.Appliance {
+            if device.controlType == ControlType.Relay {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.CurtainsRS485 {
+            if device.controlType == ControlType.Curtain {
                 SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
-            if device.type == ControlType.HVAC {
+            if device.controlType == ControlType.Climate {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
 //            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
-            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
+            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .DimDevice {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-                if device.type == ControlType.Dimmer {
+                if device.controlType == ControlType.Dimmer {
                     SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
 //                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
-                    refreshChatListWithAnswer(commandWasSent(command, deviceType: device.type), isValeryVoiceOn: isValeryVoiceOn)
+                    refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)
                 }

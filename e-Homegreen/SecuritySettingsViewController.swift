@@ -81,6 +81,8 @@ class SecuritySettingsViewController: UIViewController, UIViewControllerTransiti
         let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
         do {
+            print(appDel)
+            print(appDel.managedObjectContext!)
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
             securities = fetResults!
         } catch let error1 as NSError {

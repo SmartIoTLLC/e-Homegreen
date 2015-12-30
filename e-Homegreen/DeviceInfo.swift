@@ -34,7 +34,9 @@ enum speedState:Int {
 struct Channel {
     static let One = 1
     static let Two = 2
+    static let Three = 3
     static let Four = 4
+    static let Five = 5
     static let Six = 6
     static let Eight = 8
     static let Ten = 10
@@ -51,12 +53,15 @@ struct ControlType {
     // AnalogInput
     // AnalogOutput
     // SaltoAccess
-    static let CurtainsRS485 = "curtainsRS485"
-    static let CurtainsRelay = "curtainsRelay"
+    static let CurtainsRS485 = "Curtains RS485"
+    static let Gateway = "Gateway"
+    static let CurtainsRelay = "Curtains Relay"
     static let PC = "PC"
     static let Dimmer = "Dimmer"
+    static let Relay = "Relay"
     static let Appliance = "Appliance"
     static let HVAC = "HVAC"
+    static let Climate = "Climate"
     static let Sensor = "Sensor"
     static let Light = "Light"
     static let HumanInterfaceSeries = "Intelligent Switch"
@@ -65,7 +70,8 @@ struct ControlType {
     static let DigitalOutput = "Digital Output"
     static let AnalogInput = "Analog Input"
     static let IRTransmitter = "IR Transmitter"
-    static let SaltoAccess = "Salto Access"
+    static let Access = "Access"
+    static let Curtain = "Curtain"
 }
 struct Interface {
     static let TemperatureProbe = "CPU.Temp"
@@ -98,13 +104,6 @@ struct DeviceInfo {
         2:"Med",
         3:"High"]
 
-    static let deviceCategory:[Int:String] = [2 : ControlType.Dimmer,
-        4:ControlType.HVAC,
-        11:ControlType.Light,
-        12:ControlType.Appliance,
-        19:ControlType.CurtainsRelay,
-        13:ControlType.CurtainsRelay,
-        14:ControlType.Sensor]
     static let inputInterface10in1:[Int:String] = [1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
@@ -140,43 +139,17 @@ struct DeviceInfo {
         16:"Flag",
         17:"Event"]
     
-    static let deviceChannel:[UInt8:DeviceChannelType] = [0x03 :DeviceChannelType(channel:Channel.One, name:ControlType.CurtainsRS485), //RS232/RS485 Gateway
-        0x21:DeviceChannelType(channel:Channel.Four, name:ControlType.CurtainsRelay), //ChangeOverRelay
-        0x25:DeviceChannelType(channel:Channel.Eight, name:ControlType.CurtainsRelay), //ChangeOverRelay
-        0x0C:DeviceChannelType(channel:Channel.One, name:ControlType.PC), //ControlType.PC
-        0x13:DeviceChannelType(channel:Channel.Four, name:ControlType.Dimmer), //Dimmer Module 4CH, 1A
-        0x16:DeviceChannelType(channel:Channel.Eight, name:ControlType.Dimmer), //Dimmer Module 8CH, 1A
-        0x11:DeviceChannelType(channel:Channel.Two, name:ControlType.Dimmer), //Dimmer Module 2CH, 2A
-        0x14:DeviceChannelType(channel:Channel.Four, name:ControlType.Dimmer), //Dimmer Module 4CH, 2A
-        0x12:DeviceChannelType(channel:Channel.One, name:ControlType.Dimmer), //Dimmer Module 1CH, 4A
-        0x15:DeviceChannelType(channel:Channel.Two, name:ControlType.Dimmer), //Dimmer Module 2CH, 4A
-        0x22:DeviceChannelType(channel:Channel.Four, name:ControlType.Appliance), //Relay Module 4CH 10A
-        0x26:DeviceChannelType(channel:Channel.Eight, name:ControlType.Appliance), //Relay Module 8CH 10A
-        0x23:DeviceChannelType(channel:Channel.Four, name:ControlType.Appliance), //Relay Module 4CH 16A
-        0x27:DeviceChannelType(channel:Channel.Eight, name:ControlType.Appliance), //Relay Module 8CH 16A
-        0x24:DeviceChannelType(channel:Channel.Two, name:ControlType.Appliance),//Relay Module 2CH 20A
-        0x32:DeviceChannelType(channel:Channel.One, name:ControlType.HVAC), //Climate Module, 1 Controller with I/O
-        0x35:DeviceChannelType(channel:Channel.Two, name:ControlType.HVAC), //Climate Module, 2 Controllers with I/O
-        0x33:DeviceChannelType(channel:Channel.One, name:ControlType.HVAC), //Climate Module, 1 Controller
-        0x31:DeviceChannelType(channel:Channel.Two, name:ControlType.HVAC), //Climate Module, 2 Controllers
-        0x34:DeviceChannelType(channel:Channel.Four, name:ControlType.HVAC), //Climate Module, 4 Controllers
-        0x04:DeviceChannelType(channel:Channel.Four, name:ControlType.HVAC), //Climate Module, 4 Controllers
-        0x41:DeviceChannelType(channel:Channel.Ten, name:ControlType.Sensor), //10-in-1 Multisensor
-        0x45:DeviceChannelType(channel:Channel.Six, name:ControlType.Sensor)] //6-in-1 Multisensor
-    
-//    static let deviceType: [DeviceType:DeviceTypeCode] = [:]
-
     // stojao je i class
     static let deviceType:[DeviceType:DeviceTypeCode] = [
         // Gateway & Control series
-//        DeviceType(deviceId: 0x01, subId: 0x00):DeviceTypeCode(channel: Channel.One, name:ControlType.CurtainsRS485, MPN: "IPGC256"), // RS232/RS485 Gateway
-//        DeviceType(deviceId: 0x01, subId: 0x01):DeviceTypeCode(channel:Channel.One, name:ControlType.CurtainsRS485, MPN: "IPGCW02"), // RS232/RS485 Gateway, DIN rail
-//        DeviceType(deviceId: 0x03, subId: 0x00):DeviceTypeCode(channel: Channel.One, name:ControlType.CurtainsRS485, MPN: "RSGW2SP"), // RS232/RS485 Gateway
-//        DeviceType(deviceId: 0x03, subId: 0x01):DeviceTypeCode(channel:Channel.One, name:ControlType.CurtainsRS485, MPN: "RSGW2SD"), // RS232/RS485 Gateway, DIN rail
-//        DeviceType(deviceId: 0x03, subId: 0x02):DeviceTypeCode(channel:Channel.One, name:ControlType.IntelligentCurtainModule, MPN: "ICM05XX"), // Intelligent Curtain Module
-//        DeviceType(deviceId: 0x03, subId: 0x03):DeviceTypeCode(channel: Channel.One, name:ControlType.SaltoAccess, MPN: "S04HOST"), // RS232/RS485 Gateway
-//        DeviceType(deviceId: 0x03, subId: 0x04):DeviceTypeCode(channel:Channel.One, name:ControlType.SaltoAccess, MPN: "S08HOST"), // RS232/RS485 Gateway, DIN rail
-//        DeviceType(deviceId: 0x03, subId: 0x05):DeviceTypeCode(channel: Channel.One, name:ControlType.SaltoAccess, MPN: "S16HOST"), // RS232/RS485 Gateway
+        DeviceType(deviceId: 0x01, subId: 0x00):DeviceTypeCode(channel: Channel.Three, name:ControlType.Gateway, MPN: "IPGC256"), // RS232/RS485 Gateway
+        DeviceType(deviceId: 0x01, subId: 0x01):DeviceTypeCode(channel:Channel.Three, name:ControlType.Gateway, MPN: "IPGCW02"), // RS232/RS485 Gateway, DIN rail
+        DeviceType(deviceId: 0x03, subId: 0x00):DeviceTypeCode(channel: Channel.Three, name:ControlType.Gateway, MPN: "RSGW2SP"), // RS232/RS485 Gateway
+        DeviceType(deviceId: 0x03, subId: 0x01):DeviceTypeCode(channel:Channel.Three, name:ControlType.Gateway, MPN: "RSGW2SD"), // RS232/RS485 Gateway, DIN rail
+        DeviceType(deviceId: 0x03, subId: 0x02):DeviceTypeCode(channel:Channel.One, name:ControlType.Curtain, MPN: "ICM05XX"), // Intelligent Curtain Module
+        DeviceType(deviceId: 0x03, subId: 0x03):DeviceTypeCode(channel: Channel.One, name:ControlType.Access, MPN: "S04HOST"), // RS232/RS485 Gateway
+        DeviceType(deviceId: 0x03, subId: 0x04):DeviceTypeCode(channel:Channel.One, name:ControlType.Access, MPN: "S08HOST"), // RS232/RS485 Gateway, DIN rail
+        DeviceType(deviceId: 0x03, subId: 0x05):DeviceTypeCode(channel: Channel.One, name:ControlType.Access, MPN: "S16HOST"), // RS232/RS485 Gateway
         
         // Dimming Control Series
         DeviceType(deviceId: 0x13, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Dimmer, MPN: "DM0401A"), // Dimmer Module 4CH, 1A
@@ -203,38 +176,40 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x15, subId: 0x03):DeviceTypeCode(channel:Channel.Two, name:ControlType.Dimmer, MPN: "DM0245W"), // Dimmer Module 2CH, 450W
         
         // Relay Control Series
-        DeviceType(deviceId: 0x21, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.CurtainsRelay, MPN: "RM0405A"), // Change Over Module 4CH, 5A
-        DeviceType(deviceId: 0x22, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Appliance, MPN: "RM0410A"), // Relay Module 4CH 10A
-        DeviceType(deviceId: 0x23, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Appliance, MPN: "RM0416A"), // Relay Module 4CH 16A
-        DeviceType(deviceId: 0x24, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.Appliance, MPN: "RM0220A"), // Relay Module 2CH 20A
-        DeviceType(deviceId: 0x25, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.CurtainsRelay, MPN: "RM0805A"), // Change Over Module 8CH, 5A
-        DeviceType(deviceId: 0x26, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Appliance, MPN: "RM0810A"), // Relay Module 8CH 10A
-        DeviceType(deviceId: 0x27, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Appliance, MPN: "RM0816A"), // Relay Module 8CH 16A
+        DeviceType(deviceId: 0x21, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Relay, MPN: "RM0405A"), // Change Over Module 4CH, 5A
+        DeviceType(deviceId: 0x22, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Relay, MPN: "RM0410A"), // Relay Module 4CH 10A
+        DeviceType(deviceId: 0x23, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Relay, MPN: "RM0416A"), // Relay Module 4CH 16A
+        DeviceType(deviceId: 0x24, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.Relay, MPN: "RM0220A"), // Relay Module 2CH 20A
+        DeviceType(deviceId: 0x25, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0805A"), // Change Over Module 8CH, 5A
+        DeviceType(deviceId: 0x26, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0810A"), // Relay Module 8CH 10A
+        DeviceType(deviceId: 0x27, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0816A"), // Relay Module 8CH 16A
         
         // Climate Control Series
-        DeviceType(deviceId: 0x31, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.HVAC, MPN: "CM1002S"), // Climate Module, 2 Controllers
-        DeviceType(deviceId: 0x32, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.HVAC, MPN: "CM0604I"), // Climate Module, 1 Controller with I/O
-        DeviceType(deviceId: 0x33, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.HVAC, MPN: "CM0501S"), // Climate Module, 1 Controller
-        DeviceType(deviceId: 0x34, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.HVAC, MPN: "CM2004S"), // Climate Module, 4 Controllers
-        DeviceType(deviceId: 0x35, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.HVAC, MPN: "CM1208I"), // Climate Module, 2 Controllers with I/O
-        DeviceType(deviceId: 0x04, subId: 0x01):DeviceTypeCode(channel:Channel.One, name: ControlType.HVAC, MPN: "CM051CG"), // Climate Module, 1 Controller Gateway
-        DeviceType(deviceId: 0x04, subId: 0x02):DeviceTypeCode(channel: Channel.Two, name:ControlType.HVAC, MPN: "CM102CG"), // Climate Module, 2 Controllers Gateway
-        DeviceType(deviceId: 0x04, subId: 0x04):DeviceTypeCode(channel: Channel.Four, name:ControlType.HVAC, MPN: "CM204CG"), // Climate Module, 4 Controllers Gateway
+        DeviceType(deviceId: 0x31, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.Climate, MPN: "CM1002S"), // Climate Module, 2 Controllers
+        DeviceType(deviceId: 0x32, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.Climate, MPN: "CM0604I"), // Climate Module, 1 Controller with I/O
+        DeviceType(deviceId: 0x33, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.Climate, MPN: "CM0501S"), // Climate Module, 1 Controller
+        DeviceType(deviceId: 0x34, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.Climate, MPN: "CM2004S"), // Climate Module, 4 Controllers
+        DeviceType(deviceId: 0x35, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.Climate, MPN: "CM1208I"), // Climate Module, 2 Controllers with I/O
+        DeviceType(deviceId: 0x04, subId: 0x01):DeviceTypeCode(channel:Channel.One, name: ControlType.Climate, MPN: "CM051CG"), // Climate Module, 1 Controller Gateway
+        DeviceType(deviceId: 0x04, subId: 0x02):DeviceTypeCode(channel: Channel.Two, name:ControlType.Climate, MPN: "CM102CG"), // Climate Module, 2 Controllers Gateway
+        DeviceType(deviceId: 0x04, subId: 0x04):DeviceTypeCode(channel: Channel.Four, name:ControlType.Climate, MPN: "CM204CG"), // Climate Module, 4 Controllers Gateway
         
         // Human Interface Series
-//        DeviceType(deviceId: 0x54, subId: 0x00):DeviceTypeCode(channel: Channel.Twelve, name:ControlType.HumanInterfaceSeries, MPN: "HS04xxx"), // Intelligent Switch, 4 Buttons
-//        DeviceType(deviceId: 0x54, subId: 0x00):DeviceTypeCode(channel: Channel.Twelve, name:ControlType.HumanInterfaceSeries, MPN: "HS08xxx"), // Intelligent Switch, 8 Buttons
-//        DeviceType(deviceId: 0x72, subId: 0x00):DeviceTypeCode(channel: Channel.Twelve, name:ControlType.HumanInterfaceSeries, MPN: "HS12xxx"), // Intelligent LCD Switch, 12 Buttons
+        DeviceType(deviceId: 0x54, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS04xxx"), // Intelligent Switch, 4 Buttons
+        DeviceType(deviceId: 0x54, subId: 0x01):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS08xxx"), // Intelligent Switch, 8 Buttons
+        DeviceType(deviceId: 0x72, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS12xxx"), // Intelligent LCD Switch, 12 Buttons
         
         // I/O Series
-//        DeviceType(deviceId: 0x42, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogOutput, MPN: "AO4010V"), // Analog Output Module, 4CH 0-10V
-//        DeviceType(deviceId: 0x43, subId: 0x01):DeviceTypeCode(channel:Channel.Four, name:ControlType.DigitalInput, MPN: "DI04GPC"), // Digital Input Module, 4CH
-//        DeviceType(deviceId: 0x2A, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.DigitalOutput, MPN: "DO02GPC"), // Digital Output Module, 2CH
-//        DeviceType(deviceId: 0x41, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogInput, MPN: "AI0402S"), // Analog Input Module, 4CH 0-10V/0-20mA
-        DeviceType(deviceId: 0x45, subId: 0x00):DeviceTypeCode(channel:Channel.Ten, name:ControlType.Sensor, MPN: "MSIX08C"), // 10-in-1 Multisensor, Indoor Ceiling Mount
+        DeviceType(deviceId: 0x42, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogOutput, MPN: "AO4010V"), // Analog Output Module, 4CH 0-10V
+        DeviceType(deviceId: 0x43, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.DigitalInput, MPN: "DI04GPC"), // Digital Input Module, 4CH
+        DeviceType(deviceId: 0x2A, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.DigitalOutput, MPN: "DO02GPC"), // Digital Output Module, 2CH
+        DeviceType(deviceId: 0x44, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogInput, MPN: "AI0402S"), // Analog Input Module, 4CH 0-10V/0-20mA
+        
+        DeviceType(deviceId: 0x41, subId: 0x00):DeviceTypeCode(channel:Channel.Ten, name:ControlType.Sensor, MPN: "MSIX08C"), // 10-in-1 Multisensor, Indoor Ceiling Mount
         DeviceType(deviceId: 0x45, subId: 0x01):DeviceTypeCode(channel:Channel.Six, name:ControlType.Sensor, MPN: "MSI605C"), // 6-in-1 Multisensor, Indoor Ceiling Mount
-        DeviceType(deviceId: 0x44, subId: 0x00):DeviceTypeCode(channel:Channel.Six, name:ControlType.Sensor, MPN: "MSI605W"), // 6-in-1 Multisensor, Indoor Wall Mount number
-//        DeviceType(deviceId: 0x47, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.IRTransmitter, MPN: "MS0502S"), // IR Transmitter, 2CH with 2 AI
+        DeviceType(deviceId: 0x45, subId: 0x00):DeviceTypeCode(channel:Channel.Six, name:ControlType.Sensor, MPN: "MSI605W"), // 6-in-1 Multisensor, Indoor Wall Mount number
+        
+        DeviceType(deviceId: 0x47, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "MS0502S"), // IR Transmitter, 2CH with 2 AI
     ]
 }
 struct DeviceChannelType {

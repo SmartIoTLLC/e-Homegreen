@@ -38,22 +38,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.stopMonitoringForRegion(beaconRegion)
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
-//    func refreshDevicesToYesterday () {
-//        var error:NSError?
-//        let fetchRequest = NSFetchRequest(entityName: "Device")
-//        do {
-//            if let devices = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device] {
-//                for device in devices {
-//                    device.stateUpdatedAt = nil
-//                }
-//                saveContext()
-//            }
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//    }
+    func refreshDevicesToYesterday () {
+        var error:NSError?
+        let fetchRequest = NSFetchRequest(entityName: "Device")
+        do {
+            if let devices = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device] {
+                for device in devices {
+                    
+                    device.stateUpdatedAt = NSDate.yesterDay()
+                }
+                saveContext()
+            }
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 //        refreshDevicesToYesterday()
         

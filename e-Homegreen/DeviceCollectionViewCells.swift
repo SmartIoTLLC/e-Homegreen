@@ -96,7 +96,13 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var onOff: UIButton!
     
     func refreshDevice(device:Device) {
-        let deviceValue = Double(device.currentValue)/255
+        let deviceValue:Double = {
+            if Double(device.currentValue) == 100 {
+                return Double(device.currentValue)/100
+            } else {
+                return Double(device.currentValue)/255
+            }
+        }()
         if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
             self.image.image = image
         } else {
@@ -107,7 +113,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
                 image.image = UIImage(named: "applianceoff")
             }
         }
-        if device.currentValue == 255 {
+        if deviceValue == 1 {
             onOff.setTitle("ON", forState: .Normal)
         } else if device.currentValue == 0 {
             onOff.setTitle("OFF", forState: .Normal)
@@ -147,27 +153,44 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var curtainSlider: UISlider!
     
     func refreshDevice(device:Device) {
-        let deviceValue = Double(device.currentValue) / 100
-        if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
-            curtainImage.image = image
-        } else {
-            if deviceValue >= 0 && deviceValue < 0.2 {
-                curtainImage.image = UIImage(named: "curtain0")
-            } else if deviceValue >= 0.2 && deviceValue < 0.4 {
-                curtainImage.image = UIImage(named: "curtain1")
-            } else if deviceValue >= 0.4 && deviceValue < 0.6 {
-                curtainImage.image = UIImage(named: "curtain2")
-            } else if deviceValue >= 0.6 && deviceValue < 0.8 {
-                curtainImage.image = UIImage(named: "curtain3")
+        let deviceValue:Double = {
+            if Double(device.currentValue) > 100 {
+                return Double(device.currentValue) / 255
             } else {
-                curtainImage.image = UIImage(named: "curtain4")
+                return Double(device.currentValue) / 100
             }
-        }
+        }()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+            if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.curtainImage.image = image
+                })
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    if deviceValue == 0 {
+                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
+                    } else if deviceValue <= 1/3 {
+                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
+                    } else if deviceValue <= 2/3 {
+                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
+                    } else if deviceValue < 3/3 {
+                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
+                    } else {
+                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
+                    }
+                })
+            }
+        })
         curtainSlider.value = Float(deviceValue)
-        labelRunningTime.text = "\(device.runningTime)"
-        lblElectricity.text = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text = "\(Float(device.voltage)) V"
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+//        labelRunningTime.text = "\(device.runningTime)"
+//        lblElectricity.text = "\(Float(device.current) * 0.01) A"
+//        lblVoltage.text = "\(Float(device.voltage)) V"
+//        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        
+//        lblAddress.text = "\(device.channel)" 
+        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))"
+        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))"
+        lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))"
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
             disabledCellView.hidden = true
@@ -185,20 +208,14 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var disabledCellView: UIView!
     
     @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var labelPowrUsege: UILabel!
-    @IBOutlet weak var lblElectricity: UILabel!
-    @IBOutlet weak var lblVoltage: UILabel!
-    @IBOutlet weak var labelRunningTime: UILabel!
-    @IBOutlet weak var btnRefresh: UIButton!
+    @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var lblLevel: UILabel!
+    @IBOutlet weak var lblZone: UILabel!
+    @IBOutlet weak var lblCategory: UILabel!
 }
 //Door
-class AccessControllCell: UICollectionViewCell {
-    @IBOutlet weak var accessLabel: UILabel!
-    @IBOutlet weak var accessImage: UIImageView!
-    
-    func refreshDevice(device:Device) {
-        
-    }
+class DefaultCell: UICollectionViewCell {
+    @IBOutlet weak var defaultLabel: UILabel!
 }
 //Clima
 class ClimateCell: UICollectionViewCell {
