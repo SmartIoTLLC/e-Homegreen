@@ -48,10 +48,16 @@ class SendingHandler {
         print("Poslata je komanda: \(byteArray)")
         let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)
+        for inOutSocket in appDel.inOutSockets {
+            if inOutSocket.port == UInt16(Int(port)) {
+                inOutSocket.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
+                return
+            }
+        }
         //  Send via local ip
         let io = InOutSocket(port: port)
         io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
-        io.socket.close()
+//        io.socket.close()
     }
 }
 

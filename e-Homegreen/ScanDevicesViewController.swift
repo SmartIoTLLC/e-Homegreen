@@ -615,7 +615,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -15,29 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     let locationManager = CLLocationManager()
+    var timer: dispatch_source_t!
     
-    func loadItems() {
-        for item in iBeacons {
-            startMonitoringItem(item)
-        }
-    }
-    
-    func stopiBeacons() {
-        for item in iBeacons {
-            stopMonitoringItem(item)
-        }
-    }
-    func startMonitoringItem(item: IBeacon) {
-        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
-        locationManager.startMonitoringForRegion(beaconRegion)
-        locationManager.startRangingBeaconsInRegion(beaconRegion)
-    }
-    
-    func stopMonitoringItem(item: IBeacon) {
-        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
-        locationManager.stopMonitoringForRegion(beaconRegion)
-        locationManager.stopRangingBeaconsInRegion(beaconRegion)
-    }
+//    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+//
+//    }
     func refreshDevicesToYesterday () {
         var error:NSError?
         let fetchRequest = NSFetchRequest(entityName: "Device")
@@ -57,7 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 //        refreshDevicesToYesterday()
-        
+        broadcastTimeAndDate()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         
@@ -73,38 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let containerViewController = ContainerViewController()
         window!.rootViewController = containerViewController
         
-        //   Configuring data for first time
-        let defaults = NSUserDefaults.standardUserDefaults()
+        configureStateForTheFirstTime()
         
-        let isPreloaded = defaults.boolForKey(UserDefaults.IsPreloaded)
-        if !isPreloaded {
-            preloadData()
-            defaults.setValue(0, forKey: UserDefaults.RefreshDelayHours)
-            defaults.setValue(10, forKey: UserDefaults.RefreshDelayMinutes)
-            defaults.setBool(true, forKey: UserDefaults.IsPreloaded)
-            defaults.setBool(true, forKey: UserDefaults.OpenLastScreen)
-            defaults.setObject("Idle", forKey: UserDefaults.Security.AlarmState)
-            //        Idle, Trobule, Alert, alarm
-            defaults.setObject("Disarm", forKey: UserDefaults.Security.SecurityMode)
-            //        Disarm, Away, Night, Day, Vacation
-            defaults.setObject(1, forKey: UserDefaults.Security.AddressOne)
-            //        No Panic, Panic
-            defaults.setObject(0, forKey: UserDefaults.Security.AddressTwo)
-            //        No Panic, Panic
-            defaults.setObject(254, forKey: UserDefaults.Security.AddressThree)
-            //        No Panic, Panic
-            defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
-            
-            LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Events", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Sequences", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
-        }
-    
         setFilterBySSIDOrByiBeaconAgain()
         return true
     }
@@ -149,18 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         beacon = nil
         stopiBeacons()
-    }
-    func preloadData () {
-        let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
-        for securityJSON in importedData! {
-            let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: managedObjectContext!) as! Security
-            security.name = securityJSON.name
-            security.modeExplanation = securityJSON.modeExplanation
-            security.addressOne = 1
-            security.addressTwo = 0
-            security.addressThree = 254
-            saveContext()
-        }
     }
     func checkIfThereISGatewayWithExistingSSID() {
             if let ssid = UIDevice.currentDevice().SSID {
@@ -312,37 +253,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-//    func establishAllConnections () {
-//        disconnectAllConnections()
-//        fetchGateways()
-//        if gateways != [] {
-//            for var i = 0; i < gateways.count; i++ {
-//                if inOutSockets != [] {
-//                    var foundRemote:Bool = false
-//                    var foundLocal:Bool = false
-//                    for var j = 0; j < inOutSockets.count; j++ {
-//                        if inOutSockets[j].port == UInt16(Int(gateways[i].localPort)) {
-//                            foundLocal = true
-//                        }
-//                        if inOutSockets[j].port == UInt16(Int(gateways[i].remotePort)) {
-//                            foundRemote = true
-//                        }
-//                    }
-//                    if !foundLocal {
-//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
-//                    }
-//                    if !foundRemote {
-//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
-//                    }
-//                } else {
-//                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].localPort))))
-//                    if inOutSockets[0].port != UInt16(Int(gateways[i].remotePort)) {
-//                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateways[i].remotePort))))
-//                    }
-//                }
-//            }
-//        }
-//    }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         establishAllConnections()
@@ -430,43 +340,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                     NSLog("Unresolved error \(error), \(error!.userInfo)")
                     abort()
-                }
-            }
-        }
-    }
-}
-
-extension AppDelegate: CLLocationManagerDelegate {
-    
-    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
-        print("Failed monitoring region: \(error.description)")
-    }
-    
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Location manager failed: \(error.description)")
-    }
-    
-    func returnZoneWithIBeacon (iBeacon:IBeacon) -> Zone? {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "iBeacon == %@", iBeacon)
-        fetchRequest.predicate = predicateOne
-        do {
-            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults?.count != 0 {
-                return fetResults![0]
-            }
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
-        return nil
-    }
-    
-    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
-        for beacon in beacons {
-            for item in iBeacons {
-                if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercaseString == beacon.proximityUUID.UUIDString){
-                    item.accuracy = beacon.accuracy
                 }
             }
         }

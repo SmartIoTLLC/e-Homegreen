@@ -11,6 +11,9 @@
 		3F277F957EC64F51D01216DB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AFD136AEC4526FF7C887E1 /* libPods.a */; };
 		731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */; };
 		731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */; };
+		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
+		731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */; };
+		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F65441BCFABA8001BE004 /* ChatHandler.swift */; };
 		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
 		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
@@ -231,6 +234,9 @@
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultisensorParametarVC.swift; sourceTree = "<group>"; };
 		731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultisensorParametarVC.xib; sourceTree = "<group>"; };
+		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; };
+		731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ConfigureStateForTheFirstTime.swift"; sourceTree = "<group>"; };
+		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
 		733F65441BCFABA8001BE004 /* ChatHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHandler.swift; sourceTree = "<group>"; };
 		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
 		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
@@ -627,6 +633,9 @@
 			isa = PBXGroup;
 			children = (
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
+				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
+				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
+				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
 				E76B57651BBD1DAC00A70F69 /* UI */,
 				73E2390E1B97145D00CB38ED /* Model */,
 				736265DD1B4A47FE0078C11D /* BL */,
@@ -1359,6 +1368,7 @@
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
+				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
@@ -1406,6 +1416,7 @@
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
+				731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */,
 				73FD2E5E1C0A0A1E00B9F11A /* Surveilence.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
@@ -1429,6 +1440,7 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
+				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,

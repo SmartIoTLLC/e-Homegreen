@@ -8,17 +8,21 @@
 
 import UIKit
 
-class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
+class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
 
     var settingArray:[String]!
     @IBOutlet weak var settingsTableView: UITableView!
     
+    @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     var hourRefresh:Int = 0
     var minRefresh:Int = 0
     
+//    @IBOutlet weak var centarY: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
         settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon", "Broadcast"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
@@ -173,6 +177,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         } else if settingArray[indexPath.section] == "Broadcast" {
             let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
             cell.setBroadcast()
+            cell.txtM.delegate = self
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
@@ -241,11 +246,9 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         settingsTableView.reloadData()
     }
     @IBAction func broadcastTimeAndDateFromPhone(sender: AnyObject) {
-        BroadcastPreference.setBroadcastIp("areoffice.selfip.net")
-        BroadcastPreference.setBroadcastPort(5101)
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Year , .Month , .Day, .Hour, .Minute, .Second, .Weekday], fromDate: date)
+        let components = calendar.components([.Year , .Month , .Day, .Hour, .Minute, .Second, .Weekday, .WeekdayOrdinal] , fromDate: date)
         
         let year =  components.year-2000
         let month = components.month
@@ -253,9 +256,48 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         let hour =  components.hour
         let minute = components.minute
         let second = components.second
-        let weekday = components.weekday-1 // OVO BI MOGAO DA BUDE PROBLEM
+        let weekday = components.weekday-1
         
         SendingHandler.sendCommand(byteArray: Function.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
+    }
+    func textFieldDidBeginEditing(textField: UITextField) {
+        let cell = textField.superview?.superview as! BroadcastTimeAndDateTVC
+        settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+    }
+    func KeyboardWillShow(notification: NSNotification){
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            if let endFrame = endFrame{
+                self.tableBottomConstraint.constant = endFrame.size.height + 5
+            }
+            UIView.animateWithDuration(duration,
+                delay: NSTimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
+    }
+    
+    func KeyboardWillHide(notification: NSNotification){
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            
+            self.tableBottomConstraint.constant = 0
+            
+            UIView.animateWithDuration(duration,
+                delay: NSTimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
     }
 }
 
@@ -350,56 +392,20 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
             BroadcastPreference.setIsBroadcastOnEvery(swtitchIs.on)
         }
     }
-}
-class BroadcastPreference {
-    class func getBroadcastIp() -> String {
-        if let ip = NSUserDefaults.standardUserDefaults().stringForKey("kBroadcastIp") {
-            return ip
-        } else {
-            return ""
-        }
-    }
-    class func setBroadcastIp(ip:String) {
-        NSUserDefaults.standardUserDefaults().setValue(ip, forKey: "kBroadcastIp")
-    }
-    
-    class func getBroadcastPort() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastPort")
-        return port
-    }
-    class func setBroadcastPort(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastPort")
-    }
-    
-    class func getIsBroadcastOnStartUp() -> Bool {
-        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnStartUp")
-        return port
-    }
-    class func setIsBroadcastOnStartUp(port:Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(port, forKey: "kIsBroadcastOnStartUp")
-    }
-    
-    class func getIsBroadcastOnEvery() -> Bool {
-        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnEvery")
-        return port
-    }
-    class func setIsBroadcastOnEvery(port:Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(port, forKey: "kIsBroadcastOnEvery")
-    }
-    
-    class func getBroadcastHour() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastHour")
-        return port
-    }
-    class func setBroadcastHour(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastHour")
-    }
-    
-    class func getBroadcastMin() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastMin")
-        return port
-    }
-    class func setBroadcastMin(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastMin")
-    }
+//    func keyboardWillShow(notification: NSNotification) {
+//        var info = notification.userInfo!
+//        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+//        
+//        if txtDescription.isFirstResponder(){
+//            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+//                
+//                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+//                
+//            }
+//        }
+//        
+//        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//        
+//    }
+
 }
