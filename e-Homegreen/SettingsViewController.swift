@@ -19,7 +19,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon", "Broadcast"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
@@ -75,6 +75,11 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 { return 90 }
+        if settingArray[indexPath.section] == "Broadcast" {
+            if isMore {
+                return 192
+            }
+        }
         return 44
     }
     
@@ -165,6 +170,12 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
+        } else if settingArray[indexPath.section] == "Broadcast" {
+            let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
+            cell.setBroadcast()
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
         } else {
             let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
             cell.textLabel?.text = "dads"
@@ -224,6 +235,28 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         let destinationVC = segue.destinationViewController 
         destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
+    var isMore = false
+    @IBAction func btnMore(sender: AnyObject) {
+        isMore = !isMore
+        settingsTableView.reloadData()
+    }
+    @IBAction func broadcastTimeAndDateFromPhone(sender: AnyObject) {
+        BroadcastPreference.setBroadcastIp("areoffice.selfip.net")
+        BroadcastPreference.setBroadcastPort(5101)
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Year , .Month , .Day, .Hour, .Minute, .Second, .Weekday], fromDate: date)
+        
+        let year =  components.year-2000
+        let month = components.month
+        let day = components.day
+        let hour =  components.hour
+        let minute = components.minute
+        let second = components.second
+        let weekday = components.weekday-1 // OVO BI MOGAO DA BUDE PROBLEM
+        
+        SendingHandler.sendCommand(byteArray: Function.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
+    }
 }
 
 class SettinsTableViewCell: UITableViewCell {
@@ -248,4 +281,125 @@ class SettingsRefreshDelayTableViewCell: UITableViewCell {
 class SettingsLastScreenTableViewCell: UITableViewCell {
     @IBOutlet weak var openLastScreen: UISwitch!
     
+}
+class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
+    
+    @IBOutlet weak var txtIp: UITextField!
+    @IBOutlet weak var txtPort: UITextField!
+    @IBOutlet weak var txtH: UITextField!
+    @IBOutlet weak var txtM: UITextField!
+    @IBOutlet weak var isBroadcastOnStartUp: UISwitch!
+    @IBOutlet weak var isBroadcastEvery: UISwitch!
+    
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        saveData()
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        saveData()
+        return true
+    }
+    
+    func setBroadcast () {
+        self.txtIp.delegate = self
+        self.txtPort.delegate = self
+        self.txtH.delegate = self
+        self.txtM.delegate = self
+        self.txtIp.text = BroadcastPreference.getBroadcastIp()
+        self.txtPort.text = "\(BroadcastPreference.getBroadcastPort())"
+        self.txtH.text = "\(BroadcastPreference.getBroadcastHour())"
+        self.txtM.text = "\(BroadcastPreference.getBroadcastMin())"
+        self.isBroadcastOnStartUp.on = BroadcastPreference.getIsBroadcastOnStartUp()
+        self.isBroadcastEvery.on = BroadcastPreference.getIsBroadcastOnEvery()
+    }
+    func saveData() {
+        self.txtIp.resignFirstResponder()
+        self.txtPort.resignFirstResponder()
+        self.txtH.resignFirstResponder()
+        self.txtM.resignFirstResponder()
+        BroadcastPreference.setBroadcastIp(self.txtIp.text!)
+        if let port = Int(self.txtPort.text!) {
+            if port <= 65535 {
+                BroadcastPreference.setBroadcastPort(port)
+            }
+        }
+        if let hour = Int(self.txtH.text!) {
+            if hour <= 23 {
+                BroadcastPreference.setBroadcastHour(hour)
+            }
+        }
+        if let min = Int(self.txtM.text!) {
+            if min <= 59 {
+                BroadcastPreference.setBroadcastMin(min)
+            }
+        }
+        self.txtIp.text = BroadcastPreference.getBroadcastIp()
+        self.txtPort.text = "\(BroadcastPreference.getBroadcastPort())"
+        self.txtH.text = "\(BroadcastPreference.getBroadcastHour())"
+        self.txtM.text = "\(BroadcastPreference.getBroadcastMin())"
+        
+    }
+    @IBAction func isBroadcastOnStartUp(sender: AnyObject) {
+        if let swtitchIs = sender as? UISwitch {
+            BroadcastPreference.setIsBroadcastOnStartUp(swtitchIs.on)
+        }
+    }
+    @IBAction func isBroadcastEvery(sender: AnyObject) {
+        if let swtitchIs = sender as? UISwitch {
+            BroadcastPreference.setIsBroadcastOnEvery(swtitchIs.on)
+        }
+    }
+}
+class BroadcastPreference {
+    class func getBroadcastIp() -> String {
+        if let ip = NSUserDefaults.standardUserDefaults().stringForKey("kBroadcastIp") {
+            return ip
+        } else {
+            return ""
+        }
+    }
+    class func setBroadcastIp(ip:String) {
+        NSUserDefaults.standardUserDefaults().setValue(ip, forKey: "kBroadcastIp")
+    }
+    
+    class func getBroadcastPort() -> Int {
+        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastPort")
+        return port
+    }
+    class func setBroadcastPort(port:Int) {
+        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastPort")
+    }
+    
+    class func getIsBroadcastOnStartUp() -> Bool {
+        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnStartUp")
+        return port
+    }
+    class func setIsBroadcastOnStartUp(port:Bool) {
+        NSUserDefaults.standardUserDefaults().setBool(port, forKey: "kIsBroadcastOnStartUp")
+    }
+    
+    class func getIsBroadcastOnEvery() -> Bool {
+        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnEvery")
+        return port
+    }
+    class func setIsBroadcastOnEvery(port:Bool) {
+        NSUserDefaults.standardUserDefaults().setBool(port, forKey: "kIsBroadcastOnEvery")
+    }
+    
+    class func getBroadcastHour() -> Int {
+        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastHour")
+        return port
+    }
+    class func setBroadcastHour(port:Int) {
+        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastHour")
+    }
+    
+    class func getBroadcastMin() -> Int {
+        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastMin")
+        return port
+    }
+    class func setBroadcastMin(port:Int) {
+        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastMin")
+    }
 }

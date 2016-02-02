@@ -44,6 +44,15 @@ class SendingHandler {
             }
         }
     }
+    static func sendCommand(byteArray byteArray:[UInt8], ip:String, port:UInt16) {
+        print("Poslata je komanda: \(byteArray)")
+        let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)
+        //  Send via local ip
+        let io = InOutSocket(port: port)
+        io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
+        io.socket.close()
+    }
 }
 
 extension UIDevice {

@@ -9,6 +9,24 @@
 import UIKit
 
 class Function {
+    static func setInternalClockRTC (address:[Byte], year:Byte, month:Byte, day:Byte, hour:Byte, minute:Byte, second:Byte, dayOfWeak:Byte) -> [Byte] {
+        var messageInfo:[Byte] = [0xFF, year, month, day, hour, minute,  second, dayOfWeak]
+        var message:[Byte] = []
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x01
+        message[6] = 0x11
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
     static func getLightRelayStatus (address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -273,108 +291,6 @@ class Function {
         message[4] = address[2]
         message[5] = 0x04
         message[6] = 0x0A
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setSensorState (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        var s:Byte = 0x00
-        if status == 0xFF {
-            s = 0x80
-        }
-        if status == 0x00 {
-            s = 0x7F
-        }
-        messageInfo = [channel, s]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x03
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func getSensorState (address:[Byte]) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [0xFF]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x01
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func getSensorEna (address:[Byte], channel:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x02
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func sensorEnabled (address:[Byte], channel:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, 0x80]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x03
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func sensorDisabled (address:[Byte], channel:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, 0x7F]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x03
         for i in 0...messageInfo.count - 1 {
             message[7+i] = messageInfo[i]
         }
@@ -785,8 +701,9 @@ extension Function {
     }
 }
 extension Function {
-    
-    
+    //   **************************************************************************************
+    //   ****************************   ANALOG/ DIGITAL INPUT   *******************************
+    //   **************************************************************************************
     
     static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel]
@@ -808,6 +725,7 @@ extension Function {
         return message
     }
     
+    // Set interface parametar
     static func setInterfaceParametar (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel, isEnabled]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -822,6 +740,133 @@ extension Function {
         for byte in messageInfo {
             message[7+i] = byte
             i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    
+    // Set interface parametar
+    static func getInterfaceStatus (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [channel, isEnabled]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x03
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    // Set interface parametar
+    static func setSensorState (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        var s:Byte = 0x00
+        if status == 0xFF {
+            s = 0x80
+        }
+        if status == 0x00 {
+            s = 0x7F
+        }
+        messageInfo = [channel, s]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x03
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    // Get interface status
+    static func getSensorState (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [0xFF]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x01
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    // Get interface parametar
+    static func getSensorEna (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x02
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    // Set interface parametar
+    static func sensorEnabled (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, 0x80]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x03
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func sensorDisabled (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, 0x7F]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x03
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
         }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
@@ -950,4 +995,69 @@ extension Function {
         return message
     }
 
+}
+
+extension Function {
+//   **************************************************************************************
+//   ****************************   ANALOG/ DIGITAL OUPUT   *******************************
+//   **************************************************************************************
+    
+//    static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+//        let messageInfo:[Byte] = [0x04, panic]
+//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = Byte(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x05
+//        message[6] = 0x11
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
+//    static func setInterfaceParametar (address:[Byte], panic:Byte) -> [Byte]{
+//        let messageInfo:[Byte] = [0x04, panic]
+//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = Byte(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x05
+//        message[6] = 0x11
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
+//    static func setInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+//        let messageInfo:[Byte] = [0x04, panic]
+//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+//        message[0] = 0xAA
+//        message[1] = Byte(messageInfo.count)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x05
+//        message[6] = 0x11
+//        var i = 0
+//        for byte in messageInfo {
+//            message[7+i] = byte
+//            i = i + 1
+//        }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
+    
 }

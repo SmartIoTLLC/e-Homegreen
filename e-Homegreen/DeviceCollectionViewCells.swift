@@ -357,24 +357,24 @@ class MultiSensorCell: UICollectionViewCell {
                     sensorImage.image = UIImage(named: "applianceon")
                 }
                 sensorState.text = "\(device.currentValue)"
-            case 4:
+            case 9:
                 if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
                     sensorImage.image = image
                 } else {
                     sensorImage.image = UIImage(named: "sensor")
                 }
                 sensorState.text = "\(device.currentValue)%"
-            case 5:
+            case 4:
                 sensorImage.image = UIImage(named: "sensor_temperature")
                 sensorState.text = "\(device.currentValue) C"
-            case 6:
+            case 5:
                 if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
                     sensorImage.image = image
                 } else {
                     sensorImage.image = UIImage(named: "sensor_brightness")
                 }
                 sensorState.text = "\(device.currentValue) LUX"
-            case 7:
+            case 6:
                 switch device.currentValue {
                 case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
@@ -393,7 +393,7 @@ class MultiSensorCell: UICollectionViewCell {
             case 8:
                 sensorImage.image = UIImage(named: "sensor_ir_receiver")
                 sensorState.text = "\(device.currentValue)"
-            case 9:
+            case 7:
                 if device.currentValue == 1 {
                     sensorImage.image = UIImage(named: "tamper_on")
                 } else {
@@ -482,24 +482,24 @@ class MultiSensorCell: UICollectionViewCell {
                     sensorImage.image = UIImage(named: "applianceon")
                 }
                 sensorState.text = "\(device.currentValue)"
-            case 4:
+            case 9:
                 if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
                     sensorImage.image = image
                 } else {
                     sensorImage.image = UIImage(named: "sensor")
                 }
                 sensorState.text = "\(device.currentValue)%"
-            case 5:
+            case 4:
                 sensorImage.image = UIImage(named: "sensor_temperature")
                 sensorState.text = "\(device.currentValue) C"
-            case 6:
+            case 5:
                 if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
                     sensorImage.image = image
                 } else {
                     sensorImage.image = UIImage(named: "sensor_brightness")
                 }
                 sensorState.text = "\(device.currentValue) LUX"
-            case 7:
+            case 6:
                 switch device.currentValue {
                 case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
@@ -518,7 +518,7 @@ class MultiSensorCell: UICollectionViewCell {
             case 8:
                 sensorImage.image = UIImage(named: "sensor_ir_receiver")
                 sensorState.text = "\(device.currentValue)"
-            case 9:
+            case 7:
                 if device.currentValue == 1 {
                     sensorImage.image = UIImage(named: "tamper_on")
                 } else {

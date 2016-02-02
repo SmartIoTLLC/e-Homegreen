@@ -40,6 +40,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         self.view.addSubview(pullDown)
         
+        
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self

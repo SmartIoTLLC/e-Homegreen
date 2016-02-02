@@ -515,13 +515,12 @@
 		736265DD1B4A47FE0078C11D /* BL */ = {
 			isa = PBXGroup;
 			children = (
+				73EEEB451C3530570071DF53 /* Incoming Handler */,
+				73EEEB441C3530520071DF53 /* Function */,
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				733C15701B5A825400554FD1 /* Device info and settings */,
 				73ECD4A21B332A6F00767740 /* Constants.swift */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
-				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
-				738E4E771C340A6F0017A7B0 /* IncomingHandler+Extensions.swift */,
-				736265E21B4A483E0078C11D /* Function.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
 				73556C811BB02C6600428375 /* File.swift */,
@@ -707,6 +706,23 @@
 				73E6CDB81BC56454003A5F55 /* FlagParametarVC.xib */,
 			);
 			name = FlagXIB;
+			sourceTree = "<group>";
+		};
+		73EEEB441C3530520071DF53 /* Function */ = {
+			isa = PBXGroup;
+			children = (
+				736265E21B4A483E0078C11D /* Function.swift */,
+			);
+			name = Function;
+			sourceTree = "<group>";
+		};
+		73EEEB451C3530570071DF53 /* Incoming Handler */ = {
+			isa = PBXGroup;
+			children = (
+				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
+				738E4E771C340A6F0017A7B0 /* IncomingHandler+Extensions.swift */,
+			);
+			name = "Incoming Handler";
 			sourceTree = "<group>";
 		};
 		E739739E1B43E62E0077E984 /* Settings */ = {
@@ -1578,7 +1594,7 @@
 			baseConfigurationReference = 170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

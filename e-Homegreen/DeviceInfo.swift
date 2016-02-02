@@ -85,6 +85,18 @@ struct Interface {
     static let DigitalInput = "Tamper Sensor"
     static let DigitalInput2 = "Noise Sensor"
 }
+//struct InterfaceNew {
+//    static let TemperatureProbe = "CPU.Temp"
+//    static let DigitalInputDryContact = "Dig Input 1"
+//    static let DigitalInputDryContact2 = "Dig. Input 2"
+//    static let TemperatureProbe2 = "Temperature"
+//    static let BrightnessSensorLUX = "Brt. Level"
+//    static let MotionSensorPIR = "Motion Sensor"
+//    static let DigitalInput = "Tamper Sensor"
+//    static let IRReceiver = "IR Receiver"
+//    static let AnalogInput = "Analog Input"
+//    static let DigitalInput2 = "Noise Sensor"
+//}
 struct DeviceInfo {
     
     static let setMode:[Int:String] = [0 : "Auto",
@@ -103,7 +115,7 @@ struct DeviceInfo {
         1:"Low",
         2:"Med",
         3:"High"]
-
+    
     static let inputInterface10in1:[Int:String] = [1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
@@ -114,6 +126,18 @@ struct DeviceInfo {
         8:Interface.IRReceiver,
         9:Interface.DigitalInput,
         10:Interface.DigitalInput2]
+    
+    static let inputInterface10in1new:[Int:String] = [1:Interface.TemperatureProbe,
+        2:Interface.DigitalInputDryContact,
+        3:Interface.DigitalInputDryContact2,
+        4:Interface.TemperatureProbe2,
+        5:Interface.BrightnessSensorLUX,
+        6:Interface.MotionSensorPIR,
+        7:Interface.DigitalInput,
+        8:Interface.IRReceiver,
+        9:Interface.AnalogInput,
+        10:Interface.DigitalInput2]
+    
     static let inputInterface6in1:[Int:String] = [1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
