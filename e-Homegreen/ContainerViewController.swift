@@ -39,7 +39,6 @@ class ContainerViewController: UIViewController {
             showShadowForCenterViewController(shouldShowShadow)
         }
     }
-
     
     @IBAction func hamburgerTapped(sender: AnyObject) {
 //        delegate?.toggleLeftPanel?()
@@ -258,7 +257,7 @@ private extension UIStoryboard {
 //    class func cameraViewController() -> CameraViewController? {
 //        return mainStoryboard().instantiateViewControllerWithIdentifier("CameraViewController") as? CameraViewController
 //    }
-    
+
 //    class func databaseViewController() -> DatabaseViewController? {
 //        return mainStoryboard().instantiateViewControllerWithIdentifier("DatabaseViewController") as? DatabaseViewController
 //    }

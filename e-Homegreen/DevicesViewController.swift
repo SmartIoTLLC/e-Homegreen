@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import AVFoundation
+import Crashlytics
+
 
 class DevicesViewController: CommonViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, PullDownViewDelegate {
     
@@ -40,7 +42,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         self.view.addSubview(pullDown)
         
-        
+        let button = UIButton(type: UIButtonType.RoundedRect)
+        button.frame = CGRectMake(20, 50, 100, 30)
+        button.setTitle("Crash", forState: UIControlState.Normal)
+        button.addTarget(self, action: "crashButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(button)
+
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
@@ -52,6 +59,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
+    @IBAction func crashButtonTapped(sender: AnyObject) {
+        printOut("proba")
+        CLSLogv("Log awesomeness %@", getVaList(["Wow. Much fun. Very nice. Wow."]))
+        Crashlytics.sharedInstance().crash()
+    }
+
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }

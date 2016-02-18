@@ -67,3 +67,11 @@ extension AppDelegate: CLLocationManagerDelegate {
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
     }
 }
+
+import Crashlytics
+
+public func printOut (value:String) {
+    NSLog(value)
+    CLSLogv("Log awesomeness %@", getVaList(["Wow. Much fun. Very nice. Wow."]))
+    print(value)
+}

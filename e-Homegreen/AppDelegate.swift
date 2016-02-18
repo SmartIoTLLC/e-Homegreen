@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import CoreLocation
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let locationManager = CLLocationManager()
     var timer: dispatch_source_t!
+    var refreshTimer: dispatch_source_t!
     
 //    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 //
@@ -36,10 +39,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+        API.shared.sendRequest(.GET, url: "") { (completion) -> () in
+            switch completion {
+            case .Success(let response):
+                print("")
+            case .Error(let error):
+                print("")
+            }
+        }
     }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Fabric.with([Crashlytics.self])
 //        refreshDevicesToYesterday()
         broadcastTimeAndDate()
+        refreshAllConnections()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
@@ -81,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let zone = returnZoneWithIBeacon(beacon!)
             if zone != nil {
                 print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.gateway.name) A POKAZUJE OVAj GATEWAY: \(zone?.gateway.name)")
-                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
+                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance"]
                 for filter in filterArray {
                     var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                     if zone!.level == 0 {
@@ -110,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print(gateway.ssid)
                     print(ssid)
                     if gateway.ssid == ssid {
-                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat"]
+                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance"]
                         for filter in filterArray {
                             var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                             //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
@@ -304,6 +317,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             fatalError()
         }
+        
         return coordinator
     }()
     lazy var moc:NSManagedObjectContext? = {

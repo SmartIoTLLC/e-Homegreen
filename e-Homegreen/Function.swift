@@ -496,6 +496,7 @@ class Function {
 //        message[message.count-1] = 0x10
 //        return message
 //    }
+    // MARK: - Get check byte
     static func getChkByte (byteArray byteArray:[Byte]) -> Byte {
         var chk:Int = 0
         for var i = 1; i <= byteArray.count-3; i++ {
@@ -505,6 +506,47 @@ class Function {
         }
         chk = chk%256
         return Byte(chk)
+    }
+    // MARK: - Get command for getting zone and categories
+    class func getZone (address:[Byte], id:Byte) -> [Byte] {
+        var message:[Byte] = []
+        //        Video sam da stoji i 0xFF
+        //        var messageInfo:[Byte] = [0xFF, id]
+        var messageInfo:[Byte] = [0x00, id]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x02
+        message[6] = 0x11
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    class func getCategory (address:[Byte], id:Byte) -> [Byte] {
+        var message:[Byte] = []
+        //        Video sam da stoji i 0xFF
+        //        var messageInfo:[Byte] = [0xFF, id]
+        var messageInfo:[Byte] = [0x00, id]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x02
+        message[6] = 0x13
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
     }
 }
 extension Function {

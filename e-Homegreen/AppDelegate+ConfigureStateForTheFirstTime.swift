@@ -45,6 +45,7 @@ extension AppDelegate {
             defaults.setObject(254, forKey: UserDefaults.Security.AddressThree)
             //        No Panic, Panic
             defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
+            defaults.setInteger(3, forKey: "kRefreshConnections")
             
             LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All","All","All","All"])
@@ -54,6 +55,7 @@ extension AppDelegate {
             LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Surveillance", parametar: ["All","All","All","All","All","All","All"])
         }
     }
 }

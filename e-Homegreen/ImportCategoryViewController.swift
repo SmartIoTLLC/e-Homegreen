@@ -36,7 +36,12 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBOutlet weak var txtFrom: UITextField!
+    @IBOutlet weak var txtTo: UITextField!
     
+    @IBAction func btnScanCategories(sender: AnyObject) {
+        
+    }
     @IBAction func brnDeleteAll(sender: AnyObject) {
         for var item = 0; item < categories.count; item++ {
             if categories[item].gateway.objectID == gateway!.objectID {

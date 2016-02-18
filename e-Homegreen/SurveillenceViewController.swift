@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
     
     var data:NSData?
     
@@ -19,6 +19,9 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     @IBOutlet weak var cameraCollectionView: UICollectionView!
     @IBOutlet weak var imageBack: UIImageView!
     var timer:NSTimer = NSTimer()
+    
+    var pullDown = PullDownView()
+    var locationSearchText = ["", "", "", "", "", "", ""]
     
     var surveillance:[Surveilence] = []
     
@@ -41,11 +44,35 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
+        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+        
         // Do any additional setup after loading the view.
     }
     
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+        fetchSurveillance()
+        cameraCollectionView.reloadData()
+        LocalSearchParametar.setLocalParametar("Surveillance", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
+        locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+    }
+    func refreshLocalParametars() {
+        locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
+        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        fetchSurveillance()
+        cameraCollectionView.reloadData()
+    }
+    func refreshSurveillanceList(){
+        fetchSurveillance()
+        cameraCollectionView.reloadData()
+    }
     override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
         addObservers()
+        fetchSurveillance()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -55,12 +82,14 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: NotificationKey.Surveillance.Run, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: NotificationKey.Surveillance.Stop, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: NotificationKey.RefreshSurveillance, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
     
     func removeObservers () {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Surveillance.Run, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Surveillance.Stop, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSurveillance, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
@@ -69,29 +98,61 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         return 5
     }
     override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.width == 568{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-//            }else if self.view.frame.size.width == 667{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-//            }
-//        }else{
-//            if self.view.frame.size.width == 320{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }else if self.view.frame.size.width == 375{
-//                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }
-//        }
+        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            //            if self.view.frame.size.width == 568{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            //            }else if self.view.frame.size.width == 667{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            //            }else{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            //            }
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+            
+        } else {
+            //            if self.view.frame.size.width == 320{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            //            }else if self.view.frame.size.width == 375{
+            //                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            //            }else{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            //            }
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         cameraCollectionView.reloadData()
+        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
     }
     
+    var locationSearch:String = "All"
+    var zoneSearch:String = "All"
+    var levelSearch:String = "All"
+    var categorySearch:String = "All"
+    var zoneSearchName:String = "All"
+    var levelSearchName:String = "All"
+    var categorySearchName:String = "All"
     func runTimer(){
         if timer.valid == false{
             timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
@@ -182,11 +243,29 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
     }
     
-    func fetchSurveillance () {
+    func fetchSurveillance() {
         let fetchRequest = NSFetchRequest(entityName: "Surveilence")
         let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
+        var predicateArray:[NSPredicate] = []
+        if locationSearch != "All" {
+            let locationPredicate = NSPredicate(format: "location == %@", locationSearch)
+            predicateArray.append(locationPredicate)
+        }
+        if levelSearch != "All" {
+            let levelPredicate = NSPredicate(format: "level == %@", levelSearchName)
+            predicateArray.append(levelPredicate)
+        }
+        if zoneSearch != "All" {
+            let zonePredicate = NSPredicate(format: "surveillanceZone == %@", zoneSearchName)
+            predicateArray.append(zonePredicate)
+        }
+        if categorySearch != "All" {
+            let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", categorySearchName)
+            predicateArray.append(categoryPredicate)
+        }
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
             surveillance = []
@@ -202,10 +281,6 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         }
     }
     
-    func refreshSurveillanceList(){
-        fetchSurveillance()
-        cameraCollectionView.reloadData()
-    }
 
 
 }

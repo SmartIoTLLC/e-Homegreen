@@ -143,20 +143,36 @@ class MenuViewControllers: NSObject {
     }
     
     func allMenuItems1() -> Array<MenuItem> {
-        let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
-        
-        
-        if let unwrappedTitlesForTip = returnValue {
-            menu.removeAll(keepCapacity: false)
+        if !NSUserDefaults.standardUserDefaults().boolForKey("OvoObrisiKadaBudesVideoOvoJeSamoZaKalifuPrepravka") {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "OvoObrisiKadaBudesVideoOvoJeSamoZaKalifuPrepravka")
+        } else {
+            let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
             
-            for item in unwrappedTitlesForTip{
+            
+            if let unwrappedTitlesForTip = returnValue {
+                menu.removeAll(keepCapacity: false)
                 
-                let men:MenuItem = MenuItem (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
-                menu.append(men)
+                for item in unwrappedTitlesForTip{
+                    
+                    let men:MenuItem = MenuItem (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
+                    menu.append(men)
+                }
+                return menu
             }
-            return menu
         }
-        
+//        let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
+//        
+//        
+//        if let unwrappedTitlesForTip = returnValue {
+//            menu.removeAll(keepCapacity: false)
+//            
+//            for item in unwrappedTitlesForTip{
+//                
+//                let men:MenuItem = MenuItem (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
+//                menu.append(men)
+//            }
+//            return menu
+//        }
         menu = [
             MenuItem (title: "Dashboard", image: UIImage(named: "Dashboard"), viewController: MenuViewControllers.sharedInstance.getViewController("Dashboard"), state: true),
             MenuItem (title: "Devices", image: UIImage(named: "Devices"), viewController: MenuViewControllers.sharedInstance.getViewController("Devices"), state: true),

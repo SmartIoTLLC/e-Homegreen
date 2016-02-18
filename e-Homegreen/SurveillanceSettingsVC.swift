@@ -11,14 +11,19 @@ import CoreData
 
 class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate {
     
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scroll: UIScrollView!
+    
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
     var isPresenting: Bool = true
     
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var editLocation: UITextField!
+    @IBOutlet weak var editLevel: UITextField!
+    @IBOutlet weak var editZone: UITextField!
+    @IBOutlet weak var editCategory: UITextField!
     @IBOutlet weak var editName: UITextField!
     
     
@@ -67,6 +72,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             editIPLocal.layer.borderWidth = 1
             editPortLocal.layer.borderWidth = 1
             editSSID.layer.borderWidth = 1
+            editLevel.layer.borderWidth = 1
+            editZone.layer.borderWidth = 1
+            editCategory.layer.borderWidth = 1
         }else{
             editIPRemote.layer.borderWidth = 0.5
             editPortRemote.layer.borderWidth = 0.5
@@ -77,6 +85,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             editIPLocal.layer.borderWidth = 0.5
             editPortLocal.layer.borderWidth = 0.5
             editSSID.layer.borderWidth = 0.5
+            editLevel.layer.borderWidth = 0.5
+            editZone.layer.borderWidth = 0.5
+            editCategory.layer.borderWidth = 0.5
         }
         
         editIPRemote.layer.cornerRadius = 2
@@ -88,6 +99,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editIPLocal.layer.cornerRadius = 2
         editPortLocal.layer.cornerRadius = 2
         editSSID.layer.cornerRadius = 2
+        editLevel.layer.cornerRadius = 2
+        editZone.layer.cornerRadius = 2
+        editCategory.layer.cornerRadius = 2
         
         editIPRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
         editPortRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -98,6 +112,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editIPLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
         editPortLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
         editSSID.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editLevel.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editZone.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editCategory.layer.borderColor = UIColor.lightGrayColor().CGColor
         
         editIPRemote.attributedPlaceholder = NSAttributedString(string:"IP/Host",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
@@ -117,6 +134,12 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         editSSID.attributedPlaceholder = NSAttributedString(string:"SSID",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editLevel.attributedPlaceholder = NSAttributedString(string:"Level",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editZone.attributedPlaceholder = NSAttributedString(string:"Zone",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        editCategory.attributedPlaceholder = NSAttributedString(string:"Category",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
@@ -132,6 +155,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editIPLocal.delegate = self
         editPortLocal.delegate = self
         editSSID.delegate = self
+        editLevel.delegate = self
+        editZone.delegate = self
+        editCategory.delegate = self
         
         if surv != nil{
             editIPRemote.text = surv?.ip
@@ -153,14 +179,23 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if surv?.ssid != nil{
                 editSSID.text = surv?.ssid
             }
+            if surv?.level != nil{
+                editLevel.text = surv?.level
+            }
+            if surv?.surveillanceZone != nil{
+                editZone.text = surv?.surveillanceZone
+            }
+            if surv?.surveillanceCategory != nil{
+                editCategory.text = surv?.surveillanceCategory
+            }
             
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+//        tapGesture.delegate = self
+//        self.view.addGestureRecognizer(tapGesture)
         
         // Do any additional setup after loading the view.
     }
@@ -181,6 +216,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     }
     
     override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation.isLandscape {
+            print("UIDevice.currentDevice().orientation.isLandscape")
+        }
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{
                 backViewHeightConstraint.constant = 250
@@ -192,9 +230,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 backViewHeightConstraint.constant = 480
             }
         }else{
-            
             backViewHeightConstraint.constant = 480
-            
         }
     }
 
@@ -242,6 +278,15 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 if editSSID.text != ""{
                     surveillance.ssid = editSSID.text!
                 }
+                if editLevel.text != ""{
+                    surveillance.localIp = editIPLocal.text!
+                }
+                if editZone.text != ""{
+                    surveillance.localPort = editPortLocal.text!
+                }
+                if editCategory.text != ""{
+                    surveillance.ssid = editSSID.text!
+                }
                 
                 surveillance.tiltStep = 1
                 surveillance.panStep = 1
@@ -265,6 +310,15 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                     surv!.localPort = editPortLocal.text!
                 }
                 if editSSID.text != ""{
+                    surv!.ssid = editSSID.text!
+                }
+                if editLevel.text != ""{
+                    surv!.localIp = editIPLocal.text!
+                }
+                if editZone.text != ""{
+                    surv!.localPort = editPortLocal.text!
+                }
+                if editCategory.text != ""{
                     surv!.ssid = editSSID.text!
                 }
                 
@@ -324,6 +378,46 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         if editSSID.isFirstResponder(){
             if backView.frame.origin.y + editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editUserName.isFirstResponder(){
+            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPassword.isFirstResponder(){
+            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editSSID.isFirstResponder(){
+            if backView.frame.origin.y + editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editLevel.isFirstResponder(){
+            if backView.frame.origin.y + editLevel.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editLevel.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editZone.isFirstResponder(){
+            if backView.frame.origin.y + editZone.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editZone.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editCategory.isFirstResponder(){
+            if backView.frame.origin.y + editCategory.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editCategory.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }

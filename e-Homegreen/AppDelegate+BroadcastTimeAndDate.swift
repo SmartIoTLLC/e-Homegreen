@@ -14,9 +14,14 @@ extension AppDelegate {
     
     func startTimer() {
         if BroadcastPreference.getIsBroadcastOnEvery() {
-            let queue = dispatch_queue_create("com.domain.app.timer", nil)
+            let queue = dispatch_queue_create("com.domain.app.broadcast.time.and.date.timer", nil)
             timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
-            dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
+            let minutes = BroadcastPreference.getBroadcastMin()
+            let hourMinutes = BroadcastPreference.getBroadcastHour()*60
+            let sumMinutes = minutes + hourMinutes
+            let seconds:UInt64 = UInt64(((sumMinutes*60)-10))
+            NSLog("\(seconds)")
+            dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
             dispatch_source_set_event_handler(timer) {
                 // do whatever you want here
                 self.broadcastTimeAndDateEveryNowAndThen()
@@ -28,9 +33,34 @@ extension AppDelegate {
 
     }
     
+    func refreshAllConnections() {
+        let queue = dispatch_queue_create("com.domain.app.refresh.connections.timer", nil)
+        var minutes = RefreshConnectionsPreference.getMinutes()
+        minutes = minutes == 0 ? 3 : minutes        
+        let seconds:UInt64 = UInt64(((minutes*60)-10))
+        NSLog("\(seconds)")
+        refreshTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
+        dispatch_source_set_timer(refreshTimer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
+        dispatch_source_set_event_handler(refreshTimer) {
+            // do whatever you want here
+            self.establishAllConnections()
+        }
+        dispatch_resume(refreshTimer)
+        
+        return
+    }
+    
     func stopTimer() {
-        dispatch_source_cancel(timer)
-        timer = nil
+        if timer != nil {
+            dispatch_source_cancel(timer)
+            timer = nil
+        }
+    }
+    func stopRefreshTimer() {
+        if refreshTimer != nil {
+            dispatch_source_cancel(refreshTimer)
+            refreshTimer = nil
+        }
     }
     
     func broadcastTimeAndDate() {
@@ -143,35 +173,13 @@ class BroadcastPreference {
         NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "kBroadcastUpdateDate")
     }
 }
-//class YourScene:SKScene {
-//    
-//    // Time of last update(currentTime:) call
-//    var lastUpdateTime = NSTimeInterval(0)
-//    
-//    // Seconds elapsed since last action
-//    var timeSinceLastAction = NSTimeInterval(0)
-//    
-//    // Seconds before performing next action. Choose a default value
-//    var timeUntilNextAction = NSTimeInterval(4)
-//    
-//    override func update(currentTime: NSTimeInterval) {
-//        
-//        let delta = currentTime - lastUpdateTime
-//        lastUpdateTime = currentTime
-//        
-//        timeSinceLastAction += delta
-//        
-//        if timeSinceLastAction >= timeUntilNextAction {
-//            
-//            // perform your action
-//            
-//            // reset
-//            timeSinceLastAction = NSTimeInterval(0)
-//            // Randomize seconds until next action
-//            timeUntilNextAction = CDouble(arc4random_uniform(6))
-//            
-//        }
-//        
-//    }
-//    
-//}
+
+class RefreshConnectionsPreference {
+    class func getMinutes() -> Int {
+        let number = NSUserDefaults.standardUserDefaults().integerForKey("kRefreshConnections")
+        return number
+    }
+    class func setMinutes(number:Int) {
+        NSUserDefaults.standardUserDefaults().setInteger(number, forKey: "kRefreshConnections")
+    }
+}

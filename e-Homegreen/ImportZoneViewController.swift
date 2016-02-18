@@ -35,6 +35,19 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        removeObservers()
+        addObservers()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceiverdFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
+    }
+    func removeObservers() {
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZonesOrCategories)
+    }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -90,7 +103,96 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
         refreshZoneList()
     }
+    @IBOutlet weak var txtFrom: UITextField!
+    @IBOutlet weak var txtTo: UITextField!
     
+    var pbSZ:ProgressBarVC?
+    @IBAction func btnScanZones(sender: AnyObject) {
+        // TODO: Prvo izbrisi prethodne
+        // TODO: Pokreni servis za skeniranje
+        do {
+             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
+            
+            pbSZ = ProgressBarVC(title: "Finding devices", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
+            pbSZ?.delegate = self
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    
+    // MARK: - Service for scanning categories
+    func scanZones () {
+        if let from = txtFrom.text, to = txtTo.text {
+            
+        }
+    }
+    func checkIfGatewayDidGetZones () {
+        
+    }
+    // MARK: Error handling
+    func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
+        if from == "" && to == "" {
+            let count = 255
+            let percent = Float(1)/Float(count)
+            return SearchParametars(from: 0, to: 0, count: count, initialPercentage: percent)
+        }
+        guard let from = Int(from), let to = Int(to) else {
+            throw InputError.NotConvertibleToInt
+        }
+        if from < 0 || to < 0 {
+            throw InputError.NotPositiveNumbers
+        }
+        if from > to {
+            throw InputError.FromBiggerThanTo
+        }
+        let count = to - from + 1
+        let percent = Float(1)/Float(count)
+        return SearchParametars(from: from, to: to, count: count, initialPercentage: percent)
+    }
+    // MARK: Alert controller
+    var alertController:UIAlertController?
+    func alertController (title:String, message:String) {
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        alertController!.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            // ...
+        }
+        alertController!.addAction(OKAction)
+        
+        self.presentViewController(alertController!, animated: true) {
+            // ...
+        }
+    }
+    var zoneScanTimer:NSTimer?
+    
+    var index:Int = 0
+    var timesRepeatedCounter:Int = 0
+    func dismissScaningControls() {
+        timesRepeatedCounter = 0
+        //   For scaning zones
+        index = 0
+        zoneScanTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        pbSZ?.dissmissProgressBar()
+        UIApplication.sharedApplication().idleTimerDisabled = false
+    }
+    func categoryReceiverdFromGateway (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            if let info = notification.userInfo! as? [String:Int] {
+                if let deviceIndex = info["deviceAddresInGateway"] {
+                    
+                }
+            }
+        }
+    }
     @IBAction func btnDeleteAll(sender: AnyObject) {
         for var item = 0; item < zones.count; item++ {
             if zones[item].gateway.objectID == gateway!.objectID {
@@ -221,7 +323,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         return nil
     }
 }
-
+extension ImportZoneViewController: ProgressBarDelegate {
+    func progressBarDidPressedExit() {
+        
+    }
+}
 extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {

@@ -43,7 +43,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         var defaultMenu = menuItems
         for (index, item) in defaultMenu.enumerate() {
             if item.title == "Settings" {
-                defaultMenu.removeAtIndex(index)
+//                defaultMenu.removeAtIndex(index)
             }
         }
         menuItems = defaultMenu
@@ -133,7 +133,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count
+        return menuItems.count-1
     }
     
     @IBAction func backButton(sender: AnyObject) {

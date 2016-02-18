@@ -86,6 +86,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
+        stopTextToSpeech()
     }
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
@@ -145,6 +146,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
+        stopTextToSpeech()
         if isValeryVoiceOn {
             controlValleryVoice.setImage(UIImage(named: "mute"), forState: .Normal)
             isValeryVoiceOn = false
@@ -180,11 +182,16 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         
     }
     
+    let synth = AVSpeechSynthesizer()
+    
     func textToSpeech(text:String) {
         let utterance = AVSpeechUtterance(string: text)
-        let synth = AVSpeechSynthesizer()
         synth.speakUtterance(utterance)
         //        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
+    }
+    
+    func stopTextToSpeech() {
+        synth.stopSpeakingAtBoundary(.Word)
     }
     
     func searchForTermInString (text:String, searchTerm:String) {
@@ -204,6 +211,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
     
     @IBAction func sendBtnAction(sender: AnyObject) {
         if  chatTextView.text != ""{
+            stopTextToSpeech()
             chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
             calculateHeight()
             chatTableView.reloadData()

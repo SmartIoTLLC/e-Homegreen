@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaAsyncSocket
 
 class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
@@ -50,8 +51,6 @@ class TestSocket: NSObject, GCDAsyncUdpSocketDelegate {
             error = error1
             print("4 \(error)")
         }
-        
-        
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
         print("incoming message: \(address.convertToBytes())")

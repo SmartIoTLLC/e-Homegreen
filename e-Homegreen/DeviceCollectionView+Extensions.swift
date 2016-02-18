@@ -533,7 +533,9 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("dafaultCell", forIndexPath: indexPath) as! DefaultCell
-            cell.defaultLabel.text = "type:\(devices[indexPath.row].type) controlType:\(devices[indexPath.row].controlType)"
+            cell.defaultLabel.text = "Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nAddress:\(devices[indexPath.row].address) Channel:\(devices[indexPath.row].channel) \nNumber of devices:\(devices[indexPath.row].numberOfDevices) \nType:\(devices[indexPath.row].type) \nControl type:\(devices[indexPath.row].controlType)"
+            NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nDevice address:\(devices[indexPath.row].address) Device channel:\(devices[indexPath.row].channel) \nDevice number of devices:\(devices[indexPath.row].numberOfDevices) \nDevice type:\(devices[indexPath.row].type) Device controlType:\(devices[indexPath.row].controlType)")
+//            NSLog("%@ %@", indexPath.row, devices[indexPath.row])
             return cell
         }
     }

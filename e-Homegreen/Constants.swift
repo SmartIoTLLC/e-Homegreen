@@ -87,6 +87,7 @@ struct UserDefaults {
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
     static let OpenLastScreen = "EHGIsLastScreenOpened"
+    static let IsScaningForZonesOrCategories = "EHGIsScanningForZonesOrCategories"
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"
@@ -139,6 +140,8 @@ struct NotificationKey {
     static let DidFindSensorParametar = "kPLCDidFindSensorParametar"
     static let DidRefreshDeviceInfo = "btnRefreshDevicesClicked"
     static let DidReceiveDataForRepeatSendingHandler = "repeatSendingHandlerNotification"
+    static let DidReceiveCategoryFromGateway = "kPLCDidFoundCategory"
+    static let DidReceiveZoneFromGateway = "kPLCDidFoundCategory"
     
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"
@@ -226,3 +229,6 @@ extension NSDate {
         return yesterDayDate
     }
 }
+//if let path = NSBundle.mainBundle().pathForResource("Config", ofType: "plist"), dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
+//    // use swift dictionary as normal
+//}

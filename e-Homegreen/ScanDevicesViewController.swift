@@ -115,6 +115,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
     
+    // MARK: - FINDING DEVICES FOR GATEWAY
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
     
     var searchDeviceTimer:NSTimer?
@@ -243,6 +244,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
     
+    // MARK: - FINDING NAMES FOR DEVICE
     // ======================= *** FINDING NAMES FOR DEVICE *** =======================
     
     var deviceNameTimer:NSTimer?
@@ -368,6 +370,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     
+    // MARK: - DELETING DEVICES FOR GATEWAY
     // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
     
     func changeValueEnable (sender:UISwitch) {
@@ -425,6 +428,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
+    // MARK: - Sensor parametar
     //   ============================================   Sensor parametar   ============================================
     var findSensorParametar = false
     var arrayOfSensorAdresses:[Int] = []
@@ -504,6 +508,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
     }
+    // MARK: - Find names
     //   ============================================   Sensor parametar   ============================================
     @IBAction func findNames(sender: AnyObject) {
         do {

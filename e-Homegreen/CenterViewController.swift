@@ -127,8 +127,13 @@ class CenterViewController: UIViewController {
     }
   
     @IBOutlet weak var btnScreenMode: UIButton!
-  // MARK: Button actions
+    // MARK: Button actions
+    var isHamburgerShown:Bool = true
     @IBAction func asfnpadogfjaspgojswdgs(sender: AnyObject) {
+        if let button = sender as? HamburgerButton {
+            button.showsMenu = isHamburgerShown
+            isHamburgerShown = !isHamburgerShown
+        }
         toggleLeftPanel.collapseInReturnToNormal(1)
         delegate?.toggleLeftPanel?()
     }

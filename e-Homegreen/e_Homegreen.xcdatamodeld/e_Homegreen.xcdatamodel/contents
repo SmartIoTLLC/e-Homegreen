@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
     <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
         <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -46,14 +46,15 @@
         <attribute name="voltage" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="devices" inverseEntity="Gateway" syncable="YES"/>
+        <relationship name="images" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="devices" inverseEntity="Image" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="eventImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="eventImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="eventImageOne" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="eventImageTwo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -104,6 +105,11 @@
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="iBeaconZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="iBeacon" inverseEntity="Zone" syncable="YES"/>
     </entity>
+    <entity name="Image" representedClassName=".Image" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="numberInList" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="images" inverseEntity="Device" syncable="YES"/>
+    </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
@@ -144,6 +150,7 @@
         <attribute name="dwellTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="ip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
@@ -152,6 +159,8 @@
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tiltStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="urlAutoPan" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlAutoPanStop" optional="YES" attributeType="String" syncable="YES"/>
@@ -191,7 +200,7 @@
     </entity>
     <elements>
         <element name="Category" positionX="-9" positionY="144" width="128" height="120"/>
-        <element name="Device" positionX="-63" positionY="-18" width="128" height="615"/>
+        <element name="Device" positionX="-63" positionY="-18" width="128" height="630"/>
         <element name="Event" positionX="-9" positionY="171" width="128" height="210"/>
         <element name="Flag" positionX="-18" positionY="135" width="128" height="225"/>
         <element name="Gateway" positionX="-63" positionY="54" width="128" height="360"/>
@@ -199,8 +208,9 @@
         <element name="Scene" positionX="-54" positionY="135" width="128" height="210"/>
         <element name="Security" positionX="27" positionY="189" width="128" height="135"/>
         <element name="Sequence" positionX="-27" positionY="162" width="128" height="225"/>
-        <element name="Surveilence" positionX="-18" positionY="135" width="128" height="405"/>
+        <element name="Surveilence" positionX="-18" positionY="135" width="128" height="450"/>
         <element name="Timer" positionX="9" positionY="180" width="128" height="240"/>
         <element name="Zone" positionX="-18" positionY="135" width="128" height="150"/>
+        <element name="Image" positionX="-18" positionY="135" width="128" height="90"/>
     </elements>
 </model>

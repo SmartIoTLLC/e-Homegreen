@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaAsyncSocket
 
 class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     

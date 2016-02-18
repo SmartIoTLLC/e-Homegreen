@@ -1,10 +1,13 @@
 PODS:
+  - Alamofire (3.2.0)
   - CocoaAsyncSocket (7.4.1)
 
 DEPENDENCIES:
+  - Alamofire (~> 3.0)
   - CocoaAsyncSocket
 
 SPEC CHECKSUMS:
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
   CocoaAsyncSocket: 7cbf214b27f8e7f7574db6a3fd96352ffaed433d
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.39.0

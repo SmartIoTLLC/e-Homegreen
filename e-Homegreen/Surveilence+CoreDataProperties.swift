@@ -2,8 +2,8 @@
 //  Surveilence+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 11/28/15.
-//  Copyright © 2015 Teodor Stevic. All rights reserved.
+//  Created by Teodor Stevic on 2/8/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
 //  to delete and recreate this implementation file for your updated model.
@@ -27,16 +27,19 @@ extension Surveilence {
     @NSManaged var port: NSNumber?
     @NSManaged var ssid: String?
     @NSManaged var tiltStep: NSNumber?
-    @NSManaged var username: String?
-    @NSManaged var urlGetImage: String?
-    @NSManaged var urlMoveDown: String?
-    @NSManaged var urlMoveRight: String?
-    @NSManaged var urlMoveUp: String?
-    @NSManaged var urlMoveLeft: String?
     @NSManaged var urlAutoPan: String?
     @NSManaged var urlAutoPanStop: String?
-    @NSManaged var urlPresetSequence: String?
+    @NSManaged var urlGetImage: String?
     @NSManaged var urlHome: String?
+    @NSManaged var urlMoveDown: String?
+    @NSManaged var urlMoveLeft: String?
+    @NSManaged var urlMoveRight: String?
+    @NSManaged var urlMoveUp: String?
+    @NSManaged var urlPresetSequence: String?
     @NSManaged var urlPresetSequenceStop: String?
+    @NSManaged var username: String?
+    @NSManaged var level: String?
+    @NSManaged var surveillanceZone: String?
+    @NSManaged var surveillanceCategory: String?
 
 }

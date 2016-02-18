@@ -23,7 +23,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon", "Broadcast"]
+        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon", "Broadcast", "RefreshConnection"]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
@@ -177,7 +177,17 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         } else if settingArray[indexPath.section] == "Broadcast" {
             let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
             cell.setBroadcast()
+            cell.txtIp.delegate = self
+            cell.txtPort.delegate = self
+            cell.txtH.delegate = self
             cell.txtM.delegate = self
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
+        } else if settingArray[indexPath.section] == "RefreshConnection" {
+            let cell = tableView.dequeueReusableCellWithIdentifier("idRefreshGatewayTimerCell") as! SettingsRefreshConnectionEvery
+            cell.setRefreshCell()
+            cell.txtMinutesField.delegate = self
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
@@ -246,23 +256,16 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         settingsTableView.reloadData()
     }
     @IBAction func broadcastTimeAndDateFromPhone(sender: AnyObject) {
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Year , .Month , .Day, .Hour, .Minute, .Second, .Weekday, .WeekdayOrdinal] , fromDate: date)
-        
-        let year =  components.year-2000
-        let month = components.month
-        let day = components.day
-        let hour =  components.hour
-        let minute = components.minute
-        let second = components.second
-        let weekday = components.weekday-1
-        
-        SendingHandler.sendCommand(byteArray: Function.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
+        (UIApplication.sharedApplication().delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
     }
     func textFieldDidBeginEditing(textField: UITextField) {
-        let cell = textField.superview?.superview as! BroadcastTimeAndDateTVC
-        settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+        if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
+            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+        }
+        
+        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
+            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+        }
     }
     func KeyboardWillShow(notification: NSNotification){
         if let userInfo = notification.userInfo {
@@ -299,6 +302,16 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
                 completion: nil)
         }
     }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
+            cell.saveData()
+        }
+        
+        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
+            cell.saveData()
+        }
+        return true
+    }
 }
 
 class SettinsTableViewCell: UITableViewCell {
@@ -324,6 +337,32 @@ class SettingsLastScreenTableViewCell: UITableViewCell {
     @IBOutlet weak var openLastScreen: UISwitch!
     
 }
+class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
+    
+    @IBOutlet weak var txtMinutesField: UITextField!
+    
+    func setRefreshCell() {
+        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
+    }
+    
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        saveData()
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        saveData()
+        return true
+    }
+    
+    func saveData() {
+        self.txtMinutesField.resignFirstResponder()
+        if let minutes = Int(self.txtMinutesField.text!) {
+            RefreshConnectionsPreference.setMinutes(minutes)
+        }
+        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
+    }
+}
 class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet weak var txtIp: UITextField!
@@ -344,10 +383,6 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     }
     
     func setBroadcast () {
-        self.txtIp.delegate = self
-        self.txtPort.delegate = self
-        self.txtH.delegate = self
-        self.txtM.delegate = self
         self.txtIp.text = BroadcastPreference.getBroadcastIp()
         self.txtPort.text = "\(BroadcastPreference.getBroadcastPort())"
         self.txtH.text = "\(BroadcastPreference.getBroadcastHour())"
@@ -392,20 +427,4 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
             BroadcastPreference.setIsBroadcastOnEvery(swtitchIs.on)
         }
     }
-//    func keyboardWillShow(notification: NSNotification) {
-//        var info = notification.userInfo!
-//        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-//        
-//        if txtDescription.isFirstResponder(){
-//            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-//                
-//                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-//                
-//            }
-//        }
-//        
-//        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-//        
-//    }
-
 }
