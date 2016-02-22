@@ -52,6 +52,7 @@
 		7372EB421BC410800097806D /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB321BC410800097806D /* Sequence.swift */; };
 		737700FE1C74B35D00B6BC32 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737700FD1C74B35D00B6BC32 /* API.swift */; };
 		737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */; };
+		7389E1841C75E5970081EED1 /* LaunchScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7389E1831C75E5970081EED1 /* LaunchScreenVC.swift */; };
 		738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD051B9EF79F005D183F /* DataImporter.swift */; };
 		738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */; };
 		738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */; };
@@ -285,6 +286,7 @@
 		7372EB321BC410800097806D /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		737700FD1C74B35D00B6BC32 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientButtonWhite.swift; sourceTree = "<group>"; };
+		7389E1831C75E5970081EED1 /* LaunchScreenVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenVC.swift; sourceTree = "<group>"; };
 		738BFD051B9EF79F005D183F /* DataImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityPadVC.swift; sourceTree = "<group>"; };
 		738DEC9B1BBBC2F000D6B834 /* SecurityPadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityPadVC.xib; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 				73C4C9001C19E3BB0047CBD5 /* Database.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
+				7389E1831C75E5970081EED1 /* LaunchScreenVC.swift */,
 				733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */,
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
 				73BD1EBE1B4E655700AA5B28 /* Other */,
@@ -1375,6 +1378,7 @@
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
+				7389E1841C75E5970081EED1 /* LaunchScreenVC.swift in Sources */,
 				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
@@ -1669,6 +1673,7 @@
 				PROVISIONING_PROFILE = "d8f75ab2-3063-43d7-a83f-03825f620bc7";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1693,6 +1698,7 @@
 				PROVISIONING_PROFILE = "d8f75ab2-3063-43d7-a83f-03825f620bc7";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

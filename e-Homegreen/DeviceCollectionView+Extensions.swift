@@ -533,8 +533,16 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("dafaultCell", forIndexPath: indexPath) as! DefaultCell
-            cell.defaultLabel.text = "Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nAddress:\(devices[indexPath.row].address) Channel:\(devices[indexPath.row].channel) \nNumber of devices:\(devices[indexPath.row].numberOfDevices) \nType:\(devices[indexPath.row].type) \nControl type:\(devices[indexPath.row].controlType)"
-            NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nDevice address:\(devices[indexPath.row].address) Device channel:\(devices[indexPath.row].channel) \nDevice number of devices:\(devices[indexPath.row].numberOfDevices) \nDevice type:\(devices[indexPath.row].type) Device controlType:\(devices[indexPath.row].controlType)")
+            NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \n")
+            NSLog("Device address:\(devices[indexPath.row].address)")
+            NSLog("Device channel:\(devices[indexPath.row].channel) \n")
+            NSLog("Device number of devices:\(devices[indexPath.row].numberOfDevices) \n")
+            NSLog("Device type:\(devices[indexPath.row].type)")
+            NSLog("Device controlType:\(devices[indexPath.row].controlType)")
+//            if let a1 = devices[indexPath.row].gateway.name, a2 = devices[indexPath.row].address, a3 = devices[indexPath.row].channel, a4 = devices[indexPath.row].numberOfDevices, a5 = devices[indexPath.row].type, a6 = devices[indexPath.row].controlType {
+//                cell.defaultLabel.text = "Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nAddress:\(devices[indexPath.row].address) Channel:\(devices[indexPath.row].channel) \nNumber of devices:\(devices[indexPath.row].numberOfDevices) \nType:\(devices[indexPath.row].type) \nControl type:\(devices[indexPath.row].controlType)"
+//                NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nDevice address:\(devices[indexPath.row].address) Device channel:\(devices[indexPath.row].channel) \nDevice number of devices:\(devices[indexPath.row].numberOfDevices) \nDevice type:\(devices[indexPath.row].type) Device controlType:\(devices[indexPath.row].controlType)")
+//            }
 //            NSLog("%@ %@", indexPath.row, devices[indexPath.row])
             return cell
         }

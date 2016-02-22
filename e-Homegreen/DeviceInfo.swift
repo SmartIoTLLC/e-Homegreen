@@ -234,6 +234,9 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x45, subId: 0x00):DeviceTypeCode(channel:Channel.Six, name:ControlType.Sensor, MPN: "MSI605W"), // 6-in-1 Multisensor, Indoor Wall Mount number
         
         DeviceType(deviceId: 0x47, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "MS0502S"), // IR Transmitter, 2CH with 2 AI
+        
+        // New device - seucirty, MAC address:40-D8-55-0F-E0-00
+        DeviceType(deviceId: 0xC4, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "UCM/EHG"), // Comfort Panel
     ]
 }
 struct DeviceChannelType {
