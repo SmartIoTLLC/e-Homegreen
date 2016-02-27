@@ -82,9 +82,25 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: NotificationKey.Surveillance.Run, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: NotificationKey.Surveillance.Stop, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: NotificationKey.RefreshSurveillance, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserverForName("", object: nil, queue: NSOperationQueue.mainQueue()) { (let notification) -> Void in
+//            <#code#>
+//        }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
     }
-    
+//    var notificationObserver: ((NSNotification) -> Void)?
+//    init() {
+//        notificationObserver = NSNotificationCenter.defaultCenter().addObserverForName("humanEnteredKrakensLair", object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+//    [weak self] notification in //The retain cycle is fixed by using capture lists!
+//    self?.eatHuman() //self is now an optional!
+//            self.eatHuman()
+//        }
+//    }
+//    
+//    deinit {
+//        if notificationObserver != nil {
+//            NSNotificationCenter.defaultCenter.removeObserver(notificationObserver)
+//        }
+//    }
     func removeObservers () {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Surveillance.Run, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Surveillance.Stop, object: nil)

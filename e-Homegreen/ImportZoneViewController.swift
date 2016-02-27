@@ -44,6 +44,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceiverdFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserverForName(NotificationKey.DidReceiveZoneFromGateway, object: nil, queue: NSOperationQueue.mainQueue()) { [weak self] notification in
+            if let zoneId = notification.userInfo as? [String:Int] {
+                print(zoneId)
+            }
+        }
     }
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZonesOrCategories)
@@ -111,10 +116,12 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         // TODO: Prvo izbrisi prethodne
         // TODO: Pokreni servis za skeniranje
         do {
-             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
-            
-            pbSZ = ProgressBarVC(title: "Finding devices", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
+            let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
+            let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(Int(gateway!.addressThree))]
+            SendingHandler.sendCommand(byteArray: Function.getZone(address, id: UInt8(Int(sp.from))), gateway: gateway!)
+            pbSZ = ProgressBarVC(title: "Scanning Zones", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
+            self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
             
         } catch let error as InputError {
@@ -124,21 +131,26 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
     }
     
-    // MARK: - Service for scanning categories
-    func scanZones () {
-        if let from = txtFrom.text, to = txtTo.text {
-            
-        }
-    }
+    // MARK: - Service for scanning zone
     func checkIfGatewayDidGetZones () {
         
+    }
+    
+    func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
+//        var index:Int = Int(address[2])
+//        index = index - fromAddress! + 1
+//        let howMuchOf = toAddress!-fromAddress!+1
+//        pbSZ?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
+//        pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
+//        pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
     // MARK: Error handling
     func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
             let percent = Float(1)/Float(count)
-            return SearchParametars(from: 0, to: 0, count: count, initialPercentage: percent)
+            return SearchParametars(from: 1, to: 255, count: count, initialPercentage: percent)
+//            throw InputError.SpecifyRange
         }
         guard let from = Int(from), let to = Int(to) else {
             throw InputError.NotConvertibleToInt
@@ -183,15 +195,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
         pbSZ?.dissmissProgressBar()
         UIApplication.sharedApplication().idleTimerDisabled = false
-    }
-    func categoryReceiverdFromGateway (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
-            if let info = notification.userInfo! as? [String:Int] {
-                if let deviceIndex = info["deviceAddresInGateway"] {
-                    
-                }
-            }
-        }
     }
     @IBAction func btnDeleteAll(sender: AnyObject) {
         for var item = 0; item < zones.count; item++ {

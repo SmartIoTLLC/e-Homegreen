@@ -117,6 +117,24 @@ extension IncomingHandler {
                             device.runningTime = "00:00:00,0s"
                             device.current = 0
                             saveChanges()
+                        } else if name == ControlType.HumanInterfaceSeries && i > 1 {
+                            let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.currentValue = 0
+                            device.current = 0
+                            device.amp = ""
+                            device.type = name
+                            device.controlType = name
+                            device.voltage = 0
+                            device.temperature = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.isVisible = false
+                            device.isEnabled = false
+                            saveChanges()
                         } else if name == ControlType.Curtain {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
@@ -133,7 +151,7 @@ extension IncomingHandler {
                             device.runningTime = "00:00:00,0s"
                             device.current = 0
                             saveChanges()
-                        } else if name != ControlType.Climate && name != ControlType.Sensor {
+                        } else if name != ControlType.Climate && name != ControlType.Sensor && name != ControlType.HumanInterfaceSeries {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])

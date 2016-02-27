@@ -2,15 +2,18 @@ PODS:
   - Alamofire (3.2.0)
   - ALCameraViewController (1.1.6)
   - CocoaAsyncSocket (7.4.1)
+  - JSQCoreDataKit (2.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
   - ALCameraViewController
   - CocoaAsyncSocket
+  - JSQCoreDataKit
 
 SPEC CHECKSUMS:
   Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
   ALCameraViewController: 80368d0d72997d278ba21e1a62d292cfc8e6635e
   CocoaAsyncSocket: 7cbf214b27f8e7f7574db6a3fd96352ffaed433d
+  JSQCoreDataKit: 5fc7bfcd7c1f33d83a1caebbbcd87ee3f4a89261
 
 COCOAPODS: 0.39.0

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import QuartzCore
 
 extension UIView {
     var parentViewController: UIViewController? {
@@ -83,72 +84,55 @@ extension UIView {
         layer.addAnimation(animation, forKey: "fadeOut")
     }
 }
+//extension UIView {
+//    func startShimmering() {
+////        let light = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+//        let light:AnyObject = (UIColor(white: 0, alpha: 0.1).CGColor as! AnyObject)
+//        let dark:AnyObject = (UIColor.blackColor().CGColor as! AnyObject)
+//        
+//        let gradient:CAGradientLayer = CAGradientLayer()
+//        gradient.colors = [dark, light, dark]
+//        gradient.frame = CGRectMake(-self.bounds.size.width, 0 , 3*self.bounds.size.width, self.bounds.size.height)
+//        gradient.startPoint = CGPointMake(0.0, 0.5)
+//        gradient.endPoint = CGPointMake(1.0, 0.525)
+//        gradient.locations = [0.4, 0.5, 0.6]
+//        self.layer.mask = gradient
+//        
+//        let animation:CABasicAnimation = CABasicAnimation(keyPath: "locations")
+//        animation.fromValue = [0.8, 0.1, 0.2]
+//        animation.toValue = [0.8, 0.9, 1.0]
+//        animation.duration = 1.5
+//        animation.repeatCount = 4
+//        gradient.addAnimation(animation, forKey: "shimmer")
+//        // GIHSBPNG GIHSBPNG GIHSBPNG
+//    }
+//    func stopShimmering() {
+//        self.layer.mask = nil
+//    }
+//}
 extension UIView {
     func startShimmering() {
-//        let light = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-        let light = UIColor(white: 0, alpha: 0.1)
-        let dark = UIColor.blackColor()
+        let light: AnyObject = (UIColor(white: 0, alpha: 0.1).CGColor as! AnyObject)
+        let dark: AnyObject = (UIColor.redColor().CGColor as! AnyObject)
         
-        let gradient = CAGradientLayer(layer: layer)
+        let gradient: CAGradientLayer = CAGradientLayer()
         gradient.colors = [dark, light, dark]
-        gradient.frame = CGRectMake(-self.bounds.size.width, 0 , 3*self.bounds.size.width, self.bounds.size.height)
+        gradient.frame = CGRectMake(-self.bounds.size.width, 0, 3 * self.bounds.size.width, self.bounds.size.height)
         gradient.startPoint = CGPointMake(0.0, 0.5)
         gradient.endPoint = CGPointMake(1.0, 0.525)
+        // slightly slanted forward
         gradient.locations = [0.4, 0.5, 0.6]
         self.layer.mask = gradient
         
-        let animation = CABasicAnimation(keyPath: "locations")
-        animation.fromValue = [0.8, 0.1, 0.2]
+        var animation: CABasicAnimation = CABasicAnimation(keyPath: "locations")
+        animation.fromValue = [0.0, 0.1, 0.2]
         animation.toValue = [0.8, 0.9, 1.0]
         animation.duration = 1.5
         animation.repeatCount = Float.infinity
         gradient.addAnimation(animation, forKey: "shimmer")
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
-        // GIHSBPNG GIHSBPNG GIHSBPNG
     }
+    
     func stopShimmering() {
         self.layer.mask = nil
     }
 }
-//@implementation UIView (Shimmer)
-//- (void)startShimmering
-//{
-//    id light = (id)[UIColor colorWithWhite:0 alpha:0.1].CGColor;
-//    id dark  = (id)[UIColor blackColor].CGColor;
-//    
-//    CAGradientLayer *gradient = [CAGradientLayer layer];
-//    gradient.colors = @[dark, light, dark];
-//    gradient.frame = CGRectMake(-self.bounds.size.width, 0, 3*self.bounds.size.width, self.bounds.size.height);
-//    gradient.startPoint = CGPointMake(0.0, 0.5);
-//    gradient.endPoint   = CGPointMake(1.0, 0.525); // slightly slanted forward
-//    gradient.locations  = @[@0.4, @0.5, @0.6];
-//    self.layer.mask = gradient;
-//    
-//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"locations"];
-//    animation.fromValue = @[@0.0, @0.1, @0.2];
-//    animation.toValue   = @[@0.8, @0.9, @1.0];
-//    
-//    animation.duration = 1.5;
-//    animation.repeatCount = HUGE_VALF;
-//    [gradient addAnimation:animation forKey:@"shimmer"];
-//    }
-//    
-//    - (void)stopShimmering
-//        {
-//            self.layer.mask = nil;
-//}

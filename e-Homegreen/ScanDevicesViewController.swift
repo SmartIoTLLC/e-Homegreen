@@ -325,6 +325,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
+        print(devices[index].type)
         if devices[index].type == ControlType.Curtain {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
@@ -340,7 +341,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         if devices[index].type == ControlType.Sensor {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-//            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == ControlType.HumanInterfaceSeries {
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
+            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int, numberInArray:Int) {
@@ -600,6 +606,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
     }
+    //MARK:- Table view dlegates and data source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
             cell.backgroundColor = UIColor.clearColor()

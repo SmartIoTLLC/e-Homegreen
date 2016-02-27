@@ -27,6 +27,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBOutlet weak var btnLevel: UIButton!
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
+    @IBOutlet weak var btnImages: UIButton!
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -38,10 +39,11 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     var isPresenting: Bool = true
     
-    init(point:CGPoint){
+    init(device: Device, point:CGPoint){
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.device = device
         self.point = point
     }
     
@@ -75,6 +77,20 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
                 btnControlType.setTitle(text,forState: UIControlState.Normal)
             }
         }
+    }
+    @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
+        let touches = event.touchesForView(sender as! UIView)
+        let touch:UITouch = touches!.first!
+        let touchPoint = touch.locationInView(self.view)
+//        let touchPoint2 = touch.locationInView(sender as! UIView)
+//        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
+        showDeviceImagesPicker(device!, point: touchPoint)
+    }
+    @IBAction func btnImages(sender: AnyObject) {
+//        if let button = sender as? UIButton {
+//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
+//                showDeviceImagesPicker(device!, point: pointInView)
+//        }
     }
     @IBAction func changeControlType(sender: AnyObject) {
         let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
@@ -282,8 +298,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device) {
-        let cdp = ChangeDeviceParametarsVC(point: point)
-        cdp.device = device
+        let cdp = ChangeDeviceParametarsVC(device: device, point: point)
         cdp.editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType)
 //        self.view.window?.rootViewController?.presentViewController(cdp, animated: true, completion: nil)
         self.presentViewController(cdp, animated: true, completion: nil)

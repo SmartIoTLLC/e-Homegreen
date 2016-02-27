@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
@@ -9,6 +9,7 @@
                 <outlet property="backView" destination="uxQ-GK-AHI" id="GSi-Mq-QmU"/>
                 <outlet property="btnCategory" destination="GJ3-oz-PoC" id="GiT-Pe-JO1"/>
                 <outlet property="btnControlType" destination="biO-WP-GcJ" id="C9a-Tf-Zrz"/>
+                <outlet property="btnImages" destination="TXF-dI-RqW" id="AYc-pH-DoO"/>
                 <outlet property="btnLevel" destination="rY8-cL-0z5" id="FeB-Q8-6Bg"/>
                 <outlet property="btnZone" destination="Jfr-F6-Oph" id="wKG-LR-zPh"/>
                 <outlet property="lblAddress" destination="VQh-sR-r8A" id="Y4E-6X-1lk"/>
@@ -26,46 +27,108 @@
                     <rect key="frame" x="145" y="43" width="310" height="350"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg3-IJ-sKD">
-                            <rect key="frame" x="35" y="28" width="104" height="30"/>
+                            <rect key="frame" x="8" y="28" width="104" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Atl-Uw-cGU">
-                            <rect key="frame" x="35" y="66" width="104" height="30"/>
+                            <rect key="frame" x="8" y="66" width="104" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Channel:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odu-AH-r9h">
-                            <rect key="frame" x="35" y="104" width="104" height="30"/>
+                            <rect key="frame" x="8" y="104" width="104" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RsX-pq-U5j">
-                            <rect key="frame" x="145" y="25" width="131" height="30"/>
+                            <rect key="frame" x="118" y="25" width="131" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQh-sR-r8A">
-                            <rect key="frame" x="145" y="66" width="113" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQh-sR-r8A">
+                            <rect key="frame" x="171" y="66" width="131" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zcz-qD-hy1">
-                            <rect key="frame" x="145" y="104" width="113" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zcz-qD-hy1">
+                            <rect key="frame" x="171" y="104" width="131" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Level:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B76-ga-CBZ">
-                            <rect key="frame" x="35" y="180" width="104" height="30"/>
+                            <rect key="frame" x="8" y="180" width="104" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oV0-VB-c2R">
+                            <rect key="frame" x="8" y="256" width="104" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rY8-cL-0z5" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="171" y="180" width="131" height="30"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnLevel:" destination="-1" eventType="touchUpInside" id="PLK-9h-JgS"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfr-F6-Oph" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="171" y="218" width="131" height="30"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnZone:" destination="-1" eventType="touchUpInside" id="SXM-Ek-stZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJ3-oz-PoC" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="171" y="256" width="131" height="30"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnCategory:" destination="-1" eventType="touchUpInside" id="Wkf-Fd-P9L"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Zone:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-vX-yxU">
+                            <rect key="frame" x="8" y="218" width="104" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Control Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lm3-yQ-p19">
+                            <rect key="frame" x="8" y="142" width="104" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biO-WP-GcJ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="171" y="142" width="131" height="30"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="changeControlType:" destination="-1" eventType="touchUpInside" id="SH6-EK-4A7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TXF-dI-RqW">
+                            <rect key="frame" x="256" y="28" width="46" height="30"/>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="btnImages:" destination="-1" eventType="touchUpInside" id="8av-SM-Qdh"/>
+                                <action selector="btnImages:forEvent:" destination="-1" eventType="touchUpInside" id="Zfu-ie-Sva"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsR-t9-ivu" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="58" y="303" width="70" height="30"/>
                             <state key="normal" title="Cancel">
@@ -82,60 +145,6 @@
                             </state>
                             <connections>
                                 <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="V9Q-4G-fY3"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oV0-VB-c2R">
-                            <rect key="frame" x="35" y="256" width="104" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rY8-cL-0z5" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="145" y="180" width="131" height="30"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="btnLevel:" destination="-1" eventType="touchUpInside" id="PLK-9h-JgS"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfr-F6-Oph" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="145" y="218" width="131" height="30"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="btnZone:" destination="-1" eventType="touchUpInside" id="SXM-Ek-stZ"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJ3-oz-PoC" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="145" y="256" width="131" height="30"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="btnCategory:" destination="-1" eventType="touchUpInside" id="Wkf-Fd-P9L"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Zone:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-vX-yxU">
-                            <rect key="frame" x="35" y="218" width="104" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Control Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lm3-yQ-p19">
-                            <rect key="frame" x="35" y="142" width="104" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biO-WP-GcJ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="145" y="142" width="131" height="30"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="changeControlType:" destination="-1" eventType="touchUpInside" id="SH6-EK-4A7"/>
                             </connections>
                         </button>
                     </subviews>

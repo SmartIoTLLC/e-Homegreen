@@ -63,6 +63,8 @@
 		738DECB11BBBFC1100D6B834 /* Security.json in Resources */ = {isa = PBXBuildFile; fileRef = 738DECB01BBBFC1100D6B834 /* Security.json */; };
 		738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738E4E771C340A6F0017A7B0 /* IncomingHandler+Extensions.swift */; };
 		739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */; };
+		739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */; };
+		739D57171C809B30004CC50E /* DeviceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739D57151C809B30004CC50E /* DeviceImage.swift */; };
 		73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */; };
 		73B55E471C6B2C99001C9251 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B55E451C6B2C99001C9251 /* Fabric.framework */; };
 		73B55E481C6B2C99001C9251 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B55E461C6B2C99001C9251 /* Crashlytics.framework */; };
@@ -115,6 +117,11 @@
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
+		73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */; };
+		73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */; };
+		73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */; };
+		73F4D6BB1C807A5900FE0514 /* DeviceImagePickerTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */; };
+		73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F67B931C7CA497008C6A0D /* AAViewController.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
@@ -297,6 +304,8 @@
 		738DECB01BBBFC1100D6B834 /* Security.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Security.json; sourceTree = "<group>"; };
 		738E4E771C340A6F0017A7B0 /* IncomingHandler+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncomingHandler+Extensions.swift"; sourceTree = "<group>"; };
 		7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
+		739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceImage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		739D57151C809B30004CC50E /* DeviceImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImage.swift; sourceTree = "<group>"; };
 		73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSearchParametar.swift; sourceTree = "<group>"; };
 		73B55E451C6B2C99001C9251 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		73B55E461C6B2C99001C9251 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -353,6 +362,11 @@
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
+		73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagesPickerVC.swift; sourceTree = "<group>"; };
+		73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceImagesPickerVC.xib; sourceTree = "<group>"; };
+		73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagePickerTVC.swift; sourceTree = "<group>"; };
+		73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceImagePickerTVC.xib; sourceTree = "<group>"; };
+		73F67B931C7CA497008C6A0D /* AAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AAViewController.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
@@ -636,6 +650,7 @@
 		73E2069D1B2EEFFE0008B002 = {
 			isa = PBXGroup;
 			children = (
+				73F67B931C7CA497008C6A0D /* AAViewController.swift */,
 				73B55E451C6B2C99001C9251 /* Fabric.framework */,
 				73B55E461C6B2C99001C9251 /* Crashlytics.framework */,
 				73E206A81B2EEFFE0008B002 /* e-Homegreen */,
@@ -738,6 +753,8 @@
 				73FD2E5C1C0A0A1E00B9F11A /* Surveilence.swift */,
 				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
 				730E90C01C6A1BF400B1D50D /* Image.swift */,
+				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
+				739D57151C809B30004CC50E /* DeviceImage.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -946,6 +963,10 @@
 				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
 				731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */,
 				731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */,
+				73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */,
+				73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */,
+				73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */,
+				73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */,
 			);
 			name = "Device Parametars";
 			sourceTree = "<group>";
@@ -1265,6 +1286,7 @@
 				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
+				73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */,
 				E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */,
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
@@ -1295,6 +1317,7 @@
 				73C4C9021C19E3BB0047CBD5 /* Database.storyboard in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
 				E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */,
+				73F4D6BB1C807A5900FE0514 /* DeviceImagePickerTVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1395,9 +1418,11 @@
 				E7FC2C231BBC31D30075CD60 /* SecuritySettingsViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
+				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
+				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
 				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
@@ -1440,6 +1465,7 @@
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
+				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
@@ -1448,6 +1474,7 @@
 				73556C821BB02C6600428375 /* File.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
+				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
 				730E90C31C6A1BF400B1D50D /* Image.swift in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
@@ -1477,6 +1504,7 @@
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
+				73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */,
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				73FD2E5D1C0A0A1E00B9F11A /* Surveilence+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
@@ -1670,7 +1698,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.universal";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d8f75ab2-3063-43d7-a83f-03825f620bc7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1683,7 +1711,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1695,7 +1723,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.universal";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d8f75ab2-3063-43d7-a83f-03825f620bc7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "e-Homegreen-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";

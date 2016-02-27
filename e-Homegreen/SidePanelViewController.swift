@@ -1,4 +1,4 @@
-//
+   //
 //  SidePanelViewController.swift
 //  e-Homegreen
 //
@@ -43,7 +43,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         menuCollectionView.userInteractionEnabled = true
 //        menuList = []
     }
-
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+//        logoImageView.startShimmering()
+    }
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
     

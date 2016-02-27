@@ -561,6 +561,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="logoImageView" destination="dBy-un-k0R" id="xM2-OJ-WPo"/>
                         <outlet property="menuCollectionView" destination="VwH-0j-wOZ" id="VrP-O5-7rg"/>
                     </connections>
                 </viewController>

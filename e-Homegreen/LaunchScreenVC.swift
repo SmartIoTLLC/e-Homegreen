@@ -11,6 +11,15 @@ import UIKit
 class LaunchScreenVC: UIViewController {
 
     @IBOutlet weak var logo: UIImageView!
+//    init(){
+//        super.init(nibName: "LaunchScreen", bundle: NSBundle.mainBundle())
+////        transitioningDelegate = self
+////        modalPresentationStyle = UIModalPresentationStyle.Custom
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.startAnimating()

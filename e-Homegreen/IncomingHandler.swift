@@ -440,7 +440,7 @@ class IncomingHandler: NSObject {
     func acknowledgementAboutCurtainParametar (byteArray:[Byte]) {
         self.fetchDevices()
         print(byteArray)
-        for device in devices {
+        for (i, device) in devices.enumerate() {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                 var string:String = ""
                 for var j = 12; j < byteArray.count-2; j++ {
@@ -454,6 +454,9 @@ class IncomingHandler: NSObject {
                 device.categoryId = Int(byteArray[8])
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
+                //TODO: problem with modul names and response for finding names
+//                let data = ["deviceIndexForFoundName":i]
+//                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
             }
             self.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
@@ -703,6 +706,8 @@ class IncomingHandler: NSObject {
         let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
         (zone.id, zone.name, zone.level, zone.zoneDescription) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description)
         saveChanges()
+        let data = ["zoneId":Int(id)]
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
         
     }
     func getCategories(byteArray:[Byte]) {
@@ -721,6 +726,8 @@ class IncomingHandler: NSObject {
         let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
         (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
         saveChanges()
+        let data = ["categoryId":Int(id)]
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
     }
 }
 
