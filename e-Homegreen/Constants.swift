@@ -78,6 +78,66 @@ struct SomethingSomethingSomething {
     static let Elapsed = 0xF0
     static let Suspend = 0xEE
 }
+//MARK:- Multisensor
+struct DigitalInput {
+    struct Generic {
+        static let Open = 0x00
+        static let Close = 0x01
+        static func description()->String {return "Generic"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Open" : "Close"
+        }
+    }
+    struct NormallyOpen {
+        static let Ready = 0x00
+        static let Triggerd = 0x01
+        static func description()->String {return "Normally Open"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Ready" : "Triggerd"
+        }
+    }
+    struct NormallyClosed {
+        static let Triggered = 0x00
+        static let Ready = 0x01
+        static func description()->String {return "Normally Closed"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Triggered" : "Ready"
+        }
+    }
+    struct MotionSensor {
+        static let Idle = 0x00
+        static let Motion = 0x01
+        static func description()->String {return "Motion Sensor"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Idle" : "Motion"
+        }
+    }
+    struct ButtonNormallyOpen {
+        static let Press = 0x00
+        static let Release = 0x01
+        static func description()->String {return "Button(NormallyOpen)"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Press" : "Release"
+        }
+    }
+    struct ButtonNormallyClosed {
+        static let Release = 0x00
+        static let Press = 0x01
+        static func description()->String {return "Button(NormallyClosed)"}
+        static func description(state:Int) -> String {
+            return state == 0x00 ? "Release" : "Press"
+        }
+    }
+    struct DigitalInputMode {
+        static let NormallyOpen = 0x00
+        static let NormallyClosed = 0x00
+        static let Generic = 0x02
+        static let ButtonNormallyOpen = 0x03
+        static let ButtonNormallyClosed = 0x83
+        static let MotionSensor = 0x04
+//        static let MultiSensorNormallyClosed = 0x84
+    }
+}
 struct ReuseIdentifier {
 //    "settingsCell"
 }
@@ -89,7 +149,8 @@ struct UserDefaults {
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
     static let OpenLastScreen = "EHGIsLastScreenOpened"
-    static let IsScaningForZonesOrCategories = "EHGIsScanningForZonesOrCategories"
+    static let IsScaningForZones = "EHGIsScanningForZones"
+    static let IsScaningForCategories = "EHGIsScanningForCategories"
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"

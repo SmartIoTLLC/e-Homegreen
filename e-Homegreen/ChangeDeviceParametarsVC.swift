@@ -29,9 +29,22 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
     
+    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
+    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
+    func hideDeviceInput(isHidden:Bool) {
+        if isHidden {
+            deviceInputHeight.constant = 0
+            deviceInputTopSpace.constant = 0
+        } else {
+            deviceInputHeight.constant = 30
+            deviceInputTopSpace.constant = 8
+        }
+        //TODO:- Ovde nesto ne valja, usporava ga self.view.setNeedsUpdateConstraints()
+        backView.layoutIfNeeded()
+    }
     var point:CGPoint?
     var oldPoint:CGPoint?
-    var device:Device?
+    var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
     
@@ -40,15 +53,47 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     var isPresenting: Bool = true
     
     init(device: Device, point:CGPoint){
+        self.device = device
+        self.point = point
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
-        self.device = device
-        self.point = point
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        //        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        self.view.tag = 1
+        
+        self.view.backgroundColor = UIColor.clearColor()
+        
+        txtFieldName.text = device.name
+        lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
+        lblChannel.text = "\(device.channel)"
+        print(device.parentZoneId)
+        print(device.zoneId)
+        print(device.categoryId)
+        print(device.controlType)
+        btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))", forState: UIControlState.Normal)
+        btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))", forState: UIControlState.Normal)
+        btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))", forState: UIControlState.Normal)
+        btnControlType.setTitle("\(device.controlType)", forState: UIControlState.Normal)
+        txtFieldName.becomeFirstResponder()
+        // Do any additional setup after loading the view.
+        if device.controlType == ControlType.Sensor {
+            hideDeviceInput(false)
+        } else {
+            hideDeviceInput(true)
+        }
+        
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
@@ -58,17 +103,17 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         print("\(text) \(id)")
         if text != "All" {
             if id == 2 {
-                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device!.gateway)) {
+                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device.gateway)) {
                     editedDevice?.levelId = levelId
                 }
                 btnLevel.setTitle(text, forState: UIControlState.Normal)
             } else if id == 3 {
-                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device!.gateway)) {
+                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device.gateway)) {
                     editedDevice?.zoneId = zoneId
                 }
                 btnZone.setTitle(text, forState: UIControlState.Normal)
             } else if id == 4 {
-                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, gateway: device!.gateway)) {
+                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, gateway: device.gateway)) {
                     editedDevice?.categoryId = categoryId
                 }
                 btnCategory.setTitle(text, forState: UIControlState.Normal)
@@ -84,13 +129,32 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         let touchPoint = touch.locationInView(self.view)
 //        let touchPoint2 = touch.locationInView(sender as! UIView)
 //        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
-        showDeviceImagesPicker(device!, point: touchPoint)
+        showDeviceImagesPicker(device, point: touchPoint)
     }
     @IBAction func btnImages(sender: AnyObject) {
 //        if let button = sender as? UIButton {
 //            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
 //                showDeviceImagesPicker(device!, point: pointInView)
 //        }
+    }
+    
+    @IBAction func changeDeviceInputMode(sender: AnyObject) {
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 21
+        popoverVC.device = device
+        popoverVC.filterGateway = device.gateway
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
     }
     @IBAction func changeControlType(sender: AnyObject) {
         let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
@@ -99,8 +163,8 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 21
-        popoverVC.device = device!
-        popoverVC.filterGateway = device?.gateway
+        popoverVC.device = device
+        popoverVC.filterGateway = device.gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -118,7 +182,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterGateway = device?.gateway
+        popoverVC.filterGateway = device.gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -140,7 +204,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterGateway = device?.gateway
+        popoverVC.filterGateway = device.gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -158,7 +222,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterGateway = device?.gateway
+        popoverVC.filterGateway = device.gateway
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -170,41 +234,15 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     }
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
-            device!.name = txtFieldName.text!
-            device!.parentZoneId = NSNumber(integer: editedDevice!.levelId)
-            device!.zoneId = NSNumber(integer: editedDevice!.zoneId)
-            device!.categoryId = NSNumber(integer: editedDevice!.categoryId)
-            device!.controlType = editedDevice!.controlType
+            device.name = txtFieldName.text!
+            device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
+            device.zoneId = NSNumber(integer: editedDevice!.zoneId)
+            device.categoryId = NSNumber(integer: editedDevice!.categoryId)
+            device.controlType = editedDevice!.controlType
             saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        //        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
-        
-        self.view.backgroundColor = UIColor.clearColor()
-        
-        txtFieldName.text = device!.name
-        lblAddress.text = "\(returnThreeCharactersForByte(Int(device!.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device!.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device!.address)))"
-        lblChannel.text = "\(device!.channel)"
-        print(device!.parentZoneId)
-        print(device!.zoneId)
-        print(device!.categoryId)
-        print(device!.controlType)
-        btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device!.parentZoneId), gateway: device!.gateway))", forState: UIControlState.Normal)
-        btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device!.zoneId), gateway: device!.gateway))", forState: UIControlState.Normal)
-        btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device!.categoryId), gateway: device!.gateway))", forState: UIControlState.Normal)
-        btnControlType.setTitle("\(device!.controlType)", forState: UIControlState.Normal)
-        txtFieldName.becomeFirstResponder()
-        // Do any additional setup after loading the view.
     }
     
     func saveChanges() {

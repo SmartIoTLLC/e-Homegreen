@@ -172,24 +172,19 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
-    func fetchZones () {
-        // OVDE ISKACE BUD NA ANY
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+    func fetchZones() -> [Zone] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-            devices = fetResults!
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            return fetResults!
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+        return []
     }
     func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
         //        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
@@ -259,6 +254,9 @@ class IncomingHandler: NSObject {
                 devices[i].heatTemperature = Int(byteArray[14+13*(channel-1)])
                 devices[i].roomTemperature = Int(byteArray[15+13*(channel-1)])
                 devices[i].humidity = Int(byteArray[16+13*(channel-1)])
+                print(byteArray[17+13*(channel-1)] == 0x00 ? false : true)
+                devices[i].filterWarning = byteArray[17+13*(channel-1)] == 0x00 ? false : true
+                devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? NSNumber(bool:false) : NSNumber(bool:true)
                 devices[i].current = Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])
                 let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveDataForRepeatSendingHandler, object: self, userInfo: data)
@@ -363,6 +361,7 @@ class IncomingHandler: NSObject {
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
                 device.categoryId = Int(byteArray[8])
+                device.digitalInputMode = Int(byteArray[14])
                 //                var interfaceParametar:[Byte] = []
                 //                for var i = 7; i < byteArray.count-2; i++ {
                 //                    interfaceParametar.append(byteArray[i])
@@ -689,45 +688,64 @@ class IncomingHandler: NSObject {
     }
     // MARK: - Get zones and categories
     func getZone(byteArray:[Byte]) {
-        var name:String = ""
-        for var j = 11; j < 11+Int(byteArray[10]); j++ {
-            name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-        }
-        let id = byteArray[8]
-        let level = byteArray[byteArray.count - 2 - 1]
-        var description = ""
-        if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-            let number = 11+Int(byteArray[10])+2
-            for var j = number; j < number+Int(byteArray[number-1]); j++ {
-                description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
+            // Miminum is 12, but that is also doubtful...
+            if byteArray.count > 12 {
+                var name:String = ""
+                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
+                let id = byteArray[8]
+                let level = byteArray[byteArray.count - 2 - 1]
+                var description = ""
+                if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+                    let number = 11+Int(byteArray[10])+2
+                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                        description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                    }
+                }
+                print("Id:\(id) Name:\(name) Description:\(description) Level:\(level)")
+                var doesIdExist = false
+                let zones = fetchZones()
+                for zone in zones {
+                    if zone.id == NSNumber(integer: Int(id)) {
+                        doesIdExist = true
+                        (zone.name, zone.level, zone.zoneDescription) = (name, NSNumber(integer:Int(level)), description)
+                        saveChanges()
+                        break
+                    }
+                }
+                if doesIdExist {
+                } else {
+                    let zone = Zone(context: appDel.managedObjectContext!)
+                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.gateway) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0])
+                    saveChanges()
+                }
+                let data = ["zoneId":Int(id)]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
             }
         }
-        print("Id:\(id) Name:\(name) Description:\(description) Level:\(level)")
-        let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-        (zone.id, zone.name, zone.level, zone.zoneDescription) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description)
-        saveChanges()
-        let data = ["zoneId":Int(id)]
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
-        
     }
     func getCategories(byteArray:[Byte]) {
-        var name:String = ""
-        for var j = 11; j < 11+Int(byteArray[10]); j++ {
-            name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-        }
-        let id = byteArray[8]
-        var description = ""
-        if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-            let number = 11+Int(byteArray[10])+2
-            for var j = number; j < number+Int(byteArray[number-1]); j++ {
-                description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
+            var name:String = ""
+            for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
             }
+            let id = byteArray[8]
+            var description = ""
+            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+                let number = 11+Int(byteArray[10])+2
+                for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
+            }
+            let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+            (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
+            saveChanges()
+            let data = ["categoryId":Int(id)]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
         }
-        let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-        (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
-        saveChanges()
-        let data = ["categoryId":Int(id)]
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
     }
 }
 

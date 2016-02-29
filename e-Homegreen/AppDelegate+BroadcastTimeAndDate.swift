@@ -43,7 +43,10 @@ extension AppDelegate {
         dispatch_source_set_timer(refreshTimer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
         dispatch_source_set_event_handler(refreshTimer) {
             // do whatever you want here
-            self.establishAllConnections()
+            NSLog("Upravo se sve osvezilo")
+            dispatch_async(dispatch_get_main_queue(),{
+                self.establishAllConnections()
+            })
         }
         dispatch_resume(refreshTimer)
         

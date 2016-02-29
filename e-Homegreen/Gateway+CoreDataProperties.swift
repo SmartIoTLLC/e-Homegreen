@@ -35,5 +35,7 @@ extension Gateway {
     @NSManaged var timers: NSSet
     @NSManaged var zones: NSSet
     @NSManaged var flags: NSSet
+    @NSManaged var autoReconnectDelay: NSNumber
+    
 
 }

@@ -55,6 +55,7 @@ extension Device {
 //    @NSManaged var images: NSSet?
     @NSManaged var deviceImages: NSMutableSet?
     @NSManaged var address: NSNumber
+    @NSManaged var allowEnergySaving: NSNumber
     @NSManaged var amp: String
     @NSManaged var categoryId: NSNumber
     @NSManaged var categoryName: String
@@ -92,6 +93,9 @@ extension Device {
     @NSManaged var gateway: Gateway
     @NSManaged var curtainGroupID: NSNumber
     @NSManaged var curtainControlMode: NSNumber
+    @NSManaged var digitalInputMode: NSNumber
+    
+    
 }
 ////
 ////  Device+CoreDataProperties.swift

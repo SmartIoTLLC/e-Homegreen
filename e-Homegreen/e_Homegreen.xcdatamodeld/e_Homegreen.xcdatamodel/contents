@@ -9,6 +9,7 @@
     </entity>
     <entity name="Device" representedClassName="e_Homegreen.Device" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="allowEnergySaving" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="amp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="categoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,6 +21,7 @@
         <attribute name="curtainControlMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="curtainGroupID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="digitalInputMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="heatTemperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="humidity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isCurtainModeAllowed" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -84,6 +86,7 @@
         <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressThree" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="autoReconnectDelay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="gatewayDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -205,19 +208,19 @@
         <relationship name="iBeacon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IBeacon" inverseName="iBeaconZone" inverseEntity="IBeacon" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Category" positionX="-9" positionY="144" width="128" height="120"/>
-        <element name="Device" positionX="-63" positionY="-18" width="128" height="630"/>
-        <element name="DeviceImage" positionX="-18" positionY="135" width="128" height="90"/>
-        <element name="Event" positionX="-9" positionY="171" width="128" height="210"/>
-        <element name="Flag" positionX="-18" positionY="135" width="128" height="225"/>
-        <element name="Gateway" positionX="-63" positionY="54" width="128" height="360"/>
-        <element name="IBeacon" positionX="-18" positionY="135" width="128" height="120"/>
-        <element name="Image" positionX="-18" positionY="135" width="128" height="105"/>
-        <element name="Scene" positionX="-54" positionY="135" width="128" height="210"/>
-        <element name="Security" positionX="27" positionY="189" width="128" height="135"/>
-        <element name="Sequence" positionX="-27" positionY="162" width="128" height="225"/>
-        <element name="Surveilence" positionX="-18" positionY="135" width="128" height="450"/>
-        <element name="Timer" positionX="9" positionY="180" width="128" height="240"/>
-        <element name="Zone" positionX="-18" positionY="135" width="128" height="150"/>
+        <element name="Category" positionX="547" positionY="195" width="128" height="120"/>
+        <element name="Device" positionX="-504" positionY="-27" width="128" height="660"/>
+        <element name="DeviceImage" positionX="-326" positionY="-333" width="128" height="90"/>
+        <element name="Event" positionX="-63" positionY="72" width="128" height="210"/>
+        <element name="Flag" positionX="-306" positionY="-54" width="128" height="225"/>
+        <element name="Gateway" positionX="-135" positionY="423" width="128" height="373"/>
+        <element name="IBeacon" positionX="-72" positionY="-183" width="128" height="120"/>
+        <element name="Image" positionX="610" positionY="-96" width="128" height="105"/>
+        <element name="Scene" positionX="513" positionY="519" width="128" height="210"/>
+        <element name="Security" positionX="493" positionY="333" width="128" height="135"/>
+        <element name="Sequence" positionX="205" positionY="-18" width="128" height="225"/>
+        <element name="Surveilence" positionX="718" positionY="153" width="128" height="450"/>
+        <element name="Timer" positionX="376" positionY="18" width="128" height="240"/>
+        <element name="Zone" positionX="313" positionY="480" width="128" height="150"/>
     </elements>
 </model>

@@ -117,7 +117,7 @@ extension IncomingHandler {
                             device.runningTime = "00:00:00,0s"
                             device.current = 0
                             saveChanges()
-                        } else if name == ControlType.HumanInterfaceSeries && i > 1 {
+                        } else if channel == 5 && name == ControlType.HumanInterfaceSeries && i > 1 {
                             let device = NSEntityDescription.insertNewObjectForEntityForName("Device", inManagedObjectContext: appDel.managedObjectContext!) as! Device
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])

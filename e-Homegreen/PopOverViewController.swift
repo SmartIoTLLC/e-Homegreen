@@ -369,6 +369,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case CategoriesPick = 14
         case SecurityGateways = 15
         case ControlType = 21
+        case DeviceInputMode = 22
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -409,6 +410,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 changeControlType("")
             }
+        } else if indexTab == PopOver.DeviceInputMode.rawValue {
+            tableList = [TableList(name: DigitalInput.Generic.description(), id: 22), TableList(name: DigitalInput.NormallyOpen.description(), id: 22), TableList(name: DigitalInput.NormallyClosed.description(), id: 22), TableList(name: DigitalInput.MotionSensor.description(), id: 22), TableList(name: DigitalInput.ButtonNormallyOpen.description(), id: 22), TableList(name: DigitalInput.ButtonNormallyClosed.description(), id: 22)]
         }
     }
     func changeControlType (type:String) {

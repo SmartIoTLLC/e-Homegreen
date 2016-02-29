@@ -53,6 +53,11 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         refreshCategoryList()
     }
     
+    @IBAction func btnCleearFields(sender: AnyObject) {
+        txtFrom.text = ""
+        txtTo.text = ""
+    }
+    
     func backURL(strText: String) {
 //        First - Delete all categories
         for var item = 0; item < categories.count; item++ {

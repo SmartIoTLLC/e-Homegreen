@@ -30,4 +30,5 @@ class Device: NSManagedObject {
             self.address = NSNumber(integer:newValue.rawValue)
         }
     }
+    var filterWarning:Bool = false
 }

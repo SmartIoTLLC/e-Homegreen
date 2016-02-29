@@ -203,7 +203,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.backView.hidden = false
             }
             if devices[indexPath.row].warningState == 0 {
-                cell.backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+                cell.backView.colorTwo = Colors.MediumGray
                 
             } else if devices[indexPath.row].warningState == 1 {
                 // Uppet state
@@ -405,18 +405,24 @@ extension DevicesViewController: UICollectionViewDataSource {
             
         } else if devices[indexPath.row].controlType == ControlType.Climate {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-            
+            cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
 //            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.climateName.text = devices[indexPath.row].name
                         cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
-            cell.temperature.text = "\(devices[indexPath.row].roomTemperature) C"
+            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 17)
+            cell.temperature.text = "\(devices[indexPath.row].roomTemperature) \u{00B0}c"
             
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
             
             var fanSpeed = 0.0
             let speedState = devices[indexPath.row].speedState
+            if devices[indexPath.row].filterWarning {
+                cell.backView.colorTwo = Colors.DirtyRedColor
+            } else {
+                cell.backView.colorTwo = Colors.MediumGray
+            }
             if devices[indexPath.row].currentValue == 255 {
                 switch speedState {
                 case "Low":
@@ -435,17 +441,18 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
                 let modeState = devices[indexPath.row].modeState
+                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 17)
                 switch modeState {
                 case "Cool":
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = UIImage(named: "cool")
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
                 case "Heat":
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = UIImage(named: "heat")
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) \u{00B0}c"
                 case "Fan":
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
                     if fanSpeed == 0 {
                         cell.modeImage.image = UIImage(named: "fanauto")
                         cell.modeImage.stopAnimating()
@@ -461,14 +468,14 @@ extension DevicesViewController: UICollectionViewDataSource {
                     let mode = devices[indexPath.row].mode
                     switch mode {
                     case "Cool":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
                     case "Heat":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) C"
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) \u{00B0}c"
                     case "Fan":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
                     default:
                         //  Hoce i tu da zezne
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) C"
+                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
                     }
                 }
             } else {
@@ -509,7 +516,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
             
-        } else if devices[indexPath.row].controlType == ControlType.Sensor {
+        } else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions

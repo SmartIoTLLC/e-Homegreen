@@ -144,6 +144,13 @@ struct DeviceInfo {
         4:Interface.TemperatureProbe2,
         5:Interface.MotionSensorPIR,
         6:Interface.DigitalInput]
+    
+    static let inteligentSwitch:[Int:String] = [1:Interface.TemperatureProbe,
+        2:Interface.DigitalInputDryContact,
+        3:Interface.DigitalInputDryContact2,
+        4:Interface.TemperatureProbe2,
+        5:Interface.IRReceiver]
+    
     static let categoryList:[Int:String] = [0:"",
         1:"Gateway & Control",
         2:"Dimming Control",

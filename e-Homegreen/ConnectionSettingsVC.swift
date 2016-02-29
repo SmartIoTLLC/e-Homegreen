@@ -39,6 +39,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var txtAutoReconnectDelay: UITextField!
     
     init(){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
@@ -209,21 +210,21 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeightConstraint.constant = 250
-            }else if self.view.frame.size.height == 375{
-                backViewHeightConstraint.constant = 300
-            }else if self.view.frame.size.height == 414{
-                backViewHeightConstraint.constant = 350
-            }else{
-                backViewHeightConstraint.constant = 480
-            }
-        }else{
-            
-            backViewHeightConstraint.constant = 480
-            
-        }
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            if self.view.frame.size.height == 320{
+//                backViewHeightConstraint.constant = 250
+//            }else if self.view.frame.size.height == 375{
+//                backViewHeightConstraint.constant = 300
+//            }else if self.view.frame.size.height == 414{
+//                backViewHeightConstraint.constant = 350
+//            }else{
+//                backViewHeightConstraint.constant = 480
+//            }
+//        }else{
+//            
+//            backViewHeightConstraint.constant = 480
+//            
+//        }
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -238,7 +239,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             if let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
                 if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
                     if gatewayIndex == -1 {
-                        let gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
+                        let gateway = Gateway(context: appDel.managedObjectContext!)
+//                        let gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
                         gateway.name = name.text!
                         if ipHost.text == "" {
                             gateway.remoteIp = "0"
@@ -258,6 +260,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                         gateway.addressThree = Int(addressThird.text!)!
                         gateway.gatewayDescription = txtDescription.text
                         gateway.turnedOn = true
+                        gateway.autoReconnectDelay = NSNumber(integer: 3)
                         createZonesAndCategories(gateway)
                         saveChanges()
                         self.dismissViewControllerAnimated(true, completion: nil)

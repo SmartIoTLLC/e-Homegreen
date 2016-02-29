@@ -38,6 +38,14 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     var categoryButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 180, 150, 40))
     var goButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(55, 250, 150, 40))
     
+    
+    var locationButtonReset:UIButton = UIButton(frame: CGRectMake(270, 30, 40, 40))
+    var levelButtonReset:UIButton = UIButton(frame: CGRectMake(270, 80, 40, 40))
+    var zoneButtonReset:UIButton = UIButton(frame: CGRectMake(270, 130, 40, 40))
+    var categoryButtonReset:UIButton = UIButton(frame: CGRectMake(270, 180, 40, 40))
+    
+    
+    
     let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
     let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
     let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
@@ -94,7 +102,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         categoryLabel.text = "Category"
         categoryLabel.textColor = UIColor.whiteColor()
         self.addSubview(categoryLabel)
-        
+        // Filters
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         locationButton.tag = 1
@@ -122,13 +130,37 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButton)
-        
+        // Go button
         goButton.titleLabel?.tintColor = UIColor.whiteColor()
         goButton.setTitle("Go", forState: UIControlState.Normal)
         goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
         goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(goButton)
+        // Reset filters
+        locationButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        locationButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        locationButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(locationButtonReset)
+        
+        levelButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        levelButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        levelButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(levelButtonReset)
+        
+        zoneButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        zoneButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        zoneButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(zoneButtonReset)
+        
+        categoryButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        categoryButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        categoryButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        self.addSubview(categoryButtonReset)
     }
     func drawMenu(locationText:String, level:String, zone:String, category:String, locationSearch:[String]){
         self.locationSearch = locationSearch

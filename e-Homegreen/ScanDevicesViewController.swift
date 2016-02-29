@@ -114,6 +114,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             abort()
         }
     }
+    @IBAction func btnDeleteTextFields(sender: AnyObject) {
+        rangeFrom.text = ""
+        rangeTo.text = ""
+    }
     
     // MARK: - FINDING DEVICES FOR GATEWAY
     // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
@@ -338,20 +342,20 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.Sensor {
+        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.HumanInterfaceSeries {
-            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
-            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-        }
+//        if devices[index].type == ControlType.HumanInterfaceSeries {
+//            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+//            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
+//            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+//        }
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int, numberInArray:Int) {
         setProgressBarParametarsForFindingSensorParametar(deviceIndex, numberInArray:numberInArray)
-        if devices[deviceIndex].controlType == ControlType.Sensor {
+        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.HumanInterfaceSeries {
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
@@ -442,7 +446,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     func findParametarsForSensor() {
         arrayOfSensorAdresses = []
         for var i = fromAddress!; i<=toAddress; i++ {
-            if devices[i].controlType == ControlType.Sensor {
+            if devices[i].controlType == ControlType.Sensor || devices[i].type == ControlType.HumanInterfaceSeries {
                 arrayOfSensorAdresses.append(i)
             }
         }
@@ -522,7 +526,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if devices.count != 0 {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
                 for var i = sp.from-1; i <= sp.to-1; i++ {
-                    if devices[i].controlType == ControlType.Sensor {
+                    if devices[i].controlType == ControlType.Sensor || devices[i].controlType == ControlType.HumanInterfaceSeries{
                         findSensorParametar = true
                         break
                     }

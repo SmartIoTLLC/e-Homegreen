@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -43,15 +43,10 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceiverdFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserverForName(NotificationKey.DidReceiveZoneFromGateway, object: nil, queue: NSOperationQueue.mainQueue()) { [weak self] notification in
-            if let zoneId = notification.userInfo as? [String:Int] {
-                print(zoneId)
-            }
-        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "zoneReceivedFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
     }
     func removeObservers() {
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZonesOrCategories)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -108,19 +103,33 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
         refreshZoneList()
     }
+    
+    //MARK: - ZONE SCANNING
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
+    var currentIndex:Int = 0
+    var from:Int = 0
+    var to:Int = 0
     
     var pbSZ:ProgressBarVC?
+    func progressBarDidPressedExit () {
+        dismissScaningControls()
+    }
+    var scanZones:ScanFunction?
+    var zoneScanTimer:NSTimer?
+    var idToSearch:Int?
+    var timesRepeatedCounter:Int = 0
     @IBAction func btnScanZones(sender: AnyObject) {
-        // TODO: Prvo izbrisi prethodne
-        // TODO: Pokreni servis za skeniranje
         do {
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
-            let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(Int(gateway!.addressThree))]
-            SendingHandler.sendCommand(byteArray: Function.getZone(address, id: UInt8(Int(sp.from))), gateway: gateway!)
+            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway!, scanForWhat: .Zone)
             pbSZ = ProgressBarVC(title: "Scanning Zones", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForZones)
+            scanZones?.sendCommandForFinding(id:Byte(sp.from))
+            idToSearch = sp.from
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
+            timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
             
@@ -131,20 +140,94 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
     }
     
-    // MARK: - Service for scanning zone
-    func checkIfGatewayDidGetZones () {
-        
+    @IBAction func btnClearFields(sender: AnyObject) {
+        txtFrom.text = ""
+        txtTo.text = ""
     }
-    
-    func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
-//        var index:Int = Int(address[2])
-//        index = index - fromAddress! + 1
-//        let howMuchOf = toAddress!-fromAddress!+1
-//        pbSZ?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
-//        pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
-//        pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
+    // MARK: Service for scanning zone
+    func checkIfGatewayDidGetZones (timer:NSTimer) {
+        if let zoneId = timer.userInfo as? Int {
+            if zoneId > idToSearch {
+                // nesto nije dobro
+                dismissScaningControls()
+                alertController("Error", message: "Something went wrong!")
+                return
+            }
+            if zoneId == idToSearch {
+                // ako je proverio tri puta
+                if timesRepeatedCounter == 3 {
+                    // Proveriti da li je poslednji ili idemo dalje
+                    if (zoneId+1) > scanZones?.to {
+                        dismissScaningControls()
+                    } else {
+                        //ima jos
+                        idToSearch! += 1
+                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
+                        setProgressBarParametarsForScanningZones(id: idToSearch!)
+                        zoneScanTimer!.invalidate()
+                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
+                        timesRepeatedCounter = 1
+                    }
+                } else {
+                    scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
+                    setProgressBarParametarsForScanningZones(id: idToSearch!)
+                    zoneScanTimer!.invalidate()
+                    zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
+                    timesRepeatedCounter += 1
+                }
+                return
+            }
+            if zoneId < idToSearch {
+                // nesto nije dobro
+                dismissScaningControls()
+                alertController("Error", message: "Something went wrong!")
+            }
+        }
     }
-    // MARK: Error handling
+    //MARK: Zone received from gateway
+    func zoneReceivedFromGateway (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
+            if let zoneId = notification.userInfo as? [String:Int] {
+                if zoneId["zoneId"] > idToSearch {
+                    // nesto nije dobro
+                    dismissScaningControls()
+                    alertController("Error", message: "Something went wrong!")
+                    return
+                }
+                if zoneId["zoneId"] == idToSearch {
+                    timesRepeatedCounter = 0
+                    if idToSearch >= scanZones?.to {
+                        //gotovo
+                        dismissScaningControls()
+                    } else {
+                        //ima jos
+                        idToSearch! += 1
+                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
+                        setProgressBarParametarsForScanningZones(id: idToSearch!)
+                        zoneScanTimer!.invalidate()
+                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
+                        timesRepeatedCounter = 1
+                    }
+                    return
+                }
+                if zoneId["zoneId"] < idToSearch {
+                    // nesto nije dobro
+                    dismissScaningControls()
+                    alertController("Error", message: "Something went wrong!")
+                }
+            }
+        }
+    }
+    // MARK: Controlling progress bar
+    func setProgressBarParametarsForScanningZones(id zoneId:Int) {
+        var index:Int = zoneId
+        index = index - scanZones!.from + 1
+        let howMuchOf = scanZones!.to - scanZones!.from + 1
+        pbSZ?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
+        pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
+        pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
+    }
+    // MARK: Error handling for Zones
     func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
@@ -165,6 +248,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         let percent = Float(1)/Float(count)
         return SearchParametars(from: from, to: to, count: count, initialPercentage: percent)
     }
+    
     // MARK: Alert controller
     var alertController:UIAlertController?
     func alertController (title:String, message:String) {
@@ -183,19 +267,18 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             // ...
         }
     }
-    var zoneScanTimer:NSTimer?
-    
-    var index:Int = 0
-    var timesRepeatedCounter:Int = 0
+    // MARK: Dismiss zone scanning
     func dismissScaningControls() {
         timesRepeatedCounter = 0
-        //   For scaning zones
-        index = 0
+        idToSearch = 0
         zoneScanTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
         pbSZ?.dissmissProgressBar()
         UIApplication.sharedApplication().idleTimerDisabled = false
     }
+    
+    // MARK:- Delete zones and other
+    
     @IBAction func btnDeleteAll(sender: AnyObject) {
         for var item = 0; item < zones.count; item++ {
             if zones[item].gateway.objectID == gateway!.objectID {
@@ -259,16 +342,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
     func isVisibleValueChanged (sender:UISwitch) {
         if sender.on == true {
             zones[sender.tag].isVisible = true
@@ -324,11 +397,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             error = catchedError
         }
         return nil
-    }
-}
-extension ImportZoneViewController: ProgressBarDelegate {
-    func progressBarDidPressedExit() {
-        
     }
 }
 extension ImportZoneViewController: UITableViewDataSource {

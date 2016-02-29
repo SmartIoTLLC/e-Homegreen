@@ -23,6 +23,7 @@
 		733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F65441BCFABA8001BE004 /* ChatHandler.swift */; };
 		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
 		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
+		734E35781C8239990096E043 /* ScanFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734E35771C8239990096E043 /* ScanFunction.swift */; };
 		73556C821BB02C6600428375 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73556C811BB02C6600428375 /* File.swift */; };
 		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
@@ -264,6 +265,7 @@
 		733F65441BCFABA8001BE004 /* ChatHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHandler.swift; sourceTree = "<group>"; };
 		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
 		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
+		734E35771C8239990096E043 /* ScanFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFunction.swift; sourceTree = "<group>"; };
 		73556C811BB02C6600428375 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
@@ -1159,6 +1161,7 @@
 				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
+				734E35771C8239990096E043 /* ScanFunction.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -1436,6 +1439,7 @@
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
+				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
