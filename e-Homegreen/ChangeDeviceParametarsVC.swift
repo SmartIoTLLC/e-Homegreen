@@ -31,6 +31,8 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     
     @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
     @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
+    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
+    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
     func hideDeviceInput(isHidden:Bool) {
         if isHidden {
             deviceInputHeight.constant = 0
@@ -39,7 +41,16 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             deviceInputHeight.constant = 30
             deviceInputTopSpace.constant = 8
         }
-        //TODO:- Ovde nesto ne valja, usporava ga self.view.setNeedsUpdateConstraints()
+        backView.layoutIfNeeded()
+    }
+    func hideImageButton(isHidden:Bool) {
+        if isHidden {
+            deviceImageHeight.constant = 0
+            deviceImageLeading.constant = 0
+        } else {
+            deviceImageHeight.constant = 30
+            deviceImageLeading.constant = 7
+        }
         backView.layoutIfNeeded()
     }
     var point:CGPoint?
@@ -88,12 +99,20 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         btnControlType.setTitle("\(device.controlType)", forState: UIControlState.Normal)
         txtFieldName.becomeFirstResponder()
         // Do any additional setup after loading the view.
-        if device.controlType == ControlType.Sensor {
+        let chn = Int(device.channel)
+        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
             hideDeviceInput(false)
         } else {
             hideDeviceInput(true)
         }
-        
+        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
+            hideDeviceInput(false)
+        } else {
+            hideDeviceInput(true)
+        }
+        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
+            hideImageButton(true)
+        }
     }
     
     @IBAction func btnCancel(sender: AnyObject) {

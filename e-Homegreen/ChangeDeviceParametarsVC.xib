@@ -12,6 +12,8 @@
                 <outlet property="btnImages" destination="TXF-dI-RqW" id="AYc-pH-DoO"/>
                 <outlet property="btnLevel" destination="rY8-cL-0z5" id="FeB-Q8-6Bg"/>
                 <outlet property="btnZone" destination="Jfr-F6-Oph" id="wKG-LR-zPh"/>
+                <outlet property="deviceImageHeight" destination="wQY-Vs-ns0" id="eLR-qb-ktL"/>
+                <outlet property="deviceImageLeading" destination="Etg-dA-h7t" id="yfO-2b-Grv"/>
                 <outlet property="deviceInputHeight" destination="7vg-sL-MDF" id="fuI-b0-AeX"/>
                 <outlet property="deviceInputTopSpace" destination="Yaa-w3-Mgh" id="uau-lj-I8G"/>
                 <outlet property="lblAddress" destination="VQh-sR-r8A" id="Y4E-6X-1lk"/>

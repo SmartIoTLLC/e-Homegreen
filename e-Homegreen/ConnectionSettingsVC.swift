@@ -210,6 +210,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     override func viewWillLayoutSubviews() {
+        
+        self.view.layoutIfNeeded()
 //        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
 //            if self.view.frame.size.height == 320{
 //                backViewHeightConstraint.constant = 250

@@ -688,6 +688,7 @@ class IncomingHandler: NSObject {
     }
     // MARK: - Get zones and categories
     func getZone(byteArray:[Byte]) {
+        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones))
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
             // Miminum is 12, but that is also doubtful...
             if byteArray.count > 12 {

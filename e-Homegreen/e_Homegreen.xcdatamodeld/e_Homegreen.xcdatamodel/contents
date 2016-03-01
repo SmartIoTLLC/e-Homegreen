@@ -51,6 +51,7 @@
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="devices" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="DeviceImage" representedClassName=".DeviceImage" syncable="YES">
+        <attribute name="defaultImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="deviceImages" inverseEntity="Device" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="deviceImages" inverseEntity="Image" syncable="YES"/>
@@ -114,9 +115,7 @@
         <relationship name="iBeaconZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" inverseName="iBeacon" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Image" representedClassName=".Image" syncable="YES">
-        <attribute name="fromXCAssets" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="isAddedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DeviceImage" inverseName="image" inverseEntity="DeviceImage" syncable="YES"/>
     </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
@@ -210,12 +209,12 @@
     <elements>
         <element name="Category" positionX="547" positionY="195" width="128" height="120"/>
         <element name="Device" positionX="-504" positionY="-27" width="128" height="660"/>
-        <element name="DeviceImage" positionX="-326" positionY="-333" width="128" height="90"/>
+        <element name="DeviceImage" positionX="-326" positionY="-333" width="128" height="105"/>
         <element name="Event" positionX="-63" positionY="72" width="128" height="210"/>
         <element name="Flag" positionX="-306" positionY="-54" width="128" height="225"/>
         <element name="Gateway" positionX="-135" positionY="423" width="128" height="373"/>
         <element name="IBeacon" positionX="-72" positionY="-183" width="128" height="120"/>
-        <element name="Image" positionX="610" positionY="-96" width="128" height="105"/>
+        <element name="Image" positionX="610" positionY="-96" width="128" height="75"/>
         <element name="Scene" positionX="513" positionY="519" width="128" height="210"/>
         <element name="Security" positionX="493" positionY="333" width="128" height="135"/>
         <element name="Sequence" positionX="205" positionY="-18" width="128" height="225"/>

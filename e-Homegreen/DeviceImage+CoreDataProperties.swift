@@ -13,7 +13,8 @@ import Foundation
 import CoreData
 
 extension DeviceImage {
-
+    
+    @NSManaged var defaultImage: String?
     @NSManaged var state: NSNumber?
     @NSManaged var device: Device?
     @NSManaged var image: Image?

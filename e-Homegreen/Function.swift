@@ -183,121 +183,6 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    // AC
-    static func getACStatus (address:[Byte]) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [0xFF]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x03
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setACStatus (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, status, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x05
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setACmode (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x06
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setACSpeed (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x07
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setACSetPoint (address:[Byte], channel:Byte, coolingSetPoint:Byte, heatingSetPoint:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, coolingSetPoint, heatingSetPoint]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x08
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func setACEnergySaving (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, status]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x0A
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
     static func getChannelName (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -328,25 +213,6 @@ class Function {
         message[4] = address[2]
         message[5] = 0x01
         message[6] = 0x0D
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
-    static func getACName (address:[Byte], channel:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [channel, 0x01]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x04
-        message[6] = 0x01
         for i in 0...messageInfo.count - 1 {
             message[7+i] = messageInfo[i]
         }
@@ -549,6 +415,143 @@ class Function {
         return message
     }
 }
+//MARK:- CLIMATE
+extension Function {
+    static func getACName (address:[Byte], channel:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, 0x01]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x01
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func getACStatus (address:[Byte]) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [0xFF]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x03
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setACStatus (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, status, 0x00, 0x00]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x05
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setACmode (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, 0x00, value, 0x00, 0x00]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x06
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setACSpeed (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, 0x00, value, 0x00, 0x00]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setACSetPoint (address:[Byte], channel:Byte, coolingSetPoint:Byte, heatingSetPoint:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, coolingSetPoint, heatingSetPoint]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x08
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setACEnergySaving (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [channel, status]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x04
+        message[6] = 0x0A
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+}
+//MARK:- FLAG
 extension Function {
     //   **************************************************************************************
     //   **************************************   FLAG   **************************************
@@ -592,6 +595,7 @@ extension Function {
         return message
     }
 }
+//MARK:- EVENT
 extension Function {
     //   **************************************************************************************
     //   **************************************   EVENT   *************************************
@@ -631,6 +635,7 @@ extension Function {
         return message
     }
 }
+//MARK:- SEQUENCE
 extension Function {
     //   **************************************************************************************
     //   *************************************   SEQUENCE   ***********************************
@@ -655,6 +660,7 @@ extension Function {
         return message
     }
 }
+//MARK:- SCENE
 extension Function {
     //   **************************************************************************************
     //   **************************************   SCENE   *************************************
@@ -679,6 +685,7 @@ extension Function {
         return message
     }
 }
+//MARK:- TIMER
 extension Function {
     //   **************************************************************************************
     //   **************************************   TIMER   *************************************
@@ -742,6 +749,7 @@ extension Function {
         return message
     }
 }
+//MARK:- ANALOG/ DIGITAL INPUT
 extension Function {
     //   **************************************************************************************
     //   ****************************   ANALOG/ DIGITAL INPUT   *******************************
@@ -916,6 +924,7 @@ extension Function {
     }
     
 }
+//MARK:- SECURITY
 extension Function {
     //   **************************************************************************************
     //   ************************************   SECURITY   ************************************

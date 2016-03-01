@@ -47,6 +47,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "zoneReceivedFromGateway:", object: nil)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None

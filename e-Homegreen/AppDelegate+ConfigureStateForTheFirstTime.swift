@@ -56,13 +56,6 @@ extension AppDelegate {
             LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Surveillance", parametar: ["All","All","All","All","All","All","All"])
-            
-            for imageInGallery in CoreDataPreload.galleryList {
-                let image = Image(context: managedObjectContext!)
-                image.fromXCAssets = imageInGallery
-                image.isAddedByUser = NSNumber(bool: false)
-                saveContext()
-            }
         }
     }
 }

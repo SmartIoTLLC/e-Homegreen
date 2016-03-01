@@ -14,10 +14,7 @@ import CoreData
 
 extension Image {
 
-//    @NSManaged var numberInList: NSNumber?
-    @NSManaged var fromXCAssets: String?
     @NSManaged var imageData: NSData?
-    @NSManaged var isAddedByUser: NSNumber?
     @NSManaged var deviceImages: NSMutableSet?
 
 }
