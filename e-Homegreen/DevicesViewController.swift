@@ -360,7 +360,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 longTouchOldValue = 0
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                     dispatch_async(dispatch_get_main_queue(), {
-                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
                     })
                 })
                 timer.invalidate()
@@ -449,7 +449,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(setDeviceValue)
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: setDeviceValue), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
         }
 //        deviceCollectionView.reloadData()
@@ -910,7 +910,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].controlType == ControlType.Curtain {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -935,7 +935,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         if devices[tag].controlType == ControlType.Curtain {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, channel:  0x00, value: UInt8(Int(self.devices[tag].currentValue))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
             //            })
         }
