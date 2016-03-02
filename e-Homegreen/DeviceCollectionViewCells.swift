@@ -373,7 +373,7 @@ class MultiSensorCell: UICollectionViewCell {
         if device.info {
             infoView.hidden = false
             backView.hidden = true
-        }else {
+        } else {
             infoView.hidden = true
             backView.hidden = false
         }

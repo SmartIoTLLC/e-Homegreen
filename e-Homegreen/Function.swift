@@ -164,25 +164,6 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    static func setCurtainStatus (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x03
-        message[6] = 0x07
-        for i in 0...messageInfo.count - 1 {
-            message[7+i] = messageInfo[i]
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
     static func getChannelName (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -414,6 +395,53 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+}
+
+//MARK:- CURTAIN
+extension Function {
+    enum Value:Byte {
+        case Open = 0xFF
+        case Close = 0x00
+        case Stop = 0xEF
+        case Toggle = 0xF1
+    }
+    static func setCurtainStatus (address:[Byte], value:Byte, groupId:Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, groupId]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x03
+        message[6] = 0x07
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 06 00 00 00 01 15 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 06 00 00 00 01 23 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 06 00 00 00 01 24 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
+//    //
+//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
+//    AA 0D 01 00 02 03 07 FF FF FF 06 4A 00 00 00 00 00 00 00 01 68 10
+//    //
+//    EF 00 00 00 00 00 00 00 01
 }
 //MARK:- CLIMATE
 extension Function {
