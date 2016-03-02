@@ -225,12 +225,12 @@ public class ALCameraViewController: UIViewController {
         libraryButton.sizeToFit()
         flashButton.sizeToFit()
         
-        if allowCropping {
-            layoutCropView()
-        } else {
+//        if allowCropping {
+//            layoutCropView()
+//        } else {
             cameraView.configureFocus()
-        }
-        
+//        }
+    
         cameraButton.enabled = true
 
         let size = view.frame.size

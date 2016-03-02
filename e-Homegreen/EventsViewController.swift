@@ -297,6 +297,8 @@ extension EventsViewController: UICollectionViewDataSource {
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
             cell.eventImageView.image = eventImage
         }
+        cell.eventImageView.layer.cornerRadius = 5
+        cell.eventImageView.clipsToBounds = true
         
         cell.eventButton.tag = indexPath.row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")

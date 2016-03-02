@@ -11,7 +11,7 @@ import Foundation
 //Light
 class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var backView: CustomGradientBackground!
-    @IBOutlet weak var typeOfLight: UILabel!
+    @IBOutlet weak var typeOfLight: MarqueeLabel!
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var lightSlider: UISlider!
     

@@ -318,6 +318,9 @@ extension FlagsViewController: UICollectionViewDataSource {
             cell.flagButton.setTitle("Set True", forState: UIControlState.Normal)
         }
         
+        cell.flagImageView.layer.cornerRadius = 5
+        cell.flagImageView.clipsToBounds = true
+        
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

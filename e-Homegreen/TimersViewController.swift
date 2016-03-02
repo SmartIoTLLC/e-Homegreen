@@ -429,7 +429,8 @@ extension TimersViewController: UICollectionViewDataSource {
         
         // cancel start pause resume
         //
-        
+        cell.timerImageView.layer.cornerRadius = 5
+        cell.timerImageView.clipsToBounds = true
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

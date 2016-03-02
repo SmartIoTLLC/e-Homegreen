@@ -296,6 +296,8 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellLabel.addGestureRecognizer(longPress)
         cell.sceneCellImageView.tag = indexPath.row
         cell.sceneCellImageView.userInteractionEnabled = true
+        cell.sceneCellImageView.clipsToBounds = true
+        cell.sceneCellImageView.layer.cornerRadius = 5
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
         cell.sceneCellImageView.addGestureRecognizer(set)
         cell.btnSet.tag = indexPath.row

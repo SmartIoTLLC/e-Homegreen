@@ -314,6 +314,9 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.sequenceImageView.tag = indexPath.row
         cell.sequenceImageView.userInteractionEnabled = true
         cell.sequenceImageView.addGestureRecognizer(set)
+        cell.sequenceImageView.clipsToBounds = true
+        cell.sequenceImageView.layer.cornerRadius = 5
+        
         cell.getImagesFrom(sequences[indexPath.row])
         
         cell.sequenceButton.tag = indexPath.row

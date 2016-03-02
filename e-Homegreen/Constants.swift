@@ -151,6 +151,7 @@ struct UserDefaults {
     static let OpenLastScreen = "EHGIsLastScreenOpened"
     static let IsScaningForZones = "EHGIsScanningForZones"
     static let IsScaningForCategories = "EHGIsScanningForCategories"
+    static let GalleryContentOffset = "GalleryContentOffset"
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"

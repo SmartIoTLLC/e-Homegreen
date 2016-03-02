@@ -287,6 +287,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
 //            abort()
         }
     }
+
     func setACPowerStatus(gesture:UIGestureRecognizer) {
         let tag = gesture.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
@@ -784,6 +785,34 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             }
             
             devices[index.row].info = true
+        }
+    }
+    
+    func doubleTap (gesture:UIGestureRecognizer) {
+        let location = gesture.locationInView(deviceCollectionView)
+        if let index = deviceCollectionView.indexPathForItemAtPoint(location){
+            if devices[index.row].controlType == ControlType.Dimmer {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
+                if cell.typeOfLight.holdScrolling{
+                    cell.typeOfLight.holdScrolling = false
+                }else{
+                    cell.typeOfLight.holdScrolling = true
+                }
+                
+            } else if devices[index.row].controlType == ControlType.Relay {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
+                
+            } else if devices[index.row].controlType == ControlType.Sensor {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
+                
+            } else if devices[index.row].controlType == ControlType.Climate {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
+                
+            } else if devices[index.row].controlType == ControlType.Curtain {
+                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
+            }
+            
+            
         }
     }
     

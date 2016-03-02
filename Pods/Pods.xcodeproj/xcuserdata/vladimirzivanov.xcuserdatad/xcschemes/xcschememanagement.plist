@@ -4,6 +4,26 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ALCameraViewController.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>CocoaAsyncSocket.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>JSQCoreDataKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>Pods-CocoaAsyncSocket.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,12 +37,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>6146EFA45623743641CD4080BE645AEB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>79C040AFDDCE1BCBF6D8B5EB0B85887F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7B8DB3C0877AE3CFD1427047</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>87330B1DCE9E3653334A1C392975BFB8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B1D17BA74BEACBD28F897F231B5907A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B99342B0AF1F678D71BC800C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D18DDDC841046AD686091B816167A024</key>
 		<dict>
 			<key>primary</key>
 			<true/>
