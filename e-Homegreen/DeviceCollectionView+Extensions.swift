@@ -67,7 +67,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].controlType == ControlType.Sensor {
+        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.HumanInterfaceSeries {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
@@ -408,10 +408,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
 //            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.climateName.text = devices[indexPath.row].name
-                        cell.climateName.text = devices[indexPath.row].cellTitle
+            cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
-            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 17)
+            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) \u{00B0}c"
+            cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+            cell.temperatureSetPoint.text = "00 \u{00B0}c"
             
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
@@ -441,7 +443,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
                 let modeState = devices[indexPath.row].modeState
-                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 17)
+                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+                cell.temperatureSetPoint.text = "00 \u{00B0}c"
                 switch modeState {
                 case "Cool":
                     cell.modeImage.stopAnimating()
@@ -515,7 +518,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-            
         } else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)

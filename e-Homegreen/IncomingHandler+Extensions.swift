@@ -185,7 +185,47 @@ extension IncomingHandler {
 //        // ako ne nadje nista vrati defaultno
 //        
 //    }
-//    static func returnPictures(categoryId:Int, deviceValue:Double, motionSensor:Bool) -> UIImage? {
+//    static func returnPictures(type:String, categoryId:Int, motionSensor:Bool) -> [DeviceImageInfo] {
+//        // climate nema nista
+//        if motionSensor {
+//            return [DeviceImageInfo(defaultImage: "14 Security - Motion Sensor - 00", state: 1), DeviceImageInfo(defaultImage: "14 Security - Motion Sensor - 01", state: 2), DeviceImageInfo(defaultImage: "14 Security - Motion Sensor - 02", state: 3)]
+//        }
+//        if categoryId != 0 || categoryId != 1 || categoryId != 5 || categoryId != 6 || categoryId != 7 || categoryId != 8 || categoryId != 9 || categoryId != 10 {
+//            
+//        }
+////        static let CurtainsRS485 = "Curtains RS485"
+////        static let Gateway = "Gateway"
+////        static let CurtainsRelay = "Curtains Relay"
+////        static let PC = "PC"
+////        static let HVAC = "HVAC"
+////        static let Climate = "Climate"
+////        static let Sensor = "Sensor"
+////        static let HumanInterfaceSeries = "Intelligent Switch"
+////        static let AnalogOutput = "Analog Output"
+////        static let DigitalInput = "Digital Input"
+////        static let DigitalOutput = "Digital Output"
+////        static let AnalogInput = "Analog Input"
+////        static let IRTransmitter = "IR Transmitter"
+////        static let Access = "Access"
+////        static let Curtain = "Curtain"
+//        if type == ControlType.Dimmer {
+//            
+//        }
+//        if type == ControlType.Relay {
+//            
+//        }
+//        if type == ControlType.Appliance {
+//            
+//        }
+//        if type == ControlType.Sensor {
+//            
+//        }
+//        if type == ControlType.Sensor {
+//            
+//        }
+//        if type == ControlType.HumanInterfaceSeries {
+//            
+//        }
 //        //        1 - Gateway & Control
 //        //        2 - Dimming Control *
 //        //        3 - Relay Control *
@@ -402,5 +442,9 @@ extension IncomingHandler {
 //        //
 //        //        }
 //        return nil
-//    }
+////    }
+//}
+//struct DeviceImageInfo {
+//    let defaultImage:String
+//    let state:Int
 }

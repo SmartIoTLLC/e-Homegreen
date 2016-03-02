@@ -245,7 +245,7 @@ class ClimateCell: UICollectionViewCell {
     }
     func refreshDevice(device:Device) {
         self.device = device
-        temperature.font = UIFont(name: "DBLCDTempBlack", size: 17)
+        temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
         temperature.text = "\(device.roomTemperature) \u{00B0}c"
         energySavingImage.hidden = device.allowEnergySaving == NSNumber(bool: true) ? false : true
         if device.filterWarning {
@@ -273,7 +273,7 @@ class ClimateCell: UICollectionViewCell {
                 fanSpeed = 0.0
             }
             let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-            temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 17)
+            temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
             let modeState = device.modeState
             switch modeState {
             case "Cool":
@@ -299,7 +299,7 @@ class ClimateCell: UICollectionViewCell {
                 modeImage.stopAnimating()
                 modeImage.image = nil
                 let mode = device.mode
-                temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 17)
+                temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
                 switch mode {
                 case "Cool":
                     temperatureSetPoint.text = "\(device.coolTemperature) \u{00B0}c"
@@ -357,162 +357,14 @@ class MultiSensorCell: UICollectionViewCell {
     func populateCellWithData(sensorDevice:Device, tag:Int) {
         device = sensorDevice
         if device.channel == 1 || device.channel == 4 {
-            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 17)
+            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
         } else {
             sensorState.font = UIFont(name: "Tahoma", size: 17)
         }
         sensorTitle.userInteractionEnabled = true
         sensorTitle.text = device.cellTitle
         sensorTitle.tag = tag
-        if device.numberOfDevices == 10 {
-            switch device.channel {
-            case 1:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                }
-                sensorState.text = "\(device.currentValue) C"
-            case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
-                sensorState.text = "\(device.currentValue)"
-            case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
-                sensorState.text = "\(device.currentValue)"
-            case 9:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor")
-                }
-                sensorState.text = "\(device.currentValue)%"
-            case 4:
-                sensorImage.image = UIImage(named: "sensor_temperature")
-                sensorState.text = "\(device.currentValue) C"
-            case 5:
-                if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_brightness")
-                }
-                sensorState.text = "\(device.currentValue) LUX"
-            case 6:
-                switch device.currentValue {
-                case DeviceValue.MotionSensor.Idle:
-                    sensorImage.image = UIImage(named: "sensor_idle")
-                    sensorState.text = "Idle"
-                case DeviceValue.MotionSensor.Motion:
-                    sensorImage.image = UIImage(named: "sensor_motion")
-                    sensorState.text = "Motion"
-                case DeviceValue.MotionSensor.IdleWarning:
-                    sensorImage.image = UIImage(named: "sensor_third")
-                    sensorState.text = "Idle Warning"
-                case DeviceValue.MotionSensor.ResetTimer:
-                    sensorImage.image = UIImage(named: "sensor_third")
-                    sensorState.text = "Reset Timer"
-                default: break
-                }
-            case 8:
-                sensorImage.image = UIImage(named: "sensor_ir_receiver")
-                sensorState.text = "\(device.currentValue)"
-            case 7:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "tamper_on")
-                } else {
-                    sensorImage.image = UIImage(named: "tamper_off")
-                }
-                sensorState.text = "\(device.currentValue)"
-            case 10:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "sensor_noise")
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_no_noise")
-                }
-                sensorState.text = "\(device.currentValue)"
-                sensorState.text = "\(device.currentValue)"
-            default:
-                sensorState.text = "..."
-            }
-        }
-        if device.numberOfDevices == 6 {
-            switch device.channel {
-            case 1:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                sensorState.text = "\(device.currentValue) C"
-            case 2:
-                sensorImage.image = UIImage(named: "sensor")
-                sensorState.text = "\(device.currentValue)"
-            case 3:
-                sensorImage.image = UIImage(named: "sensor")
-                sensorState.text = "\(device.currentValue)"
-            case 4:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                sensorState.text = "\(device.currentValue) C"
-            case 5:
-                switch device.currentValue {
-                case DeviceValue.MotionSensor.Idle:
-                    sensorImage.image = UIImage(named: "sensor_idle")
-                    sensorState.text = "Idle"
-                case DeviceValue.MotionSensor.Motion:
-                    sensorImage.image = UIImage(named: "sensor_motion")
-                    sensorState.text = "Motion"
-                case DeviceValue.MotionSensor.IdleWarning:
-                    sensorImage.image = UIImage(named: "sensor_third")
-                    sensorState.text = "Idle Warning"
-                case DeviceValue.MotionSensor.ResetTimer:
-                    sensorImage.image = UIImage(named: "sensor_third")
-                    sensorState.text = "Reset Timer"
-                default: break
-                }
-            case 6:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "tamper_on")
-                } else {
-                    sensorImage.image = UIImage(named: "tamper_off")
-                }
-                sensorState.text = "\(device.currentValue)"
-            default:
-                sensorState.text = "..."
-            }
-        }
-        if device.numberOfDevices == 5 {
-            switch device.channel {
-            case 1:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                sensorState.text = "\(device.currentValue) C"
-            case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
-                sensorState.text = "\(device.currentValue)"
-            case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
-                sensorState.text = "\(device.currentValue)"
-            case 4:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                sensorState.font = UIFont(name: "DBLCDTempBlack", size: 17)
-                sensorState.text = "\(device.currentValue) \u{00B0}c"
-            case 5:
-                sensorImage.image = UIImage(named: "sensor_ir_receiver")
-                sensorState.text = "\(device.currentValue)"
-            default:
-                sensorState.text = "..."
-            }
-        }
+        populateCell(device)
         labelID.text = "\(device.channel)"
         labelName.text = "\(device.name)"
         labelCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))"
@@ -527,7 +379,9 @@ class MultiSensorCell: UICollectionViewCell {
         }
     }
     func returnDigitalInputModeStateinterpreter (device:Device) -> String {
-        var digitalInputCurrentValue = ""
+        print(device.digitalInputMode)
+        print(Int(device.currentValue))
+        var digitalInputCurrentValue = " "
         if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.NormallyOpen) {
             digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
         } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.NormallyClosed) {
@@ -545,10 +399,32 @@ class MultiSensorCell: UICollectionViewCell {
     }
     func refreshDevice(device:Device) {
         if device.channel == 1 || device.channel == 4 {
-            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 17)
+            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
         } else {
             sensorState.font = UIFont(name: "Tahoma", size: 17)
         }
+        sensorState.text = " "
+        populateCell(device)
+        labelID.text = "\(device.channel)"
+        labelName.text = "\(device.name)"
+        labelCategory.text = "\(device.categoryId)"
+        labelLevel.text = "\(device.parentZoneId)"
+        labelZone.text = "\(device.zoneId)"
+        if device.info {
+            infoView.hidden = false
+            backView.hidden = true
+        }else {
+            infoView.hidden = true
+            backView.hidden = false
+        }
+        // If device is enabled add all interactions
+        if device.isEnabled.boolValue {
+            disabledCellView.hidden = true
+        } else {
+            disabledCellView.hidden = false
+        }
+    }
+    func populateCell(device:Device) {
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
@@ -703,24 +579,6 @@ class MultiSensorCell: UICollectionViewCell {
             default:
                 sensorState.text = "..."
             }
-        }
-        labelID.text = "\(device.channel)"
-        labelName.text = "\(device.name)"
-        labelCategory.text = "\(device.categoryId)"
-        labelLevel.text = "\(device.parentZoneId)"
-        labelZone.text = "\(device.zoneId)"
-        if device.info {
-            infoView.hidden = false
-            backView.hidden = true
-        }else {
-            infoView.hidden = true
-            backView.hidden = false
-        }
-        // If device is enabled add all interactions
-        if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
-        } else {
-            disabledCellView.hidden = false
         }
     }
     

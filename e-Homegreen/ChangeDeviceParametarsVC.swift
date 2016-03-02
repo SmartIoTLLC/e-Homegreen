@@ -14,6 +14,7 @@ struct EditedDevice {
     var zoneId:Int
     var categoryId:Int
     var controlType:String
+    var digitalInputMode:Int
 }
 
 class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
@@ -28,6 +29,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
+    @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
     
     @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
     @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
@@ -66,6 +68,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     init(device: Device, point:CGPoint){
         self.device = device
         self.point = point
+        editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -102,11 +105,17 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         let chn = Int(device.channel)
         if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
             hideDeviceInput(false)
+            if let diMode = device.digitalInputMode as? Int {
+                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+            }
         } else {
             hideDeviceInput(true)
         }
         if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
             hideDeviceInput(false)
+            if let diMode = device.digitalInputMode as? Int {
+                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+            }
         } else {
             hideDeviceInput(true)
         }
@@ -139,6 +148,9 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             } else if id == 21 {
                 editedDevice?.controlType = text
                 btnControlType.setTitle(text,forState: UIControlState.Normal)
+            } else if id == 22 {
+                editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[text]!
+                changeDeviceInputMode.setTitle(text,forState: UIControlState.Normal)
             }
         }
     }
@@ -163,7 +175,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 21
+        popoverVC.indexTab = 22
         popoverVC.device = device
         popoverVC.filterGateway = device.gateway
         if let popoverController = popoverVC.popoverPresentationController {
@@ -258,6 +270,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
+            device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
             saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -272,10 +285,6 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             abort()
         }
     }
-    
-    
-    
-    
 //    func returnThreeCharactersForByte (number:Int) -> String {
 //        return String(format: "%03d",number)
 //    }
@@ -356,7 +365,6 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device) {
         let cdp = ChangeDeviceParametarsVC(device: device, point: point)
-        cdp.editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType)
 //        self.view.window?.rootViewController?.presentViewController(cdp, animated: true, completion: nil)
         self.presentViewController(cdp, animated: true, completion: nil)
     }
