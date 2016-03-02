@@ -80,6 +80,22 @@ struct SomethingSomethingSomething {
 }
 //MARK:- Multisensor
 struct DigitalInput {
+    
+    static let modeInfo: [Int:String] = [0x00:DigitalInput.Generic.description(),
+        0x01:DigitalInput.NormallyOpen.description(),
+        0x02:DigitalInput.NormallyClosed.description(),
+        0x03:DigitalInput.ButtonNormallyOpen.description(),
+        0x83:DigitalInput.ButtonNormallyClosed.description(),
+        0x04:DigitalInput.MotionSensor.description(),
+        0x84:DigitalInput.MotionSensor.description()]
+    static let modeInfoReverse: [String:Int] = [DigitalInput.Generic.description():0x00,
+        DigitalInput.NormallyOpen.description():0x01,
+        DigitalInput.NormallyClosed.description():0x02,
+        DigitalInput.ButtonNormallyOpen.description():0x03,
+        DigitalInput.ButtonNormallyClosed.description():0x83,
+        DigitalInput.MotionSensor.description():0x04]
+//        DigitalInput.MotionSensor.description():0x84]
+    
     struct Generic {
         static let Open = 0x00
         static let Close = 0x01
@@ -130,7 +146,7 @@ struct DigitalInput {
     }
     struct DigitalInputMode {
         static let NormallyOpen = 0x00
-        static let NormallyClosed = 0x00
+        static let NormallyClosed = 0x01
         static let Generic = 0x02
         static let ButtonNormallyOpen = 0x03
         static let ButtonNormallyClosed = 0x83
