@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
             <string>Tahoma</string>
         </mutableArray>
     </customFonts>
@@ -40,32 +41,52 @@
                             </connections>
                         </collectionView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajN-eN-eFj" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="20" y="8" width="260" height="31"/>
+                            <rect key="frame" x="20" y="8" width="120" height="31"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                            <state key="normal" title="Open From Gallery">
+                            <state key="normal" title="Open Gallery">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="openGallery:" destination="-1" eventType="touchUpInside" id="sPj-eI-fW6"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4z-Nq-kaI" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="160" y="8" width="120" height="31"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="Take A Photo">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="takePhoto:" destination="-1" eventType="touchUpInside" id="asZ-JT-f6X"/>
+                            </connections>
+                        </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="s4z-Nq-kaI" secondAttribute="trailing" constant="20" id="4LI-TW-HbH"/>
                         <constraint firstAttribute="height" constant="400" id="AdM-JM-5kF"/>
                         <constraint firstAttribute="trailing" secondItem="ajN-eN-eFj" secondAttribute="trailing" constant="20" id="AuW-le-Bjw"/>
                         <constraint firstItem="rPm-x4-qhY" firstAttribute="top" secondItem="ajN-eN-eFj" secondAttribute="bottom" constant="3" id="FLf-je-5gJ"/>
                         <constraint firstAttribute="bottom" secondItem="rPm-x4-qhY" secondAttribute="bottom" id="JCn-MW-d5o"/>
                         <constraint firstItem="ajN-eN-eFj" firstAttribute="top" secondItem="Ro3-NP-QI0" secondAttribute="top" constant="8" id="RBg-Fb-j9A"/>
                         <constraint firstAttribute="trailing" secondItem="rPm-x4-qhY" secondAttribute="trailing" id="ZDS-1T-ecr"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="centerY" secondItem="ajN-eN-eFj" secondAttribute="centerY" id="aE0-y8-LpS"/>
                         <constraint firstItem="ajN-eN-eFj" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" constant="20" id="i2S-jH-gKs"/>
                         <constraint firstItem="rPm-x4-qhY" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" id="kgN-NX-Z7r"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="leading" secondItem="ajN-eN-eFj" secondAttribute="trailing" constant="20" id="liL-9f-tve"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="ok0-aO-NEl"/>
                         <constraint firstAttribute="width" constant="300" id="slC-bg-W2z"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                     </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="AuW-le-Bjw"/>
+                        </mask>
+                    </variation>
                     <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
                         <rect key="frame" x="50" y="50" width="300" height="400"/>
                     </variation>

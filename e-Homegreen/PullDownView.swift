@@ -16,13 +16,6 @@ import CoreData
 
 class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
-    //    var table:UITableView = UITableView()
-    //
-    //    var levelList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
-    //    var zoneList:[String] = ["Zone 1", "Zone 2", "Zone 3", "All"]
-    //    var categoryList:[String] = ["Category 1", "Category 2", "Category 3", "All"]
-    //    var tableList:[String] = ["Level 1", "Level 2", "Level 3", "All"]
-    
     var senderButton:UIButton?
     var customDelegate : PullDownViewDelegate?
     
@@ -38,13 +31,10 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     var categoryButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(110, 180, 150, 40))
     var goButton:CustomGradientButton = CustomGradientButton(frame: CGRectMake(55, 250, 150, 40))
     
-    
     var locationButtonReset:UIButton = UIButton(frame: CGRectMake(270, 30, 40, 40))
     var levelButtonReset:UIButton = UIButton(frame: CGRectMake(270, 80, 40, 40))
     var zoneButtonReset:UIButton = UIButton(frame: CGRectMake(270, 130, 40, 40))
     var categoryButtonReset:UIButton = UIButton(frame: CGRectMake(270, 180, 40, 40))
-    
-    
     
     let locationLabel:UILabel = UILabel(frame: CGRectMake(10, 30, 100, 40))
     let levelLabel:UILabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
@@ -64,9 +54,9 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let pixelOutside:CGFloat = 2
         self.contentSize = CGSizeMake(320, frame.size.height * 2 - pixelOutside)
         
-        let redArea:UIView = UIView(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
-        redArea.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.9)
-        self.addSubview(redArea)
+        let blackArea:UIView = UIView(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
+        blackArea.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.9)
+        self.addSubview(blackArea)
         
         //  RGB za pulldown ruckicu je R: 128/255 G: 128/255 B: 128/255
         
@@ -130,6 +120,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButton)
+        
         // Go button
         goButton.titleLabel?.tintColor = UIColor.whiteColor()
         goButton.setTitle("Go", forState: UIControlState.Normal)
@@ -137,31 +128,60 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
         goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(goButton)
+        
         // Reset filters
         locationButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         locationButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        locationButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButtonReset.tag = 1
         locationButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(locationButtonReset)
         
         levelButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         levelButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        levelButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButtonReset.tag = 2
         levelButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(levelButtonReset)
         
         zoneButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         zoneButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        zoneButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButtonReset.tag = 3
         zoneButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(zoneButtonReset)
         
         categoryButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         categoryButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        categoryButtonReset.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButtonReset.tag = 4
         categoryButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButtonReset)
     }
+    
+    func resetFilter(sender : UIButton){
+        
+        switch sender.tag {
+        case 1:
+            locationButton.setTitle("All", forState: UIControlState.Normal)
+            levelButton.setTitle("All", forState: UIControlState.Normal)
+            zoneButton.setTitle("All", forState: UIControlState.Normal)
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
+        case 2:
+            levelButton.setTitle("All", forState: UIControlState.Normal)
+            zoneButton.setTitle("All", forState: UIControlState.Normal)
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
+            
+        case 3:
+            zoneButton.setTitle("All", forState: UIControlState.Normal)
+        case 4:
+            categoryButton.setTitle("All", forState: UIControlState.Normal)
+        default:
+            print("")
+        }
+
+    }
+    
     func drawMenu(locationText:String, level:String, zone:String, category:String, locationSearch:[String]){
         self.locationSearch = locationSearch
         var levelText = "All"
@@ -419,12 +439,6 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
         return super.hitTest(point, withEvent: event)
     }
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-    // Drawing code
-    }
-    */
+
     
 }

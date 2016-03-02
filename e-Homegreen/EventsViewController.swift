@@ -283,7 +283,35 @@ extension EventsViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! EventsCollectionViewCell
-        cell.eventTitle.text = "\(events[indexPath.row].eventName)"
+    
+        var eventLevel = ""
+        var eventZone = ""
+        var eventLocation = events[indexPath.row].gateway.name
+        
+        if let level = events[indexPath.row].entityLevel{
+            eventLevel = level
+        }
+        if let zone = events[indexPath.row].eventZone{
+            eventZone = zone
+        }
+        
+        if locationSearchText[0] == "All" {
+            cell.eventTitle.text = eventLocation + " " + eventLevel + " " + eventZone + " " + events[indexPath.row].eventName
+        }else{
+            var eventTitle = ""
+            if locationSearchText[0] == "All"{
+                eventTitle += " " + eventLocation
+            }
+            if locationSearchText[4] == "All"{
+                eventTitle += " " + eventLevel
+            }
+            if locationSearchText[5] == "All"{
+                eventTitle += " " + eventZone
+            }
+            eventTitle += " " + events[indexPath.row].eventName
+            cell.eventTitle.text = eventTitle
+        }
+        
         cell.eventTitle.tag = indexPath.row
         cell.eventTitle.userInteractionEnabled = true
         cell.getImagesFrom(events[indexPath.row])
@@ -297,6 +325,8 @@ extension EventsViewController: UICollectionViewDataSource {
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
             cell.eventImageView.image = eventImage
         }
+        cell.eventImageView.layer.cornerRadius = 5
+        cell.eventImageView.clipsToBounds = true
         
         cell.eventButton.tag = indexPath.row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ALCameraViewController
 
 @objc protocol SceneGalleryDelegate{
     optional func backString(strText: String, imageIndex:Int)
@@ -206,6 +207,8 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     
     @IBOutlet weak var backview: UIView!
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     init(){
         super.init(nibName: "SceneGalleryVC", bundle: nil)
         transitioningDelegate = self
@@ -233,58 +236,86 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         self.gallery.registerNib(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
-
+    
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(animated: Bool) {
+
+        if let offset = defaults.valueForKey(UserDefaults.GalleryContentOffset) as? CGFloat  {
+            self.gallery.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+        }
+
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
+    }
+    
     @IBAction func openGallery(sender: AnyObject) {
-        
-//        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
-            print("Button capture")
+        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { (image) -> Void in
+            if let backImage = image{
+                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }else{
+                self.dismissViewControllerAnimated(true, completion:nil)
+            }
+        }
+        presentViewController(libraryViewController, animated: true, completion: nil)
+
+    }
+    
+    @IBAction func takePhoto(sender: AnyObject) {
+        let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
+            if let backImage = image{
+                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }else{
+                self.dismissViewControllerAnimated(true, completion:nil)
+            }
             
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-//            imagePicker.allowsEditing = false
-            
-            self.presentViewController(imagePicker, animated: true, completion: nil)
-//        }
+        }
+        presentViewController(cameraViewController, animated: true, completion: nil)
+
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         
-        delegate?.backImageFromGallery!(UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150))!, 0.5)!, imageIndex: imageIndex)
+        delegate?.backImageFromGallery!(UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)!, imageIndex: imageIndex)
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func RBResizeImage(image: UIImage?, targetSize: CGSize) -> UIImage? {
-        if let image = image {
-            let size = image.size
-            
-            let widthRatio  = targetSize.width  / image.size.width
-            let heightRatio = targetSize.height / image.size.height
-            
-            // Figure out what our orientation is, and use that to form the rectangle
-            var newSize: CGSize
-            if(widthRatio > heightRatio) {
-                newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
-            } else {
-                newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
-            }
-            
-            // This is the rect that we've calculated out and this is what is actually used below
-            let rect = CGRectMake(0, 0, newSize.width, newSize.height)
-            
-            // Actually do the resizing to the rect using the ImageContext stuff
-            UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-            image.drawInRect(rect)
-            let newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            return newImage
+    func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
         } else {
-            return nil
+            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
         }
+        
+        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.drawInRect(rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+        
     }
 
     

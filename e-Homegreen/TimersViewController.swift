@@ -28,10 +28,10 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateTimersList()
-        timersCollectionView.reloadData()
+        
         LocalSearchParametar.setLocalParametar("Timers", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
         locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
-
+        timersCollectionView.reloadData()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -360,7 +360,31 @@ extension TimersViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TimerCollectionViewCell
-        cell.timerTitle.text = "\(timers[indexPath.row].timerName)"
+        
+        var timerLevel = ""
+        var timerZone = ""
+        let timerLocation = timers[indexPath.row].gateway.name
+        
+        if let level = timers[indexPath.row].entityLevel{
+            timerLevel = level
+        }
+        if let zone = timers[indexPath.row].timeZone{
+            timerZone = zone
+        }
+        
+        if locationSearchText[0] == "All" {
+            cell.timerTitle.text = timerLocation + " " + timerLevel + " " + timerZone + " " + timers[indexPath.row].timerName
+        }else{
+            var timerTitle = ""
+            if locationSearchText[4] == "All"{
+                timerTitle += " " + timerLevel
+            }
+            if locationSearchText[5] == "All"{
+                timerTitle += " " + timerZone
+            }
+            timerTitle += " " + timers[indexPath.row].timerName
+            cell.timerTitle.text = timerTitle
+        }
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
@@ -429,7 +453,8 @@ extension TimersViewController: UICollectionViewDataSource {
         
         // cancel start pause resume
         //
-        
+        cell.timerImageView.layer.cornerRadius = 5
+        cell.timerImageView.clipsToBounds = true
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5

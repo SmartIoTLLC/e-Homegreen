@@ -304,7 +304,32 @@ extension SequencesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
-        cell.sequenceTitle.text = "\(sequences[indexPath.row].sequenceName)"
+        
+        var sequenceLevel = ""
+        var sequenceZone = ""
+        let sequenceLocation = sequences[indexPath.row].gateway.name
+        
+        if let level = sequences[indexPath.row].entityLevel{
+            sequenceLevel = level
+        }
+        if let zone = sequences[indexPath.row].sequenceZone{
+            sequenceZone = zone
+        }
+        
+        if locationSearchText[0] == "All" {
+            cell.sequenceTitle.text = sequenceLocation + " " + sequenceLevel + " " + sequenceZone + " " + sequences[indexPath.row].sequenceName
+        }else{
+            var sequenceTitle = ""
+            if locationSearchText[4] == "All"{
+                sequenceTitle += " " + sequenceLevel
+            }
+            if locationSearchText[5] == "All"{
+                sequenceTitle += " " + sequenceZone
+            }
+            sequenceTitle += " " + sequences[indexPath.row].sequenceName
+            cell.sequenceTitle.text = sequenceTitle
+        }
+
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
@@ -314,6 +339,9 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.sequenceImageView.tag = indexPath.row
         cell.sequenceImageView.userInteractionEnabled = true
         cell.sequenceImageView.addGestureRecognizer(set)
+        cell.sequenceImageView.clipsToBounds = true
+        cell.sequenceImageView.layer.cornerRadius = 5
+        
         cell.getImagesFrom(sequences[indexPath.row])
         
         cell.sequenceButton.tag = indexPath.row

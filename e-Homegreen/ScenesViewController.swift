@@ -34,14 +34,17 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
     var locationSearchText = ["", "", "", "", "", "", ""]
+    
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
         updateSceneList()
-        scenesCollectionView.reloadData()
+        
         LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
         locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
 //        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+        scenesCollectionView.reloadData()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        commonConstruct()
@@ -285,8 +288,35 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
+        var sceneLocation = ""
+        var sceneLevel = ""
+        var sceneZone = ""
+        sceneLocation = scenes[indexPath.row].gateway.name 
+     
+        if let level = scenes[indexPath.row].entityLevel{
+            sceneLevel = level
+        }
+        if let zone = scenes[indexPath.row].sceneZone{
+            sceneZone = zone
+        }
         
-        cell.sceneCellLabel.text = "\(scenes[indexPath.row].sceneName)"
+        if locationSearchText[0] == "All" {
+            cell.sceneCellLabel.text = sceneLocation + " " + sceneLevel + " " + sceneZone + " " + scenes[indexPath.row].sceneName
+        }else{
+            var sceneTitle = ""
+            if locationSearchText[0] == "All"{
+                sceneTitle += " " + sceneLocation
+            }
+            if locationSearchText[4] == "All"{
+                sceneTitle += " " + sceneLevel
+            }
+            if locationSearchText[5] == "All"{
+                sceneTitle += " " + sceneZone
+            }
+            sceneTitle += " " + scenes[indexPath.row].sceneName
+            cell.sceneCellLabel.text = sceneTitle
+        }
+        
         cell.sceneCellLabel.tag = indexPath.row
         cell.sceneCellLabel.userInteractionEnabled = true
         
@@ -296,6 +326,8 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellLabel.addGestureRecognizer(longPress)
         cell.sceneCellImageView.tag = indexPath.row
         cell.sceneCellImageView.userInteractionEnabled = true
+        cell.sceneCellImageView.clipsToBounds = true
+        cell.sceneCellImageView.layer.cornerRadius = 5
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
         cell.sceneCellImageView.addGestureRecognizer(set)
         cell.btnSet.tag = indexPath.row

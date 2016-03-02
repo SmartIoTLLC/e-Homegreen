@@ -297,7 +297,31 @@ extension FlagsViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! FlagCollectionViewCell
-        cell.flagTitle.text = "\(flags[indexPath.row].flagName)"
+        
+        var flagLevel = ""
+        var flagZone = ""
+        let flagLocation = flags[indexPath.row].gateway.name
+        
+        if let level = flags[indexPath.row].entityLevel{
+            flagLevel = level
+        }
+        if let zone = flags[indexPath.row].flagZone{
+            flagZone = zone
+        }
+        
+        if locationSearchText[0] == "All" {
+            cell.flagTitle.text = flagLocation + " " + flagLevel + " " + flagZone + " " + flags[indexPath.row].flagName
+        }else{
+            var flagTitle = ""
+            if locationSearchText[4] == "All"{
+                flagTitle += " " + flagLevel
+            }
+            if locationSearchText[5] == "All"{
+                flagTitle += " " + flagZone
+            }
+            flagTitle += " " + flags[indexPath.row].flagName
+            cell.flagTitle.text = flagTitle
+        }
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
         longPress.minimumPressDuration = 0.5
@@ -317,6 +341,9 @@ extension FlagsViewController: UICollectionViewDataSource {
         } else {
             cell.flagButton.setTitle("Set True", forState: UIControlState.Normal)
         }
+        
+        cell.flagImageView.layer.cornerRadius = 5
+        cell.flagImageView.clipsToBounds = true
         
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
