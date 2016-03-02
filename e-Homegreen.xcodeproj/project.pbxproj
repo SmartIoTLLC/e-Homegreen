@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
+		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
+		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
+		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
+		22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */; };
 		730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */; };
 		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
 		730E90C31C6A1BF400B1D50D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90C01C6A1BF400B1D50D /* Image.swift */; };
@@ -251,6 +255,10 @@
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
+		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
+		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
+		22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneViewController.xib; sourceTree = "<group>"; };
 		730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90C01C6A1BF400B1D50D /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -1145,6 +1153,10 @@
 				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
 				E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */,
 				E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */,
+				22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */,
+				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
+				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
+				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -1267,6 +1279,7 @@
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
+				22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */,
 				E7C9CE011BC2B2AD007D8FE8 /* SecParamatarVC.xib in Resources */,
 				E7DC67C41B457C0E00EA6543 /* weather-scattered.png in Resources */,
 				E7DC67BA1B457C0E00EA6543 /* weather-few.png in Resources */,
@@ -1312,6 +1325,7 @@
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
 				E79AEBB11B70B77D00410E2D /* AccessParametarVC.xib in Resources */,
+				22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
 				731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
@@ -1414,6 +1428,7 @@
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
 				733E5E841C6391DB0039B7A8 /* HamburgerButton.swift in Sources */,
+				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
@@ -1528,6 +1543,7 @@
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
+				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
@@ -1700,7 +1716,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newebdevelopment.rimo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1725,7 +1741,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newebdevelopment.rimo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nswebdevelopment.rimo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

@@ -178,7 +178,22 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
 }
 extension ImportCategoryViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        showEditCategory(categories[indexPath.row])
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if ((categories[indexPath.row].id as Int) >= 1 && (categories[indexPath.row].id as Int) <= 19) || (categories[indexPath.row].id as Int) == 255 {
+            return false
+        }
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            appDel.managedObjectContext?.deleteObject(categories[indexPath.row])
+            appDel.saveContext()
+            refreshCategoryList()
+        }
     }
 }
 extension ImportCategoryViewController: UITableViewDataSource {
