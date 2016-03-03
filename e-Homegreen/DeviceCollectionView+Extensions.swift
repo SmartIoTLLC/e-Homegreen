@@ -67,7 +67,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.HumanInterfaceSeries {
+        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.HumanInterfaceSeries || devices[indexPathRow].controlType == ControlType.Gateway {
             print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
@@ -528,7 +528,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-        } else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries {
+        } else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions

@@ -101,7 +101,7 @@ extension IncomingHandler {
                             device.humidity = 0
                             device.current = 0
                             saveChanges()
-                        } else if name == ControlType.Gateway || name == ControlType.Access || name == ControlType.AnalogInput || name == ControlType.AnalogOutput || name == ControlType.DigitalInput || name == ControlType.DigitalOutput || name == ControlType.IRTransmitter {
+                        } else if name == ControlType.Access || name == ControlType.AnalogInput || name == ControlType.AnalogOutput || name == ControlType.DigitalInput || name == ControlType.DigitalOutput || name == ControlType.IRTransmitter {
                             let device = Device(context: appDel.managedObjectContext!)
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])
@@ -117,7 +117,25 @@ extension IncomingHandler {
                             device.runningTime = "00:00:00,0s"
                             device.current = 0
                             saveChanges()
-                        } else if channel == 5 && name == ControlType.HumanInterfaceSeries && i > 1 {
+                        } else if channel == 3 && name == ControlType.Gateway && i > 1 {
+                            let device = Device(context: appDel.managedObjectContext!)
+                            device.name = "Unknown"
+                            device.address = Int(byteArray[4])
+                            device.channel = i
+                            device.numberOfDevices = channel
+                            device.runningTime = ""
+                            device.currentValue = 0
+                            device.current = 0
+                            device.amp = ""
+                            device.type = name
+                            device.controlType = name
+                            device.voltage = 0
+                            device.temperature = 0
+                            device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
+                            device.isVisible = false
+                            device.isEnabled = false
+                            saveChanges()
+                        }  else if channel == 5 && name == ControlType.HumanInterfaceSeries && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!)
                             device.name = "Unknown"
                             device.address = Int(byteArray[4])

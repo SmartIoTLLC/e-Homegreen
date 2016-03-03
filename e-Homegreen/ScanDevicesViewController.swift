@@ -342,7 +342,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries {
+        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries || devices[index].type == ControlType.Gateway {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -355,7 +355,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int, numberInArray:Int) {
         setProgressBarParametarsForFindingSensorParametar(deviceIndex, numberInArray:numberInArray)
-        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.HumanInterfaceSeries {
+        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.HumanInterfaceSeries || devices[deviceIndex].controlType == ControlType.Gateway {
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
@@ -446,7 +446,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     func findParametarsForSensor() {
         arrayOfSensorAdresses = []
         for var i = fromAddress!; i<=toAddress; i++ {
-            if devices[i].controlType == ControlType.Sensor || devices[i].type == ControlType.HumanInterfaceSeries {
+            if devices[i].controlType == ControlType.Sensor || devices[i].type == ControlType.HumanInterfaceSeries || devices[i].type == ControlType.Gateway {
                 arrayOfSensorAdresses.append(i)
             }
         }
@@ -526,11 +526,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if devices.count != 0 {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
                 for var i = sp.from-1; i <= sp.to-1; i++ {
-                    if devices[i].controlType == ControlType.Sensor || devices[i].controlType == ControlType.HumanInterfaceSeries{
+                    if devices[i].controlType == ControlType.Sensor || devices[i].controlType == ControlType.HumanInterfaceSeries || devices[i].controlType == ControlType.Gateway
+                    {
                         findSensorParametar = true
                         break
                     }
                 }
+                arrayOfSensorAdresses = []
                 UIApplication.sharedApplication().idleTimerDisabled = true
                 fromAddress = sp.from - 1
                 toAddress = sp.to - 1
@@ -670,9 +672,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             updateDeviceList()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
-        
     }
-    
 }
 class ScanCell:UITableViewCell{
     
