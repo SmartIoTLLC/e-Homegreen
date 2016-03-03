@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/DeviceCollectionViewCells.swift"
-            timestampString = "478535170.54021"
+            timestampString = "478623872.460904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "384"
-            endingLineNumber = "384"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
             landmarkName = "returnDigitalInputModeStateinterpreter(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/DeviceCollectionViewCells.swift"
-            timestampString = "478535170.54021"
+            timestampString = "478623872.460904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "398"
-            endingLineNumber = "398"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "returnDigitalInputModeStateinterpreter(_:)"
             landmarkType = "5">
          </BreakpointContent>

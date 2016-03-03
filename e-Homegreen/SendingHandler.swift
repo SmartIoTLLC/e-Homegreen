@@ -11,7 +11,7 @@ import SystemConfiguration.CaptiveNetwork
 
 class SendingHandler {
     static func sendCommand(byteArray byteArray:[UInt8], gateway:Gateway) {
-        print("Poslata je komanda: \(byteArray)")
+        print("Poslata je komanda: \(byteArray) na: \(gateway)")
         let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)

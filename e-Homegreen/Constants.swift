@@ -52,6 +52,33 @@ extension InputError: CustomStringConvertible {
         }
     }
 }
+
+//00 Closed
+//FE Closing
+//FF Opening
+//64 Opened
+//00 - 64 je procenat
+//EF Stoped - Tada ne pisemo nista
+
+struct CurtainModuleState {
+    static func returnState(byte:Int) -> String {
+        var state = ""
+        switch byte {
+        case 0x00:
+            state = "Closed"
+        case 0xFE:
+            state = "Closing"
+        case 0xFF:
+            state = "Opening"
+        case 0x64:
+            state = "Opened"
+        default:
+            state = "\(byte)%"
+        }
+        return state
+    }
+}
+
 //  0x00 Waiting = 0
 //  0x01 Started = 1
 //  0xF0 Elapsed = 240

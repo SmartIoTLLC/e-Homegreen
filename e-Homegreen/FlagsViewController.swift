@@ -246,7 +246,6 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
 }
 
 extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let flagId = flags[indexPath.row].flagId as? Int {
             var address:[UInt8] = []

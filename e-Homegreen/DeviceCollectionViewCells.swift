@@ -151,6 +151,7 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
     @IBOutlet weak var curtainSlider: UISlider!
+    @IBOutlet weak var curtainState: MarqueeLabel!
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
@@ -160,6 +161,7 @@ class CurtainCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue) / 100
             }
         }()
+        curtainState.text = "\(CurtainModuleState.returnState(Int(device.currentValue)))"
         if device.filterWarning {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
         } else {
@@ -585,6 +587,7 @@ class MultiSensorCell: UICollectionViewCell {
     func returnDigitalInputMode(status:Byte) -> String {
         return ""
     }
+    
     @IBOutlet weak var disabledCellView: UIView!
     
     @IBOutlet weak var infoView: UIView!
@@ -594,5 +597,7 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var labelLevel: UILabel!
     @IBOutlet weak var labelZone: UILabel!
 }
-
+class CurtainModule:UICollectionViewCell {
+    
+}
 
