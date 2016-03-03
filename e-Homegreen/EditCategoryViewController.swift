@@ -9,11 +9,17 @@
 import UIKit
 import CoreData
 
+protocol EditCategoryDelegate{
+    func editCategoryFInished()
+}
+
 class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
 
     var isPresenting: Bool = true
     
     var category:Category?
+    var delegate:EditCategoryDelegate?
+    var gateway:Gateway?
     
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -26,10 +32,11 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(category:Category?){
+    init(category:Category?, gateway:Gateway?){
         super.init(nibName: "EditCategoryViewController", bundle: nil)
         transitioningDelegate = self
         self.category = category
+        self.gateway = gateway
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
@@ -83,10 +90,10 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
         descriptionTextField.delegate = self
         idTextField.delegate = self
         
-        if category != nil{
-            idTextField.text = "\(category!.id)"
-            nameTextField.text = category?.name
-            descriptionTextField.text = category?.categoryDescription
+        if  let category = category{
+            idTextField.text = "\(category.id)"
+            nameTextField.text = category.name
+            descriptionTextField.text = category.categoryDescription
             idTextField.enabled = false
         }
         
@@ -111,25 +118,64 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
         // Dispose of any resources that can be recreated.
     }
     
+    func fetchCategory(id:Int, gateway:Gateway) -> [Category]? {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return nil
+    }
+    
     @IBAction func saveAction(sender: AnyObject) {
-        if nameTextField.text != "" || idTextField.text != ""{
+        if let name = nameTextField.text, let id = idTextField.text, let idValid = Int(id) {
             if category == nil{
-            let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                categoryNew.id = Int(idTextField.text!)!
-                categoryNew.name = nameTextField.text!
-                if descriptionTextField.text != ""{
-                    categoryNew.categoryDescription = descriptionTextField.text!
+                if let gw = gateway, let category = fetchCategory(idValid, gateway: gw){
+                    if category != []{
+                        for item in category{
+                            item.name = name
+                            if let desc = descriptionTextField.text{
+                                item.categoryDescription = desc
+                            }
+                        }
+                    }else{
+                        if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
+                            categoryNew.id = idValid
+                            categoryNew.name = name
+                            if let desc = descriptionTextField.text{
+                                categoryNew.categoryDescription = desc
+                            }
+                            categoryNew.gateway = gw
+                        }
+                    }
+                }else if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
+                    categoryNew.id = idValid
+                    categoryNew.name = name
+                    if let desc = descriptionTextField.text{
+                        categoryNew.categoryDescription = desc
+                    }
+                    saveChanges()
                 }
-                saveChanges()
             }else{
-                category?.name = nameTextField.text!
-                if descriptionTextField.text != ""{
-                    category!.categoryDescription = descriptionTextField.text!
+                category?.name = name
+                if let desc = descriptionTextField.text{
+                    category?.categoryDescription = desc
                 }
                 saveChanges()
             }
+            delegate?.editCategoryFInished()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+        
+        
     }
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -207,8 +253,9 @@ extension EditCategoryViewController : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showEditCategory(category:Category?) {
-        let editCategory = EditCategoryViewController(category: category)
+    func showEditCategory(category:Category?, gateway:Gateway?) -> EditCategoryViewController{
+        let editCategory = EditCategoryViewController(category: category, gateway: gateway)
         self.presentViewController(editCategory, animated: true, completion: nil)
+        return editCategory
     }
 }

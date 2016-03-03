@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -123,7 +123,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     
     @IBAction func addZone(sender: AnyObject) {
-        
+        showEditZone(nil, gateway: gateway).delegate = self
+    }
+    
+    func editZoneFInished() {
+        refreshZoneList()
     }
     
     
@@ -411,7 +415,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
 extension ImportZoneViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showEditZone(zones[indexPath.row])
+        showEditZone(zones[indexPath.row], gateway: nil).delegate = self
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

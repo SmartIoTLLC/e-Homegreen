@@ -9,11 +9,18 @@
 import UIKit
 import CoreData
 
+protocol EditZoneDelegate{
+    func editZoneFInished()
+}
+
 class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var isPresenting: Bool = true
     
-    var zoneNew:Zone?
+    var delegate:EditZoneDelegate?
+    
+    var editZone:Zone?
+    var gateway:Gateway?
     
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -26,10 +33,11 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(zone:Zone?){
+    init(zone:Zone?, gateway:Gateway?){
         super.init(nibName: "EditZoneViewController", bundle: nil)
         transitioningDelegate = self
-        self.zoneNew = zone
+        self.editZone = zone
+        self.gateway = gateway
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
@@ -83,10 +91,10 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         levelTextField.delegate = self
         idTextField.delegate = self
         
-        if zoneNew != nil{
-            idTextField.text = "\(zoneNew!.id)"
-            nameTextField.text = zoneNew?.name
-            levelTextField.text = "\(zoneNew!.level)"
+        if let zoneForEdit = editZone {
+            idTextField.text = "\(zoneForEdit.id)"
+            nameTextField.text = zoneForEdit.name
+            levelTextField.text = "\(zoneForEdit.level)"
             idTextField.enabled = false
         }
         
@@ -112,23 +120,58 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         // Dispose of any resources that can be recreated.
     }
     
+    func fetchZones(id:Int, gateway:Gateway) -> [Zone]? {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicate = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateTwo])
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return nil
+    }
     @IBAction func saveAction(sender: AnyObject) {
-        if nameTextField.text != "" || idTextField.text != "" || levelTextField != "" {
-            if zoneNew == nil{
-                let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                zoneInsert.id = Int(idTextField.text!)!
-                zoneInsert.name = nameTextField.text!
-                zoneInsert.categoryDescription = levelTextField.text!
+        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
+            if editZone == nil{
+                if let gw = gateway, let zones = fetchZones(idValid, gateway: gw){
+                    if zones != []{
+                        for item in zones{
+                            item.name = name
+                            item.level = levelValid
+                        }
+                    }else{
+                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+                            zoneInsert.id = idValid
+                            zoneInsert.name = name
+                            zoneInsert.level = levelValid
+                            zoneInsert.gateway = gw
+                        }
+                    }
+                }else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+                    zoneInsert.id = idValid
+                    zoneInsert.name = name
+                    zoneInsert.level = levelValid
+        
+                }
                 
                 saveChanges()
             }else{
-                zoneNew?.name = nameTextField.text!
-                zoneNew?.level = Int(levelTextField.text!)!
+                editZone?.name = name
+                editZone?.level = levelValid
+                
                 saveChanges()
             }
+            delegate?.editZoneFInished()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
+    
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -207,8 +250,9 @@ extension EditZoneViewController : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showEditZone(zone:Zone?) {
-        let editzone = EditZoneViewController(zone: zone)
+    func showEditZone(zone:Zone?, gateway:Gateway?) -> EditZoneViewController {
+        let editzone = EditZoneViewController(zone: zone, gateway: gateway)
         self.presentViewController(editzone, animated: true, completion: nil)
+        return editzone
     }
 }

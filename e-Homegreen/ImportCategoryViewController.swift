@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //IPGCW02001_000_000_Categories List
-class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
+class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate {
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -127,6 +127,11 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
     }
     
     
+    
+    func editCategoryFInished() {
+        refreshCategoryList()
+    }
+    
     func updateCategoryList () {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -178,7 +183,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
 }
 extension ImportCategoryViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showEditCategory(categories[indexPath.row])
+        showEditCategory(categories[indexPath.row], gateway: nil).delegate = self
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
