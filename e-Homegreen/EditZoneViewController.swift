@@ -51,9 +51,24 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         }
         return true
     }
+    
+    func endEditingNow(){
+        idTextField.resignFirstResponder()
+        levelTextField.resignFirstResponder()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        idTextField.inputAccessoryView = keyboardDoneButtonView
+        levelTextField.inputAccessoryView = keyboardDoneButtonView
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)

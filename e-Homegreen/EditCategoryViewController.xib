@@ -32,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sks-47-DxW" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="165" width="300" height="270"/>
+                    <rect key="frame" x="150" y="115" width="300" height="270"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bg2-v9-h9m">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="270"/>
@@ -177,7 +177,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Sks-47-DxW" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="jj9-Ti-cpl"/>
+                <constraint firstItem="Sks-47-DxW" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-50" id="jj9-Ti-cpl"/>
                 <constraint firstItem="Sks-47-DxW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lLe-eh-Qxt"/>
             </constraints>
         </view>

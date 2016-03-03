@@ -126,6 +126,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         importCategoryTableView.reloadData()
     }
     
+    @IBAction func addCategory(sender: AnyObject) {
+        showEditCategory(nil, gateway: gateway).delegate = self
+    }
     
     
     func editCategoryFInished() {
