@@ -84,6 +84,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         // Do any additional setup after loading the view.
     }
     
+    override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+        
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false

@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let zone = returnZoneWithIBeacon(beacon!)
             if zone != nil {
                 print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.gateway.name) A POKAZUJE OVAj GATEWAY: \(zone?.gateway.name)")
-                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance"]
+                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance", "Settings"]
                 for filter in filterArray {
                     var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                     if zone!.level == 0 {
@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print(gateway.ssid)
                     print(ssid)
                     if gateway.ssid == ssid {
-                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance"]
+                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance", "Settings"]
                         for filter in filterArray {
                             var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                             //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway

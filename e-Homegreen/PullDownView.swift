@@ -181,7 +181,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
 
     }
-    
+        
     func drawMenu(locationText:String, level:String, zone:String, category:String, locationSearch:[String]){
         self.locationSearch = locationSearch
         var levelText = "All"

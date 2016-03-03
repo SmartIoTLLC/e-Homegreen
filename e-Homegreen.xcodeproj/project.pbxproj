@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -253,6 +254,7 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -907,6 +909,7 @@
 				E79FD4ED1BCE43D600CA17DB /* Util.swift */,
 				E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */,
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
+				223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1486,6 +1489,7 @@
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
 				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
+				223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate{
+class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate{
     
     @IBOutlet weak var topView: UIView!
     
@@ -24,6 +24,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var importCategoryViewController: ImportCategoryViewController!
     var scanFlagsViewController: ScanFlagViewController!
     
+    var pullDown = PullDownView()
+    var locationSearchText = ["", "", "", "", "", "", ""]
+    
+    var toViewController:UIViewController = UIViewController()
     
 //    var appDel:AppDelegate!
 //    var error:NSError? = nil
@@ -68,6 +72,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
         scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanFlags") as! ScanFlagViewController
         
+        toViewController = scanDeviceViewController
+        
         scanSceneViewController.gateway = gateway
         scanDeviceViewController.gateway = gateway
         scanSequencesViewController.gateway = gateway
@@ -81,11 +87,69 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
+        
+        pullDown = PullDownView(frame: CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64))
+        self.view.addSubview(pullDown)
+        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        
+        locationSearchText = LocalSearchParametar.getLocalParametar("Settings")
+        
 //        let swipeDismiss = UISwipeGestureRecognizer(target: self, action: "userSwiped:")
 //        swipeDismiss.direction = UISwipeGestureRecognizerDirection.Right
 //        self.view.addGestureRecognizer(swipeDismiss)
         // Do any additional setup after loading the view.
     }
+    
+    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+        toViewController.sendFilterParametar(gateway, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            //            if self.view.frame.size.width == 568{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
+            //            }else if self.view.frame.size.width == 667{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
+            //            }else{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+            //            }
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.origin.y = 44
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height - 44
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+            
+        } else {
+            //            if self.view.frame.size.width == 320{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            //            }else if self.view.frame.size.width == 375{
+            //                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            //            }else{
+            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            //            }
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.origin.y = 64
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height - 64
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            //  This is from viewcontroller superclass:
+        }
+
+        pullDown.drawMenu(gateway!.name, level: "All", zone: "All", category: "All", locationSearch: locationSearchText)
+    }
+
     
 //    func userSwiped (gesture:UISwipeGestureRecognizer) {
 ////        self.performSegueWithIdentifier("scanUnwind", sender: self)
@@ -142,7 +206,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     func saveText(text: String, id: Int) {
         print(Array(text.characters.reverse()))
         senderButton?.setTitle(text, forState: .Normal)
-        var toViewController:UIViewController = UIViewController()
+        
         switch text {
         case "Devices":
             toViewController = scanDeviceViewController
@@ -167,8 +231,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             self.addChildViewController(toViewController)
             self.transitionFromViewController(fromViewController, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
                 fromViewController.removeFromParentViewController()
-                toViewController.didMoveToParentViewController(self)
-                toViewController.view.frame = self.container.bounds
+                self.toViewController.didMoveToParentViewController(self)
+                self.toViewController.view.frame = self.container.bounds
             })
         } else {
             childViewControllers.last!.viewWillAppear(true)

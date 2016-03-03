@@ -56,6 +56,7 @@ extension AppDelegate {
             LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
             LocalSearchParametar.setLocalParametar("Surveillance", parametar: ["All","All","All","All","All","All","All"])
+            LocalSearchParametar.setLocalParametar("Settings", parametar: ["All","All","All","All","All","All","All"])
         }
     }
 }

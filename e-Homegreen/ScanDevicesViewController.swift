@@ -63,6 +63,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
     }
+    
+    override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+        
+    }
+    
     override func viewDidAppear(animated: Bool) {
         removeObservers()
         addObservers()
@@ -482,6 +487,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
     
+
+    
     func checkIfSensorDidGotParametar (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
 //            if (index != 0 || deviceIndex < index) && deviceIndex <= toAddress {
@@ -674,6 +681,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         }
     }
 }
+
+
 class ScanCell:UITableViewCell{
     
     @IBOutlet weak var lblRow: UILabel!
