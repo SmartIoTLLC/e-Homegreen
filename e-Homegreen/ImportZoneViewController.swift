@@ -209,6 +209,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
                         zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
                         timesRepeatedCounter = 1
                     }
+                    refreshZoneList()
                     return
                 }
                 if zoneId["zoneId"] < idToSearch {
@@ -398,6 +399,27 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             error = catchedError
         }
         return nil
+    }
+}
+extension ImportZoneViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        showEditZone(zones[indexPath.row])
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if zones[indexPath.row].id as Int == 255 || zones[indexPath.row].id as Int == 254{
+            return false
+        }
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+         if editingStyle == .Delete {
+            appDel.managedObjectContext?.deleteObject(zones[indexPath.row])
+            appDel.saveContext()
+            refreshZoneList()
+         }
     }
 }
 extension ImportZoneViewController: UITableViewDataSource {
