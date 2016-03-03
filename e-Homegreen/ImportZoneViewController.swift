@@ -120,6 +120,13 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     var zoneScanTimer:NSTimer?
     var idToSearch:Int?
     var timesRepeatedCounter:Int = 0
+    
+    
+    @IBAction func addZone(sender: AnyObject) {
+        
+    }
+    
+    
     @IBAction func btnScanZones(sender: AnyObject) {
         do {
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
