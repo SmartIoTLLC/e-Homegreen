@@ -582,6 +582,29 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorState.text = "..."
             }
         }
+        if device.numberOfDevices == 3 {
+            switch device.channel {
+            case 1:
+                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                sensorState.text = "\(device.currentValue) C"
+            case 2:
+                if device.currentValue == 0 {
+                    sensorImage.image = UIImage(named: "applianceoff")
+                } else {
+                    sensorImage.image = UIImage(named: "applianceon")
+                }
+                sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            case 3:
+                if device.currentValue == 0 {
+                    sensorImage.image = UIImage(named: "applianceoff")
+                } else {
+                    sensorImage.image = UIImage(named: "applianceon")
+                }
+                sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            default:
+                sensorState.text = "..."
+            }
+        }
     }
     
     func returnDigitalInputMode(status:Byte) -> String {
@@ -598,6 +621,20 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var labelZone: UILabel!
 }
 class CurtainModule:UICollectionViewCell {
+    @IBOutlet weak var title: MarqueeLabel!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var leftButton: CustomGradientButtonWhite!
+    @IBOutlet weak var rightButton: CustomGradientButtonWhite!
+    
+    func refreshDevice(device:Device) {
+        
+    }
+    
+    @IBOutlet weak var channel: MarqueeLabel!
+    @IBOutlet weak var name: MarqueeLabel!
+    @IBOutlet weak var category: MarqueeLabel!
+    @IBOutlet weak var level: MarqueeLabel!
+    @IBOutlet weak var deviceZone: MarqueeLabel!
     
 }
 

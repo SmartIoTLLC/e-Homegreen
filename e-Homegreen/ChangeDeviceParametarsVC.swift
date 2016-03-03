@@ -122,6 +122,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
             hideImageButton(true)
         }
+        //TODO: Dodaj i za gateway
     }
     
     @IBAction func btnCancel(sender: AnyObject) {

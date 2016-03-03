@@ -316,7 +316,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 if devices[index.row].controlType == ControlType.Curtain {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
                 }
-                if devices[index.row].controlType == ControlType.Sensor {
+                if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
                     showMultisensorParametar(CGPoint(x: self.view.center.x, y: self.view.center.y), device: devices[index.row])
                 }
             }
@@ -773,7 +773,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].controlType == ControlType.Sensor {
+            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             } else if devices[index.row].controlType == ControlType.Climate {
@@ -802,7 +802,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 
-            } else if devices[index.row].controlType == ControlType.Sensor {
+            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 
             } else if devices[index.row].controlType == ControlType.Climate {
@@ -825,7 +825,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].controlType == ControlType.Sensor {
+            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             } else if devices[index.row].controlType == ControlType.Climate {
