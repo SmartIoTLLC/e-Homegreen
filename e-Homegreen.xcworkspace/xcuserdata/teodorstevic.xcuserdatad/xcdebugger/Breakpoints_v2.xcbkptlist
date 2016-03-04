@@ -81,6 +81,38 @@
             endingLineNumber = "129"
             landmarkName = "btnScanZones(_:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "e_Homegreen.ImportZoneViewController.editZoneFInished (e_Homegreen.ImportZoneViewController)() -&gt; ()"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
+                  timestampString = "478773494.630141"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "protocol witness for e_Homegreen.EditZoneDelegate.editZoneFInished &lt;A where A: e_Homegreen.EditZoneDelegate&gt; (A)() -&gt; () in conformance e_Homegreen.ImportZoneViewController : e_Homegreen.EditZoneDelegate in e_Homegreen"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
+                  timestampString = "478773494.630535"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "0">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -250,7 +282,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478694437.408534"
+                  timestampString = "478773494.637559"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"
@@ -265,7 +297,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478694437.408726"
+                  timestampString = "478773494.637708"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"
@@ -273,6 +305,20 @@
                   offsetFromSymbolStart = "8">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/NSManagedObject+Extension.swift"
+            timestampString = "478770645.514747"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -121,6 +121,10 @@
 		73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */; };
 		73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */; };
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
+		73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */; };
+		73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA51C8978B2007CEEAA /* Location.swift */; };
+		73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */; };
+		73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA71C8978B2007CEEAA /* SSID.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
 		73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */; };
@@ -372,6 +376,10 @@
 		73EF27791C07583F003A3A0A /* SurveilenceUrlsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveilenceUrlsVC.swift; sourceTree = "<group>"; };
 		73EF277A1C07583F003A3A0A /* SurveilenceUrlsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveilenceUrlsVC.xib; sourceTree = "<group>"; };
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F1ECA51C8978B2007CEEAA /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SSID+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F1ECA71C8978B2007CEEAA /* SSID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSID.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagesPickerVC.swift; sourceTree = "<group>"; };
@@ -767,6 +775,10 @@
 				730E90C01C6A1BF400B1D50D /* Image.swift */,
 				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
 				739D57151C809B30004CC50E /* DeviceImage.swift */,
+				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
+				73F1ECA51C8978B2007CEEAA /* Location.swift */,
+				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
+				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1447,6 +1459,7 @@
 				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
+				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
@@ -1472,6 +1485,7 @@
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
+				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */,
@@ -1514,6 +1528,7 @@
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
+				73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */,
 				731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
@@ -1540,6 +1555,7 @@
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
+				73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */,
 				731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */,
 				73FD2E5E1C0A0A1E00B9F11A /* Surveilence.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,

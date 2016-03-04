@@ -167,7 +167,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if isNew {editName.text = ""} else {editName.text = surv?.name}
 //            editName.text = surv?.name
             if surv?.location != nil{
-                if isNew {editLocation.text = ""} else {editLocation.text = surv?.location}
+                if isNew {editLocation.text = ""} else {editLocation.text = surv?.locationDELETETHIS}
 //                editLocation.text = surv?.location
             }
             if surv?.localIp != nil{
@@ -267,7 +267,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 surveillance.urlPresetSequenceStop = ""
                 surveillance.urlGetImage = ""
                 if editLocation.text != ""{
-                    surveillance.location = editLocation.text!
+                    surveillance.locationDELETETHIS = editLocation.text!
                 }
                 if editIPLocal.text != ""{
                     surveillance.localIp = editIPLocal.text!
@@ -301,7 +301,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 surv!.name = editName.text!
                 
                 if editLocation.text != ""{
-                    surv!.location = editLocation.text!
+                    surv!.locationDELETETHIS = editLocation.text!
                 }
                 if editIPLocal.text != ""{
                     surv!.localIp = editIPLocal.text!
