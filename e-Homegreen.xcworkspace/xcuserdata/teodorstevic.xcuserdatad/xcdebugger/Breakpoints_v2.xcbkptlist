@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "129"
             endingLineNumber = "129"
-            landmarkName = "btnScanZones(_:)"
+            landmarkName = "editZoneFInished()"
             landmarkType = "5">
             <Locations>
                <Location
@@ -90,7 +90,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
-                  timestampString = "478773494.630141"
+                  timestampString = "478788116.141643"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "130"
@@ -105,7 +105,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
-                  timestampString = "478773494.630535"
+                  timestampString = "478788116.143148"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"
@@ -159,8 +159,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "529"
             endingLineNumber = "529"
-            landmarkName = "findNames(_:)"
-            landmarkType = "5">
+            landmarkName = "ScanDevicesViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -282,7 +282,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478773494.637559"
+                  timestampString = "478788116.148501"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"
@@ -297,7 +297,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478773494.637708"
+                  timestampString = "478788116.148742"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"

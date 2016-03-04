@@ -1,5 +1,5 @@
 //
-//  Surveilence.swift
+//  Surveillance.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 10/7/15.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class Surveilence: NSManagedObject {
+class Surveillance: NSManagedObject {
     
     var imageData:NSData?
     var lastDate:NSDate?

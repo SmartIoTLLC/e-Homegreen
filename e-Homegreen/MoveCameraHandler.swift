@@ -10,7 +10,7 @@ import UIKit
 
 class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     
-    func home(surv:Surveilence) {
+    func home(surv:Surveillance) {
         let username = surv.username
         let password = surv.password
         let loginString = NSString(format: "%@:%@", username!, password!)
@@ -45,7 +45,7 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         }
         task.resume()
     }
-    func moveCamera(surv: Surveilence, position: String){
+    func moveCamera(surv: Surveillance, position: String){
         let username = surv.username
         let password = surv.password
         
@@ -90,7 +90,7 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         }
         task.resume()
     }
-    func autoPan(surv: Surveilence, isStopNecessary:Bool){
+    func autoPan(surv: Surveillance, isStopNecessary:Bool){
         let username = surv.username
         let password = surv.password
         
@@ -184,7 +184,7 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
 //        task1.resume()
 //    }
     
-    func presetSequence(surv: Surveilence, isStopNecessary:Bool){
+    func presetSequence(surv: Surveillance, isStopNecessary:Bool){
         let username = surv.username
         let password = surv.password
         

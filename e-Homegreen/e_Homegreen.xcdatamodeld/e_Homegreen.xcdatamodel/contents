@@ -124,7 +124,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
         <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
-        <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Surveilence" inverseName="location" inverseEntity="Surveilence" syncable="YES"/>
+        <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
     </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -165,12 +165,11 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="ssids" inverseEntity="Location" syncable="YES"/>
     </entity>
-    <entity name="Surveilence" representedClassName="e_Homegreen.Surveilence" syncable="YES">
+    <entity name="Surveillance" representedClassName="e_Homegreen.Surveilence" syncable="YES">
         <attribute name="autSpanStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dwellTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="ip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationDELETETHIS" optional="YES" attributeType="String" syncable="YES"/>
@@ -180,6 +179,7 @@
         <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="surveillanceCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="surveillanceZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tiltStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="urlAutoPan" optional="YES" attributeType="String" syncable="YES"/>
@@ -228,13 +228,13 @@
         <element name="Gateway" positionX="-135" positionY="423" width="128" height="390"/>
         <element name="IBeacon" positionX="-72" positionY="-183" width="128" height="120"/>
         <element name="Image" positionX="610" positionY="-96" width="128" height="75"/>
+        <element name="Location" positionX="-306" positionY="-189" width="128" height="120"/>
         <element name="Scene" positionX="513" positionY="519" width="128" height="210"/>
         <element name="Security" positionX="493" positionY="333" width="128" height="135"/>
         <element name="Sequence" positionX="205" positionY="-18" width="128" height="225"/>
-        <element name="Surveilence" positionX="718" positionY="153" width="128" height="465"/>
+        <element name="SSID" positionX="-297" positionY="-180" width="128" height="75"/>
+        <element name="Surveillance" positionX="718" positionY="153" width="128" height="465"/>
         <element name="Timer" positionX="376" positionY="18" width="128" height="240"/>
         <element name="Zone" positionX="313" positionY="480" width="128" height="150"/>
-        <element name="Location" positionX="-306" positionY="-189" width="128" height="120"/>
-        <element name="SSID" positionX="-297" positionY="-180" width="128" height="75"/>
     </elements>
 </model>

@@ -85,6 +85,28 @@ struct Interface {
     static let DigitalInput = "Tamper Sensor"
     static let DigitalInput2 = "Noise Sensor"
 }
+struct CategoryId {
+    static let GatewayControl = 1
+    static let DimmingControl = 2
+    static let RelayControl = 3
+    static let ClimateControl = 4
+    static let HumanInterface = 5
+    static let InputOutput = 6
+    static let PowerSupply = 7
+    static let Reserved8 = 8
+    static let Reserved9 = 9
+    static let Reserved10 = 10
+    static let Lighting = 11
+    static let Appliance = 12
+    static let Curtain = 13
+    static let Security = 14
+    static let Timer = 15
+    static let Flag = 16
+    static let Event = 17
+    static let Media = 18
+    static let Blind = 19
+    static let Default = 255
+}
 //struct InterfaceNew {
 //    static let TemperatureProbe = "CPU.Temp"
 //    static let DigitalInputDryContact = "Dig Input 1"
@@ -115,6 +137,39 @@ struct DeviceInfo {
         1:"Low",
         2:"Med",
         3:"High"]
+    
+    enum Multisensor10in1Old: Int {
+        case TemperatureProbe = 1
+        case DigitalInputDryContact = 2
+        case DigitalInputDryContact2 = 3
+        case AnalogInput = 4
+        case TemperatureProbe2 = 5
+        case BrightnessSensorLUX = 6
+        case MotionSensorPIR = 7
+        case IRReceiver = 8
+        case DigitalInput = 9
+        case DigitalInput2 = 10
+    }
+    enum Multisensor6in1: Int {
+        case TemperatureProbe = 1
+        case DigitalInputDryContact = 2
+        case DigitalInputDryContact2 = 3
+        case TemperatureProbe2 = 4
+        case BrightnessSensorLUX = 5
+        case MotionSensorPIR = 6
+    }
+    enum Multisensor10in1: Int {
+        case TemperatureProbe = 1
+        case DigitalInputDryContact = 2
+        case DigitalInputDryContact2 = 3
+        case TemperatureProbe2 = 4
+        case BrightnessSensorLUX = 5
+        case MotionSensorPIR = 6
+        case DigitalInput = 7
+        case IRReceiver = 8
+        case AnalogInput = 9
+        case DigitalInput2 = 10
+    }
     
     static let inputInterface10in1:[Int:String] = [1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,

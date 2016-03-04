@@ -15,7 +15,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     
     var isPresenting: Bool = true
     
-    var surv:Surveilence!
+    var surv:Surveillance!
     var appDel:AppDelegate!
     var error:NSError? = nil
     
@@ -31,7 +31,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     @IBOutlet weak var autoPanStepLabel: UILabel!
     @IBOutlet weak var dwellTimeLabel: UILabel!
     
-    init(point:CGPoint, surv:Surveilence){
+    init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "CameraParametarXIBViewController", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -199,7 +199,7 @@ extension CameraParametarXIBViewController : UIViewControllerTransitioningDelega
     
 }
 extension UIViewController {
-    func showCameraParametar(point:CGPoint, surveillance:Surveilence) {
+    func showCameraParametar(point:CGPoint, surveillance:Surveillance) {
         let sp = CameraParametarXIBViewController(point: point, surv: surveillance)
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }

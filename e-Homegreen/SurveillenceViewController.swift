@@ -23,7 +23,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     var pullDown = PullDownView()
     var locationSearchText = ["", "", "", "", "", "", ""]
     
-    var surveillance:[Surveilence] = []
+    var surveillance:[Surveillance] = []
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -260,7 +260,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     }
     
     func fetchSurveillance() {
-        let fetchRequest = NSFetchRequest(entityName: "Surveilence")
+        let fetchRequest = NSFetchRequest(entityName: "Surveillance")
         let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
@@ -270,7 +270,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
             predicateArray.append(locationPredicate)
         }
         if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "level == %@", levelSearchName)
+            let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", levelSearchName)
             predicateArray.append(levelPredicate)
         }
         if zoneSearch != "All" {
@@ -283,7 +283,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         }
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveillance]
             surveillance = []
             for item in fetResults!{
                 if item.isVisible == true {

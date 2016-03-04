@@ -16,7 +16,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
     
     var isPresenting:Bool = false
     
-    var surveillance:[Surveilence] = []
+    var surveillance:[Surveillance] = []
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -120,12 +120,12 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
     }
     
     func fetchSurveillance () {
-        let fetchRequest = NSFetchRequest(entityName: "Surveilence")
+        let fetchRequest = NSFetchRequest(entityName: "Surveillance")
         let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveilence]
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveillance]
             surveillance = fetResults!
         } catch let error1 as NSError {
             error = error1

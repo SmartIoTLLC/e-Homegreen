@@ -36,7 +36,7 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     
     var isPresenting: Bool = true
     
-    var surv:Surveilence?
+    var surv:Surveillance?
     var appDel:AppDelegate!
     var error:NSError? = nil
     
@@ -51,7 +51,7 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     @IBOutlet weak var txtStopPresetSequence: UITextField!
     @IBOutlet weak var txtHome: UITextField!
     
-    init(point:CGPoint, surv:Surveilence){
+    init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "SurveilenceUrlsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -264,7 +264,7 @@ extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
     }
 }
 extension UIViewController {
-    func showCameraUrls (point:CGPoint, surveillance:Surveilence) {
+    func showCameraUrls (point:CGPoint, surveillance:Surveillance) {
         let scu = SurveilenceUrlsVC(point: point, surv: surveillance)
 //        scu.surv = surveillance
         self.presentViewController(scu, animated: true, completion: nil)

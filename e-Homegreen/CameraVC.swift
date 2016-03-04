@@ -25,7 +25,7 @@ class CameraVC: UIViewController {
     var isAutoPanStop = false
     var isPresetSequenceStop = false
     
-    var surv:Surveilence!
+    var surv:Surveillance!
     var point:CGPoint?
     var oldPoint:CGPoint?
     
@@ -38,7 +38,7 @@ class CameraVC: UIViewController {
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     
-    init(point:CGPoint, surv:Surveilence){
+    init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "CameraVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -211,7 +211,7 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showCamera(point:CGPoint, surv:Surveilence) {
+    func showCamera(point:CGPoint, surv:Surveillance) {
         let ad = CameraVC(point: point, surv:surv)
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }

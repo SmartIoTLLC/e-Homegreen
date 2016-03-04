@@ -1,5 +1,5 @@
 //
-//  Surveilence+CoreDataProperties.swift
+//  Surveillance+CoreDataProperties.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 3/4/16.
@@ -12,13 +12,12 @@
 import Foundation
 import CoreData
 
-extension Surveilence {
+extension Surveillance {
 
     @NSManaged var autSpanStep: NSNumber?
     @NSManaged var dwellTime: NSNumber?
     @NSManaged var ip: String?
     @NSManaged var isVisible: NSNumber?
-    @NSManaged var level: String?
     @NSManaged var localIp: String?
     @NSManaged var localPort: String?
     @NSManaged var locationDELETETHIS: String?
@@ -27,6 +26,7 @@ extension Surveilence {
     @NSManaged var password: String?
     @NSManaged var port: NSNumber?
     @NSManaged var ssid: String?
+    @NSManaged var surveillanceLevel: String?
     @NSManaged var surveillanceCategory: String?
     @NSManaged var surveillanceZone: String?
     @NSManaged var tiltStep: NSNumber?

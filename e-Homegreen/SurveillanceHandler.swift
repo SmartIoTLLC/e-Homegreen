@@ -16,7 +16,7 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
     
 //    var delegate:GetImageHandler?
     
-    init(surv: Surveilence) {
+    init(surv: Surveillance) {
         super.init()
         let username = surv.username
         let password = surv.password

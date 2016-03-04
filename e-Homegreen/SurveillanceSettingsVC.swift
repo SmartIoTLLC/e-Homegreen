@@ -42,11 +42,11 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     
     var appDel:AppDelegate!
     var error:NSError? = nil
-    var surv:Surveilence?
+    var surv:Surveillance?
     
     var isNew = false
     
-    init(surv: Surveilence?){
+    init(surv: Surveillance?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
         self.surv = surv
         transitioningDelegate = self
@@ -179,8 +179,8 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if surv?.ssid != nil{
                 editSSID.text = surv?.ssid
             }
-            if surv?.level != nil{
-                editLevel.text = surv?.level
+            if surv?.surveillanceLevel != nil{
+                editLevel.text = surv?.surveillanceLevel
             }
             if surv?.surveillanceZone != nil{
                 editZone.text = surv?.surveillanceZone
@@ -249,7 +249,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             
         } else {
             if surv == nil || isNew{
-                let surveillance = NSEntityDescription.insertNewObjectForEntityForName("Surveilence", inManagedObjectContext: appDel.managedObjectContext!) as! Surveilence
+                let surveillance = Surveillance(context: appDel.managedObjectContext!)
                 surveillance.ip = editIPRemote.text!
                 surveillance.port = Int(editPortRemote.text!)!
                 surveillance.username = editUserName.text!
@@ -498,7 +498,7 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSurveillanceSettings(surv: Surveilence?, isNew:Bool) {
+    func showSurveillanceSettings(surv: Surveillance?, isNew:Bool) {
         let connSettVC = SurveillanceSettingsVC(surv: surv)
         connSettVC.isNew = isNew
         self.presentViewController(connSettVC, animated: true, completion: nil)
