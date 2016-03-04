@@ -34,6 +34,10 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     var gateway:Gateway?
     var flags:[Flag] = []
     
+    var levelFromFilter:String = "All"
+    var zoneFromFilter:String = "All"
+    var categoryFromFilter:String = "All"
+    
     var selected:AnyObject?
     
     func endEditingNow(){
@@ -83,7 +87,11 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     }
     
     override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        
+        levelFromFilter = levelName
+        zoneFromFilter = zoneName
+        categoryFromFilter = categoryName
+        updateFlagList()
+        flagTableView.reloadData()
     }
     
     func changeValue (sender:UISwitch){
@@ -122,8 +130,22 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        if levelFromFilter != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
+            predicateArray.append(levelPredicate)
+        }
+        if zoneFromFilter != "All" {
+            let zonePredicate = NSPredicate(format: "flagZone == %@", zoneFromFilter)
+            predicateArray.append(zonePredicate)
+        }
+        if categoryFromFilter != "All" {
+            let categoryPredicate = NSPredicate(format: "flagCategory == %@", categoryFromFilter)
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
             flags = fetResults!

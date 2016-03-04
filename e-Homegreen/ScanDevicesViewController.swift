@@ -30,6 +30,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     var devices:[Device] = []
     var gateway:Gateway?
     
+    var levelFromFilter:String = "All"
+    var zoneFromFilter:String = "All"
+    var categoryFromFilter:String = "All"
+    
     func endEditingNow(){
         rangeFrom.resignFirstResponder()
         rangeTo.resignFirstResponder()
@@ -65,7 +69,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        
+        levelFromFilter = level
+        zoneFromFilter = zone
+        categoryFromFilter = category
+        refreshDeviceList()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -108,8 +115,21 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        if levelFromFilter != "All" {
+            predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelFromFilter)!)))
+        }
+        if zoneFromFilter != "All" {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneFromFilter)!))
+            predicateArray.append(zonePredicate)
+        }
+        if categoryFromFilter != "All" {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categoryFromFilter)!))
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
             devices = fetResults!
@@ -648,7 +668,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gateway!.devices.count
+        return devices.count
     }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in

@@ -36,6 +36,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     
     var selected:AnyObject?
     
+    var levelFromFilter:String = "All"
+    var zoneFromFilter:String = "All"
+    var categoryFromFilter:String = "All"
+    
     func endEditingNow(){
 //        devAddressOne.resignFirstResponder()
 //        devAddressTwo.resignFirstResponder()
@@ -85,7 +89,11 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     }
     
     override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        
+        levelFromFilter = levelName
+        zoneFromFilter = zoneName
+        categoryFromFilter = categoryName
+        updateEventList()
+        eventTableView.reloadData()
     }
     
     func changeValue (sender:UISwitch){
@@ -107,8 +115,23 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
+//        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        if levelFromFilter != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
+            predicateArray.append(levelPredicate)
+        }
+        if zoneFromFilter != "All" {
+            let zonePredicate = NSPredicate(format: "eventZone == %@", zoneFromFilter)
+            predicateArray.append(zonePredicate)
+        }
+        if categoryFromFilter != "All" {
+            let categoryPredicate = NSPredicate(format: "eventCategory == %@", categoryFromFilter)
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
             events = fetResults!
