@@ -34,6 +34,10 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     var gateway:Gateway?
     var scenes:[Scene] = []
     
+    var levelFromFilter:String = "All"
+    var zoneFromFilter:String = "All"
+    var categoryFromFilter:String = "All"
+    
     var selected:AnyObject?
     
     func endEditingNow(){
@@ -91,7 +95,11 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     }
     
     override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        
+        levelFromFilter = levelName
+        zoneFromFilter = zoneName
+        categoryFromFilter = categoryName
+        updateSceneList()
+        sceneTableView.reloadData()
     }
     
     func changeValue (sender:UISwitch){
@@ -113,8 +121,22 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-        fetchRequest.predicate = predicate
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        if levelFromFilter != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
+            predicateArray.append(levelPredicate)
+        }
+        if zoneFromFilter != "All" {
+            let zonePredicate = NSPredicate(format: "sceneZone == %@", zoneFromFilter)
+            predicateArray.append(zonePredicate)
+        }
+        if categoryFromFilter != "All" {
+            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", categoryFromFilter)
+            predicateArray.append(categoryPredicate)
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
             scenes = fetResults!

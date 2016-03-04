@@ -244,7 +244,6 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let zoneName = "\(zoneButton.titleLabel!.text!)"
         let categoryName = "\(categoryButton.titleLabel!.text!)"
         customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
-        print(self.parentViewController!.parentViewController!)
         self.setContentOffset(CGPointMake(0, self.frame.size.height - 2), animated: true)
     }
     var choosedGateway:Gateway?
