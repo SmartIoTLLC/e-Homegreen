@@ -125,7 +125,7 @@
 		73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA51C8978B2007CEEAA /* Location.swift */; };
 		73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */; };
 		73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA71C8978B2007CEEAA /* SSID.swift */; };
-		73F1ECAD1C8993E8007CEEAA /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECAC1C8993E8007CEEAA /* Test.swift */; };
+		73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
 		73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */; };
@@ -381,7 +381,7 @@
 		73F1ECA51C8978B2007CEEAA /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SSID+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73F1ECA71C8978B2007CEEAA /* SSID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSID.swift; sourceTree = "<group>"; };
-		73F1ECAC1C8993E8007CEEAA /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDeviceImages.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagesPickerVC.swift; sourceTree = "<group>"; };
@@ -1129,7 +1129,7 @@
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
 				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
-				73F1ECAC1C8993E8007CEEAA /* Test.swift */,
+				73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -1468,7 +1468,7 @@
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
-				73F1ECAD1C8993E8007CEEAA /* Test.swift in Sources */,
+				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,

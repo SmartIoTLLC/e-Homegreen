@@ -52,7 +52,6 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
                 surv.imageData = nil
                 surv.lastDate = nil
             }
-            
         }
         task.resume()
     }

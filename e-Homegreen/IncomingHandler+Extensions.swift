@@ -58,6 +58,14 @@ extension IncomingHandler {
                             device.gateway = gateways[0] // OVDE BI TREBALO DA BUDE SAMO JEDAN, NIKAKO DVA ILI VISE
                             device.isVisible = false
                             device.isEnabled = false
+                            //FIXME:
+                            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
+                            for defaultDeviceImage in defaultDeviceImages {
+                                let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+                                deviceImage.defaultImage = defaultDeviceImage.defaultImage
+                                deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+                                deviceImage.device = device
+                            }
                             saveChanges()
                         } else if channel == 6 && name == ControlType.Sensor && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!)
