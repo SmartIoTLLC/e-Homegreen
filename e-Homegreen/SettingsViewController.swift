@@ -213,9 +213,17 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             self.settingsTableView.userInteractionEnabled = false
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
             if tag == 0 {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("menuSettings", sender: self)
-                })
+//                dispatch_async(dispatch_get_main_queue(),{
+//                    self.performSegueWithIdentifier("menuSettings", sender: self)
+//                })
+//                if (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB {
+//                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = false
+//                } else {
+//                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = true
+//                }
+//                (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinator = (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinatorNew("e_homegreen.sqlite")
+//                (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContextNew()
+                (UIApplication.sharedApplication().delegate as! AppDelegate).changeCoreDataStackPreferences("")
             }
             if tag == 1 {
                 dispatch_async(dispatch_get_main_queue(),{

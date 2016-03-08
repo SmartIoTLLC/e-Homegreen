@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/IncomingHandler.swift"
-            timestampString = "478517008.259426"
+            timestampString = "479121357.674575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "692"
-            endingLineNumber = "692"
+            startingLineNumber = "693"
+            endingLineNumber = "693"
             landmarkName = "getZone(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "e-Homegreen/IncomingHandler.swift"
-            timestampString = "478517067.936921"
+            timestampString = "479121357.674575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "694"
-            endingLineNumber = "694"
+            startingLineNumber = "695"
+            endingLineNumber = "695"
             landmarkName = "getZone(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,7 +90,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
-                  timestampString = "478788116.141643"
+                  timestampString = "479133851.109441"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "130"
@@ -105,7 +105,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/ImportZoneViewController.swift"
-                  timestampString = "478788116.143148"
+                  timestampString = "479133851.109646"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"
@@ -176,22 +176,6 @@
             startingLineNumber = "531"
             endingLineNumber = "531"
             landmarkName = "findNames(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/IncomingHandler.swift"
-            timestampString = "478693923.725908"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "init(byteArrayToHandle:host:port:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,7 +266,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478788116.148501"
+                  timestampString = "479133851.119985"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"
@@ -297,7 +281,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/teodorstevic/Desktop/e-Homegreen/e-Homegreen/DevicesViewController.swift"
-                  timestampString = "478788116.148742"
+                  timestampString = "479133851.120241"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "280"
@@ -319,6 +303,86 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
             endingLineNumber = "37">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/AppDelegate.swift"
+            timestampString = "479133850.924362"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
+            landmarkName = "changeCoreDataStackPreferences(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/AppDelegate.swift"
+            timestampString = "479133850.924362"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "changeCoreDataStackPreferences(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/AppDelegate.swift"
+            timestampString = "479133858.310948"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
+            landmarkName = "changeCoreDataStackPreferences(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/AppDelegate.swift"
+            timestampString = "479133859.054945"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
+            landmarkName = "changeCoreDataStackPreferences(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/DeviceCollectionView+Extensions.swift"
+            timestampString = "479134156.843349"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "555"
+            endingLineNumber = "555"
+            landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
