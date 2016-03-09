@@ -24,6 +24,7 @@
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
+		732EF2AF1C8EC5E4001812D5 /* AppDelegate+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */; };
 		733E5E821C6350A90039B7A8 /* CoreDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */; };
 		733E5E841C6391DB0039B7A8 /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */; };
 		733E5E861C666F840039B7A8 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 733E5E851C666F840039B7A8 /* Config.plist */; };
@@ -127,7 +128,7 @@
 		73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA51C8978B2007CEEAA /* Location.swift */; };
 		73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */; };
 		73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA71C8978B2007CEEAA /* SSID.swift */; };
-		73F1ECAD1C8993E8007CEEAA /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECAC1C8993E8007CEEAA /* Test.swift */; };
+		73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
 		73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */; };
@@ -276,6 +277,7 @@
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; };
 		731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ConfigureStateForTheFirstTime.swift"; sourceTree = "<group>"; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
+		732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Test.swift"; sourceTree = "<group>"; };
 		733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWrapper.swift; sourceTree = "<group>"; };
 		733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		733E5E851C666F840039B7A8 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -383,7 +385,7 @@
 		73F1ECA51C8978B2007CEEAA /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SSID+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73F1ECA71C8978B2007CEEAA /* SSID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSID.swift; sourceTree = "<group>"; };
-		73F1ECAC1C8993E8007CEEAA /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDeviceImages.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
 		73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagesPickerVC.swift; sourceTree = "<group>"; };
@@ -697,6 +699,7 @@
 			children = (
 				737700FD1C74B35D00B6BC32 /* API.swift */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
+				732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */,
 				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
 				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
 				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
@@ -1129,7 +1132,7 @@
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
 				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
-				73F1ECAC1C8993E8007CEEAA /* Test.swift */,
+				73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -1469,7 +1472,7 @@
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
-				73F1ECAD1C8993E8007CEEAA /* Test.swift in Sources */,
+				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
@@ -1568,6 +1571,7 @@
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				732EF2AF1C8EC5E4001812D5 /* AppDelegate+Test.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,

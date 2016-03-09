@@ -284,7 +284,7 @@ class Function {
     static func resetRunningTime (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
-//        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
+        //        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
@@ -301,48 +301,48 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-//    static func refreshSecurityMode () -> [Byte]{
-//        var messageInfo:[Byte] = []
-//        var message:[Byte] = []
-//        messageInfo = [0x02, 0x00]
-//        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = Byte(messageInfo.count)
-//        message[2] = Byte(id1Address)
-//        message[3] = Byte(id2Address)
-//        message[4] = 0xFE
-//        message[5] = 0x05
-//        message[6] = 0x0C
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
-//    static func sendKeySecurity (key:Byte) -> [Byte]{
-//        var messageInfo:[Byte] = []
-//        var message:[Byte] = []
-//        messageInfo = [0x01, key]
-//        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = Byte(messageInfo.count)
-//        message[2] = Byte(id1Address)
-//        message[3] = Byte(id2Address)
-//        message[4] = 0xFE
-//        message[5] = 0x05
-//        message[6] = 0x11
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
+    //    static func refreshSecurityMode () -> [Byte]{
+    //        var messageInfo:[Byte] = []
+    //        var message:[Byte] = []
+    //        messageInfo = [0x02, 0x00]
+    //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+    //        message[0] = 0xAA
+    //        message[1] = Byte(messageInfo.count)
+    //        message[2] = Byte(id1Address)
+    //        message[3] = Byte(id2Address)
+    //        message[4] = 0xFE
+    //        message[5] = 0x05
+    //        message[6] = 0x0C
+    //        var i = 0
+    //        for byte in messageInfo {
+    //            message[7+i] = byte
+    //            i = i + 1
+    //        }
+    //        message[message.count-2] = self.getChkByte(byteArray:message)
+    //        message[message.count-1] = 0x10
+    //        return message
+    //    }
+    //    static func sendKeySecurity (key:Byte) -> [Byte]{
+    //        var messageInfo:[Byte] = []
+    //        var message:[Byte] = []
+    //        messageInfo = [0x01, key]
+    //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+    //        message[0] = 0xAA
+    //        message[1] = Byte(messageInfo.count)
+    //        message[2] = Byte(id1Address)
+    //        message[3] = Byte(id2Address)
+    //        message[4] = 0xFE
+    //        message[5] = 0x05
+    //        message[6] = 0x11
+    //        var i = 0
+    //        for byte in messageInfo {
+    //            message[7+i] = byte
+    //            i = i + 1
+    //        }
+    //        message[message.count-2] = self.getChkByte(byteArray:message)
+    //        message[message.count-1] = 0x10
+    //        return message
+    //    }
     // MARK: - Get check byte
     static func getChkByte (byteArray byteArray:[Byte]) -> Byte {
         var chk:Int = 0
@@ -424,24 +424,24 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 06 00 00 00 01 15 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 06 00 00 00 01 23 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 06 00 00 00 01 24 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
-//    //
-//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
-//    AA 0D 01 00 02 03 07 FF FF FF 06 4A 00 00 00 00 00 00 00 01 68 10
-//    //
-//    EF 00 00 00 00 00 00 00 01
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 06 00 00 00 01 15 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 06 00 00 00 01 23 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 06 00 00 00 01 24 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
+    //    //
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
+    //    AA 0D 01 00 02 03 07 FF FF FF 06 4A 00 00 00 00 00 00 00 01 68 10
+    //    //
+    //    EF 00 00 00 00 00 00 00 01
 }
 //MARK:- CLIMATE
 extension Function {
@@ -1073,70 +1073,228 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-
+    
 }
 
 extension Function {
-//   **************************************************************************************
-//   ****************************   ANALOG/ DIGITAL OUPUT   *******************************
-//   **************************************************************************************
+    //   **************************************************************************************
+    //   ****************************   ANALOG/ DIGITAL OUPUT   *******************************
+    //   **************************************************************************************
     
-//    static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
-//        let messageInfo:[Byte] = [0x04, panic]
-//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = Byte(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[1]
-//        message[4] = address[2]
-//        message[5] = 0x05
-//        message[6] = 0x11
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
-//    static func setInterfaceParametar (address:[Byte], panic:Byte) -> [Byte]{
-//        let messageInfo:[Byte] = [0x04, panic]
-//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = Byte(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[1]
-//        message[4] = address[2]
-//        message[5] = 0x05
-//        message[6] = 0x11
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
-//    static func setInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
-//        let messageInfo:[Byte] = [0x04, panic]
-//        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-//        message[0] = 0xAA
-//        message[1] = Byte(messageInfo.count)
-//        message[2] = address[0]
-//        message[3] = address[1]
-//        message[4] = address[2]
-//        message[5] = 0x05
-//        message[6] = 0x11
-//        var i = 0
-//        for byte in messageInfo {
-//            message[7+i] = byte
-//            i = i + 1
-//        }
-//        message[message.count-2] = self.getChkByte(byteArray:message)
-//        message[message.count-1] = 0x10
-//        return message
-//    }
+    //    static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+    //        let messageInfo:[Byte] = [0x04, panic]
+    //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+    //        message[0] = 0xAA
+    //        message[1] = Byte(messageInfo.count)
+    //        message[2] = address[0]
+    //        message[3] = address[1]
+    //        message[4] = address[2]
+    //        message[5] = 0x05
+    //        message[6] = 0x11
+    //        var i = 0
+    //        for byte in messageInfo {
+    //            message[7+i] = byte
+    //            i = i + 1
+    //        }
+    //        message[message.count-2] = self.getChkByte(byteArray:message)
+    //        message[message.count-1] = 0x10
+    //        return message
+    //    }
+    //    static func setInterfaceParametar (address:[Byte], panic:Byte) -> [Byte]{
+    //        let messageInfo:[Byte] = [0x04, panic]
+    //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+    //        message[0] = 0xAA
+    //        message[1] = Byte(messageInfo.count)
+    //        message[2] = address[0]
+    //        message[3] = address[1]
+    //        message[4] = address[2]
+    //        message[5] = 0x05
+    //        message[6] = 0x11
+    //        var i = 0
+    //        for byte in messageInfo {
+    //            message[7+i] = byte
+    //            i = i + 1
+    //        }
+    //        message[message.count-2] = self.getChkByte(byteArray:message)
+    //        message[message.count-1] = 0x10
+    //        return message
+    //    }
+    //    static func setInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+    //        let messageInfo:[Byte] = [0x04, panic]
+    //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+    //        message[0] = 0xAA
+    //        message[1] = Byte(messageInfo.count)
+    //        message[2] = address[0]
+    //        message[3] = address[1]
+    //        message[4] = address[2]
+    //        message[5] = 0x05
+    //        message[6] = 0x11
+    //        var i = 0
+    //        for byte in messageInfo {
+    //            message[7+i] = byte
+    //            i = i + 1
+    //        }
+    //        message[message.count-2] = self.getChkByte(byteArray:message)
+    //        message[message.count-1] = 0x10
+    //        return message
+    //    }
     
+}
+//MARK:- PC Control
+extension Function {
+    //   **************************************************************************************
+    //   **********************************   PC Control   ************************************
+    //   **************************************************************************************
+    //TODO:- Nije uradjeno report PC state
+    static func reportPCState (address:[Byte], text:String) -> [Byte]{
+        let textByteArray = [Byte](text.utf8)
+        var messageInfo:[Byte] = [0x01, 0x00, 0x00]
+        messageInfo = messageInfo + textByteArray
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x01
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+//    0x01 - Shut down
+//    0x02 - Restart
+//    0x03 - Sleep
+//    0x04 - Hibernate
+//    0x05 - Log off
+    static func setPCState (address:[Byte], command:Byte) -> [Byte]{
+        let messageInfo:[Byte] = [0x02, command]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x02
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func setPCVolume (address:[Byte], volume:Byte, mute:Byte=0x00) -> [Byte]{
+        let messageInfo:[Byte] = [volume, mute]
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x03
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+//    0x01 - Windows Media Player
+//    0x02 - Windows Media Center
+    static func playVideo (address:[Byte], fileName:String, fullScreen:Byte, by:Byte) -> [Byte]{
+        let fileNameByteArray = [Byte](fileName.utf8)
+        var messageInfo:[Byte] = [by, fullScreen, 0xFF]
+        messageInfo = messageInfo + fileNameByteArray
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x04
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func runApp (address:[Byte], cmdLine:String) -> [Byte] {
+        let cmdLineByteArray = [Byte](cmdLine.utf8)
+        var messageInfo:[Byte] = [0x01]
+        messageInfo = messageInfo + cmdLineByteArray
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x05
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    static func textToSpeech (address:[Byte], text:String) -> [Byte]{
+        let textByteArray = [Byte](text.utf8)
+        var messageInfo:[Byte] = [0x01, 0x00, 0x00]
+        messageInfo = messageInfo + textByteArray
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x06
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    //TODO:- Nije odradjeno budjenje iz lana
+    static func wakeOnLan (address:[Byte], text:String) -> [Byte]{
+        let textByteArray = [Byte](text.utf8)
+        var messageInfo:[Byte] = [0x01, 0x00, 0x00]
+        messageInfo = messageInfo + textByteArray
+        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x07
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
 }
