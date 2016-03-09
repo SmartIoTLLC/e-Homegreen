@@ -11,6 +11,8 @@
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
+		2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */; };
+		2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32E1C9041CB0019C6FB /* PCControlCell.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -24,7 +26,6 @@
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
-		732EF2AF1C8EC5E4001812D5 /* AppDelegate+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */; };
 		733E5E821C6350A90039B7A8 /* CoreDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */; };
 		733E5E841C6391DB0039B7A8 /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */; };
 		733E5E861C666F840039B7A8 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 733E5E851C666F840039B7A8 /* Config.plist */; };
@@ -263,6 +264,8 @@
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlViewController.swift; sourceTree = "<group>"; };
+		2249A32E1C9041CB0019C6FB /* PCControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlCell.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -277,7 +280,6 @@
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; };
 		731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ConfigureStateForTheFirstTime.swift"; sourceTree = "<group>"; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
-		732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Test.swift"; sourceTree = "<group>"; };
 		733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWrapper.swift; sourceTree = "<group>"; };
 		733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		733E5E851C666F840039B7A8 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -561,6 +563,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2249A3271C90349C0019C6FB /* PC Controll */ = {
+			isa = PBXGroup;
+			children = (
+				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
+				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
+			);
+			name = "PC Controll";
+			sourceTree = "<group>";
+		};
 		22CD26771BD53685005BA67D /* DAKeyboardControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -642,6 +653,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2249A3271C90349C0019C6FB /* PC Controll */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
@@ -699,7 +711,6 @@
 			children = (
 				737700FD1C74B35D00B6BC32 /* API.swift */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
-				732EF2AE1C8EC5E4001812D5 /* AppDelegate+Test.swift */,
 				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
 				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
 				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
@@ -1489,6 +1500,7 @@
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
+				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
@@ -1517,6 +1529,7 @@
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
+				2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
@@ -1571,7 +1584,6 @@
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
-				732EF2AF1C8EC5E4001812D5 /* AppDelegate+Test.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
