@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum SettingsItem{
+    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Surveillance, Security, IBeacon, Broadcast, RefreshConnection
+    
+    
+}
+
 class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
 
     var settingArray:[String]!
