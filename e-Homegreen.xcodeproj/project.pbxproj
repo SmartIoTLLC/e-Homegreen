@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
+		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -136,8 +138,6 @@
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
-		73FD2E5D1C0A0A1E00B9F11A /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E5B1C0A0A1E00B9F11A /* Surveillance+CoreDataProperties.swift */; };
-		73FD2E5E1C0A0A1E00B9F11A /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E5C1C0A0A1E00B9F11A /* Surveillance.swift */; };
 		73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */; };
 		E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
@@ -259,6 +259,8 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
@@ -392,8 +394,6 @@
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
-		73FD2E5B1C0A0A1E00B9F11A /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		73FD2E5C1C0A0A1E00B9F11A /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		80BCDAD58C51E5A3CC1189F2 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsViewController.swift; sourceTree = "<group>"; };
@@ -771,8 +771,6 @@
 				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
 				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
 				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
-				73FD2E5B1C0A0A1E00B9F11A /* Surveillance+CoreDataProperties.swift */,
-				73FD2E5C1C0A0A1E00B9F11A /* Surveillance.swift */,
 				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
 				730E90C01C6A1BF400B1D50D /* Image.swift */,
 				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
@@ -781,6 +779,8 @@
 				73F1ECA51C8978B2007CEEAA /* Location.swift */,
 				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
 				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
+				223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */,
+				223980BA1C89CFB500E02536 /* Surveillance.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1432,6 +1432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
+				223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
@@ -1548,7 +1549,6 @@
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */,
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
-				73FD2E5D1C0A0A1E00B9F11A /* Surveillance+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
@@ -1561,7 +1561,6 @@
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
 				73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */,
 				731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */,
-				73FD2E5E1C0A0A1E00B9F11A /* Surveillance.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				733E5E821C6350A90039B7A8 /* CoreDataWrapper.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
@@ -1586,6 +1585,7 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
+				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,

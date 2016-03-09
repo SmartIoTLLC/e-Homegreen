@@ -165,7 +165,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="ssids" inverseEntity="Location" syncable="YES"/>
     </entity>
-    <entity name="Surveillance" representedClassName="e_Homegreen.Surveilence" syncable="YES">
+    <entity name="Surveillance" representedClassName="e_Homegreen.Surveillance" syncable="YES">
         <attribute name="autSpanStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dwellTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="ip" optional="YES" attributeType="String" syncable="YES"/>

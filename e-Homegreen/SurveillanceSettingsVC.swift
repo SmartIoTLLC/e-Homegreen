@@ -230,7 +230,11 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 backViewHeightConstraint.constant = 480
             }
         }else{
-            backViewHeightConstraint.constant = 480
+            if self.view.frame.size.height < 600{
+                backViewHeightConstraint.constant = 480
+            }else{
+                backViewHeightConstraint.constant = 590
+            }
         }
     }
 
@@ -244,18 +248,25 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     }
     
     @IBAction func btnSave(sender: AnyObject) {
-        if editIPRemote.text == "" || editPortRemote.text == "" || editUserName.text == "" || editPassword.text == "" || editName.text == ""{
-            
-            
-        } else {
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let level = editLevel.text, let zone = editZone.text, let category = editCategory.text, let remotePortNumber = Int(remotePort), let location = editLocation.text,let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort),let ssid = editSSID.text   {
             if surv == nil || isNew{
                 let surveillance = Surveillance(context: appDel.managedObjectContext!)
-                surveillance.ip = editIPRemote.text!
-                surveillance.port = Int(editPortRemote.text!)!
-                surveillance.username = editUserName.text!
-                surveillance.password = editPassword.text!
+                
+                surveillance.locationDELETETHIS = location
+                surveillance.surveillanceLevel = level
+                surveillance.surveillanceZone = zone
+                surveillance.surveillanceCategory = category
+                surveillance.name = name
+                surveillance.username = username
+                surveillance.password = password
+                surveillance.localIp = localIp
+                surveillance.localPort = localPort
+                surveillance.ssid = ssid
+                surveillance.ip = remoteIp
+                surveillance.port = remotePortNumber
+
                 surveillance.isVisible = true
-                surveillance.name = editName.text!
+               
                 surveillance.urlHome = ""
                 surveillance.urlMoveUp = ""
                 surveillance.urlMoveRight = ""
@@ -266,27 +277,6 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 surveillance.urlPresetSequence = ""
                 surveillance.urlPresetSequenceStop = ""
                 surveillance.urlGetImage = ""
-                if editLocation.text != ""{
-                    surveillance.locationDELETETHIS = editLocation.text!
-                }
-                if editIPLocal.text != ""{
-                    surveillance.localIp = editIPLocal.text!
-                }
-                if editPortLocal.text != ""{
-                    surveillance.localPort = editPortLocal.text!
-                }
-                if editSSID.text != ""{
-                    surveillance.ssid = editSSID.text!
-                }
-                if editLevel.text != ""{
-                    surveillance.localIp = editIPLocal.text!
-                }
-                if editZone.text != ""{
-                    surveillance.localPort = editPortLocal.text!
-                }
-                if editCategory.text != ""{
-                    surveillance.ssid = editSSID.text!
-                }
                 
                 surveillance.tiltStep = 1
                 surveillance.panStep = 1
@@ -294,33 +284,19 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 surveillance.dwellTime = 15
                 saveChanges()
             }else if surv != nil || !isNew{
-                surv!.ip = editIPRemote.text!
-                surv!.port = Int(editPortRemote.text!)!
-                surv!.username = editUserName.text!
-                surv!.password = editPassword.text!
-                surv!.name = editName.text!
                 
-                if editLocation.text != ""{
-                    surv!.locationDELETETHIS = editLocation.text!
-                }
-                if editIPLocal.text != ""{
-                    surv!.localIp = editIPLocal.text!
-                }
-                if editPortLocal.text != ""{
-                    surv!.localPort = editPortLocal.text!
-                }
-                if editSSID.text != ""{
-                    surv!.ssid = editSSID.text!
-                }
-                if editLevel.text != ""{
-                    surv!.localIp = editIPLocal.text!
-                }
-                if editZone.text != ""{
-                    surv!.localPort = editPortLocal.text!
-                }
-                if editCategory.text != ""{
-                    surv!.ssid = editSSID.text!
-                }
+                surv!.locationDELETETHIS = location
+                surv!.surveillanceLevel = level
+                surv!.surveillanceZone = zone
+                surv!.surveillanceCategory = category
+                surv!.name = name
+                surv!.username = username
+                surv!.password = password
+                surv!.localIp = localIp
+                surv!.localPort = localPort
+                surv!.ssid = ssid
+                surv!.ip = remoteIp
+                surv!.port = remotePortNumber
                 
                 saveChanges()
             }

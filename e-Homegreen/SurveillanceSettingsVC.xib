@@ -437,8 +437,10 @@
                                 <constraint firstItem="MWD-xe-Ano" firstAttribute="leading" secondItem="UiG-IU-ZQu" secondAttribute="trailing" constant="22" id="a8q-Uw-g8F"/>
                                 <constraint firstItem="BYR-Jx-aH5" firstAttribute="top" secondItem="le5-Eb-cAc" secondAttribute="bottom" constant="20" id="aqh-hY-Tka"/>
                                 <constraint firstItem="kBD-VS-6kd" firstAttribute="leading" secondItem="BYR-Jx-aH5" secondAttribute="trailing" constant="56" id="b0c-tt-TrI"/>
+                                <constraint firstAttribute="bottom" secondItem="xfT-WA-yDl" secondAttribute="bottom" constant="11" id="bUl-MT-xi7"/>
                                 <constraint firstAttribute="trailing" secondItem="xfT-WA-yDl" secondAttribute="trailing" constant="62" id="cAB-S1-cs0"/>
                                 <constraint firstItem="fJE-T5-qCJ" firstAttribute="leading" secondItem="Cga-6t-tyM" secondAttribute="leading" constant="10" id="dKw-z9-lyo"/>
+                                <constraint firstAttribute="bottom" secondItem="xfT-WA-yDl" secondAttribute="bottom" constant="11" id="f0w-M8-aOA"/>
                                 <constraint firstItem="zEP-Lm-AEy" firstAttribute="top" secondItem="SxH-0d-NWX" secondAttribute="bottom" constant="10" id="fYv-5o-hFa"/>
                                 <constraint firstItem="SxH-0d-NWX" firstAttribute="top" secondItem="T0E-Pb-Fm7" secondAttribute="bottom" constant="8" id="fkd-p1-YCX"/>
                                 <constraint firstItem="xfT-WA-yDl" firstAttribute="top" secondItem="HRp-Si-HEi" secondAttribute="bottom" constant="8" id="gmT-1j-g1g"/>
@@ -468,6 +470,14 @@
                                 <constraint firstItem="fJE-T5-qCJ" firstAttribute="top" secondItem="Jjn-1G-jKd" secondAttribute="bottom" constant="10" id="wbO-Wz-Nmg"/>
                                 <constraint firstItem="T0E-Pb-Fm7" firstAttribute="top" secondItem="Kp7-Mf-Oer" secondAttribute="bottom" constant="12" id="y4u-th-WnO"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="Iba-4B-jas"/>
+                                    <exclude reference="jKi-Nj-2hW"/>
+                                    <exclude reference="f0w-M8-aOA"/>
+                                    <exclude reference="jAX-ul-x8T"/>
+                                </mask>
+                            </variation>
                         </scrollView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

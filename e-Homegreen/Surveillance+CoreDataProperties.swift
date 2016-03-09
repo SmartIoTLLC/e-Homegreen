@@ -2,7 +2,7 @@
 //  Surveillance+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 3/4/16.
+//  Created by Vladimir Zivanov on 3/4/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -26,8 +26,8 @@ extension Surveillance {
     @NSManaged var password: String?
     @NSManaged var port: NSNumber?
     @NSManaged var ssid: String?
-    @NSManaged var surveillanceLevel: String?
     @NSManaged var surveillanceCategory: String?
+    @NSManaged var surveillanceLevel: String?
     @NSManaged var surveillanceZone: String?
     @NSManaged var tiltStep: NSNumber?
     @NSManaged var urlAutoPan: String?

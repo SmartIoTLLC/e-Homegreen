@@ -149,7 +149,7 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
             
 //            cell.lblID.text = surveillance[indexPath.section].ip
 //            cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
-            cell.lblLocation.text = "\(surveillance[indexPath.section].location!)"
+            cell.lblLocation.text = "\(surveillance[indexPath.section].locationDELETETHIS!)"
             cell.lblName.text = "\(surveillance[indexPath.section].name!)"
 //            cell.switchVisible.tag = indexPath.section
 //            cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)

@@ -51,11 +51,13 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
-        fetchSurveillance()
-        cameraCollectionView.reloadData()
+        
+        
         LocalSearchParametar.setLocalParametar("Surveillance", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
         locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        fetchSurveillance()
+        cameraCollectionView.reloadData()
     }
     func refreshLocalParametars() {
         locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
@@ -266,7 +268,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
         var predicateArray:[NSPredicate] = []
         if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "location == %@", locationSearch)
+            let locationPredicate = NSPredicate(format: "locationDELETETHIS == %@", locationSearch)
             predicateArray.append(locationPredicate)
         }
         if levelSearch != "All" {
