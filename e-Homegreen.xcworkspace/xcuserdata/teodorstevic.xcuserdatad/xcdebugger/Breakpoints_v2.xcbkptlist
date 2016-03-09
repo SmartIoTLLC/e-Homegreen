@@ -159,8 +159,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "529"
             endingLineNumber = "529"
-            landmarkName = "ScanDevicesViewController"
-            landmarkType = "3">
+            landmarkName = "checkIfSensorDidGotParametar(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -175,7 +175,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "531"
             endingLineNumber = "531"
-            landmarkName = "findNames(_:)"
+            landmarkName = "checkIfSensorDidGotParametar(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
