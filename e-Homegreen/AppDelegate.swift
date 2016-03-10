@@ -352,10 +352,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        ssid i te gluposti?
         var persistentFileName = ""
         if changeDB {
-            persistentFileName = "e_homegreen.sqlite"
+            persistentFileName = "e_Homegreen.sqlite"
             changeDB = false
         } else {
-            persistentFileName = "e_homegreen2.sqlite"
+            persistentFileName = "e_Homegreen2.sqlite"
             changeDB = true
         }
         self.managedObjectContext!.reset()

@@ -130,6 +130,8 @@
 		73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */; };
 		73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */; };
 		73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */; };
+		73F45AD41C9056E30026801F /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F45AD21C9056E30026801F /* PCCommand+CoreDataProperties.swift */; };
+		73F45AD51C9056E30026801F /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F45AD31C9056E30026801F /* PCCommand.swift */; };
 		73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */; };
 		73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */; };
 		73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */; };
@@ -386,6 +388,8 @@
 		73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDeviceImages.swift; sourceTree = "<group>"; };
 		73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneViewController.swift; sourceTree = "<group>"; };
 		73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCategoryViewController.swift; sourceTree = "<group>"; };
+		73F45AD21C9056E30026801F /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F45AD31C9056E30026801F /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCCommand.swift; sourceTree = "<group>"; };
 		73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagesPickerVC.swift; sourceTree = "<group>"; };
 		73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceImagesPickerVC.xib; sourceTree = "<group>"; };
 		73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagePickerTVC.swift; sourceTree = "<group>"; };
@@ -781,6 +785,8 @@
 				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
 				223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */,
 				223980BA1C89CFB500E02536 /* Surveillance.swift */,
+				73F45AD21C9056E30026801F /* PCCommand+CoreDataProperties.swift */,
+				73F45AD31C9056E30026801F /* PCCommand.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1434,6 +1440,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				73F45AD41C9056E30026801F /* PCCommand+CoreDataProperties.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
@@ -1528,6 +1535,7 @@
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
+				73F45AD51C9056E30026801F /* PCCommand.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				73DB8B951B2FF98700139E58 /* CenterViewController.swift in Sources */,
 				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
