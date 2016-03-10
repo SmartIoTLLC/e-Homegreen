@@ -8,65 +8,6 @@
 
 import UIKit
 
-//@objc
-class Menu {
-    deinit {
-        print("deinit - class Menu {")
-    }
-    let title: String
-    let image: UIImage?
-    let viewController: UIViewController
-    var state:Bool
-    
-    init(title: String, image: UIImage?, viewController: UIViewController, state:Bool) {
-        self.title = title
-        self.image = image
-        self.viewController = viewController
-        self.state = state
-    }
-    
-    class func allMenuItems() -> Array<Menu> {
-        let returnValue: [NSString]? = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? [NSString]
-        
-        
-        if let unwrappedTitlesForTip = returnValue {
-            var menu: Array<Menu>!
-            for item in unwrappedTitlesForTip{
-                
-                let men:Menu = Menu (title: item as String, image: UIImage(named: item as String), viewController: MenuViewControllers.sharedInstance.getViewController(item as String), state: true)
-                menu.append(men)
-            }
-            return menu
-//            return [
-//                Menu (title: unwrappedTitlesForTip[0] as String, image: UIImage(named: unwrappedTitlesForTip[0] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[0] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[1] as String, image: UIImage(named: unwrappedTitlesForTip[1] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[1] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[2] as String, image: UIImage(named: unwrappedTitlesForTip[2] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[2] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[3] as String, image: UIImage(named: unwrappedTitlesForTip[3] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[3] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[4] as String, image: UIImage(named: unwrappedTitlesForTip[4] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[4] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[5] as String, image: UIImage(named: unwrappedTitlesForTip[5] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[5] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[6] as String, image: UIImage(named: unwrappedTitlesForTip[6] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[6] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[7] as String, image: UIImage(named: unwrappedTitlesForTip[7] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[7] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[8] as String, image: UIImage(named: unwrappedTitlesForTip[8] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[8] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[9] as String, image: UIImage(named: unwrappedTitlesForTip[9] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[9] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[10] as String, image: UIImage(named: unwrappedTitlesForTip[10] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[10] as String), state: true),
-//                Menu (title: unwrappedTitlesForTip[11] as String, image: UIImage(named: unwrappedTitlesForTip[11] as String), viewController: MenuViewControllers.sharedInstance.getViewController(unwrappedTitlesForTip[11] as String), state: true)]
-        }
-        return [
-            Menu (title: "Dashboard", image: UIImage(named: "Dashboard"), viewController: MenuViewControllers.sharedInstance.getViewController("Dashboard"), state: true),
-            Menu (title: "Devices", image: UIImage(named: "Devices"), viewController: MenuViewControllers.sharedInstance.getViewController("Devices"), state: true),
-            Menu (title: "Scenes", image: UIImage(named: "Scenes"), viewController: MenuViewControllers.sharedInstance.getViewController("Scenes"), state: true),
-            Menu (title: "Events", image: UIImage(named: "Events"), viewController: MenuViewControllers.sharedInstance.getViewController("Events"), state: true),
-            Menu (title: "Sequences", image: UIImage(named: "Sequences"), viewController: MenuViewControllers.sharedInstance.getViewController("Sequences"), state: true),
-            Menu (title: "Timers", image: UIImage(named: "Timers"), viewController: MenuViewControllers.sharedInstance.getViewController("Timers"), state: true),
-            Menu (title: "Flags", image: UIImage(named: "Flags"), viewController: MenuViewControllers.sharedInstance.getViewController("Flags"), state: true),
-            Menu (title: "Chat", image: UIImage(named: "Chat"), viewController: MenuViewControllers.sharedInstance.getViewController("Chat"), state: true),
-            Menu (title: "Security", image: UIImage(named: "Security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: true),
-            Menu (title: "Surveillance", image: UIImage(named: "Surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: true),
-            Menu (title: "Energy", image: UIImage(named: "Energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: true),
-            Menu (title: "Settings", image: UIImage(named: "Settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: true)]
-        
-    }
-}
 class MenuItem:NSObject{
     let title: String?
     let image: UIImage?
@@ -102,7 +43,8 @@ class MenuViewControllers: NSObject {
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SecurityViewController") as? SecurityViewController)!,
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SurveillenceViewController") as? SurveillenceViewController)!,
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("EnergyViewController") as? EnergyViewController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SettingsViewController") as? SettingsViewController)!
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SettingsViewController") as? SettingsViewController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PCControlViewController") as? PCControlViewController )!
     ]
 //    func getViewController (arrayNumber:Int) -> CommonViewController {
 //        return viewControllers[arrayNumber]
@@ -122,6 +64,7 @@ class MenuViewControllers: NSObject {
             case "Surveillance": backNumber = 9
             case "Energy": backNumber = 10
             case "Settings": backNumber = 11
+            case "PC Control": backNumber = 12
             default: backNumber = 0
         }
         return viewControllers[backNumber]
@@ -139,6 +82,7 @@ class MenuViewControllers: NSObject {
             MenuItem (title: "Security", image: UIImage(named: "menu_security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: false),
             MenuItem (title: "Surveillance", image: UIImage(named: "menu_surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: false),
             MenuItem (title: "Energy", image: UIImage(named: "menu_energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: false),
+            MenuItem (title: "PC Control", image: UIImage(named: "18 Media - LCD TV - 01"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: false),
             MenuItem (title: "Settings", image: UIImage(named: "menu_settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: false)]
     }
     
@@ -185,6 +129,7 @@ class MenuViewControllers: NSObject {
             MenuItem (title: "Security", image: UIImage(named: "Security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: true),
             MenuItem (title: "Surveillance", image: UIImage(named: "Surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: true),
             MenuItem (title: "Energy", image: UIImage(named: "Energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: true),
+            MenuItem (title: "PC Control", image: UIImage(named: "18 Media - LCD TV - 01"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: true),
             MenuItem (title: "Settings", image: UIImage(named: "Settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: true)]
         
         return menu

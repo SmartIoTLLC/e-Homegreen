@@ -10,7 +10,19 @@ import UIKit
 
 enum SettingsItem{
     case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Surveillance, Security, IBeacon, Broadcast, RefreshConnection
-    
+    var description:String{
+        switch self{
+            case MainMenu: return "Main Menu"
+            case Interfaces: return "Interfaces"
+            case RefreshStatusDelay: return "Refresh Status Delay"
+            case OpenLastScreen: return "Open Last Screen"
+            case Surveillance: return "Surveillance"
+            case Security: return "Security"
+            case IBeacon: return "IBeacon"
+            case Broadcast: return "Broadcast"
+            case RefreshConnection: return "Refresh Connection"
+        }
+    }
     
 }
 
