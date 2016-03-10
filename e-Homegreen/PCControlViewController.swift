@@ -46,5 +46,12 @@ class PCControlViewController: CommonViewController, UICollectionViewDataSource,
         return collectionViewCellSize
     }
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        showPCInterface()
+    }
+    
+    @IBAction func changeSliderValue(sender: AnyObject) {
+        
+    }
 
 }

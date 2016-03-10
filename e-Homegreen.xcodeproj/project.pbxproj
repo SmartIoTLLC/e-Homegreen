@@ -8,11 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
+		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
+		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
+		223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */; };
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */; };
 		2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32E1C9041CB0019C6FB /* PCControlCell.swift */; };
+		2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */; };
+		2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -261,11 +267,17 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
+		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
+		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
+		2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddVideo_AppXIB.xib; sourceTree = "<group>"; };
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlViewController.swift; sourceTree = "<group>"; };
 		2249A32E1C9041CB0019C6FB /* PCControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlCell.swift; sourceTree = "<group>"; };
+		2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlInterfaceXIB.swift; sourceTree = "<group>"; };
+		2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlInterfaceXIB.xib; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -568,6 +580,12 @@
 			children = (
 				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
 				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
+				2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */,
+				2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */,
+				223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */,
+				2238789A1C916748001357E0 /* Device_AppCell.swift */,
+				2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */,
+				2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */,
 			);
 			name = "PC Controll";
 			sourceTree = "<group>";
@@ -1297,6 +1315,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */,
 				E7DC67C91B457C0E00EA6543 /* weather-snow@2x.png in Resources */,
 				73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */,
 				E7DC67C11B457C0E00EA6543 /* weather-rain-night@2x.png in Resources */,
@@ -1335,6 +1354,7 @@
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */,
+				223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */,
 				E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */,
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
@@ -1448,6 +1468,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
@@ -1470,6 +1491,7 @@
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
+				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
@@ -1479,6 +1501,7 @@
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
+				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
@@ -1599,6 +1622,7 @@
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
+				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
