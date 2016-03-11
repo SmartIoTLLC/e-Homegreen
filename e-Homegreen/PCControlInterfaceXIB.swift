@@ -163,7 +163,7 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
                     transitionContext.completeTransition(completed)
             })
         }else{
-            if let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey) {
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
@@ -175,7 +175,7 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-            }
+            
         }
         
     }

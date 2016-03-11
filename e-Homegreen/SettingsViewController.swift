@@ -28,7 +28,7 @@ enum SettingsItem{
 
 class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
 
-    var settingArray:[String]!
+    var settingArray:[SettingsItem]!
     @IBOutlet weak var settingsTableView: UITableView!
     
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
@@ -41,7 +41,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        settingArray = ["Main menu", "Connections", "Refresh status delay", "Open last screen", "Surveillance", "Security", "iBeacon", "Broadcast", "RefreshConnection"]
+        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Surveillance, .Security, .IBeacon, .Broadcast, .RefreshConnection]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
@@ -97,7 +97,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 { return 90 }
-        if settingArray[indexPath.section] == "Broadcast" {
+        if settingArray[indexPath.section] == SettingsItem.Broadcast {
             if isMore {
                 return 192
             }
@@ -151,16 +151,17 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == "Main menu" || settingArray[indexPath.section] == "Connections" || settingArray[indexPath.section] == "Surveillance" || settingArray[indexPath.section] == "Security" || settingArray[indexPath.section] == "iBeacon"{
+        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.Surveillance || settingArray[indexPath.section] == SettingsItem.Security || settingArray[indexPath.section] == SettingsItem.IBeacon {
+            
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.settingsButton.tag = indexPath.section
             cell.settingsButton.addTarget(self, action: "didTouchSettingButton:", forControlEvents: .TouchUpInside)
-            cell.settingsButton.setTitle(settingArray[indexPath.section], forState: .Normal)
+            cell.settingsButton.setTitle(settingArray[indexPath.section].description, forState: .Normal)
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             
             return cell
-        } else if settingArray[indexPath.section] == "Refresh status delay" {
+        } else if settingArray[indexPath.section] == SettingsItem.RefreshStatusDelay {
             let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
             cell.layer.cornerRadius = 5
             
@@ -178,7 +179,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.minLabel.text = "\(minRefresh)"
             
             return cell
-        } else if settingArray[indexPath.section] == "Open last screen" {
+        } else if settingArray[indexPath.section] == SettingsItem.OpenLastScreen {
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
             cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clearColor()
@@ -192,7 +193,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
-        } else if settingArray[indexPath.section] == "Broadcast" {
+        } else if settingArray[indexPath.section] == SettingsItem.Broadcast {
             let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
             cell.setBroadcast()
             cell.txtIp.delegate = self
@@ -202,7 +203,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
-        } else if settingArray[indexPath.section] == "RefreshConnection" {
+        } else if settingArray[indexPath.section] == SettingsItem.RefreshConnection {
             let cell = tableView.dequeueReusableCellWithIdentifier("idRefreshGatewayTimerCell") as! SettingsRefreshConnectionEvery
             cell.setRefreshCell()
             cell.txtMinutesField.delegate = self
