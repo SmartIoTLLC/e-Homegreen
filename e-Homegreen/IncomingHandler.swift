@@ -172,24 +172,32 @@ class IncomingHandler: NSObject {
                     self.getCategories(self.byteArray)
                 }
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
-                    self.parseTimerStatus(self.byteArray)
+                    self.parseTimerStatus(dataFrame)
                     //FIXME: Popravi me
 //                    self.ackTimerStatus(self.byteArray)
                 }
             }
         }
     }
-    func parseTimerStatus(byteArray:[Byte]) {
-        fetchDevices()
-        for device in devices {
-            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
-                //                var number = Int(byteArray[6+5*Int(device.channel)])
-                print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
-                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
+    func parseTimerStatus(dataFrame:DataFrame) {
+        fetchEntities("Timer")
+        // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
+        guard dataFrame.INFO.count == 74 else {
+            return
+        }
+        // For loop in data frame INFO block
+        for var i = 1; i <= 16; i++ {
+            print(timers.count)
+            for item in timers {
+                if  item.gateway.addressOne == Int(dataFrame.ADR1) && item.gateway.addressTwo == Int(dataFrame.ADR2) && item.address == Int(dataFrame.ADR3) && item.timerId == Int(i) {
+                    let position = i - 1
+                    let fourBytes = [dataFrame.INFO[1+position], dataFrame.INFO[2+position], dataFrame.INFO[3+position], dataFrame.INFO[4+position]]
+                    item.count = NSNumber(unsignedInteger: UInt.convertFourBytesToUInt(fourBytes))
+                    saveChanges()
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
+                }
             }
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func refreshSecurityStatus (byteArray:[Byte]) {
         
