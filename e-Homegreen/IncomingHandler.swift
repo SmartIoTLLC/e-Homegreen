@@ -26,7 +26,7 @@ extension DataFrame {
     init?(byteArray:[Byte]) {
         // 0xFC is an exception, it is not normal. Khalifa said to implement it like this
         // Check if byte array has minimum count size requirements
-        guard byteArray.count <= 9 else {
+        guard byteArray.count >= 9 else {
             return nil
         }
         // Check if first byte is ok

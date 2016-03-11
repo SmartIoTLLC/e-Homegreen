@@ -54,4 +54,6 @@ extension Device {
     @NSManaged var curtainGroupID: NSNumber
     @NSManaged var curtainControlMode: NSNumber
     @NSManaged var digitalInputMode: NSNumber?
+    @NSManaged var pcCommands: NSSet?
+    @NSManaged var mac: NSData?
 }

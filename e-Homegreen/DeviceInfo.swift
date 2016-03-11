@@ -299,6 +299,7 @@ struct DeviceInfo {
         
         // New device - seucirty, MAC address:40-D8-55-0F-E0-00
         DeviceType(deviceId: 0xC4, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "UCM/EHG"), // Comfort Panel
+        DeviceType(deviceId: 0x0C, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.PC, MPN: "PC0000S"), // e-Homegreen PC Controller
     ]
 }
 struct DeviceChannelType {
