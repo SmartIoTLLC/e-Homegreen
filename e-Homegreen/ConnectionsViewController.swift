@@ -30,7 +30,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
-        self.showConnectionSettings(-1)
+//        self.showConnectionSettings(-1)
+        self.showAddLocation()
         
     }
     

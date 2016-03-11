@@ -12,6 +12,8 @@
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
 		223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */; };
+		223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878A21C919A70001357E0 /* AddLocationXIB.swift */; };
+		223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223878A31C919A70001357E0 /* AddLocationXIB.xib */; };
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
@@ -274,6 +276,8 @@
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
 		2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddVideo_AppXIB.xib; sourceTree = "<group>"; };
+		223878A21C919A70001357E0 /* AddLocationXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationXIB.swift; sourceTree = "<group>"; };
+		223878A31C919A70001357E0 /* AddLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationXIB.xib; sourceTree = "<group>"; };
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -581,17 +585,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		223878A61C91A6C9001357E0 /* Add Video/App */ = {
+			isa = PBXGroup;
+			children = (
+				223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */,
+				2238789A1C916748001357E0 /* Device_AppCell.swift */,
+				2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */,
+				2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */,
+			);
+			name = "Add Video/App";
+			sourceTree = "<group>";
+		};
+		223878A71C91A714001357E0 /* PC Control Interface */ = {
+			isa = PBXGroup;
+			children = (
+				2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */,
+				2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */,
+			);
+			name = "PC Control Interface";
+			sourceTree = "<group>";
+		};
 		2249A3271C90349C0019C6FB /* PC Controll */ = {
 			isa = PBXGroup;
 			children = (
 				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
 				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
-				2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */,
-				2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */,
-				223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */,
-				2238789A1C916748001357E0 /* Device_AppCell.swift */,
-				2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */,
-				2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */,
+				223878A71C91A714001357E0 /* PC Control Interface */,
+				223878A61C91A6C9001357E0 /* Add Video/App */,
 			);
 			name = "PC Controll";
 			sourceTree = "<group>";
@@ -1232,6 +1252,8 @@
 				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
 				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
 				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
+				223878A21C919A70001357E0 /* AddLocationXIB.swift */,
+				223878A31C919A70001357E0 /* AddLocationXIB.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -1396,6 +1418,7 @@
 				73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */,
 				73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
+				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
@@ -1534,6 +1557,7 @@
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
+				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
