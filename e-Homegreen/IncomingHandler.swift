@@ -10,77 +10,6 @@ import UIKit
 import CoreData
 import Crashlytics
 
-struct DataFrame {
-    let SOI:Byte
-    let LEN:Byte
-    let ADR1:Byte
-    let ADR2:Byte
-    let ADR3:Byte
-    let CID1:Byte
-    let CID2:Byte
-    let INFO:[Byte]
-    let CHK:Byte
-    let EOI:Byte
-}
-extension DataFrame {
-    init?(byteArray:[Byte]) {
-        // 0xFC is an exception, it is not normal. Khalifa said to implement it like this
-        // Check if byte array has minimum count size requirements
-        guard byteArray.count >= 9 else {
-            return nil
-        }
-        // Check if first byte is ok
-        guard byteArray[0] == 0xAA || byteArray[0] == 0xFC  else {
-            return nil
-        }
-        // Check if second byte is ok
-        let len = Int(byteArray[1])
-        guard len == (byteArray.count-9 % 256) else {
-            return nil
-        }
-        // Check if penultimate byte is ok
-        let chk = Int(byteArray[byteArray.count-2])
-        var sum = 0
-        for var i = 1; i < byteArray.count - 2; i++ {
-            sum += Int(byteArray[i])
-        }
-        guard chk == sum % 256  else {
-            return nil
-        }
-        // Check if last byte is ok
-        guard byteArray[byteArray.count-1] == 0x10 else {
-            return nil
-        }
-        // Create data frame object
-        self.SOI = byteArray[0]
-        self.LEN = byteArray[1]
-        self.ADR1 = byteArray[2]
-        self.ADR2 = byteArray[3]
-        self.ADR3 = byteArray[4]
-        self.CID1 = byteArray[5]
-        self.CID2 = byteArray[6]
-        if (byteArray.count-3) >= 7 {
-            self.INFO = Array(byteArray[7...(byteArray.count-3)])
-        } else {
-            self.INFO = []
-        }
-        self.CHK = byteArray[byteArray.count-2]
-        self.EOI = byteArray[byteArray.count-1]
-        return
-    }
-}
-enum CID1:Byte {
-    case CommonComand = 0xF1
-    case GatewayControllerCommand = 0xF2
-    case LightingControlCommandDimmerRelayModule = 0xF3
-    case ClimateControlCommand = 0xF4
-    case AnalogDigitalInputCommand = 0xF5
-    case AnalogDigitalOutputCommand = 0xF6
-    case SwitchPanelCommand = 0xF8
-    case LCDPanelCommands = 0xF7
-    case IRCommand = 0xF9
-    case PCControllerCommand = 0xFA
-}
 class IncomingHandler: NSObject {
     var byteArray:[Byte]!
     var appDel:AppDelegate!
@@ -91,6 +20,21 @@ class IncomingHandler: NSObject {
     var port:UInt16 = 0
     deinit {
         print("UPRAVO SE GASIM - class IncomingHandler: NSObject")
+    }
+    func commonCommand(dataFrame:DataFrame) {
+        
+    }
+    func gatewayControllerCommand(dataFrame:DataFrame) {
+        
+    }
+    func lightingControlCommandDimmerRelayModule(dataFrame:DataFrame) {
+        
+    }
+    func climateControlCommand(dataFrame:DataFrame) {
+        
+    }
+    func analogDigitalInputCommand(dataFrame:DataFrame) {
+        
     }
     init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
@@ -105,7 +49,23 @@ class IncomingHandler: NSObject {
         guard let dataFrame = DataFrame(byteArray: byteArrayToHandle) else {
             return
         }
-        
+        switch dataFrame.CID1 {
+        case .CommonComand:
+            commonCommand(dataFrame)
+        case .GatewayControllerCommand:
+            gatewayControllerCommand(dataFrame)
+        case .LightingControlCommandDimmerRelayModule:
+            lightingControlCommandDimmerRelayModule(dataFrame)
+        case .ClimateControlCommand:
+            climateControlCommand(dataFrame)
+        case .AnalogDigitalInputCommand:
+            analogDigitalInputCommand(dataFrame)
+        case .AnalogDigitalOutputCommand: return
+        case .SwitchPanelCommand: return
+        case .LCDPanelCommands: return
+        case .IRCommand: return
+        case .PCControllerCommand: return
+        }
         //  Checks if there are any gateways
         if gateways != [] {
             fetchDevices()
@@ -211,8 +171,25 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
                     self.getCategories(self.byteArray)
                 }
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
+                    self.parseTimerStatus(self.byteArray)
+                    //FIXME: Popravi me
+//                    self.ackTimerStatus(self.byteArray)
+                }
             }
         }
+    }
+    func parseTimerStatus(byteArray:[Byte]) {
+        fetchDevices()
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
+                //                var number = Int(byteArray[6+5*Int(device.channel)])
+                print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
+                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
+            }
+        }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func refreshSecurityStatus (byteArray:[Byte]) {
         
@@ -362,19 +339,10 @@ class IncomingHandler: NSObject {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func bytesToUInt(byteArray: [Byte]) -> UInt {
-        assert(byteArray.count <= 4)
-        var result: UInt = 0
-        for idx in 0..<(byteArray.count) {
-            let shiftAmount = UInt((byteArray.count) - idx - 1) * 8
-            result += UInt(byteArray[idx]) << shiftAmount
-        }
-        return result
-    }
     
     func returnRunningTime (runningTimeByteArray:[Byte]) -> String {
         print(runningTimeByteArray)
-        let x = Int(bytesToUInt(runningTimeByteArray))
+        let x = Int(UInt.convertFourBytesToUInt(runningTimeByteArray))
         //        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
         //        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
         var seconds = x / 10
@@ -450,6 +418,7 @@ class IncomingHandler: NSObject {
                     device.isEnabled = NSNumber(bool: false)
                     device.isVisible = NSNumber(bool: false)
                 }
+                device.resetImages(appDel.managedObjectContext!)
                 let data = ["sensorIndexForFoundParametar":counter]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshInterface, object: self, userInfo: nil)
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindSensorParametar, object: self, userInfo: data)

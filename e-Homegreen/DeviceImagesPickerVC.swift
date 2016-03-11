@@ -61,20 +61,27 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
                 cell.deviceState.text = "\(0)"
             }
             if indexPath.row == deviceImages.count-1 {
-                cell.deviceState.text = "\(1)"
+                cell.deviceState.text = "\(100)"
             }
         }
         if deviceImages.count > 2 {
             if indexPath.row == 0 {
                 cell.deviceState.text = "\(0)"
             } else if indexPath.row == deviceImages.count-1 {
-                cell.deviceState.text = "\(1)"
+                cell.deviceState.text = "\(100)"
             } else {
                 let part:Double = Double(100) / Double(deviceImages.count-2)
-                cell.deviceState.text = "\(part*Double(indexPath.row-1)) - \(part*(Double(indexPath.row)))"
+                let number1 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row-1))
+                let number2 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row))
+                cell.deviceState.text = number1 + " - " + number2
             }
         }
-        
+        cell.deviceImage.image = UIImage().returnImage(forDeviceImage: deviceImages[indexPath.row])
+//        if let deviceImage = deviceImages[indexPath.row].image?.imageData {
+//            cell.deviceImage.image = UIImage(data: deviceImage)
+//        } else {
+//            cell.deviceImage.image = UIImage(named:deviceImages[indexPath.row].defaultImage!)
+//        }
 //        if let deviceImage = UIImage(data: (deviceImages[indexPath.row].image!.imageData)!) {
 //            cell.deviceImage.image = deviceImage
 //        }
@@ -109,7 +116,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
-//            appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
+//            appDel.managedObjectContext?.deleteObject(device.deviceImages)
 //            saveChanges()
 //            updateDeviceList()
 //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
@@ -192,5 +199,14 @@ extension UIViewController {
     func showDeviceImagesPicker(device:Device, point:CGPoint) {
         let dip = DeviceImagesPickerVC(device:device, point:point)
         self.presentViewController(dip, animated: true, completion: nil)
+    }
+}
+extension UIImage {
+    func returnImage (forDeviceImage deviceImage:DeviceImage) -> UIImage {
+        if let deviceImageUnwrapped = deviceImage.image?.imageData {
+            return UIImage(data: deviceImageUnwrapped)!
+        } else {
+            return UIImage(named:deviceImage.defaultImage!)!
+        }
     }
 }

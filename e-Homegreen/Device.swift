@@ -12,24 +12,12 @@ enum EmployeeStatus: Int {
     case ReadyForHire, Hired, Retired, Resigned, Fired, Deceased
 }
 class Device: NSManagedObject {
-
-
     var interfaceParametar:[UInt8] = []
     var warningState:Int = 0
     var opening:Bool = true
     var on:Bool = false
     var info:Bool = false
-    
     var cellTitle:String = ""
-
-    var status: EmployeeStatus {
-        get {
-            return EmployeeStatus(rawValue: Int(self.address))!
-        }
-        set {
-            self.address = NSNumber(integer:newValue.rawValue)
-        }
-    }
     var filterWarning:Bool = false
     
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
@@ -61,6 +49,20 @@ class Device: NSManagedObject {
             self.heatTemperature = 0
             self.roomTemperature = 0
             self.humidity = 0
+        }
+        let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
+        for defaultDeviceImage in defaultDeviceImages {
+            let deviceImage = DeviceImage(context: context)
+            deviceImage.defaultImage = defaultDeviceImage.defaultImage
+            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            deviceImage.device = self
+        }
+    }
+    func resetImages(context:NSManagedObjectContext) {
+        if self.deviceImages?.count > 0 {
+            for image in self.deviceImages! {
+                context.deleteObject(image as! DeviceImage)
+            }
         }
         let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
         for defaultDeviceImage in defaultDeviceImages {

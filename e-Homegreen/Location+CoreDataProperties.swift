@@ -2,7 +2,7 @@
 //  Location+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 3/4/16.
+//  Created by Teodor Stevic on 3/11/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,10 +14,14 @@ import CoreData
 
 extension Location {
 
-    @NSManaged var name: String?
     @NSManaged var locationDescription: String?
-    @NSManaged var ssids: NSSet?
+    @NSManaged var name: String?
+    @NSManaged var longitude: NSNumber?
+    @NSManaged var latitude: NSNumber?
+    @NSManaged var radius: NSNumber?
     @NSManaged var gateways: NSSet?
+    @NSManaged var ssids: NSSet?
     @NSManaged var surveillances: NSSet?
+    @NSManaged var timer: Timer?
 
 }

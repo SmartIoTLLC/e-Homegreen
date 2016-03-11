@@ -9,6 +9,16 @@
 import Foundation
 import CoreData
 
+struct DeviceInformation {
+    let address:Int
+    let channel:Int
+    let numberOfDevices:Int
+    let type:String
+    let gateway:Gateway
+    let mac:NSData
+    let isClimate:Bool
+}
+
 // Curtain
 extension IncomingHandler {
     func ackonowledgementAboutCurtainState(byteArray:[Byte]) {
@@ -24,15 +34,6 @@ extension IncomingHandler {
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-}
-struct DeviceInformation {
-    let address:Int
-    let channel:Int
-    let numberOfDevices:Int
-    let type:String
-    let gateway:Gateway
-    let mac:NSData
-    let isClimate:Bool
 }
 // New devices
 extension IncomingHandler {
