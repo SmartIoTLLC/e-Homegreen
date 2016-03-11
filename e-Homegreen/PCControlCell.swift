@@ -14,8 +14,16 @@ class PCControlCell: UICollectionViewCell {
     @IBOutlet weak var pccontrollImage: UIImageView!
     @IBOutlet weak var pccontrolSlider: UISlider!
     
-    func setItem(){
+    override func awakeFromNib() {
+        pccontrolSlider.continuous = false
+        super.awakeFromNib()
+    }
     
+    func setItem(pc:Device, tag:Int){
+        pccontrolSlider.tag = tag
+        pccontrolTitleLabel.text = pc.name
+//        pccontrollImage.image = pc.name
+//        pccontrolSlider.value = pc.
     }
     
     override func drawRect(rect: CGRect) {

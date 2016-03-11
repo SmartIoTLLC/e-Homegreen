@@ -19,7 +19,10 @@ class Device: NSManagedObject {
     var info:Bool = false
     var cellTitle:String = ""
     var filterWarning:Bool = false
-    
+    var pcVolume:Byte = 0
+    lazy var moduleAddress:[Byte] = {
+        return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
+    }()
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
         let name = self.dynamicType.entityName()
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!

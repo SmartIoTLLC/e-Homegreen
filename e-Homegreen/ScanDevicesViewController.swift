@@ -367,10 +367,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries || devices[index].type == ControlType.Gateway {
+        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries || devices[index].type == ControlType.Gateway  {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+        }
+        if devices[index].type == ControlType.PC  {
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
         }
 //        if devices[index].type == ControlType.HumanInterfaceSeries {
 //            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]

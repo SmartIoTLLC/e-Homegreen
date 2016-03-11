@@ -135,7 +135,7 @@
 		73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */; };
 		73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F04EC81C92C74C009696EF /* Int+Extensions.swift */; };
 		73F04ECB1C92CD06009696EF /* DataFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F04ECA1C92CD06009696EF /* DataFrame.swift */; };
-		73F04ECE1C92CDA9009696EF /* TestTestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F04ECD1C92CDA9009696EF /* TestTestTest.swift */; };
+		73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F04ECD1C92CDA9009696EF /* CoreDataController.swift */; };
 		73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */; };
 		73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA51C8978B2007CEEAA /* Location.swift */; };
 		73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */; };
@@ -404,7 +404,7 @@
 		73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		73F04EC81C92C74C009696EF /* Int+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		73F04ECA1C92CD06009696EF /* DataFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFrame.swift; sourceTree = "<group>"; };
-		73F04ECD1C92CDA9009696EF /* TestTestTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTestTest.swift; sourceTree = "<group>"; };
+		73F04ECD1C92CDA9009696EF /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73F1ECA51C8978B2007CEEAA /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SSID+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -608,7 +608,6 @@
 		2249A3271C90349C0019C6FB /* PC Controll */ = {
 			isa = PBXGroup;
 			children = (
-				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
 				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
 				223878A71C91A714001357E0 /* PC Control Interface */,
 				223878A61C91A6C9001357E0 /* Add Video/App */,
@@ -705,6 +704,7 @@
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
+				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
 				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
@@ -883,7 +883,7 @@
 		73F04ECC1C92CD95009696EF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				73F04ECD1C92CDA9009696EF /* TestTestTest.swift */,
+				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1572,7 +1572,7 @@
 				73F04ECB1C92CD06009696EF /* DataFrame.swift in Sources */,
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
-				73F04ECE1C92CDA9009696EF /* TestTestTest.swift in Sources */,
+				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,

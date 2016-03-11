@@ -248,7 +248,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let predicateNull = NSPredicate(format: "categoryId != 0") // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
+        let predicateThree = NSPredicate(format: "type != %@", ControlType.PC)
+        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo, predicateThree]
         if locationSearch != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
             predicateArray.append(locationPredicate)

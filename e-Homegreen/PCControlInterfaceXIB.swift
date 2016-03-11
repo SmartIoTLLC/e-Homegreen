@@ -33,8 +33,9 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var commandTextField: UITextField!
-    
-    init(){
+    var pc:Device
+    init(pc:Device){
+        self.pc = pc
         super.init(nibName: "PCControlInterfaceXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -87,15 +88,24 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     }
     
     @IBAction func powerAction(sender: AnyObject) {
+//        SendingHandler.sendCommand(byteArray: Function.setPCState(pc.moduleAddress, command: <#T##Byte#>), gateway: <#T##Gateway#>)
     }
     
     @IBAction func playAction(sender: AnyObject) {
     }
 
     @IBAction func runAction(sender: AnyObject) {
+        guard let appName = runLabel.text else {
+            return
+        }
+        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: appName), gateway: pc.gateway)
     }
     
     @IBAction func sendAction(sender: AnyObject) {
+        guard let text = commandTextField.text else {
+            return
+        }
+        SendingHandler.sendCommand(byteArray: Function.textToSpeech(pc.moduleAddress, text: text), gateway: pc.gateway)
     }
     
     @IBAction func addPathForVideo(sender: AnyObject) {
@@ -199,8 +209,8 @@ extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showPCInterface() {
-        let pci = PCControlInterfaceXIB()
+    func showPCInterface(pc:Device) {
+        let pci = PCControlInterfaceXIB(pc:pc)
         self.view.window?.rootViewController?.presentViewController(pci, animated: true, completion: nil)
     }
 }
