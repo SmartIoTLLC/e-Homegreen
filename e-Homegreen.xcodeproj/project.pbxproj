@@ -147,6 +147,8 @@
 		73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */; };
 		73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */; };
 		73F4D6BB1C807A5900FE0514 /* DeviceImagePickerTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */; };
+		73F51A091C9475C6003EE702 /* wol.c in Sources */ = {isa = PBXBuildFile; fileRef = 73F51A081C9475C6003EE702 /* wol.c */; };
+		73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */; };
 		73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F67B931C7CA497008C6A0D /* AAViewController.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
@@ -416,6 +418,10 @@
 		73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceImagesPickerVC.xib; sourceTree = "<group>"; };
 		73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceImagePickerTVC.swift; sourceTree = "<group>"; };
 		73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceImagePickerTVC.xib; sourceTree = "<group>"; };
+		73F51A071C9475C6003EE702 /* wol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wol.h; sourceTree = "<group>"; };
+		73F51A081C9475C6003EE702 /* wol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wol.c; sourceTree = "<group>"; };
+		73F51A0A1C9484E4003EE702 /* Test.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Test.playground; sourceTree = "<group>"; };
+		73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extensions.swift"; sourceTree = "<group>"; };
 		73F67B931C7CA497008C6A0D /* AAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AAViewController.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
@@ -689,6 +695,7 @@
 				73E2C9F81B5E25570048C072 /* ViewControllerUtils.swift */,
 				E75163F01B4C089300457BED /* Widget */,
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
+				73F51A0A1C9484E4003EE702 /* Test.playground */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -865,6 +872,8 @@
 		73EEEB451C3530570071DF53 /* Incoming Handler */ = {
 			isa = PBXGroup;
 			children = (
+				73F51A071C9475C6003EE702 /* wol.h */,
+				73F51A081C9475C6003EE702 /* wol.c */,
 				73E427B51B4D08CE0083A747 /* IncomingHandler.swift */,
 				738E4E771C340A6F0017A7B0 /* IncomingHandler+Extensions.swift */,
 				73F04ECA1C92CD06009696EF /* DataFrame.swift */,
@@ -876,6 +885,7 @@
 			isa = PBXGroup;
 			children = (
 				73F04EC81C92C74C009696EF /* Int+Extensions.swift */,
+				73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1573,6 +1583,7 @@
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
 				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
+				73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
@@ -1672,6 +1683,7 @@
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
+				73F51A091C9475C6003EE702 /* wol.c in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,

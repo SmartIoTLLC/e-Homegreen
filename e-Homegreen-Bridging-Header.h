@@ -22,5 +22,5 @@
 //#import "GCDAsyncSocket.h"
 #import "MarqueeLabel.h"
 #import "DAKeyboardControl.h"
-
+#import "wol.h"
 #endif

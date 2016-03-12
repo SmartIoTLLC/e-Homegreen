@@ -7,6 +7,7 @@
 //
 
 import UIKit
+//import wol.h
 
 enum FileType{
     case Video
@@ -36,6 +37,7 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     var pc:Device
     init(pc:Device){
         self.pc = pc
+        socketIO = InOutSocket(port: 5000)
         super.init(nibName: "PCControlInterfaceXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -98,9 +100,48 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
         guard let appName = runLabel.text else {
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: appName), gateway: pc.gateway)
+//        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: appName), gateway: pc.gateway)
+//        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+//        0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1
+//        let byteArray:[Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
+//        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
+//        let data = NSData(bytes: byteArray, length: byteArray.count)
+//        socketIO.socket.sendData(data, toHost: "192.168.0.255", port: 5100, withTimeout: -1, tag: 1)
+        
+        let s1 = "192.168.0.7"
+        let cs1 = (s1 as NSString).UTF8String
+        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
+        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
+//        let s2 = "08:9E:01:50:83:D1"
+        let s2 = convertByteArrayToMacAddress(byteArray)
+        let cs2 = (s2 as NSString).UTF8String
+        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
+//        let second_parametar = UnsafeMutablePointer<UInt8>([0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1])
+        
+//        var p1:UnsafeBufferPointer<Byte>?
+//        let s: String = "192.168.0.255"
+//        s.nulTerminatedUTF8.withUnsafeBufferPointer { p -> Void in
+//            puts(UnsafePointer<Int8>(p.baseAddress))
+//            p1 = p
+//            Void()
+//        }
+//        var p2:UnsafeBufferPointer<Byte>?
+//        let s2: String = "0x08:0x9E:0x01:0x50:0x83:0xD1"
+//        s2.nulTerminatedUTF8.withUnsafeBufferPointer { p -> Void in
+//            puts(UnsafePointer<Int8>(p.baseAddress))
+//            p2 = p
+//            Void()
+//        }
+//        guard let s12 = p1 as! UnsafeMutablePointer<Byte>( else {
+//            return
+//        }
+//        guard let s22 = p1 as UnsafeMutablePointer<Byte> else {
+//            return
+//        }
+        send_wol_packet(first_parametar, second_parametar)
     }
-    
+    var socketIO:InOutSocket
+//    
     @IBAction func sendAction(sender: AnyObject) {
         guard let text = commandTextField.text else {
             return

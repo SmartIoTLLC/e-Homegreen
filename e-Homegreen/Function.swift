@@ -14,7 +14,7 @@ class Function {
         var message:[Byte] = []
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -33,7 +33,7 @@ class Function {
         messageInfo = [0xFF]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -52,7 +52,7 @@ class Function {
         messageInfo = [0xF0]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -75,7 +75,7 @@ class Function {
         messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -94,7 +94,7 @@ class Function {
         messageInfo = [0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -113,7 +113,7 @@ class Function {
         messageInfo = [0x01, 0x00, 0x00, 0x02, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, zone]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xFF
         message[3] = 0xFF
         message[4] = 0xFF
@@ -133,7 +133,7 @@ class Function {
         messageInfo = [0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -151,7 +151,7 @@ class Function {
         var messageInfo:[Byte] = [0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -170,7 +170,7 @@ class Function {
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -188,7 +188,7 @@ class Function {
         var message:[Byte] = []
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -207,7 +207,7 @@ class Function {
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -226,7 +226,7 @@ class Function {
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -246,7 +246,7 @@ class Function {
         messageInfo = [0x00] //  resi ovo
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -267,7 +267,7 @@ class Function {
         messageInfo = [0x00] //  resi ovo
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -288,7 +288,7 @@ class Function {
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -307,7 +307,7 @@ class Function {
     //        messageInfo = [0x02, 0x00]
     //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
     //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count)
+    //        message[1] = Byte(messageInfo.count % 256)
     //        message[2] = Byte(id1Address)
     //        message[3] = Byte(id2Address)
     //        message[4] = 0xFE
@@ -328,7 +328,7 @@ class Function {
     //        messageInfo = [0x01, key]
     //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
     //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count)
+    //        message[1] = Byte(messageInfo.count % 256)
     //        message[2] = Byte(id1Address)
     //        message[3] = Byte(id2Address)
     //        message[4] = 0xFE
@@ -362,7 +362,7 @@ class Function {
         var messageInfo:[Byte] = [0x00, id]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -382,7 +382,7 @@ class Function {
         var messageInfo:[Byte] = [0x00, id]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -411,7 +411,7 @@ extension Function {
         messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, groupId]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -451,7 +451,7 @@ extension Function {
         messageInfo = [channel, 0x01]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -470,7 +470,7 @@ extension Function {
         messageInfo = [0xFF]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -489,7 +489,7 @@ extension Function {
         messageInfo = [channel, status, 0x00, 0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -508,7 +508,7 @@ extension Function {
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -527,7 +527,7 @@ extension Function {
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -546,7 +546,7 @@ extension Function {
         messageInfo = [channel, coolingSetPoint, heatingSetPoint]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -565,7 +565,7 @@ extension Function {
         messageInfo = [channel, status]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -588,7 +588,7 @@ extension Function {
         let messageInfo:[Byte] = [id, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -607,7 +607,7 @@ extension Function {
         let messageInfo:[Byte] = [0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -632,7 +632,7 @@ extension Function {
         var messageInfo:[Byte] = [id, 0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -649,7 +649,7 @@ extension Function {
         var messageInfo:[Byte] = [id, 0xEF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -674,7 +674,7 @@ extension Function {
         var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -699,7 +699,7 @@ extension Function {
         var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -722,7 +722,7 @@ extension Function {
         let messageInfo:[Byte] = [id]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -742,7 +742,7 @@ extension Function {
         let messageInfo:[Byte] = [id, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -761,7 +761,7 @@ extension Function {
         let messageInfo:[Byte] = [0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -780,7 +780,7 @@ extension Function {
         let messageInfo:[Byte] = [0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -806,7 +806,7 @@ extension Function {
         let messageInfo:[Byte] = [channel]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -827,7 +827,7 @@ extension Function {
         let messageInfo:[Byte] = [channel, isEnabled]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -848,7 +848,7 @@ extension Function {
         let messageInfo:[Byte] = [channel, isEnabled]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -877,7 +877,7 @@ extension Function {
         messageInfo = [channel, s]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -897,7 +897,7 @@ extension Function {
         messageInfo = [0xFF]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -917,7 +917,7 @@ extension Function {
         messageInfo = [channel]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -937,7 +937,7 @@ extension Function {
         messageInfo = [channel, 0x80]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -956,7 +956,7 @@ extension Function {
         messageInfo = [channel, 0x7F]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -981,7 +981,7 @@ extension Function {
         let messageInfo:[Byte] = [0x02, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1001,7 +1001,7 @@ extension Function {
         let messageInfo:[Byte] = [0x01, key]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1020,7 +1020,7 @@ extension Function {
         let messageInfo:[Byte] = [0x02, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1039,7 +1039,7 @@ extension Function {
         let messageInfo:[Byte] = [0x02, mode]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1058,7 +1058,7 @@ extension Function {
         let messageInfo:[Byte] = [0x03, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1077,7 +1077,7 @@ extension Function {
         let messageInfo:[Byte] = [0x04, panic]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1104,7 +1104,7 @@ extension Function {
     //        let messageInfo:[Byte] = [0x04, panic]
     //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
     //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count)
+    //        message[1] = Byte(messageInfo.count % 256)
     //        message[2] = address[0]
     //        message[3] = address[1]
     //        message[4] = address[2]
@@ -1123,7 +1123,7 @@ extension Function {
     //        let messageInfo:[Byte] = [0x04, panic]
     //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
     //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count)
+    //        message[1] = Byte(messageInfo.count % 256)
     //        message[2] = address[0]
     //        message[3] = address[1]
     //        message[4] = address[2]
@@ -1142,7 +1142,7 @@ extension Function {
     //        let messageInfo:[Byte] = [0x04, panic]
     //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
     //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count)
+    //        message[1] = Byte(messageInfo.count % 256)
     //        message[2] = address[0]
     //        message[3] = address[1]
     //        message[4] = address[2]
@@ -1171,7 +1171,7 @@ extension Function {
         messageInfo = messageInfo + textByteArray
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1195,7 +1195,7 @@ extension Function {
         let messageInfo:[Byte] = [0x02, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1214,7 +1214,7 @@ extension Function {
         let messageInfo:[Byte] = [volume, mute]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1237,7 +1237,7 @@ extension Function {
         messageInfo = messageInfo + fileNameByteArray
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1258,7 +1258,7 @@ extension Function {
         messageInfo = messageInfo + cmdLineByteArray
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1279,7 +1279,7 @@ extension Function {
         messageInfo = messageInfo + textByteArray
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
@@ -1301,7 +1301,7 @@ extension Function {
         messageInfo = messageInfo + textByteArray
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
-        message[1] = Byte(messageInfo.count)
+        message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
         message[3] = address[1]
         message[4] = address[2]
