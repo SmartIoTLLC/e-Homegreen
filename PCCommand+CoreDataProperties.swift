@@ -1,9 +1,9 @@
 //
 //  PCCommand+CoreDataProperties.swift
-//  e-Homegreen
+//  
 //
-//  Created by Teodor Stevic on 3/9/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Zivanov on 3/14/16.
+//
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
 //  to delete and recreate this implementation file for your updated model.
@@ -14,9 +14,9 @@ import CoreData
 
 extension PCCommand {
 
-    @NSManaged var name: String?
     @NSManaged var comand: String?
     @NSManaged var isRunCommand: NSNumber?
+    @NSManaged var name: String?
     @NSManaged var device: Device?
 
 }

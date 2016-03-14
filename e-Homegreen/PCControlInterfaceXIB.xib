@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="backView" destination="CZA-8h-76T" id="UYv-NT-xXn"/>
                 <outlet property="commandTextField" destination="K91-d2-BYw" id="Opg-7s-vep"/>
+                <outlet property="fullScreenSwitch" destination="leq-SM-Ct1" id="140-I0-TQr"/>
                 <outlet property="playLabel" destination="AAQ-kg-fz6" id="voJ-2Z-WYN"/>
                 <outlet property="powerLabel" destination="Cl0-xM-jEQ" id="4B8-wh-O6e"/>
                 <outlet property="runLabel" destination="ZBc-1Y-HrK" id="q9d-EP-foi"/>
@@ -61,16 +62,16 @@
                                 <action selector="playAction:" destination="-1" eventType="touchUpInside" id="NXM-2h-Qkf"/>
                             </connections>
                         </button>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="leq-SM-Ct1">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="leq-SM-Ct1">
                             <rect key="frame" x="83" y="81" width="51" height="31"/>
                         </switch>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cl0-xM-jEQ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cl0-xM-jEQ">
                             <rect key="frame" x="140" y="41" width="332" height="21"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AAQ-kg-fz6">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AAQ-kg-fz6">
                             <rect key="frame" x="140" y="86" width="332" height="21"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -210,7 +211,7 @@
                         <action selector="runAction:" destination="-1" eventType="touchUpInside" id="QhB-ak-akY"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZBc-1Y-HrK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZBc-1Y-HrK">
                     <rect key="frame" x="160" y="300" width="327" height="21"/>
                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

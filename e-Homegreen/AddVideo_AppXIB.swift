@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import CoreData
+
+protocol ImportPathDelegate{
+    func importFinished()
+}
 
 class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
@@ -20,12 +25,24 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
     
     @IBOutlet weak var backView: CustomGradientBackground!
     
+    @IBOutlet weak var pathOrCmdLabel: UILabel!
     
+    var typeOfFile:FileType!
+    var device:Device!
+    var command:PCCommand?
     
-    init(){
+    var delegate:ImportPathDelegate?
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    
+    init(typeOfFile:FileType, device:Device, command:PCCommand?){
         super.init(nibName: "AddVideo_AppXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.typeOfFile = typeOfFile
+        self.device = device
+        self.command = command
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,6 +51,9 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         nameTextField.layer.borderWidth = 1
@@ -47,8 +67,17 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
         
         nameTextField.attributedPlaceholder = NSAttributedString(string:"Name",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        pathTextField.attributedPlaceholder = NSAttributedString(string:"Path",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        if typeOfFile == FileType.App {
+            pathTextField.attributedPlaceholder = NSAttributedString(string:"Command",
+                attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            pathOrCmdLabel.text = "Command"
+        }
+        else{
+            pathTextField.attributedPlaceholder = NSAttributedString(string:"Path",
+                attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            pathOrCmdLabel.text = "Path"
+        }
+
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
@@ -59,6 +88,11 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        
+        if let command = command{
+            nameTextField.text = command.name
+            pathTextField.text = command.comand
+        }
         
         // Do any additional setup after loading the view.
     }
@@ -80,8 +114,43 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
     }
 
     @IBAction func saveAction(sender: AnyObject) {
-
+        guard let name = nameTextField.text where !name.isEmpty, let commandText = pathTextField.text where !commandText.isEmpty else{
+            return
+        }
+        
+        if command == nil{
+            if let path = NSEntityDescription.insertNewObjectForEntityForName("PCCommand", inManagedObjectContext: appDel.managedObjectContext!) as? PCCommand{
+                
+                path.comand = commandText
+                if typeOfFile == FileType.Video{
+                    path.isRunCommand = false
+                }else{
+                    path.isRunCommand = true
+                }
+                path.name = name
+                path.device = device
+                
+            }
+        }else{
+            command?.name = name
+            command?.comand = commandText
+        }
+        saveChanges()
+        delegate?.importFinished()
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
+
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+
     
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -150,8 +219,8 @@ extension AddVideo_AppXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddInList() -> AddVideo_AppXIB {
-        let addInList = AddVideo_AppXIB()
+    func showAddVideoAppXIB(typeOfFile:FileType, device:Device,command:PCCommand?) -> AddVideo_AppXIB {
+        let addInList = AddVideo_AppXIB(typeOfFile:typeOfFile, device:device, command:command)
         self.presentViewController(addInList, animated: true, completion: nil)
         return addInList
     }

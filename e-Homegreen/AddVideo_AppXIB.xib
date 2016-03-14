@@ -18,6 +18,7 @@
                 <outlet property="btnCancel" destination="Xbh-NG-ock" id="pAO-HL-nAm"/>
                 <outlet property="btnSave" destination="1jV-UH-e0u" id="FWa-CM-dWJ"/>
                 <outlet property="nameTextField" destination="NdH-ug-QsC" id="Ard-9f-06n"/>
+                <outlet property="pathOrCmdLabel" destination="GmN-Bh-xXc" id="utp-dN-Yh7"/>
                 <outlet property="pathTextField" destination="qq4-Ip-coY" id="6Gx-aE-qKb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
