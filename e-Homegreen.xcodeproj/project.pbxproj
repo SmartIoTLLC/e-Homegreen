@@ -17,6 +17,8 @@
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
+		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
+		2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2245843A1C96AA3700D2C372 /* PCCommand.swift */; };
 		2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */; };
 		2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32E1C9041CB0019C6FB /* PCControlCell.swift */; };
 		2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */; };
@@ -283,6 +285,8 @@
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2245843A1C96AA3700D2C372 /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PCCommand.swift; path = ../PCCommand.swift; sourceTree = "<group>"; };
 		2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlViewController.swift; sourceTree = "<group>"; };
 		2249A32E1C9041CB0019C6FB /* PCControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlCell.swift; sourceTree = "<group>"; };
 		2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlInterfaceXIB.swift; sourceTree = "<group>"; };
@@ -816,6 +820,8 @@
 			isa = PBXGroup;
 			children = (
 				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
+				224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */,
+				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
 				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
 				730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */,
 				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
@@ -1603,6 +1609,7 @@
 				730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */,
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,
+				2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
@@ -1679,6 +1686,7 @@
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
+				2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,

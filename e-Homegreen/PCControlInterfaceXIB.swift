@@ -27,14 +27,22 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     
     var popoverVC:PopOverViewController = PopOverViewController()
     
+    @IBOutlet weak var fullScreenSwitch: UISwitch!
     @IBOutlet weak var powerLabel: UILabel!
     @IBOutlet weak var playLabel: UILabel!
     @IBOutlet weak var runLabel: UILabel!
+    var fullScreenByte:Byte = 0x00
     
     @IBOutlet weak var backView: UIView!
     
     @IBOutlet weak var commandTextField: UITextField!
+    
+    var tagIndex = 0 // cuvam tag od dugmeta koje poziva popover
+    var runCommand:String? // run komanda
+    var pathForVideo:String? // putanja selektovanog videa
+    
     var pc:Device
+    
     init(pc:Device){
         self.pc = pc
         socketIO = InOutSocket(port: 5000)
@@ -90,58 +98,59 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     }
     
     @IBAction func powerAction(sender: AnyObject) {
-//        SendingHandler.sendCommand(byteArray: Function.setPCState(pc.moduleAddress, command: <#T##Byte#>), gateway: <#T##Gateway#>)
+        if let text = powerLabel.text{
+            switch text{
+            case PowerOption.ShutDown.description:
+                
+                break
+            case PowerOption.Restart.description:
+                
+                break
+            case PowerOption.Sleep.description:
+                
+                break
+            case PowerOption.Hibernate.description:
+                
+                break
+            case PowerOption.LogOff.description:
+                
+                break
+            default: print("")
+                
+            }
+        }
     }
     
     @IBAction func playAction(sender: AnyObject) {
+        guard let videoName = playLabel.text where videoName != "-", let path =  pathForVideo  else {
+            return
+        }
+        if fullScreenSwitch.on {
+            fullScreenByte = 0x00
+        }else{
+            fullScreenByte = 0x01
+        }
+        SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: 0x01), gateway: pc.gateway)
     }
 
     @IBAction func runAction(sender: AnyObject) {
-        guard let appName = runLabel.text else {
+        guard let appName = runLabel.text where appName != "-", let command =  runCommand  else {
             return
         }
-//        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: appName), gateway: pc.gateway)
-//        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-//        0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1
-//        let byteArray:[Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1,  0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
+        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
+//        let s1 = "192.168.0.7"
+//        let cs1 = (s1 as NSString).UTF8String
+//        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
 //        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
-//        let data = NSData(bytes: byteArray, length: byteArray.count)
-//        socketIO.socket.sendData(data, toHost: "192.168.0.255", port: 5100, withTimeout: -1, tag: 1)
-        
-        let s1 = "192.168.0.7"
-        let cs1 = (s1 as NSString).UTF8String
-        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
-        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
-//        let s2 = "08:9E:01:50:83:D1"
-        let s2 = convertByteArrayToMacAddress(byteArray)
-        let cs2 = (s2 as NSString).UTF8String
-        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
-//        let second_parametar = UnsafeMutablePointer<UInt8>([0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1])
-        
-//        var p1:UnsafeBufferPointer<Byte>?
-//        let s: String = "192.168.0.255"
-//        s.nulTerminatedUTF8.withUnsafeBufferPointer { p -> Void in
-//            puts(UnsafePointer<Int8>(p.baseAddress))
-//            p1 = p
-//            Void()
-//        }
-//        var p2:UnsafeBufferPointer<Byte>?
-//        let s2: String = "0x08:0x9E:0x01:0x50:0x83:0xD1"
-//        s2.nulTerminatedUTF8.withUnsafeBufferPointer { p -> Void in
-//            puts(UnsafePointer<Int8>(p.baseAddress))
-//            p2 = p
-//            Void()
-//        }
-//        guard let s12 = p1 as! UnsafeMutablePointer<Byte>( else {
-//            return
-//        }
-//        guard let s22 = p1 as UnsafeMutablePointer<Byte> else {
-//            return
-//        }
-        send_wol_packet(first_parametar, second_parametar)
+//
+//        let s2 = convertByteArrayToMacAddress(byteArray)
+//        let cs2 = (s2 as NSString).UTF8String
+//        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
+//        send_wol_packet(first_parametar, second_parametar)
     }
+    
     var socketIO:InOutSocket
-//    
+    
     @IBAction func sendAction(sender: AnyObject) {
         guard let text = commandTextField.text else {
             return
@@ -150,9 +159,9 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     }
     
     @IBAction func addPathForVideo(sender: AnyObject) {
-//        let vc = ListOfDevice_AppViewController()
         if let vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? ListOfDevice_AppViewController {
             vc.typeOfFile = .Video
+            vc.device = pc
         self.presentViewController(vc, animated: true, completion: nil)
         }
         
@@ -161,6 +170,7 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     @IBAction func addPathForRunApp(sender: AnyObject) {
         if let vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? ListOfDevice_AppViewController {
             vc.typeOfFile = .App
+            vc.device = pc
             self.presentViewController(vc, animated: true, completion: nil)
         }
     }
@@ -170,7 +180,15 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 6
+        popoverVC.device = pc
+        tagIndex = sender.tag
+        if sender.tag == 1{
+           popoverVC.indexTab = 23
+        }else if sender.tag == 2{
+            popoverVC.indexTab = 24
+        }else{
+           popoverVC.indexTab = 25
+        }
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -178,6 +196,20 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func returnNameAndPath(name: String, path: String?) {
+        if tagIndex == 1{
+            powerLabel.text = name
+        }else if tagIndex == 2{
+            playLabel.text = name
+            if let path = path{
+                pathForVideo = path + name
+            }
+        }else{
+            runLabel.text = name
+            runCommand = path
         }
     }
     

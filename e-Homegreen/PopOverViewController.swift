@@ -16,6 +16,30 @@ import CoreData
     optional func saveText (text : String, gateway:Gateway)
     optional func clickedOnGatewayWithIndex (index : Int)
     optional func clickedOnGatewayWithObjectID(objectId:String)
+    optional func returnNameAndPath(name:String, path:String?)
+}
+
+class PathAndName {
+    var name:String
+    var path:String?
+    init(name: String, path:String?) {
+        self.name = name
+        self.path = path
+    }
+}
+
+enum PowerOption{
+    case ShutDown, Restart, Sleep, Hibernate, LogOff
+    var description:String{
+        switch self{
+        case ShutDown: return "Shut Down"
+        case Restart: return "Restart"
+        case Sleep: return "Sleep"
+        case Hibernate: return "Hibernate"
+        case LogOff: return "LogOff"
+        }
+    }
+    static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
 }
 
 class TableList {
@@ -352,7 +376,39 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return
         }
-        
+        if whatToFetch == "PowerOption" {
+            for option in PowerOption.allValues{
+                tableList.append(PathAndName(name: option.description, path: nil))
+            }
+            
+        }
+        if whatToFetch == "PlayOption" {
+            if let device = device{
+                if let list = device.pcCommands {
+                    if let commandArray = Array(list) as? [PCCommand] {
+                        for item in commandArray{
+                            if item.isRunCommand == false{
+                                tableList.append(PathAndName(name: item.name!, path: item.comand))
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        if whatToFetch == "RunOption" {
+            if let device = device{
+                if let list = device.pcCommands {
+                    if let commandArray = Array(list) as? [PCCommand] {
+                        for item in commandArray{
+                            if item.isRunCommand == true{
+                                tableList.append(PathAndName(name: item.name!, path: item.comand))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     enum PopOver: Int {
@@ -370,6 +426,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case SecurityGateways = 15
         case ControlType = 21
         case DeviceInputMode = 22
+        case PowerOption = 23
+        case PlayOption = 24
+        case RunOption = 25
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -404,6 +463,12 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList.insert(TableList(name: "No iBeacon", id: -1), atIndex: 0)
         } else if indexTab == PopOver.SecurityGateways.rawValue {
             updateDeviceList("Security")
+        } else if indexTab == PopOver.PowerOption.rawValue {
+            updateDeviceList("PowerOption")
+        } else if indexTab == PopOver.PlayOption.rawValue {
+            updateDeviceList("PlayOption")
+        } else if indexTab == PopOver.RunOption.rawValue {
+            updateDeviceList("RunOption")
         } else if indexTab == PopOver.ControlType.rawValue {
             if let type = device?.type {
                 changeControlType(type)
@@ -437,6 +502,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.tableItem.text = list[indexPath.row].name
             } else if let list = tableList as? [SecurityFeedback] {
                 cell.tableItem.text = list[indexPath.row].name
+            } else if let list = tableList as? [PathAndName]{
+                cell.tableItem.text = list[indexPath.row].name
             }
             return cell
         }
@@ -450,6 +517,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             delegate?.saveText!(list[indexPath.row].name, id: list[indexPath.row].id)
         } else if let list = tableList as? [SecurityFeedback] {
             delegate?.saveText!(list[indexPath.row].name, gateway: list[indexPath.row].gateway)
+        } else if let list = tableList as? [PathAndName]{
+            delegate?.returnNameAndPath!(list[indexPath.row].name, path: list[indexPath.row].path)
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
