@@ -13,7 +13,7 @@ import Foundation
 import CoreData
 
 extension Device {
-    @NSManaged var deviceImages: NSMutableSet?
+    @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
     @NSManaged var amp: String

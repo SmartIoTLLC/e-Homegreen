@@ -21,34 +21,15 @@ class DeviceCollectionCell: UICollectionViewCell {
         self.device = device
     }
     func refreshDevice(device:Device) {
-        let deviceValue = Double(device.currentValue) / 100
-        if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
-            picture.image = image
-        } else {
-            if deviceValue == 0 {
-                picture.image = UIImage(named: "lightBulb")
-            } else if deviceValue > 0 && deviceValue < 0.1 {
-                picture.image = UIImage(named: "lightBulb1")
-            } else if deviceValue >= 0.1 && deviceValue < 0.2 {
-                picture.image = UIImage(named: "lightBulb2")
-            } else if deviceValue >= 0.2 && deviceValue < 0.3 {
-                picture.image = UIImage(named: "lightBulb3")
-            } else if deviceValue >= 0.3 && deviceValue < 0.4 {
-                picture.image = UIImage(named: "lightBulb4")
-            } else if deviceValue >= 0.4 && deviceValue < 0.5 {
-                picture.image = UIImage(named: "lightBulb5")
-            } else if deviceValue >= 0.5 && deviceValue < 0.6 {
-                picture.image = UIImage(named: "lightBulb6")
-            } else if deviceValue >= 0.6 && deviceValue < 0.7 {
-                picture.image = UIImage(named: "lightBulb7")
-            } else if deviceValue >= 0.7 && deviceValue < 0.8 {
-                picture.image = UIImage(named: "lightBulb8")
-            } else if deviceValue >= 0.8 && deviceValue < 0.9 {
-                picture.image = UIImage(named: "lightBulb9")
+//        let deviceValue = Double(device.currentValue) / 100
+        let deviceValue:Double = {
+            if Double(device.currentValue) <= 100 {
+                return Double(device.currentValue)/100
             } else {
-                picture.image = UIImage(named: "lightBulb10")
+                return Double(device.currentValue)/255
             }
-        }
+        }()
+        picture.image = device.returnImage(deviceValue)
         lightSlider.value = Float(deviceValue)
         lblElectricity.text = "\(Float(device.current) * 0.01) A"
         lblVoltage.text = "\(Float(device.voltage)) V"
@@ -103,16 +84,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue)/255
             }
         }()
-        if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
-            self.image.image = image
-        } else {
-            if device.currentValue == 255 {
-                image.image = UIImage(named: "applianceon")
-            }
-            if device.currentValue == 0{
-                image.image = UIImage(named: "applianceoff")
-            }
-        }
+        image.image = device.returnImage(deviceValue)
         if deviceValue == 1 {
             onOff.setTitle("ON", forState: .Normal)
         } else if device.currentValue == 0 {
@@ -161,33 +133,13 @@ class CurtainCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue) / 100
             }
         }()
+        curtainImage.image = device.returnImage(deviceValue)
         curtainState.text = "\(CurtainModuleState.returnState(Int(device.currentValue)))"
         if device.filterWarning {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
         } else {
             backView.colorTwo = Colors.DirtyRedColor
         }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-            if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: deviceValue, motionSensor: false) {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.curtainImage.image = image
-                })
-            } else {
-                dispatch_async(dispatch_get_main_queue(), {
-                    if deviceValue == 0 {
-                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                    } else if deviceValue <= 1/3 {
-                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                    } else if deviceValue <= 2/3 {
-                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                    } else if deviceValue < 3/3 {
-                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                    } else {
-                        self.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                    }
-                })
-            }
-        })
         curtainSlider.value = Float(deviceValue)
 //        labelRunningTime.text = "\(device.runningTime)"
 //        lblElectricity.text = "\(Float(device.current) * 0.01) A"
@@ -430,42 +382,28 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_cpu_temperature")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 9:
-                if let image = ImageHandler.returnPictures(Int(device.categoryId), deviceValue: Double(device.currentValue)/255, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)%"
             case 4:
-                sensorImage.image = UIImage(named: "sensor_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 5:
-                if let image = ImageHandler.returnPictures(2, deviceValue: Double(device.currentValue)/100, motionSensor: false) {
-                    sensorImage.image = image
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_brightness")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) LUX"
             case 6:
                 switch device.currentValue {
@@ -484,21 +422,16 @@ class MultiSensorCell: UICollectionViewCell {
                 default: break
                 }
             case 8:
-                sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)"
             case 7:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "tamper_on")
-                } else {
-                    sensorImage.image = UIImage(named: "tamper_off")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)"
             case 10:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "sensor_noise")
-                } else {
-                    sensorImage.image = UIImage(named: "sensor_no_noise")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -507,24 +440,20 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 6 {
             switch device.channel {
             case 1:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 4:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 5:
                 switch device.currentValue {
@@ -543,11 +472,8 @@ class MultiSensorCell: UICollectionViewCell {
                 default: break
                 }
             case 6:
-                if device.currentValue == 1 {
-                    sensorImage.image = UIImage(named: "tamper_on")
-                } else {
-                    sensorImage.image = UIImage(named: "tamper_off")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -556,27 +482,24 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 5 {
             switch device.channel {
             case 1:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 4:
-                sensorImage.image = UIImage(named: "sensor_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) \u{00B0}c"
             case 5:
-                sensorImage.image = UIImage(named: "sensor_ir_receiver")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -585,21 +508,16 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 3 {
             switch device.channel {
             case 1:
-                sensorImage.image = UIImage(named: "sensor_cpu_temperature")
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                if device.currentValue == 0 {
-                    sensorImage.image = UIImage(named: "applianceoff")
-                } else {
-                    sensorImage.image = UIImage(named: "applianceon")
-                }
+                let deviceValue = Double(device.currentValue)/255
+                sensorImage.image = device.returnImage(deviceValue)
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             default:
                 sensorState.text = "..."

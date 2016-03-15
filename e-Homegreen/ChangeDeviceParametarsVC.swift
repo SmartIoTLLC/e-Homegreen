@@ -272,12 +272,28 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
+            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
+            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
+            if let checkDeviceImages = device.deviceImages {
+                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
+                    if devImages.count > 0 {
+                        for deviceImage in devImages {
+                            appDel.managedObjectContext!.deleteObject(deviceImage)
+                        }
+                        for defaultDeviceImage in defaultDeviceImages {
+                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
+                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+                            deviceImage.device = device
+                        }
+                    }
+                }
+            }
             saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()

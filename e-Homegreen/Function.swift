@@ -1295,10 +1295,13 @@ extension Function {
         return message
     }
     //TODO:- Nije odradjeno budjenje iz lana
-    static func wakeOnLan (address:[Byte], text:String) -> [Byte]{
-        let textByteArray = [Byte](text.utf8)
+    static func wakeOnLan (address:[Byte], mac:[Byte], password:[Byte]) -> [Byte]{
+        guard mac.count == 6 || password.count == 6 || address.count == 3 else {
+            return [0x00]
+        }
         var messageInfo:[Byte] = [0x01, 0x00, 0x00]
-        messageInfo = messageInfo + textByteArray
+        messageInfo += mac
+        messageInfo += password
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)

@@ -497,7 +497,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(deviceValue*100)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
@@ -543,7 +544,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(deviceValue*100)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
+                cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
@@ -866,7 +868,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             devices[tag].currentValue = Int(value)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
+                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
+                cell.picture.image = devices[tag].returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
@@ -961,32 +964,27 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let deviceValue = sender.value
         let indexPath = NSIndexPath(forItem: tag, inSection: 0)
         if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-            cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
-            cell.lightSlider.value = deviceValue
+            let deviceValue:Double = {
+                if Int(devices[tag].currentValue) > 100 {
+                    return Double(Double(devices[tag].currentValue)/255)
+                } else {
+                    return Double(devices[tag].currentValue)/100
+                }
+            }()
+            cell.picture.image = devices[tag].returnImage(deviceValue)
+            cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
+            cell.lightSlider.value = Float(deviceValue)
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        cell.curtainImage.image = image
-                    })
+            let deviceValue:Double = {
+                if Int(devices[tag].currentValue) > 100 {
+                    return Double(Double(devices[tag].currentValue)/255)
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if deviceValue == 0 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                        } else if deviceValue <= 1/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                        } else if deviceValue <= 2/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                        } else if deviceValue < 3/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                        } else {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                        }
-                    })
+                    return Double(devices[tag].currentValue)/100
                 }
-            })
-            cell.curtainSlider.value = deviceValue
+            }()
+            cell.curtainImage.image = devices[tag].returnImage(deviceValue)
+            cell.curtainSlider.value = Float(deviceValue)
             cell.setNeedsDisplay()
         }
     }

@@ -75,4 +75,52 @@ class Device: NSManagedObject {
             deviceImage.device = self
         }
     }
+    struct Result {
+        let stateValue:Double
+        let imageData:UIImage?
+        let defaultImage:UIImage?
+    }
+    // MARK: Return image for specific state
+    func returnImage(deviceValue:Double) -> UIImage {
+        // Convert device images to array
+        print(self.deviceImages!.count)
+        guard let checkDeviceImages = self.deviceImages else {
+            return UIImage(named: "")!
+        }
+        guard let devImages = Array(checkDeviceImages) as? [DeviceImage] else {
+            return UIImage(named: "")!
+        }
+        let sumOfDeviceImages = devImages.count
+        let dblSection:Double = 100/Double(sumOfDeviceImages)
+        let preSort = devImages.sort { (let result1, let result2) -> Bool in
+            if result1.state?.integerValue < result2.state?.integerValue {return true}
+            return false
+        }
+        let mapedResult = preSort.enumerate().map { (let index, let deviceImage) -> Result in
+            let defaultImageNamed = deviceImage.defaultImage!
+            let stateValue = (Double(index) + 1) * dblSection
+            if let imageData = deviceImage.image?.imageData {
+                let image = UIImage(data: imageData)
+                return Result(stateValue: stateValue, imageData: image, defaultImage: UIImage(named: defaultImageNamed)!)
+            }
+            
+            return Result(stateValue: stateValue, imageData: nil, defaultImage: UIImage(named: defaultImageNamed)!)
+        }
+        let filteredMapedresult = mapedResult.filter { (let result) -> Bool in
+            if result.stateValue >= deviceValue {return true}
+            return false
+        }
+        let sortedFilteredMapedResult = filteredMapedresult.sort { (let result1, let result2) -> Bool in
+            if result1.stateValue < result2.stateValue {return true}
+            return false
+        }
+         let result = sortedFilteredMapedResult[0]
+        if let image = result.imageData {
+            return image
+        }
+        if let image = result.defaultImage {
+            return image
+        }
+        return UIImage(named: "")!
+    }
 }

@@ -155,39 +155,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
-                if Double(devices[indexPath.row].currentValue) > 100 {
-                    return Double(devices[indexPath.row].currentValue) / 255
+                if Int(devices[indexPath.row].currentValue) > 100 {
+                    return Double(Double(devices[indexPath.row].currentValue)/255)
                 } else {
-                    return Double(devices[indexPath.row].currentValue) / 100
+                    return Double(devices[indexPath.row].currentValue)/100
                 }
             }()
-            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
-                cell.picture.image = image
-            } else {
-                if deviceValue == 0 {
-                    cell.picture.image = UIImage(named: "lightBulb")
-                } else if deviceValue > 0 && deviceValue < 0.1 {
-                    cell.picture.image = UIImage(named: "lightBulb1")
-                } else if deviceValue >= 0.1 && deviceValue < 0.2 {
-                    cell.picture.image = UIImage(named: "lightBulb2")
-                } else if deviceValue >= 0.2 && deviceValue < 0.3 {
-                    cell.picture.image = UIImage(named: "lightBulb3")
-                } else if deviceValue >= 0.3 && deviceValue < 0.4 {
-                    cell.picture.image = UIImage(named: "lightBulb4")
-                } else if deviceValue >= 0.4 && deviceValue < 0.5 {
-                    cell.picture.image = UIImage(named: "lightBulb5")
-                } else if deviceValue >= 0.5 && deviceValue < 0.6 {
-                    cell.picture.image = UIImage(named: "lightBulb6")
-                } else if deviceValue >= 0.6 && deviceValue < 0.7 {
-                    cell.picture.image = UIImage(named: "lightBulb7")
-                } else if deviceValue >= 0.7 && deviceValue < 0.8 {
-                    cell.picture.image = UIImage(named: "lightBulb8")
-                } else if deviceValue >= 0.8 && deviceValue < 0.9 {
-                    cell.picture.image = UIImage(named: "lightBulb9")
-                } else {
-                    cell.picture.image = UIImage(named: "lightBulb10")
-                }
-            }
+            cell.picture.image = devices[indexPath.row].returnImage(deviceValue)
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
@@ -269,29 +243,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                     return Double(devices[indexPath.row].currentValue) / 100
                 }
             }()
-            print(devices[indexPath.row].categoryId)
-            print(deviceValue)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                if let image = ImageHandler.returnPictures(Int(self.devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        cell.curtainImage.image = image
-                    })
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if deviceValue == 0 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                        } else if deviceValue <= 1/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                        } else if deviceValue <= 2/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                        } else if deviceValue < 3/3 {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                        } else {
-                            cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                        }
-                    })
-                }
-            })
+            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
             cell.curtainName.userInteractionEnabled = true
             cell.curtainSlider.value = Float(deviceValue)
             cell.curtainImage.userInteractionEnabled = true
@@ -346,25 +298,16 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
 //            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.name.text = devices[indexPath.row].name
-                        cell.name.text = devices[indexPath.row].cellTitle
+            cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue:Double = {
-                if Double(devices[indexPath.row].currentValue) == 100 {
+                if Double(devices[indexPath.row].currentValue) <= 100 {
                     return Double(devices[indexPath.row].currentValue)/100
                 } else {
                     return Double(devices[indexPath.row].currentValue)/255
                 }
             }()
-            if let image = ImageHandler.returnPictures(Int(devices[indexPath.row].categoryId), deviceValue: deviceValue, motionSensor: false) {
-                cell.image.image = image
-            } else {
-                if devices[indexPath.row].currentValue == 255 {
-                    cell.image.image = UIImage(named: "applianceon")
-                }
-                if devices[indexPath.row].currentValue == 0{
-                    cell.image.image = UIImage(named: "applianceoff")
-                }
-            }
+            cell.image.image = devices[indexPath.row].returnImage(deviceValue)
             if deviceValue == 1 {
                 cell.onOff.setTitle("ON", forState: .Normal)
             } else if devices[indexPath.row].currentValue == 0 {
@@ -552,19 +495,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("dafaultCell", forIndexPath: indexPath) as! DefaultCell
-//            NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \n")
-//            NSLog("Device address:\(devices[indexPath.row].address)")
-//            NSLog("Device channel:\(devices[indexPath.row].channel) \n")
-//            NSLog("Device number of devices:\(devices[indexPath.row].numberOfDevices) \n")
-//            NSLog("Device type:\(devices[indexPath.row].type)")
-//            NSLog("Device controlType:\(devices[indexPath.row].controlType)")
-//            cell.defaultLabel.text = "\(devices[indexPath.row].name) "
             cell.defaultLabel.text = ""
-//            if let a1 = devices[indexPath.row].gateway.name, a2 = devices[indexPath.row].address, a3 = devices[indexPath.row].channel, a4 = devices[indexPath.row].numberOfDevices, a5 = devices[indexPath.row].type, a6 = devices[indexPath.row].controlType {
-//                cell.defaultLabel.text = "Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nAddress:\(devices[indexPath.row].address) Channel:\(devices[indexPath.row].channel) \nNumber of devices:\(devices[indexPath.row].numberOfDevices) \nType:\(devices[indexPath.row].type) \nControl type:\(devices[indexPath.row].controlType)"
-//                NSLog("Device:\nGateway name:\(devices[indexPath.row].gateway.name) \nDevice address:\(devices[indexPath.row].address) Device channel:\(devices[indexPath.row].channel) \nDevice number of devices:\(devices[indexPath.row].numberOfDevices) \nDevice type:\(devices[indexPath.row].type) Device controlType:\(devices[indexPath.row].controlType)")
-//            }
-//            NSLog("%@ %@", indexPath.row, devices[indexPath.row])
             return cell
         }
     }

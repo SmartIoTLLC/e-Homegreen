@@ -15,6 +15,8 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     var device:Device
 //    var appDel:AppDelegate!
     var isPresenting: Bool = true
+    var appDel:AppDelegate
+    
     
     @IBAction func btnBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true) { () -> Void in
@@ -26,6 +28,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     init(device:Device, point:CGPoint){
         self.device = device
         self.point = point
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         let sort = NSSortDescriptor(key: "state", ascending: true)
         deviceImages = device.deviceImages!.sortedArrayUsingDescriptors([sort]) as! [DeviceImage]
         super.init(nibName: "DeviceImagesPickerVC", bundle: nil)
@@ -116,14 +119,14 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
-//            appDel.managedObjectContext?.deleteObject(device.deviceImages)
-//            saveChanges()
-//            updateDeviceList()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
+            deviceImages.removeAtIndex(indexPath.row)
+            appDel.saveContext()
+            tableView.reloadData()
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
         
     }
-
     /*
     // MARK: - Navigation
 
