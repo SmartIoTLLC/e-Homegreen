@@ -41,12 +41,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         self.view.addSubview(pullDown)
-        
-//        let button = UIButton(type: UIButtonType.RoundedRect)
-//        button.frame = CGRectMake(20, 50, 100, 30)
-//        button.setTitle("Crash", forState: UIControlState.Normal)
-//        button.addTarget(self, action: "crashButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-//        view.addSubview(button)
 
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         deviceCollectionView.delaysContentTouches = false
@@ -136,38 +130,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     var devices:[Device] = []
     var error:NSError? = nil
     var inte = 0
-//    func fetchDevicesInBackground () {
-//        inte++
-//        print("fetchDevicesInBackground \(inte)")
-//        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-//        backgroundContext.persistentStoreCoordinator = appDel.persistentStoreCoordinator
-//        backgroundContext.performBlock{[weak self] in
-//            do {
-//                let devices = try backgroundContext.executeFetchRequest(self!.deviceBackgroundFetch()) as! [Device]
-//                let mainContext = self!.appDel.managedObjectContext
-//                
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    print(devices.count)
-//                    self!.devices = devices
-////                    self!.devices = []
-////                    for device in devices {
-////                        let device = mainContext!.objectWithID(deviceId) as! Device
-////                        self!.appDel.managedObjectContext?.refreshObject(device, mergeChanges: true)
-////                        self!.devices.append(device)
-////                    }
-////                for device in self!.devices {
-////                    device.cellTitle = self!.returnNameForDeviceAccordingToFilter(device)
-////                }
-//                    if !self!.isScrolling {
-//                        self!.deviceCollectionView.reloadData()
-//                    }
-//                })
-//            } catch let error as NSError {
-//                print("Unresolved error \(error), \(error.userInfo)")
-//                abort()
-//            }
-//        }
-//    }
     func fetchDevicesInBackground () {
         updateCells()
     }
@@ -708,54 +670,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
-//        fetchEntities("Flag")
-//        fetchEntities("Timer")
-//        fetchEntities("Security")
     }
-//    var timers:[Timer] = []
-//    var flags:[Flag] = []
-//    var securities:[Security] = []
-//    func fetchEntities (whatToFetch:String) {
-//        if whatToFetch == "Flag" {
-//            let fetchRequest = NSFetchRequest(entityName: "Flag")
-//            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
-//            fetchRequest.sortDescriptors = [sortDescriptors]
-//            do {
-//                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
-//                print(results.count)
-//                flags = results
-//            } catch let catchedError as NSError {
-//                error = catchedError
-//            }
-//            return
-//        }
-//        
-//        if whatToFetch == "Timer" {
-//            let fetchRequest = NSFetchRequest(entityName: "Timer")
-//            let sortDescriptors = NSSortDescriptor(key: "timerName", ascending: true)
-//            fetchRequest.sortDescriptors = [sortDescriptors]
-//            do {
-//                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
-//                timers = results
-//            } catch let catchedError as NSError {
-//                error = catchedError
-//            }
-//            return
-//        }
-//        if whatToFetch == "Security" {
-//            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
-//            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
-//            fetchRequest.sortDescriptors = [sortDescriptorTwo]
-//            do {
-//                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-//                securities = fetResults!
-//            } catch let error1 as NSError {
-//                error = error1
-//                print("Unresolved error \(error), \(error!.userInfo)")
-//                abort()
-//            }
-//        }
-//    }
     
     var locationSearch:String = "All"
     var zoneSearch:String = "All"
