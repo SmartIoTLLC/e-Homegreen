@@ -29,7 +29,7 @@ class DeviceCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue)/255
             }
         }()
-        picture.image = device.returnImage(deviceValue)
+        picture.image = device.returnImage(Double(device.currentValue))
         lightSlider.value = Float(deviceValue)
         lblElectricity.text = "\(Float(device.current) * 0.01) A"
         lblVoltage.text = "\(Float(device.voltage)) V"
@@ -78,13 +78,13 @@ class ApplianceCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
-            if Double(device.currentValue) == 100 {
+            if Double(device.currentValue) <= 100 {
                 return Double(device.currentValue)/100
             } else {
                 return Double(device.currentValue)/255
             }
         }()
-        image.image = device.returnImage(deviceValue)
+        image.image = device.returnImage(Double(device.currentValue))
         if deviceValue == 1 {
             onOff.setTitle("ON", forState: .Normal)
         } else if device.currentValue == 0 {
@@ -133,7 +133,7 @@ class CurtainCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue) / 100
             }
         }()
-        curtainImage.image = device.returnImage(deviceValue)
+        curtainImage.image = device.returnImage(Double(device.currentValue))
         curtainState.text = "\(CurtainModuleState.returnState(Int(device.currentValue)))"
         if device.filterWarning {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
@@ -382,28 +382,22 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 9:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)%"
             case 4:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 5:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) LUX"
             case 6:
                 switch device.currentValue {
@@ -422,16 +416,13 @@ class MultiSensorCell: UICollectionViewCell {
                 default: break
                 }
             case 8:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)"
             case 7:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)"
             case 10:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -440,20 +431,16 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 6 {
             switch device.channel {
             case 1:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 4:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 5:
                 switch device.currentValue {
@@ -472,8 +459,7 @@ class MultiSensorCell: UICollectionViewCell {
                 default: break
                 }
             case 6:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -482,24 +468,19 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 5 {
             switch device.channel {
             case 1:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 4:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) \u{00B0}c"
             case 5:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue)"
             default:
                 sensorState.text = "..."
@@ -508,16 +489,13 @@ class MultiSensorCell: UICollectionViewCell {
         if device.numberOfDevices == 3 {
             switch device.channel {
             case 1:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) C"
             case 2:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 3:
-                let deviceValue = Double(device.currentValue)/255
-                sensorImage.image = device.returnImage(deviceValue)
+                sensorImage.image = device.returnImage(Double(device.currentValue)) 
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             default:
                 sensorState.text = "..."

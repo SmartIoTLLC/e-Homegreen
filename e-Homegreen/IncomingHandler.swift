@@ -413,6 +413,8 @@ class IncomingHandler: NSObject {
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
                 device.categoryId = Int(byteArray[8])
+                // When we change category it will reset images
+                device.resetImages(appDel.managedObjectContext!)
                 device.digitalInputMode = Int(byteArray[14])
                 //                var interfaceParametar:[Byte] = []
                 //                for var i = 7; i < byteArray.count-2; i++ {
@@ -506,6 +508,8 @@ class IncomingHandler: NSObject {
                 device.categoryId = Int(byteArray[8])
                 device.zoneId = Int(byteArray[9])
                 device.parentZoneId = Int(byteArray[10])
+                // When we change category it will reset images
+                device.resetImages(appDel.managedObjectContext!)
                 //TODO: problem with modul names and response for finding names
 //                let data = ["deviceIndexForFoundName":i]
 //                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
@@ -575,6 +579,8 @@ class IncomingHandler: NSObject {
                         devices[i].parentZoneId = Int(byteArray[10])
                     }
                     devices[i].categoryId = Int(byteArray[8])
+                    // When we change category it will reset images
+                    devices[i].resetImages(appDel.managedObjectContext!)
                     if byteArray[22] == 0x01 {
                         devices[i].isEnabled = NSNumber(bool: true)
                     } else {
@@ -601,9 +607,7 @@ class IncomingHandler: NSObject {
             saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
-        
     }
-    
     //  0x00 Waiting = 0
     //  0x01 Started = 1
     //  0xF0 Elapsed = 240
@@ -646,6 +650,7 @@ class IncomingHandler: NSObject {
         }
         
     }
+    //FIXME: Part for security is commented
     func securityFeedbackHandler (byteArray:[Byte]) {
 //        print("AOOO 3")
 //        print(byteArray)

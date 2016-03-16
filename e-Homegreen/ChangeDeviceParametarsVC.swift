@@ -92,10 +92,6 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        print(device.parentZoneId)
-        print(device.zoneId)
-        print(device.categoryId)
-        print(device.controlType)
         btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))", forState: UIControlState.Normal)
         btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))", forState: UIControlState.Normal)
         btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))", forState: UIControlState.Normal)
@@ -272,23 +268,23 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
-            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-            if let checkDeviceImages = device.deviceImages {
-                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-                    if devImages.count > 0 {
-                        for deviceImage in devImages {
-                            appDel.managedObjectContext!.deleteObject(deviceImage)
-                        }
-                        for defaultDeviceImage in defaultDeviceImages {
-                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-                            deviceImage.device = device
-                        }
-                    }
-                }
-            }
+//            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
+//            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
+//            if let checkDeviceImages = device.deviceImages {
+//                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
+//                    if devImages.count > 0 {
+//                        for deviceImage in devImages {
+//                            appDel.managedObjectContext!.deleteObject(deviceImage)
+//                        }
+//                        for defaultDeviceImage in defaultDeviceImages {
+//                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+//                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
+//                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+//                            deviceImage.device = device
+//                        }
+//                    }
+//                }
+//            }
             saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)

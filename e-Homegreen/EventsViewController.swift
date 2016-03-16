@@ -235,6 +235,7 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
 //            
 //        }
     }
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()

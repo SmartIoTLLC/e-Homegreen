@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ImageHandler: NSObject {
 //    static func returnPictures(type:String, categoryId:Int, deviceValue:Float, motionSensor:Bool) -> UIImage? {

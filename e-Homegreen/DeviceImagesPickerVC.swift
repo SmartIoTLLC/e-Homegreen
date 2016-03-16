@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SceneGalleryDelegate {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -20,8 +20,48 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func btnBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true) { () -> Void in
+        }
+    }
+    @IBAction func addNewImage(sender: AnyObject) {
+        showGallery(-1).delegate = self
+    }
+    func backString(strText: String, imageIndex:Int) {
+        if imageIndex == -1 {
+            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.defaultImage = strText
+            deviceImage.device = device
+            deviceImage.image = nil
+            deviceImages.append(deviceImage)
+        } else {
+            deviceImages[imageIndex].defaultImage = strText
+            deviceImages[imageIndex].image = nil
+        }
+        do {
+            try appDel.managedObjectContext?.save()
+        } catch let error {
             
         }
+        tableView.reloadData()
+    }
+    func backImage(image:Image, imageIndex:Int) {
+        if imageIndex == -1 {
+            // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
+            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.defaultImage = "12 Appliance - Power - 02"
+            deviceImage.device = device
+            deviceImage.image = image
+            deviceImages.append(deviceImage)
+        } else {
+            deviceImages[imageIndex].image = image
+        }
+        do {
+            try appDel.managedObjectContext?.save()
+        } catch let error {
+            
+        }
+        tableView.reloadData()
     }
     @IBOutlet weak var tableView: UITableView!
         var deviceImages:[DeviceImage]
@@ -80,19 +120,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             }
         }
         cell.deviceImage.image = UIImage().returnImage(forDeviceImage: deviceImages[indexPath.row])
-//        if let deviceImage = deviceImages[indexPath.row].image?.imageData {
-//            cell.deviceImage.image = UIImage(data: deviceImage)
-//        } else {
-//            cell.deviceImage.image = UIImage(named:deviceImages[indexPath.row].defaultImage!)
-//        }
-//        if let deviceImage = UIImage(data: (deviceImages[indexPath.row].image!.imageData)!) {
-//            cell.deviceImage.image = deviceImage
-//        }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        showGallery(indexPath.row).delegate = self
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
@@ -114,7 +146,6 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         button.backgroundColor = UIColor.redColor()
         return [button]
     }
-    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == .Delete {
@@ -122,7 +153,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
             deviceImages.removeAtIndex(indexPath.row)
             appDel.saveContext()
-            tableView.reloadData()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
         
