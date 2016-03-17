@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */; };
 		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
@@ -276,6 +277,7 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 			children = (
 				73F04EC81C92C74C009696EF /* Int+Extensions.swift */,
 				73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */,
+				22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1683,6 +1686,7 @@
 				7372EB3C1BC410800097806D /* Category.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
+				22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,

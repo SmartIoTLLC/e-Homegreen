@@ -9,10 +9,17 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
+
+protocol AddEditLocationDelegate{
+    func editAddLocationFinished()
+}
 
 class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var isPresenting: Bool = true
+    
+    var delegate:AddEditLocationDelegate?
     
     var popoverVC:PopOverViewController = PopOverViewController()
     
@@ -34,11 +41,16 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     let locationManager = CLLocationManager()
     
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    var location:Location?
+    
     var radius:Double = 50.0
-    init(){
+    init(location:Location?){
         super.init(nibName: "AddLocationXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.location = location
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,17 +62,14 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         locationMap.mapType = MKMapType.Hybrid
         locationMap.showsUserLocation = true
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.startUpdatingLocation()
-        }
         
-        radiusLabel.text = "Radius: \(Int(radius))"
+        
+        
         
         locationNameTextField.layer.borderWidth = 1
         locationNameTextField.layer.cornerRadius = 2
@@ -77,6 +86,34 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         let lpgr = UILongPressGestureRecognizer(target: self, action:"handleLongPress:")
         lpgr.minimumPressDuration = 0.5
         locationMap.addGestureRecognizer(lpgr)
+        
+        if let location = location{
+            locationNameTextField.text = location.name
+            if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
+                
+                let location = CLLocation(latitude: Double(latitude), longitude: Double(longitude))
+                
+                annotation.coordinate = location.coordinate
+                locationMap.addAnnotation(annotation)
+                self.radius = Double(radius)
+                radiusLabel.text = "Radius: \(Int(radius))"
+                radiusSlider.value = Float(radius)
+                addRadiusCircle(location)
+                
+                let center = location.coordinate
+                let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+                
+                self.locationMap.setRegion(region, animated: true)
+            }
+        }else{
+            radiusLabel.text = "Radius: \(Int(radius))"
+            if CLLocationManager.locationServicesEnabled() {
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                locationManager.requestAlwaysAuthorization()
+                locationManager.startUpdatingLocation()
+            }
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -144,7 +181,41 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     }
     
     @IBAction func saveAction(sender: AnyObject) {
+        if locationNameTextField.text != "" && annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 {
+            if location == nil{
+                if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
+                    newLocation.name = locationNameTextField.text!
+                    newLocation.latitude = annotation.coordinate.latitude
+                    newLocation.longitude = annotation.coordinate.longitude
+                    newLocation.radius = radius
+                    saveChanges()
+                    delegate?.editAddLocationFinished()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                
+            }else{
+                location?.name = locationNameTextField.text!
+                location?.latitude = annotation.coordinate.latitude
+                location?.longitude = annotation.coordinate.longitude
+                location?.radius = radius
+                saveChanges()
+                delegate?.editAddLocationFinished()
+                self.dismissViewControllerAnimated(true, completion: nil)
 
+            }
+            
+        }
+        
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
@@ -239,8 +310,8 @@ extension AddLocationXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddLocation() -> AddLocationXIB {
-        let addLocation = AddLocationXIB()
+    func showAddLocation(location:Location?) -> AddLocationXIB {
+        let addLocation = AddLocationXIB(location: location)
         self.presentViewController(addLocation, animated: true, completion: nil)
         return addLocation
     }

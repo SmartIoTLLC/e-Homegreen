@@ -42,7 +42,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
         let p = gesture.locationInView(self.surveillanceTableView)
         let indexPath = self.surveillanceTableView.indexPathForRowAtPoint(p)
         if let index = indexPath?.section {
-            showSurveillanceSettings(surveillance[index], isNew: true)
+//            showSurveillanceSettings(surveillance[index], isNew: true)
         }
     }
     
@@ -52,7 +52,7 @@ class SurveillanceSettingsViewController: UIViewController, UIViewControllerTran
     }
     
     @IBAction func btnAddNewCamera(sender: AnyObject) {
-        showSurveillanceSettings(nil, isNew:false)
+//        showSurveillanceSettings(nil, isNew:false)
     }
     
     @IBAction func btnUrls(sender: AnyObject) {
@@ -149,7 +149,7 @@ extension SurveillanceSettingsViewController: UITableViewDataSource {
             
 //            cell.lblID.text = surveillance[indexPath.section].ip
 //            cell.lblPort.text = "\(surveillance[indexPath.section].port!)"
-            cell.lblLocation.text = "\(surveillance[indexPath.section].locationDELETETHIS!)"
+//            cell.lblLocation.text = "\(surveillance[indexPath.section].locationDELETETHIS!)"
             cell.lblName.text = "\(surveillance[indexPath.section].name!)"
 //            cell.switchVisible.tag = indexPath.section
 //            cell.switchVisible.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
@@ -198,7 +198,7 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)        
         dispatch_async(dispatch_get_main_queue(),{
-            self.showSurveillanceSettings(self.surveillance[indexPath.section], isNew: false)
+//            self.showSurveillanceSettings(self.surveillance[indexPath.section], isNew: false)
         })
     }
     
@@ -236,41 +236,53 @@ extension SurveillanceSettingsViewController: UITableViewDelegate {
     }
 }
 
+protocol SurveillanceCellDelegate{
+    func deleteSurveillance(surveillance:Surveillance)
+    func scanURL(surveillance:Surveillance)
+}
 
 class SurvCell: UITableViewCell{
     
-//    @IBOutlet weak var lblID: UILabel!
-//    @IBOutlet weak var lblPort: UILabel!
-    @IBOutlet weak var lblLocation: UILabel!
+    var surveillance:Surveillance?
+    var delegate:SurveillanceCellDelegate?
+
     @IBOutlet weak var lblName: UILabel!
-//    @IBOutlet weak var switchVisible: UISwitch!
     @IBOutlet weak var btnUrl: CustomGradientButton!
     
+    func setItem(surveillance:Surveillance){
+        self.surveillance = surveillance
+        self.lblName.text = surveillance.name
+    }
+    @IBAction func deleteSurveillance(sender: AnyObject) {
+        if let surv  = surveillance{
+            delegate?.deleteSurveillance(surv)
+        }
+    }
+    
+    @IBAction func URLActions(sender: AnyObject) {
+        if let surv  = surveillance{
+            delegate?.scanURL(surv)
+        }
+    }
     override func drawRect(rect: CGRect) {
-        
-        let path = UIBezierPath(roundedRect: rect,
+        var rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+        let path = UIBezierPath(roundedRect: rectNew,
             byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 8.0, height: 8.0))
+            cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
-        path.lineWidth = 2
-        
-        UIColor.lightGrayColor().setStroke()
+        path.lineWidth = 1
+        UIColor.darkGrayColor().setStroke()
         
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        
+        let colors = [UIColor().surveillanceColor().CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        
+        let colorLocations:[CGFloat] = [0.0, 0.35, 1.0]
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
-        
         let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
+        let endPoint = CGPoint(x:self.bounds.width , y:0)        
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
         path.stroke()
     }
 }
