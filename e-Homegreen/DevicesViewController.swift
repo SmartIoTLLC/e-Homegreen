@@ -464,27 +464,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            cell.curtainImage.image = image
-                        })
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if deviceValue == 0 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                            } else if deviceValue <= 1/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                            } else if deviceValue <= 2/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                            } else if deviceValue < 3/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                            } else {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                            }
-                        })
-                    }
-                })
+                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
@@ -511,27 +491,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false) {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            cell.curtainImage.image = image
-                        })
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if deviceValue == 0 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                            } else if deviceValue <= 1/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                            } else if deviceValue <= 2/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                            } else if deviceValue < 3/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                            } else {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                            }
-                        })
-                    }
-                })
+                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
@@ -788,27 +748,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                    if let image = ImageHandler.returnPictures(Int(self.devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false) {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            cell.curtainImage.image = image
-                        })
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if slider.value == 0 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 00")
-                            } else if slider.value <= 1/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 01")
-                            } else if slider.value <= 2/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 02")
-                            } else if slider.value < 3/3 {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 03")
-                            } else {
-                                cell.curtainImage.image = UIImage(named: "13 Curtain - Curtain - 04")
-                            }
-                        })
-                    }
-                })
+                cell.curtainImage.image = devices[tag].returnImage(Double(value))
                 cell.curtainSlider.value = slider.value
                 cell.setNeedsDisplay()
             }
@@ -886,7 +826,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     return Double(devices[tag].currentValue)/100
                 }
             }()
-            cell.picture.image = devices[tag].returnImage(deviceValue)
             cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
             cell.lightSlider.value = Float(deviceValue)
             cell.setNeedsDisplay()
@@ -898,7 +837,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                     return Double(devices[tag].currentValue)/100
                 }
             }()
-            cell.curtainImage.image = devices[tag].returnImage(deviceValue)
+            cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
             cell.curtainSlider.value = Float(deviceValue)
             cell.setNeedsDisplay()
         }

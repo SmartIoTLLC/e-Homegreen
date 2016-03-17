@@ -360,7 +360,6 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         }
         resignFirstRespondersOnTextFields()
     }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {

@@ -81,9 +81,15 @@ class Device: NSManagedObject {
         let defaultImage:UIImage?
     }
     // MARK: Return image for specific state
-    func returnImage(deviceValue:Double) -> UIImage {
+    func returnImage(newDeviceValue:Double) -> UIImage {
         // Convert device images to array
-        print(self.deviceImages!.count)
+        let deviceValue:Double = {
+            if newDeviceValue <= 100 {
+                return Double(newDeviceValue)
+            } else {
+                return Double(newDeviceValue)/255 * 100
+            }
+        }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!
         }

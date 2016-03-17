@@ -17,3 +17,27 @@ class Hey: NSObject {
     }
 }
 Hey().wakeOnLan([1,2,3], mac: [1,2,3,4,5,6], password: [1,2,3,4,5,6])
+let locations:[NSObject:[AnyObject]] = [
+    1:["String1",12,43.5, "String Vladimir"],
+    "String":["String",1,3.5, "String"],]
+
+let array = locations[1]?[0]
+locations["String"]
+
+class Vladimir, Enumerable {
+    init() {
+    }
+}
+class Marko: Vladimir {
+    
+}
+class Sladjan: Vladimir {
+}
+class Damir: Vladimir {
+    
+}
+enum enumi:Vladimir {
+    case M:Marko
+    case S:Sladjan
+    case D:Damir
+}

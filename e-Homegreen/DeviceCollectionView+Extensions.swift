@@ -155,13 +155,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
-                if Int(devices[indexPath.row].currentValue) > 100 {
+                if Double(devices[indexPath.row].currentValue) > 100 {
                     return Double(Double(devices[indexPath.row].currentValue)/255)
                 } else {
                     return Double(devices[indexPath.row].currentValue)/100
                 }
             }()
-            cell.picture.image = devices[indexPath.row].returnImage(deviceValue)
+            cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
@@ -307,7 +307,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                     return Double(devices[indexPath.row].currentValue)/255
                 }
             }()
-            cell.image.image = devices[indexPath.row].returnImage(deviceValue)
+            cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
             if deviceValue == 1 {
                 cell.onOff.setTitle("ON", forState: .Normal)
             } else if devices[indexPath.row].currentValue == 0 {

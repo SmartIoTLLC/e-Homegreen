@@ -8,10 +8,15 @@
 
 import UIKit
 import ALCameraViewController
+import CoreData
 
 @objc protocol SceneGalleryDelegate{
+    // Returns string for image and index
     optional func backString(strText: String, imageIndex:Int)
+    // Returns data for image and index
     optional func backImageFromGallery(data:NSData, imageIndex:Int)
+    // Returns Image for image and index
+    optional func backImage(image:Image, imageIndex:Int)
 }
 
 class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -195,6 +200,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
 "Scene - All On - 01", 
 "Scene - Movie - 00", 
 "Scene - Movie - 01"]
+    var galleryImages:[AnyObject] = []
     var imageIndex:Int!
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
@@ -208,8 +214,9 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var backview: UIView!
     
     let defaults = NSUserDefaults.standardUserDefaults()
-    
+    var appDel:AppDelegate
     init(){
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         super.init(nibName: "SceneGalleryVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
@@ -225,7 +232,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         }
         return true
     }
-
+    var images:[Image] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -238,6 +245,24 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         self.gallery.registerNib(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
     
         // Do any additional setup after loading the view.
+        images = returnImages()
+        for item in galleryList {
+            galleryImages.append(item)
+        }
+        for item in images {
+            galleryImages.append(item)
+        }
+    }
+    
+    func returnImages () -> [Image] {
+        let fetchRequest = NSFetchRequest(entityName: "Image")
+        do {
+            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Image]
+            return fetchResults!
+        } catch let error as NSError {
+            print("Unresolved error \(error), \(error.userInfo)")
+        }
+        return []
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -255,41 +280,46 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
     }
-    
+    func updateWithImage (image:UIImage) {
+        let newImage = Image(context: appDel.managedObjectContext!)
+        newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
+        galleryImages.append(newImage)
+        gallery.reloadData()
+    }
     @IBAction func openGallery(sender: AnyObject) {
-        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { (image) -> Void in
+        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
             if let backImage = image{
-                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                self?.updateWithImage(backImage)
+                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                    self?.dismissViewControllerAnimated(true, completion: nil)
                 })
             }else{
-                self.dismissViewControllerAnimated(true, completion:nil)
+                self?.dismissViewControllerAnimated(true, completion:nil)
+            }
+        }
+        presentViewController(libraryViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction func takePhoto(sender: AnyObject) {
+        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
+            if let backImage = image{
+                self?.updateWithImage(backImage)
+                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                    self?.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }else{
+                self?.dismissViewControllerAnimated(true, completion:nil)
             }
         }
         presentViewController(libraryViewController, animated: true, completion: nil)
 
     }
     
-    @IBAction func takePhoto(sender: AnyObject) {
-        let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
-            if let backImage = image{
-                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                })
-            }else{
-                self.dismissViewControllerAnimated(true, completion:nil)
-            }
-            
-        }
-        presentViewController(cameraViewController, animated: true, completion: nil)
-
-    }
-    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        
-        delegate?.backImageFromGallery!(UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)!, imageIndex: imageIndex)
+        let newImage = Image(context: appDel.managedObjectContext!)
+        newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
+        galleryImages.append(newImage)
+        gallery.reloadData()
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -339,14 +369,17 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryList.count
+        return galleryImages.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
-        
-        cell.cellImage.image = UIImage(named: galleryList[indexPath.row])
-        
+        if let image = galleryImages[indexPath.row] as? Image {
+            cell.cellImage.image = UIImage(data: image.imageData!)
+        }
+        if let string = galleryImages[indexPath.row] as? String {
+            cell.cellImage.image = UIImage(named:string)
+        }
         cell.layer.borderColor = UIColor.lightGrayColor().CGColor
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 5
@@ -359,7 +392,14 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        delegate?.backString!(galleryList[indexPath.row], imageIndex: imageIndex)
+        if let image = galleryImages[indexPath.row] as? Image {
+            delegate?.backImage?(image, imageIndex: imageIndex)
+            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
+        }
+        if let string = galleryImages[indexPath.row] as? String {
+            delegate?.backString?(string, imageIndex: imageIndex)
+            delegate?.backImageFromGallery?(UIImageJPEGRepresentation(UIImage(named: string)!, 0.5)!, imageIndex: imageIndex)
+        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -371,9 +411,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-
 }
 
 extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
