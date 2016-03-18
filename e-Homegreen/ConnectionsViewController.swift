@@ -181,7 +181,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     //delegati kada dodajemo gateway i surveillance
     
     func add_editGatewayFinished() {
-        reloadLocations()
+        editLocation()
     }
     
     func editAddLocationFinished() {
@@ -189,15 +189,11 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     func add_editSurveillanceFinished(){
-        reloadLocations()
+        editLocation()
     }
     
     func reloadLocations(){
-//        let isOpen = locationList[index].isCollapsed
         updateLocationList()
-//        if isOpen{
-//            locationList[index].isCollapsed = true
-//        }
         gatewayTableView.reloadData()
     }
     
@@ -224,6 +220,24 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             }
             locationList.append(CollapsableViewModel(location: item, children: listOfChildrenDevice))
         }
+    }
+    
+    func editLocation(){
+        let locationEdit = locationList[index].location
+        locationList[index].children = []
+        var listOfChildrenDevice:[LocationDevice] = []
+        if let listOfGateway = locationEdit.gateways {
+            for gateway in listOfGateway{
+                listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Gateway))
+            }
+        }
+        if let listOfSurveillance = locationEdit.surveillances {
+            for surv in listOfSurveillance{
+                listOfChildrenDevice.append(LocationDevice(device: surv, typeOfLocationDevice: .Surveillance))
+            }
+        }
+        locationList[index].children = listOfChildrenDevice
+        gatewayTableView.reloadData()
     }
     
     func returnLocations () -> [Location] {
@@ -405,7 +419,9 @@ extension ConnectionsViewController: UITableViewDataSource {
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.appDel.managedObjectContext?.deleteObject(surveillance)
-            self.reloadLocations()
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
@@ -431,8 +447,12 @@ extension ConnectionsViewController: UITableViewDataSource {
         
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
+            
             self.appDel.managedObjectContext?.deleteObject(gateway)
-            self.reloadLocations()
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
+            
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
