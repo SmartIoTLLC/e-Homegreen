@@ -36,6 +36,7 @@
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
+		73331C141C9ADC87009BA1DE /* MainDatabaseStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C131C9ADC87009BA1DE /* MainDatabaseStack.swift */; };
 		733E5E821C6350A90039B7A8 /* CoreDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */; };
 		733E5E841C6391DB0039B7A8 /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */; };
 		733E5E861C666F840039B7A8 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 733E5E851C666F840039B7A8 /* Config.plist */; };
@@ -152,6 +153,9 @@
 		73F51A091C9475C6003EE702 /* wol.c in Sources */ = {isa = PBXBuildFile; fileRef = 73F51A081C9475C6003EE702 /* wol.c */; };
 		73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */; };
 		73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F67B931C7CA497008C6A0D /* AAViewController.swift */; };
+		73F993001C9ABAF600E54AB8 /* MasterDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73F992FE1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodeld */; };
+		73F993041C9ACA9900E54AB8 /* Information+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F993021C9ACA9900E54AB8 /* Information+CoreDataProperties.swift */; };
+		73F993051C9ACA9900E54AB8 /* Information.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F993031C9ACA9900E54AB8 /* Information.swift */; };
 		73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */; };
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
@@ -305,6 +309,7 @@
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; };
 		731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ConfigureStateForTheFirstTime.swift"; sourceTree = "<group>"; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
+		73331C131C9ADC87009BA1DE /* MainDatabaseStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainDatabaseStack.swift; sourceTree = "<group>"; };
 		733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWrapper.swift; sourceTree = "<group>"; };
 		733E5E831C6391DB0039B7A8 /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		733E5E851C666F840039B7A8 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -427,6 +432,9 @@
 		73F51A0A1C9484E4003EE702 /* Test.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Test.playground; sourceTree = "<group>"; };
 		73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extensions.swift"; sourceTree = "<group>"; };
 		73F67B931C7CA497008C6A0D /* AAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AAViewController.swift; sourceTree = "<group>"; };
+		73F992FF1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MasterDatabase.xcdatamodel; sourceTree = "<group>"; };
+		73F993021C9ACA9900E54AB8 /* Information+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Information+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		73F993031C9ACA9900E54AB8 /* Information.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Information.swift; sourceTree = "<group>"; };
 		73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSettingsVC.swift; sourceTree = "<group>"; };
 		73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionSettingsVC.xib; sourceTree = "<group>"; };
 		73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
@@ -771,6 +779,7 @@
 				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
 				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
 				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
+				73331C131C9ADC87009BA1DE /* MainDatabaseStack.swift */,
 				733E5E851C666F840039B7A8 /* Config.plist */,
 				E76B57651BBD1DAC00A70F69 /* UI */,
 				73E2390E1B97145D00CB38ED /* Model */,
@@ -783,7 +792,6 @@
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
 				7389E1831C75E5970081EED1 /* LaunchScreenVC.swift */,
 				733E5E811C6350A90039B7A8 /* CoreDataWrapper.swift */,
-				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
 				73BD1EBE1B4E655700AA5B28 /* Other */,
 				E7E1A81F1B3804F1008D8713 /* Framework */,
 				73E206A91B2EEFFE0008B002 /* Supporting Files */,
@@ -820,40 +828,8 @@
 			isa = PBXGroup;
 			children = (
 				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
-				224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */,
-				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
-				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
-				730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */,
-				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
-				738DECAB1BBBEA6300D6B834 /* Security.swift */,
-				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
-				7372EB241BC410800097806D /* Timer.swift */,
-				7372EB251BC410800097806D /* Scene+CoreDataProperties.swift */,
-				7372EB261BC410800097806D /* Scene.swift */,
-				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
-				7372EB281BC410800097806D /* Flag.swift */,
-				7372EB2C1BC410800097806D /* Category.swift */,
-				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
-				7372EB2E1BC410800097806D /* Event.swift */,
-				7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */,
-				7372EB301BC410800097806D /* Gateway.swift */,
-				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
-				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
-				7372EB321BC410800097806D /* Sequence.swift */,
-				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
-				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
-				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
-				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
-				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
-				730E90C01C6A1BF400B1D50D /* Image.swift */,
-				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
-				739D57151C809B30004CC50E /* DeviceImage.swift */,
-				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
-				73F1ECA51C8978B2007CEEAA /* Location.swift */,
-				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
-				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
-				223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */,
-				223980BA1C89CFB500E02536 /* Surveillance.swift */,
+				73F993061C9ACAD700E54AB8 /* User Database */,
+				73F993011C9ACA7600E54AB8 /* Master Database */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -902,6 +878,58 @@
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		73F993011C9ACA7600E54AB8 /* Master Database */ = {
+			isa = PBXGroup;
+			children = (
+				73F992FE1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodeld */,
+				73F993021C9ACA9900E54AB8 /* Information+CoreDataProperties.swift */,
+				73F993031C9ACA9900E54AB8 /* Information.swift */,
+			);
+			name = "Master Database";
+			sourceTree = "<group>";
+		};
+		73F993061C9ACAD700E54AB8 /* User Database */ = {
+			isa = PBXGroup;
+			children = (
+				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
+				224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */,
+				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
+				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
+				730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */,
+				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
+				738DECAB1BBBEA6300D6B834 /* Security.swift */,
+				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
+				7372EB241BC410800097806D /* Timer.swift */,
+				7372EB251BC410800097806D /* Scene+CoreDataProperties.swift */,
+				7372EB261BC410800097806D /* Scene.swift */,
+				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
+				7372EB281BC410800097806D /* Flag.swift */,
+				7372EB2C1BC410800097806D /* Category.swift */,
+				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
+				7372EB2E1BC410800097806D /* Event.swift */,
+				7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */,
+				7372EB301BC410800097806D /* Gateway.swift */,
+				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
+				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
+				7372EB321BC410800097806D /* Sequence.swift */,
+				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
+				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
+				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
+				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
+				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
+				730E90C01C6A1BF400B1D50D /* Image.swift */,
+				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
+				739D57151C809B30004CC50E /* DeviceImage.swift */,
+				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
+				73F1ECA51C8978B2007CEEAA /* Location.swift */,
+				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
+				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
+				223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */,
+				223980BA1C89CFB500E02536 /* Surveillance.swift */,
+			);
+			name = "User Database";
 			sourceTree = "<group>";
 		};
 		E739739E1B43E62E0077E984 /* Settings */ = {
@@ -1564,6 +1592,7 @@
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
+				73F993001C9ABAF600E54AB8 /* MasterDatabase.xcdatamodeld in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
@@ -1576,6 +1605,7 @@
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
+				73331C141C9ADC87009BA1DE /* MainDatabaseStack.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
@@ -1608,6 +1638,7 @@
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */,
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
+				73F993041C9ACA9900E54AB8 /* Information+CoreDataProperties.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,
 				2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
@@ -1683,6 +1714,7 @@
 				7372EB3C1BC410800097806D /* Category.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
+				73F993051C9ACA9900E54AB8 /* Information.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
@@ -1962,6 +1994,16 @@
 			);
 			currentVersion = 73E28EDE1B6657A80016CD77 /* e_Homegreen.xcdatamodel */;
 			path = e_Homegreen.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		73F992FE1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				73F992FF1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodel */,
+			);
+			currentVersion = 73F992FF1C9ABAF600E54AB8 /* MasterDatabase.xcdatamodel */;
+			path = MasterDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 //
 //    }
+    var testTestTest:TestTestTest = TestTestTest()
     func refreshDevicesToYesterday () {
         var error:NSError?
         let fetchRequest = NSFetchRequest(entityName: "Device")
@@ -48,8 +49,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    func enumerateDirectory() -> [String] {
+        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as [String]
+        let dir = dirs[0]
+        do {
+            let fileList = try NSFileManager.defaultManager().contentsOfDirectoryAtPath(dir)
+            return fileList as [String]
+        } catch {
+            
+        }
+        return []
+    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let documentsDirectory: AnyObject = paths[0]
+        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
+        
+        do {
+            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+        } catch let error as NSError {
+            print(error.localizedDescription);
+        }
         Fabric.with([Crashlytics.self])
+//        let storeURL: NSURL = NSURL.fileURLWithPath(self.applicationPrivateDocumentsDirectory.stringByAppendingPathComponent("SomeApp.sqlite"))
+//        print(storeURL)
+        var content:[String] = enumerateDirectory()
 //        refreshDevicesToYesterday()
         broadcastTimeAndDate()
         refreshAllConnections()
@@ -283,9 +307,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.e-homeautomation.e_Homegreen" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] 
+        return urls[urls.count-1]
     }()
-
+    lazy var applicationPrivateDocumentsDirectory:String = {
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let documentsDirectory: AnyObject = paths[0]
+        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
+        
+        do {
+            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+        } catch let error as NSError {
+            print(error.localizedDescription);
+        }
+//        var path: String
+//        if !path {
+//            NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomainMask.AllDomainsMask, true)
+//            var libraryPath: String = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, true).lastObject()
+//            path = libraryPath.stringByAppendingPathComponent("Private Documents")
+//            var isDirectory: Bool
+//            if !NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: isDirectory) {
+//                var error: NSError? = nil
+//                if !NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil, error: error!) {
+//                    NSLog("Can't create directory %@ [%@]", path, error!)
+//                    abort()
+//                    // replace with proper error handling
+//                }
+//            }
+//            else if !isDirectory {
+//                NSLog("Path %@ exists but is no directory", path)
+//                abort()
+//                // replace with error handling
+//            }
+//        }
+        return ""
+    }()
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource("e_Homegreen", withExtension: "momd")!
@@ -300,7 +355,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+            var options: [NSObject : AnyObject] = [NSMigratePersistentStoresAutomaticallyOption:true,
+                NSInferMappingModelAutomaticallyOption:true,
+                NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
+//            var options: [NSObject : AnyObject] = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
         } catch var error1 as NSError {
             error = error1
             coordinator = nil
@@ -374,7 +433,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+//            @{NSSQLitePragmasOption: @{@"journal_mode": @"delete"}}
+//            NSMutableDictionary *pragmaOptions = [NSMutableDictionary dictionary];
+//            [pragmaOptions setObject:@"DELETE" forKey:@"journal_mode"];
+//            var pragma_options:NSMutableDictionary
+//            pragma_options.setObject("DELETE", forKey: "journal_mode")
+            var pragma_options = ["journal_mode":"DELETE"]
+//            var options = [NSNumber(bool: true), NSMigratePersistentStoresAutomaticallyOption, NSNumber(bool: true), NSInferMappingModelAutomaticallyOption, pragma_options, NSSQLitePragmasOption]
+            var options: [NSObject : AnyObject] = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
+//            var options = [NSNumber(bool: true), NSMigratePersistentStoresAutomaticallyOption, NSNumber(bool: true), NSInferMappingModelAutomaticallyOption, pragmaOptions, NSSQLitePragmasOption, nil]]
+//            var options:NSDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, pragmaOptions, NSSQLitePragmasOption, nil]];
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
         } catch var error1 as NSError {
             error = error1
             coordinator = nil

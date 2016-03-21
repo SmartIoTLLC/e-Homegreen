@@ -234,22 +234,22 @@
         <relationship name="iBeacon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IBeacon" inverseName="iBeaconZone" inverseEntity="IBeacon" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Category" positionX="547" positionY="195" width="128" height="120"/>
-        <element name="Device" positionX="-504" positionY="-27" width="128" height="690"/>
-        <element name="DeviceImage" positionX="-326" positionY="-333" width="128" height="105"/>
-        <element name="Event" positionX="-63" positionY="72" width="128" height="210"/>
-        <element name="Flag" positionX="-306" positionY="-54" width="128" height="225"/>
-        <element name="Gateway" positionX="-135" positionY="423" width="128" height="390"/>
-        <element name="IBeacon" positionX="-72" positionY="-183" width="128" height="120"/>
-        <element name="Image" positionX="610" positionY="-96" width="128" height="75"/>
-        <element name="Location" positionX="-306" positionY="-189" width="128" height="180"/>
-        <element name="PCCommand" positionX="-306" positionY="-189" width="128" height="105"/>
-        <element name="Scene" positionX="513" positionY="519" width="128" height="210"/>
-        <element name="Security" positionX="493" positionY="333" width="128" height="135"/>
-        <element name="Sequence" positionX="205" positionY="-18" width="128" height="225"/>
-        <element name="SSID" positionX="-297" positionY="-180" width="128" height="75"/>
-        <element name="Surveillance" positionX="718" positionY="153" width="128" height="465"/>
-        <element name="Timer" positionX="376" positionY="18" width="128" height="270"/>
-        <element name="Zone" positionX="313" positionY="480" width="128" height="150"/>
+        <element name="Category" positionX="-461" positionY="-1591" width="128" height="43"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="43"/>
+        <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
+        <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>
+        <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
+        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="43"/>
+        <element name="IBeacon" positionX="-234" positionY="-1510" width="128" height="43"/>
+        <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
+        <element name="Location" positionX="-1125" positionY="-1726" width="128" height="43"/>
+        <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="43"/>
+        <element name="Scene" positionX="-639" positionY="-1879" width="128" height="43"/>
+        <element name="Security" positionX="-650" positionY="-1935" width="128" height="43"/>
+        <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>
+        <element name="SSID" positionX="-936" positionY="-1467" width="128" height="43"/>
+        <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="43"/>
+        <element name="Timer" positionX="-621" positionY="-1827" width="128" height="43"/>
+        <element name="Zone" positionX="-459" positionY="-1510" width="128" height="43"/>
     </elements>
 </model>

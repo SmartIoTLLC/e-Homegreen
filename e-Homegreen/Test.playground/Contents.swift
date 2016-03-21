@@ -23,21 +23,3 @@ let locations:[NSObject:[AnyObject]] = [
 
 let array = locations[1]?[0]
 locations["String"]
-
-class Vladimir, Enumerable {
-    init() {
-    }
-}
-class Marko: Vladimir {
-    
-}
-class Sladjan: Vladimir {
-}
-class Damir: Vladimir {
-    
-}
-enum enumi:Vladimir {
-    case M:Marko
-    case S:Sladjan
-    case D:Damir
-}
