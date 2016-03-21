@@ -132,7 +132,7 @@
                                     </constraints>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remote Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jjn-1G-jKd">
                                     <rect key="frame" x="0.0" y="441" width="300" height="19"/>
@@ -173,7 +173,7 @@
                                     </constraints>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SSID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBD-VS-6kd">
                                     <rect key="frame" x="97" y="405" width="195" height="30"/>

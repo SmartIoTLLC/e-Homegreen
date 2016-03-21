@@ -191,7 +191,7 @@ extension UIViewController {
         return suggVC
     }
 }
-extension UIViewController {
+extension NSObject {
     
     func returnThreeCharactersForByte (number:Int) -> String {
         return String(format: "%03d",number)

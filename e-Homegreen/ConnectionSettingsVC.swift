@@ -9,11 +9,15 @@
 import UIKit
 import CoreData
 
+protocol AddEditGatewayDelegate{
+    func add_editGatewayFinished()
+}
+
 class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
-    var gatewayIndex:Int = -1
-    
     var isPresenting: Bool = true
+    
+    var delegate:AddEditGatewayDelegate?
     
     @IBOutlet weak var backView: UIView!
     
@@ -34,6 +38,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
+    var location:Location?
+    var gateway:Gateway?
+    
 
     @IBOutlet weak var centarY: NSLayoutConstraint!
     
@@ -41,10 +48,12 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     @IBOutlet weak var txtAutoReconnectDelay: UITextField!
     
-    init(){
+    init(gateway:Gateway?, location:Location?){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.location = location
+        self.gateway = gateway
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -62,9 +71,24 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         return true
     }
     
+    func endEditingNow(){
+        port.resignFirstResponder()
+        localPort.resignFirstResponder()
+        centarY.constant = 0
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        port.inputAccessoryView = keyboardDoneButtonView
+        localPort.inputAccessoryView = keyboardDoneButtonView
         
         print(UIDevice.currentDevice().SSID)
         
@@ -152,14 +176,29 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         name.delegate = self
         txtDescription.delegate = self
         
+        name.enabled = false
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
 
         // Do any additional setup after loading the view.
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+
 
         // Default gateway address
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        if gatewayIndex == -1 {
-            name.text = ""
+        if let gateway = gateway{
+            ipHost.text = gateway.remoteIp
+            port.text = "\(gateway.remotePort)"
+            localIP.text = gateway.localIp
+            localPort.text = "\(gateway.localPort)"
+            localSSID.text = gateway.ssid
+            addressFirst.text = returnThreeCharactersForByte(Int(gateway.addressOne))
+            addressSecond.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
+            addressThird.text = returnThreeCharactersForByte(Int(gateway.addressThree))
+            txtDescription.text = gateway.gatewayDescription
+            name.text = gateway.location.name
+        }else{
+            name.text = location?.name
             addressFirst.text = returnThreeCharactersForByte(1)
             addressSecond.text = returnThreeCharactersForByte(0)
             addressThird.text = returnThreeCharactersForByte(0)
@@ -169,25 +208,10 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             localSSID.text = ""
             ipHost.text = "192.168.0.181"
             port.text = "5101"
-            
-        } else {
-            fetchGateways()
-            ipHost.text = "\(gateways[gatewayIndex].remoteIp)"
-            port.text = "\(gateways[gatewayIndex].remotePort)"
-            localIP.text = "\(gateways[gatewayIndex].localIp)"
-            localPort.text = "\(gateways[gatewayIndex].localPort)"
-            localSSID.text = "\(gateways[gatewayIndex].ssid)"
-            addressFirst.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressOne))
-            addressSecond.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressTwo))
-            addressThird.text = returnThreeCharactersForByte(Int(gateways[gatewayIndex].addressThree))
-            txtDescription.text = "\(gateways[gatewayIndex].gatewayDescription)"
-            name.text = "\(gateways[gatewayIndex].name)"
         }
         
     }
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
+
     override func viewWillAppear(animated: Bool) {
         print("")
     }
@@ -237,49 +261,54 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" {
             
         } else {
-            //            if let remoPort = Int(port.text!), let locaPort = Int(localPort.text!), let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
             if let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
                 if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
-                    if gatewayIndex == -1 {
-                        let gateway = Gateway(context: appDel.managedObjectContext!)
-//                        let gateway = NSEntityDescription.insertNewObjectForEntityForName("Gateway", inManagedObjectContext: appDel.managedObjectContext!) as! Gateway
-                        gateway.name = name.text!
-                        if ipHost.text == "" {
-                            gateway.remoteIp = "0"
-                        } else {
-                            gateway.remoteIp = ipHost.text!
+                    
+                    if gateway == nil{
+                        if let location = location{
+                            let gateway = Gateway(context: appDel.managedObjectContext!)
+                            gateway.name = name.text!
+                            if ipHost.text == "" {
+                                gateway.remoteIp = "0"
+                            } else {
+                                gateway.remoteIp = ipHost.text!
+                            }
+                            if port.text == "" {
+                                gateway.remotePort = 0
+                            } else {
+                                gateway.remotePort = Int(port.text!)!
+                            }
+                            gateway.localIp = localIP.text!
+                            gateway.localPort = Int(localPort.text!)!
+                            gateway.ssid = localSSID.text!
+                            gateway.addressOne = Int(addressFirst.text!)!
+                            gateway.addressTwo = Int(addressSecond.text!)!
+                            gateway.addressThree = Int(addressThird.text!)!
+                            gateway.gatewayDescription = txtDescription.text
+                            gateway.turnedOn = true
+                            gateway.autoReconnectDelay = NSNumber(integer: 3)
+                            gateway.location = location
+                            createZonesAndCategories(gateway)
+                            saveChanges()
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                            delegate?.add_editGatewayFinished()
                         }
-                        if port.text == "" {
-                            gateway.remotePort = 0
-                        } else {
-                            gateway.remotePort = Int(port.text!)!
-                        }
-                        gateway.localIp = localIP.text!
-                        gateway.localPort = Int(localPort.text!)!
-                        gateway.ssid = localSSID.text!
-                        gateway.addressOne = Int(addressFirst.text!)!
-                        gateway.addressTwo = Int(addressSecond.text!)!
-                        gateway.addressThree = Int(addressThird.text!)!
-                        gateway.gatewayDescription = txtDescription.text
-                        gateway.turnedOn = true
-                        gateway.autoReconnectDelay = NSNumber(integer: 3)
-                        createZonesAndCategories(gateway)
+                    }else{
+                        gateway?.name = name.text!
+                        gateway?.remoteIp = ipHost.text!
+                        gateway?.remotePort = Int(port.text!)!
+                        gateway?.localIp = localIP.text!
+                        gateway?.localPort = Int(localPort.text!)!
+                        gateway?.ssid = localSSID.text!
+                        gateway?.addressOne = Int(addressFirst.text!)!
+                        gateway?.addressTwo = Int(addressSecond.text!)!
+                        gateway?.addressThree = Int(addressThird.text!)!
+                        gateway?.gatewayDescription = txtDescription.text
                         saveChanges()
                         self.dismissViewControllerAnimated(true, completion: nil)
-                    } else {
-                        gateways[gatewayIndex].name = name.text!
-                        gateways[gatewayIndex].remoteIp = ipHost.text!
-                        gateways[gatewayIndex].remotePort = Int(port.text!)!
-                        gateways[gatewayIndex].localIp = localIP.text!
-                        gateways[gatewayIndex].localPort = Int(localPort.text!)!
-                        gateways[gatewayIndex].ssid = localSSID.text!
-                        gateways[gatewayIndex].addressOne = Int(addressFirst.text!)!
-                        gateways[gatewayIndex].addressTwo = Int(addressSecond.text!)!
-                        gateways[gatewayIndex].addressThree = Int(addressThird.text!)!
-                        gateways[gatewayIndex].gatewayDescription = txtDescription.text
-                        saveChanges()
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        delegate?.add_editGatewayFinished()
                     }
+                    
                 }
             }
         }
@@ -310,27 +339,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         }
     }
     var appDel:AppDelegate!
-    var gateways:[Gateway] = []
     var error:NSError? = nil
-    func fetchGateways() {
-        let fetchRequest = NSFetchRequest(entityName: "Gateway")
-        let sortDescriptor1 = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-            gateways = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-//        if let results = fetResults {
-//            gateways = results
-//        } else {
-//            
-//        }
-    }
+
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -339,7 +349,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.Refresh, object: self, userInfo: nil)
         appDel.establishAllConnections()
     }
     
@@ -461,9 +470,9 @@ extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showConnectionSettings(gatewayIndex: Int) {
-        let connSettVC = ConnectionSettingsVC()
-        connSettVC.gatewayIndex = gatewayIndex
+    func showConnectionSettings(gateway: Gateway?, location:Location?) -> ConnectionSettingsVC{
+        let connSettVC = ConnectionSettingsVC(gateway: gateway, location: location)
         self.presentViewController(connSettVC, animated: true, completion: nil)
+        return connSettVC
     }
 }

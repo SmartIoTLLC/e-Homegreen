@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol AddEditSurveillanceDelegate{
+    func add_editSurveillanceFinished()
+}
+
 class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var scroll: UIScrollView!
@@ -17,6 +21,8 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     var isPresenting: Bool = true
+    
+    var delegate:AddEditSurveillanceDelegate?
     
     @IBOutlet weak var backView: UIView!
     
@@ -34,6 +40,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     
     @IBOutlet weak var editIPRemote: UITextField!
     @IBOutlet weak var editPortRemote: UITextField!
+    
     @IBOutlet weak var editUserName: UITextField!
     @IBOutlet weak var editPassword: UITextField!
     
@@ -43,12 +50,12 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     var appDel:AppDelegate!
     var error:NSError? = nil
     var surv:Surveillance?
+    var parentLocation:Location?
     
-    var isNew = false
-    
-    init(surv: Surveillance?){
+    init(surv: Surveillance?, location:Location?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
         self.surv = surv
+        self.parentLocation = location
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
@@ -56,11 +63,27 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func endEditingNow(){
+        editPortRemote.resignFirstResponder()
+        editPortLocal.resignFirstResponder()
+        centarConstraint.constant = 0
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+
+        editPortRemote.inputAccessoryView = keyboardDoneButtonView
+        editPortLocal.inputAccessoryView = keyboardDoneButtonView
         
         if UIScreen.mainScreen().scale > 2.5{
             editIPRemote.layer.borderWidth = 1
@@ -159,17 +182,18 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editZone.delegate = self
         editCategory.delegate = self
         
+        editLocation.enabled = false
+        
+        
         if surv != nil{
+            
+            editLocation.text = surv?.location?.name
             editIPRemote.text = surv?.ip
             editPortRemote.text = "\(surv!.port!)"
             editUserName.text = surv?.username
             editPassword.text = surv?.password
-            if isNew {editName.text = ""} else {editName.text = surv?.name}
-//            editName.text = surv?.name
-            if surv?.location != nil{
-                if isNew {editLocation.text = ""} else {editLocation.text = surv?.locationDELETETHIS}
-//                editLocation.text = surv?.location
-            }
+            editName.text = surv?.name
+
             if surv?.localIp != nil{
                 editIPLocal.text = surv?.localIp
             }
@@ -189,6 +213,8 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 editCategory.text = surv?.surveillanceCategory
             }
             
+        }else{
+            editLocation.text = parentLocation?.name
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
@@ -249,41 +275,44 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     
     @IBAction func btnSave(sender: AnyObject) {
         if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let level = editLevel.text, let zone = editZone.text, let category = editCategory.text, let remotePortNumber = Int(remotePort), let location = editLocation.text,let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort),let ssid = editSSID.text   {
-            if surv == nil || isNew{
-                let surveillance = Surveillance(context: appDel.managedObjectContext!)
-                
-                surveillance.locationDELETETHIS = location
-                surveillance.surveillanceLevel = level
-                surveillance.surveillanceZone = zone
-                surveillance.surveillanceCategory = category
-                surveillance.name = name
-                surveillance.username = username
-                surveillance.password = password
-                surveillance.localIp = localIp
-                surveillance.localPort = localPort
-                surveillance.ssid = ssid
-                surveillance.ip = remoteIp
-                surveillance.port = remotePortNumber
-
-                surveillance.isVisible = true
-               
-                surveillance.urlHome = ""
-                surveillance.urlMoveUp = ""
-                surveillance.urlMoveRight = ""
-                surveillance.urlMoveLeft = ""
-                surveillance.urlMoveDown = ""
-                surveillance.urlAutoPan = ""
-                surveillance.urlAutoPanStop = ""
-                surveillance.urlPresetSequence = ""
-                surveillance.urlPresetSequenceStop = ""
-                surveillance.urlGetImage = ""
-                
-                surveillance.tiltStep = 1
-                surveillance.panStep = 1
-                surveillance.autSpanStep = 1
-                surveillance.dwellTime = 15
-                saveChanges()
-            }else if surv != nil || !isNew{
+            if surv == nil{
+                if let parentLocation = parentLocation{
+                    let surveillance = Surveillance(context: appDel.managedObjectContext!)
+                    
+                    surveillance.locationDELETETHIS = location
+                    surveillance.surveillanceLevel = level
+                    surveillance.surveillanceZone = zone
+                    surveillance.surveillanceCategory = category
+                    surveillance.name = name
+                    surveillance.username = username
+                    surveillance.password = password
+                    surveillance.localIp = localIp
+                    surveillance.localPort = localPort
+                    surveillance.ssid = ssid
+                    surveillance.ip = remoteIp
+                    surveillance.port = remotePortNumber
+                    
+                    surveillance.isVisible = true
+                    
+                    surveillance.urlHome = ""
+                    surveillance.urlMoveUp = ""
+                    surveillance.urlMoveRight = ""
+                    surveillance.urlMoveLeft = ""
+                    surveillance.urlMoveDown = ""
+                    surveillance.urlAutoPan = ""
+                    surveillance.urlAutoPanStop = ""
+                    surveillance.urlPresetSequence = ""
+                    surveillance.urlPresetSequenceStop = ""
+                    surveillance.urlGetImage = ""
+                    
+                    surveillance.tiltStep = 1
+                    surveillance.panStep = 1
+                    surveillance.autSpanStep = 1
+                    surveillance.dwellTime = 15
+                    surveillance.location = parentLocation
+                    saveChanges()
+                }
+            }else if surv != nil{
                 
                 surv!.locationDELETETHIS = location
                 surv!.surveillanceLevel = level
@@ -302,6 +331,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             }
             
             self.dismissViewControllerAnimated(true, completion: nil)
+            delegate?.add_editSurveillanceFinished()
         }
     }
     
@@ -474,9 +504,9 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSurveillanceSettings(surv: Surveillance?, isNew:Bool) {
-        let connSettVC = SurveillanceSettingsVC(surv: surv)
-        connSettVC.isNew = isNew
-        self.presentViewController(connSettVC, animated: true, completion: nil)
+    func showSurveillanceSettings(surv: Surveillance?, location:Location?) -> SurveillanceSettingsVC {
+        let survSettVC = SurveillanceSettingsVC(surv: surv, location:location)
+        self.presentViewController(survSettVC, animated: true, completion: nil)
+        return survSettVC
     }
 }

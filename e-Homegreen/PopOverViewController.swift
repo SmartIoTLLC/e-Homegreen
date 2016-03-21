@@ -80,6 +80,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Hourly", id: 7),
         TableList(name: "Minutely", id: 7),
         TableList(name: "Countdown", id: 7)]
+    var locationAddOption:[TableList] = [TableList(name: TypeOfLocationDevice.Gateway.description, id: -1),
+        TableList(name: TypeOfLocationDevice.Surveillance.description, id: -1)]
     var tableList:[AnyObject] = []
     
     var appDel:AppDelegate!
@@ -429,6 +431,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case PowerOption = 23
         case PlayOption = 24
         case RunOption = 25
+        case LocationOptions = 26
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Gateways.rawValue {
@@ -469,6 +472,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             updateDeviceList("PlayOption")
         } else if indexTab == PopOver.RunOption.rawValue {
             updateDeviceList("RunOption")
+        } else if indexTab == PopOver.LocationOptions.rawValue {
+            tableList = locationAddOption
         } else if indexTab == PopOver.ControlType.rawValue {
             if let type = device?.type {
                 changeControlType(type)
@@ -513,6 +518,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.dismissViewControllerAnimated(true, completion: nil)
         if let list = tableList as? [TableList] {
             delegate?.saveText!(list[indexPath.row].name, id: list[indexPath.row].id)
         } else if let list = tableList as? [SecurityFeedback] {
@@ -520,7 +526,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if let list = tableList as? [PathAndName]{
             delegate?.returnNameAndPath!(list[indexPath.row].name, path: list[indexPath.row].path)
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

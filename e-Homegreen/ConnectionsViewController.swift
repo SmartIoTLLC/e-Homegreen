@@ -9,7 +9,35 @@
 import UIKit
 import CoreData
 
-class ConnectionsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning  {
+struct LocationDevice {
+    var device:AnyObject
+    var typeOfLocationDevice:TypeOfLocationDevice
+}
+
+enum TypeOfLocationDevice{
+    case Gateway, Surveillance
+    var description:String{
+        switch self{
+        case Gateway: return "e-Homegreen"
+        case Surveillance: return "Surveillance"
+        }
+    }
+    static let allValues = [Gateway, Surveillance]
+}
+
+class CollapsableViewModel {
+    let location: Location
+    var children: [LocationDevice]
+    var isCollapsed: Bool
+    
+    init(location: Location, children: [LocationDevice] = [], isCollapsed: Bool = false) {
+        self.location = location
+        self.children = children
+        self.isCollapsed = isCollapsed
+    }
+}
+
+class ConnectionsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, GatewayCellDelegate, SurveillanceCellDelegate, AddEditLocationDelegate, AddEditGatewayDelegate, AddEditSurveillanceDelegate  {
     
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
@@ -23,6 +51,12 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     var isPresenting:Bool = false
     
+    var locationList:[CollapsableViewModel] = []
+    
+    var popoverVC:PopOverViewController = PopOverViewController()
+    
+    var index = 0
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 //        transitioningDelegate = self
@@ -30,8 +64,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
-        self.showConnectionSettings(-1)
-//        self.showAddLocation()
+        self.showAddLocation(nil).delegate = self
         
     }
     
@@ -71,10 +104,13 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         transitioningDelegate = self
         self.commonConstruct()
         
+        gatewayTableView.estimatedRowHeight = 44.0
+        gatewayTableView.rowHeight = UITableViewAutomaticDimension
+        
         // Do any additional setup after loading the view.
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        fetchGateways()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: NotificationKey.RefreshDevice, object: nil)
+//        fetchGateways()
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshGatewayListWithNewData", name: NotificationKey.RefreshDevice, object: nil)
         
         // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
         gatewayTableView.delaysContentTouches = false
@@ -84,7 +120,141 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
                 (currentView as! UIScrollView).delaysContentTouches = false
             }
         }
+        
+        updateLocationList()
     }
+    
+    
+    @IBAction func addNewElementInLocation(sender: AnyObject) {
+        popoverVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        index = sender.tag
+        popoverVC.indexTab = 26
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+    @IBAction func deleteLocation(sender: AnyObject) {
+        let optionMenu = UIAlertController(title: nil, message: "Delete location?", preferredStyle: .ActionSheet)
+
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.appDel.managedObjectContext?.deleteObject(self.locationList[sender.tag].location)
+            self.reloadLocations()
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+
+    }
+    
+    @IBAction func editLocation(sender: AnyObject) {
+        self.showAddLocation(locationList[sender.tag].location).delegate = self
+    }
+    
+
+    
+    func saveText(text: String, id: Int) {
+        if TypeOfLocationDevice.Gateway.description == text{
+            self.showConnectionSettings(nil, location: locationList[index].location).delegate = self
+        }
+        if TypeOfLocationDevice.Surveillance.description == text{
+            showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
+        }
+    }
+    
+    //delegati kada dodajemo gateway i surveillance
+    
+    func add_editGatewayFinished() {
+        editLocation()
+    }
+    
+    func editAddLocationFinished() {
+        reloadLocations()
+    }
+    
+    func add_editSurveillanceFinished(){
+        editLocation()
+    }
+    
+    func reloadLocations(){
+        updateLocationList()
+        gatewayTableView.reloadData()
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
+   // popunjavam location list sa elementima lokacije, izvucem lokaciju i onda iz svake lokacije listu gatewaya i surveillance
+    func updateLocationList(){
+        locationList = []
+        let location = returnLocations()
+        
+        for item in location{
+            var listOfChildrenDevice:[LocationDevice] = []
+            if let listOfGateway = item.gateways {
+                for gateway in listOfGateway{
+                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Gateway))
+                }
+            }
+            if let listOfSurveillance = item.surveillances {
+                for surv in listOfSurveillance{
+                    listOfChildrenDevice.append(LocationDevice(device: surv, typeOfLocationDevice: .Surveillance))
+                }
+            }
+            locationList.append(CollapsableViewModel(location: item, children: listOfChildrenDevice))
+        }
+    }
+    
+    func editLocation(){
+        let locationEdit = locationList[index].location
+        locationList[index].children = []
+        var listOfChildrenDevice:[LocationDevice] = []
+        if let listOfGateway = locationEdit.gateways {
+            for gateway in listOfGateway{
+                listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Gateway))
+            }
+        }
+        if let listOfSurveillance = locationEdit.surveillances {
+            for surv in listOfSurveillance{
+                listOfChildrenDevice.append(LocationDevice(device: surv, typeOfLocationDevice: .Surveillance))
+            }
+        }
+        locationList[index].children = listOfChildrenDevice
+        gatewayTableView.reloadData()
+    }
+    
+    func returnLocations () -> [Location] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
+        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorTwo]
+        do {
+            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
+            return fetchResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    
     override func viewDidAppear(animated: Bool) {
         appDel.establishAllConnections()
     }
@@ -92,44 +262,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         appDel.establishAllConnections()
     }
     override func viewWillAppear(animated: Bool) {
+        gatewayTableView.reloadData()
         gatewayTableView.userInteractionEnabled = true
-    }
-    
-    func refreshGatewayListWithNewData () {
-        fetchGateways()
-        gatewayTableView.reloadData()
-    }
-    
-    func updateNewGatewayList () {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.Gateway.Refresh, object: nil)
-        fetchGateways()
-    }
-    
-    func fetchGateways () {
-        let fetchRequest = NSFetchRequest(entityName: "Gateway")
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            print(appDel)
-            print(appDel.managedObjectContext!)
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-            gateways = fetResults!
-            refreshGatewayList()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-//        if let results = fetResults {
-//            gateways = results
-//            refreshGatewayList()
-//        } else {
-//        }
-    }
-    
-    func refreshGatewayList () {
-        gatewayTableView.reloadData()
     }
     
     func commonConstruct() {
@@ -150,6 +284,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    // delegatske funkcije za tranziciju ekrana
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5
@@ -196,20 +332,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
     
-//    override func viewWillLayoutSubviews() {
-//        gatewayTableView.reloadData()
-//    }
-    
-    func changeValue(sender:UISwitch){
-        if sender.on == true {
-            gateways[sender.tag].turnedOn = true
-        }else {
-            gateways[sender.tag].turnedOn = false
-        }
-        saveChanges()
-        gatewayTableView.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-    }
+
     
     func saveChanges() {
         do {
@@ -220,60 +343,47 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
             abort()
         }
     }
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
     
 
 }
 
 extension ConnectionsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.lblGatewayName.text = gateways[indexPath.section].name
-            
-            cell.lblGatewayDescription.text = gateways[indexPath.section].gatewayDescription
-            
-            cell.lblGatewayDeviceNumber.text = "\(gateways[indexPath.section].devices.count) device(s)"
-            cell.add1.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressOne))
-            cell.add2.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressTwo))
-            cell.add3.text = returnThreeCharactersForByte(Int(gateways[indexPath.section].addressThree))
-            cell.switchGatewayState.on = gateways[indexPath.section].turnedOn.boolValue
-            cell.switchGatewayState.tag = indexPath.section
-            cell.switchGatewayState.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-            cell.add1.layer.cornerRadius = 3
-            cell.add2.layer.cornerRadius = 3
-            cell.add3.layer.cornerRadius = 3
-            cell.add1.clipsToBounds = true
-            cell.add2.clipsToBounds = true
-            cell.add3.clipsToBounds = true
-            if UIScreen.mainScreen().scale > 2.5{
-                cell.add1.layer.borderWidth = 1
-                cell.add2.layer.borderWidth = 1
-                cell.add3.layer.borderWidth = 1
-                cell.buttonGatewayScan.layer.borderWidth = 1
-            }else{
-                cell.add1.layer.borderWidth = 0.5
-                cell.add2.layer.borderWidth = 0.5
-                cell.add3.layer.borderWidth = 0.5
-                cell.buttonGatewayScan.layer.borderWidth = 0.5
+
+        if indexPath.row == 0{
+            if let cell = tableView.dequeueReusableCellWithIdentifier("locationCell") as? LocationCell {
+                cell.setItem(locationList[indexPath.section].location, isColapsed: locationList[indexPath.section].isCollapsed)
+                cell.addButton.tag = indexPath.section
+                cell.editButton.tag = indexPath.section
+                cell.deleteButton.tag = indexPath.section
+                return cell
             }
-            cell.add1.layer.borderColor = UIColor.darkGrayColor().CGColor
-            cell.add2.layer.borderColor = UIColor.darkGrayColor().CGColor
-            cell.add3.layer.borderColor = UIColor.darkGrayColor().CGColor
-            cell.buttonGatewayScan.layer.borderColor = UIColor.darkGrayColor().CGColor
-            cell.buttonGatewayScan.layer.cornerRadius = 5
-            cell.buttonGatewayScan.addTarget(self, action: "scanDevice:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.buttonGatewayScan.tag = indexPath.section
+        }else{
+            let location = locationList[indexPath.section]
+            let device = location.children[indexPath.row - 1]
+            switch device.typeOfLocationDevice{
+            case TypeOfLocationDevice.Gateway:
+                if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
+                    if let gateway = device.device as? Gateway{
+                        cell.delegate = self
+                        cell.setItem(gateway)
+                    }
+                    return cell
+                }
+                break
             
-            if gateways[indexPath.section].turnedOn.boolValue {
-                cell.buttonGatewayScan.enabled = true
-            } else {
-                cell.buttonGatewayScan.enabled = false
+            case TypeOfLocationDevice.Surveillance:
+                if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
+                    if let surv = device.device as? Surveillance{
+                        cell.delegate = self
+                        cell.setItem(surv)
+                    }
+                    return cell
+                }
+                break
+            
             }
             
-            return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
@@ -281,7 +391,12 @@ extension ConnectionsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if locationList[section].isCollapsed{
+            return (locationList[section].children).count + 1
+        }else{
+            return 1
+        }
+        
     }
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = UIView()
@@ -293,102 +408,225 @@ extension ConnectionsViewController: UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return gateways.count
+        return locationList.count
     }
-    func scanDevice(button:UIButton){
-        performSegueWithIdentifier("scan", sender: button)
+    
+    //delegatske funkcije za brisanje i gatewaya i surveillance, za skeniranje uredjaja
+    
+    func deleteSurveillance(surveillance:Surveillance){
+        let optionMenu = UIAlertController(title: nil, message: "Delete camera?", preferredStyle: .ActionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.appDel.managedObjectContext?.deleteObject(surveillance)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+    }
+    func scanURL(surveillance:Surveillance){
+        showCameraUrls(self.view.center, surveillance: surveillance)
+    }
+    
+    func scanDevice(gateway: Gateway) {
+        performSegueWithIdentifier("scan", sender: gateway)
         gatewayTableView.userInteractionEnabled = false
     }
+    
+    func deleteGateway(gateway: Gateway) {
+        let optionMenu = UIAlertController(title: nil, message: "Delete e-Homegreen?", preferredStyle: .ActionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            self.appDel.managedObjectContext?.deleteObject(gateway)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+    }
+    
+    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch){
+        if gatewaySwitch.on == true {
+            gateway.turnedOn = true
+        }else {
+            gateway.turnedOn = false
+        }
+        saveChanges()
+        gatewayTableView.reloadData()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "scan" {
-            if let button = sender as? UIButton {
                 if let vc = segue.destinationViewController as? ScanViewController {
-                        vc.gateway = gateways[button.tag]
+                    if let gateway = sender as? Gateway{
+                        vc.gateway = gateway
+                    }
                 }
             }
-        }
     }
     
 }
 
 extension ConnectionsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
-        
-        dispatch_async(dispatch_get_main_queue(),{
-            self.showConnectionSettings(indexPath.section)
-        })
-    }
-    
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.gatewayTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+
+        if indexPath.row == 0{
+            locationList[indexPath.section].isCollapsed = !locationList[indexPath.section].isCollapsed
+            tableView.reloadData()
+//            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.None)
+        }else{
+            let device = locationList[indexPath.section].children[indexPath.row - 1]
+            if let surv = device.device as? Surveillance{
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.showSurveillanceSettings(surv, location: nil).delegate = self
+                })
             }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            if let gateway = device.device as? Gateway{
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.showConnectionSettings(gateway, location: nil).delegate = self
+                })
             }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
-        })
-        
-        button.backgroundColor = UIColor.redColor()
-        return [button]
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if editingStyle == .Delete {
-            // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            appDel.managedObjectContext?.deleteObject(gateways[indexPath.section])
-            saveChanges()
-            fetchGateways()
         }
-        
+        index = indexPath.section
     }
+
+}
+
+protocol GatewayCellDelegate{
+    func deleteGateway(gateway:Gateway)
+    func scanDevice(gateway:Gateway)
+    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch)
 }
 
 // Gateway cell
 class GatewayCell: UITableViewCell {
     
-    @IBOutlet weak var lblGatewayName: UILabel!
+    var gateway:Gateway?
+    var delegate:GatewayCellDelegate?
     @IBOutlet weak var lblGatewayDeviceNumber: UILabel!
     @IBOutlet weak var lblGatewayDescription: MarqueeLabel!
     var gradientLayer: CAGradientLayer?
     
-    
     @IBOutlet weak var buttonGatewayScan: UIButton!
-    
     @IBOutlet weak var switchGatewayState: UISwitch!
     
     @IBOutlet weak var add1: UILabel!
     @IBOutlet weak var add2: UILabel!
     @IBOutlet weak var add3: UILabel!
     
-    override func drawRect(rect: CGRect) {
+    @IBAction func scanDevicesAction(sender: AnyObject) {
+        if let gate = gateway{
+            delegate?.scanDevice(gate)
+        }
+    }
+    
+    @IBAction func deleteGateway(sender: AnyObject) {
+        if let gate = gateway{
+            delegate?.deleteGateway(gate)
+        }
+    }
+    
+    @IBAction func changeSwitchValue(sender: AnyObject) {
+        if let gatewaySwitch = sender as? UISwitch, let gate = gateway{
+            delegate?.changeSwitchValue(gate, gatewaySwitch: gatewaySwitch)
+        }
+    }
+    
+    override func awakeFromNib() {
+        self.add1.layer.cornerRadius = 2
+        self.add2.layer.cornerRadius = 2
+        self.add3.layer.cornerRadius = 2
+        self.add1.clipsToBounds = true
+        self.add2.clipsToBounds = true
+        self.add3.clipsToBounds = true
         
-        let path = UIBezierPath(roundedRect: rect,
+        self.add1.layer.borderWidth = 1
+        self.add2.layer.borderWidth = 1
+        self.add3.layer.borderWidth = 1
+        
+        self.add1.layer.borderColor = UIColor.darkGrayColor().CGColor
+        self.add2.layer.borderColor = UIColor.darkGrayColor().CGColor
+        self.add3.layer.borderColor = UIColor.darkGrayColor().CGColor
+        
+    }
+    
+    func setItem(gateway:Gateway){
+        
+        self.gateway = gateway
+        
+        self.lblGatewayDescription.text = gateway.gatewayDescription
+        self.lblGatewayDeviceNumber.text = "\(gateway.devices.count) device(s)"
+        self.add1.text = returnThreeCharactersForByte(Int(gateway.addressOne))
+        self.add2.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
+        self.add3.text = returnThreeCharactersForByte(Int(gateway.addressThree))
+        self.switchGatewayState.on = gateway.turnedOn.boolValue
+        if gateway.turnedOn.boolValue {
+            self.buttonGatewayScan.enabled = true
+        } else {
+            self.buttonGatewayScan.enabled = false
+        }
+    }
+    
+    override func drawRect(rect: CGRect) {
+        var rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+        let path = UIBezierPath(roundedRect: rectNew,
             byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 8.0, height: 8.0))
+            cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
-        path.lineWidth = 2
+        path.lineWidth = 1
         
         UIColor.darkGrayColor().setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+        let colors = [UIColor().e_homegreenColor().CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
+        let colorLocations:[CGFloat] = [0.0, 0.35, 1.0]
         let gradient = CGGradientCreateWithColors(colorSpace,
             colors,
             colorLocations)
         let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        let endPoint = CGPoint(x:self.bounds.width , y:0)
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
+    }
+    
+}
+//location cell
+class LocationCell: UITableViewCell {
+    @IBOutlet weak var arrowImage: UIImageView!
+    @IBOutlet weak var locationNameLabel: UILabel!
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    func setItem(location:Location, isColapsed:Bool){
+        locationNameLabel.text = location.name
+        if isColapsed{
+            arrowImage.image = UIImage(named: "strelica_gore")
+        }else{
+            arrowImage.image = UIImage(named: "strelica_dole")
+        }
     }
     
 }
