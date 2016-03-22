@@ -52,16 +52,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
-        
-        appDel.testTestTest.managedObjectContext!.performBlock{[weak self] in
-            if let selfStrong = self {
-                
-            }
-            let user = User(context: (UIApplication.sharedApplication().delegate as? AppDelegate)!.testTestTest.managedObjectContext!)
-            user.username = "fgdg"
-            user.password = "gdfgdsfgdf;oil"
-            self?.appDel.testTestTest.saveContext()
-        }
     }
     @IBAction func crashButtonTapped(sender: AnyObject) {
         printOut("proba")

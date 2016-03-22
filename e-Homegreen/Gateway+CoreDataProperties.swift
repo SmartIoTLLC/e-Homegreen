@@ -27,7 +27,6 @@ extension Gateway {
     @NSManaged var remotePort: NSNumber
     @NSManaged var ssid: String
     @NSManaged var turnedOn: NSNumber
-    @NSManaged var categories: NSSet
     @NSManaged var devices: NSSet
     @NSManaged var events: NSSet
     @NSManaged var flags: NSSet
@@ -35,7 +34,6 @@ extension Gateway {
     @NSManaged var security: NSSet
     @NSManaged var sequences: NSSet
     @NSManaged var timers: NSSet
-    @NSManaged var zones: NSSet
     @NSManaged var location: Location
 
 }

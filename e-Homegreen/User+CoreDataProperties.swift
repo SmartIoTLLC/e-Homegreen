@@ -1,5 +1,5 @@
 //
-//  Zone+CoreDataProperties.swift
+//  User+CoreDataProperties.swift
 //  e-Homegreen
 //
 //  Created by Teodor Stevic on 3/22/16.
@@ -12,14 +12,11 @@
 import Foundation
 import CoreData
 
-extension Zone {
+extension User {
 
-    @NSManaged var id: NSNumber?
-    @NSManaged var isVisible: NSNumber?
-    @NSManaged var level: NSNumber?
-    @NSManaged var name: String?
-    @NSManaged var zoneDescription: String?
-    @NSManaged var iBeacon: IBeacon?
-    @NSManaged var location: Location?
+    @NSManaged var password: String?
+    @NSManaged var profilePicture: NSData?
+    @NSManaged var username: String?
+    @NSManaged var locations: NSSet?
 
 }

@@ -244,7 +244,7 @@ class ChatHandler {
             let words = message.componentsSeparatedByString(" ")
             var maxElement:[Int:String] = [:]
             for zone in results {
-                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                let zoneNameWords = zone.name!.componentsSeparatedByString(" ")
                 var counter = 0
                 for word in words {
                     for zoneWord in zoneNameWords {
@@ -285,7 +285,7 @@ class ChatHandler {
             var maxElement:[Int:Zone] = [:]
             for zone in results {
                 print(zone.name)
-                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                let zoneNameWords = zone.name!.componentsSeparatedByString(" ")
                 var counter = 0
                 for word in words {
                     for zoneWord in zoneNameWords {
@@ -473,7 +473,7 @@ class ChatHandler {
             zones = results
             for zone in zones! {
                 print("\(zone.name)")
-                if message.containsString("\(zone.name.lowercaseString)") {
+                if message.containsString("\(zone.name!.lowercaseString)") {
                     return zone
                 }
             }

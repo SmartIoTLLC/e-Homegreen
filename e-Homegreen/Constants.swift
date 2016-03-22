@@ -419,6 +419,15 @@ struct CellSize {
 //struct Size {
 //    let cellSize = 0
 //}
+struct FilterKey {
+    static let location = "kLocation"
+    static let levelId = "kLevelId"
+    static let zoneId = "kZoneId"
+    static let categoryId = "kCategoryId"
+    static let levelName = "klevelName"
+    static let zoneName = "kZoneName"
+    static let categoryName = "kCategoryName"
+}
 struct NotificationKey {
     static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"

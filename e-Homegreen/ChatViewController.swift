@@ -475,7 +475,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                 }
             } else if command == .SetLevel {
                 if let zone = helper.getZone(message, isLevel: true) {
-                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.gateway.name, "\(zone.id)", "All", "All", "\(zone.name)", "All", "All"])
+                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(zone.id)", "All", "All", "\(zone.name)", "All", "All"])
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
                     refreshChatListWithAnswer("Level was set.", isValeryVoiceOn: isValeryVoiceOn)
                 } else {
@@ -483,8 +483,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                 }
             } else if command == .SetZone {
                 if let zone = helper.getZone(message, isLevel: false) {
-                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level), gateway: zone.gateway) {
-                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.gateway.name, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
+                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level!), gateway: zone.location!.gateways?.allObjects.first as! Gateway) {
+                    LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
                         refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)
                     } else {

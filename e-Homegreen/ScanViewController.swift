@@ -20,8 +20,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanSequencesViewController: ScanSequencesesViewController!
     var scanEventsViewController: ScanEventsViewController!
     var scanTimersViewController: ScanTimerViewController!
-    var importZoneViewController:ImportZoneViewController!
-    var importCategoryViewController: ImportCategoryViewController!
+//    var importZoneViewController:ImportZoneViewController!
+//    var importCategoryViewController: ImportCategoryViewController!
     var scanFlagsViewController: ScanFlagViewController!
     
     var pullDown = PullDownView()
@@ -68,8 +68,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
         scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier("ScanTimers") as! ScanTimerViewController
-        importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
-        importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
+//        importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
+//        importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
         scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanFlags") as! ScanFlagViewController
         
         toViewController = scanDeviceViewController
@@ -79,8 +79,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanSequencesViewController.gateway = gateway
         scanEventsViewController.gateway = gateway
         scanTimersViewController.gateway = gateway
-        importZoneViewController.gateway = gateway
-        importCategoryViewController.gateway = gateway
+//        importZoneViewController.gateway = gateway
+//        importCategoryViewController.gateway = gateway
         scanFlagsViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
@@ -216,10 +216,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             toViewController = scanEventsViewController
         case "Sequences":
             toViewController = scanSequencesViewController
-        case "Zones":
-            toViewController = importZoneViewController
-        case "Categories":
-            toViewController = importCategoryViewController
+//        case "Zones":
+//            toViewController = importZoneViewController
+//        case "Categories":
+//            toViewController = importCategoryViewController
         case "Timers":
             toViewController = scanTimersViewController
         case "Flag":

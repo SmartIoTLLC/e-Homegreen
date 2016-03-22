@@ -151,40 +151,41 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         }
         return nil
     }
+    //FIXME: Ove zone i kategorije su promenjene i nemaju vise gejtvej vec imaju samo lokacije
     @IBAction func saveAction(sender: AnyObject) {
-        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
-            if editZone == nil{
-                if let gw = gateway, let zones = fetchZones(idValid, gateway: gw){
-                    if zones != []{
-                        for item in zones{
-                            item.name = name
-                            item.level = levelValid
-                        }
-                    }else{
-                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-                            zoneInsert.id = idValid
-                            zoneInsert.name = name
-                            zoneInsert.level = levelValid
-                            zoneInsert.gateway = gw
-                        }
-                    }
-                }else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-                    zoneInsert.id = idValid
-                    zoneInsert.name = name
-                    zoneInsert.level = levelValid
-        
-                }
-                
-                saveChanges()
-            }else{
-                editZone?.name = name
-                editZone?.level = levelValid
-                
-                saveChanges()
-            }
-            delegate?.editZoneFInished()
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+//        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
+//            if editZone == nil{
+//                if let gw = gateway, let zones = fetchZones(idValid, gateway: gw){
+//                    if zones != []{
+//                        for item in zones{
+//                            item.name = name
+//                            item.level = levelValid
+//                        }
+//                    }else{
+//                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+//                            zoneInsert.id = idValid
+//                            zoneInsert.name = name
+//                            zoneInsert.level = levelValid
+//                            zoneInsert.gateway = gw
+//                        }
+//                    }
+//                }else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+//                    zoneInsert.id = idValid
+//                    zoneInsert.name = name
+//                    zoneInsert.level = levelValid
+//        
+//                }
+//                
+//                saveChanges()
+//            }else{
+//                editZone?.name = name
+//                editZone?.level = levelValid
+//                
+//                saveChanges()
+//            }
+//            delegate?.editZoneFInished()
+//            self.dismissViewControllerAnimated(true, completion: nil)
+//        }
     }
     
     @IBAction func cancelAction(sender: AnyObject) {

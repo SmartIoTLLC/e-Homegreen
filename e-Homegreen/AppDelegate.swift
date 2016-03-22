@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 //
 //    }
-    var testTestTest:TestTestTest = TestTestTest()
     func refreshDevicesToYesterday () {
         var error:NSError?
         let fetchRequest = NSFetchRequest(entityName: "Device")
@@ -117,16 +116,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if beacon != nil && beacon!.accuracy != 10000 {
             let zone = returnZoneWithIBeacon(beacon!)
             if zone != nil {
-                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.gateway.name) A POKAZUJE OVAj GATEWAY: \(zone?.gateway.name)")
+                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.location!.name) A POKAZUJE OVAj GATEWAY: \(zone?.location!.name)")
                 let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance", "Settings"]
                 for filter in filterArray {
                     var filterParametars = LocalSearchParametar.getLocalParametar(filter)
                     if zone!.level == 0 {
-                        filterParametars[0] = zone!.gateway.name
+                        filterParametars[0] = zone!.location!.name!
                         filterParametars[1] = "\(zone!.id)"
                         LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
                     } else {
-                        filterParametars[0] = zone!.gateway.name
+                        filterParametars[0] = zone!.location!.name!
                         filterParametars[2] = "\(zone!.id)"
                         LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
                     }
