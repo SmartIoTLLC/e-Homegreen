@@ -62,7 +62,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ScanScenesViewController.endEditingNow) )
         let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
@@ -76,17 +76,17 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         
         imageSceneOne.userInteractionEnabled = true
         imageSceneOne.tag = 1
-        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanScenesViewController.handleTap(_:))))
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
-        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanScenesViewController.handleTap(_:))))
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
-        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        broadcastSwitch.addTarget(self, action: #selector(ScanScenesViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         localcastSwitch.tag = 200
         localcastSwitch.on = false
-        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.addTarget(self, action: #selector(ScanScenesViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
@@ -215,7 +215,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -232,7 +232,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -249,7 +249,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

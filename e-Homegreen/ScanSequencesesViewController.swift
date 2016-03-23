@@ -207,7 +207,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -224,7 +224,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -241,7 +241,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

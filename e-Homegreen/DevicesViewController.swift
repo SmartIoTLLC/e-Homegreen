@@ -27,7 +27,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     
     var timer:NSTimer = NSTimer()
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
+//    var locationSearchText = ["", "", "", "", "", "", ""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,20 +45,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
-        // Do any additional setup after loading the view.
-//        LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All"])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-//        (locationSearch, levelSearch, zoneSearch, categorySearch) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3])
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
-    @IBAction func crashButtonTapped(sender: AnyObject) {
-        printOut("proba")
-        CLSLogv("Log awesomeness %@", getVaList(["Wow. Much fun. Very nice. Wow."]))
-        Crashlytics.sharedInstance().crash()
-    }
-
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
@@ -104,11 +96,8 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func refreshLocalParametars () {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         updateDeviceList()
-//        fetchDevicesInBackground()
         deviceCollectionView.reloadData()
     }
     
@@ -131,73 +120,23 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     func fetchDevicesInBackground () {
         updateCells()
     }
-    func deviceBackgroundFetch () -> NSFetchRequest {
-        let request = NSFetchRequest(entityName: "Device")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        request.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        
-        let predicateNull = NSPredicate(format: "categoryId != 0")
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
-        
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
-            predicateArray.append(locationPredicate)
-        }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-            predicateArray.append(levelPredicate)
-        }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-            predicateArray.append(zonePredicate)
-        }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        request.predicate = compoundPredicate
-        request.resultType = .ManagedObjectIDResultType
-        
-        return request
-    }
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
-        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        updateDeviceList()
-        deviceCollectionView.reloadData()
-        fetchDevicesInBackground()
-    }
-//    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String) {
-//        (locationSearch, levelSearch, zoneSearch, categorySearch) = (gateway, level, zone, category)
-//        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
+//        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+//        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
 //        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
 //        updateDeviceList()
 //        deviceCollectionView.reloadData()
 //        fetchDevicesInBackground()
-//    }
-    var gateways:[Gateway]?
-    func updateGateways(gatewayName:String, zone:Zone) {
-        let fetchRequest = NSFetchRequest(entityName: "Gateway")
-        let sortDescriptorOne = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne]
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-            gateways = fetResults!.map({$0})
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            //            abort()
-        }
+    }
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        updateDeviceList()
+        deviceCollectionView.reloadData()
+        fetchDevicesInBackground()
     }
     func updateDeviceList () {
-        print("ovde je uslo")
         let fetchRequest = NSFetchRequest(entityName: "Device")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
@@ -210,30 +149,29 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         let predicateNull = NSPredicate(format: "categoryId != 0") // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        // Filtering out PC devices
         let predicateThree = NSPredicate(format: "type != %@", ControlType.PC)
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo, predicateThree]
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-//            DatabaseHandler.returnZoneWithId(<#T##id: Int##Int#>, gateway: <#T##Gateway#>)
-//            DatabaseHandler.returnZoneIdWithName(<#T##name: String##String#>, gateway: <#T##Gateway#>)
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate, levelPredicateTwo])
+        if filterParametar.levelId != 0 {
+            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId))
+//            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterParametar.levelName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate, zonePredicateTwo])
+        if filterParametar.zoneId != 0 {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
+//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterParametar.zoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, categoryPredicateTwo])
+        if filterParametar.categoryId != 0 {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
+//            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", filterParametar.categoryName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
             predicateArray.append(copmpoundPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -296,7 +234,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("update:"), userInfo: tag, repeats: true)
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(DevicesViewController.update(_:)), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 longTouchOldValue = 0
@@ -317,7 +255,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 longTouchOldValue = Int(devices[tag].currentValue)
                 deviceInControlMode = true
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("updateCurtain:"), userInfo: tag, repeats: true)
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(DevicesViewController.updateCurtain(_:)), userInfo: tag, repeats: true)
             }
             if gestureRecognizer.state == UIGestureRecognizerState.Ended {
                 longTouchOldValue = 0
@@ -623,20 +561,12 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             deviceCollectionView.reloadData()
         }
-        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        pullDown.drawMenu(filterParametar)
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -864,10 +794,11 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         }
     }
     var deviceInControlMode = false
+    //MARK: Setting names for devices according to filter
     func returnNameForDeviceAccordingToFilter (device:Device) -> String {
-        if locationSearchText[0] != "All" {
-            if locationSearchText[1] != "All" {
-                if locationSearchText[2] != "All" {
+        if filterParametar.location != "All" {
+            if filterParametar.levelId != 0 {
+                if filterParametar.zoneId != 0 {
                     return "\(device.name)"
                 } else {
                     return "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"

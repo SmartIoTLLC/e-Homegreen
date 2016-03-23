@@ -54,7 +54,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ScanFlagViewController.endEditingNow) )
         let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
@@ -68,20 +68,20 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         imageSceneOne.userInteractionEnabled = true
         imageSceneOne.tag = 1
-        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanFlagViewController.handleTap(_:))))
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
-        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanFlagViewController.handleTap(_:))))
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
-        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        broadcastSwitch.addTarget(self, action: #selector(ScanFlagViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         localcastSwitch.tag = 200
         localcastSwitch.on = false
-        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.addTarget(self, action: #selector(ScanFlagViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         // Do any additional setup after loading the view.
     }
@@ -201,7 +201,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -218,7 +218,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -235,7 +235,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterGateway = gateway
+        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

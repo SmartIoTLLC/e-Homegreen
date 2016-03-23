@@ -25,7 +25,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanFlagsViewController: ScanFlagViewController!
     
     var pullDown = PullDownView()
-    var locationSearchText = ["", "", "", "", "", "", ""]
     
     var toViewController:UIViewController = UIViewController()
     
@@ -92,18 +91,22 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         self.view.addSubview(pullDown)
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
-        locationSearchText = LocalSearchParametar.getLocalParametar("Settings")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
         
 //        let swipeDismiss = UISwipeGestureRecognizer(target: self, action: "userSwiped:")
 //        swipeDismiss.direction = UISwipeGestureRecognizerDirection.Right
 //        self.view.addGestureRecognizer(swipeDismiss)
         // Do any additional setup after loading the view.
     }
-    
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        toViewController.sendFilterParametar(gateway, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+    //FIXME: Radi i sada ali mozda da se promeni na toViewController.sendFilterParametar(filterItem)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
+    func pullDownSearchParametars(filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Database)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
+        toViewController.sendFilterParametar(filterParametar.location, level: "\(filterParametar.levelId)", zone: "\(filterParametar.zoneId)", category: "\(filterParametar.categoryId)", levelName: filterParametar.levelName, zoneName: filterParametar.zoneName, categoryName: filterParametar.categoryName)
+//        toViewController.sendFilterParametar(filterItem)
+        pullDown.drawMenu(filterParametar)
     }
-    
     override func viewWillLayoutSubviews() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -146,8 +149,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
         }
-
-        pullDown.drawMenu(gateway!.name, level: "All", zone: "All", category: "All", locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
 
     

@@ -51,8 +51,8 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         
         calculateHeight()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
         
         // Do any additional setup after loading the view.
         
@@ -60,18 +60,17 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         //                pullDown.scrollsToTop = false
         self.view.addSubview(pullDown)
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        pullDown.drawMenu(filterParametar)
+        chatTableView.reloadData()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     
     func removeObservers() {
@@ -88,19 +87,11 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
         removeObservers()
         stopTextToSpeech()
     }
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Chat)
+    func pullDownSearchParametars(filterItem: FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         chatTableView.reloadData()
-        LocalSearchParametar.setLocalParametar("Chat", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Chat")
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -142,7 +133,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             layout = "Portrait"
         }
         chatTableView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     @IBOutlet weak var controlValleryVoice: UIButton!
     @IBAction func controlValleryVOice(sender: AnyObject) {
@@ -496,12 +487,12 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             } else if command == .ListDeviceInZone {
                 let zone = helper.getZone(message)
                 if zone == "" {
-                    if locationSearchText[0] != "All" {
-                        if locationSearchText[2] != "All" {
+                    if filterParametar.location != "All" {
+                        if filterParametar.zoneId != 0 {
                             // There is
-                            let devices = helper.returnAllDevices(locationSearchText, onlyZoneName: "")
+                            let devices = helper.returnAllDevices(filterParametar, onlyZoneName: "")
                             if devices.count != 0 {
-                                var answer = "These are all devices in \(locationSearchText[5]):\n"
+                                var answer = "These are all devices in \(filterParametar.zoneName):\n"
                                 for device in devices {
                                     answer = answer + "\(device.name)\n"
                                 }
@@ -520,7 +511,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     }
                 } else {
                     // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
-                    let devices = helper.returnAllDevices(locationSearchText, onlyZoneName: zone)
+                    let devices = helper.returnAllDevices(filterParametar, onlyZoneName: zone)
                     if devices.count != 0 {
                         var answer = "These are all devices in \(zone):\n"
                         for device in devices {
@@ -534,12 +525,12 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             } else if command == .ListSceneInZone {
                 let zone = helper.getZone(message)
                 if zone == "" {
-                    if locationSearchText[0] != "All" {
-                        if locationSearchText[2] != "All" {
+                    if filterParametar.location != "All" {
+                        if filterParametar.zoneId != 0 {
                             // There is
-                            let devices = helper.returnAllScenes(locationSearchText, onlyZoneName: "")
+                            let devices = helper.returnAllScenes(filterParametar, onlyZoneName: "")
                             if devices.count != 0 {
-                                var answer = "These are all devices in \(locationSearchText[5]):\n"
+                                var answer = "These are all devices in \(filterParametar.zoneName):\n"
                                 for device in devices {
                                     answer = answer + "\(device.sceneName)\n"
                                 }
@@ -558,7 +549,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     }
                 } else {
                     // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
-                    let devices = helper.returnAllScenes(locationSearchText, onlyZoneName: zone)
+                    let devices = helper.returnAllScenes(filterParametar, onlyZoneName: zone)
                     if devices.count != 0 {
                         var answer = "These are all scenes in \(zone):\n"
                         for device in devices {
@@ -572,12 +563,12 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             } else if command == .ListEventsInZone {
                 let zone = helper.getZone(message)
                 if zone == "" {
-                    if locationSearchText[0] != "All" {
-                        if locationSearchText[2] != "All" {
+                    if filterParametar.location != "All" {
+                        if filterParametar.zoneId != 0 {
                             // There is
-                            let devices = helper.returnAllEvents(locationSearchText, onlyZoneName: "")
+                            let devices = helper.returnAllEvents(filterParametar, onlyZoneName: "")
                             if devices.count != 0 {
-                                var answer = "These are all events in \(locationSearchText[5]):\n"
+                                var answer = "These are all events in \(filterParametar.zoneName):\n"
                                 for device in devices {
                                     answer = answer + "\(device.eventName)\n"
                                 }
@@ -596,7 +587,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     }
                 } else {
                     // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
-                    let devices = helper.returnAllEvents(locationSearchText, onlyZoneName: zone)
+                    let devices = helper.returnAllEvents(filterParametar, onlyZoneName: zone)
                     if devices.count != 0 {
                         var answer = "These are all events in \(zone):\n"
                         for device in devices {
@@ -610,10 +601,10 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             } else if command == .ListSequenceInZone {
                 let zone = helper.getZone(message)
                 if zone == "" {
-                    if locationSearchText[0] != "All" {
-                        if locationSearchText[2] != "All" {
+                    if filterParametar.location != "All" {
+                        if filterParametar.zoneId != 0 {
                             // There is
-                            let devices = helper.returnAllSequences(locationSearchText, onlyZoneName: "")
+                            let devices = helper.returnAllSequences(filterParametar, onlyZoneName: "")
                             if devices.count != 0 {
                                 var answer = "These are all sequences in \(zone):\n"
                                 for (index, device) in devices.enumerate() {
@@ -635,7 +626,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                     }
                 } else {
                     // izlistaj sve uredjaje u toj zoni! (mozda proveri i da li ima lokacija!)
-                    let devices = helper.returnAllSequences(locationSearchText, onlyZoneName: zone)
+                    let devices = helper.returnAllSequences(filterParametar, onlyZoneName: zone)
                     if devices.count != 0 {
                         var answer = "These are all sequences in \(zone):\n"
                         for device in devices {
@@ -765,8 +756,8 @@ extension ChatViewController: UITableViewDataSource {
         let chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
         let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
         chatBubbleMine.tag = indexPath.row
-        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longPress:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.oneTap(_:)))
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.longPress(_:)))
         longPress.minimumPressDuration = 1.0
         chatBubbleMine.addGestureRecognizer(tap)
         chatBubbleMine.addGestureRecognizer(longPress)

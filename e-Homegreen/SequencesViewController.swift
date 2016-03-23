@@ -26,13 +26,12 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
     private let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
         updateSequencesList()
         sequenceCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Sequences", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
@@ -51,9 +50,8 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
 //        }
 
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
         updateSequencesList()
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshSequenceList() {
@@ -61,9 +59,8 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         sequenceCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Sequences")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        pullDown.drawMenu(filterParametar)
         updateSequencesList()
         sequenceCollectionView.reloadData()
     }
@@ -76,8 +73,8 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSequenceList", name: NotificationKey.RefreshSequence, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SequencesViewController.refreshSequenceList), name: NotificationKey.RefreshSequence, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SequencesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSequence, object: nil)
@@ -129,19 +126,11 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         sequenceCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -151,42 +140,6 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         textField.resignFirstResponder()
         return true
     }
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-        
     func updateSequencesList () {
         let fetchRequest = NSFetchRequest(entityName: "Sequence")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -195,32 +148,20 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "sequenceZone == %@", returnZoneWithId(Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", returnCategoryWithId(Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "sequenceZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "sequenceZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -316,14 +257,14 @@ extension SequencesViewController: UICollectionViewDataSource {
             sequenceZone = zone
         }
         
-        if locationSearchText[0] == "All" {
+        if filterParametar.location == "All" {
             cell.sequenceTitle.text = sequenceLocation + " " + sequenceLevel + " " + sequenceZone + " " + sequences[indexPath.row].sequenceName
         }else{
             var sequenceTitle = ""
-            if locationSearchText[4] == "All"{
+            if filterParametar.levelName == "All"{
                 sequenceTitle += " " + sequenceLevel
             }
-            if locationSearchText[5] == "All"{
+            if filterParametar.zoneName == "All"{
                 sequenceTitle += " " + sequenceZone
             }
             sequenceTitle += " " + sequences[indexPath.row].sequenceName
@@ -331,11 +272,11 @@ extension SequencesViewController: UICollectionViewDataSource {
         }
 
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.sequenceTitle.userInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setSequence:")
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.setSequence(_:)))
         cell.sequenceImageView.tag = indexPath.row
         cell.sequenceImageView.userInteractionEnabled = true
         cell.sequenceImageView.addGestureRecognizer(set)
@@ -345,7 +286,7 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.getImagesFrom(sequences[indexPath.row])
         
         cell.sequenceButton.tag = indexPath.row
-        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapStop:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.tapStop(_:)))
         cell.sequenceButton.addGestureRecognizer(tap)
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
@@ -433,7 +374,7 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage() {
         sequenceImageView.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SequenceCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageToNormal () {
         sequenceImageView.image = imageOne
