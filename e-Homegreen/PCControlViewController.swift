@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class PCControlViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -15,13 +16,37 @@ class PCControlViewController: CommonViewController, UICollectionViewDataSource,
     
     @IBOutlet weak var pccontrolCollectionView: UICollectionView!
     var pcs:[Device] = []
+    var appDel:AppDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
-        pcs = CoreDataController().fetchPCController("", parentZone: 1, zone: 1, category: 1)
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        // Not sending zones and categories
+        pcs = fetchSortedPCRequest("", parentZone: 1, zone: 1, category: 1)
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         // Do any additional setup after loading the view.
     }
-
+    
+    func fetchSortedPCRequest (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> [Device] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+        //        let predicate = NSPredicate(format: "gateway.name == %@", gatewayName)
+        let predicateOne = NSPredicate(format: "type == %@", ControlType.PC)
+        //        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateOne])
+        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne])
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        fetchRequest.predicate = predicateArray
+        do {
+            let fetResults = try appDel!.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]
+            return fetResults
+        } catch let error as NSError {
+            print("Unresolved error \(error), \(error.userInfo)")
+            abort()
+        }
+        return []
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

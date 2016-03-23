@@ -747,65 +747,65 @@ class IncomingHandler: NSObject {
     }
     // MARK: - Get zones and categories
     func getZone(byteArray:[Byte]) {
-        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones))
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
-            // Miminum is 12, but that is also doubtful...
-            if byteArray.count > 12 {
-                var name:String = ""
-                for var j = 11; j < 11+Int(byteArray[10]); j++ {
-                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-                }
-                let id = byteArray[8]
-                let level = byteArray[byteArray.count - 2 - 1]
-                var description = ""
-                if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-                    let number = 11+Int(byteArray[10])+2
-                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
-                        description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-                    }
-                }
-                print("Id:\(id) Name:\(name) Description:\(description) Level:\(level)")
-                var doesIdExist = false
-                let zones = fetchZones()
-                for zone in zones {
-                    if zone.id == NSNumber(integer: Int(id)) {
-                        doesIdExist = true
-                        (zone.name, zone.level, zone.zoneDescription) = (name, NSNumber(integer:Int(level)), description)
-                        saveChanges()
-                        break
-                    }
-                }
-                if doesIdExist {
-                } else {
-                    let zone = Zone(context: appDel.managedObjectContext!)
-                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.gateway) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0])
-                    saveChanges()
-                }
-                let data = ["zoneId":Int(id)]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
-            }
-        }
+//        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones))
+//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
+//            // Miminum is 12, but that is also doubtful...
+//            if byteArray.count > 12 {
+//                var name:String = ""
+//                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+//                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+//                }
+//                let id = byteArray[8]
+//                let level = byteArray[byteArray.count - 2 - 1]
+//                var description = ""
+//                if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+//                    let number = 11+Int(byteArray[10])+2
+//                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+//                        description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+//                    }
+//                }
+//                print("Id:\(id) Name:\(name) Description:\(description) Level:\(level)")
+//                var doesIdExist = false
+//                let zones = fetchZones()
+//                for zone in zones {
+//                    if zone.id == NSNumber(integer: Int(id)) {
+//                        doesIdExist = true
+//                        (zone.name, zone.level, zone.zoneDescription) = (name, NSNumber(integer:Int(level)), description)
+//                        saveChanges()
+//                        break
+//                    }
+//                }
+//                if doesIdExist {
+//                } else {
+//                    let zone = Zone(context: appDel.managedObjectContext!)
+//                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.gateway) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0])
+//                    saveChanges()
+//                }
+//                let data = ["zoneId":Int(id)]
+//                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
+//            }
+//        }
     }
     func getCategories(byteArray:[Byte]) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
-            var name:String = ""
-            for var j = 11; j < 11+Int(byteArray[10]); j++ {
-                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-            }
-            let id = byteArray[8]
-            var description = ""
-            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-                let number = 11+Int(byteArray[10])+2
-                for var j = number; j < number+Int(byteArray[number-1]); j++ {
-                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-                }
-            }
-            let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-            (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
-            saveChanges()
-            let data = ["categoryId":Int(id)]
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
-        }
+//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
+//            var name:String = ""
+//            for var j = 11; j < 11+Int(byteArray[10]); j++ {
+//                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+//            }
+//            let id = byteArray[8]
+//            var description = ""
+//            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+//                let number = 11+Int(byteArray[10])+2
+//                for var j = number; j < number+Int(byteArray[number-1]); j++ {
+//                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+//                }
+//            }
+//            let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+//            (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
+//            saveChanges()
+//            let data = ["categoryId":Int(id)]
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
+//        }
     }
 }
 

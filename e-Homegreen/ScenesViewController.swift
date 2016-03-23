@@ -33,15 +33,13 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
     
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
+//    var locationSearchText = ["", "", "", "", "", "", ""]
     
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
         updateSceneList()
-        
-        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
-//        LocalSearchParametar.setLocalParametar("Scenes", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch])
         scenesCollectionView.reloadData()
     }
     
@@ -60,15 +58,13 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
         updateSceneList()
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Scenes")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+        pullDown.drawMenu(filterParametar)
         updateSceneList()
         scenesCollectionView.reloadData()
     }
@@ -85,83 +81,35 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSceneList", name: NotificationKey.RefreshScene, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScenesViewController.refreshSceneList), name: NotificationKey.RefreshScene, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScenesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshScene, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
     func updateSceneList () {
         let fetchRequest = NSFetchRequest(entityName: "Scene")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "sceneZone == %@", returnZoneWithId(Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", returnCategoryWithId(Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "sceneZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "sceneZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -235,15 +183,8 @@ class ScenesViewController: CommonViewController, PullDownViewDelegate, UIPopove
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         scenesCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -291,7 +232,7 @@ extension ScenesViewController: UICollectionViewDataSource {
         var sceneLocation = ""
         var sceneLevel = ""
         var sceneZone = ""
-        sceneLocation = scenes[indexPath.row].gateway.name 
+        sceneLocation = scenes[indexPath.row].gateway.location.name!
      
         if let level = scenes[indexPath.row].entityLevel{
             sceneLevel = level
@@ -300,17 +241,17 @@ extension ScenesViewController: UICollectionViewDataSource {
             sceneZone = zone
         }
         
-        if locationSearchText[0] == "All" {
+        if filterParametar.location == "All" {
             cell.sceneCellLabel.text = sceneLocation + " " + sceneLevel + " " + sceneZone + " " + scenes[indexPath.row].sceneName
         }else{
             var sceneTitle = ""
-            if locationSearchText[0] == "All"{
+            if filterParametar.location == "All"{
                 sceneTitle += " " + sceneLocation
             }
-            if locationSearchText[4] == "All"{
+            if filterParametar.levelName == "All"{
                 sceneTitle += " " + sceneLevel
             }
-            if locationSearchText[5] == "All"{
+            if filterParametar.zoneName == "All"{
                 sceneTitle += " " + sceneZone
             }
             sceneTitle += " " + scenes[indexPath.row].sceneName
@@ -320,7 +261,7 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellLabel.tag = indexPath.row
         cell.sceneCellLabel.userInteractionEnabled = true
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.getImagesFrom(scenes[indexPath.row])
         cell.sceneCellLabel.addGestureRecognizer(longPress)
@@ -328,10 +269,10 @@ extension ScenesViewController: UICollectionViewDataSource {
         cell.sceneCellImageView.userInteractionEnabled = true
         cell.sceneCellImageView.clipsToBounds = true
         cell.sceneCellImageView.layer.cornerRadius = 5
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
         cell.sceneCellImageView.addGestureRecognizer(set)
         cell.btnSet.tag = indexPath.row
-        let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setScene:")
+        let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
         cell.btnSet.addGestureRecognizer(setTwo)
         cell.layer.cornerRadius = 5
         cell.layer.borderColor = UIColor.grayColor().CGColor
@@ -406,7 +347,7 @@ class SceneCollectionCell: UICollectionViewCell {
     }
     func changeImageForOneSecond() {
         sceneCellImageView.image = imageTwo
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(SceneCollectionCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageBack() {
         sceneCellImageView.image = imageOne

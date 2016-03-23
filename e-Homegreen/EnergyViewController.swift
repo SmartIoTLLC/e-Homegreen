@@ -24,12 +24,10 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
     var sumAmp:Float = 0
     var sumPow:Float = 0
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
-        LocalSearchParametar.setLocalParametar("Energy", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         refreshLocalParametars()
     }
     override func viewDidLoad() {
@@ -42,11 +40,9 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         // Do any additional setup after loading the view.
     }
 
@@ -83,13 +79,11 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             //  This is from viewcontroller superclass:
             backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Energy")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         updateDeviceList()
     }
     
@@ -104,25 +98,16 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EnergyViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-    
     func updateDeviceList() {
         sumAmp = 0
         sumPow = 0
         let fetchRequest = NSFetchRequest(entityName: "Device")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
@@ -133,43 +118,26 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         //        fetchRequest.predicate = predicate
-        
-//        if locationSearch != "All" {
-//            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
-//            predicateArray.append(locationPredicate)
-//        }
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelSearch)!))
-            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate, levelPredicateTwo])
+        if filterParametar.levelId != 0 {
+            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId))
+//            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneSearch)!))
-            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate, zonePredicateTwo])
+        if filterParametar.zoneId != 0 {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
+//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categorySearch)!))
-            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, categoryPredicateTwo])
+        if filterParametar.categoryId != 0 {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
+//            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
             predicateArray.append(copmpoundPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)

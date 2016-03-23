@@ -21,7 +21,6 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
     var timer:NSTimer = NSTimer()
     
     var pullDown = PullDownView()
-    var locationSearchText = ["", "", "", "", "", "", ""]
     
     var surveillance:[Surveillance] = []
     
@@ -42,27 +41,22 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         fetchSurveillance()
 
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SurveillenceViewController.update), userInfo: nil, repeats: true)
         
-        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         
         // Do any additional setup after loading the view.
     }
-    
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
-        
-        
-        LocalSearchParametar.setLocalParametar("Surveillance", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         fetchSurveillance()
         cameraCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Surveillance")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        pullDown.drawMenu(filterParametar)
         fetchSurveillance()
         cameraCollectionView.reloadData()
     }
@@ -81,13 +75,13 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         removeObservers()
     }
     func addObservers () {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "runTimer", name: NotificationKey.Surveillance.Run, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimer", name: NotificationKey.Surveillance.Stop, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSurveillanceList", name: NotificationKey.RefreshSurveillance, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.runTimer), name: NotificationKey.Surveillance.Run, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.stopTimer), name: NotificationKey.Surveillance.Stop, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.refreshSurveillanceList), name: NotificationKey.RefreshSurveillance, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserverForName("", object: nil, queue: NSOperationQueue.mainQueue()) { (let notification) -> Void in
 //            <#code#>
 //        }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
 //    var notificationObserver: ((NSNotification) -> Void)?
 //    init() {
@@ -161,19 +155,11 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         cameraCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
     func runTimer(){
         if timer.valid == false{
-            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SurveillenceViewController.update), userInfo: nil, repeats: true)
         }
     }
     
@@ -189,7 +175,6 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
                 SurveillanceHandler(surv: item)
             }
         }
-        
     }
     
     func update(){
@@ -223,7 +208,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         cell.lblName.userInteractionEnabled = true
         cell.lblName.tag = indexPath.row
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cameraParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SurveillenceViewController.cameraParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.lblName.addGestureRecognizer(longPress)
         
@@ -267,20 +252,20 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
         let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
         var predicateArray:[NSPredicate] = []
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "locationDELETETHIS == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "surveillanceZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)

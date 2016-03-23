@@ -11,6 +11,8 @@ import UIKit
 class ProjectManagerViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate {
     
     @IBOutlet weak var usersTableView: UITableView!
+    
+    var scenes:[User] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -82,7 +82,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChangeDeviceParametarsVC.handleTap(_:)))
         //        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
@@ -174,7 +174,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.delegate = self
         popoverVC.indexTab = 22
         popoverVC.device = device
-        popoverVC.filterGateway = device.gateway
+        popoverVC.filterLocation = device.gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -192,7 +192,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.delegate = self
         popoverVC.indexTab = 21
         popoverVC.device = device
-        popoverVC.filterGateway = device.gateway
+        popoverVC.filterLocation = device.gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -210,7 +210,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterGateway = device.gateway
+        popoverVC.filterLocation = device.gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -232,7 +232,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterGateway = device.gateway
+        popoverVC.filterLocation = device.gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -250,7 +250,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterGateway = device.gateway
+        popoverVC.filterLocation = device.gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

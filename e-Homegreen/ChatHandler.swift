@@ -244,7 +244,7 @@ class ChatHandler {
             let words = message.componentsSeparatedByString(" ")
             var maxElement:[Int:String] = [:]
             for zone in results {
-                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                let zoneNameWords = zone.name!.componentsSeparatedByString(" ")
                 var counter = 0
                 for word in words {
                     for zoneWord in zoneNameWords {
@@ -285,7 +285,7 @@ class ChatHandler {
             var maxElement:[Int:Zone] = [:]
             for zone in results {
                 print(zone.name)
-                let zoneNameWords = zone.name.componentsSeparatedByString(" ")
+                let zoneNameWords = zone.name!.componentsSeparatedByString(" ")
                 var counter = 0
                 for word in words {
                     for zoneWord in zoneNameWords {
@@ -312,27 +312,27 @@ class ChatHandler {
         return nil
     }
     //
-    func returnAllDevices(locationSearchText:[String], onlyZoneName:String) -> [Device] {
+    func returnAllDevices(filterItem:FilterItem, onlyZoneName:String) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicateNull = NSPredicate(format: "categoryId != 0")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
-        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+        if filterItem.location != "" && filterItem.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterItem.location)
             predicateArray.append(locationPredicate)
         }
         if onlyZoneName == "" {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
-            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(locationSearchText[2])!))
-            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", locationSearchText[5])
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne, zonePredicateTwo])
+            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterItem.zoneId))
+//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterItem.zoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         } else {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
             let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: DatabaseHandler.returnZoneIdWithName(onlyZoneName)))
-            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", onlyZoneName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne, zonePredicateTwo])
+//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", onlyZoneName)
+            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         }
         fetchRequest.predicate =  NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -347,17 +347,17 @@ class ChatHandler {
         return []
     }
     //
-    func returnAllEvents(locationSearchText:[String], onlyZoneName:String) -> [Event] {
+    func returnAllEvents(filterItem:FilterItem, onlyZoneName:String) -> [Event] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicate]
-        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+        if filterItem.location != "" && filterItem.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterItem.location)
             predicateArray.append(locationPredicate)
         }
         if onlyZoneName == "" {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
-            let zonePredicateOne = NSPredicate(format: "eventZone == %@", locationSearchText[5])
+            let zonePredicateOne = NSPredicate(format: "eventZone == %@", filterItem.zoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         } else {
@@ -378,17 +378,17 @@ class ChatHandler {
         return []
     }
     //
-    func returnAllScenes(locationSearchText:[String], onlyZoneName:String) -> [Scene] {
+    func returnAllScenes(filterItem:FilterItem, onlyZoneName:String) -> [Scene] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicate]
-        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+        if filterItem.location != "" && filterItem.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterItem.location)
             predicateArray.append(locationPredicate)
         }
         if onlyZoneName == "" {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
-            let zonePredicateOne = NSPredicate(format: "sceneZone == %@", locationSearchText[5])
+            let zonePredicateOne = NSPredicate(format: "sceneZone == %@", filterItem.zoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         } else {
@@ -409,17 +409,17 @@ class ChatHandler {
         return []
     }
     //
-    func returnAllSequences(locationSearchText:[String], onlyZoneName:String) -> [Sequence] {
+    func returnAllSequences(filterItem:FilterItem, onlyZoneName:String) -> [Sequence] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Sequence")
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicate]
-        if locationSearchText[0] != "" && locationSearchText[0] != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearchText[0])
+        if filterItem.location != "" && filterItem.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterItem.location)
             predicateArray.append(locationPredicate)
         }
         if onlyZoneName == "" {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
-            let zonePredicateOne = NSPredicate(format: "sequenceZone == %@", locationSearchText[5])
+            let zonePredicateOne = NSPredicate(format: "sequenceZone == %@", filterItem.zoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         } else {
@@ -473,7 +473,7 @@ class ChatHandler {
             zones = results
             for zone in zones! {
                 print("\(zone.name)")
-                if message.containsString("\(zone.name.lowercaseString)") {
+                if message.containsString("\(zone.name!.lowercaseString)") {
                     return zone
                 }
             }

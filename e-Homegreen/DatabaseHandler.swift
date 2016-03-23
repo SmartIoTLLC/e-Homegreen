@@ -121,7 +121,7 @@ class DatabaseHandler: NSObject {
         do {
             let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
-                return Int(fetResults![0].id)
+                return Int(fetResults![0].id!)
             } else {
                 return -1
             }

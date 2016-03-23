@@ -88,7 +88,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var devices:[Device] = []
     var gateways:[Gateway] = []
     var error:NSError? = nil
-    var filterGateway:Gateway?
+    var filterLocation:Location?
     var locationSearch:[String] = ["All", "All", "All", "All", "All", "All", "All"]
     var device:Device?
     @IBOutlet weak var table: UITableView!
@@ -105,13 +105,13 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         // Do any additional setup after loading the view.
     }
-    func updateDeviceList (whatToFetch:String, withGateway:Gateway) {
+    func updateDeviceList (whatToFetch:String, withLocation location:Location) {
         if whatToFetch == "Zone" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level != %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", withGateway)
+            let predicateThree = NSPredicate(format: "location == %@", location)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
@@ -133,7 +133,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", withGateway)
+            let predicateThree = NSPredicate(format: "location == %@", location)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
@@ -154,7 +154,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Category")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway == %@", withGateway)
+            let predicateThree = NSPredicate(format: "location == %@", location)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
@@ -171,7 +171,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
     }
-    func returnSuggestions(whatToFetch:String, gateway:Gateway, locationSearch:[String]) {
+    func returnSuggestions(whatToFetch:String, location:Location, locationSearch:[String]) {
         if whatToFetch == "Level" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
@@ -180,7 +180,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             predicateArray.append(predicateOne)
             let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             predicateArray.append(predicateTwo)
-            let predicateThree = NSPredicate(format: "gateway.name == %@", gateway.name)
+            let predicateThree = NSPredicate(format: "location.name == %@", location.name!)
             predicateArray.append(predicateThree)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             fetchRequest.sortDescriptors = [sortDescriptors]
@@ -201,7 +201,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateTwo = NSPredicate(format: "gateway.name == %@", gateway.name)
+            let predicateTwo = NSPredicate(format: "location.name == %@", location.name!)
             let predicateThree = NSPredicate(format: "level != %@", NSNumber(integer: 0))
             var predicateArray:[NSPredicate] = []
             predicateArray.append(predicateOne)
@@ -212,7 +212,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 predicateArray.append(predicate)
             }
             if let levelId = Int(locationSearch[1]) {
-                let predicate = NSPredicate(format: "ANY gateway.zones.level = %@", NSNumber(integer: levelId))
+                let predicate = NSPredicate(format: "ANY location.zones.level = %@", NSNumber(integer: levelId))
                 predicateArray.append(predicate)
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -236,7 +236,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             var predicateArray:[NSPredicate] = []
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             predicateArray.append(predicateOne)
-            let predicateTwo = NSPredicate(format: "gateway.name == %@", gateway.name)
+            let predicateTwo = NSPredicate(format: "location.name == %@", location.name!)
             predicateArray.append(predicateTwo)
             //            if let levelId = Int(locationSearch[1]) {
             //                let predicate = NSPredicate(format: "ANY gateway.zones.level == %@", NSNumber(integer: levelId))
@@ -283,72 +283,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return
         }
-        
-        if whatToFetch == "Zone" {
-            let fetchRequest = NSFetchRequest(entityName: "Zone")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
-            let predicateOne = NSPredicate(format: "level != %@", NSNumber(short: 0))
-            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            fetchRequest.predicate = compoundPredicate
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 3))
-                }
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        
-        if whatToFetch == "Level" {
-            let fetchRequest = NSFetchRequest(entityName: "Zone")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
-            let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
-            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            fetchRequest.predicate = compoundPredicate
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 2))
-                }
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        
-        if whatToFetch == "Category" {
-            let fetchRequest = NSFetchRequest(entityName: "Category")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
-            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            let predicateThree = NSPredicate(format: "gateway.name == %@", filterGateway!.name)
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            fetchRequest.predicate = compoundPredicate
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 4))
-                }
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        
         if whatToFetch == "IBeacon" {
             let fetchRequest = NSFetchRequest(entityName: "IBeacon")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
@@ -438,23 +372,20 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             updateDeviceList("Gateway")
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Levels.rawValue {
-            //            updateDeviceList("Level")
-            returnSuggestions("Level", gateway: filterGateway!, locationSearch: locationSearch)
+            returnSuggestions("Level", location: filterLocation!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Zones.rawValue {
-            //            updateDeviceList("Zone")
-            returnSuggestions("Zone", gateway: filterGateway!, locationSearch: locationSearch)
+            returnSuggestions("Zone", location: filterLocation!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Categories.rawValue {
-            //            updateDeviceList("Category")
-            returnSuggestions("Category", gateway: filterGateway!, locationSearch: locationSearch)
+            returnSuggestions("Category", location: filterLocation!, locationSearch: locationSearch)
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.LevelsPick.rawValue {
-            updateDeviceList("Level", withGateway: filterGateway!)
+            updateDeviceList("Level", withLocation: filterLocation!)
         } else if indexTab == PopOver.ZonesPick.rawValue {
-            updateDeviceList("Zone", withGateway: filterGateway!)
+            updateDeviceList("Zone", withLocation: filterLocation!)
         } else if indexTab == PopOver.CategoriesPick.rawValue {
-            updateDeviceList("Category", withGateway: filterGateway!)
+            updateDeviceList("Category", withLocation: filterLocation!)
         } else if indexTab == PopOver.Scenes.rawValue {
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.ScanGateway.rawValue {

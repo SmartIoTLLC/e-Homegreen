@@ -12,8 +12,14 @@ import CoreData
 @objc protocol PullDownViewDelegate
 {
     optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
+    optional func pullDownSearchParametars (filterParametar: FilterItem)
 }
-
+enum FilterFields: Int {
+    case Location = 1
+    case Level = 2
+    case Zone = 3
+    case Category = 4
+}
 class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     var senderButton:UIButton?
@@ -41,8 +47,12 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     let zoneLabel:UILabel = UILabel(frame: CGRectMake(10, 130, 100, 40))
     let categoryLabel:UILabel = UILabel(frame: CGRectMake(10, 180, 100, 40))
     
-    var locationSearch:[String] = []
+    var popoverVC:PopOverViewController = PopOverViewController()
     
+    var choosedLocation:Location?
+    
+    var locationSearch:[String] = []
+    //MARK: Creating a menu
     override init(frame: CGRect) {
         super.init(frame: frame)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -67,7 +77,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         
         pullView.userInteractionEnabled = true
         let tapRec = UITapGestureRecognizer()
-        tapRec.addTarget(self, action: "tap")
+        tapRec.addTarget(self, action: #selector(PullDownView.tap))
         pullView.addGestureRecognizer(tapRec)
         
         let grayBottomLine = UIView(frame:CGRectMake(0, frame.size.height-2, frame.size.width, 2))
@@ -96,28 +106,28 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         locationButton.tag = 1
-        locationButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButton.addTarget(self, action: #selector(PullDownView.menuTable(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(locationButton)
         
         levelButton.titleLabel?.tintColor = UIColor.whiteColor()
         levelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         levelButton.tag = 2
-        levelButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButton.addTarget(self, action: #selector(PullDownView.menuTable(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         levelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(levelButton)
         
         zoneButton.titleLabel?.tintColor = UIColor.whiteColor()
         zoneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         zoneButton.tag = 3
-        zoneButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButton.addTarget(self, action: #selector(PullDownView.menuTable(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         zoneButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(zoneButton)
         
         categoryButton.titleLabel?.tintColor = UIColor.whiteColor()
         categoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         categoryButton.tag = 4
-        categoryButton.addTarget(self, action: "menuTable:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButton.addTarget(self, action: #selector(PullDownView.menuTable(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         categoryButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButton)
         
@@ -125,40 +135,40 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         goButton.titleLabel?.tintColor = UIColor.whiteColor()
         goButton.setTitle("Go", forState: UIControlState.Normal)
         goButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        goButton.addTarget(self, action: "goFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        goButton.addTarget(self, action: #selector(PullDownView.goFilter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         goButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(goButton)
         
         // Reset filters
         locationButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         locationButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        locationButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        locationButtonReset.addTarget(self, action: #selector(PullDownView.resetFilter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         locationButtonReset.tag = 1
         locationButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(locationButtonReset)
         
         levelButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         levelButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        levelButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        levelButtonReset.addTarget(self, action: #selector(PullDownView.resetFilter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         levelButtonReset.tag = 2
         levelButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(levelButtonReset)
         
         zoneButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         zoneButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        zoneButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        zoneButtonReset.addTarget(self, action: #selector(PullDownView.resetFilter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         zoneButtonReset.tag = 3
         zoneButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(zoneButtonReset)
         
         categoryButtonReset.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         categoryButtonReset.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        categoryButtonReset.addTarget(self, action: "resetFilter:", forControlEvents: UIControlEvents.TouchUpInside)
+        categoryButtonReset.addTarget(self, action: #selector(PullDownView.resetFilter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         categoryButtonReset.tag = 4
         categoryButtonReset.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(categoryButtonReset)
     }
-    
+    //MARK: Reseting a filter
     func resetFilter(sender : UIButton){
         
         switch sender.tag {
@@ -181,23 +191,23 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
 
     }
-        
-    func drawMenu(locationText:String, level:String, zone:String, category:String, locationSearch:[String]){
-        self.locationSearch = locationSearch
+    //MARK: Populating a menu
+    func drawMenu(filterItem: FilterItem){
+        var locationText = filterItem.location
         var levelText = "All"
         var zoneText = "All"
         var categoryText = "All"
-        if locationText != "All" {
-            choosedGateway = returnGatewayForName(locationText)
+        if filterItem.location != "All" {
+            choosedLocation = returnLocationForName(filterItem.location)
         }
-        if level != "All" {
-            levelText = "\(level)"
+        if filterItem.levelName != "All" {
+            levelText = "\(filterItem.levelName)"
         }
-        if zone != "All" {
-            zoneText = "\(zone)"
+        if filterItem.zoneName != "All" {
+            zoneText = "\(filterItem.zoneName)"
         }
-        if category != "All" {
-            categoryText = "\(category)"
+        if filterItem.categoryName != "All" {
+            categoryText = "\(filterItem.categoryName)"
         }
         
         locationButton.setTitle(locationText, forState: UIControlState.Normal)
@@ -211,7 +221,6 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         levelButton.userInteractionEnabled = false
         zoneButton.userInteractionEnabled = false
         categoryButton.userInteractionEnabled = false
-        print("\(locationText), \(levelText), \(zoneText)")
         if locationText != "All" {
             levelButton.enabled = true
             levelButton.userInteractionEnabled = true
@@ -223,58 +232,42 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             zoneButton.userInteractionEnabled = true
         }
     }
+    //MARK: Sending a delegate method when user did scroll menu to hidden it
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        print("Ovo je mozda odgovor na sve sto sam mislio da je opproblem: \(scrollView.contentOffset)")
         if scrollView.contentOffset.y > 0.0 {
-            let level = "\(returnZoneId(levelButton.titleLabel!.text!))"
-            let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
-            let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
+            let level = returnZoneId(levelButton.titleLabel!.text!)
+            let zone = returnZoneId(zoneButton.titleLabel!.text!)
+            let category = returnCategoryId(categoryButton.titleLabel!.text!)
             let levelName = "\(levelButton.titleLabel!.text!)"
             let zoneName = "\(zoneButton.titleLabel!.text!)"
             let categoryName = "\(categoryButton.titleLabel!.text!)"
-            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+//            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+            customDelegate?.pullDownSearchParametars?(FilterItem(location: locationButton.titleLabel!.text!, levelId: level, zoneId: zone, categoryId: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName))
         }
     }
-    var popoverVC:PopOverViewController = PopOverViewController()
+    //MARK: Sending a delegate method when user pressed a button to filter
     func goFilter(sender:UIButton) {
-        let level = "\(returnZoneId( levelButton.titleLabel!.text!))"
-        let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
-        let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
+        let level = returnZoneId( levelButton.titleLabel!.text!)
+        let zone = returnZoneId(zoneButton.titleLabel!.text!)
+        let category = returnCategoryId(categoryButton.titleLabel!.text!)
         let levelName = "\(levelButton.titleLabel!.text!)"
         let zoneName = "\(zoneButton.titleLabel!.text!)"
         let categoryName = "\(categoryButton.titleLabel!.text!)"
-        customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+//        customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
+        customDelegate?.pullDownSearchParametars?(FilterItem(location: locationButton.titleLabel!.text!, levelId: level, zoneId: zone, categoryId: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName))
         self.setContentOffset(CGPointMake(0, self.frame.size.height - 2), animated: true)
     }
-    var choosedGateway:Gateway?
-    func returnGatewayForName(gatewayName:String) -> Gateway? {
-        let fetchRequest = NSFetchRequest(entityName: "Gateway")
-        let predicate = NSPredicate(format: "name == %@", gatewayName)
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-            if fetResults!.count != 0 {
-                return fetResults![0]
-            } else {
-                return nil
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return nil
-    }
-    
+    //MARK: Delegate for pop over
     func saveText (text : String, id:Int) {
         let tag = senderButton!.tag
         switch tag {
-        case 1:
+        case FilterFields.Location.rawValue:
             locationButton.setTitle(text, forState: UIControlState.Normal)
-            choosedGateway = returnGatewayForName(text)
+            choosedLocation = returnLocationForName(text)
             levelButton.setTitle("All", forState: UIControlState.Normal)
             zoneButton.setTitle("All", forState: UIControlState.Normal)
             categoryButton.setTitle("All", forState: UIControlState.Normal)
-        case 2:
+        case FilterFields.Level.rawValue:
             if id == -1 {
                 levelButton.setTitle("All", forState: UIControlState.Normal)
             } else {
@@ -282,14 +275,14 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             }
             zoneButton.setTitle("All", forState: UIControlState.Normal)
             categoryButton.setTitle("All", forState: UIControlState.Normal)
-        case 3:
+        case FilterFields.Zone.rawValue:
             if id == -1 {
                 zoneButton.setTitle("All", forState: UIControlState.Normal)
             } else {
                 zoneButton.setTitle(text, forState: UIControlState.Normal)
             }
             categoryButton.setTitle("All", forState: UIControlState.Normal)
-        case 4:
+        case FilterFields.Category.rawValue:
             if id == -1 {
                 categoryButton.setTitle("All", forState: UIControlState.Normal)
             } else {
@@ -316,40 +309,108 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
     }
     
-    func returnZoneId(name:String) -> String {
+    //MARK: Calling a pop over
+    func menuTable(sender : UIButton){
+        let level = "\(returnZoneId( levelButton.titleLabel!.text!))"
+        let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
+        let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
+        let levelName = "\(levelButton.titleLabel!.text!)"
+        let zoneName = "\(zoneButton.titleLabel!.text!)"
+        let categoryName = "\(categoryButton.titleLabel!.text!)"
+        locationSearch = ["\(locationButton.titleLabel!.text)", level, zone, category, levelName, zoneName, categoryName]
+        senderButton = sender
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = sender.tag
+        popoverVC.locationSearch = locationSearch
+        popoverVC.filterLocation = choosedLocation
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            self.parentViewController!.presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func tap(){
+       self.setContentOffset(CGPointMake(0, 0), animated: false)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        
+        if point.y < self.frame.size.height + 40 && point.y > self.frame.size.height{
+            if point.x < frame.size.width/2 - 30 || point.x > frame.size.width/2 + 30 {
+                return nil
+            }
+            
+        }
+        if point.y > self.frame.size.height + 30 {
+            return nil
+            
+        }
+        return super.hitTest(point, withEvent: event)
+    }
+    //MARK: Database handlers
+    func returnLocationForName(locationName:String) -> Location? {
+        let fetchRequest = NSFetchRequest(entityName: "Location")
+        let predicate = NSPredicate(format: "name == %@", locationName)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
+            if fetResults!.count != 0 {
+                return fetResults![0]
+            } else {
+                return nil
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return nil
+    }
+    
+    func returnZoneId(name:String) -> Int {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
-                return "\(fetResults![0].id)"
+                return Int(fetResults![0].id!)
             } else {
-                return "\(name)"
+                return 0
             }
         } catch _ as NSError {
             print("Unresolved error")
             abort()
         }
-        return ""
+        return 0
     }
     
-    func returnCategoryId(name:String) -> String {
+    func returnCategoryId(name:String) -> Int {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
-                return "\(fetResults![0].id)"
+                return Int(fetResults![0].id!)
             } else {
-                return "\(name)"
+                return 0
             }
         } catch _ as NSError {
             print("Unresolved error")
             abort()
         }
-        return ""
+        return 0
     }
     
     func returnZoneNameWithId(id:Int) -> String {
@@ -387,57 +448,4 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
         return ""
     }
-    
-    func menuTable(sender : UIButton){
-        print("\(sender.tag):\(sender.enabled):\(sender)")
-        
-        let level = "\(returnZoneId( levelButton.titleLabel!.text!))"
-        let zone = "\(returnZoneId(zoneButton.titleLabel!.text!))"
-        let category = "\(returnCategoryId(categoryButton.titleLabel!.text!))"
-        let levelName = "\(levelButton.titleLabel!.text!)"
-        let zoneName = "\(zoneButton.titleLabel!.text!)"
-        let categoryName = "\(categoryButton.titleLabel!.text!)"
-        locationSearch = ["\(locationButton.titleLabel!.text)", level, zone, category, levelName, zoneName, categoryName]
-        senderButton = sender
-        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = sender.tag
-        popoverVC.locationSearch = locationSearch
-        popoverVC.filterGateway = choosedGateway
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            self.parentViewController!.presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
-    
-    func tap(){
-       self.setContentOffset(CGPointMake(0, 0), animated: false)
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        
-        if point.y < self.frame.size.height + 40 && point.y > self.frame.size.height{
-            if point.x < frame.size.width/2 - 30 || point.x > frame.size.width/2 + 30 {
-                return nil
-            }
-            
-        }
-        if point.y > self.frame.size.height + 30 {
-            return nil
-            
-        }
-        return super.hitTest(point, withEvent: event)
-    }
-
-    
 }

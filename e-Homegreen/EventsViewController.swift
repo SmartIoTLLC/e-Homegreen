@@ -26,13 +26,12 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
     private let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Events)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Events)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
         updateEventsList()
         eventCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Events", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,15 +42,13 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
 //            collectionViewCellSize = CGSize(width: 118, height: 144)
 //        }
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
         updateEventsList()
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Events")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
+        pullDown.drawMenu(filterParametar)
         updateEventsList()
         eventCollectionView.reloadData()
     }
@@ -68,8 +65,8 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshEventsList", name: NotificationKey.RefreshEvent, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EventsViewController.refreshEventsList), name: NotificationKey.RefreshEvent, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EventsViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshEvent, object: nil)
@@ -131,56 +128,11 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         eventCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-    
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
     func updateEventsList () {
         let fetchRequest = NSFetchRequest(entityName: "Event")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -189,32 +141,20 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "eventZone == %@", returnZoneWithId(Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "eventCategory == %@", returnCategoryWithId(Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "eventZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "eventZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "eventCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "eventCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -287,7 +227,7 @@ extension EventsViewController: UICollectionViewDataSource {
     
         var eventLevel = ""
         var eventZone = ""
-        var eventLocation = events[indexPath.row].gateway.name
+        let eventLocation = events[indexPath.row].gateway.location.name!
         
         if let level = events[indexPath.row].entityLevel{
             eventLevel = level
@@ -296,17 +236,17 @@ extension EventsViewController: UICollectionViewDataSource {
             eventZone = zone
         }
         
-        if locationSearchText[0] == "All" {
+        if filterParametar.location == "All" {
             cell.eventTitle.text = eventLocation + " " + eventLevel + " " + eventZone + " " + events[indexPath.row].eventName
         }else{
             var eventTitle = ""
-            if locationSearchText[0] == "All"{
+            if filterParametar.location == "All"{
                 eventTitle += " " + eventLocation
             }
-            if locationSearchText[4] == "All"{
+            if filterParametar.levelName == "All"{
                 eventTitle += " " + eventLevel
             }
-            if locationSearchText[5] == "All"{
+            if filterParametar.zoneName == "All"{
                 eventTitle += " " + eventZone
             }
             eventTitle += " " + events[indexPath.row].eventName
@@ -316,11 +256,11 @@ extension EventsViewController: UICollectionViewDataSource {
         cell.eventTitle.tag = indexPath.row
         cell.eventTitle.userInteractionEnabled = true
         cell.getImagesFrom(events[indexPath.row])
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EventsViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.eventTitle.addGestureRecognizer(longPress)
         cell.eventImageView.tag = indexPath.row
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setEvent:")
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EventsViewController.setEvent(_:)))
         cell.eventImageView.userInteractionEnabled = true
         cell.eventImageView.addGestureRecognizer(set)
         if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
@@ -330,7 +270,7 @@ extension EventsViewController: UICollectionViewDataSource {
         cell.eventImageView.clipsToBounds = true
         
         cell.eventButton.tag = indexPath.row
-        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapCancel:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EventsViewController.tapCancel(_:)))
         cell.eventButton.addGestureRecognizer(tap)
         
         cell.layer.cornerRadius = 5
@@ -423,7 +363,7 @@ class EventsCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage () {
         eventImageView.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(EventsCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageToNormal () {
         eventImageView.image = imageOne

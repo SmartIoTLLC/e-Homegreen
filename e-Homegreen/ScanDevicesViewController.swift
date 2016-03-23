@@ -56,7 +56,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ScanDevicesViewController.endEditingNow) )
         let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
@@ -83,10 +83,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "nameReceivedFromPLC:", name: NotificationKey.DidFindDeviceName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceReceivedFromPLC:", name: NotificationKey.DidFindDevice, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sensorParametarReceivedFromPLC:", name: NotificationKey.DidFindSensorParametar, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidFindDeviceName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.deviceReceivedFromPLC(_:)), name: NotificationKey.DidFindDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.sensorParametarReceivedFromPLC(_:)), name: NotificationKey.DidFindSensorParametar, object: nil)
     }    
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
@@ -171,7 +171,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         timesRepeatedCounter = 0
                         searchForDeviceWithId = searchForDeviceWithId! + 1
                         searchDeviceTimer?.invalidate()
-                        searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                        searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                         let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                         setProgressBarParametarsForSearchingDevices(address)
                         SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
@@ -179,7 +179,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         dismissScaningControls()
                     }
                 } else {
-                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
@@ -189,7 +189,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     timesRepeatedCounter = 0
                     searchForDeviceWithId = searchForDeviceWithId! + 1
                     searchDeviceTimer?.invalidate()
-                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                    searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                     setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
@@ -209,7 +209,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                             timesRepeatedCounter = 0
                             searchForDeviceWithId = searchForDeviceWithId! + 1
                             searchDeviceTimer?.invalidate()
-                            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+                            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                             let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
                             setProgressBarParametarsForSearchingDevices(address)
                             SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
@@ -291,7 +291,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         index = deviceIndex + 1
                         timesRepeatedCounter = 0
                         deviceNameTimer?.invalidate()
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: index, repeats: false)
                         NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(deviceIndex)")
                         sendCommandForFindingName(index: index)
                     }
@@ -305,7 +305,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if (index != 0 || deviceIndex < index) && deviceIndex <= toAddress {
                 timesRepeatedCounter += 1
                 if timesRepeatedCounter < 3 {
-                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: deviceIndex, repeats: false)
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: deviceIndex, repeats: false)
                     NSLog("func checkIfDeviceDidGetName \(index)")
                     sendCommandForFindingName(index: deviceIndex)
                 } else {
@@ -314,7 +314,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     } else {
                         index = deviceIndex + 1
                         timesRepeatedCounter = 0
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: index, repeats: false)
                         NSLog("func checkIfDeviceDidGetName 2 \(index)")
                         sendCommandForFindingName(index: index)
                     }
@@ -324,7 +324,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     // uslo je jednom i non stop se ponavljalo
                     if timesRepeatedCounter < 3 {
                         timesRepeatedCounter += 1
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: index, repeats: false)
                         NSLog("func checkIfDeviceDidGetName 3 \(index)")
                         sendCommandForFindingName(index: 0)
                     } else {
@@ -333,7 +333,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         } else {
                             index = deviceIndex + 1
                             timesRepeatedCounter = 0
-                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: index, repeats: false)
                             NSLog("func checkIfDeviceDidGetName 2 \(index)")
                             sendCommandForFindingName(index: index)
                         }
@@ -419,7 +419,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             devices[sender.tag].isEnabled = NSNumber(bool: false)
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
     func changeValueVisible (sender:UISwitch) {
@@ -429,7 +429,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             devices[sender.tag].isVisible = NSNumber(bool: false)
         }
         saveChanges()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
     var pbFD:ProgressBarVC?
@@ -447,7 +447,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             pbFD = ProgressBarVC(title: "Finding devices", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbFD?.delegate = self
             self.presentViewController(pbFD!, animated: true, completion: nil)
-            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetDevice:", userInfo: searchForDeviceWithId, repeats: false)
+            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
             let address = [UInt8(Int(gateway!.addressOne)), UInt8(Int(gateway!.addressTwo)), UInt8(searchForDeviceWithId!)]
             SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway!)
         } catch let error as InputError {
@@ -482,7 +482,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSensorParametars)
         index = 0
         timesRepeatedCounter = 0
-        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfSensorDidGotParametar:", userInfo: index, repeats: false)
+        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: index, repeats: false)
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
             self.pbFN = ProgressBarVC(title: "Finding sensor parametars", percentage: Float(1)/Float(self.arrayOfSensorAdresses.count), howMuchOf: "1 / \(self.arrayOfSensorAdresses.count)")
             self.pbFN?.delegate = self
@@ -502,7 +502,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                         index = index + 1
                         timesRepeatedCounter = 0
                         deviceNameTimer?.invalidate()
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfSensorDidGotParametar:", userInfo: index, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: index, repeats: false)
                         NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(deviceIndex)")
                         sendComandForSensorZone(deviceIndex: arrayOfSensorAdresses[index], numberInArray: index)
                     }
@@ -519,7 +519,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             if (index != 0 || deviceIndex < index) && deviceIndex <= arrayOfSensorAdresses.last {
                 timesRepeatedCounter += 1
                 if timesRepeatedCounter < 3 {
-                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfSensorDidGotParametar:", userInfo: deviceIndex, repeats: false)
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
                     NSLog("func checkIfSensorDidGotParametar \(index)")
                     sendComandForSensorZone(deviceIndex:arrayOfSensorAdresses[index], numberInArray:index)
                 } else {
@@ -529,7 +529,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                     } else {
                         index = index + 1
                         timesRepeatedCounter = 0
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfSensorDidGotParametar:", userInfo: index, repeats: false)
+                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: index, repeats: false)
                         NSLog("func checkIfSensorDidGotParametar 2 \(index)")
                         sendComandForSensorZone(deviceIndex:arrayOfSensorAdresses[index], numberInArray:index)
                     }
@@ -537,7 +537,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             } else {
                 if index == 0 {
                     timesRepeatedCounter += 1
-                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfSensorDidGotParametar:", userInfo: index, repeats: false)
+                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: index, repeats: false)
                     NSLog("func checkIfSensorDidGotParametar 3 \(index)")
                     sendComandForSensorZone(deviceIndex:arrayOfSensorAdresses[index], numberInArray:index)
                 } else {
@@ -572,7 +572,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
                 pbFN = ProgressBarVC(title: "Finding names", percentage:sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
                 pbFN?.delegate = self
                 self.presentViewController(pbFN!, animated: true, completion: nil)
-                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfDeviceDidGetName:", userInfo: index, repeats: false)
+                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: index, repeats: false)
                 NSLog("func findNames \(index)")
                 sendCommandForFindingName(index: index)
             }
@@ -655,10 +655,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             cell.lblZone.text = "Zone: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), gateway: devices[indexPath.row].gateway)) Level: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), gateway: devices[indexPath.row].gateway))"
             cell.lblCategory.text = "Category: \(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), gateway: devices[indexPath.row].gateway))"
             cell.isEnabledSwitch.tag = indexPath.row
-            cell.isEnabledSwitch.addTarget(self, action: "changeValueEnable:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.isEnabledSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueEnable(_:)), forControlEvents: UIControlEvents.ValueChanged)
             cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
             cell.isVisibleSwitch.tag = indexPath.row
-            cell.isVisibleSwitch.addTarget(self, action: "changeValueVisible:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.isVisibleSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueVisible(_:)), forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

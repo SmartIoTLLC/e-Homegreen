@@ -24,13 +24,11 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
     
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Timers)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         updateTimersList()
-        
-        LocalSearchParametar.setLocalParametar("Timers", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
         timersCollectionView.reloadData()
     }
     override func viewDidLoad() {
@@ -44,9 +42,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
 //        }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         refreshTimerList()
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshTimerList() {
@@ -54,9 +51,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         timersCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Timers")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        pullDown.drawMenu(filterParametar)
         updateTimersList()
         timersCollectionView.reloadData()
     }
@@ -69,8 +65,8 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTimerList", name: NotificationKey.RefreshTimer, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshTimer, object: nil)
@@ -128,7 +124,7 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         timersCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -151,42 +147,6 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         textField.resignFirstResponder()
         return true
     }
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
     func updateTimersList () {
         let fetchRequest = NSFetchRequest(entityName: "Timer")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -195,32 +155,20 @@ class TimersViewController: CommonViewController, UIPopoverPresentationControlle
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "timeZone == %@", returnZoneWithId(Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "timerCategory == %@", returnCategoryWithId(Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "timeZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "timeZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "timerCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "timerCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -372,21 +320,21 @@ extension TimersViewController: UICollectionViewDataSource {
             timerZone = zone
         }
         
-        if locationSearchText[0] == "All" {
+        if filterParametar.location == "All" {
             cell.timerTitle.text = timerLocation + " " + timerLevel + " " + timerZone + " " + timers[indexPath.row].timerName
         }else{
             var timerTitle = ""
-            if locationSearchText[4] == "All"{
+            if filterParametar.levelName == "All"{
                 timerTitle += " " + timerLevel
             }
-            if locationSearchText[5] == "All"{
+            if filterParametar.zoneName == "All"{
                 timerTitle += " " + timerZone
             }
             timerTitle += " " + timers[indexPath.row].timerName
             cell.timerTitle.text = timerTitle
         }
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TimersViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.timerTitle.userInteractionEnabled = true
         cell.timerTitle.addGestureRecognizer(longPress)
@@ -404,7 +352,7 @@ extension TimersViewController: UICollectionViewDataSource {
             cell.timerButtonRight.hidden = true
             cell.timerButton.enabled = true
             cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-            cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             //   ===================
             if timers[indexPath.row].timerState == 1 {
                 cell.timerButton.hidden = true
@@ -412,8 +360,8 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonRight.hidden = false
                 cell.timerButtonRight.setTitle("Pause", forState: UIControlState.Normal)
                 cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButtonRight.addTarget(self, action: "pressedPause:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedPause(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }
             if timers[indexPath.row].timerState == 240 {
                 cell.timerButton.hidden = false
@@ -421,7 +369,7 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonRight.hidden = true
                 cell.timerButton.enabled = true
                 cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }
             if timers[indexPath.row].timerState == 238 {
                 cell.timerButton.hidden = true
@@ -429,8 +377,8 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonRight.hidden = false
                 cell.timerButtonRight.setTitle("Resume", forState: UIControlState.Normal)
                 cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButtonRight.addTarget(self, action: "pressedResume:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedResume(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }
         } else {
             if timers[indexPath.row].timerState == 240 {
@@ -439,14 +387,14 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonRight.hidden = true
                 cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
 //                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.timerButton.enabled = false
             } else {
                 cell.timerButton.hidden = false
                 cell.timerButtonLeft.hidden = true
                 cell.timerButtonRight.hidden = true
                 cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.timerButton.enabled = true
             }
         }
@@ -485,7 +433,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage () {
         timerImageView.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageToNormal () {
         timerImageView.image = imageOne

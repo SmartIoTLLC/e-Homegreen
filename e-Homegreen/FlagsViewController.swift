@@ -25,13 +25,12 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
     
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Flags)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         updateFlagsList()
         flagsCollectionView.reloadData()
-        LocalSearchParametar.setLocalParametar("Flags", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +43,8 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
 //        }
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         refreshFlagList()
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
         // Do any additional setup after loading the view.
     }
     func refreshFlagList() {
@@ -54,9 +52,8 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         flagsCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-        locationSearchText = LocalSearchParametar.getLocalParametar("Flags")
-        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (locationSearchText[0], locationSearchText[1], locationSearchText[2], locationSearchText[3], locationSearchText[4], locationSearchText[5], locationSearchText[6])
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        pullDown.drawMenu(filterParametar)
         updateFlagsList()
         flagsCollectionView.reloadData()
     }
@@ -69,8 +66,8 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         removeObservers()
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshFlagList", name: NotificationKey.RefreshFlag, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FlagsViewController.refreshFlagList), name: NotificationKey.RefreshFlag, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FlagsViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFlag, object: nil)
@@ -132,94 +129,37 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         flagsCollectionView.reloadData()
-        pullDown.drawMenu(locationSearchText[0], level: locationSearchText[4], zone: locationSearchText[5], category: locationSearchText[6], locationSearch: locationSearchText)
+        pullDown.drawMenu(filterParametar)
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-        
     func updateFlagsList () {
         let fetchRequest = NSFetchRequest(entityName: "Flag")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
-//        if levelSearch != "All" {
-//            let levelPredicate = NSPredicate(format: "entityLevel == %@", returnZoneWithId(Int(levelSearch)!))
-//            predicateArray.append(levelPredicate)
-//        }
-//        if zoneSearch != "All" {
-//            let zonePredicate = NSPredicate(format: "flagZone == %@", returnZoneWithId(Int(zoneSearch)!))
-//            predicateArray.append(zonePredicate)
-//        }
-//        if categorySearch != "All" {
-//            let categoryPredicate = NSPredicate(format: "flagCategory == %@", returnCategoryWithId(Int(categorySearch)!))
-//            predicateArray.append(categoryPredicate)
-//        }
-        if locationSearch != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", locationSearch)
+        if filterParametar.location != "All" {
+            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if levelSearch != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelSearchName)
+        if filterParametar.levelName != "All" {
+            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
             predicateArray.append(levelPredicate)
         }
-        if zoneSearch != "All" {
-            let zonePredicate = NSPredicate(format: "flagZone == %@", zoneSearchName)
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "flagZone == %@", filterParametar.zoneName)
             predicateArray.append(zonePredicate)
         }
-        if categorySearch != "All" {
-            let categoryPredicate = NSPredicate(format: "flagCategory == %@", categorySearchName)
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "flagCategory == %@", filterParametar.categoryName)
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
@@ -308,31 +248,31 @@ extension FlagsViewController: UICollectionViewDataSource {
             flagZone = zone
         }
         
-        if locationSearchText[0] == "All" {
+        if filterParametar.location == "All" {
             cell.flagTitle.text = flagLocation + " " + flagLevel + " " + flagZone + " " + flags[indexPath.row].flagName
         }else{
             var flagTitle = ""
-            if locationSearchText[4] == "All"{
+            if filterParametar.levelName == "All"{
                 flagTitle += " " + flagLevel
             }
-            if locationSearchText[5] == "All"{
+            if filterParametar.zoneName == "All"{
                 flagTitle += " " + flagZone
             }
             flagTitle += " " + flags[indexPath.row].flagName
             cell.flagTitle.text = flagTitle
         }
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.flagTitle.userInteractionEnabled = true
         cell.flagTitle.addGestureRecognizer(longPress)
         
         cell.getImagesFrom(flags[indexPath.row])
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "setFlag:")
+        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.setFlag(_:)))
         cell.flagImageView.tag = indexPath.row
         cell.flagImageView.userInteractionEnabled = true
         cell.flagImageView.addGestureRecognizer(set)
-        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.buttonPressed(_:)))
         cell.flagButton.tag = indexPath.row
         cell.flagButton.addGestureRecognizer(tap)
         if flags[indexPath.row].setState.boolValue {
@@ -410,7 +350,7 @@ class FlagCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage () {
         flagImageView.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(FlagCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageToNormal () {
         flagImageView.image = imageOne
