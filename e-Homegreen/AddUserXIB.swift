@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol AddUserDelegate{
     func addUserFinished()
@@ -30,11 +31,13 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     
     var appDel:AppDelegate!
     var error:NSError? = nil
+    var user:User?
     
-    init(){
+    init(user:User?){
         super.init(nibName: "AddUserXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
+        self.user = user
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -56,6 +59,10 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AddUserXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        
+        if let user = user{
+            usernameTextField.text = user.username
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -77,6 +84,19 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     }
     
     @IBAction func saveAction(sender: AnyObject) {
+        
+        guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
+            return
+        }
+
+        if let user = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDel.managedObjectContext!) as? User{
+        
+            user.username = username
+            user.password = password
+            saveChanges()
+            
+        }
+        
         delegate?.addUserFinished()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -159,8 +179,8 @@ extension AddUserXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddUser() -> AddUserXIB {
-        let addUser = AddUserXIB()
+    func showAddUser(user:User?) -> AddUserXIB {
+        let addUser = AddUserXIB(user:user)
         self.presentViewController(addUser, animated: true, completion: nil)
         return addUser
     }

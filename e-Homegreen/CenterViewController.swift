@@ -27,7 +27,7 @@ class CenterViewController: UIViewController {
     }
     @IBAction func addUserSign(sender: AnyObject) {
         if let vc = fromViewController as? ProjectManagerViewController {
-            showAddUser().delegate = vc
+            showAddUser(nil).delegate = vc
         }
 
     }
