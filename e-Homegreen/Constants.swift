@@ -416,9 +416,7 @@ struct CellSize {
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
 }
-//struct Size {
-//    let cellSize = 0
-//}
+//MARK: Filter constants
 struct FilterKey {
     static let location = "kLocation"
     static let levelId = "kLevelId"
@@ -428,6 +426,22 @@ struct FilterKey {
     static let zoneName = "kZoneName"
     static let categoryName = "kCategoryName"
 }
+enum FilterEnumeration:String {
+    case Device = "Device"
+    case Scenes = "Scenes"
+    case Events = "Events"
+    case Sequences = "Sequences"
+    case Timers = "Timers"
+    case Flags = "Flags"
+    case Chat = "Chat"
+    case Security = "Security" // Thise should be moved to devices but there was a problem scanning security device
+    case Surveillance = "Surveillance"
+    case Energy = "Energy"
+    case PCControl = "PCControl"
+    case Users = "Users"
+    case Database = "Database"
+}
+//MARK: Notification constants
 struct NotificationKey {
     static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"

@@ -113,9 +113,9 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshDeviceList", name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshVisibleDevicesInScrollView", name: NotificationKey.DidRefreshDeviceInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshLocalParametars", name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
     
     func removeObservers() {

@@ -8,65 +8,64 @@
 
 import Foundation
 
-struct Filter {
-    let location:String
-    let levelId:Int
-    let zoneId:Int
-    let categoryId:Int
-    let levelName:String
-    let zoneName:String
-    let categoryName:String
+class FilterItem: NSObject {
+    var location:String = "All"
+    var levelId:Int = 0
+    var zoneId:Int = 0
+    var categoryId:Int = 0
+    var levelName:String = "All"
+    var zoneName:String = "All"
+    var categoryName:String = "All"
     
-    static func encode(filter: Filter) {
-        let personClassObject = HelperClass(filter: filter)
-        
-        NSKeyedArchiver.archiveRootObject(personClassObject, toFile: HelperClass.path())
+    init(location:String, levelId:Int, zoneId:Int, categoryId:Int, levelName:String, zoneName:String, categoryName:String) {
+        self.location = location
+        self.levelId = levelId
+        self.zoneId = zoneId
+        self.categoryId = categoryId
+        self.levelName = levelName
+        self.zoneName = zoneName
+        self.categoryName = categoryName
     }
     
-    static func decode() -> Filter? {
-        let filterClassObject = NSKeyedUnarchiver.unarchiveObjectWithFile(HelperClass.path()) as? HelperClass
+    required init(coder aDecoder: NSCoder) {
+        self.location = aDecoder.decodeObjectForKey(FilterKey.location) as! String
+        self.levelId = aDecoder.decodeIntegerForKey(FilterKey.levelId)
+        self.zoneId = aDecoder.decodeIntegerForKey(FilterKey.zoneId)
+        self.categoryId = aDecoder.decodeIntegerForKey(FilterKey.categoryId)
+        self.levelName = aDecoder.decodeObjectForKey(FilterKey.levelName) as! String
+        self.zoneName = aDecoder.decodeObjectForKey(FilterKey.zoneName) as! String
+        self.categoryName = aDecoder.decodeObjectForKey(FilterKey.categoryName) as! String
         
-        return filterClassObject?.filter
+        super.init()
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(location, forKey: FilterKey.location)
+        aCoder.encodeInteger(levelId, forKey: FilterKey.levelId)
+        aCoder.encodeInteger(zoneId, forKey: FilterKey.zoneId)
+        aCoder.encodeInteger(categoryId, forKey: FilterKey.categoryId)
+        aCoder.encodeObject(levelName, forKey: FilterKey.levelName)
+        aCoder.encodeObject(zoneName, forKey: FilterKey.zoneName)
+        aCoder.encodeObject(categoryName, forKey: FilterKey.categoryName)
     }
 }
-extension Filter {
-    class HelperClass:NSObject, NSCoding {
-        
-        var filter: Filter?
-        
-        init(filter: Filter) {
-            self.filter = filter
-            super.init()
+class Filter:NSObject {
+    static let sharedInstance = Filter()
+    
+    func returnFilter(forTab tab: FilterEnumeration) -> FilterItem {
+        let object:FilterItem?
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let savedUser = defaults.objectForKey(tab.rawValue) as? NSData {
+            object = NSKeyedUnarchiver.unarchiveObjectWithData(savedUser) as? FilterItem
+            return object!
         }
-        
-        class func path() -> String {
-            let documentsPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
-            let path = documentsPath?.stringByAppendingString("/Filter")
-            return path!
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            guard let location = aDecoder.decodeObjectForKey(FilterKey.location) as? String else { filter = nil; super.init(); return nil }
-            let levelId = aDecoder.decodeIntegerForKey(FilterKey.levelId)
-            let zoneId = aDecoder.decodeIntegerForKey(FilterKey.zoneId)
-            let categoryId = aDecoder.decodeIntegerForKey(FilterKey.categoryId)
-            guard let levelName = aDecoder.decodeObjectForKey(FilterKey.levelName) as? String else { filter = nil; super.init(); return nil }
-            guard let zoneName = aDecoder.decodeObjectForKey(FilterKey.zoneName) as? String else { filter = nil; super.init(); return nil }
-            guard let categoryName = aDecoder.decodeObjectForKey(FilterKey.categoryName) as? String else { filter = nil; super.init(); return nil }
-            
-            filter = Filter(location:location, levelId:levelId, zoneId:zoneId, categoryId:categoryId, levelName:levelName, zoneName:zoneName, categoryName:categoryName)
-            
-            super.init()
-        }
-        
-        func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(filter!.location, forKey: FilterKey.location)
-            aCoder.encodeObject(filter!.levelId, forKey: FilterKey.levelId)
-            aCoder.encodeObject(filter!.zoneId, forKey: FilterKey.zoneId)
-            aCoder.encodeObject(filter!.categoryId, forKey: FilterKey.categoryId)
-            aCoder.encodeObject(filter!.levelName, forKey: FilterKey.levelName)
-            aCoder.encodeObject(filter!.zoneName, forKey: FilterKey.zoneName)
-            aCoder.encodeObject(filter!.categoryName, forKey: FilterKey.categoryName)
-        }
+        return FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+    }
+    
+    func saveFilter(item filterItem:FilterItem, forTab tab: FilterEnumeration) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let encodedData = NSKeyedArchiver.archivedDataWithRootObject(filterItem)
+        defaults.setObject(encodedData, forKey: tab.rawValue)
+        defaults.synchronize()
     }
 }
