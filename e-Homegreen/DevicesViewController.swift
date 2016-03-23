@@ -53,15 +53,15 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
         
-        appDel.testTestTest.managedObjectContext!.performBlock{[weak self] in
-            if let selfStrong = self {
-                
-            }
-            let user = User(context: (UIApplication.sharedApplication().delegate as? AppDelegate)!.testTestTest.managedObjectContext!)
-            user.username = "fgdg"
-            user.password = "gdfgdsfgdf;oil"
-            self?.appDel.testTestTest.saveContext()
-        }
+//        appDel.testTestTest.managedObjectContext!.performBlock{[weak self] in
+//            if let selfStrong = self {
+//                
+//            }
+//            let user = User(context: (UIApplication.sharedApplication().delegate as? AppDelegate)!.testTestTest.managedObjectContext!)
+//            user.username = "fgdg"
+//            user.password = "gdfgdsfgdf;oil"
+//            self?.appDel.testTestTest.saveContext()
+//        }
     }
     @IBAction func crashButtonTapped(sender: AnyObject) {
         printOut("proba")

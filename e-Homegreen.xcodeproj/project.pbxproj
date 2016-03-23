@@ -8,7 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		221F8B6C1CA148C20093C89D /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221F8B6B1CA148C20093C89D /* CreateAdminViewController.swift */; };
 		22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */; };
+		22324BBE1CA04ECF00E50E55 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22324BBD1CA04ECF00E50E55 /* LogInViewController.swift */; };
+		22324BC01CA0522800E50E55 /* LogInTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22324BBF1CA0522800E50E55 /* LogInTextField.swift */; };
+		223362851CA29F67006C80C4 /* ProjectManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362841CA29F67006C80C4 /* ProjectManagerViewController.swift */; };
+		223362881CA2BAF3006C80C4 /* AddUserXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362861CA2BAF3006C80C4 /* AddUserXIB.swift */; };
+		223362891CA2BAF3006C80C4 /* AddUserXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223362871CA2BAF3006C80C4 /* AddUserXIB.xib */; };
+		2233628B1CA2D18A006C80C4 /* EditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2233628A1CA2D18A006C80C4 /* EditTextField.swift */; };
 		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
@@ -29,6 +36,7 @@
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
 		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
 		22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */; };
+		22EFD31A1CA1866D00A56388 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EFD3191CA1866D00A56388 /* UsersViewController.swift */; };
 		730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */; };
 		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
 		730E90C31C6A1BF400B1D50D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90C01C6A1BF400B1D50D /* Image.swift */; };
@@ -277,7 +285,14 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		221F8B6B1CA148C20093C89D /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
 		22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		22324BBD1CA04ECF00E50E55 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		22324BBF1CA0522800E50E55 /* LogInTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInTextField.swift; sourceTree = "<group>"; };
+		223362841CA29F67006C80C4 /* ProjectManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectManagerViewController.swift; sourceTree = "<group>"; };
+		223362861CA2BAF3006C80C4 /* AddUserXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUserXIB.swift; sourceTree = "<group>"; };
+		223362871CA2BAF3006C80C4 /* AddUserXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddUserXIB.xib; sourceTree = "<group>"; };
+		2233628A1CA2D18A006C80C4 /* EditTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTextField.swift; sourceTree = "<group>"; };
 		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
@@ -299,6 +314,7 @@
 		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
 		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
 		22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneViewController.xib; sourceTree = "<group>"; };
+		22EFD3191CA1866D00A56388 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90C01C6A1BF400B1D50D /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -597,6 +613,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		22324BB91CA04B2E00E50E55 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				22324BBF1CA0522800E50E55 /* LogInTextField.swift */,
+				2233628A1CA2D18A006C80C4 /* EditTextField.swift */,
+			);
+			name = TextField;
+			sourceTree = "<group>";
+		};
+		22324BBC1CA04EA500E50E55 /* LogInController */ = {
+			isa = PBXGroup;
+			children = (
+				22324BBD1CA04ECF00E50E55 /* LogInViewController.swift */,
+				221F8B6B1CA148C20093C89D /* CreateAdminViewController.swift */,
+			);
+			name = LogInController;
+			sourceTree = "<group>";
+		};
+		223362831CA29F3B006C80C4 /* Project Manager */ = {
+			isa = PBXGroup;
+			children = (
+				223362841CA29F67006C80C4 /* ProjectManagerViewController.swift */,
+				223362861CA2BAF3006C80C4 /* AddUserXIB.swift */,
+				223362871CA2BAF3006C80C4 /* AddUserXIB.xib */,
+			);
+			name = "Project Manager";
+			sourceTree = "<group>";
+		};
 		223878A61C91A6C9001357E0 /* Add Video/App */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,6 +678,14 @@
 				22CD26791BD53685005BA67D /* DAKeyboardControl.m */,
 			);
 			path = DAKeyboardControl;
+			sourceTree = "<group>";
+		};
+		22EFD3181CA1865300A56388 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				22EFD3191CA1866D00A56388 /* UsersViewController.swift */,
+			);
+			name = Users;
 			sourceTree = "<group>";
 		};
 		733C15701B5A825400554FD1 /* Device info and settings */ = {
@@ -709,6 +761,9 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				223362831CA29F3B006C80C4 /* Project Manager */,
+				22EFD3181CA1865300A56388 /* Users */,
+				22324BBC1CA04EA500E50E55 /* LogInController */,
 				2249A3271C90349C0019C6FB /* PC Controll */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
@@ -988,6 +1043,7 @@
 		E76B57651BBD1DAC00A70F69 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				22324BB91CA04B2E00E50E55 /* TextField */,
 				E79309B91BC571470009EFB1 /* UILabel */,
 				E7C9CDFB1BC28CDC007D8FE8 /* TextView */,
 				E76B576A1BBD245400A70F69 /* ScrollView */,
@@ -1407,6 +1463,7 @@
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
 				73E2311E1BA6E2C4003E41EC /* SceneParametarVC.xib in Resources */,
+				223362891CA2BAF3006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
 				E7DC67BF1B457C0E00EA6543 /* weather-moon@2x.png in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
@@ -1579,6 +1636,7 @@
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
+				22EFD31A1CA1866D00A56388 /* UsersViewController.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
@@ -1605,6 +1663,7 @@
 				7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */,
+				223362851CA29F67006C80C4 /* ProjectManagerViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
@@ -1654,11 +1713,14 @@
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,
 				E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */,
+				22324BC01CA0522800E50E55 /* LogInTextField.swift in Sources */,
+				2233628B1CA2D18A006C80C4 /* EditTextField.swift in Sources */,
 				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				73F67B941C7CA497008C6A0D /* AAViewController.swift in Sources */,
+				221F8B6C1CA148C20093C89D /* CreateAdminViewController.swift in Sources */,
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
@@ -1680,12 +1742,14 @@
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				223362881CA2BAF3006C80C4 /* AddUserXIB.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
 				7372EB3C1BC410800097806D /* Category.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
+				22324BBE1CA04ECF00E50E55 /* LogInViewController.swift in Sources */,
 				22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,

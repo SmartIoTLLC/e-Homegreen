@@ -43,8 +43,9 @@ class MenuViewControllers: NSObject {
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SecurityViewController") as? SecurityViewController)!,
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SurveillenceViewController") as? SurveillenceViewController)!,
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("EnergyViewController") as? EnergyViewController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SettingsViewController") as? SettingsViewController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PCControlViewController") as? PCControlViewController )!
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ProjectManagerViewController") as? ProjectManagerViewController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PCControlViewController") as? PCControlViewController )!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("UsersViewController") as? UsersViewController )!
     ]
 //    func getViewController (arrayNumber:Int) -> CommonViewController {
 //        return viewControllers[arrayNumber]
@@ -65,6 +66,7 @@ class MenuViewControllers: NSObject {
             case "Energy": backNumber = 10
             case "Settings": backNumber = 11
             case "PC Control": backNumber = 12
+            case "Users": backNumber = 13
             default: backNumber = 0
         }
         return viewControllers[backNumber]
@@ -82,7 +84,8 @@ class MenuViewControllers: NSObject {
             MenuItem (title: "Security", image: UIImage(named: "menu_security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: false),
             MenuItem (title: "Surveillance", image: UIImage(named: "menu_surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: false),
             MenuItem (title: "Energy", image: UIImage(named: "menu_energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: false),
-            MenuItem (title: "PC Control", image: UIImage(named: "18 Media - LCD TV - 01"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: false),
+            MenuItem (title: "PC Control", image: UIImage(named: "PC Control"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: false),
+            MenuItem (title: "Users", image: UIImage(named: "Users"), viewController: MenuViewControllers.sharedInstance.getViewController("Users"), state: false),
             MenuItem (title: "Settings", image: UIImage(named: "menu_settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: false)]
     }
     
@@ -117,6 +120,7 @@ class MenuViewControllers: NSObject {
 //            }
 //            return menu
 //        }
+        
         menu = [
             MenuItem (title: "Dashboard", image: UIImage(named: "Dashboard"), viewController: MenuViewControllers.sharedInstance.getViewController("Dashboard"), state: true),
             MenuItem (title: "Devices", image: UIImage(named: "Devices"), viewController: MenuViewControllers.sharedInstance.getViewController("Devices"), state: true),
@@ -129,8 +133,10 @@ class MenuViewControllers: NSObject {
             MenuItem (title: "Security", image: UIImage(named: "Security"), viewController: MenuViewControllers.sharedInstance.getViewController("Security"), state: true),
             MenuItem (title: "Surveillance", image: UIImage(named: "Surveillance"), viewController: MenuViewControllers.sharedInstance.getViewController("Surveillance"), state: true),
             MenuItem (title: "Energy", image: UIImage(named: "Energy"), viewController: MenuViewControllers.sharedInstance.getViewController("Energy"), state: true),
-            MenuItem (title: "PC Control", image: UIImage(named: "18 Media - LCD TV - 01"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: true),
-            MenuItem (title: "Settings", image: UIImage(named: "Settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: true)]
+            MenuItem (title: "PC Control", image: UIImage(named: "PC Control"), viewController: MenuViewControllers.sharedInstance.getViewController("PC Control"), state: true),
+            MenuItem (title: "Users", image: UIImage(named: "Users"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: true),
+            MenuItem (title: "Settings", image: UIImage(named: "Settings"), viewController: MenuViewControllers.sharedInstance.getViewController("Settings"), state: true)
+            ]
         
         return menu
         

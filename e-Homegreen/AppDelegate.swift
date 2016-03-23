@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 //
 //    }
-    var testTestTest:TestTestTest = TestTestTest()
+//    var testTestTest:TestTestTest = TestTestTest()
     func refreshDevicesToYesterday () {
         var error:NSError?
         let fetchRequest = NSFetchRequest(entityName: "Device")

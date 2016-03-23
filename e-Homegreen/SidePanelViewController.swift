@@ -64,14 +64,14 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     }
     func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 //        var pom = menuItems[fromIndexPath.item]
-        if indexPath.item == (menuItems.count - 1) {
+        if indexPath.item == (menuItems.count - 1) || indexPath.item == menuItems.count {
             return false
         }
         return true
     }
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, canMoveToIndexPath toIndexPath: NSIndexPath!) -> Bool {
-        if toIndexPath.item == (menuItems.count - 1) {
+        if toIndexPath.item == (menuItems.count - 1) || toIndexPath.item == menuItems.count {
             return false
         }
         return true
@@ -102,60 +102,37 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         }
         NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
         NSUserDefaults.standardUserDefaults().synchronize()
-//        let menuData = NSKeyedArchiver.archivedDataWithRootObject(menuList)
-//        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
+
     }
     
-//    override func viewWillAppear(animated: Bool) {
-//        let menuData = NSUserDefaults.standardUserDefaults().objectForKey("menu") as? NSData
-//        if let menuData = menuData {
-//            let menuArray = NSKeyedUnarchiver.unarchiveObjectWithData(menuData) as? [Menu]
-//            
-//            if let placesArray = menuArray {
-//                menuCollectionView.reloadData()
-//            }
-//            
-//        }
-//    }
+    @IBAction func logOutAction(sender: AnyObject) {
+        
+    }
     
-//    init() {
-//        NSNotificationCenter.defaultCenter().addObserverForName(
-//            UIApplicationDidReceiveMemoryWarningNotification,
-//            object: nil, queue: NSOperationQueue.mainQueue()) { notification in
-////                self.images.removeAll(keepCapacity: false)
-//        }
-//    }
-//    
-//    deinit {
-//        NSNotificationCenter.defaultCenter().removeObserver(self,
-//            name: UIApplicationDidReceiveMemoryWarningNotification,
-//            object: nil)
-//    }
-//    cell.heartToggleHandler = { isStarred in
-//    self.collectionView.reloadItemsAtIndexPaths([ indexPath ])
-//    }
-//    cell.heartToggleHandler = { [weak self] isStarred in
-//    if let strongSelf = self {
-//    strongSelf.collectionView.reloadItemsAtIndexPaths([ indexPath ])
-//    }
-//    }
+    
 }
 
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
-        let selectedMenuItem = menuItems[indexPath.row]
-        NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
-        NSUserDefaults.standardUserDefaults().synchronize()
-        delegate?.menuItemSelected!(selectedMenuItem)
-        collectionView.userInteractionEnabled = false
+        //        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
+        if indexPath.row != menuItems.count{
+            let selectedMenuItem = menuItems[indexPath.row]
+            NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
+            NSUserDefaults.standardUserDefaults().synchronize()
+            delegate?.menuItemSelected!(selectedMenuItem)
+            collectionView.userInteractionEnabled = false
+        }
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: 88, height: 88)
+        if indexPath.row < menuItems.count{
+            return CGSize(width: 88, height: 88)
+        }else{
+            return CGSize(width: 190, height: 70)
+        }
     }
 }
 
@@ -164,22 +141,26 @@ extension SidePanelViewController: UICollectionViewDataSource {
         return 1
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return menuItems.count
+        return menuItems.count + 1
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
-        cell.configureForMenu(menuItems[indexPath.row])
-        cell.layer.cornerRadius = 5
-        return cell
-//        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accessCell", forIndexPath: indexPath) as! AccessControllCell
-//        return cell
+        if indexPath.row < menuItems.count{
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
+            cell.configureForMenu(menuItems[indexPath.row])
+            cell.layer.cornerRadius = 5
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
+            return cell
+        }
+
     }
 }
+   
 class MenuItemCell: UICollectionViewCell {
     
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
-//    var gradientLayer: CAGradientLayer?
     
     var colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
     var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
@@ -206,17 +187,7 @@ class MenuItemCell: UICollectionViewCell {
     }
     override func drawRect(rect: CGRect) {
         super.drawRect(rect)
-//        let path = UIBezierPath(roundedRect: rect,
-//            byRoundingCorners: UIRectCorner.AllCorners,
-//            cornerRadii: CGSize(width: 5.0, height: 5.0))
-//        path.addClip()
-//        path.lineWidth = 2
-//        UIColor.lightGrayColor().setStroke()
-        
-        
-        
         let context = UIGraphicsGetCurrentContext()
-//        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
         let colors = [ colorOne, colorTwo]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
@@ -226,9 +197,17 @@ class MenuItemCell: UICollectionViewCell {
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:bounds.height)
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
-        
-        
-//        path.stroke()
+
     }
 }
+   
+class LogOutCell: UICollectionViewCell {
+    
+    @IBOutlet weak var userImage: UIImageView!
+    @IBOutlet weak var userLabel: UILabel!
+    @IBOutlet weak var dataBaseLabel: UILabel!
+    @IBOutlet weak var logOutButton: UIButton!
+    
+    
+}
+   

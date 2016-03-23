@@ -277,6 +277,11 @@ extension ContainerViewController: SidePanelViewControllerDelegate {
 //            }else{
 //                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Surveillance.Stop, object: self, userInfo: nil)
 //            }
+            if menuItem.title == "Settings"{
+               centerViewControllerSecond.addButtonWidth.constant = 30
+            }else{
+                centerViewControllerSecond.addButtonWidth.constant = 0
+            }
             if menuItem.title == "Devices" {
                 centerViewControllerSecond.btnRefreshDevices.enabled = true
                 centerViewControllerSecond.btnRefreshDevices.hidden = false

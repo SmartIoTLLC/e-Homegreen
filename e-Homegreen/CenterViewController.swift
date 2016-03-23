@@ -25,6 +25,15 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidRefreshDeviceInfo, object: self, userInfo: nil)
         btnRefreshDevices.rotate(1)
     }
+    @IBAction func addUserSign(sender: AnyObject) {
+        if let vc = fromViewController as? ProjectManagerViewController {
+            showAddUser().delegate = vc
+        }
+
+    }
+    
+    @IBOutlet weak var addButtonWidth: NSLayoutConstraint!
+    
     @IBOutlet weak var btnRefreshDevices: UIButton!
     @IBOutlet weak var toggleLeftPanel: UIButton!
     @IBOutlet weak var btnSearchIBeacon: UIButton!
@@ -33,10 +42,14 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var greenView: UIView!
     @IBOutlet weak var redView: UIView!
+    
     var fromViewController:UIViewController?
+    var toViewController:UIViewController?
+    
     func prepareForSegue123 (sender: AnyObject?) {
         if let menuItem = sender as? MenuItem {
             let toViewController = menuItem.viewController!
+            self.toViewController = toViewController
             if toViewController != fromViewController {
                 self.addChildViewController(menuItem.viewController!)
                 self.transitionFromViewController(fromViewController!, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in

@@ -13,7 +13,7 @@ enum SettingsItem{
     var description:String{
         switch self{
             case MainMenu: return "Main Menu"
-            case Interfaces: return "Interfaces"
+            case Interfaces: return "Locations"
             case RefreshStatusDelay: return "Refresh Status Delay"
             case OpenLastScreen: return "Open Last Screen"
             case Surveillance: return "Surveillance"
@@ -41,7 +41,7 @@ class SettingsViewController: CommonViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Surveillance, .Security, .IBeacon, .Broadcast, .RefreshConnection]
+        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
