@@ -16,7 +16,15 @@ class SendingHandler {
         if appDel.inOutSockets.count > 0 {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)
             if let ssid = UIDevice.currentDevice().SSID {
-                if gateway.ssid == ssid {
+                // Checks if ssid exists
+                var doesSSIDExist = false
+                if let ssids = gateway.location.ssids?.allObjects as? [SSID]  {
+                    doesSSIDExist = ssids.contains({ (let item) -> Bool in
+                        return item.name == ssid ? true : false
+                    })
+                }
+                // According to result in finding if ssid exists move on
+                if doesSSIDExist {
                     //  Send via local ip
                     for inOutSocket in appDel.inOutSockets {
                         if inOutSocket.port == UInt16(Int(gateway.localPort)) {
@@ -80,46 +88,3 @@ extension UIDevice {
         }
     }
 }
-//class SendingHandler: NSObject {
-//    var appDel:AppDelegate!
-//
-//    init (byteArray:[UInt8], gateway:Gateway) {
-//        super.init()
-//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-//        if let ssid = UIDevice.currentDevice().SSID {
-//            if gateway.ssid == ssid {
-//                //  Send via local ip
-//                if appDel.inOutSockets != [] {
-////                    var i:Int
-//                    for i in 0...appDel.inOutSockets.count-1 {
-//                        if appDel.inOutSockets[i].port == UInt16(Int(gateway.localPort)) {
-//                            appDel.inOutSockets[i].sendByte(gateway.localIp, arrayByte:byteArray)
-//                        }
-//                    }
-//                }
-//            } else {
-//                //  Send via remote ip
-//                if appDel.inOutSockets != [] {
-////                    var i:Int
-//                    for i in 0...appDel.inOutSockets.count-1 {
-//                        if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-//                            print(gateway.remoteIpInUse)
-//                            appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
-//                        }
-//                    }
-//                }
-//            }
-//        } else {
-//            //  Send vie remote ip
-//            if appDel.inOutSockets != [] {
-////                var i:Int
-//                for i in 0...appDel.inOutSockets.count-1 {
-//                    if appDel.inOutSockets[i].port == UInt16(Int(gateway.remotePort)) {
-//                        print(gateway.remoteIpInUse)
-//                        appDel.inOutSockets[i].sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

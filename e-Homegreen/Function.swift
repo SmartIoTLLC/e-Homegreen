@@ -9,6 +9,25 @@
 import UIKit
 
 class Function {
+    // Get Socket State Command:
+    static func refreshGatewayConnection (address:[Byte]) -> [Byte] {
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count % 256)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x02
+        message[6] = 0x03
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        return message
+    }
     static func setInternalClockRTC (address:[Byte], year:Byte, month:Byte, day:Byte, hour:Byte, minute:Byte, second:Byte, dayOfWeak:Byte) -> [Byte] {
         var messageInfo:[Byte] = [0xFF, year, month, day, hour, minute,  second, dayOfWeak]
         var message:[Byte] = []

@@ -440,6 +440,8 @@ enum FilterEnumeration:String {
     case PCControl = "PCControl"
     case Users = "Users"
     case Database = "Database"
+    static let allFilters = [Device, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
+
 }
 //MARK: Notification constants
 struct NotificationKey {

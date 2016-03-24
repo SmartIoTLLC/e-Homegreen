@@ -35,17 +35,14 @@ extension AppDelegate {
     
     func refreshAllConnections() {
         let queue = dispatch_queue_create("com.domain.app.refresh.connections.timer", nil)
-        var minutes = RefreshConnectionsPreference.getMinutes()
-        minutes = minutes == 0 ? 3 : minutes        
+        var minutes = 1
         let seconds:UInt64 = UInt64(((minutes*60)-10))
-        NSLog("\(seconds)")
         refreshTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
         dispatch_source_set_timer(refreshTimer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
         dispatch_source_set_event_handler(refreshTimer) {
-            // do whatever you want here
             NSLog("Upravo se sve osvezilo")
             dispatch_async(dispatch_get_main_queue(),{
-                self.establishAllConnections()
+                self.refreshAllConnectionsToEHomeGreenPLC()
             })
         }
         dispatch_resume(refreshTimer)
@@ -176,7 +173,7 @@ class BroadcastPreference {
         NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "kBroadcastUpdateDate")
     }
 }
-
+// Ovo se vise ne koristi, ali svakako proveri
 class RefreshConnectionsPreference {
     class func getMinutes() -> Int {
         let number = NSUserDefaults.standardUserDefaults().integerForKey("kRefreshConnections")

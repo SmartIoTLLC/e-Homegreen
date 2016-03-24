@@ -191,7 +191,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             port.text = "\(gateway.remotePort)"
             localIP.text = gateway.localIp
             localPort.text = "\(gateway.localPort)"
-            localSSID.text = gateway.ssid
             addressFirst.text = returnThreeCharactersForByte(Int(gateway.addressOne))
             addressSecond.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
             addressThird.text = returnThreeCharactersForByte(Int(gateway.addressThree))
@@ -280,7 +279,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                             }
                             gateway.localIp = localIP.text!
                             gateway.localPort = Int(localPort.text!)!
-                            gateway.ssid = localSSID.text!
                             gateway.addressOne = Int(addressFirst.text!)!
                             gateway.addressTwo = Int(addressSecond.text!)!
                             gateway.addressThree = Int(addressThird.text!)!
@@ -299,7 +297,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                         gateway?.remotePort = Int(port.text!)!
                         gateway?.localIp = localIP.text!
                         gateway?.localPort = Int(localPort.text!)!
-                        gateway?.ssid = localSSID.text!
                         gateway?.addressOne = Int(addressFirst.text!)!
                         gateway?.addressTwo = Int(addressSecond.text!)!
                         gateway?.addressThree = Int(addressThird.text!)!
