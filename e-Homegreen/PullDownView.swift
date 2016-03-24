@@ -15,7 +15,8 @@ import CoreData
     optional func pullDownSearchParametars (filterParametar: FilterItem)
 }
 enum FilterFields: Int {
-    case Location = 1
+    case Location = 0
+    case Gateway = 1
     case Level = 2
     case Zone = 3
     case Category = 4
@@ -385,6 +386,9 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
+//                if let id = Int(fetResults![0].id!) {
+//                    return id
+//                }
                 return Int(fetResults![0].id!)
             } else {
                 return 0
@@ -403,7 +407,9 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
-                return Int(fetResults![0].id!)
+//                if let id = Int(fetResults![0].id!) {
+//                    return id
+//                }
             } else {
                 return 0
             }
@@ -421,7 +427,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
+                return "\(fetResults![0].name!)"
             } else {
                 return "\(id)"
             }
@@ -439,7 +445,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
+                return "\(fetResults![0].name!)"
             } else {
                 return "\(id)"
             }

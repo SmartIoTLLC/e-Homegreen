@@ -24,6 +24,7 @@ extension Location {
     @NSManaged var ssids: NSSet?
     @NSManaged var surveillances: NSSet?
     @NSManaged var timer: Timer?
+    @NSManaged var user: User?
     @NSManaged var zones: NSSet?
 
 }

@@ -187,9 +187,17 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
+//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                let levelNames = results.map({ (let level) -> String in
+                    if let name = level.name {
+                        return name
+                    }
+                    return ""
+                }).filter({ (let name) -> Bool in
+                    return name != "" ? true : false
+                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in levelNames {
                     tableList.append(TableList(name: item, id: 3))
                 }
             } catch let catchedError as NSError {
@@ -220,10 +228,21 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 2))
+//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+//                for item in distinctSorted {
+//                    tableList.append(TableList(name: item, id: 2))
+//                }
+                let zoneNames = results.map({ (let zone) -> String in
+                    if let name = zone.name {
+                        return name
+                    }
+                    return ""
+                }).filter({ (let name) -> Bool in
+                    return name != "" ? true : false
+                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in zoneNames {
+                    tableList.append(TableList(name: item, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -251,10 +270,21 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 4))
+//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+//                for item in distinctSorted {
+//                    tableList.append(TableList(name: item, id: 4))
+//                }
+                let categoryNames = results.map({ (let category) -> String in
+                    if let name = category.name {
+                        return name
+                    }
+                    return ""
+                }).filter({ (let name) -> Bool in
+                    return name != "" ? true : false
+                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in categoryNames {
+                    tableList.append(TableList(name: item, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
