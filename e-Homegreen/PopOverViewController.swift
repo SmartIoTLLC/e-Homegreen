@@ -262,6 +262,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     func updateDeviceList (whatToFetch:String) {
+        // Gateway had to return distinct values, but with II stage, and implementation of Location, this was no longer needed
         if whatToFetch == "Gateway" {
             let fetchRequest = NSFetchRequest(entityName: "Gateway")
             let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
@@ -276,6 +277,32 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 print(distinctSorted)
                 for item in distinctSorted {
+                    tableList.append(TableList(name: item, id: -1))
+                }
+            } catch let catchedError as NSError {
+                error = catchedError
+            }
+            return
+        }
+        // Location was intended to be distinct and unique, but there could be a situation with two locations with same name in ~ 0.0000001% of time
+        if whatToFetch == "Location" {
+            let fetchRequest = NSFetchRequest(entityName: "Location")
+            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//            let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+//            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
+            fetchRequest.sortDescriptors = [sortDescriptor]
+//            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Location]
+                let locationNames = results.map({ (let location) -> String in
+                    if let name = location.name {
+                        return name
+                    }
+                    return ""
+                }).filter({ (let name) -> Bool in
+                    return name != "" ? true : false
+                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in locationNames {
                     tableList.append(TableList(name: item, id: -1))
                 }
             } catch let catchedError as NSError {
@@ -348,6 +375,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     enum PopOver: Int {
+        case Location = 0
         case Gateways = 1
         case Levels = 2
         case Zones = 3
@@ -368,7 +396,10 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case LocationOptions = 26
     }
     override func viewWillAppear(animated: Bool) {
-        if indexTab == PopOver.Gateways.rawValue {
+        if indexTab == PopOver.Location.rawValue {
+            updateDeviceList("Location")
+            tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
+        } else if indexTab == PopOver.Gateways.rawValue {
             updateDeviceList("Gateway")
             tableList.insert(TableList(name: "All", id: -1), atIndex: 0)
         } else if indexTab == PopOver.Levels.rawValue {

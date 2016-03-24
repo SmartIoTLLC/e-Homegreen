@@ -63,3 +63,18 @@
 ////    user = NSKeyedUnarchiver.unarchiveObjectWithData(savedUser) as? User
 ////}
 ////user
+import UIKit
+struct Location {
+    let id:Int
+    let name:String?
+}
+let results = [Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Damir"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Sladjan"),Location(id: 1, name: "Teodor")]
+let locationNames = results.map({ (let location) -> String in
+    if let name = location.name {
+        return name
+    }
+    return ""
+}).filter({ (let name) -> Bool in
+    return name != "" ? true : false
+}).
+sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }

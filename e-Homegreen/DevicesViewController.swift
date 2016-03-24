@@ -47,7 +47,23 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        
+        let location = Location(context: appDel.managedObjectContext!)
+        location.name = "Covece"
+        for var i in 0...10 {
+            let zone = Zone(context: appDel.managedObjectContext!)
+            zone.id = 1
+            zone.level = 0 + i
+            zone.name = "\(i+1)"
+            zone.location = location
+        }
+        for var i in 0...10 {
+            let zone = Category(context: appDel.managedObjectContext!)
+            zone.id = 1
+            zone.categoryDescription = "Category"
+            zone.name = "\(i+1)"
+            zone.location = location
+        }
+        saveChanges()
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }

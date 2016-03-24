@@ -105,7 +105,8 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         // Filters
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        locationButton.tag = 1
+        // Before was tag 1 for Gateway but know it is tag 0 for Location
+        locationButton.tag = 0
         locationButton.addTarget(self, action: #selector(PullDownView.menuTable(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         locationButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
         self.addSubview(locationButton)

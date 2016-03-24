@@ -17,6 +17,8 @@ extension User {
     @NSManaged var password: String?
     @NSManaged var profilePicture: NSData?
     @NSManaged var username: String?
+    @NSManaged var isSuperUser: NSNumber?
+    @NSManaged var isLocked: NSNumber?
     @NSManaged var locations: NSSet?
 
 }
