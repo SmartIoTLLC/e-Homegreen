@@ -150,6 +150,19 @@ class CenterViewController: UIViewController {
         toggleLeftPanel.collapseInReturnToNormal(1)
         delegate?.toggleLeftPanel?()
     }
+    
+//    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {
+//        if let id = identifier{
+//            if id == "segueUnwind" {
+//                let unwindSegue = SegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
+//                    
+//                })
+//                return unwindSegue
+//            }
+//        }
+//        
+//        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
+//    }
 
 }
 

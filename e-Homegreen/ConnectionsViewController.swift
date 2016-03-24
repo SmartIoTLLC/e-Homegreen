@@ -245,7 +245,9 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     func returnLocations () -> [Location] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
         let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+        let predicate = NSPredicate(format: "user == %@", user)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
+        fetchRequest.predicate = predicate
         do {
             let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
             return fetchResults!

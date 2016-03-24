@@ -8,9 +8,11 @@
 
 import UIKit
 
-class UserSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
+class UserSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning{
     
     var user:User!
+    
+    var isPresenting:Bool = false
     
     var settingArray:[SettingsItem]!
     @IBOutlet weak var settingsTableView: UITableView!
@@ -21,6 +23,8 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        transitioningDelegate = self
         
         settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
         
@@ -211,17 +215,9 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             self.settingsTableView.userInteractionEnabled = false
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
             if tag == 0 {
-                //                dispatch_async(dispatch_get_main_queue(),{
-                //                    self.performSegueWithIdentifier("menuSettings", sender: self)
-                //                })
-                //                if (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB {
-                //                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = false
-                //                } else {
-                //                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = true
-                //                }
-                //                (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinator = (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinatorNew("e_homegreen.sqlite")
-                //                (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContextNew()
-                (UIApplication.sharedApplication().delegate as! AppDelegate).changeCoreDataStackPreferences("")
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("menuSettings", sender: self)
+                })
             }
             if tag == 1 {
                 dispatch_async(dispatch_get_main_queue(),{
@@ -283,7 +279,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             if let endFrame = endFrame{
-                self.tableBottomConstraint.constant = endFrame.size.height + 5
+//                self.tableBottomConstraint.constant = endFrame.size.height + 5
             }
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
@@ -301,7 +297,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             
-            self.tableBottomConstraint.constant = 0
+//            self.tableBottomConstraint.constant = 0
             
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
@@ -323,7 +319,54 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+//        self.performSegueWithIdentifier("segueUnwind", sender: self)
     }
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+        return 0.5
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting == true{
+            isPresenting = false
+            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.center.x += containerView!.bounds.size.width
+            containerView!.addSubview(presentedControllerView)
+            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x -= containerView!.bounds.size.width
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }else{
+            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let containerView = transitionContext.containerView()
+            
+            // Animate the presented view off the bottom of the view
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                presentedControllerView.center.x += containerView!.bounds.size.width
+                }, completion: {(completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+            })
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if dismissed == self {
+            return self
+        }
+        else {
+            return nil
+        }
+    }
+
 
 
 

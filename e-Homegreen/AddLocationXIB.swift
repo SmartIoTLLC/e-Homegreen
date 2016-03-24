@@ -185,15 +185,17 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBAction func saveAction(sender: AnyObject) {
         if locationNameTextField.text != "" && annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 {
             if location == nil{
-                if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
-                    newLocation.name = locationNameTextField.text!
-                    newLocation.latitude = annotation.coordinate.latitude
-                    newLocation.longitude = annotation.coordinate.longitude
-                    newLocation.radius = radius
-                    
-                    saveChanges()
-                    delegate?.editAddLocationFinished()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                if let user = user{
+                    if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
+                        newLocation.name = locationNameTextField.text!
+                        newLocation.latitude = annotation.coordinate.latitude
+                        newLocation.longitude = annotation.coordinate.longitude
+                        newLocation.radius = radius
+                        newLocation.user = user
+                        saveChanges()
+                        delegate?.editAddLocationFinished()
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
                 }
                 
             }else{
@@ -204,7 +206,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 saveChanges()
                 delegate?.editAddLocationFinished()
                 self.dismissViewControllerAnimated(true, completion: nil)
-
+                
             }
             
         }

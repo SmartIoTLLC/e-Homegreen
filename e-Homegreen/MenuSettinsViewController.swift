@@ -54,6 +54,8 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         return 0.5
     }
     
+    
+    
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         if isPresenting == true{
             isPresenting = false

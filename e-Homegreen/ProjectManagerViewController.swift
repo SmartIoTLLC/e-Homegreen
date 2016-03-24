@@ -86,6 +86,7 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("userCell") as? UserCell{
             cell.editDatabaseButton.tag = indexPath.row
+            print(indexPath.row)
             cell.setItem(users[indexPath.row])
             return cell
         }
@@ -101,6 +102,37 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showAddUser(users[indexPath.row]).delegate = self
     }
+    
+//    @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
+//        
+//    }
+//    
+//    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {
+//        if let id = identifier{
+//            if id == "segueUnwind" {
+//                let unwindSegue = SegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: {
+//                    
+//                })
+//                return unwindSegue
+//            }
+//        }
+//        return nil
+//    }
+    
+    
+//    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
+//        if let id = identifier{
+//            if id == "segueUnwind" {
+//                let unwindSegue = SegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
+//                    
+//                })
+//                return unwindSegue
+//            }
+//        }
+//        
+//        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
+//    
+//    }
 
 }
 
