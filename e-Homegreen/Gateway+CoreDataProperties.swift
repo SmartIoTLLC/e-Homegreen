@@ -17,7 +17,8 @@ extension Gateway {
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressThree: NSNumber
     @NSManaged var addressTwo: NSNumber
-    @NSManaged var autoReconnectDelay: NSNumber
+    @NSManaged var autoReconnectDelay: NSNumber?
+    @NSManaged var autoReconnectDelayLast: NSDate?
     @NSManaged var gatewayDescription: String
     @NSManaged var localIp: String
     @NSManaged var localPort: NSNumber
@@ -25,7 +26,6 @@ extension Gateway {
     @NSManaged var remoteIp: String
     @NSManaged var remoteIpInUse: String
     @NSManaged var remotePort: NSNumber
-    @NSManaged var ssid: String
     @NSManaged var turnedOn: NSNumber
     @NSManaged var devices: NSSet
     @NSManaged var events: NSSet

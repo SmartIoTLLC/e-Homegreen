@@ -90,6 +90,7 @@
         <attribute name="addressThree" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="autoReconnectDelay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="autoRenonnectDelayLast" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gatewayDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -248,7 +249,7 @@
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
-        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="360"/>
+        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="223"/>

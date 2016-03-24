@@ -48,17 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    func enumerateDirectory() -> [String] {
-        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as [String]
-        let dir = dirs[0]
-        do {
-            let fileList = try NSFileManager.defaultManager().contentsOfDirectoryAtPath(dir)
-            return fileList as [String]
-        } catch {
-            
-        }
-        return []
-    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         let documentsDirectory: AnyObject = paths[0]
@@ -69,11 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch let error as NSError {
             print(error.localizedDescription);
         }
-        Fabric.with([Crashlytics.self])
-//        let storeURL: NSURL = NSURL.fileURLWithPath(self.applicationPrivateDocumentsDirectory.stringByAppendingPathComponent("SomeApp.sqlite"))
-//        print(storeURL)
-        var content:[String] = enumerateDirectory()
-//        refreshDevicesToYesterday()
         broadcastTimeAndDate()
         refreshAllConnections()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
@@ -103,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
     }
     func setFilterBySSIDOrByiBeacon () {
-        checkIfThereISGatewayWithExistingSSID()
+        checkIfThereIsLocationWithExistingSSID()
         var beacon:IBeacon?
         for item in iBeacons {
             if beacon == nil {
@@ -114,64 +98,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         if beacon != nil && beacon!.accuracy != 10000 {
-            let zone = returnZoneWithIBeacon(beacon!)
-            if zone != nil {
-                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.location!.name) A POKAZUJE OVAj GATEWAY: \(zone?.location!.name)")
-                let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance", "Settings"]
-                for filter in filterArray {
-                    var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-                    if zone!.level == 0 {
-                        filterParametars[0] = zone!.location!.name!
-                        filterParametars[1] = "\(zone!.id)"
-                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+            let zoneWithBeacon = returnZoneWithIBeacon(beacon!)
+            // Check if zone exists with that iBeacon
+            if let zone = zoneWithBeacon {
+                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.location!.name) A POKAZUJE OVAj GATEWAY: \(zone.location!.name)")
+                if let zoneLocation = zone.location, zoneName = zone.name, lvlId = zone.level {
+                    // Check if zone has level (which is another zone)
+                    let levelId = Int(lvlId)
+                    if levelId == 0 {
+                        for item in  FilterEnumeration.allFilters {
+                            Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(zone.id!), zoneId:0, categoryId:0, levelName:zoneName, zoneName:"All", categoryName:"All"), forTab: item)
+                        }
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+                        return
                     } else {
-                        filterParametars[0] = zone!.location!.name!
-                        filterParametars[2] = "\(zone!.id)"
-                        LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
+                        if let level = fetchZone(Int(levelId)) {
+                            for item in  FilterEnumeration.allFilters {
+                                Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(level.id!), zoneId:Int(zone.id!), categoryId:0, levelName:level.name!, zoneName:zoneName, categoryName:"All"), forTab: item)
+                            }
+                            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+                            // Exit method
+                            return
+                        }
                     }
                 }
             }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
+            for item in iBeacons {
+                item.accuracy = 10000
+            }
+            beacon = nil
+            stopiBeacons()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
-        for item in iBeacons {
-            item.accuracy = 10000
-        }
-        beacon = nil
-        stopiBeacons()
     }
-    func checkIfThereISGatewayWithExistingSSID() {
-            if let ssid = UIDevice.currentDevice().SSID {
-                fetchGateways()
-                for gateway in gateways {
-                    print(gateway.ssid)
-                    print(ssid)
-                    if gateway.ssid == ssid {
-                        let filterArray = ["Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Energy", "Chat", "Surveillance", "Settings"]
-                        for filter in filterArray {
-                            var filterParametars = LocalSearchParametar.getLocalParametar(filter)
-                            //                        This logic is responsible for suplying filter with Gateway name if it is different gateway and leaving it as it is if it is same gateway
-                            if filterParametars[0] != "\(gateway.name)" {
-                                filterParametars[0] = "\(gateway.name)"
-                                filterParametars[1] = "All"
-                                filterParametars[2] = "All"
-                                filterParametars[3] = "All"
-                                filterParametars[4] = "All"
-                                filterParametars[5] = "All"
-                                filterParametars[6] = "All"
-                                LocalSearchParametar.setLocalParametar(filter, parametar: filterParametars)
-//                                dispatch_async(dispatch_get_main_queue(), {
-                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
-//                                })
+    func checkIfThereIsLocationWithExistingSSID() {
+        if let ssid = UIDevice.currentDevice().SSID {
+            let ssidsDB:[SSID] = fetchSSIDs()
+            for ssidDB in ssidsDB {
+                if ssid == ssidDB {
+                    if let location = ssidDB.location, locationName = location.name {
+                        for item in  FilterEnumeration.allFilters {
+                            let filter = Filter.sharedInstance.returnFilter(forTab: item)
+                            if filter.location != locationName {
+                                Filter.sharedInstance.saveFilter(item: FilterItem(location:locationName, levelId:0, zoneId:0, categoryId:0, levelName:"All", zoneName:"All", categoryName:"All"), forTab: item)
                             }
                         }
-                        break
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: self, userInfo: nil)
                     }
+                    break
                 }
             }
-            else {
-                print("Nije nasao ssid.")
-            }
-//        })
+        } else {
+            print("Nije nasao ssid.")
+        }
     }
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -199,6 +178,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
+    }
+    func fetchSSIDs() -> [SSID] {
+        var error:NSError?
+        let fetchRequest = NSFetchRequest(entityName: "SSID")
+        do {
+            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [SSID]
+            if let results = fetResults {return results}
+            return []
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
+    func fetchZone(id:Int) -> Zone? {
+        var error:NSError?
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        do {
+            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let zone = fetResults![0]
+            return zone
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return nil
     }
     
     var inOutSockets:[InOutSocket] = []
@@ -288,6 +295,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
+    func refreshAllConnectionsToEHomeGreenPLC () {
+        fetchGateways()
+        // === === === === ===
+        if gateways != [] {
+            for gateway in gateways {
+                if let minutes = gateway.autoReconnectDelay as? Int, date = gateway.autoReconnectDelayLast {
+                    if NSDate().timeIntervalSinceDate(date.dateByAddingTimeInterval(NSTimeInterval(minutes))) >= 0 {
+                        let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+                        SendingHandler.sendCommand(byteArray: Function.refreshGatewayConnection(address), gateway: gateway)
+                    }
+                }
+            }
+        }
+        // === === === === ===
     }
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

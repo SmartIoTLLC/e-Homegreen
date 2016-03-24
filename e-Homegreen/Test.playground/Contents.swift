@@ -69,12 +69,32 @@ struct Location {
     let name:String?
 }
 let results = [Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Damir"),Location(id: 1, name: "Teodor"),Location(id: 1, name: "Sladjan"),Location(id: 1, name: "Teodor")]
-let locationNames = results.map({ (let location) -> String in
-    if let name = location.name {
-        return name
-    }
-    return ""
-}).filter({ (let name) -> Bool in
-    return name != "" ? true : false
-}).
-sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+//let locationNames = results.map({ (let location) -> String in
+//    if let name = location.name {
+//        return name
+//    }
+//    return ""
+//}).filter({ (let name) -> Bool in
+//    return name != "" ? true : false
+//}).
+//sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+let bool = results.contains { (let location) -> Bool in
+    return location.name == "Teodor" ? true : false
+}
+let marko = results.indexOf( {(let ime) -> Bool in
+    return ime.name! == "Sladjan" ? true : false
+})
+marko
+//let object = indexOf(results.flatMap({ $0.name }), "Foo")
+let object = results.map({ $0.name}).filter({ (let string) -> Bool in
+    return string == "Sladjan" ? true : false
+}).count > 0 ? true : false
+print(object)
+
+
+//var doesSSIDExist = false
+//guard let doesExist == gateway.location.ssids!.allObjects.contains({ (let item) -> Bool in
+//    return item.name == ssid ? true : false
+//}) else {
+//    
+//}
