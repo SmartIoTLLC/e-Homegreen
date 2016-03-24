@@ -44,13 +44,15 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     var appDel:AppDelegate!
     var error:NSError? = nil
     var location:Location?
+    var user:User?
     
     var radius:Double = 50.0
-    init(location:Location?){
+    init(location:Location?, user:User?){
         super.init(nibName: "AddLocationXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.location = location
+        self.user = user
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -188,6 +190,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                     newLocation.latitude = annotation.coordinate.latitude
                     newLocation.longitude = annotation.coordinate.longitude
                     newLocation.radius = radius
+                    
                     saveChanges()
                     delegate?.editAddLocationFinished()
                     self.dismissViewControllerAnimated(true, completion: nil)
@@ -310,8 +313,8 @@ extension AddLocationXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddLocation(location:Location?) -> AddLocationXIB {
-        let addLocation = AddLocationXIB(location: location)
+    func showAddLocation(location:Location?, user:User?) -> AddLocationXIB {
+        let addLocation = AddLocationXIB(location: location, user:user)
         self.presentViewController(addLocation, animated: true, completion: nil)
         return addLocation
     }

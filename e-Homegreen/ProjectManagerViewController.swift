@@ -38,7 +38,19 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     }
     
     @IBAction func editDataBase(sender: AnyObject) {
-        
+        if let button = sender as? UIButton{
+            performSegueWithIdentifier("settings", sender: button)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "settings"{
+            if let button = sender as? UIButton{
+                if let vc = segue.destinationViewController as? UserSettingsViewController{
+                    vc.user = users[button.tag]
+                }
+            }
+        }
     }
     
     func addUserFinished() {
@@ -73,6 +85,7 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("userCell") as? UserCell{
+            cell.editDatabaseButton.tag = indexPath.row
             cell.setItem(users[indexPath.row])
             return cell
         }

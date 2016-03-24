@@ -46,6 +46,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     var appDel:AppDelegate!
     var error:NSError? = nil
     
+    var user:User!
+    
     @IBOutlet weak var gatewayTableView: UITableView!
     @IBOutlet weak var topView: UIView!
     
@@ -64,7 +66,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
-        self.showAddLocation(nil).delegate = self
+        self.showAddLocation(nil, user: user).delegate = self
         
     }
     
@@ -164,7 +166,7 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     }
     
     @IBAction func editLocation(sender: AnyObject) {
-        self.showAddLocation(locationList[sender.tag].location).delegate = self
+        self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
     
 

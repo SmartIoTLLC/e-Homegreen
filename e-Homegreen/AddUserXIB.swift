@@ -62,6 +62,9 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         
         if let user = user{
             usernameTextField.text = user.username
+            if let issuperuser = user.isSuperUser as? Bool{
+                superUserSwitch.on = issuperuser
+            }
         }
 
         // Do any additional setup after loading the view.
@@ -93,6 +96,8 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         
             user.username = username
             user.password = password
+            user.isLocked = false
+            user.isSuperUser = superUserSwitch.on
             saveChanges()
             
         }
