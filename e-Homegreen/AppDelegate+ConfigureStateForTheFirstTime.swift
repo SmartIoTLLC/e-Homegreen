@@ -11,6 +11,7 @@ import CoreData
 
 extension AppDelegate {
     func preloadData () {
+        //MARK: OVO NEBI TREBALO DA POSTOJI VISE
         let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
         for securityJSON in importedData! {
             let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: managedObjectContext!) as! Security
@@ -46,17 +47,6 @@ extension AppDelegate {
             //        No Panic, Panic
             defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
             defaults.setInteger(3, forKey: "kRefreshConnections")
-            
-            LocalSearchParametar.setLocalParametar("Devices", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Scenes", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Events", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Sequences", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Timers", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Flags", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Energy", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Chat", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Surveillance", parametar: ["All","All","All","All","All","All","All"])
-            LocalSearchParametar.setLocalParametar("Settings", parametar: ["All","All","All","All","All","All","All"])
         }
     }
 }
