@@ -23,6 +23,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     var popoverVC:PopOverViewController = PopOverViewController()
     
+    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
@@ -46,7 +48,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     var location:Location?
     var user:User?
     
-    var radius:Double = 50.0
+    var radius:Double = 0
     init(location:Location?, user:User?){
         super.init(nibName: "AddLocationXIB", bundle: nil)
         transitioningDelegate = self
@@ -68,16 +70,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         
         locationMap.mapType = MKMapType.Hybrid
         locationMap.showsUserLocation = true
-        
-        
-        
-        
-        
-        locationNameTextField.layer.borderWidth = 1
-        locationNameTextField.layer.cornerRadius = 2
-        locationNameTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        locationNameTextField.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
@@ -90,6 +83,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         locationMap.addGestureRecognizer(lpgr)
         
         if let location = location{
+            topConstraint.constant = 136
+            backViewHeight.constant = 563
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -108,6 +103,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 self.locationMap.setRegion(region, animated: true)
             }
         }else{
+            topConstraint.constant = 4
+            backViewHeight.constant = 427
             radiusLabel.text = "Radius: \(Int(radius))"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
@@ -252,6 +249,24 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         radiusLabel.text = "Radius: \(Int(radius))"
         addRadiusCircle(CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude))
     }
+    
+    @IBAction func importZone(sender: AnyObject) {
+        
+        if let importZoneViewController = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportZone") as? ImportZoneViewController{
+        self.presentViewController(importZoneViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func importCategory(sender: AnyObject) {
+        if let importCategoryViewController = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportCategory") as? ImportCategoryViewController{
+            self.presentViewController(importCategoryViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func importSSID(sender: AnyObject) {
+        
+    }
+    
 
 }
 
