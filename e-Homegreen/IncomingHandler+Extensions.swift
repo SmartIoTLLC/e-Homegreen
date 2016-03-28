@@ -77,10 +77,10 @@ extension IncomingHandler {
                         } else if name == ControlType.Curtain {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name != ControlType.PC {
+                        } else if name == ControlType.PC {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name != ControlType.Climate && name != ControlType.Sensor && name != ControlType.HumanInterfaceSeries {
+                        } else if name != ControlType.Climate && name != ControlType.Sensor && name != ControlType.HumanInterfaceSeries && name != ControlType.Gateway {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
                         }

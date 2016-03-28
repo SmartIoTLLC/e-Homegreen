@@ -30,7 +30,7 @@ class Device: NSManagedObject {
         self.name = "Unknown"
         self.address = information.address
         self.channel = information.channel
-        self.numberOfDevices = channel
+        self.numberOfDevices = information.numberOfDevices
         self.runningTime = "00:00:00,0s"
         self.currentValue = 0
         self.current = 0
