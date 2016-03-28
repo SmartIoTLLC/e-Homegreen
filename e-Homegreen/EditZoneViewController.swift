@@ -107,9 +107,9 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         idTextField.delegate = self
         
         if let zoneForEdit = editZone {
-            idTextField.text = "\(zoneForEdit.id)"
-            nameTextField.text = zoneForEdit.name
-            levelTextField.text = "\(zoneForEdit.level)"
+            idTextField.text = "\(zoneForEdit.id!)"
+            nameTextField.text = zoneForEdit.name!
+            levelTextField.text = "\(zoneForEdit.level!)"
             idTextField.enabled = false
         }
         

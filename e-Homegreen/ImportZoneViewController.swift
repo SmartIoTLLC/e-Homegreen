@@ -53,11 +53,11 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     func backURL(strText: String) {
 //        First - Delete all zones
-//        for var item = 0; item < zones.count; item++ {
-//            if zones[item].location.objectID == location!.objectID {
-//                appDel.managedObjectContext!.deleteObject(zones[item])
-//            }
-//        }
+        for item in 0 ..< zones.count {
+            if zones[item].location == location! {
+                appDel.managedObjectContext!.deleteObject(zones[item])
+            }
+        }
 //        Second - Take default zones from bundle
         let zonesJSONBundle = DataImporter.createZonesFromFileFromNSBundle()
 //        Third - Add new zones and edit zones from bundle if needed
@@ -80,25 +80,25 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
                     zone.name = zoneJSON.name
                     zone.zoneDescription = zoneJSON.description
                     zone.level = zoneJSON.level
+                    zone.location = location!
                     if zoneJSON.id == 254 || zoneJSON.id == 255 {
                         zone.isVisible = NSNumber(bool: false)
                     } else {
                         zone.isVisible = NSNumber(bool: true)
                     }
-//                    zone.location = location!
                     saveChanges()
                 }
             } else {
                 let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 presentViewController(alert, animated: true, completion: nil)
-//                createZones(gateway!)
+                createZones(location!)
             }
         } else {
             let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             presentViewController(alert, animated: true, completion: nil)
-//            createZones(gateway!)
+            createZones(location!)
         }
         refreshZoneList()
     }
@@ -296,14 +296,14 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     // MARK:- Delete zones and other
     
     @IBAction func btnDeleteAll(sender: AnyObject) {
-//        for var item = 0; item < zones.count; item++ {
-//            if zones[item].gateway.objectID == gateway!.objectID {
-//                appDel.managedObjectContext!.deleteObject(zones[item])
-//            }
-//        }
-//        createZones(gateway!)
-//        saveChanges()
-//        refreshZoneList()
+        for var item = 0; item < zones.count; item++ {
+            if zones[item].location == location! {
+                appDel.managedObjectContext!.deleteObject(zones[item])
+            }
+        }
+        createZones(location!)
+        saveChanges()
+        refreshZoneList()
     }
 
     @IBAction func btnImportFile(sender: AnyObject) {
@@ -335,22 +335,22 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     
     func updateZoneList () {
-//        let fetchRequest = NSFetchRequest(entityName: "Zone")
-//        let sortDescriptorOne = NSSortDescriptor(key: "location.name", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
-//        let sortDescriptorFour = NSSortDescriptor(key: "level", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-//        let predicate = NSPredicate(format: "location == %@", location!.objectID)
-//        fetchRequest.predicate = predicate
-//        do {
-//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-//            zones = fetResults!
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let sortDescriptorOne = NSSortDescriptor(key: "location.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "level", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let predicate = NSPredicate(format: "location == %@", location!)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            zones = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
     }
     
     func saveChanges() {
@@ -445,9 +445,8 @@ extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblName.text = "\(zones[indexPath.row].id). \(zones[indexPath.row].name)"
-            print(zones[indexPath.row].level)
-            cell.lblLevel.text = "Level: \(zones[indexPath.row].level)"
+            cell.lblName.text = "\(zones[indexPath.row].id!). \(zones[indexPath.row].name!)"
+            cell.lblLevel.text = "Level: \(zones[indexPath.row].level!)"
 //            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
 //            cell.lblLevel.text = ""
             cell.lblDescription.text = ""
@@ -464,7 +463,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name), Level: \(zones[indexPath.row].level), Desc: \(zones[indexPath.row].zoneDescription)"
+        cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name!), Level: \(zones[indexPath.row].level!), Desc: \(zones[indexPath.row].zoneDescription!)"
         cell.textLabel?.textColor = UIColor.whiteColor()
         cell.backgroundColor = UIColor.clearColor()
         return cell
