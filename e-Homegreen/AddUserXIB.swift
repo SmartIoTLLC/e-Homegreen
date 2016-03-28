@@ -13,7 +13,7 @@ protocol AddUserDelegate{
     func addUserFinished()
 }
 
-class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
+class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, SceneGalleryDelegate {
     
     var isPresenting: Bool = true
     
@@ -32,6 +32,8 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     var appDel:AppDelegate!
     var error:NSError? = nil
     var user:User?
+    
+    var imageData:NSData?
     
     init(user:User?){
         super.init(nibName: "AddUserXIB", bundle: nil)
@@ -65,9 +67,21 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
             }
+            if let data = user.profilePicture{
+                userImageButton.setImage(UIImage(data: data), forState: .Normal)
+            }
         }
 
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func changePicture(sender: AnyObject) {
+        showGallery(1).delegate = self
+    }
+    
+    func backImageFromGallery(data: NSData, imageIndex: Int) {
+        imageData = data
+        userImageButton.setImage(UIImage(data: data), forState: .Normal)
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -98,6 +112,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
             user.password = password
             user.isLocked = false
             user.isSuperUser = superUserSwitch.on
+            user.profilePicture = imageData
             saveChanges()
             
         }

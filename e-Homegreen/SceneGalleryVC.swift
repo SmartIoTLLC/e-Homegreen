@@ -289,9 +289,10 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     @IBAction func openGallery(sender: AnyObject) {
         let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
             if let backImage = image{
-                self?.updateWithImage(backImage)
+//                self?.updateWithImage(backImage)
+                self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
                 self?.dismissViewControllerAnimated(true, completion: { () -> Void in
-//                    self?.dismissViewControllerAnimated(true, completion: nil)
+                    self?.dismissViewControllerAnimated(true, completion: nil)
                 })
             }else{
                 self?.dismissViewControllerAnimated(true, completion:nil)
@@ -301,17 +302,31 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     @IBAction func takePhoto(sender: AnyObject) {
-        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
+        
+        let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
             if let backImage = image{
-                self?.updateWithImage(backImage)
-                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
-//                    self?.dismissViewControllerAnimated(true, completion: nil)
+                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 })
             }else{
-                self?.dismissViewControllerAnimated(true, completion:nil)
+                self.dismissViewControllerAnimated(true, completion:nil)
             }
         }
-        presentViewController(libraryViewController, animated: true, completion: nil)
+        presentViewController(cameraViewController, animated: true, completion: nil)
+
+        
+//        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
+//            if let backImage = image{
+//                self?.updateWithImage(backImage)
+//                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
+////                    self?.dismissViewControllerAnimated(true, completion: nil)
+//                })
+//            }else{
+//                self?.dismissViewControllerAnimated(true, completion:nil)
+//            }
+//        }
+//        presentViewController(libraryViewController, animated: true, completion: nil)
 
     }
     

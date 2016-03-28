@@ -83,8 +83,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         locationMap.addGestureRecognizer(lpgr)
         
         if let location = location{
-            topConstraint.constant = 136
-            backViewHeight.constant = 563
+            topConstraint.constant = 150
+            backViewHeight.constant = 577
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -103,8 +103,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 self.locationMap.setRegion(region, animated: true)
             }
         }else{
-            topConstraint.constant = 4
-            backViewHeight.constant = 427
+            topConstraint.constant = 8
+            backViewHeight.constant = 431
             radiusLabel.text = "Radius: \(Int(radius))"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
@@ -265,6 +265,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     @IBAction func importSSID(sender: AnyObject) {
         if let importSSID = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportSSID") as? ImportSSIDViewController{
+            importSSID.location = location
             self.presentViewController(importSSID, animated: true, completion: nil)
         }
     }

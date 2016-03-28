@@ -499,7 +499,6 @@ extension ConnectionsViewController: UITableViewDelegate {
         if indexPath.row == 0{
             locationList[indexPath.section].isCollapsed = !locationList[indexPath.section].isCollapsed
             tableView.reloadData()
-//            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.None)
         }else{
             let device = locationList[indexPath.section].children[indexPath.row - 1]
             if let surv = device.device as? Surveillance{
