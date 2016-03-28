@@ -474,7 +474,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
                 }
             } else if command == .SetZone {
                 if let zone = helper.getZone(message, isLevel: false) {
-                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level!), gateway: zone.location!.gateways?.allObjects.first as! Gateway) {
+                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level!), location: zone.location!) {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
                         refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)

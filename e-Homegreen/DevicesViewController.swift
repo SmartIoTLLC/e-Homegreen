@@ -47,22 +47,7 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        let location = Location(context: appDel.managedObjectContext!)
-        location.name = "Covece"
-        for var i in 0...10 {
-            let zone = Zone(context: appDel.managedObjectContext!)
-            zone.id = 1
-            zone.level = 0 + i
-            zone.name = "\(i+1)"
-            zone.location = location
-        }
-        for var i in 0...10 {
-            let zone = Category(context: appDel.managedObjectContext!)
-            zone.id = 1
-            zone.categoryDescription = "Category"
-            zone.name = "\(i+1)"
-            zone.location = location
-        }
+        
         saveChanges()
         updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
@@ -84,31 +69,6 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
     }
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
-    }
-    func batchUpdate (device:Device) {
-        let batch = NSBatchUpdateRequest(entityName: "Device")
-        batch.propertiesToUpdate = ["stateUpdatedAt":NSDate()]
-        let predOne = NSPredicate(format: "gateway == %@", device.gateway)
-        let predFour = NSPredicate(format: "address == %@", device.address)
-        let predFive = NSPredicate(format: "type == %@", device.controlType)
-        let predSix = NSPredicate(format: "isEnabled == %@", NSNumber(bool: true))
-        let predSeven = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        let predArray:[NSPredicate] = [predOne, predFour, predFive, predSix, predSeven]
-        let compoundPred = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predArray)
-        batch.predicate = compoundPred
-        batch.resultType = .UpdatedObjectIDsResultType
-        do {
-            let batchResult = try appDel.managedObjectContext!.executeRequest(batch) as? NSBatchUpdateResult
-            if let objectIDs = batchResult!.result as? [NSManagedObjectID] {
-                for objectID in objectIDs {
-                    let managedObject = appDel.managedObjectContext!.objectWithID(objectID)
-                    self.appDel.managedObjectContext!.refreshObject(managedObject, mergeChanges: true)
-                }
-            }
-        } catch let error as NSError {
-            print("Unresolved error \(error), \(error.userInfo)")
-            abort()
-        }
     }
     
     func refreshLocalParametars () {
@@ -817,13 +777,13 @@ class DevicesViewController: CommonViewController, UIPopoverPresentationControll
                 if filterParametar.zoneId != 0 {
                     return "\(device.name)"
                 } else {
-                    return "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+                    return "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
                 }
             } else {
-                return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+                return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
             }
         } else {
-            return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway)) \(device.name)"
+            return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
         }
     }
 }

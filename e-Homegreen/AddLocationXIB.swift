@@ -264,7 +264,9 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     }
     
     @IBAction func importSSID(sender: AnyObject) {
-        
+        if let importSSID = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportSSID") as? ImportSSIDViewController{
+            self.presentViewController(importSSID, animated: true, completion: nil)
+        }
     }
     
 

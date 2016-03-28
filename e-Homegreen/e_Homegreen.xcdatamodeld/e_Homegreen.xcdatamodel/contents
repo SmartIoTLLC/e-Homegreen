@@ -90,7 +90,7 @@
         <attribute name="addressThree" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="autoReconnectDelay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="autoRenonnectDelayLast" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="autoReconnectDelayLast" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gatewayDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

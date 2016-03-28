@@ -30,6 +30,7 @@
 		2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */; };
 		2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */; };
 		224A14EF1CA3EBA50098D88D /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */; };
+		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -305,6 +306,7 @@
 		2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlInterfaceXIB.swift; sourceTree = "<group>"; };
 		2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlInterfaceXIB.xib; sourceTree = "<group>"; };
 		224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
+		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -1316,6 +1318,7 @@
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				734E35771C8239990096E043 /* ScanFunction.swift */,
+				2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -1726,6 +1729,7 @@
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
+				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,

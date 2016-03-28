@@ -11,10 +11,10 @@ import CoreData
 
 class DatabaseHandler: NSObject {
     
-    class func returnCategoryWithId(id:Int, gateway:Gateway) -> String {
+    class func returnCategoryWithId(id:Int, location:Location) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
@@ -32,10 +32,10 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    class func returnZoneWithId(id:Int, gateway:Gateway) -> String {
+    class func returnZoneWithId(id:Int, location:Location) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
@@ -50,13 +50,13 @@ class DatabaseHandler: NSObject {
             print("Unresolved error")
             abort()
         }
-        return ""
+        return "0"
     }
     
-    class func returnLevelWithId(id:Int, gateway:Gateway) -> Zone? {
+    class func returnLevelWithId(id:Int, location:Location) -> Zone? {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
@@ -72,10 +72,10 @@ class DatabaseHandler: NSObject {
         return nil
     }
     
-    class func returnCategoryIdWithName(name:String, gateway:Gateway) -> String {
+    class func returnCategoryIdWithName(name:String, location:Location) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
@@ -93,10 +93,10 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    class func returnZoneIdWithName (name:String, gateway:Gateway) -> String {
+    class func returnZoneIdWithName (name:String, location:Location) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "name == %@", name)
-        let predicateTwo = NSPredicate(format: "gateway == %@", gateway)
+        let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate

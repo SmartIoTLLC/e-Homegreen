@@ -253,9 +253,9 @@ extension DevicesViewController: UICollectionViewDataSource {
 //            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
 //            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address)))"
-            cell.lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), gateway: devices[indexPath.row].gateway))"
-            cell.lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), gateway: devices[indexPath.row].gateway))"
-            cell.lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), gateway: devices[indexPath.row].gateway))"
+            cell.lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location))"
+            cell.lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location))"
+            cell.lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location))"
 
             
             // If device is enabled add all interactions

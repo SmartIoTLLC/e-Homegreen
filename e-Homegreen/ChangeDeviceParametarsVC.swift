@@ -92,9 +92,9 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))", forState: UIControlState.Normal)
-        btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))", forState: UIControlState.Normal)
-        btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))", forState: UIControlState.Normal)
+        btnLevel.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location))", forState: UIControlState.Normal)
+        btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location))", forState: UIControlState.Normal)
+        btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))", forState: UIControlState.Normal)
         btnControlType.setTitle("\(device.controlType)", forState: UIControlState.Normal)
         txtFieldName.becomeFirstResponder()
         // Do any additional setup after loading the view.
@@ -128,17 +128,17 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         print("\(text) \(id)")
         if text != "All" {
             if id == 2 {
-                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device.gateway)) {
+                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
                     editedDevice?.levelId = levelId
                 }
                 btnLevel.setTitle(text, forState: UIControlState.Normal)
             } else if id == 3 {
-                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, gateway: device.gateway)) {
+                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
                     editedDevice?.zoneId = zoneId
                 }
                 btnZone.setTitle(text, forState: UIControlState.Normal)
             } else if id == 4 {
-                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, gateway: device.gateway)) {
+                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, location: device.gateway.location)) {
                     editedDevice?.categoryId = categoryId
                 }
                 btnCategory.setTitle(text, forState: UIControlState.Normal)

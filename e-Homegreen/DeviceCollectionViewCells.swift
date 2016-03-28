@@ -147,9 +147,9 @@ class CurtainCollectionCell: UICollectionViewCell {
 //        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         
 //        lblAddress.text = "\(device.channel)" 
-        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))"
-        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))"
-        lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))"
+        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location))"
+        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location))"
+        lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))"
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
             disabledCellView.hidden = true
@@ -321,9 +321,9 @@ class MultiSensorCell: UICollectionViewCell {
         populateCell(device)
         labelID.text = "\(device.channel)"
         labelName.text = "\(device.name)"
-        labelCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), gateway: device.gateway))"
-        labelLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), gateway: device.gateway))"
-        labelZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), gateway: device.gateway))"
+        labelCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))"
+        labelLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location))"
+        labelZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location))"
         if device.info {
             infoView.hidden = false
             backView.hidden = true
