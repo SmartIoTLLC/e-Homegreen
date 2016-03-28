@@ -20,7 +20,7 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     var delegate:EditZoneDelegate?
     
     var editZone:Zone?
-    var gateway:Gateway?
+    var location:Location?
     
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -33,11 +33,11 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(zone:Zone?, gateway:Gateway?){
+    init(zone:Zone?, location:Location?){
         super.init(nibName: "EditZoneViewController", bundle: nil)
         transitioningDelegate = self
         self.editZone = zone
-        self.gateway = gateway
+        self.location = location
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
@@ -62,7 +62,7 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(EditZoneViewController.endEditingNow) )
         let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
@@ -113,7 +113,7 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
             idTextField.enabled = false
         }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(EditZoneViewController.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
 
@@ -135,9 +135,9 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         // Dispose of any resources that can be recreated.
     }
     
-    func fetchZones(id:Int, gateway:Gateway) -> [Zone]? {
+    func fetchZones(id:Int, location:Location) -> [Zone]? {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "gateway == %@", gateway)
+        let predicate = NSPredicate(format: "location == %@", location)
         let predicateTwo = NSPredicate(format: "id == %@", NSNumber(integer: id))
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateTwo])
         fetchRequest.predicate = compoundPredicate
@@ -153,39 +153,40 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     }
     //FIXME: Ove zone i kategorije su promenjene i nemaju vise gejtvej vec imaju samo lokacije
     @IBAction func saveAction(sender: AnyObject) {
-//        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
-//            if editZone == nil{
-//                if let gw = gateway, let zones = fetchZones(idValid, gateway: gw){
-//                    if zones != []{
-//                        for item in zones{
-//                            item.name = name
-//                            item.level = levelValid
-//                        }
-//                    }else{
-//                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-//                            zoneInsert.id = idValid
-//                            zoneInsert.name = name
-//                            zoneInsert.level = levelValid
-//                            zoneInsert.gateway = gw
-//                        }
-//                    }
-//                }else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
+            if editZone == nil{
+                if let loc = location, let zones = fetchZones(idValid, location: loc){
+                    if zones != []{
+                        for item in zones{
+                            item.name = name
+                            item.level = levelValid
+                        }
+                    }else{
+                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+                            zoneInsert.id = idValid
+                            zoneInsert.name = name
+                            zoneInsert.level = levelValid
+                            zoneInsert.location = loc
+                        }
+                    }
+                }
+//                else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
 //                    zoneInsert.id = idValid
 //                    zoneInsert.name = name
 //                    zoneInsert.level = levelValid
 //        
 //                }
-//                
-//                saveChanges()
-//            }else{
-//                editZone?.name = name
-//                editZone?.level = levelValid
-//                
-//                saveChanges()
-//            }
-//            delegate?.editZoneFInished()
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//        }
+                
+                saveChanges()
+            }else{
+                editZone?.name = name
+                editZone?.level = levelValid
+                
+                saveChanges()
+            }
+            delegate?.editZoneFInished()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
@@ -266,8 +267,8 @@ extension EditZoneViewController : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showEditZone(zone:Zone?, gateway:Gateway?) -> EditZoneViewController {
-        let editzone = EditZoneViewController(zone: zone, gateway: gateway)
+    func showEditZone(zone:Zone?, location:Location?) -> EditZoneViewController {
+        let editzone = EditZoneViewController(zone: zone, location: location)
         self.presentViewController(editzone, animated: true, completion: nil)
         return editzone
     }

@@ -253,7 +253,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBAction func importZone(sender: AnyObject) {
         
         if let importZoneViewController = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportZone") as? ImportZoneViewController{
-        self.presentViewController(importZoneViewController, animated: true, completion: nil)
+            importZoneViewController.location = location
+            self.presentViewController(importZoneViewController, animated: true, completion: nil)
         }
     }
     

@@ -14,7 +14,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     var appDel:AppDelegate!
     var error:NSError? = nil
     var zones:[Zone] = []
-    var gateway:Gateway?
+    var location:Location?
     var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var importZoneTableView: UITableView!
@@ -121,7 +121,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     
     @IBAction func addZone(sender: AnyObject) {
-        showEditZone(nil, gateway: gateway).delegate = self
+        showEditZone(nil, location: location).delegate = self
     }
     
     func editZoneFInished() {
@@ -131,14 +131,19 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     @IBAction func btnScanZones(sender: AnyObject) {
         do {
+            // This guard statement is just for test scanning with first available gateway
+            // FIXME: Gateway should be picked from location level, not to pick first gateway randomly like now!
+            guard let gateway = location!.gateways?.allObjects[0] as? Gateway else {
+                return
+            }
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
-            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway!, scanForWhat: .Zone)
+            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .Zone)
             pbSZ = ProgressBarVC(title: "Scanning Zones", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForZones)
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
             idToSearch = sp.from
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "checkIfGatewayDidGetZones:", userInfo: idToSearch, repeats: false)
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
             timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
@@ -418,7 +423,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
 extension ImportZoneViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showEditZone(zones[indexPath.row], gateway: nil).delegate = self
+        showEditZone(zones[indexPath.row], location: nil).delegate = self
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
