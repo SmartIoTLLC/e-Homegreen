@@ -84,7 +84,8 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
                     self.acknowledgementAboutNewDevices(self.byteArray)
                 }
-                
+                // Get device (module not by channel) Main ACK, Category, Zone, Name
+                // It was named curtain in beginning, but it is standard for all modules.
                 if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x0D {
                     self.acknowledgementAboutCurtainParametar(self.byteArray)
                 }
@@ -492,30 +493,31 @@ class IncomingHandler: NSObject {
         }
     }
     func acknowledgementAboutCurtainParametar (byteArray:[Byte]) {
-        self.fetchDevices()
-        print(byteArray)
-        for (i, device) in devices.enumerate() {
-            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
-                var string:String = ""
-                for var j = 12; j < byteArray.count-2; j++ {
-                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
+            self.fetchDevices()
+            for (i, device) in devices.enumerate() {
+                if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
+                    var string:String = ""
+                    for var j = 12; j < byteArray.count-2; j++ {
+                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                    }
+                    if string != "" {
+                        device.name = string
+                    } else {
+                        device.name = "Unknown"
+                    }
+                    device.categoryId = Int(byteArray[8])
+                    device.zoneId = Int(byteArray[9])
+                    device.parentZoneId = Int(byteArray[10])
+                    // When we change category it will reset images
+                    device.resetImages(appDel.managedObjectContext!)
+                    //TODO: problem with modul names and response for finding names
+                    //                let data = ["deviceIndexForFoundName":i]
+                    //                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
-                if string != "" {
-                    device.name = string
-                } else {
-                    device.name = "Unknown"
-                }
-                device.categoryId = Int(byteArray[8])
-                device.zoneId = Int(byteArray[9])
-                device.parentZoneId = Int(byteArray[10])
-                // When we change category it will reset images
-                device.resetImages(appDel.managedObjectContext!)
-                //TODO: problem with modul names and response for finding names
-//                let data = ["deviceIndexForFoundName":i]
-//                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
+                self.saveChanges()
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             }
-            self.saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     //  informacije o stanjima na uredjajima
@@ -583,6 +585,7 @@ class IncomingHandler: NSObject {
                     devices[i].resetImages(appDel.managedObjectContext!)
                     if byteArray[22] == 0x01 {
                         devices[i].isEnabled = NSNumber(bool: true)
+                        devices[i].isVisible = NSNumber(bool: true)
                     } else {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
@@ -650,7 +653,7 @@ class IncomingHandler: NSObject {
         }
         
     }
-    //FIXME: Part for security is commented
+    //FIXME: Part for security is commented, and it worked before, but now it needs to be changed
     func securityFeedbackHandler (byteArray:[Byte]) {
 //        print("AOOO 3")
 //        print(byteArray)
