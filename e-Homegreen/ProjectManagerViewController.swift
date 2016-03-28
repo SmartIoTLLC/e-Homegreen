@@ -100,7 +100,10 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showAddUser(users[indexPath.row]).delegate = self
+        dispatch_async(dispatch_get_main_queue(), {
+            self.showAddUser(self.users[indexPath.row]).delegate = self
+        })
+
     }
 
 
@@ -116,6 +119,9 @@ class UserCell: UITableViewCell{
     
     func setItem(user:User){
         userNameLabel.text = user.username
+        if let data = user.profilePicture{
+            userImage.image = UIImage(data: data)
+        }
     }
     
 }

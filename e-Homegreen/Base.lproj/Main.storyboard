@@ -846,6 +846,9 @@
                                 <state key="normal" title="ADD">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="addSSID:" destination="hpw-dr-VcV" eventType="touchUpInside" id="qox-kF-Qfn"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gAr-U4-leF" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                 <rect key="frame" x="120" y="110" width="97" height="27"/>
@@ -853,6 +856,9 @@
                                 <state key="normal" title="REMOVE ALL">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="removeAll:" destination="hpw-dr-VcV" eventType="touchUpInside" id="LgJ-87-VKK"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z2o-ym-aga">
                                 <rect key="frame" x="15" y="72" width="290" height="30"/>
@@ -860,7 +866,7 @@
                                     <constraint firstAttribute="height" constant="30" id="VfX-ig-qDO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GhF-Nr-UN0" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
@@ -900,7 +906,7 @@
                                 <rect key="frame" x="0.0" y="145" width="320" height="423"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ssidCell" id="R20-Qj-CNb" customClass="SSIDCell" customModule="e_Homegreen" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ssidCell" id="R20-Qj-CNb" customClass="SSIDCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R20-Qj-CNb" id="1ul-Ci-rjR">
@@ -954,6 +960,10 @@
                             <constraint firstItem="gAr-U4-leF" firstAttribute="centerY" secondItem="ZxN-kJ-iUn" secondAttribute="centerY" id="sIH-AW-rGV"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="ssidNameTextfield" destination="z2o-ym-aga" id="3kO-N6-ql6"/>
+                        <outlet property="ssidTableView" destination="Eub-On-Cjd" id="q7v-KM-lv1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bth-Fo-UYt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

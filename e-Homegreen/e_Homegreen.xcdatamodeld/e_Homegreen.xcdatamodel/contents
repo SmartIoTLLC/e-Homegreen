@@ -48,7 +48,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="voltage" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DeviceImage" inverseName="device" inverseEntity="DeviceImage" syncable="YES"/>
+        <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceImage" inverseName="device" inverseEntity="DeviceImage" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="devices" inverseEntity="Gateway" syncable="YES"/>
         <relationship name="pcCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PCCommand" inverseName="device" inverseEntity="PCCommand" syncable="YES"/>
     </entity>
@@ -128,7 +128,7 @@
         <attribute name="radius" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
         <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
+        <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
         <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
         <relationship name="timer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Timer" inverseName="location" inverseEntity="Timer" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="locations" inverseEntity="User" syncable="YES"/>
@@ -245,14 +245,14 @@
     </entity>
     <elements>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="120"/>
-        <element name="Device" positionX="-677" positionY="-1989" width="128" height="43"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="690"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
-        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="223"/>
+        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="225"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="43"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="43"/>
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="43"/>
