@@ -101,6 +101,8 @@ class ProjectManagerViewController: CommonViewController, UITableViewDelegate, U
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         dispatch_async(dispatch_get_main_queue(), {
+            
+            print("TEST")
             self.showAddUser(self.users[indexPath.row]).delegate = self
         })
 
