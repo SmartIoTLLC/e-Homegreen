@@ -9,7 +9,9 @@
 import UIKit
 import CoreData
 
-class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate {
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
@@ -17,8 +19,30 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet weak var pccontrolCollectionView: UICollectionView!
     var pcs:[Device] = []
     var appDel:AppDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         // Not sending zones and categories
         pcs = fetchSortedPCRequest("", parentZone: 1, zone: 1, category: 1)
@@ -46,10 +70,6 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
             abort()
         }
         return []
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

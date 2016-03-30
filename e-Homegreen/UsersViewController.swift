@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UsersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class UsersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
     
     var appDel:AppDelegate!
     var timers:[Timer] = []
@@ -18,6 +18,8 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     var senderButton:UIButton?
     
     @IBOutlet weak var timersCollectionView: UICollectionView!
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "TimerCell"
@@ -30,6 +32,26 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         // Do any additional setup after loading the view.

@@ -149,7 +149,6 @@
 		73E758F11B4EBE0300ECE061 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */; };
 		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
 		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
-		73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */; };
 		73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */; };
 		73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */; };
 		73ECD4A11B33189800767740 /* PullDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A01B33189800767740 /* PullDownView.swift */; };
@@ -448,7 +447,6 @@
 		73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
 		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
-		73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCells.swift; sourceTree = "<group>"; };
 		73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceCollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		73ECD4A01B33189800767740 /* PullDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownView.swift; sourceTree = "<group>"; };
@@ -700,6 +698,24 @@
 			name = Flags;
 			sourceTree = "<group>";
 		};
+		223292281CABD1B60001422B /* Surveillance */ = {
+			isa = PBXGroup;
+			children = (
+				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
+				22495D261CAA7F510034FC94 /* Surveillance.storyboard */,
+			);
+			name = Surveillance;
+			sourceTree = "<group>";
+		};
+		223292291CABD3280001422B /* Energy */ = {
+			isa = PBXGroup;
+			children = (
+				22495D281CAA80600034FC94 /* Energy.storyboard */,
+				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
+			);
+			name = Energy;
+			sourceTree = "<group>";
+		};
 		2233628E1CA2E4D2006C80C4 /* Project Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +730,7 @@
 		223362951CA2E604006C80C4 /* Users */ = {
 			isa = PBXGroup;
 			children = (
+				22495D2B1CAA80F20034FC94 /* Users.storyboard */,
 				223362961CA2E624006C80C4 /* UsersViewController.swift */,
 			);
 			name = Users;
@@ -751,6 +768,8 @@
 		2249A3271C90349C0019C6FB /* PC Controll */ = {
 			isa = PBXGroup;
 			children = (
+				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
+				22495D2D1CAA81490034FC94 /* PCControl.storyboard */,
 				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
 				223878A71C91A714001357E0 /* PC Control Interface */,
 				223878A61C91A6C9001357E0 /* Add Video/App */,
@@ -829,6 +848,8 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				223292291CABD3280001422B /* Energy */,
+				223292281CABD1B60001422B /* Surveillance */,
 				223292261CABD0130001422B /* Flags */,
 				223292251CABCE180001422B /* Timers */,
 				223292241CABCDFB0001422B /* Sequences */,
@@ -844,10 +865,6 @@
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
-				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
-				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
-				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
-				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 				22788B481CAAC1EA0070758C /* VladaViewController.swift */,
 			);
 			name = ViewControllers;
@@ -905,10 +922,6 @@
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
 				22495D301CAA83260034FC94 /* Popover.storyboard */,
-				22495D2D1CAA81490034FC94 /* PCControl.storyboard */,
-				22495D2B1CAA80F20034FC94 /* Users.storyboard */,
-				22495D281CAA80600034FC94 /* Energy.storyboard */,
-				22495D261CAA7F510034FC94 /* Surveillance.storyboard */,
 				73C4C9001C19E3BB0047CBD5 /* Database.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
@@ -1811,7 +1824,6 @@
 				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,
 				E7AA26091BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift in Sources */,
-				73E9C27F1B31759800E3FEE3 /* CommonViewController.swift in Sources */,
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
