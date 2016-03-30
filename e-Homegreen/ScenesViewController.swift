@@ -9,9 +9,9 @@
 import UIKit
 import CoreData
 
-class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
+class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPresentationControllerDelegate, SWRevealViewControllerDelegate {
     
-
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
@@ -45,7 +45,27 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        commonConstruct()
+        
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
 //        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {

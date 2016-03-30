@@ -69,11 +69,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
-        
-        self.navigationController?.navigationBar.translucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
-        self.navigationController?.navigationBar.titleTextAttributes = fontDictionary
+
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         if hour < 20 && hour > 6{

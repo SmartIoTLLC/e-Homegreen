@@ -145,11 +145,11 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//self.revealViewController().pushFrontViewController(menuItems[0].viewController, animated: true)
-//        if indexPath.row != 14 {
-//            self.revealViewController().pushFrontViewController(vc, animated: true)
-//        }
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+
+        if indexPath.row != 14 {
+            self.revealViewController().pushFrontViewController(menuItems[indexPath.row].viewController, animated: true)
+        }
         //        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
 //        if indexPath.row != menuItems.count{
 //            let selectedMenuItem = menuItems[indexPath.row]
@@ -158,8 +158,8 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
 //            delegate?.menuItemSelected!(selectedMenuItem)
 //            collectionView.userInteractionEnabled = false
 //        }
-//    }
-    
+    }
+   
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
@@ -185,8 +185,8 @@ extension SidePanelViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MenuItemCell", forIndexPath: indexPath) as! MenuItemCell
             cell.configureForMenu(menuItems[indexPath.row])
             cell.layer.cornerRadius = 5
-            cell.menuItemImageView.userInteractionEnabled = true
-            cell.menuItemImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "vlada:"))
+//            cell.menuItemImageView.userInteractionEnabled = true
+//            cell.menuItemImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "vlada:"))
             return cell
         }else{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
@@ -209,35 +209,35 @@ class MenuItemCell: UICollectionViewCell {
     }
     
     
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-//                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-//            } else {
-//                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
-//                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//            setNeedsDisplay()
-//        }
-//    }
-//    override func drawRect(rect: CGRect) {
-//        super.drawRect(rect)
-//        let context = UIGraphicsGetCurrentContext()
-//        let colors = [ colorOne, colorTwo]
-//        let colorSpace = CGColorSpaceCreateDeviceRGB()
-//        let colorLocations:[CGFloat] = [0.0, 1.0]
-//        let gradient = CGGradientCreateWithColors(colorSpace,
-//            colors,
-//            colorLocations)
-//        let startPoint = CGPoint.zero
-//        let endPoint = CGPoint(x:0, y:bounds.height)
-//        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-//
-//    }
+    override var highlighted: Bool {
+        willSet(newValue) {
+            if newValue {
+                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
+                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+            } else {
+                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
+                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
+            }
+        }
+        didSet {
+            print("highlighted = \(highlighted)")
+            setNeedsDisplay()
+        }
+    }
+    override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        let context = UIGraphicsGetCurrentContext()
+        let colors = [ colorOne, colorTwo]
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        let gradient = CGGradientCreateWithColors(colorSpace,
+            colors,
+            colorLocations)
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x:0, y:bounds.height)
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+
+    }
 }
    
 class LogOutCell: UICollectionViewCell {

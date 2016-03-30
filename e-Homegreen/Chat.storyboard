@@ -5,7 +5,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Chat View Controller-->
+        <!--Chat-->
         <scene sceneID="wYk-oe-9mY">
             <objects>
                 <viewController storyboardIdentifier="ChatViewController" id="lRA-DQ-GYr" customClass="ChatViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,8 +20,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="cDM-B3-N35">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hBP-Zq-FPM">
-                                <rect key="frame" x="0.0" y="50" width="320" height="469"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hBP-Zq-FPM">
+                                <rect key="frame" x="0.0" y="94" width="320" height="425"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chatCommandCell" id="IcH-gI-7vL" customClass="ChatCommandCell" customModule="e_Homegreen" customModuleProvider="target">
@@ -92,8 +92,8 @@
                                     <constraint firstAttribute="trailing" secondItem="uXF-AE-Pcv" secondAttribute="trailing" constant="8" id="zQC-Tj-21U"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmn-yh-3vt">
-                                <rect key="frame" x="270" y="20" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmn-yh-3vt">
+                                <rect key="frame" x="274" y="64" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="EFi-zP-XuA"/>
                                     <constraint firstAttribute="height" constant="30" id="c9h-NZ-90b"/>
@@ -121,13 +121,16 @@
                             <constraint firstAttribute="trailing" secondItem="CEb-ct-1fn" secondAttribute="trailing" id="wcC-lm-bd1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="plp-Lm-p2P"/>
+                    <navigationItem key="navigationItem" title="Chat" id="plp-Lm-p2P">
+                        <barButtonItem key="leftBarButtonItem" image="Menu button" id="AI4-xe-H9L"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="bottomConstraint" destination="EuG-2W-Bb7" id="F7y-XY-ccX"/>
                         <outlet property="chatTableView" destination="hBP-Zq-FPM" id="APf-bw-ugd"/>
                         <outlet property="chatTextView" destination="x81-fb-zYc" id="OnP-eR-FbY"/>
                         <outlet property="controlValleryVoice" destination="kmn-yh-3vt" id="Adp-pj-n1c"/>
+                        <outlet property="menuButton" destination="AI4-xe-H9L" id="F4G-Hy-XCr"/>
                         <outlet property="sendButton" destination="uXF-AE-Pcv" id="5bZ-J7-Xc8"/>
                         <outlet property="viewHeight" destination="GB6-9C-uHG" id="J9a-bd-ZJU"/>
                     </connections>
@@ -139,6 +142,7 @@
     </scenes>
     <resources>
         <image name="Background" width="1024" height="768"/>
+        <image name="Menu button" width="22" height="22"/>
         <image name="unmute" width="200" height="200"/>
     </resources>
 </document>

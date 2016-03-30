@@ -5,7 +5,7 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Timers View Controller-->
+        <!--Timers-->
         <scene sceneID="d5c-0J-A4Y">
             <objects>
                 <viewController storyboardIdentifier="TimersViewController" id="P8W-CS-RQM" customClass="TimersViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -14,14 +14,14 @@
                         <viewControllerLayoutGuide type="bottom" id="fp9-cY-9JN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VQc-cy-VZf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="Ap2-ax-AI2">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KfQ-z3-3a1">
-                                <rect key="frame" x="0.0" y="25" width="320" height="543"/>
+                                <rect key="frame" x="0.0" y="25" width="320" height="479"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kp0-3j-t9z">
                                     <size key="itemSize" width="150" height="180"/>
@@ -148,9 +148,13 @@
                             <constraint firstAttribute="trailing" secondItem="KfQ-z3-3a1" secondAttribute="trailing" id="kAH-b9-hMm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="IgJ-J9-2iT"/>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="Timers" id="IgJ-J9-2iT">
+                        <barButtonItem key="leftBarButtonItem" image="Menu button" id="Sqr-5Y-n0B"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="menuButton" destination="Sqr-5Y-n0B" id="iML-wZ-Mg0"/>
                         <outlet property="timersCollectionView" destination="KfQ-z3-3a1" id="iWl-Ga-P48"/>
                     </connections>
                 </viewController>
@@ -161,5 +165,6 @@
     </scenes>
     <resources>
         <image name="Background" width="1024" height="768"/>
+        <image name="Menu button" width="22" height="22"/>
     </resources>
 </document>

@@ -646,6 +646,60 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		223292211CABCB180001422B /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				22495D121CAA74880034FC94 /* Dashboard.storyboard */,
+				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
+			);
+			name = Dashboard;
+			sourceTree = "<group>";
+		};
+		223292221CABCC1F0001422B /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				22495D141CAA75100034FC94 /* Scenes.storyboard */,
+				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
+		223292231CABCC350001422B /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				22495D171CAA75DC0034FC94 /* Events.storyboard */,
+				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
+		223292241CABCDFB0001422B /* Sequences */ = {
+			isa = PBXGroup;
+			children = (
+				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
+				22495D191CAA797C0034FC94 /* Sequences.storyboard */,
+			);
+			name = Sequences;
+			sourceTree = "<group>";
+		};
+		223292251CABCE180001422B /* Timers */ = {
+			isa = PBXGroup;
+			children = (
+				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
+				22495D1C1CAA7A2E0034FC94 /* Timers.storyboard */,
+			);
+			name = Timers;
+			sourceTree = "<group>";
+		};
+		223292261CABD0130001422B /* Flags */ = {
+			isa = PBXGroup;
+			children = (
+				22495D1E1CAA7ADA0034FC94 /* Flags.storyboard */,
+				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
+			);
+			name = Flags;
+			sourceTree = "<group>";
+		};
 		2233628E1CA2E4D2006C80C4 /* Project Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,31 +829,31 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				223292261CABD0130001422B /* Flags */,
+				223292251CABCE180001422B /* Timers */,
+				223292241CABCDFB0001422B /* Sequences */,
+				223292231CABCC350001422B /* Events */,
+				223292221CABCC1F0001422B /* Scenes */,
+				223292211CABCB180001422B /* Dashboard */,
 				223362951CA2E604006C80C4 /* Users */,
 				2233628E1CA2E4D2006C80C4 /* Project Manager */,
 				2249A3271C90349C0019C6FB /* PC Controll */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
-				73DEA2201B32CE9F007836B4 /* Main ViewControllers */,
+				73DEA2201B32CE9F007836B4 /* Side Menu */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				2249A32C1C903F1E0019C6FB /* PCControlViewController.swift */,
-				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 				73E9C27E1B31759800E3FEE3 /* CommonViewController.swift */,
-				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
-				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
-				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
-				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
-				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
 				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 				22788B481CAAC1EA0070758C /* VladaViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		73DEA2201B32CE9F007836B4 /* Main ViewControllers */ = {
+		73DEA2201B32CE9F007836B4 /* Side Menu */ = {
 			isa = PBXGroup;
 			children = (
 				73DB8B901B2FF87600139E58 /* Menu.swift */,
@@ -807,7 +861,7 @@
 				73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */,
 				73DB8B941B2FF98700139E58 /* CenterViewController.swift */,
 			);
-			name = "Main ViewControllers";
+			name = "Side Menu";
 			sourceTree = "<group>";
 		};
 		73E2069D1B2EEFFE0008B002 = {
@@ -855,13 +909,6 @@
 				22495D2B1CAA80F20034FC94 /* Users.storyboard */,
 				22495D281CAA80600034FC94 /* Energy.storyboard */,
 				22495D261CAA7F510034FC94 /* Surveillance.storyboard */,
-				22495D211CAA7B910034FC94 /* Chat.storyboard */,
-				22495D1E1CAA7ADA0034FC94 /* Flags.storyboard */,
-				22495D1C1CAA7A2E0034FC94 /* Timers.storyboard */,
-				22495D191CAA797C0034FC94 /* Sequences.storyboard */,
-				22495D171CAA75DC0034FC94 /* Events.storyboard */,
-				22495D141CAA75100034FC94 /* Scenes.storyboard */,
-				22495D121CAA74880034FC94 /* Dashboard.storyboard */,
 				73C4C9001C19E3BB0047CBD5 /* Database.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
@@ -1026,6 +1073,7 @@
 		E73993151BCE9DC400C74486 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				22495D211CAA7B910034FC94 /* Chat.storyboard */,
 				736F17D91B3AE87E003A6A02 /* ChatViewController.swift */,
 				733F65441BCFABA8001BE004 /* ChatHandler.swift */,
 				73D592E71C1EC08400E206ED /* ChatInfo.swift */,

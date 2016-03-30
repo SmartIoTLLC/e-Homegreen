@@ -73,6 +73,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
+        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
+        UINavigationBar.appearance().titleTextAttributes = fontDictionary
+
+        
 //        window = UIWindow(frame: UIScreen.mainScreen().bounds)
 //        
 //        let containerViewController = ContainerViewController()

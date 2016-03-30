@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class FlagsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class FlagsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate,SWRevealViewControllerDelegate {
     
     var appDel:AppDelegate!
     var flags:[Flag] = []
@@ -18,6 +18,8 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     var pullDown = PullDownView()
     
     var senderButton:UIButton?
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "FlagCell"
@@ -34,6 +36,27 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
         //        cyclesTextField.delegate = self
         
 //        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {

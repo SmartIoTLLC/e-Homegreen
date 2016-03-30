@@ -72,7 +72,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="836"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-6k-Eai">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-6k-Eai">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HnO-ii-vqM">
@@ -1471,6 +1471,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Background" width="1024" height="768"/>
         <image name="Home logo" width="86" height="86"/>
         <image name="Menu button" width="22" height="22"/>
         <image name="applianceoff" width="200" height="200"/>
