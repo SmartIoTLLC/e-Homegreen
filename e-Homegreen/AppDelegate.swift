@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 //
 //    }
+
+    
     func refreshDevicesToYesterday () {
         var error:NSError?
         let fetchRequest = NSFetchRequest(entityName: "Device")
@@ -71,10 +73,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        let containerViewController = ContainerViewController()
-        window!.rootViewController = containerViewController
+//        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//        
+//        let containerViewController = ContainerViewController()
+//        window!.rootViewController = containerViewController
         
         configureStateForTheFirstTime()
         

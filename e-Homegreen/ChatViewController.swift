@@ -15,7 +15,7 @@ struct ChatItem {
     var type:BubbleDataType
 }
 
-class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDelegate, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
+class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelegate, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
@@ -110,7 +110,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
             var rect = self.pullDown.frame
@@ -125,7 +125,7 @@ class ChatViewController: CommonViewController, UITextViewDelegate, ChatDeviceDe
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             layout = "Landscape"

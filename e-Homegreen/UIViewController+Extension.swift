@@ -16,4 +16,17 @@ extension UIViewController {
     func sendFilterParametar(filterParametar:FilterItem){
         
     }
+    
+    func imageLayerForGradientBackground() -> UIImage {
+        
+        var updatedFrame = self.navigationController?.navigationBar.bounds
+        // take into account the status bar
+        updatedFrame!.size.height += 20
+        var layer = CAGradientLayer.gradientLayerForBounds(updatedFrame!)
+        UIGraphicsBeginImageContext(layer.bounds.size)
+        layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
 }

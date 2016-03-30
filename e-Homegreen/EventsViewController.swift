@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EventsViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class EventsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
     
     @IBOutlet weak var eventCollectionView: UICollectionView!
     @IBOutlet weak var broadcastSwitch: UISwitch!
@@ -102,7 +102,7 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
 //            if self.view.frame.size.width == 320{
@@ -122,7 +122,7 @@ class EventsViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)

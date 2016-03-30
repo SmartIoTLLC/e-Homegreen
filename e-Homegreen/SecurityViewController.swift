@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SecurityViewController: CommonViewController {
+class SecurityViewController: UIViewController {
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SecurityCell"

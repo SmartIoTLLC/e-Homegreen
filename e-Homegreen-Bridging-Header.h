@@ -9,6 +9,7 @@
 #ifndef e_Homegreen_e_Homegreen_Bridging_Header_h
 #define e_Homegreen_e_Homegreen_Bridging_Header_h
 
+#import "SWRevealViewController.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SPClockView.h"
 #import "FSCalendar.h"

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Flags View Controller-->
+        <scene sceneID="eQ7-H8-OWv">
+            <objects>
+                <viewController storyboardIdentifier="FlagsViewController" id="cWS-a5-l7n" customClass="FlagsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ynj-VN-BzA"/>
+                        <viewControllerLayoutGuide type="bottom" id="c4l-HJ-7AV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XG5-D7-Wyc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="zPe-nq-yGP">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dDw-eG-icM">
+                                <rect key="frame" x="0.0" y="25" width="320" height="543"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="OHe-PJ-YLV">
+                                    <size key="itemSize" width="150" height="180"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FlagCell" id="AHn-W6-pAq" customClass="FlagCollectionViewCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHa-sT-aPw" customClass="MarqueeLabel">
+                                                    <rect key="frame" x="0.0" y="8" width="150" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="rate">
+                                                            <real key="value" value="20"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                                            <real key="value" value="10"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zZ-dY-raM" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="8" y="142" width="134" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <state key="normal" title="Button">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="CNk-lB-ZXV">
+                                                    <rect key="frame" x="25" y="37" width="100" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="CNk-lB-ZXV" secondAttribute="height" multiplier="1:1" id="PWF-0v-2c8"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="8zZ-dY-raM" secondAttribute="bottom" constant="8" id="0e6-GL-zK6"/>
+                                            <constraint firstItem="CNk-lB-ZXV" firstAttribute="top" secondItem="AHa-sT-aPw" secondAttribute="bottom" constant="8" id="2ti-5d-e46"/>
+                                            <constraint firstItem="AHa-sT-aPw" firstAttribute="top" secondItem="AHn-W6-pAq" secondAttribute="top" constant="8" id="DQd-Hp-UuQ"/>
+                                            <constraint firstItem="8zZ-dY-raM" firstAttribute="top" secondItem="CNk-lB-ZXV" secondAttribute="bottom" constant="5" id="Hrm-dW-Vnt"/>
+                                            <constraint firstAttribute="trailing" secondItem="8zZ-dY-raM" secondAttribute="trailing" constant="8" id="Kbc-Dt-rwm"/>
+                                            <constraint firstItem="CNk-lB-ZXV" firstAttribute="centerX" secondItem="AHn-W6-pAq" secondAttribute="centerX" id="NcC-Gj-hav"/>
+                                            <constraint firstItem="AHa-sT-aPw" firstAttribute="leading" secondItem="AHn-W6-pAq" secondAttribute="leading" id="QJe-GM-TBZ"/>
+                                            <constraint firstItem="8zZ-dY-raM" firstAttribute="leading" secondItem="AHn-W6-pAq" secondAttribute="leading" constant="8" id="VHz-dG-pnT"/>
+                                            <constraint firstAttribute="trailing" secondItem="AHa-sT-aPw" secondAttribute="trailing" id="jez-Wf-ZC0"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="flagButton" destination="8zZ-dY-raM" id="5gr-du-VQJ"/>
+                                            <outlet property="flagImageView" destination="CNk-lB-ZXV" id="SE0-VO-KYx"/>
+                                            <outlet property="flagTitle" destination="AHa-sT-aPw" id="tEk-3M-85P"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="cWS-a5-l7n" id="4HR-zT-96i"/>
+                                    <outlet property="delegate" destination="cWS-a5-l7n" id="k0F-EX-kcH"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="zPe-nq-yGP" firstAttribute="top" secondItem="XG5-D7-Wyc" secondAttribute="top" id="6ue-s2-tnK"/>
+                            <constraint firstAttribute="trailing" secondItem="zPe-nq-yGP" secondAttribute="trailing" id="DkM-Pj-gj0"/>
+                            <constraint firstItem="zPe-nq-yGP" firstAttribute="leading" secondItem="XG5-D7-Wyc" secondAttribute="leading" id="WKu-cO-aDL"/>
+                            <constraint firstItem="dDw-eG-icM" firstAttribute="top" secondItem="XG5-D7-Wyc" secondAttribute="top" constant="25" id="WoC-LA-e0A"/>
+                            <constraint firstItem="dDw-eG-icM" firstAttribute="leading" secondItem="XG5-D7-Wyc" secondAttribute="leading" id="c3S-wa-rr7"/>
+                            <constraint firstAttribute="trailing" secondItem="dDw-eG-icM" secondAttribute="trailing" id="di6-zO-3nA"/>
+                            <constraint firstItem="c4l-HJ-7AV" firstAttribute="top" secondItem="zPe-nq-yGP" secondAttribute="bottom" id="kfq-Uv-4E7"/>
+                            <constraint firstItem="c4l-HJ-7AV" firstAttribute="top" secondItem="dDw-eG-icM" secondAttribute="bottom" id="lUV-H3-mGw"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="4Ic-AR-fiq"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="flagsCollectionView" destination="dDw-eG-icM" id="YnG-WH-uO7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p1V-SU-EoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="469" y="200"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Background" width="1024" height="768"/>
+    </resources>
+</document>

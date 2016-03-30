@@ -8,44 +8,71 @@
 
 import UIKit
 
-@objc
-protocol SidePanelViewControllerDelegate {
-    optional func menuItemSelected(menuItem: MenuItem)
-}
+//@objc
+//protocol SidePanelViewControllerDelegate {
+//    optional func menuItemSelected(menuItem: MenuItem)
+//}
 
 class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
   
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var menuCollectionView: UICollectionView!
-    var delegate: SidePanelViewControllerDelegate?
+//    var delegate: SidePanelViewControllerDelegate?
     private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    var menuItems: [MenuItem]!
-    var menuList:[NSString] = []
+    var menuItems: [MenuItem] = []
   
-    struct CollectionView {
-        struct CellIdentifiers {
-            static let MenuCell = "MenuItemCell"
-        }
-    }
+//    struct CollectionView {
+//        struct CellIdentifiers {
+//            static let MenuCell = "MenuItemCell"
+//        }
+//    }
+    var vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("vlada") as! UINavigationController
     
-    deinit {
-        print("deinit - class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {")
+    @IBAction func action(sender: AnyObject) {
+        self.revealViewController().pushFrontViewController(vc, animated: true)
     }
+    var viewControllers:Array<UINavigationController> = [
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Dashboard") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Devices") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Scenes") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Events") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Sequences") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Timers") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Flags") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Chat") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Security") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Surveillance") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Energy") as? UINavigationController)!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PC Control") as? UINavigationController )!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Users") as? UINavigationController )!,
+        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Settings") as? UINavigationController)!
+    ]
+    
+    var menuList:[String] = ["Dashboard", "Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Chat", "Security", "Surveillance", "Energy", "PC Control", "Users", "Settings"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //(red: 47/255, green: 47/255, blue: 47/255, alpha: 1)
         view.backgroundColor = UIColor.blackColor()
+        
+        for (index, element) in viewControllers.enumerate() {
+            let menuItem = MenuItem(title: menuList[index], image: UIImage(named: menuList[index]), viewController: element, state: true)
+            menuItems.append(menuItem)
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         menuList.removeAll(keepCapacity: false)
-        menuCollectionView.userInteractionEnabled = true
+//        menuCollectionView.userInteractionEnabled = true
 //        menuList = []
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 //        logoImageView.startShimmering()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        
     }
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
@@ -63,15 +90,14 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         return 8
     }
     func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        var pom = menuItems[fromIndexPath.item]
-        if indexPath.item == (menuItems.count - 1) || indexPath.item == menuItems.count {
+        if indexPath.item == 14 || indexPath.item == 13 {
             return false
         }
         return true
     }
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, canMoveToIndexPath toIndexPath: NSIndexPath!) -> Bool {
-        if toIndexPath.item == (menuItems.count - 1) || toIndexPath.item == menuItems.count {
+        if toIndexPath.item == 14 || toIndexPath.item == 13 {
             return false
         }
         return true
@@ -96,17 +122,22 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     }
 
     
-    override func viewWillDisappear(animated: Bool) {
-        for item in menuItems{
-            menuList.append(item.title!)
-        }
-        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
-        NSUserDefaults.standardUserDefaults().synchronize()
-
-    }
+//    override func viewWillDisappear(animated: Bool) {
+//        for item in menuItems{
+//            menuList.append(item.title!)
+//        }
+//        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
+//        NSUserDefaults.standardUserDefaults().synchronize()
+//
+//    }
     
     @IBAction func logOutAction(sender: AnyObject) {
         
+    }
+    
+    
+    func vlada(gest:UITapGestureRecognizer){
+        self.revealViewController().pushFrontViewController(menuItems[0].viewController, animated: true)
     }
     
     
@@ -114,21 +145,26 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 
 extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//self.revealViewController().pushFrontViewController(menuItems[0].viewController, animated: true)
+//        if indexPath.row != 14 {
+//            self.revealViewController().pushFrontViewController(vc, animated: true)
+//        }
         //        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
-        if indexPath.row != menuItems.count{
-            let selectedMenuItem = menuItems[indexPath.row]
-            NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
-            NSUserDefaults.standardUserDefaults().synchronize()
-            delegate?.menuItemSelected!(selectedMenuItem)
-            collectionView.userInteractionEnabled = false
-        }
-    }
+//        if indexPath.row != menuItems.count{
+//            let selectedMenuItem = menuItems[indexPath.row]
+//            NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
+//            NSUserDefaults.standardUserDefaults().synchronize()
+//            delegate?.menuItemSelected!(selectedMenuItem)
+//            collectionView.userInteractionEnabled = false
+//        }
+//    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if indexPath.row < menuItems.count{
+        if indexPath.row < 14{
             return CGSize(width: 88, height: 88)
         }else{
             return CGSize(width: 190, height: 70)
@@ -141,13 +177,16 @@ extension SidePanelViewController: UICollectionViewDataSource {
         return 1
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return menuItems.count + 1
+//        return menuItems.count + 1
+        return 15
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if indexPath.row < menuItems.count{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionView.CellIdentifiers.MenuCell, forIndexPath: indexPath) as! MenuItemCell
+        if indexPath.row < 14{
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MenuItemCell", forIndexPath: indexPath) as! MenuItemCell
             cell.configureForMenu(menuItems[indexPath.row])
             cell.layer.cornerRadius = 5
+            cell.menuItemImageView.userInteractionEnabled = true
+            cell.menuItemImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "vlada:"))
             return cell
         }else{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
@@ -170,35 +209,35 @@ class MenuItemCell: UICollectionViewCell {
     }
     
     
-    override var highlighted: Bool {
-        willSet(newValue) {
-            if newValue {
-                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-            } else {
-                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
-                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
-            }
-        }
-        didSet {
-            print("highlighted = \(highlighted)")
-            setNeedsDisplay()
-        }
-    }
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [ colorOne, colorTwo]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:bounds.height)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-
-    }
+//    override var highlighted: Bool {
+//        willSet(newValue) {
+//            if newValue {
+//                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
+//                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+//            } else {
+//                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
+//                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
+//            }
+//        }
+//        didSet {
+//            print("highlighted = \(highlighted)")
+//            setNeedsDisplay()
+//        }
+//    }
+//    override func drawRect(rect: CGRect) {
+//        super.drawRect(rect)
+//        let context = UIGraphicsGetCurrentContext()
+//        let colors = [ colorOne, colorTwo]
+//        let colorSpace = CGColorSpaceCreateDeviceRGB()
+//        let colorLocations:[CGFloat] = [0.0, 1.0]
+//        let gradient = CGGradientCreateWithColors(colorSpace,
+//            colors,
+//            colorLocations)
+//        let startPoint = CGPoint.zero
+//        let endPoint = CGPoint(x:0, y:bounds.height)
+//        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+//
+//    }
 }
    
 class LogOutCell: UICollectionViewCell {

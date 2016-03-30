@@ -26,7 +26,7 @@ enum SettingsItem{
     
 }
 
-class SettingsViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
 
     var settingArray:[SettingsItem]!
     @IBOutlet weak var settingsTableView: UITableView!

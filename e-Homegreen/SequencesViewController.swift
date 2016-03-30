@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
 
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
 //    @IBOutlet weak var broadcastSwitch: UISwitch!
@@ -100,7 +100,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
 //            if self.view.frame.size.width == 320{
@@ -120,7 +120,7 @@ class SequencesViewController: CommonViewController, UITextFieldDelegate, UIPopo
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)

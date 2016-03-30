@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SurveillenceViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
+class SurveillenceViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PullDownViewDelegate, UIPopoverPresentationControllerDelegate {
     
     var data:NSData?
     
@@ -129,7 +129,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
             //            if self.view.frame.size.width == 320{
@@ -149,7 +149,7 @@ class SurveillenceViewController: CommonViewController, UICollectionViewDataSour
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)

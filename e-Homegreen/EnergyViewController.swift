@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EnergyViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class EnergyViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
     
     @IBOutlet weak var current: UILabel!
     @IBOutlet weak var powerUsage: UILabel!
@@ -64,7 +64,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
             var rect = self.pullDown.frame
@@ -77,7 +77,7 @@ class EnergyViewController: CommonViewController, UIPopoverPresentationControlle
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         pullDown.drawMenu(filterParametar)
     }

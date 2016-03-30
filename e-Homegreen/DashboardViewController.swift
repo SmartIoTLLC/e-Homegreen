@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCalendarDelegate, CLLocationManagerDelegate {
+class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, CLLocationManagerDelegate, SWRevealViewControllerDelegate {
     
     
     @IBOutlet weak var lblPlace: UILabel!
@@ -20,7 +20,8 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
     
     var locationManager = CLLocationManager()
     
-
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
     @IBOutlet weak var backgroundImage: UIImageView!
     
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
@@ -50,6 +51,30 @@ class DashboardViewController: CommonViewController, FSCalendarDataSource, FSCal
         let calendarUnit = NSCalendar.currentCalendar()
         let components = calendarUnit.components([.Hour, .Minute], fromDate: date)
         let hour = components.hour
+        
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
+        self.navigationController?.navigationBar.titleTextAttributes = fontDictionary
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         if hour < 20 && hour > 6{
             backgroundImage.image = UIImage(named: "dashboardDay")

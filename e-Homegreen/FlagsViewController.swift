@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class FlagsViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class FlagsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
     
     var appDel:AppDelegate!
     var flags:[Flag] = []
@@ -103,7 +103,7 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
 //            if self.view.frame.size.width == 320{
@@ -123,7 +123,7 @@ class FlagsViewController: CommonViewController, UIPopoverPresentationController
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
             //  This is from viewcontroller superclass:
-            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
+//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)

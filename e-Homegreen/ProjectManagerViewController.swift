@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ProjectManagerViewController: CommonViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate {
+class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate {
     
     @IBOutlet weak var usersTableView: UITableView!
     

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class PCControlViewController: CommonViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)

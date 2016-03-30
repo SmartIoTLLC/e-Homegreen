@@ -29,8 +29,8 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         
         self.transitioningDelegate = self
         
-        menuItems = MenuViewControllers.sharedInstance.allMenuItems()
-        listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
+//        menuItems = MenuViewControllers.sharedInstance.allMenuItems()
+//        listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
         
         for item in menuItems{
             for item1 in listOfMenuItems{

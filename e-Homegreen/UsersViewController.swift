@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UsersViewController: CommonViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
+class UsersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate {
     
     var appDel:AppDelegate!
     var timers:[Timer] = []
