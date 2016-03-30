@@ -20,10 +20,12 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
     var pcs:[Device] = []
     var appDel:AppDelegate?
     
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -65,11 +67,19 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
             pccontrolCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(PCControlViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             pccontrolCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
     }
 
     

@@ -53,7 +53,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         let components = calendarUnit.components([.Hour, .Minute], fromDate: date)
         let hour = components.hour
         
-        self.revealViewController().delegate = self
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -102,7 +101,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     }
     
     override func viewWillAppear(animated: Bool) {
-        print("")
+        self.revealViewController().delegate = self
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

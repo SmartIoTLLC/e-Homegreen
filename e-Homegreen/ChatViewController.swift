@@ -42,10 +42,12 @@ class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelega
     let reuseIdentifierCommand  = "chatCommandCell"
     let reuseIdentifierAnswer  = "chatAnswerCell"
     
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -90,9 +92,12 @@ class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelega
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
+            chatTextView.userInteractionEnabled = true
             chatTableView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
+            self.view.endEditing(true)
+            chatTextView.userInteractionEnabled = false
             chatTableView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
@@ -100,14 +105,25 @@ class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelega
     
     func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
+            chatTextView.userInteractionEnabled = true
             chatTableView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.endEditing(true)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
+            chatTextView.userInteractionEnabled = false
             chatTableView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
