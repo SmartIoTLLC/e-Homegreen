@@ -27,6 +27,8 @@ enum SettingsItem{
 }
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
+    
+    var user:User!
 
     var settingArray:[SettingsItem]!
     @IBOutlet weak var settingsTableView: UITableView!
@@ -39,8 +41,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "KeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
@@ -55,11 +57,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
         settingsTableView.delaysContentTouches = false
         // Not a permanent solution as Apple can deside to change view hierarchy inf the future
-        for currentView in settingsTableView.subviews {
-            if let view = currentView as? UIScrollView {
-                (currentView as! UIScrollView).delaysContentTouches = false
-            }
-        }
+//        for currentView in settingsTableView.subviews {
+//            if let view = currentView as? UIScrollView {
+//                (currentView as! UIScrollView).delaysContentTouches = false
+//            }
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -108,7 +110,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func btnAddHourPressed(sender:UIButton){
         if sender.tag == 1{
             if hourRefresh < 23 {
-                hourRefresh++
+                hourRefresh += 1
             }else{
                 hourRefresh = 0
             }
@@ -117,7 +119,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh < 59 {
-                minRefresh++
+                minRefresh += 1
             }else{
                 minRefresh = 0
             }
@@ -131,7 +133,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func btnDecHourPressed(sender:UIButton){
         if sender.tag == 1{
             if hourRefresh > 0 {
-                hourRefresh--
+                hourRefresh -= 1
             }else{
                 hourRefresh = 23
             }
@@ -140,7 +142,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             NSUserDefaults.standardUserDefaults().synchronize()
         }else{
             if minRefresh > 0 {
-                minRefresh--
+                minRefresh -= 1
             }else{
                 minRefresh = 59
             }
@@ -155,7 +157,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.settingsButton.tag = indexPath.section
-            cell.settingsButton.addTarget(self, action: "didTouchSettingButton:", forControlEvents: .TouchUpInside)
+            cell.settingsButton.addTarget(self, action: #selector(SettingsViewController.didTouchSettingButton(_:)), forControlEvents: .TouchUpInside)
             cell.settingsButton.setTitle(settingArray[indexPath.section].description, forState: .Normal)
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
@@ -165,16 +167,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
             cell.layer.cornerRadius = 5
             
-            cell.btnAddHourPressed.addTarget(self, action: "btnAddHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddHourPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.btnAddHourPressed.tag = 1
-            cell.btnDecHourPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecHourPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.btnDecHourPressed.tag = 1
             cell.hourLabel.text = "\(hourRefresh)"
             
             cell.backgroundColor = UIColor.clearColor()
             
-            cell.btnAddMinPressed.addTarget(self, action: "btnAddHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.btnDecMinPressed.addTarget(self, action: "btnDecHourPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddMinPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecMinPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             cell.minLabel.text = "\(minRefresh)"
             
@@ -183,7 +185,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
             cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clearColor()
-            cell.openLastScreen.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
             if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.OpenLastScreen) {
                 cell.openLastScreen.on = true
             }else{
@@ -230,23 +232,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if let view = sender as? UIButton {
             let tag = view.tag
             self.settingsTableView.userInteractionEnabled = false
-            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SettingsViewController.update), userInfo: nil, repeats: false)
             if tag == 0 {
-//                dispatch_async(dispatch_get_main_queue(),{
-//                    self.performSegueWithIdentifier("menuSettings", sender: self)
-//                })
-//                if (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB {
-//                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = false
-//                } else {
-//                    (UIApplication.sharedApplication().delegate as! AppDelegate).changeDB = true
-//                }
-//                (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinator = (UIApplication.sharedApplication().delegate as! AppDelegate).persistentStoreCoordinatorNew("e_homegreen.sqlite")
-//                (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContextNew()
-                (UIApplication.sharedApplication().delegate as! AppDelegate).changeCoreDataStackPreferences("")
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.performSegueWithIdentifier("menuSettings", sender: self)
+                })
+
             }
             if tag == 1 {
                 dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("connectionSettings", sender: self)
+                    self.performSegueWithIdentifier("connection", sender: self)
                 })
             }
             if tag == 4 {
@@ -267,15 +262,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 
         }
     }
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        
-//    }
+
     func update(){
         self.settingsTableView.userInteractionEnabled = true
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationVC = segue.destinationViewController 
-        destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+        if segue.identifier == "connection"{
+            if let destinationVC = segue.destinationViewController as? ConnectionsViewController{
+                destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+                destinationVC.user = user
+            }
+        }
     }
     var isMore = false
     @IBAction func btnMore(sender: AnyObject) {
@@ -364,6 +361,7 @@ class SettingsLastScreenTableViewCell: UITableViewCell {
     @IBOutlet weak var openLastScreen: UISwitch!
     
 }
+
 class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet weak var txtMinutesField: UITextField!
@@ -390,6 +388,7 @@ class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
         self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
     }
 }
+
 class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet weak var txtIp: UITextField!

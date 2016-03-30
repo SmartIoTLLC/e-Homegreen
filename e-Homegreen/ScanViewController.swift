@@ -32,6 +32,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 //    var error:NSError? = nil
 //    var choosedTab:ChoosedTab = .Devices
     var senderButton:UIButton?
+
     
 //    enum ChoosedTab {
 //        case Devices, Scenes, Events, Sequences, Zones, Categories
@@ -60,7 +61,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         super.viewDidLoad()
 //        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
 
         scanSceneViewController = storyboard.instantiateViewControllerWithIdentifier("ScanScenes") as! ScanScenesViewController
         scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
@@ -87,7 +88,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
         
-        pullDown = PullDownView(frame: CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64))
+        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
         self.view.addSubview(pullDown)
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
@@ -119,9 +120,9 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             //            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-            rect.origin.y = 44
+//            rect.origin.y = 0
             rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height - 44
+            rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
             pullDown.customDelegate = self
@@ -139,9 +140,9 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             //            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-            rect.origin.y = 64
+//            rect.origin.y = 0
             rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height - 64
+            rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
             pullDown = PullDownView(frame: rect)
             pullDown.customDelegate = self
@@ -182,7 +183,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     @IBAction func btnScenes(sender: AnyObject) {
         senderButton = sender as? UIButton
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
+        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
