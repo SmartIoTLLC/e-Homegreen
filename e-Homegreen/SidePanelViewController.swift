@@ -21,16 +21,6 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var menuItems: [MenuItem] = []
   
-//    struct CollectionView {
-//        struct CellIdentifiers {
-//            static let MenuCell = "MenuItemCell"
-//        }
-//    }
-    var vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("vlada") as! UINavigationController
-    
-    @IBAction func action(sender: AnyObject) {
-        self.revealViewController().pushFrontViewController(vc, animated: true)
-    }
     var viewControllers:Array<UINavigationController> = [
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Dashboard") as? UINavigationController)!,
         (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Devices") as? UINavigationController)!,

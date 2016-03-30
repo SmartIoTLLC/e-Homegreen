@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
 		22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */; };
+		2232922B1CABD6790001422B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2232922A1CABD6790001422B /* Settings.storyboard */; };
 		2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2233628C1CA2E477006C80C4 /* EditTextField.swift */; };
 		223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2233628F1CA2E4EC006C80C4 /* AddUserXIB.swift */; };
 		223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223362901CA2E4EC006C80C4 /* AddUserXIB.xib */; };
@@ -47,7 +48,6 @@
 		2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */; };
 		224A14EF1CA3EBA50098D88D /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */; };
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
-		22788B491CAAC1EA0070758C /* VladaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22788B481CAAC1EA0070758C /* VladaViewController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -301,6 +301,7 @@
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		2232922A1CABD6790001422B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		2233628C1CA2E477006C80C4 /* EditTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTextField.swift; sourceTree = "<group>"; };
 		2233628F1CA2E4EC006C80C4 /* AddUserXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUserXIB.swift; sourceTree = "<group>"; };
 		223362901CA2E4EC006C80C4 /* AddUserXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddUserXIB.xib; sourceTree = "<group>"; };
@@ -340,7 +341,6 @@
 		2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlInterfaceXIB.xib; sourceTree = "<group>"; };
 		224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
-		22788B481CAAC1EA0070758C /* VladaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VladaViewController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -716,15 +716,16 @@
 			name = Energy;
 			sourceTree = "<group>";
 		};
-		2233628E1CA2E4D2006C80C4 /* Project Manager */ = {
+		2233628E1CA2E4D2006C80C4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2232922A1CABD6790001422B /* Settings.storyboard */,
 				223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */,
 				2233628F1CA2E4EC006C80C4 /* AddUserXIB.swift */,
 				223362901CA2E4EC006C80C4 /* AddUserXIB.xib */,
 				224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */,
 			);
-			name = "Project Manager";
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		223362951CA2E604006C80C4 /* Users */ = {
@@ -857,7 +858,7 @@
 				223292221CABCC1F0001422B /* Scenes */,
 				223292211CABCB180001422B /* Dashboard */,
 				223362951CA2E604006C80C4 /* Users */,
-				2233628E1CA2E4D2006C80C4 /* Project Manager */,
+				2233628E1CA2E4D2006C80C4 /* Settings */,
 				2249A3271C90349C0019C6FB /* PC Controll */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				E76B576B1BBD24A100A70F69 /* XIB */,
@@ -865,7 +866,6 @@
 				E7E08E011B4E4D5400153E9A /* Devices */,
 				E739739E1B43E62E0077E984 /* Settings */,
 				738DEC991BBBBFF800D6B834 /* Security */,
-				22788B481CAAC1EA0070758C /* VladaViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1564,6 +1564,7 @@
 				223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
 				E7DC67BF1B457C0E00EA6543 /* weather-moon@2x.png in Resources */,
+				2232922B1CABD6790001422B /* Settings.storyboard in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
 				E7DC67BC1B457C0E00EA6543 /* weather-mist.png in Resources */,
 				22495D221CAA7B910034FC94 /* Chat.storyboard in Resources */,
@@ -1876,7 +1877,6 @@
 				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
-				22788B491CAAC1EA0070758C /* VladaViewController.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
