@@ -104,10 +104,11 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="c4M-x8-V1J">
             <objects>
                 <viewController storyboardIdentifier="SettingsViewController" id="LmO-Xo-G6j" customClass="SettingsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -545,13 +546,14 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="hwE-QL-74p"/>
+                    <navigationItem key="navigationItem" title="Settings" id="hwE-QL-74p"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="settingsTableView" destination="pXc-gk-3gj" id="p4L-Tk-OIz"/>
                         <outlet property="tableBottomConstraint" destination="ZFM-ae-Mag" id="eAW-sZ-w1g"/>
                         <segue destination="bJe-4g-BTz" kind="push" identifier="connection" id="6Ho-5z-Bm6"/>
+                        <segue destination="r3S-dX-q1q" kind="push" identifier="mainMenu" id="kbL-Gw-yd8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OpW-oq-dSq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -723,7 +725,7 @@
             </objects>
             <point key="canvasLocation" x="-128" y="8"/>
         </scene>
-        <!--Connections View Controller-->
+        <!--Locations-->
         <scene sceneID="oG9-Qq-MkN">
             <objects>
                 <viewController id="bJe-4g-BTz" customClass="ConnectionsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -1030,7 +1032,7 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" id="2lg-EB-Fdn">
+                    <navigationItem key="navigationItem" title="Locations" id="2lg-EB-Fdn">
                         <barButtonItem key="rightBarButtonItem" image="add sign" id="3GE-Ih-iCh">
                             <connections>
                                 <action selector="btnAddNewConnection:" destination="bJe-4g-BTz" id="Pvx-KK-Tcr"/>
@@ -4002,7 +4004,7 @@
             </objects>
             <point key="canvasLocation" x="2490" y="13"/>
         </scene>
-        <!--Scan View Controller-->
+        <!--Scan-->
         <scene sceneID="VHq-cr-jOr">
             <objects>
                 <exit id="faQ-FU-0gN" userLabel="Exit" sceneMemberID="exit"/>
@@ -4061,7 +4063,7 @@
                             <constraint firstItem="heo-bR-aDY" firstAttribute="leading" secondItem="rqn-Lc-Cew" secondAttribute="trailing" constant="31" id="s7Y-uG-rdz"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="kJ6-wk-u5v"/>
+                    <navigationItem key="navigationItem" title="Scan" id="kJ6-wk-u5v"/>
                     <connections>
                         <outlet property="container" destination="iwg-n7-cqT" id="mMF-Yd-MTe"/>
                         <segue destination="faQ-FU-0gN" kind="unwind" identifier="scanUnwind" unwindAction="returnFromSegueActions:" id="bdA-1O-Yhp"/>
@@ -4069,6 +4071,97 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="720" y="8"/>
+        </scene>
+        <!--Main Menu-->
+        <scene sceneID="JeW-20-Zcq">
+            <objects>
+                <viewController storyboardIdentifier="menuSettings" id="r3S-dX-q1q" customClass="MenuSettingsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3wl-2k-DpE"/>
+                        <viewControllerLayoutGuide type="bottom" id="YhR-2n-tke"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PA6-Z7-akb">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="Sgi-fJ-gVX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="50" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="nEP-af-Fgs">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menuSettingsCell" id="9cv-yZ-8xb" customClass="MenuSettingsCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9cv-yZ-8xb" id="5dG-MX-XDV">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYr-12-WQy">
+                                                    <rect key="frame" x="71" y="14" width="164" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dPZ-fz-9fs">
+                                                    <rect key="frame" x="255" y="9" width="51" height="31"/>
+                                                </switch>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wic-CT-rcM">
+                                                    <rect key="frame" x="16" y="7" width="35" height="35"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="35" id="3jb-zC-8UJ"/>
+                                                        <constraint firstAttribute="height" constant="35" id="Uqj-1J-sWt"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="Wic-CT-rcM" firstAttribute="centerY" secondItem="dYr-12-WQy" secondAttribute="centerY" id="Cgf-q5-SBn"/>
+                                                <constraint firstItem="Wic-CT-rcM" firstAttribute="leading" secondItem="5dG-MX-XDV" secondAttribute="leadingMargin" constant="8" id="GXb-TP-Oms"/>
+                                                <constraint firstAttribute="centerY" secondItem="dPZ-fz-9fs" secondAttribute="centerY" id="Itd-yX-2ct"/>
+                                                <constraint firstAttribute="centerY" secondItem="Wic-CT-rcM" secondAttribute="centerY" id="WrG-J5-PAb"/>
+                                                <constraint firstItem="dPZ-fz-9fs" firstAttribute="leading" secondItem="dYr-12-WQy" secondAttribute="trailing" constant="20" id="X06-DV-qKm"/>
+                                                <constraint firstItem="dYr-12-WQy" firstAttribute="leading" secondItem="Wic-CT-rcM" secondAttribute="trailing" constant="20" id="hZq-7R-BOU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="dPZ-fz-9fs" secondAttribute="trailing" constant="8" id="xn7-qi-Ihh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="menuImage" destination="Wic-CT-rcM" id="9cT-gw-hE3"/>
+                                            <outlet property="menuLabel" destination="dYr-12-WQy" id="h15-FF-bgb"/>
+                                            <outlet property="menuSwitch" destination="dPZ-fz-9fs" id="5ga-Be-kl1"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="r3S-dX-q1q" id="qHU-C5-OfI"/>
+                                    <outlet property="delegate" destination="r3S-dX-q1q" id="kie-6P-Ifb"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="nEP-af-Fgs" secondAttribute="trailing" id="3Pq-AM-7aW"/>
+                            <constraint firstItem="nEP-af-Fgs" firstAttribute="leading" secondItem="PA6-Z7-akb" secondAttribute="leading" id="B4z-LB-WSr"/>
+                            <constraint firstItem="YhR-2n-tke" firstAttribute="top" secondItem="nEP-af-Fgs" secondAttribute="bottom" id="PkT-8T-Uov"/>
+                            <constraint firstItem="Sgi-fJ-gVX" firstAttribute="top" secondItem="3wl-2k-DpE" secondAttribute="bottom" id="TWN-AJ-3yG"/>
+                            <constraint firstItem="YhR-2n-tke" firstAttribute="top" secondItem="Sgi-fJ-gVX" secondAttribute="bottom" id="dhY-Kq-krB"/>
+                            <constraint firstAttribute="trailing" secondItem="Sgi-fJ-gVX" secondAttribute="trailing" id="gzL-US-9jh"/>
+                            <constraint firstItem="nEP-af-Fgs" firstAttribute="top" secondItem="3wl-2k-DpE" secondAttribute="bottom" id="mnH-gX-rgY"/>
+                            <constraint firstItem="Sgi-fJ-gVX" firstAttribute="leading" secondItem="PA6-Z7-akb" secondAttribute="leading" id="pAT-7d-p7M"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="Main Menu" id="rDA-lC-Os4"/>
+                    <connections>
+                        <segue destination="lCi-C3-dRS" kind="unwind" identifier="unWindSettings" unwindAction="returnFromSegueActions:" id="Mf1-Mf-CkG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g34-oD-N3S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="lCi-C3-dRS" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="319" y="719"/>
         </scene>
     </scenes>
     <resources>

@@ -235,7 +235,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SettingsViewController.update), userInfo: nil, repeats: false)
             if tag == 0 {
                 dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("menuSettings", sender: self)
+                    self.performSegueWithIdentifier("mainMenu", sender: self)
                 })
 
             }
@@ -269,7 +269,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "connection"{
             if let destinationVC = segue.destinationViewController as? ConnectionsViewController{
-                destinationVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+                destinationVC.user = user
+            }
+        }
+        if segue.identifier == "mainMenu"{
+            if let destinationVC = segue.destinationViewController as? MenuSettingsViewController{
                 destinationVC.user = user
             }
         }
