@@ -27,10 +27,13 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     @IBOutlet weak var lblAlarmState: UILabel!
     
     @IBOutlet weak var securityCollectionView: UICollectionView!
+    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -85,11 +88,19 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
             securityCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             securityCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {

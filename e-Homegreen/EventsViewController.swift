@@ -36,10 +36,13 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
         updateEventsList()
         eventCollectionView.reloadData()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -214,11 +217,19 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
             eventCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(EventsViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             eventCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
     }
     
     func saveChanges() {

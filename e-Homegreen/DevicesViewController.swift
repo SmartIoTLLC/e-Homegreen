@@ -31,11 +31,14 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     @IBOutlet weak var menuButton: UIBarButtonItem!
 //    var locationSearchText = ["", "", "", "", "", "", ""]
     
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        self.revealViewController().delegate = self
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -601,11 +604,19 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             deviceCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             deviceCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
     }
     
     

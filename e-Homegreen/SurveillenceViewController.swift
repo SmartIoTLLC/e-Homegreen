@@ -29,11 +29,13 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
     
     var appDel:AppDelegate!
     var error:NSError? = nil
-
+    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -322,14 +324,20 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
             cameraCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(SurveillenceViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             cameraCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
 
 }
 

@@ -32,10 +32,14 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         refreshLocalParametars()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.revealViewController().delegate = self
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))

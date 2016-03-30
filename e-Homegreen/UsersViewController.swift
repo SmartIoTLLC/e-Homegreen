@@ -18,7 +18,7 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     var senderButton:UIButton?
     var sidebarMenuOpen : Bool!
     
-    @IBOutlet weak var timersCollectionView: UICollectionView!
+    @IBOutlet weak var usersCollectionView: UICollectionView!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -30,11 +30,13 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
 
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -67,27 +69,33 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
-            timersCollectionView.userInteractionEnabled = true
+            usersCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            timersCollectionView.userInteractionEnabled = false
+            usersCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
     func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
-            timersCollectionView.userInteractionEnabled = true
+            usersCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(UsersViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            timersCollectionView.userInteractionEnabled = false
+            usersCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
-
-
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
