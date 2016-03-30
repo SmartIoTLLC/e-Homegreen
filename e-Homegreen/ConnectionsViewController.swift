@@ -37,7 +37,7 @@ class CollapsableViewModel {
     }
 }
 
-class ConnectionsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, GatewayCellDelegate, SurveillanceCellDelegate, AddEditLocationDelegate, AddEditGatewayDelegate, AddEditSurveillanceDelegate  {
+class ConnectionsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, GatewayCellDelegate, SurveillanceCellDelegate, AddEditLocationDelegate, AddEditGatewayDelegate, AddEditSurveillanceDelegate  {
     
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
@@ -49,20 +49,12 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     var user:User!
     
     @IBOutlet weak var gatewayTableView: UITableView!
-    @IBOutlet weak var topView: UIView!
-    
-    var isPresenting:Bool = false
     
     var locationList:[CollapsableViewModel] = []
     
     var popoverVC:PopOverViewController = PopOverViewController()
     
     var index = 0
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-//        transitioningDelegate = self
-    }
     
     @IBAction func btnAddNewConnection(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNewGatewayList", name: NotificationKey.Gateway.Refresh, object: nil)
@@ -87,24 +79,8 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         }
     }
     
-    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
-        if let id = identifier{
-            if id == "scanUnwind" {
-                let unwindSegue = SegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
-                    
-                })
-                return unwindSegue
-            }
-        }
-        
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
-    
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        transitioningDelegate = self
-        self.commonConstruct()
         
         gatewayTableView.estimatedRowHeight = 44.0
         gatewayTableView.rowHeight = UITableViewAutomaticDimension
@@ -270,11 +246,11 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
         gatewayTableView.userInteractionEnabled = true
     }
     
-    func commonConstruct() {
-        backgroundImageView.image = UIImage(named: "Background")
-        backgroundImageView.frame = CGRectMake(0, 64, Common.screenWidth , Common.screenHeight-64)
-        self.view.insertSubview(backgroundImageView, atIndex: 0)
-    }
+//    func commonConstruct() {
+//        backgroundImageView.image = UIImage(named: "Background")
+//        backgroundImageView.frame = CGRectMake(0, 64, Common.screenWidth , Common.screenHeight-64)
+//        self.view.insertSubview(backgroundImageView, atIndex: 0)
+//    }
     
     @IBAction func btnSaveConnection(sender: AnyObject) {
         
@@ -288,55 +264,6 @@ class ConnectionsViewController: UIViewController, UIViewControllerTransitioning
     @IBAction func backButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    // delegatske funkcije za tranziciju ekrana
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView!.bounds.size.width
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView!.bounds.size.width
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView!.bounds.size.width
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-    }
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
-
     
     func saveChanges() {
         do {

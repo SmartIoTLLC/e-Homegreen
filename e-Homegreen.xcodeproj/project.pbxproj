@@ -46,7 +46,6 @@
 		2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32E1C9041CB0019C6FB /* PCControlCell.swift */; };
 		2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */; };
 		2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */; };
-		224A14EF1CA3EBA50098D88D /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */; };
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -339,7 +338,6 @@
 		2249A32E1C9041CB0019C6FB /* PCControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlCell.swift; sourceTree = "<group>"; };
 		2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlInterfaceXIB.swift; sourceTree = "<group>"; };
 		2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlInterfaceXIB.xib; sourceTree = "<group>"; };
-		224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
@@ -716,14 +714,38 @@
 			name = Energy;
 			sourceTree = "<group>";
 		};
+		2232922C1CABE48E0001422B /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
+				22495D301CAA83260034FC94 /* Popover.storyboard */,
+			);
+			name = Popover;
+			sourceTree = "<group>";
+		};
+		2232922D1CABE9400001422B /* Add User */ = {
+			isa = PBXGroup;
+			children = (
+				2233628F1CA2E4EC006C80C4 /* AddUserXIB.swift */,
+				223362901CA2E4EC006C80C4 /* AddUserXIB.xib */,
+			);
+			name = "Add User";
+			sourceTree = "<group>";
+		};
 		2233628E1CA2E4D2006C80C4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
+				2232922D1CABE9400001422B /* Add User */,
 				2232922A1CABD6790001422B /* Settings.storyboard */,
 				223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */,
-				2233628F1CA2E4EC006C80C4 /* AddUserXIB.swift */,
-				223362901CA2E4EC006C80C4 /* AddUserXIB.xib */,
-				224A14EE1CA3EBA50098D88D /* UserSettingsViewController.swift */,
+				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
+				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
+				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
+				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
+				E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */,
+				E7FC2C221BBC31D30075CD60 /* SecuritySettingsViewController.swift */,
+				E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -849,6 +871,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2232922C1CABE48E0001422B /* Popover */,
 				223292291CABD3280001422B /* Energy */,
 				223292281CABD1B60001422B /* Surveillance */,
 				223292261CABD0130001422B /* Flags */,
@@ -864,7 +887,7 @@
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Side Menu */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
-				E739739E1B43E62E0077E984 /* Settings */,
+				E739739E1B43E62E0077E984 /* Settings za brisanje */,
 				738DEC991BBBBFF800D6B834 /* Security */,
 			);
 			name = ViewControllers;
@@ -921,7 +944,6 @@
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
 				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
-				22495D301CAA83260034FC94 /* Popover.storyboard */,
 				73C4C9001C19E3BB0047CBD5 /* Database.storyboard */,
 				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
 				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
@@ -1057,19 +1079,12 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		E739739E1B43E62E0077E984 /* Settings */ = {
+		E739739E1B43E62E0077E984 /* Settings za brisanje */ = {
 			isa = PBXGroup;
 			children = (
 				E7AAF7651BBE887000992A18 /* CustomSegue */,
-				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
-				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
-				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
-				73E758F01B4EBE0300ECE061 /* ConnectionsViewController.swift */,
-				E705159E1BB3DB01009FDA0D /* SurveillanceSettingsViewController.swift */,
-				E7FC2C221BBC31D30075CD60 /* SecuritySettingsViewController.swift */,
-				E7AA26081BCCF48000D5C3F0 /* IBeaconSettingsViewController.swift */,
 			);
-			name = Settings;
+			name = "Settings za brisanje";
 			sourceTree = "<group>";
 		};
 		E73993141BCE9DAC00C74486 /* ChatXIB */ = {
@@ -1371,7 +1386,6 @@
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
-				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
 				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
@@ -1430,7 +1444,6 @@
 		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
 				E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */,
@@ -1775,7 +1788,6 @@
 				E705159F1BB3DB02009FDA0D /* SurveillanceSettingsViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
-				224A14EF1CA3EBA50098D88D /* UserSettingsViewController.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */,

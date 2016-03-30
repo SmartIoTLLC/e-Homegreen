@@ -54,6 +54,9 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
 
+    @IBAction func addUser(sender: AnyObject) {
+        showAddUser(nil).delegate = self
+    }
     
     @IBAction func changeDataBase(sender: AnyObject) {
         
@@ -65,11 +68,36 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
+    @IBAction func deleteUser(sender: AnyObject) {
+        if let button = sender as? UIButton{
+            let optionMenu = UIAlertController(title: nil, message: "Delete user?", preferredStyle: .ActionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.appDel.managedObjectContext?.deleteObject(self.users[button.tag])
+                
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.reloadData()
+                })
+            })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                print("Cancelled")
+            })
+            
+            optionMenu.addAction(deleteAction)
+            optionMenu.addAction(cancelAction)
+            self.presentViewController(optionMenu, animated: true, completion: nil)
+
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "settings"{
             if let button = sender as? UIButton{
-                if let vc = segue.destinationViewController as? UserSettingsViewController{
-                    vc.user = users[button.tag]
+                if let vc = segue.destinationViewController as? SettingsViewController{
+                        vc.user = users[button.tag]
                 }
             }
         }
@@ -108,6 +136,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("userCell") as? UserCell{
             cell.editDatabaseButton.tag = indexPath.row
+            cell.deleteUser.tag = indexPath.row
+            cell.shareUser.tag = indexPath.row
             print(indexPath.row)
             cell.setItem(users[indexPath.row])
             return cell
@@ -140,6 +170,8 @@ class UserCell: UITableViewCell{
     @IBOutlet weak var userDataBaseNameLabel: UILabel!
     @IBOutlet weak var chooseDatabaseButton: UIButton!
     @IBOutlet weak var editDatabaseButton: UIButton!
+    @IBOutlet weak var deleteUser: UIButton!
+    @IBOutlet weak var shareUser: UIButton!
     
     func setItem(user:User){
         userNameLabel.text = user.username
