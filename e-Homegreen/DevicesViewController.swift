@@ -20,6 +20,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     var pullDown = PullDownView()
     var isScrolling:Bool = false
     var shouldUpdate:Bool = false
+    var sidebarMenuOpen : Bool!
     
     var senderButton:UIButton?
     
@@ -35,7 +36,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         self.revealViewController().delegate = self
-        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -585,6 +585,29 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            deviceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            deviceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            deviceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            deviceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
     
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)

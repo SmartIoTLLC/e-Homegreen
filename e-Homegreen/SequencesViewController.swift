@@ -22,6 +22,8 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     var sequences:[Sequence] = []
     var error:NSError? = nil
     
+    var sidebarMenuOpen : Bool!
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
@@ -205,6 +207,30 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
 //            
 //        }
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            sequenceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            sequenceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            sequenceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            sequenceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()

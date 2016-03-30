@@ -20,6 +20,7 @@ class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelega
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
 //    @IBOutlet weak var chatTextField: UITextField!
+    var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var viewHeight: NSLayoutConstraint!
     
@@ -86,6 +87,37 @@ class ChatViewController: UIViewController, UITextViewDelegate, ChatDeviceDelega
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            chatTableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            chatTableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            chatTableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            chatTableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if(sidebarMenuOpen == true){
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         pullDown.drawMenu(filterParametar)

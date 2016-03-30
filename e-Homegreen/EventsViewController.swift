@@ -17,6 +17,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     var appDel:AppDelegate!
     var events:[Event] = []
     var error:NSError? = nil
+    var sidebarMenuOpen : Bool!
     
     var pullDown = PullDownView()
     
@@ -196,6 +197,28 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
 //        } else {
 //            
 //        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            eventCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            eventCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            eventCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            eventCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
     }
     
     func saveChanges() {

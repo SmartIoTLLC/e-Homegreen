@@ -14,6 +14,7 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     var appDel:AppDelegate!
     var flags:[Flag] = []
     var error:NSError? = nil
+    var sidebarMenuOpen : Bool!
     
     var pullDown = PullDownView()
     
@@ -197,6 +198,29 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         }
         
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            flagsCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            flagsCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            flagsCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            flagsCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()

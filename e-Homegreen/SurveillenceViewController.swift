@@ -12,6 +12,7 @@ import CoreData
 class SurveillenceViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PullDownViewDelegate, UIPopoverPresentationControllerDelegate, SWRevealViewControllerDelegate {
     
     var data:NSData?
+    var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -303,6 +304,28 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            cameraCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            cameraCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            cameraCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            cameraCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
         }
     }
     

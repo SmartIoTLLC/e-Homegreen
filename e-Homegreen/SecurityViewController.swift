@@ -15,6 +15,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     private let reuseIdentifier = "SecurityCell"
     var pullDown = PullDownView()
     
+    var sidebarMenuOpen : Bool!
     var securities:[Security] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -68,8 +69,31 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         refreshSecurityAlarmStateAndSecurityMode()
         
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            securityCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            securityCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            securityCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            securityCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshSecurity", name: NotificationKey.RefreshSecurity, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
         refreshSecurity()
     }
     override func viewDidDisappear(animated: Bool) {

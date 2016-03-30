@@ -12,7 +12,7 @@ import CoreData
 class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    
+    var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     
@@ -49,6 +49,29 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         // Do any additional setup after loading the view.
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            pccontrolCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            pccontrolCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            pccontrolCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            pccontrolCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+
     
     func fetchSortedPCRequest (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")

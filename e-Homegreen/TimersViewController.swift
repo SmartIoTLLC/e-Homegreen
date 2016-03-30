@@ -17,6 +17,8 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     
     var pullDown = PullDownView()
     var senderButton:UIButton?
+    var sidebarMenuOpen : Bool!
+    
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -278,6 +280,29 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             cell.commandSentChangeImage()
         }
     }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            timersCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            timersCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            timersCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            timersCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+
 }
 
 extension TimersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

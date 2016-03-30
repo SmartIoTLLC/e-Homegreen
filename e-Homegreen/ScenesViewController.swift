@@ -24,13 +24,11 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     var appDel:AppDelegate!
     var scenes:[Scene] = []
     var error:NSError? = nil
+    var sidebarMenuOpen : Bool!
     
     var senderButton:UIButton?
     
     @IBOutlet weak var broadcastSwitch: UISwitch!
-    
-    
-    
     @IBOutlet weak var scenesCollectionView: UICollectionView!
     
 //    var locationSearchText = ["", "", "", "", "", "", ""]
@@ -208,6 +206,28 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            scenesCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            scenesCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            scenesCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            scenesCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -21,7 +21,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     var locationManager = CLLocationManager()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    
+    var sidebarMenuOpen : Bool!
     @IBOutlet weak var backgroundImage: UIImageView!
     
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
@@ -44,6 +44,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                                               "50n":"weather-mist"]
     
     var calendar = FSCalendar()
+    var clock : SPClockView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +54,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         let hour = components.hour
         
         self.revealViewController().delegate = self
-        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -83,7 +83,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         calendar.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.55)
         calendar.layer.cornerRadius = 10
         
-        let clock:SPClockView = SPClockView(frame: CGRectMake(170, 220, 140, 140))
+        clock = SPClockView(frame: CGRectMake(170, 220, 140, 140))
         clock.timeZone = NSTimeZone.localTimeZone()
         self.view.addSubview(clock)
         
@@ -93,10 +93,10 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
         
-        let panRecognizer = UIPanGestureRecognizer(target:self, action:"detectPan:")
+        let panRecognizer = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan(_:)))
         clock.addGestureRecognizer(panRecognizer)
         
-        let panRecognizer1 = UIPanGestureRecognizer(target:self, action:"detectPan1:")
+        let panRecognizer1 = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan1(_:)))
         calendar.addGestureRecognizer(panRecognizer1)
         // Do any additional setup after loading the view.
     }
@@ -119,16 +119,18 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     }
     
     func detectPan(recognizer:UIPanGestureRecognizer) {
+        
         let translation  = recognizer.translationInView(self.view)
         recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
-            recognizer.view!.center.y + translation.y)
+                                              recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
     }
     
     func detectPan1(recognizer:UIPanGestureRecognizer) {
+        
         let translation  = recognizer.translationInView(self.view)
         recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
-            recognizer.view!.center.y + translation.y)
+                                              recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
     }
     
@@ -197,6 +199,40 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             // Error
         }
         
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            calendar.userInteractionEnabled = true
+            clock.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            calendar.userInteractionEnabled = false
+            clock.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            calendar.userInteractionEnabled = true
+            clock.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            calendar.userInteractionEnabled = false
+            clock.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
     }
 
     

@@ -36,7 +36,6 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         super.viewDidLoad()
         
         self.revealViewController().delegate = self
-        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -67,7 +66,7 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
