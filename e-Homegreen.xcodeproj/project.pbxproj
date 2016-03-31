@@ -57,6 +57,7 @@
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
 		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
 		22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */; };
+		4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */; };
 		730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */; };
 		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
 		730E90C31C6A1BF400B1D50D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90C01C6A1BF400B1D50D /* Image.swift */; };
@@ -353,6 +354,7 @@
 		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
 		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
 		22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneViewController.xib; sourceTree = "<group>"; };
+		4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "HRToast+UIView.swift"; path = "SWRevealViewController/HRToast+UIView.swift"; sourceTree = "<group>"; };
 		730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90C01C6A1BF400B1D50D /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -1083,6 +1085,7 @@
 				73ECD4A21B332A6F00767740 /* Constants.swift */,
 				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
+				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1720,6 +1723,7 @@
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
+				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
 				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,

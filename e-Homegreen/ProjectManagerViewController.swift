@@ -12,13 +12,12 @@ import CoreData
 class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var usersTableView: UITableView!
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     var appDel:AppDelegate!
     var users:[User] = []
     var sidebarMenuOpen : Bool!
-    
+    var tap : UITapGestureRecognizer!
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -42,7 +41,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
+
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -151,18 +151,24 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         return cell
     }
     
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if(sidebarMenuOpen == true){
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dispatch_async(dispatch_get_main_queue(), {
-            
-            print("TEST")
-            self.showAddUser(self.users[indexPath.row]).delegate = self
-        })
         
+        print("TEST")
+        self.showAddUser(self.users[indexPath.row]).delegate = self
     }
+    
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -175,11 +181,12 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        
         if(position == FrontViewPosition.Left) {
             usersTableView.userInteractionEnabled = true
             sidebarMenuOpen = false
+            self.view.removeGestureRecognizer(tap)
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             usersTableView.userInteractionEnabled = false
             sidebarMenuOpen = true
@@ -211,6 +218,8 @@ class UserCell: UITableViewCell{
         userNameLabel.text = user.username
         if let data = user.profilePicture{
             userImage.image = UIImage(data: data)
+        }else{
+            userImage.image = nil
         }
     }
     
