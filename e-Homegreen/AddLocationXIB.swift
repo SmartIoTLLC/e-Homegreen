@@ -64,6 +64,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -78,7 +79,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         locationNameTextField.delegate = self
 
         
-        let lpgr = UILongPressGestureRecognizer(target: self, action:"handleLongPress:")
+        let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(AddLocationXIB.handleLongPress(_:)))
         lpgr.minimumPressDuration = 0.5
         locationMap.addGestureRecognizer(lpgr)
         
@@ -204,33 +205,41 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     }
     
     @IBAction func saveAction(sender: AnyObject) {
-        if locationNameTextField.text != "" && annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 {
-            if location == nil{
-                if let user = user{
-                    if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
-                        newLocation.name = locationNameTextField.text!
-                        newLocation.latitude = annotation.coordinate.latitude
-                        newLocation.longitude = annotation.coordinate.longitude
-                        newLocation.radius = radius
-                        newLocation.user = user
-                        createZonesAndCategories(newLocation)
-                        saveChanges()
-                        delegate?.editAddLocationFinished()
-                        self.dismissViewControllerAnimated(true, completion: nil)
+       
+        if locationNameTextField.text != "" {
+            if annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 {
+                
+                if location == nil{
+                    if let user = user{
+                        if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
+                            newLocation.name = locationNameTextField.text!
+                            newLocation.latitude = annotation.coordinate.latitude
+                            newLocation.longitude = annotation.coordinate.longitude
+                            newLocation.radius = radius
+                            newLocation.user = user
+                            createZonesAndCategories(newLocation)
+                            saveChanges()
+                            delegate?.editAddLocationFinished()
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
                     }
+                    
+                }else{
+                    location?.name = locationNameTextField.text!
+                    location?.latitude = annotation.coordinate.latitude
+                    location?.longitude = annotation.coordinate.longitude
+                    location?.radius = radius
+                    saveChanges()
+                    delegate?.editAddLocationFinished()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    
                 }
-                
             }else{
-                location?.name = locationNameTextField.text!
-                location?.latitude = annotation.coordinate.latitude
-                location?.longitude = annotation.coordinate.longitude
-                location?.radius = radius
-                saveChanges()
-                delegate?.editAddLocationFinished()
-                self.dismissViewControllerAnimated(true, completion: nil)
-                
+                self.view.makeToast(message: "Choose location from map")
             }
             
+        }else{
+            self.view.makeToast(message: "Write location name")
         }
         
     }
