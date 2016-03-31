@@ -14,16 +14,13 @@ import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    let prefs = NSUserDefaults.standardUserDefaults()
 
     var window: UIWindow?
     let locationManager = CLLocationManager()
     var timer: dispatch_source_t!
     var refreshTimer: dispatch_source_t!
-    
-//    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-//
-//    }
-
     
     func refreshDevicesToYesterday () {
         var error:NSError?
@@ -50,43 +47,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        let documentsDirectory: AnyObject = paths[0]
-        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
-        
-        do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
-        } catch let error as NSError {
-            print(error.localizedDescription);
-        }
-        broadcastTimeAndDate()
-        refreshAllConnections()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
-        locationManager.requestAlwaysAuthorization()
-        locationManager.delegate = self
+
         
         UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), forState: UIControlState.Highlighted)
-        // Override point for customization after application launch.
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
-
         
-//        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-//        
-//        let containerViewController = ContainerViewController()
-//        window!.rootViewController = containerViewController
+//        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+//        let documentsDirectory: AnyObject = paths[0]
+//        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
+        
+//        do {
+//            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+//        } catch let error as NSError {
+//            print(error.localizedDescription);
+//        }
+        
+        if let username = prefs.stringForKey(Admin.Username), let password = prefs.stringForKey(Admin.Password) {
+            if !prefs.boolForKey(Login.IsLoged){
+                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
+                self.window?.rootViewController = logIn
+                self.window?.makeKeyAndVisible()
+            }else{
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                self.window?.rootViewController = sideMenu
+                self.window?.makeKeyAndVisible()
+            }
+        }else{
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let createAdmin = storyboard.instantiateViewControllerWithIdentifier("CreateAdmin") as! CreateAdminViewController
+            self.window?.rootViewController = createAdmin
+            self.window?.makeKeyAndVisible()
+        }
+        
+        
+        
+        broadcastTimeAndDate()
+        refreshAllConnections()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
+        locationManager.requestAlwaysAuthorization()
+        locationManager.delegate = self
         
         configureStateForTheFirstTime()
         
         setFilterBySSIDOrByiBeaconAgain()
+        
         return true
     }
     func setFilterBySSIDOrByiBeaconAgain () {
@@ -338,38 +354,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[urls.count-1]
     }()
-    lazy var applicationPrivateDocumentsDirectory:String = {
-        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        let documentsDirectory: AnyObject = paths[0]
-        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
-        
-        do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
-        } catch let error as NSError {
-            print(error.localizedDescription);
-        }
-//        var path: String
-//        if !path {
-//            NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomainMask.AllDomainsMask, true)
-//            var libraryPath: String = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, true).lastObject()
-//            path = libraryPath.stringByAppendingPathComponent("Private Documents")
-//            var isDirectory: Bool
-//            if !NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: isDirectory) {
-//                var error: NSError? = nil
-//                if !NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil, error: error!) {
-//                    NSLog("Can't create directory %@ [%@]", path, error!)
-//                    abort()
-//                    // replace with proper error handling
-//                }
-//            }
-//            else if !isDirectory {
-//                NSLog("Path %@ exists but is no directory", path)
-//                abort()
-//                // replace with error handling
-//            }
+//    lazy var applicationPrivateDocumentsDirectory:String = {
+//        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+//        let documentsDirectory: AnyObject = paths[0]
+//        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
+//        
+//        do {
+//            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+//        } catch let error as NSError {
+//            print(error.localizedDescription);
 //        }
-        return ""
-    }()
+////        var path: String
+////        if !path {
+////            NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomainMask.AllDomainsMask, true)
+////            var libraryPath: String = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, true).lastObject()
+////            path = libraryPath.stringByAppendingPathComponent("Private Documents")
+////            var isDirectory: Bool
+////            if !NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: isDirectory) {
+////                var error: NSError? = nil
+////                if !NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil, error: error!) {
+////                    NSLog("Can't create directory %@ [%@]", path, error!)
+////                    abort()
+////                    // replace with proper error handling
+////                }
+////            }
+////            else if !isDirectory {
+////                NSLog("Path %@ exists but is no directory", path)
+////                abort()
+////                // replace with error handling
+////            }
+////        }
+//        return ""
+//    }()
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource("e_Homegreen", withExtension: "momd")!
@@ -408,15 +424,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return coordinator
     }()
-    lazy var moc:NSManagedObjectContext? = {
-        let coordinator = self.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var moc = NSManagedObjectContext()
-        moc.persistentStoreCoordinator = coordinator
-        return moc
-    }()
+
     lazy var managedObjectContext: NSManagedObjectContext? = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
@@ -427,81 +435,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
-    
-    var changeDB:Bool = false
-    func changeCoreDataStackPreferences(fileName:String) {
-//        lock managed object context
-//        change everything
-//        unlock managedobject context
-//        do i need to lock persistent store coordinator?
-//        reconnect all connections (because of ports!?)
-//        ibeacons?
-//        preload data?
-//        ssid i te gluposti?
-        var persistentFileName = ""
-        if changeDB {
-            persistentFileName = "e_Homegreen.sqlite"
-            changeDB = false
-        } else {
-            persistentFileName = "e_Homegreen2.sqlite"
-            changeDB = true
-        }
-        self.managedObjectContext!.reset()
-        self.persistentStoreCoordinator?.performBlockAndWait({ () -> Void in
-            self.persistentStoreCoordinator = self.persistentStoreCoordinatorNew(persistentFileName)
-            self.managedObjectContext = self.managedObjectContextNew()
-        })
-        establishAllConnections()
-        setFilterBySSIDOrByiBeaconAgain()
-    }
-    func persistentStoreCoordinatorNew(fileName:String) -> NSPersistentStoreCoordinator {
-        // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(fileName)
-        var error: NSError? = nil
-        var failureReason = "There was an error creating or loading the application's saved data."
-        do {
-//            @{NSSQLitePragmasOption: @{@"journal_mode": @"delete"}}
-//            NSMutableDictionary *pragmaOptions = [NSMutableDictionary dictionary];
-//            [pragmaOptions setObject:@"DELETE" forKey:@"journal_mode"];
-//            var pragma_options:NSMutableDictionary
-//            pragma_options.setObject("DELETE", forKey: "journal_mode")
-            var pragma_options = ["journal_mode":"DELETE"]
-//            var options = [NSNumber(bool: true), NSMigratePersistentStoresAutomaticallyOption, NSNumber(bool: true), NSInferMappingModelAutomaticallyOption, pragma_options, NSSQLitePragmasOption]
-            var options: [NSObject : AnyObject] = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
-//            var options = [NSNumber(bool: true), NSMigratePersistentStoresAutomaticallyOption, NSNumber(bool: true), NSInferMappingModelAutomaticallyOption, pragmaOptions, NSSQLitePragmasOption, nil]]
-//            var options:NSDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, pragmaOptions, NSSQLitePragmasOption, nil]];
-            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
-        } catch var error1 as NSError {
-            error = error1
-            coordinator = nil
-            // Report any error we got.
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
-            dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-            // Replace this with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        } catch {
-            fatalError()
-        }
-        
-        return coordinator!
-    }
-    func managedObjectContextNew() -> NSManagedObjectContext? {
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-        let coordinator = self.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var managedObjectContext = NSManagedObjectContext()
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }
+
     // MARK: - Core Data Saving support
 
     func saveContext () {

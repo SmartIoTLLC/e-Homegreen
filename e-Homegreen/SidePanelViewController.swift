@@ -17,53 +17,39 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
   
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var menuCollectionView: UICollectionView!
-//    var delegate: SidePanelViewControllerDelegate?
     private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var menuItems: [MenuItem] = []
-  
-    var viewControllers:Array<UINavigationController> = [
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Dashboard") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Devices") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Scenes") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Events") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Sequences") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Timers") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Flags") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Chat") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Security") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Surveillance") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Energy") as? UINavigationController)!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PC Control") as? UINavigationController )!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Users") as? UINavigationController )!,
-        (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Settings") as? UINavigationController)!
-    ]
     
-    var menuList:[String] = ["Dashboard", "Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Chat", "Security", "Surveillance", "Energy", "PC Control", "Users", "Settings"]
+    var appDel:AppDelegate!
+    var user:User?
+    
+    let prefs = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
         
-        for (index, element) in viewControllers.enumerate() {
-            let menuItem = MenuItem(title: menuList[index], image: UIImage(named: menuList[index]), viewController: element, state: true)
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        if let stringUrl = prefs.valueForKey(Login.User) as? String{
+            if let url = NSURL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+                    if let tempUser = appDel.managedObjectContext?.objectWithID(id) as? User {
+                        user = tempUser
+                    }
+                }
+            }
+            
+        }
+
+        
+        for item in  Menu.allMenuItem {
+            let menuItem = MenuItem(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
             menuItems.append(menuItem)
         }
         
     }
     
-    override func viewWillAppear(animated: Bool) {
-        menuList.removeAll(keepCapacity: false)
-//        menuCollectionView.userInteractionEnabled = true
-//        menuList = []
-    }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-//        logoImageView.startShimmering()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        
-    }
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
     
@@ -112,22 +98,12 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     }
 
     
-//    override func viewWillDisappear(animated: Bool) {
-//        for item in menuItems{
-//            menuList.append(item.title!)
-//        }
-//        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
-//        NSUserDefaults.standardUserDefaults().synchronize()
-//
-//    }
-    
     @IBAction func logOutAction(sender: AnyObject) {
-        
-    }
-    
-    
-    func vlada(gest:UITapGestureRecognizer){
-        self.revealViewController().pushFrontViewController(menuItems[0].viewController, animated: true)
+        prefs.setValue(false, forKey: Login.IsLoged)
+        prefs.setValue(nil, forKey: Login.User)
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
+        self.presentViewController(logIn, animated: false, completion: nil)
     }
     
     
@@ -140,14 +116,7 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
         if indexPath.row != 14 {
             self.revealViewController().pushFrontViewController(menuItems[indexPath.row].viewController, animated: true)
         }
-        //        collectionView.cellForItemAtIndexPath(indexPath)?.collapseInReturnToNormalMenu(1)
-//        if indexPath.row != menuItems.count{
-//            let selectedMenuItem = menuItems[indexPath.row]
-//            NSUserDefaults.standardUserDefaults().setObject(selectedMenuItem.title, forKey: "firstItem")
-//            NSUserDefaults.standardUserDefaults().synchronize()
-//            delegate?.menuItemSelected!(selectedMenuItem)
-//            collectionView.userInteractionEnabled = false
-//        }
+
     }
    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -175,11 +144,10 @@ extension SidePanelViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MenuItemCell", forIndexPath: indexPath) as! MenuItemCell
             cell.configureForMenu(menuItems[indexPath.row])
             cell.layer.cornerRadius = 5
-//            cell.menuItemImageView.userInteractionEnabled = true
-//            cell.menuItemImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "vlada:"))
             return cell
         }else{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
+            cell.setItem(user)
             return cell
         }
 
@@ -236,6 +204,18 @@ class LogOutCell: UICollectionViewCell {
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var dataBaseLabel: UILabel!
     @IBOutlet weak var logOutButton: UIButton!
+    
+    func setItem(user:User?){
+        if let user = user{
+            if let image  = user.profilePicture{
+                userImage.image = UIImage(data: image)
+            }else{
+                userImage.image = UIImage(named: "User")
+            }
+            userLabel.text = user.username
+        }
+        
+    }
     
     
 }

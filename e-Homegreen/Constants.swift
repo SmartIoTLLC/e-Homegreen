@@ -481,6 +481,17 @@ struct NotificationKey {
     static let RefreshIBeacon = "refreshIBeaconList"
 }
 
+struct Admin {
+    static let Username = "username"
+    static let Password = "password"
+    static let IsAdmin = "isAdmin"
+}
+
+struct Login {
+    static let IsLoged = "isLoged"
+    static let User = "user"
+}
+
 struct SegueIdentifier {
     static let some = ""
 //    "menuSettings"

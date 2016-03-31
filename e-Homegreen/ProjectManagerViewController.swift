@@ -21,6 +21,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -41,7 +43,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         
         updateUserList()
 
@@ -116,14 +118,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         users = []
         let fetchRequest = NSFetchRequest(entityName: "User")
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
-//        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-//        var predicateArray:[NSPredicate] = [predicateOne]
-
-//        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-//        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
             users = fetResults!
