@@ -17,10 +17,10 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     var appDel:AppDelegate!
     var users:[User] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    var sidebarMenuOpen : Bool!
+    
+    
+    override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -38,22 +38,26 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         updateUserList()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     @IBAction func addUser(sender: AnyObject) {
         showAddUser(nil).delegate = self
     }
@@ -89,7 +93,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             optionMenu.addAction(deleteAction)
             optionMenu.addAction(cancelAction)
             self.presentViewController(optionMenu, animated: true, completion: nil)
-
+            
         }
     }
     
@@ -97,7 +101,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         if segue.identifier == "settings"{
             if let button = sender as? UIButton{
                 if let vc = segue.destinationViewController as? SettingsViewController{
-                        vc.user = users[button.tag]
+                    vc.user = users[button.tag]
                 }
             }
         }
@@ -116,14 +120,14 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         users = []
         let fetchRequest = NSFetchRequest(entityName: "User")
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+        //        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
+        //        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
-//        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-//        var predicateArray:[NSPredicate] = [predicateOne]
-
-//        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-//        fetchRequest.predicate = compoundPredicate
+        //        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        //        var predicateArray:[NSPredicate] = [predicateOne]
+        
+        //        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        //        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
             users = fetResults!
@@ -157,10 +161,40 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             print("TEST")
             self.showAddUser(self.users[indexPath.row]).delegate = self
         })
-
+        
     }
-
-
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            usersTableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            usersTableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            usersTableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            usersTableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
+    
+    
 }
 
 class UserCell: UITableViewCell{
