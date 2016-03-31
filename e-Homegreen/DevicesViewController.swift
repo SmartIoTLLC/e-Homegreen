@@ -33,11 +33,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -54,6 +49,11 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         self.navigationController?.navigationBar.translucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
