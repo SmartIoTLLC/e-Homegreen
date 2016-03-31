@@ -26,9 +26,11 @@ enum SettingsItem{
     
 }
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate {
     
     var user:User!
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
 
     var settingArray:[SettingsItem]!
     @IBOutlet weak var settingsTableView: UITableView!
@@ -41,6 +43,15 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if user == nil{
+            user = DatabaseUserController.shared.getLoggedUser()
+        }else{
+            navigationItem.leftBarButtonItems = []
+        }
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
@@ -52,16 +63,32 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if let min = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
             minRefresh = min
         }
-        
-        
-        // This is aded because highlighted was calling itself fast and late because of this property of UIScrollView
-        settingsTableView.delaysContentTouches = false
-        // Not a permanent solution as Apple can deside to change view hierarchy inf the future
-//        for currentView in settingsTableView.subviews {
-//            if let view = currentView as? UIScrollView {
-//                (currentView as! UIScrollView).delaysContentTouches = false
-//            }
-//        }
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if let tempUser = user {
+            if tempUser.isSuperUser == false{
+                
+                self.revealViewController().delegate = self
+                
+                if self.revealViewController() != nil {
+                    menuButton.target = self.revealViewController()
+                    menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                    revealViewController().toggleAnimationDuration = 0.5
+                    if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                        revealViewController().rearViewRevealWidth = 200
+                    }else{
+                        revealViewController().rearViewRevealWidth = 200
+                    }
+                    
+                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                    view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                    
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

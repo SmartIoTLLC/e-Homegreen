@@ -19,6 +19,7 @@
 		223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C61CAD022A0037B54A /* LogInViewController.swift */; };
 		223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C81CAD02530037B54A /* CreateAdminViewController.swift */; };
 		223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690CA1CAD04270037B54A /* LogInTextField.swift */; };
+		223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690CC1CAD5A500037B54A /* DatabaseUserController.swift */; };
 		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
@@ -312,6 +313,7 @@
 		223690C61CAD022A0037B54A /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		223690C81CAD02530037B54A /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
 		223690CA1CAD04270037B54A /* LogInTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInTextField.swift; sourceTree = "<group>"; };
+		223690CC1CAD5A500037B54A /* DatabaseUserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserController.swift; sourceTree = "<group>"; };
 		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
@@ -1089,6 +1091,7 @@
 			isa = PBXGroup;
 			children = (
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
+				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1793,6 +1796,7 @@
 				730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */,
 				2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */,
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
+				223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,
 				2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */,
 				73131ED31CA147C6008BC13E /* User+CoreDataProperties.swift in Sources */,

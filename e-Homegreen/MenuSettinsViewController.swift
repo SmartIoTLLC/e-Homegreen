@@ -9,7 +9,7 @@
 import UIKit
 
 enum Menu{
-    case Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings
+    case Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings, NotSuperUserSettings
     var description:String{
         switch self{
             case .Dashboard: return "Dashboard"
@@ -26,6 +26,7 @@ enum Menu{
             case .Users: return "Users"
             case .PCControl: return "PC Control"
             case .Settings: return "Settings"
+            case .NotSuperUserSettings: return "Settings"
         }
     }
     
@@ -45,21 +46,20 @@ enum Menu{
         case .Users: return (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Users") as! UINavigationController)
         case .PCControl: return (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PC Control") as! UINavigationController)
         case .Settings: return (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Settings") as! UINavigationController)
+        case .NotSuperUserSettings: return (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("NotSuperUserSettings") as! UINavigationController)
         }
     }
     
     static let allMenuItem = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings]
+    static let allMenuItemNotSuperUser = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, NotSuperUserSettings]
 }
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
     
     @IBOutlet weak var topView: UIView!
-//    var menuItems: Array<MenuItem>!
-//    var menuList:[NSString] = []
-//    var listOfMenuItems: Array<MenuItem>!
     var user:User!
     
-    var menuList:[String] = [] //["Dashboard", "Devices", "Scenes", "Events", "Sequences", "Timers", "Flags", "Chat", "Security", "Surveillance", "Energy", "PC Control", "Users", "Settings"]
+    var menuList:[String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,39 +67,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         for item in  Menu.allMenuItem {
             menuList.append(item.description)
         }
-        
-//        menuItems = MenuViewControllers.sharedInstance.allMenuItems()
-//        listOfMenuItems = MenuViewControllers.sharedInstance.allMenuItems1()
-        
-//        for item in menuItems{
-//            for item1 in listOfMenuItems{
-//                if item.title == item1.title{
-//                    item.state = true
-//                }
-//            }
-//        }
-//        
-//        var defaultMenu = menuItems
-//        for (index, item) in defaultMenu.enumerate() {
-//            if item.title == "Settings" {
-////                defaultMenu.removeAtIndex(index)
-//            }
-//        }
-//        menuItems = defaultMenu
-//        // Do any additional setup after loading the view.
-//    }
-//    
-//    func changeValue(sender:UISwitch){
-//        if sender.tag == 11{
-//            sender.on = true
-//        }else{
-//            if sender.on == true {
-//                menuItems[sender.tag].state = true
-//            }else {
-//                menuItems[sender.tag].state = false
-//            }
-//        }
-//        
+      
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -107,12 +75,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
             cell.menuImage.image = UIImage(named: menuList[indexPath.row])
             cell.menuLabel.text = menuList[indexPath.row]
             cell.menuSwitch.tag = indexPath.row
-//            cell.menuSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
-//            if menuItems[indexPath.row].state == true {
-//                cell.menuSwitch.on = true
-//            }else {
-//                cell.menuSwitch.on = false
-//            }
+
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -124,17 +87,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuList.count
     }
-    
-//    @IBAction func backButton(sender: AnyObject) {
-//        for items in menuItems{
-//            if items.state == true{
-//                menuList.append(items.title!)
-//            }
-//        }
-//        NSUserDefaults.standardUserDefaults().setObject(menuList, forKey: "menu")
-//        NSUserDefaults.standardUserDefaults().synchronize()
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
+
 
 }
 

@@ -20,7 +20,6 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var menuItems: [MenuItem] = []
     
-    var appDel:AppDelegate!
     var user:User?
     
     let prefs = NSUserDefaults.standardUserDefaults()
@@ -29,24 +28,27 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        if let stringUrl = prefs.valueForKey(Login.User) as? String{
-            if let url = NSURL(string: stringUrl){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let tempUser = appDel.managedObjectContext?.objectWithID(id) as? User {
-                        user = tempUser
-                    }
+        user = DatabaseUserController.shared.getLoggedUser()
+
+        if let user = user{
+            if user.isSuperUser == true {
+                for item in  Menu.allMenuItem {
+                    let menuItem = MenuItem(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
+                    menuItems.append(menuItem)
+                }
+            }else{
+                for item in  Menu.allMenuItemNotSuperUser {
+                    let menuItem = MenuItem(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
+                    menuItems.append(menuItem)
                 }
             }
-            
+        }else{
+            for item in  Menu.allMenuItem {
+                let menuItem = MenuItem(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
+                menuItems.append(menuItem)
+            }
         }
-
         
-        for item in  Menu.allMenuItem {
-            let menuItem = MenuItem(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
-            menuItems.append(menuItem)
-        }
         
     }
     
@@ -99,11 +101,29 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
 
     
     @IBAction func logOutAction(sender: AnyObject) {
-        prefs.setValue(false, forKey: Login.IsLoged)
-        prefs.setValue(nil, forKey: Login.User)
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
-        self.presentViewController(logIn, animated: false, completion: nil)
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure to want to log out?", preferredStyle: .ActionSheet)
+        
+        let logoutAction = UIAlertAction(title: "Log Out", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            self.prefs.setValue(false, forKey: Login.IsLoged)
+            self.prefs.setValue(nil, forKey: Login.User)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
+            self.presentViewController(logIn, animated: false, completion: nil)
+
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(logoutAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+        
     }
     
     
@@ -213,6 +233,8 @@ class LogOutCell: UICollectionViewCell {
                 userImage.image = UIImage(named: "User")
             }
             userLabel.text = user.username
+        }else{
+            userLabel.text = NSUserDefaults.standardUserDefaults().valueForKey(Admin.Username) as? String
         }
         
     }

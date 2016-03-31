@@ -48,7 +48,7 @@
                                             <action selector="backButton:" destination="a0L-WE-uyG" eventType="touchUpInside" id="fFV-MN-RSQ"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Security settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tI4-Hu-dAf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tI4-Hu-dAf">
                                         <rect key="frame" x="91" y="31" width="138" height="23"/>
                                         <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -189,7 +189,7 @@
                                             <action selector="backButton:" destination="a0L-WE-uyG" eventType="touchUpInside" id="Abe-LR-E0y"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Surveillance settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-Vc-R20">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Surveillance settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-Vc-R20">
                                         <rect key="frame" x="75" y="31" width="171" height="23"/>
                                         <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -232,14 +232,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="228-Uq-CSG">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="228-Uq-CSG">
                                                     <rect key="frame" x="8" y="53" width="193" height="19"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LOCATION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8J4-j9-YlZ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOCATION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8J4-j9-YlZ">
                                                     <rect key="frame" x="8" y="8" width="193" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="193" id="X5n-25-2f2"/>
@@ -520,6 +520,7 @@
                         <segue destination="WLV-we-2q9" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="BYO-1d-f2S"/>
                         <segue destination="cdg-zv-fZN" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="c3K-M4-6fM"/>
                         <segue destination="7Co-u0-uxP" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="rkg-5H-Lab"/>
+                        <segue destination="YGL-uY-aAH" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uh7-l5-Jsv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Afh-dM-bhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1032,7 +1033,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cif-Tg-Kn7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="891" y="260"/>
+            <point key="canvasLocation" x="891" y="280"/>
         </scene>
         <!--codePopover-->
         <scene sceneID="LIe-ns-VMN">
@@ -1045,7 +1046,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ecI-xV-PaI">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YGL-uY-aAH" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NotSuperUserSettings" automaticallyAdjustsScrollViewInsets="NO" id="YGL-uY-aAH" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bsR-rC-d1i">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1058,7 +1059,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d6C-WO-cYY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="381" y="272"/>
+            <point key="canvasLocation" x="213" y="290"/>
         </scene>
         <!--ProjectManagerViewController-->
         <scene sceneID="O81-ZB-asT">
@@ -1078,7 +1079,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hWn-WI-Grs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="381.5" y="693"/>
+            <point key="canvasLocation" x="213.5" y="707"/>
         </scene>
     </scenes>
     <resources>
