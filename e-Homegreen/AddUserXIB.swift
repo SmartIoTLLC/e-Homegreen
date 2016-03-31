@@ -49,6 +49,8 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         btnCancel.layer.cornerRadius = 2
@@ -64,6 +66,9 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         
         if let user = user{
             usernameTextField.text = user.username
+            passwordTextView.text = user.password
+            confirmPasswordtextView.text = user.password
+            
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
             }
@@ -102,12 +107,20 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     
     @IBAction func saveAction(sender: AnyObject) {
         
+        self.view.endEditing(true)
+        
         guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
+            self.view.makeToast(message: "All fields must be filled")
             return
         }
-
-        if let user = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDel.managedObjectContext!) as? User{
         
+        if password != confirmpass {
+            self.view.makeToast(message: "Passwords do not match")
+            return
+        }
+        
+        if let user = user {
+            
             user.username = username
             user.password = password
             user.isLocked = false
@@ -115,6 +128,17 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
             user.profilePicture = imageData
             saveChanges()
             
+        }else{
+            
+            if let user = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDel.managedObjectContext!) as? User{
+                
+                user.username = username
+                user.password = password
+                user.isLocked = false
+                user.isSuperUser = superUserSwitch.on
+                user.profilePicture = imageData
+                saveChanges()
+            }
         }
         
         delegate?.addUserFinished()

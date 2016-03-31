@@ -211,6 +211,8 @@ class UserCell: UITableViewCell{
         userNameLabel.text = user.username
         if let data = user.profilePicture{
             userImage.image = UIImage(data: data)
+        }else{
+            userImage.image = nil
         }
     }
     
