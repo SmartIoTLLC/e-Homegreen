@@ -15,6 +15,10 @@
 		223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223362901CA2E4EC006C80C4 /* AddUserXIB.xib */; };
 		223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */; };
 		223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362961CA2E624006C80C4 /* UsersViewController.swift */; };
+		223690C41CAD005E0037B54A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223690C31CAD005E0037B54A /* Login.storyboard */; };
+		223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C61CAD022A0037B54A /* LogInViewController.swift */; };
+		223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C81CAD02530037B54A /* CreateAdminViewController.swift */; };
+		223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690CA1CAD04270037B54A /* LogInTextField.swift */; };
 		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
@@ -196,8 +200,6 @@
 		E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC01B42FC0B00E48454 /* NSDate+FSExtension.m */; };
 		E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */; };
 		E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41661B662ED1005080F1 /* ScanViewController.swift */; };
-		E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F41681B6641A6005080F1 /* CustomSegue.swift */; };
-		E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F416A1B664BC3005080F1 /* SegueUnwind.swift */; };
 		E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */; };
 		E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */; };
 		E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */; };
@@ -307,6 +309,10 @@
 		223362901CA2E4EC006C80C4 /* AddUserXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddUserXIB.xib; sourceTree = "<group>"; };
 		223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectManagerViewController.swift; sourceTree = "<group>"; };
 		223362961CA2E624006C80C4 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
+		223690C31CAD005E0037B54A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		223690C61CAD022A0037B54A /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		223690C81CAD02530037B54A /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
+		223690CA1CAD04270037B54A /* LogInTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInTextField.swift; sourceTree = "<group>"; };
 		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
@@ -504,8 +510,6 @@
 		E75B4FC11B42FC0B00E48454 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
 		E75B4FC21B42FC0B00E48454 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
 		E75F41661B662ED1005080F1 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
-		E75F41681B6641A6005080F1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
-		E75F416A1B664BC3005080F1 /* SegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueUnwind.swift; sourceTree = "<group>"; };
 		E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientBackground.swift; sourceTree = "<group>"; };
 		E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportFilesViewController.swift; sourceTree = "<group>"; };
 		E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImportFilesViewController.xib; sourceTree = "<group>"; };
@@ -761,6 +765,16 @@
 			name = Users;
 			sourceTree = "<group>";
 		};
+		223690C51CAD00C00037B54A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				223690C81CAD02530037B54A /* CreateAdminViewController.swift */,
+				223690C61CAD022A0037B54A /* LogInViewController.swift */,
+				223690C31CAD005E0037B54A /* Login.storyboard */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
 		223878A61C91A6C9001357E0 /* Add Video/App */ = {
 			isa = PBXGroup;
 			children = (
@@ -873,6 +887,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* Popover */,
 				223292291CABD3280001422B /* Energy */,
 				223292281CABD1B60001422B /* Surveillance */,
@@ -889,7 +904,6 @@
 				E76B576B1BBD24A100A70F69 /* XIB */,
 				73DEA2201B32CE9F007836B4 /* Side Menu */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
-				E739739E1B43E62E0077E984 /* Settings za brisanje */,
 				738DEC991BBBBFF800D6B834 /* Security */,
 			);
 			name = ViewControllers;
@@ -1080,14 +1094,6 @@
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 			);
 			name = Controller;
-			sourceTree = "<group>";
-		};
-		E739739E1B43E62E0077E984 /* Settings za brisanje */ = {
-			isa = PBXGroup;
-			children = (
-				E7AAF7651BBE887000992A18 /* CustomSegue */,
-			);
-			name = "Settings za brisanje";
 			sourceTree = "<group>";
 		};
 		E73993141BCE9DAC00C74486 /* ChatXIB */ = {
@@ -1296,15 +1302,6 @@
 			name = SequencesXIB;
 			sourceTree = "<group>";
 		};
-		E7AAF7651BBE887000992A18 /* CustomSegue */ = {
-			isa = PBXGroup;
-			children = (
-				E75F41681B6641A6005080F1 /* CustomSegue.swift */,
-				E75F416A1B664BC3005080F1 /* SegueUnwind.swift */,
-			);
-			name = CustomSegue;
-			sourceTree = "<group>";
-		};
 		E7AAF7661BBE889800992A18 /* SecurityXIB */ = {
 			isa = PBXGroup;
 			children = (
@@ -1334,6 +1331,7 @@
 		E7C9CDFB1BC28CDC007D8FE8 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
+				223690CA1CAD04270037B54A /* LogInTextField.swift */,
 				2233628C1CA2E477006C80C4 /* EditTextField.swift */,
 				E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */,
 			);
@@ -1556,6 +1554,7 @@
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
 				E7DC67B81B457C0E00EA6543 /* weather-few-night.png in Resources */,
+				223690C41CAD005E0037B54A /* Login.storyboard in Resources */,
 				22495D1B1CAA797C0034FC94 /* Sequences.storyboard in Resources */,
 				E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */,
 				E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */,
@@ -1733,6 +1732,7 @@
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
 				733E5E841C6391DB0039B7A8 /* HamburgerButton.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
+				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
@@ -1752,10 +1752,10 @@
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
-				E75F41691B6641A7005080F1 /* CustomSegue.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
+				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
@@ -1852,6 +1852,7 @@
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
+				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
@@ -1876,7 +1877,6 @@
 				73131ED41CA147C6008BC13E /* User.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
-				E75F416B1B664BC3005080F1 /* SegueUnwind.swift in Sources */,
 				2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,

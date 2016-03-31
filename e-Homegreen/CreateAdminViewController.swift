@@ -13,6 +13,8 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userNameTextField: LogInTextField!
     @IBOutlet weak var passwordTextField: LogInTextField!
     @IBOutlet weak var confirmPasswordTextField: LogInTextField!
+    
+    let prefs = NSUserDefaults.standardUserDefaults()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +38,18 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
             return
         }
-        print("proslo")
+        guard confirmPass == password else {
+            return
+        }
+        
+        prefs.setValue(username, forKey: Admin.Username)
+        prefs.setValue(password, forKey: Admin.Password)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+        self.presentViewController(sideMenu, animated: true, completion: nil)
+
+        
     }
 
 }
