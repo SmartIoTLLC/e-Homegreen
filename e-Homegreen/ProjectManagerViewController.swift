@@ -19,6 +19,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     var sidebarMenuOpen : Bool!
     var tap : UITapGestureRecognizer!
     
+    @IBOutlet weak var addButton: UIButton!
+    
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -46,6 +48,10 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) == false {
+            addButton.hidden = true
+        }
         
         updateUserList()
         
@@ -164,11 +170,10 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        print("TEST")
-        self.showAddUser(self.users[indexPath.row]).delegate = self
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showAddUser(self.users[indexPath.row]).delegate = self
+        })
     }
-    
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -219,7 +224,7 @@ class UserCell: UITableViewCell{
         if let data = user.profilePicture{
             userImage.image = UIImage(data: data)
         }else{
-            userImage.image = nil
+            userImage.image = UIImage(named: "User")
         }
     }
     

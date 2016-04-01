@@ -36,14 +36,17 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func createAdmin(sender: AnyObject) {
         guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
+            self.view.makeToast(message: "All fields must be filled")
             return
         }
         guard confirmPass == password else {
+            self.view.makeToast(message: "Passwords do not match")
             return
         }
         
         prefs.setValue(username, forKey: Admin.Username)
-        prefs.setValue(password, forKey: Admin.Password)
+        prefs.setValue(password, forKey: Admin.Password)        
+        prefs.setValue(true, forKey: Admin.IsLogged)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController

@@ -484,7 +484,7 @@ struct NotificationKey {
 struct Admin {
     static let Username = "username"
     static let Password = "password"
-    static let IsAdmin = "isAdmin"
+    static let IsLogged = "isAdmin"
 }
 
 struct Login {

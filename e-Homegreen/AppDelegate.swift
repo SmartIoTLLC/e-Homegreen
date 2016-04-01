@@ -50,28 +50,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        
+        // slider setup
         UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), forState: UIControlState.Normal)
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "slider"), forState: UIControlState.Normal)
         UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), forState: UIControlState.Highlighted)
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
+        //navigation setup
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
-//        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-//        let documentsDirectory: AnyObject = paths[0]
-//        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
-        
-//        do {
-//            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
-//        } catch let error as NSError {
-//            print(error.localizedDescription);
-//        }
-        
+        //whether there admin exist and if exist check if user logged in
         if let username = prefs.stringForKey(Admin.Username), let password = prefs.stringForKey(Admin.Password) {
             if !prefs.boolForKey(Login.IsLoged){
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)

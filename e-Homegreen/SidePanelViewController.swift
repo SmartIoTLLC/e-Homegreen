@@ -28,8 +28,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
         
+        //get user if exist
         user = DatabaseUserController.shared.getLoggedUser()
 
+        //check if admin, user or super user and create menu for it
         if let user = user{
             if user.isSuperUser == true {
                 for item in  Menu.allMenuItem {
@@ -61,12 +63,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         menuItems.insert(pom, atIndex: toIndexPath.item)
         
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 8
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 8
-    }
+    
     func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.item == 14 || indexPath.item == 13 {
             return false
@@ -83,20 +80,28 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     //pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("did begin drag")
-    }
+//    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
+//        print("did begin drag")
+//    }
+//    
+//    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
+//        print("did end drag")
+//    }
+//    
+//    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
+//        print("will begin drag")
+//    }
+//    
+//    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
+//        print("will end drag")
+//    }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("did end drag")
+    // collection view layout
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 8
     }
-    
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("will begin drag")
-    }
-    
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("will end drag")
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 8
     }
 
     
@@ -108,6 +113,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
             
             self.prefs.setValue(false, forKey: Login.IsLoged)
             self.prefs.setValue(nil, forKey: Login.User)
+            self.prefs.setValue(false, forKey: Admin.IsLogged)
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
             self.presentViewController(logIn, animated: false, completion: nil)
@@ -156,7 +162,6 @@ extension SidePanelViewController: UICollectionViewDataSource {
         return 1
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return menuItems.count + 1
         return 15
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

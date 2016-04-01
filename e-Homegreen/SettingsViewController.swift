@@ -28,7 +28,7 @@ enum SettingsItem{
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate {
     
-    var user:User!
+    var user:User?
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
 
@@ -39,14 +39,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     var hourRefresh:Int = 0
     var minRefresh:Int = 0
     
-//    @IBOutlet weak var centarY: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if user == nil{
-            user = DatabaseUserController.shared.getLoggedUser()
-        }else{
+        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) || user != nil {
             navigationItem.leftBarButtonItems = []
         }
         
@@ -65,35 +62,27 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
     }
-    
+
     override func viewWillAppear(animated: Bool) {
-        if let tempUser = user {
-            if tempUser.isSuperUser == false{
-                
-                self.revealViewController().delegate = self
-                
-                if self.revealViewController() != nil {
-                    menuButton.target = self.revealViewController()
-                    menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                    revealViewController().toggleAnimationDuration = 0.5
-                    if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
-                        revealViewController().rearViewRevealWidth = 200
-                    }else{
-                        revealViewController().rearViewRevealWidth = 200
-                    }
-                    
-                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                    view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                    
+        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) == false && user == nil{
+            self.revealViewController().delegate = self
+            
+            if self.revealViewController() != nil {
+                menuButton.target = self.revealViewController()
+                menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                revealViewController().toggleAnimationDuration = 0.5
+                if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                    revealViewController().rearViewRevealWidth = 200
+                }else{
+                    revealViewController().rearViewRevealWidth = 200
                 }
+                
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -258,8 +247,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func didTouchSettingButton (sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag
-            self.settingsTableView.userInteractionEnabled = false
-            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SettingsViewController.update), userInfo: nil, repeats: false)
+            
             if tag == 0 {
                 dispatch_async(dispatch_get_main_queue(),{
                     self.performSegueWithIdentifier("mainMenu", sender: self)
@@ -271,32 +259,19 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                     self.performSegueWithIdentifier("connection", sender: self)
                 })
             }
-            if tag == 4 {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("surveillanceSettings", sender: self)
-                })
-            }
-            if tag == 5 {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("securitySettings", sender: self)
-                })
-            }
-            if tag == 6 {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("iBeaconSettings", sender: self)
-                })
-            }
 
         }
     }
-
-    func update(){
-        self.settingsTableView.userInteractionEnabled = true
-    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "connection"{
-            if let destinationVC = segue.destinationViewController as? ConnectionsViewController{
-                destinationVC.user = user
+            if let destinationVC = segue.destinationViewController as? LocationViewController{
+                if let user = user{
+                    destinationVC.user = user
+                }else{
+                    let tempUser = DatabaseUserController.shared.getLoggedUser()
+                    destinationVC.user = tempUser
+                }
             }
         }
         if segue.identifier == "mainMenu"{

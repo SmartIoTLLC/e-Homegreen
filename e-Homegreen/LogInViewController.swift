@@ -33,12 +33,13 @@ class LogInViewController: UIViewController {
     
     @IBAction func logInAction(sender: AnyObject) {
         guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "" else{
+            self.view.makeToast(message: "All fields must be filled")
             return
         }
         
         if let adminUsername = prefs.stringForKey(Admin.Username) where adminUsername == username, let adminPassword = prefs.stringForKey(Admin.Password) where adminPassword == password{
             
-            prefs.setValue(true, forKey: Admin.IsAdmin)
+            prefs.setValue(true, forKey: Admin.IsLogged)
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
