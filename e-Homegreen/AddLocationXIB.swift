@@ -286,22 +286,28 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     @IBAction func importZone(sender: AnyObject) {
         
-        if let importZoneViewController = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportZone") as? ImportZoneViewController{
-            importZoneViewController.location = location
-            self.presentViewController(importZoneViewController, animated: true, completion: nil)
+        if let navVC = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportZone") as? UINavigationController{
+            if let importZoneViewController = navVC.topViewController as? ImportZoneViewController{
+                importZoneViewController.location = location
+                self.presentViewController(navVC, animated: true, completion: nil)
+            }
         }
     }
     
     @IBAction func importCategory(sender: AnyObject) {
-        if let importCategoryViewController = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportCategory") as? ImportCategoryViewController{
-            self.presentViewController(importCategoryViewController, animated: true, completion: nil)
+        if let navVC = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportCategory") as? UINavigationController{
+            if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController{
+                self.presentViewController(navVC, animated: true, completion: nil)
+            }
         }
     }
     
     @IBAction func importSSID(sender: AnyObject) {
-        if let importSSID = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportSSID") as? ImportSSIDViewController{
-            importSSID.location = location
-            self.presentViewController(importSSID, animated: true, completion: nil)
+        if let navVC = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportSSID") as? UINavigationController{
+            if let importSSID = navVC.topViewController as? ImportSSIDViewController{
+                importSSID.location = location
+                self.presentViewController(navVC, animated: true, completion: nil)
+            }
         }
     }
     

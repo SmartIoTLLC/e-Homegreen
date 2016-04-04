@@ -9,18 +9,16 @@
 import UIKit
 
 enum SettingsItem{
-    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Surveillance, Security, IBeacon, Broadcast, RefreshConnection
+    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Broadcast, RefreshConnection, LockProfile
     var description:String{
         switch self{
             case MainMenu: return "Main Menu"
             case Interfaces: return "Locations"
             case RefreshStatusDelay: return "Refresh Status Delay"
             case OpenLastScreen: return "Open Last Screen"
-            case Surveillance: return "Surveillance"
-            case Security: return "Security"
-            case IBeacon: return "IBeacon"
             case Broadcast: return "Broadcast"
             case RefreshConnection: return "Refresh Connection"
+        case .LockProfile: return "Lock Profile"
         }
     }
     
@@ -51,7 +49,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
+        
+        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection, .LockProfile]
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
@@ -169,7 +168,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.Surveillance || settingArray[indexPath.section] == SettingsItem.Security || settingArray[indexPath.section] == SettingsItem.IBeacon {
+        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.settingsButton.tag = indexPath.section
@@ -228,7 +227,19 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
-        } else {
+        }else if settingArray[indexPath.section] == SettingsItem.LockProfile {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            cell.nameLabel.text = settingArray[indexPath.section].description
+            cell.openLastScreen.tag = indexPath.section
+            cell.backgroundColor = UIColor.clearColor()
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
+            
+        }else {
             let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
             cell.textLabel?.text = "dads"
             return cell
@@ -243,6 +254,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             NSUserDefaults.standardUserDefaults().setBool(false, forKey:UserDefaults.OpenLastScreen)
 
         }
+    }
+    
+    func lockProfile(switch:UISwitch){
+        
     }
     func didTouchSettingButton (sender:AnyObject) {
         if let view = sender as? UIButton {
@@ -365,6 +380,11 @@ class SettingsRefreshDelayTableViewCell: UITableViewCell {
 
 class SettingsLastScreenTableViewCell: UITableViewCell {
     @IBOutlet weak var openLastScreen: UISwitch!
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    func setItem(){
+        
+    }
     
 }
 

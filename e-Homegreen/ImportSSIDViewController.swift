@@ -23,6 +23,8 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         ssidNameTextfield.delegate = self

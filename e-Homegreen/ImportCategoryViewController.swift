@@ -24,6 +24,8 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
 //        let categories:[CategoryJSON] = DataImporter.createCategoriesFromFile("IPGCW02001_000_000_Categories List.json")!
 //        print(categories)
         
