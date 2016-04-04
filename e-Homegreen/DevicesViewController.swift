@@ -26,6 +26,8 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     var timer:NSTimer = NSTimer()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -49,16 +51,21 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateDeviceList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateDeviceList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        self.navigationController?.navigationBar.translucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.whiteColor() ]
-        self.navigationController?.navigationBar.titleTextAttributes = fontDictionary
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
@@ -71,13 +78,12 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         self.view.addSubview(pullDown)
 
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         
-        saveChanges()
-        updateDeviceList()
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
     }
     
@@ -108,13 +114,14 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
+    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
     
     func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        updateDeviceList()
+//        updateDeviceList()
         deviceCollectionView.reloadData()
     }
     
@@ -149,11 +156,11 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        updateDeviceList()
+//        updateDeviceList()
         deviceCollectionView.reloadData()
         fetchDevicesInBackground()
     }
-    func updateDeviceList () {
+    func updateDeviceList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Device")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
@@ -163,12 +170,13 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
 //        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour,sortDescriptorFive]
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
+        let userPredicate = NSPredicate(format: "gateway.location.user == %@", user)
         let predicateNull = NSPredicate(format: "categoryId != 0") // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
         // Filtering out PC devices
         let predicateThree = NSPredicate(format: "type != %@", ControlType.PC)
-        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo, predicateThree]
+        var predicateArray:[NSPredicate] = [userPredicate, predicateNull, predicateOne, predicateTwo, predicateThree]
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
@@ -643,35 +651,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             devices[index.row].info = true
         }
     }
-    
-    func doubleTap (gesture:UIGestureRecognizer) {
-        let location = gesture.locationInView(deviceCollectionView)
-        if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-            if devices[index.row].controlType == ControlType.Dimmer {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! DeviceCollectionCell
-                if cell.typeOfLight.holdScrolling{
-                    cell.typeOfLight.holdScrolling = false
-                }else{
-                    cell.typeOfLight.holdScrolling = true
-                }
-                
-            } else if devices[index.row].controlType == ControlType.Relay {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
-                
-            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
-                
-            } else if devices[index.row].controlType == ControlType.Climate {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
-                
-            } else if devices[index.row].controlType == ControlType.Curtain {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
-            }
-            
-            
-        }
-    }
-    
+
     func handleTap2 (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){

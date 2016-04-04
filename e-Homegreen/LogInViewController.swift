@@ -52,6 +52,8 @@ class LogInViewController: UIViewController {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
                 self.presentViewController(sideMenu, animated: true, completion: nil)
+            }else{
+               self.view.makeToast(message: "Check username or password") 
             }
         }
         

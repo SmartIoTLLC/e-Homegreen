@@ -485,6 +485,7 @@ struct Admin {
     static let Username = "username"
     static let Password = "password"
     static let IsLogged = "isAdmin"
+    static let OtherUserDatabase = "OtherUserDatabase"
 }
 
 struct Login {

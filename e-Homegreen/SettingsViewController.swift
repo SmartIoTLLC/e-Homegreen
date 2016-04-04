@@ -27,6 +27,8 @@ enum SettingsItem{
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate {
     
     var user:User?
+    var appDel:AppDelegate!
+    var error:NSError? = nil
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
 
@@ -45,12 +47,18 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             navigationItem.leftBarButtonItems = []
         }
         
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
-        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection, .LockProfile]
+        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
+        
+        if NSUserDefaults.standardUserDefaults().valueForKey(Admin.IsLogged) as? Bool == false {
+            settingArray.append(.LockProfile)
+        }
         
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
@@ -230,7 +238,24 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }else if settingArray[indexPath.section] == SettingsItem.LockProfile {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            
             cell.nameLabel.text = settingArray[indexPath.section].description
+            if let user = user{
+                if let locked = user.isLocked as? Bool{
+                    cell.openLastScreen.on = locked
+                }else{
+                    cell.openLastScreen.on = false
+                }
+            }else if let user = DatabaseUserController.shared.getLoggedUser(){
+                if let locked = user.isLocked as? Bool{
+                    cell.openLastScreen.on = locked
+                }else{
+                    cell.openLastScreen.on = false
+                }
+            }else{
+                cell.openLastScreen.on = false
+            }
+            
             cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clearColor()
             cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -256,9 +281,26 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func lockProfile(switch:UISwitch){
+    func lockProfile(sender:UISwitch){
+        if let user = user{
+            user.isLocked = sender.on
+        }else if let user = DatabaseUserController.shared.getLoggedUser(){
+            user.isLocked = sender.on
+        }
+        saveChanges()
         
     }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    
     func didTouchSettingButton (sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag

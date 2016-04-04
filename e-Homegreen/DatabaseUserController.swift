@@ -28,5 +28,20 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
+    
+    func getOtherUser() -> User?{
+        if let stringUrl = prefs.valueForKey(Admin.OtherUserDatabase) as? String{
+            if let url = NSURL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+                    if let user = appDel.managedObjectContext?.objectWithID(id) as? User {
+                        return user
+                    }
+                }
+            }
+            
+        }
+        return nil
+    }
+
 
 }

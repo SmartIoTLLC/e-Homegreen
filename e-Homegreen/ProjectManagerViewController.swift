@@ -19,6 +19,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     var sidebarMenuOpen : Bool!
     var tap : UITapGestureRecognizer!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     @IBOutlet weak var addButton: UIButton!
     
     override func viewWillAppear(animated: Bool) {
@@ -39,6 +41,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        usersTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -46,10 +49,11 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
 
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) == false {
+        if prefs.boolForKey(Admin.IsLogged) == false {
             addButton.hidden = true
         }
         
@@ -69,7 +73,11 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @IBAction func changeDataBase(sender: AnyObject) {
-        
+        if let button = sender as? UIButton{
+            prefs.setValue(users[button.tag].objectID.URIRepresentation().absoluteString, forKey: Admin.OtherUserDatabase)
+            
+            self.view.makeToast(message: "\(users[button.tag].username!)'s database is in use!")
+        }
     }
     
     @IBAction func editDataBase(sender: AnyObject) {
@@ -145,6 +153,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("userCell") as? UserCell{
+            cell.chooseDatabaseButton.tag = indexPath.row
             cell.editDatabaseButton.tag = indexPath.row
             cell.deleteUser.tag = indexPath.row
             cell.shareUser.tag = indexPath.row
@@ -171,7 +180,9 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         dispatch_async(dispatch_get_main_queue(),{
-            self.showAddUser(self.users[indexPath.row]).delegate = self
+            if self.users[indexPath.row].isLocked == false || self.users[indexPath.row].username == DatabaseUserController.shared.getLoggedUser()?.username{
+                self.showAddUser(self.users[indexPath.row]).delegate = self
+            }
         })
     }
     
@@ -226,6 +237,17 @@ class UserCell: UITableViewCell{
         }else{
             userImage.image = UIImage(named: "User")
         }
+        if NSUserDefaults.standardUserDefaults().valueForKey(Admin.IsLogged) as? Bool == false {
+            if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
+                chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
+                editDatabaseButton.enabled = !(user.isLocked as! Bool)
+            }
+        }else{
+            chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
+            editDatabaseButton.enabled = !(user.isLocked as! Bool)
+        }
+        
+        
     }
     
 }

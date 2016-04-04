@@ -147,9 +147,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if devices[indexPath.row].controlType == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
-//            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-//                        cell.typeOfLight.text = devices[indexPath.row].name
-//            print(devices[indexPath.row].cellTitle)
+
             cell.typeOfLight.text = devices[indexPath.row].cellTitle
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
@@ -195,13 +193,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 longPress.minimumPressDuration = 0.5
                 cell.typeOfLight.addGestureRecognizer(longPress)
                 
-                let doubleTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTap:")
-                doubleTap.numberOfTapsRequired = 2
-                cell.typeOfLight.addGestureRecognizer(doubleTap)
-                
                 let oneTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-                oneTap.numberOfTapsRequired = 1
-                oneTap.requireGestureRecognizerToFail(doubleTap)
+                oneTap.numberOfTapsRequired = 2
                 cell.typeOfLight.addGestureRecognizer(oneTap)
                 
                 
@@ -231,8 +224,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             return cell
         } else if devices[indexPath.row].type == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-//            cell.curtainName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-//                        cell.curtainName.text = devices[indexPath.row].name
+
             cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.curtainSlider.tag = indexPath.row
@@ -270,7 +262,12 @@ extension DevicesViewController: UICollectionViewDataSource {
                 lpgr.delegate = self
                 cell.curtainImage.addGestureRecognizer(lpgr)
                 cell.curtainImage.addGestureRecognizer(tap)
-                cell.curtainName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+                
+                let oneTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
+                oneTap.numberOfTapsRequired = 2
+                cell.curtainName.addGestureRecognizer(oneTap)
+                
+                
                 let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
                 longPress.minimumPressDuration = 0.5
                 cell.curtainName.addGestureRecognizer(longPress)
@@ -359,8 +356,6 @@ extension DevicesViewController: UICollectionViewDataSource {
         } else if devices[indexPath.row].controlType == ControlType.Climate {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
-//            cell.climateName.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-//                        cell.climateName.text = devices[indexPath.row].name
             cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
             cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
@@ -459,7 +454,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.imageOnOff.userInteractionEnabled = true
             cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"setACPowerStatus:"))
             cell.climateName.userInteractionEnabled = true
-            cell.climateName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+            
+            let doublePress = UITapGestureRecognizer(target: self, action: "handleTap:")
+            doublePress.numberOfTapsRequired = 2
+            cell.climateName.addGestureRecognizer(doublePress)
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             
             // If device is enabled add all interactions
@@ -480,7 +478,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPressTwo.minimumPressDuration = 0.5
             cell.disabledCellView.tag = indexPath.row
-            cell.sensorTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+            
+            var doublePress = UITapGestureRecognizer(target: self, action: "handleTap:")
+            doublePress.numberOfTapsRequired = 2
+            cell.sensorTitle.addGestureRecognizer(doublePress)
+            
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))

@@ -54,6 +54,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        menuCollectionView.reloadData()
+    }
+    
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
     
@@ -240,6 +244,11 @@ class LogOutCell: UICollectionViewCell {
             userLabel.text = user.username
         }else{
             userLabel.text = NSUserDefaults.standardUserDefaults().valueForKey(Admin.Username) as? String
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                dataBaseLabel.text = user.username! + "'s database"
+            }else{
+                dataBaseLabel.text = "null"
+            }
         }
         
     }
