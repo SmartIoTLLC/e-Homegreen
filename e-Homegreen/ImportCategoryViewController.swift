@@ -10,12 +10,12 @@ import UIKit
 import CoreData
 
 //IPGCW02001_000_000_Categories List
-class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
+class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate {
     
     var appDel:AppDelegate!
     var error:NSError? = nil
     var categories:[Category] = []
-    var gateway:Gateway?
+    var location:Location?
     
     @IBOutlet weak var importCategoryTableView: UITableView!
     
@@ -38,11 +38,23 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
     
     @IBAction func btnScanCategories(sender: AnyObject) {
-        
+        do {
+            guard let gateway = location!.gateways?.allObjects[0] as? Gateway else {
+                return
+            }
+            
+            
+            
+        }catch let error as InputError {
+           
+        } catch {
+           
+        }
     }
     @IBAction func brnDeleteAll(sender: AnyObject) {
         for var item = 0; item < categories.count; item++ {
@@ -124,12 +136,12 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
 //    }
     
     func refreshCategoryList () {
-//        updateCategoryList()
+        updateCategoryList()
         importCategoryTableView.reloadData()
     }
     
     @IBAction func addCategory(sender: AnyObject) {
-//        showEditCategory(nil, gateway: gateway).delegate = self
+        showEditCategory(nil, location: location).delegate = self
     }
     
     @IBAction func doneAction(sender: AnyObject) {
@@ -140,23 +152,24 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
         refreshCategoryList()
     }
     
-//    func updateCategoryList () {
-//        let fetchRequest = NSFetchRequest(entityName: "Category")
+    func updateCategoryList () {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Category")
 //        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-//        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
-//        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-//        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
-//        fetchRequest.predicate = predicate
-//        do {
-//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-//            categories = fetResults!
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//    }
+        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorTwo, sortDescriptorThree]
+        let predicate = NSPredicate(format: "location == %@", location!)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            categories = fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
     
     func saveChanges() {
         do {
@@ -167,16 +180,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate {
             abort()
         }
     }
-    
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     func isVisibleValueChanged (sender:UISwitch) {
         if sender.on == true {
@@ -213,17 +217,17 @@ extension ImportCategoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblName.text = "\(categories[indexPath.row].id)" + ", \(categories[indexPath.row].name)"
-            cell.lblDescription.text = "Desc: \(categories[indexPath.row].categoryDescription)"
+            cell.lblName.text = "\(categories[indexPath.row].id!)" + ", \(categories[indexPath.row].name!)"
+            cell.lblDescription.text = categories[indexPath.row].categoryDescription
 //            cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "\(categories[indexPath.row].id). \(categories[indexPath.row].name), Desc: \(categories[indexPath.row].categoryDescription)"
-        cell.backgroundColor = UIColor.clearColor()
-        cell.textLabel?.textColor = UIColor.whiteColor()
+//        cell.textLabel?.text = "\(categories[indexPath.row].id). \(categories[indexPath.row].name), Desc: \(categories[indexPath.row].categoryDescription)"
+//        cell.backgroundColor = UIColor.clearColor()
+//        cell.textLabel?.textColor = UIColor.whiteColor()
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

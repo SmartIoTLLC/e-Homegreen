@@ -297,6 +297,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBAction func importCategory(sender: AnyObject) {
         if let navVC = UIStoryboard(name: "Settings", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ImportCategory") as? UINavigationController{
             if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController{
+                importCategoryViewController.location = location
                 self.presentViewController(navVC, animated: true, completion: nil)
             }
         }
