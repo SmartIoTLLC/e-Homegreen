@@ -780,7 +780,7 @@ class IncomingHandler: NSObject {
                 if doesIdExist {
                 } else {
                     let zone = Zone(context: appDel.managedObjectContext!)
-                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location)
+                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)))
                     saveChanges()
                 }
                 let data = ["zoneId":Int(id)]

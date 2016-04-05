@@ -331,9 +331,9 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 if zoneJSON.id == 254 || zoneJSON.id == 255 {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), location)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), location, zoneJSON.id)
                 } else {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id)
                 }
                 saveChanges()
             }
@@ -347,11 +347,8 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     func updateZoneList () {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let sortDescriptorOne = NSSortDescriptor(key: "location.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "name", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "level", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorTwo]
         let predicate = NSPredicate(format: "location == %@", location!)
         fetchRequest.predicate = predicate
         do {
@@ -464,10 +461,7 @@ extension ImportZoneViewController: UITableViewDataSource {
             cell.backgroundColor = UIColor.clearColor()
             cell.lblName.text = "\(zones[indexPath.row].id!). \(zones[indexPath.row].name!)"
             cell.lblLevel.text = "Level: \(zones[indexPath.row].level!)"
-//            cell.lblDescription.text = "Desc: \(zones[indexPath.row].zoneDescription)"
-//            cell.lblLevel.text = ""
             cell.lblDescription.text = ""
-//            cell.switchVisible.on = zones[indexPath.row].isVisible.boolValue
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
             cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)

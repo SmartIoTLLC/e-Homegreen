@@ -286,7 +286,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                             gateway.turnedOn = true
                             gateway.autoReconnectDelay = NSNumber(integer: 3)
                             gateway.location = location
-                            createZonesAndCategories(gateway)
                             saveChanges()
                             self.dismissViewControllerAnimated(true, completion: nil)
                             delegate?.add_editGatewayFinished()
@@ -310,31 +309,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             }
         }
     }
-    func createZonesAndCategories(gateway:Gateway) {
-//        if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
-//            for zoneJSON in zonesJSON {
-//                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-//                if zoneJSON.id == 254 || zoneJSON.id == 255 {
-//                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), gateway)
-//                } else {
-//                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.gateway) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), gateway)
-//                }
-//                saveChanges()
-//                
-//            }
-//        }
-//        if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
-//            for categoryJSON in categoriesJSON {
-//                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-//                if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-//                    (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), gateway)
-//                } else {
-//                    (category.id, category.name, category.categoryDescription, category.isVisible, category.gateway) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), gateway)
-//                }
-//                saveChanges()
-//            }
-//        }
-    }
+
     var appDel:AppDelegate!
     var error:NSError? = nil
 

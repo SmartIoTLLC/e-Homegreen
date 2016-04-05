@@ -27,6 +27,8 @@
 		223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */; };
 		223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878A21C919A70001357E0 /* AddLocationXIB.swift */; };
 		223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223878A31C919A70001357E0 /* AddLocationXIB.xib */; };
+		223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */; };
+		223887121CB3F6A3003864B8 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223887101CB3F6A3003864B8 /* Zone.swift */; };
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
@@ -220,8 +222,6 @@
 		E7AA260D1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */; };
 		E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */; };
 		E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */; };
-		E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */; };
-		E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA26111BCD116800D5C3F0 /* Zone.swift */; };
 		E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */; };
 		E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */; };
 		E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */; };
@@ -315,6 +315,8 @@
 		2238789F1C917A96001357E0 /* AddVideo_AppXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddVideo_AppXIB.xib; sourceTree = "<group>"; };
 		223878A21C919A70001357E0 /* AddLocationXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationXIB.swift; sourceTree = "<group>"; };
 		223878A31C919A70001357E0 /* AddLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationXIB.xib; sourceTree = "<group>"; };
+		2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		223887101CB3F6A3003864B8 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -525,8 +527,6 @@
 		E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IBeaconSettingsVC.xib; sourceTree = "<group>"; };
 		E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IBeacon+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBeacon.swift; sourceTree = "<group>"; };
-		E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		E7AA26111BCD116800D5C3F0 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		E7AAF7681BBEA34000992A18 /* CameraParametarXIBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraParametarXIBViewController.swift; sourceTree = "<group>"; };
 		E7AAF7691BBEA34000992A18 /* CameraParametarXIBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraParametarXIBViewController.xib; sourceTree = "<group>"; };
 		E7C9CDFC1BC28D60007D8FE8 /* CustomTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
@@ -1005,6 +1005,8 @@
 				7372EB281BC410800097806D /* Flag.swift */,
 				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
 				7372EB2C1BC410800097806D /* Category.swift */,
+				2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */,
+				223887101CB3F6A3003864B8 /* Zone.swift */,
 				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
 				7372EB2E1BC410800097806D /* Event.swift */,
 				7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */,
@@ -1013,8 +1015,6 @@
 				7372EB321BC410800097806D /* Sequence.swift */,
 				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
 				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
-				E7AA26101BCD116800D5C3F0 /* Zone+CoreDataProperties.swift */,
-				E7AA26111BCD116800D5C3F0 /* Zone.swift */,
 				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
 				730E90C01C6A1BF400B1D50D /* Image.swift */,
 				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
@@ -1733,7 +1733,6 @@
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
-				E7AA26141BCD116800D5C3F0 /* Zone+CoreDataProperties.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
@@ -1798,7 +1797,6 @@
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
-				E7AA26151BCD116800D5C3F0 /* Zone.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */,
@@ -1816,9 +1814,11 @@
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */,
+				223887121CB3F6A3003864B8 /* Zone.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
+				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
