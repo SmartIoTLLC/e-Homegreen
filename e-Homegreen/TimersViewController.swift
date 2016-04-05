@@ -19,6 +19,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     var senderButton:UIButton?
     var sidebarMenuOpen : Bool!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -32,7 +33,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        updateTimersList()
+//        updateTimersList()
         timersCollectionView.reloadData()
     }
     
@@ -54,6 +55,16 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateTimersList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateTimersList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -71,17 +82,17 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        refreshTimerList()
+        
         // Do any additional setup after loading the view.
     }
     func refreshTimerList() {
-        updateTimersList()
+//        updateTimersList()
         timersCollectionView.reloadData()
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         pullDown.drawMenu(filterParametar)
-        updateTimersList()
+//        updateTimersList()
         timersCollectionView.reloadData()
     }
     override func viewDidAppear(animated: Bool) {
@@ -175,7 +186,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         textField.resignFirstResponder()
         return true
     }
-    func updateTimersList () {
+    func updateTimersList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Timer")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
@@ -183,6 +194,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)

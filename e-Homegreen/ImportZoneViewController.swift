@@ -18,6 +18,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var importZoneTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,16 +40,20 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         removeObservers()
         addObservers()
     }
+    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
+    
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "zoneReceivedFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
     }
+    
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "zoneReceivedFromGateway:", object: nil)
     }
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
@@ -161,6 +166,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         txtFrom.text = ""
         txtTo.text = ""
     }
+    
     // MARK: Service for scanning zone
     func checkIfGatewayDidGetZones (timer:NSTimer) {
         if let zoneId = timer.userInfo as? Int {
@@ -201,6 +207,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             }
         }
     }
+    
     //MARK: Zone received from gateway
     func zoneReceivedFromGateway (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
@@ -236,6 +243,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             }
         }
     }
+    
     // MARK: Controlling progress bar
     func setProgressBarParametarsForScanningZones(id zoneId:Int) {
         var index:Int = zoneId
@@ -245,13 +253,13 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
         pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
+    
     // MARK: Error handling for Zones
     func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
             let percent = Float(1)/Float(count)
             return SearchParametars(from: 1, to: 255, count: count, initialPercentage: percent)
-//            throw InputError.SpecifyRange
         }
         guard let from = Int(from), let to = Int(to) else {
             throw InputError.NotConvertibleToInt
@@ -285,6 +293,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             // ...
         }
     }
+    
     // MARK: Dismiss zone scanning
     func dismissScaningControls() {
         timesRepeatedCounter = 0
@@ -395,7 +404,9 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             }
         }
     }
+    
     var choosedIndex = -1
+    
     func saveText(text: String, id: Int) {
         if choosedIndex != -1 && text != "No iBeacon" {
             beacon = returniBeaconWithName(text)
@@ -408,7 +419,9 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             importZoneTableView.reloadData()
         }
     }
+    
     var beacon:IBeacon?
+    
     func returniBeaconWithName(name:String) -> IBeacon? {
         let fetchRequest = NSFetchRequest(entityName: "IBeacon")
         let predicate = NSPredicate(format: "name == %@", name)
@@ -422,6 +435,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         return nil
     }
 }
+
 extension ImportZoneViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -429,9 +443,9 @@ extension ImportZoneViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        if zones[indexPath.row].id as Int == 255 || zones[indexPath.row].id as Int == 254{
-//            return false
-//        }
+        if zones[indexPath.row].id as! Int == 255 || zones[indexPath.row].id as! Int == 254{
+            return false
+        }
         return true
     }
     
@@ -443,6 +457,7 @@ extension ImportZoneViewController: UITableViewDelegate {
          }
     }
 }
+
 extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
@@ -476,6 +491,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         return zones.count
     }
 }
+
 class ImportZoneTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lblName: UILabel!

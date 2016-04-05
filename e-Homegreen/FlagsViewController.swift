@@ -22,6 +22,8 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "FlagCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -32,7 +34,7 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-        updateFlagsList()
+//        updateFlagsList()
         flagsCollectionView.reloadData()
     }
     
@@ -54,6 +56,16 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateFlagsList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateFlagsList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -71,17 +83,17 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-        refreshFlagList()
+        
         // Do any additional setup after loading the view.
     }
     func refreshFlagList() {
-        updateFlagsList()
+//        updateFlagsList()
         flagsCollectionView.reloadData()
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         pullDown.drawMenu(filterParametar)
-        updateFlagsList()
+//        updateFlagsList()
         flagsCollectionView.reloadData()
     }
     override func viewDidAppear(animated: Bool) {
@@ -165,7 +177,7 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         textField.resignFirstResponder()
         return true
     }
-    func updateFlagsList () {
+    func updateFlagsList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Flag")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
@@ -173,6 +185,8 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+        
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)

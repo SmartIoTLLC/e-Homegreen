@@ -25,6 +25,8 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -33,7 +35,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Events)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
-        updateEventsList()
+//        updateEventsList()
         eventCollectionView.reloadData()
     }
     
@@ -55,6 +57,16 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateEventsList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateEventsList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -69,23 +81,23 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
 //        }
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
-        updateEventsList()
+        
         // Do any additional setup after loading the view.
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
         pullDown.drawMenu(filterParametar)
-        updateEventsList()
+//        updateEventsList()
         eventCollectionView.reloadData()
     }
     func refreshEventsList() {
-        updateEventsList()
+//        updateEventsList()
         eventCollectionView.reloadData()
     }
     override func viewDidAppear(animated: Bool) {
         refreshLocalParametars()
         addObservers()
-        updateEventsList()
+//        updateEventsList()
     }
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
@@ -159,7 +171,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    func updateEventsList () {
+    func updateEventsList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Event")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
@@ -167,6 +179,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)

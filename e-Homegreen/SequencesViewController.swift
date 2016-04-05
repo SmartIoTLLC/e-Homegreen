@@ -26,6 +26,8 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -34,7 +36,7 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-        updateSequencesList()
+//        updateSequencesList()
         sequenceCollectionView.reloadData()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -62,6 +64,16 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateSequencesList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateSequencesList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -79,17 +91,17 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
 
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-        updateSequencesList()
+        
         // Do any additional setup after loading the view.
     }
     func refreshSequenceList() {
-        updateSequencesList()
+//        updateSequencesList()
         sequenceCollectionView.reloadData()
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
         pullDown.drawMenu(filterParametar)
-        updateSequencesList()
+//        updateSequencesList()
         sequenceCollectionView.reloadData()
     }
     override func viewDidAppear(animated: Bool) {
@@ -168,7 +180,7 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
         textField.resignFirstResponder()
         return true
     }
-    func updateSequencesList () {
+    func updateSequencesList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Sequence")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
@@ -176,6 +188,7 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)

@@ -31,6 +31,7 @@ class ScanFunction {
     var gateway:Gateway
     let scanWhat:ScanEntity
     let gatewayAddress:[Byte]
+    
     init(from:Int, to:Int, gateway:Gateway, scanForWhat:WhatToScan) {
         self.from = from
         self.to = to

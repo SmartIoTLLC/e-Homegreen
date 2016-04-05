@@ -239,6 +239,7 @@
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderId" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="zoneDescription" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="iBeacon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IBeacon" inverseName="iBeaconZone" inverseEntity="IBeacon" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="zones" inverseEntity="Location" syncable="YES"/>
@@ -261,6 +262,6 @@
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="43"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="43"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="135"/>
-        <element name="Zone" positionX="-459" positionY="-1510" width="128" height="150"/>
+        <element name="Zone" positionX="-459" positionY="-1510" width="128" height="165"/>
     </elements>
 </model>

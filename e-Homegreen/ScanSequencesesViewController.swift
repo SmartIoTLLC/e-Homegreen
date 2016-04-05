@@ -202,7 +202,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
@@ -219,7 +219,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
@@ -236,7 +236,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnZoneAction(sender: AnyObject) {
-        popoverVC = storyboard?.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self

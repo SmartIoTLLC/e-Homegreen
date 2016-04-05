@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DevicesViewController.swift"
-            timestampString = "481468700.548038"
+            filePath = "e-Homegreen/ImportZoneViewController.swift"
+            timestampString = "481553891.355215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
-            landmarkName = "longTouch(_:)"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "btnScanZones(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DevicesViewController.swift"
-            timestampString = "481471003.433286"
+            filePath = "e-Homegreen/ImportZoneViewController.swift"
+            timestampString = "481553897.526621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
-            landmarkName = "cellParametarLongPress(_:)"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "btnScanZones(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "481472037.065165"
+            filePath = "e-Homegreen/Function.swift"
+            timestampString = "481553929.229877"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
-            landmarkName = "btnLevel(_:)"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
+            landmarkName = "getZone(_:id:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "481472081.518699"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481553937.813453"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
-            landmarkName = "btnLevel(_:)"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "481472199.117806"
+            filePath = "e-Homegreen/InOutSocket.swift"
+            timestampString = "481554002.728743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "btnAdd(_:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "udpSocket(_:didReceiveData:fromAddress:withFilterContext:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "481472205.184077"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554077.353085"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
-            landmarkName = "btnAdd(_:)"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,60 +105,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481474977.493757"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554092.721881"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "saveAction(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475034.481081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.EditCategoryViewController.saveAction (Swift.AnyObject) -&gt; ()"
+                  symbolName = "static e_Homegreen.SendingHandler.sendCommand (byteArray : Swift.Array&lt;Swift.UInt8&gt;, gateway : e_Homegreen.Gateway) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/EditCategoryViewController.swift"
-                  timestampString = "481476013.41532"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/SendingHandler.swift"
+                  timestampString = "481554092.726953"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "130"
-                  endingLineNumber = "130"
-                  offsetFromSymbolStart = "1265">
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "1484">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.EditCategoryViewController.saveAction (Swift.AnyObject) -&gt; ()"
+                  symbolName = "static e_Homegreen.SendingHandler.sendCommand (byteArray : Swift.Array&lt;Swift.UInt8&gt;, gateway : e_Homegreen.Gateway) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/EditCategoryViewController.swift"
-                  timestampString = "481476013.41555"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/SendingHandler.swift"
+                  timestampString = "481554092.727133"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "130"
-                  endingLineNumber = "130"
-                  offsetFromSymbolStart = "1316">
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "1812">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -169,13 +153,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475040.621866"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554094.047701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475044.33283"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554095.544474"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -201,13 +185,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475046.683457"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554117.447206"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -217,13 +201,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475090.984764"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554126.617791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
-            landmarkName = "fetchCategory(_:location:)"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -233,13 +217,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475096.194634"
+            filePath = "e-Homegreen/InOutSocket.swift"
+            timestampString = "481554137.039068"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "fetchCategory(_:location:)"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "sendByte(_:arrayByte:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,13 +233,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475097.14883"
+            filePath = "e-Homegreen/InOutSocket.swift"
+            timestampString = "481554206.653035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "fetchCategory(_:location:)"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "sendByte(_:arrayByte:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -265,13 +249,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475106.652138"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554273.585901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "fetchCategory(_:location:)"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -281,13 +265,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475190.623631"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554361.264016"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -297,13 +281,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475194.558347"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554386.762615"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "sendCommand(byteArray:gateway:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static e_Homegreen.SendingHandler.sendCommand (byteArray : Swift.Array&lt;Swift.UInt8&gt;, gateway : e_Homegreen.Gateway) -&gt; ()"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/SendingHandler.swift"
+                  timestampString = "481554386.768281"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "1824">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static e_Homegreen.SendingHandler.(sendCommand (byteArray : Swift.Array&lt;Swift.UInt8&gt;, gateway : e_Homegreen.Gateway) -&gt; ()).(closure #1)"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/SendingHandler.swift"
+                  timestampString = "481554386.768456"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554397.063167"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -313,13 +345,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/EditCategoryViewController.swift"
-            timestampString = "481475198.175986"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554397.831093"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "saveAction(_:)"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "sendCommand(byteArray:gateway:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/SendingHandler.swift"
+            timestampString = "481554411.798495"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "sendCommand(byteArray:gateway:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

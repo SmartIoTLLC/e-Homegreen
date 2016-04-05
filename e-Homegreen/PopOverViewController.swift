@@ -115,7 +115,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinct = NSSet(array: results.map { String($0.name!) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
                     tableList.append(TableList(name: item, id: 3))
@@ -130,14 +130,14 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
-            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+//            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             let predicateThree = NSPredicate(format: "location == %@", location)
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateTwo, predicateThree])
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinct = NSSet(array: results.map { String($0.name!) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
                     tableList.append(TableList(name: item, id: 2))
@@ -158,7 +158,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
+                let distinct = NSSet(array: results.map { String($0.name!) }).allObjects as! [String]
                 let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
                 for item in distinctSorted {
                     tableList.append(TableList(name: item, id: 4))
@@ -503,7 +503,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
         return cell
     }
     

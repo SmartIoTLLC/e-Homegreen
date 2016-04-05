@@ -19,7 +19,7 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     private let reuseIdentifier = "SceneCell"
     var pullDown = PullDownView()
     
-//    var table:UITableView = UITableView()
+    let prefs = NSUserDefaults.standardUserDefaults()
     
     var appDel:AppDelegate!
     var scenes:[Scene] = []
@@ -37,7 +37,7 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
-        updateSceneList()
+//        updateSceneList()
         scenesCollectionView.reloadData()
     }
     
@@ -59,6 +59,16 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                updateSceneList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                updateSceneList(user)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -79,17 +89,17 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
-        updateSceneList()
+//        updateSceneList()
         // Do any additional setup after loading the view.
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
         pullDown.drawMenu(filterParametar)
-        updateSceneList()
+//        updateSceneList()
         scenesCollectionView.reloadData()
     }
     func refreshSceneList() {
-        updateSceneList()
+//        updateSceneList()
         scenesCollectionView.reloadData()
     }
     override func viewDidAppear(animated: Bool) {
@@ -108,14 +118,16 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshScene, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
-    func updateSceneList () {
+    func updateSceneList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Scene")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
         var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
@@ -133,6 +145,7 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        
         fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
