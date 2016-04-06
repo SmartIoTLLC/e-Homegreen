@@ -5,6 +5,7 @@
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderId" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="categories" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Device" representedClassName="e_Homegreen.Device" syncable="YES">
@@ -100,14 +101,14 @@
         <attribute name="remotePort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
-        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
-        <relationship name="flags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
+        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
+        <relationship name="flags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="gateways" inverseEntity="Location" syncable="YES"/>
-        <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
-        <relationship name="security" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Security" inverseName="gateway" inverseEntity="Security" syncable="YES"/>
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Timer" inverseName="gateway" inverseEntity="Timer" syncable="YES"/>
+        <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
+        <relationship name="security" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Security" inverseName="gateway" inverseEntity="Security" syncable="YES"/>
+        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Timer" inverseName="gateway" inverseEntity="Timer" syncable="YES"/>
     </entity>
     <entity name="IBeacon" representedClassName=".IBeacon" syncable="YES">
         <attribute name="major" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -126,13 +127,13 @@
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="radius" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
-        <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
+        <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
         <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
-        <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
-        <relationship name="timer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Timer" inverseName="location" inverseEntity="Timer" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="locations" inverseEntity="User" syncable="YES"/>
-        <relationship name="zones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Zone" inverseName="location" inverseEntity="Zone" syncable="YES"/>
+        <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
+        <relationship name="timer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Timer" inverseName="location" inverseEntity="Timer" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="User" inverseName="locations" inverseEntity="User" syncable="YES"/>
+        <relationship name="zones" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Zone" inverseName="location" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="PCCommand" representedClassName=".PCCommand" syncable="YES">
         <attribute name="comand" optional="YES" attributeType="String" syncable="YES"/>
@@ -245,7 +246,7 @@
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="zones" inverseEntity="Location" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Category" positionX="-461" positionY="-1591" width="128" height="120"/>
+        <element name="Category" positionX="-461" positionY="-1591" width="128" height="135"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="690"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>

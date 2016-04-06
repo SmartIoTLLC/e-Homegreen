@@ -18,6 +18,8 @@
 		22359C6A1CAE98290054434B /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22359C691CAE98290054434B /* LocationCell.swift */; };
 		223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */; };
 		223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */; };
+		223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */; };
+		2236871A1CB51834005ACDE4 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223687181CB51834005ACDE4 /* Category.swift */; };
 		223690C41CAD005E0037B54A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223690C31CAD005E0037B54A /* Login.storyboard */; };
 		223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C61CAD022A0037B54A /* LogInViewController.swift */; };
 		223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C81CAD02530037B54A /* CreateAdminViewController.swift */; };
@@ -98,8 +100,6 @@
 		7372EB361BC410800097806D /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB261BC410800097806D /* Scene.swift */; };
 		7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */; };
 		7372EB381BC410800097806D /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB281BC410800097806D /* Flag.swift */; };
-		7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */; };
-		7372EB3C1BC410800097806D /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2C1BC410800097806D /* Category.swift */; };
 		7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */; };
 		7372EB3E1BC410800097806D /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2E1BC410800097806D /* Event.swift */; };
 		7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */; };
@@ -308,6 +308,8 @@
 		22359C691CAE98290054434B /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertGatewayAddressXIB.swift; sourceTree = "<group>"; };
 		223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InsertGatewayAddressXIB.xib; sourceTree = "<group>"; };
+		223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		223687181CB51834005ACDE4 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		223690C31CAD005E0037B54A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		223690C61CAD022A0037B54A /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		223690C81CAD02530037B54A /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
@@ -390,8 +392,6 @@
 		7372EB261BC410800097806D /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Flag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB281BC410800097806D /* Flag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flag.swift; sourceTree = "<group>"; };
-		7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		7372EB2C1BC410800097806D /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB2E1BC410800097806D /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gateway+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -999,6 +999,8 @@
 				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
 				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
 				730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */,
+				223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */,
+				223687181CB51834005ACDE4 /* Category.swift */,
 				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
 				738DECAB1BBBEA6300D6B834 /* Security.swift */,
 				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
@@ -1007,8 +1009,6 @@
 				7372EB261BC410800097806D /* Scene.swift */,
 				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
 				7372EB281BC410800097806D /* Flag.swift */,
-				7372EB2B1BC410800097806D /* Category+CoreDataProperties.swift */,
-				7372EB2C1BC410800097806D /* Category.swift */,
 				2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */,
 				223887101CB3F6A3003864B8 /* Zone.swift */,
 				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
@@ -1765,7 +1765,6 @@
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
-				7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
@@ -1787,6 +1786,7 @@
 				22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* LocationsViewController.swift in Sources */,
+				2236871A1CB51834005ACDE4 /* Category.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				73556C821BB02C6600428375 /* File.swift in Sources */,
@@ -1826,6 +1826,7 @@
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
+				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
@@ -1846,7 +1847,6 @@
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
-				7372EB3C1BC410800097806D /* Category.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
 				22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */,

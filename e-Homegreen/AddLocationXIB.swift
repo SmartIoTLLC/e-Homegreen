@@ -150,9 +150,9 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             for categoryJSON in categoriesJSON {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                 if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), location)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), location, categoryJSON.id)
                 } else {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id)
                 }
                 saveChanges()
             }
