@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -137,10 +137,26 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     
     
     @IBAction func btnScanZones(sender: AnyObject) {
+        showAddAddress().delegate = self
+    }
+    
+    func addAddressFinished(address: Address) {
         do {
-            // This guard statement is just for test scanning with first available gateway
-            // FIXME: Gateway should be picked from location level, not to pick first gateway randomly like now!
-            guard let gateway = location!.gateways?.allObjects[0] as? Gateway else {
+            
+            var gatewayForScan:Gateway?
+            
+            if let location = location{
+                if let gateways = location.gateways?.allObjects as? [Gateway]{
+                    for gate in gateways{
+                        if gate.addressOne == address.firstByte && gate.addressTwo == address.secondByte && gate.addressThree == address.thirdByte{
+                            gatewayForScan = gate
+                        }
+                    }
+                }
+            }
+            
+            guard let gateway = gatewayForScan else {
+                self.view.makeToast(message: "No gateway with address")
                 return
             }
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
@@ -161,6 +177,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             alertController("Error", message: "Something went wrong.")
         }
     }
+
     
     @IBAction func btnClearFields(sender: AnyObject) {
         txtFrom.text = ""

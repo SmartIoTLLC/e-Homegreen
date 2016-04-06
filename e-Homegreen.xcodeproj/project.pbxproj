@@ -16,6 +16,8 @@
 		223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */; };
 		223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223362961CA2E624006C80C4 /* UsersViewController.swift */; };
 		22359C6A1CAE98290054434B /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22359C691CAE98290054434B /* LocationCell.swift */; };
+		223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */; };
+		223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */; };
 		223690C41CAD005E0037B54A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223690C31CAD005E0037B54A /* Login.storyboard */; };
 		223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C61CAD022A0037B54A /* LogInViewController.swift */; };
 		223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C81CAD02530037B54A /* CreateAdminViewController.swift */; };
@@ -304,6 +306,8 @@
 		223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectManagerViewController.swift; sourceTree = "<group>"; };
 		223362961CA2E624006C80C4 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		22359C691CAE98290054434B /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
+		223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertGatewayAddressXIB.swift; sourceTree = "<group>"; };
+		223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InsertGatewayAddressXIB.xib; sourceTree = "<group>"; };
 		223690C31CAD005E0037B54A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		223690C61CAD022A0037B54A /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		223690C81CAD02530037B54A /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
@@ -1415,6 +1419,8 @@
 				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
 				223878A21C919A70001357E0 /* AddLocationXIB.swift */,
 				223878A31C919A70001357E0 /* AddLocationXIB.xib */,
+				223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */,
+				223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */,
 			);
 			name = SettingsXIB;
 			sourceTree = "<group>";
@@ -1600,6 +1606,7 @@
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
 				731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
+				223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
@@ -1756,6 +1763,7 @@
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
+				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				7372EB3B1BC410800097806D /* Category+CoreDataProperties.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,

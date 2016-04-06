@@ -128,12 +128,6 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func fetchZones(id:Int, location:Location) -> [Zone]? {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
