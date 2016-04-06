@@ -21,32 +21,30 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     @IBOutlet weak var backView: UIView!
     
-    @IBOutlet weak var addressFirst: UITextField!
-    @IBOutlet weak var addressSecond: UITextField!
-    @IBOutlet weak var addressThird: UITextField!
+    @IBOutlet weak var addressFirst: EditTextField!
+    @IBOutlet weak var addressSecond: EditTextField!
+    @IBOutlet weak var addressThird: EditTextField!
     
-    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var name: EditTextField!
     
     @IBOutlet weak var txtDescription: UITextView!
 
-    @IBOutlet weak var ipHost: UITextField!
-    @IBOutlet weak var port: UITextField!
-    @IBOutlet weak var localIP: UITextField!
-    @IBOutlet weak var localPort: UITextField!
-    @IBOutlet weak var localSSID: UITextField!
+    @IBOutlet weak var ipHost: EditTextField!
+    @IBOutlet weak var port: EditTextField!
+    @IBOutlet weak var localIP: EditTextField!
+    @IBOutlet weak var localPort: EditTextField!
     
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
     var location:Location?
     var gateway:Gateway?
-    
 
     @IBOutlet weak var centarY: NSLayoutConstraint!
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var txtAutoReconnectDelay: UITextField!
+    @IBOutlet weak var txtAutoReconnectDelay: EditTextField!
     
     init(gateway:Gateway?, location:Location?){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
@@ -74,6 +72,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     func endEditingNow(){
         port.resignFirstResponder()
         localPort.resignFirstResponder()
+        txtAutoReconnectDelay.resignFirstResponder()
         centarY.constant = 0
     }
     
@@ -82,103 +81,52 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
         let keyboardDoneButtonView = UIToolbar()
         keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ConnectionSettingsVC.endEditingNow) )
         let toolbarButtons = [item]
         
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
         port.inputAccessoryView = keyboardDoneButtonView
         localPort.inputAccessoryView = keyboardDoneButtonView
-        
+        txtAutoReconnectDelay.inputAccessoryView = keyboardDoneButtonView
+
         print(UIDevice.currentDevice().SSID)
         
         if UIScreen.mainScreen().scale > 2.5{
-            addressFirst.layer.borderWidth = 1
-            addressSecond.layer.borderWidth = 1
-            addressThird.layer.borderWidth = 1
             txtDescription.layer.borderWidth = 1
-            name.layer.borderWidth = 1
-            ipHost.layer.borderWidth = 1
-            port.layer.borderWidth = 1
-            localIP.layer.borderWidth = 1
-            localPort.layer.borderWidth = 1
-            localSSID.layer.borderWidth = 1
         }else{
-            addressFirst.layer.borderWidth = 0.5
-            addressSecond.layer.borderWidth = 0.5
-            addressThird.layer.borderWidth = 0.5
             txtDescription.layer.borderWidth = 0.5
-            name.layer.borderWidth = 0.5
-            ipHost.layer.borderWidth = 0.5
-            port.layer.borderWidth = 0.5
-            localIP.layer.borderWidth = 0.5
-            localPort.layer.borderWidth = 0.5
-            localSSID.layer.borderWidth = 0.5
         }
-        addressFirst.layer.cornerRadius = 2
-        addressSecond.layer.cornerRadius = 2
-        addressThird.layer.cornerRadius = 2
-        name.layer.cornerRadius = 2
-        ipHost.layer.cornerRadius = 2
-        port.layer.cornerRadius = 2
-        localIP.layer.cornerRadius = 2
-        localPort.layer.cornerRadius = 2
-        localSSID.layer.cornerRadius = 2
-        addressFirst.layer.borderColor = UIColor.lightGrayColor().CGColor
         txtDescription.layer.borderColor = UIColor.lightGrayColor().CGColor
-        addressSecond.layer.borderColor = UIColor.lightGrayColor().CGColor
-        addressThird.layer.borderColor = UIColor.lightGrayColor().CGColor
-        name.layer.borderColor = UIColor.lightGrayColor().CGColor
-        ipHost.layer.borderColor = UIColor.lightGrayColor().CGColor
-        port.layer.borderColor = UIColor.lightGrayColor().CGColor
-        localIP.layer.borderColor = UIColor.lightGrayColor().CGColor
-        localPort.layer.borderColor = UIColor.lightGrayColor().CGColor
-        localSSID.layer.borderColor = UIColor.lightGrayColor().CGColor
-        ipHost.attributedPlaceholder = NSAttributedString(string:"IP/Host",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        port.attributedPlaceholder = NSAttributedString(string:"Port",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        localIP.attributedPlaceholder = NSAttributedString(string:"IP/Host",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        localPort.attributedPlaceholder = NSAttributedString(string:"Port",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        localSSID.attributedPlaceholder = NSAttributedString(string:"SSID",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        addressFirst.attributedPlaceholder = NSAttributedString(string:"Add",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        addressSecond.attributedPlaceholder = NSAttributedString(string:"Add",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        name.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
-        let gradient:CAGradientLayer = CAGradientLayer()
-        gradient.frame = backView.bounds
-        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        backView.layer.insertSublayer(gradient, atIndex: 0)
-        backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        backView.layer.cornerRadius = 10
-        backView.clipsToBounds = true
+//        let gradient:CAGradientLayer = CAGradientLayer()
+//        gradient.frame = backView.bounds
+//        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
+//        backView.layer.insertSublayer(gradient, atIndex: 0)
+//        backView.layer.borderWidth = 1
+//        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
+//        backView.layer.cornerRadius = 10
+//        backView.clipsToBounds = true
         
         ipHost.delegate = self
         port.delegate = self
         localIP.delegate = self
         localPort.delegate = self
-        localSSID.delegate = self
         addressFirst.delegate = self
         addressSecond.delegate = self
         addressThird.delegate = self
         name.delegate = self
         txtDescription.delegate = self
+        txtAutoReconnectDelay.delegate = self
         
         name.enabled = false
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
 
         // Do any additional setup after loading the view.
         
@@ -204,7 +152,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             txtDescription.text = "G-ADP-01"
             localIP.text = "192.168.0.181"
             localPort.text = "5101"
-            localSSID.text = ""
             ipHost.text = "192.168.0.181"
             port.text = "5101"
         }
@@ -257,7 +204,10 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     }
 
     @IBAction func save(sender: AnyObject) {
-        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || localSSID.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" {
+        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" || txtAutoReconnectDelay.text == "" {
+            
+            UIView.hr_setToastThemeColor(color: UIColor.redColor())
+            self.view.makeToast(message: "Please fill all text fields")
             
         } else {
             if let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
@@ -368,13 +318,15 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         if localPort.isFirstResponder(){
             if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if localSSID.isFirstResponder(){
-            if backView.frame.origin.y + localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localSSID.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+        
+        if txtAutoReconnectDelay.isFirstResponder(){
+            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
