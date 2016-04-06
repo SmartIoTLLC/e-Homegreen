@@ -80,7 +80,7 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
         idTextField.delegate = self
         
         if  let category = category{
-            idTextField.text = "\(category.id)"
+            idTextField.text = "\(category.id!)"
             nameTextField.text = category.name
             descriptionTextField.text = category.categoryDescription
             idTextField.enabled = false
@@ -143,6 +143,7 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
                                 categoryNew.categoryDescription = desc
                             }
                             categoryNew.location = location
+                            categoryNew.orderId = idValid
                         }
                     }
                 }else if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{

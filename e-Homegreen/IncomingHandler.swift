@@ -169,7 +169,7 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x11 && self.byteArray[7] == 0x00 {
                     self.getZone(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
+                if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
                     self.getCategories(self.byteArray)
                 }
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
@@ -789,25 +789,28 @@ class IncomingHandler: NSObject {
         }
     }
     func getCategories(byteArray:[Byte]) {
-//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
-//            var name:String = ""
-//            for var j = 11; j < 11+Int(byteArray[10]); j++ {
-//                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-//            }
-//            let id = byteArray[8]
-//            var description = ""
-//            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-//                let number = 11+Int(byteArray[10])+2
-//                for var j = number; j < number+Int(byteArray[number-1]); j++ {
-//                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-//                }
-//            }
-//            let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-//            (category.id, category.name, category.categoryDescription) = (NSNumber(integer: Int(id)), name, description)
-//            saveChanges()
-//            let data = ["categoryId":Int(id)]
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
-//        }
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
+            var name:String = ""
+            for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+            }
+            let id = byteArray[8]
+            var description = ""
+            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+                let number = 11+Int(byteArray[10])+2
+                for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
+            }
+            if id > 20 {
+                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                (category.id, category.name, category.categoryDescription, category.location, category.orderId) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)))
+                saveChanges()
+            }
+            
+            let data = ["categoryId":Int(id)]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
+        }
     }
 }
 
