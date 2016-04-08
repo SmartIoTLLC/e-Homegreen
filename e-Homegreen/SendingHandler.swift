@@ -14,7 +14,7 @@ class SendingHandler {
         print("Poslata je komanda: \(byteArray) na: \(gateway)")
         let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)
+            
             if let ssid = UIDevice.currentDevice().SSID {
                 // Checks if ssid exists
                 var doesSSIDExist = false
@@ -55,7 +55,7 @@ class SendingHandler {
     static func sendCommand(byteArray byteArray:[UInt8], ip:String, port:UInt16) {
         print("Poslata je komanda: \(byteArray)")
         let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Gateway.DidSendData, object: self, userInfo: nil)
+       
         for inOutSocket in appDel.inOutSockets {
             if inOutSocket.port == UInt16(Int(port)) {
                 inOutSocket.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)

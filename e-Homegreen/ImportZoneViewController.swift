@@ -87,9 +87,18 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             
             My.cellSnapshot!.center = center
             
-            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
-// TODO:
-//                swap(&itemsArray[indexPath!.row], &itemsArray[Path.initialIndexPath!.row])
+            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {       
+                if let index = indexPath, let initial = Path.initialIndexPath {
+                    let pom = zones[index.row]
+                    zones[index.row] = zones[initial.row]
+                    zones[initial.row] = pom
+                    let id = zones[index.row].orderId
+                    zones[index.row].orderId = zones[initial.row].orderId
+                    zones[initial.row].orderId = id
+                    saveChanges()
+                    
+                }
+                
                 importZoneTableView.moveRowAtIndexPath(Path.initialIndexPath!, toIndexPath: indexPath!)
                 Path.initialIndexPath = indexPath
                 

@@ -223,13 +223,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         }
         return []
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        appDel.establishAllConnections()
-    }
-    override func viewDidDisappear(animated: Bool) {
-        appDel.establishAllConnections()
-    }
+
     override func viewWillAppear(animated: Bool) {
         gatewayTableView.reloadData()
         gatewayTableView.userInteractionEnabled = true

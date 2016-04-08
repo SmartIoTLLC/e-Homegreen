@@ -30,8 +30,16 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     
     var timer:NSTimer = NSTimer()
     
+    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
 //    var locationSearchText = ["", "", "", "", "", "", ""]
+    var userLogged:User?
+    
+    var panRecognizer:UIPanGestureRecognizer!
+    var panStartPoint:CGPoint?
+    var startingBottomConstraint:CGFloat?
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -53,10 +61,12 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
         if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
             if let user = DatabaseUserController.shared.getOtherUser(){
+                userLogged = user
                 updateDeviceList(user)
             }
         }else{
             if let user = DatabaseUserController.shared.getLoggedUser(){
+                userLogged = user
                 updateDeviceList(user)
             }
         }
@@ -85,6 +95,10 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
+        
+        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
+        panRecognizer.delegate = self
+        bottomView.addGestureRecognizer(panRecognizer)
     }
     
     @IBAction func fullScreen(sender: AnyObject) {
@@ -141,66 +155,54 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     var devices:[Device] = []
     var error:NSError? = nil
     var inte = 0
+    
     func fetchDevicesInBackground () {
         updateCells()
-    }
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-//        (locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName) = (gateway, level, zone, category, levelName, zoneName, categoryName)
-//        LocalSearchParametar.setLocalParametar("Devices", parametar: [locationSearch, levelSearch, zoneSearch, categorySearch, levelSearchName, zoneSearchName, categorySearchName])
-//        locationSearchText = LocalSearchParametar.getLocalParametar("Devices")
-//        updateDeviceList()
-//        deviceCollectionView.reloadData()
-//        fetchDevicesInBackground()
     }
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-//        updateDeviceList()
-        deviceCollectionView.reloadData()
-        fetchDevicesInBackground()
+        if let user = userLogged{
+            updateDeviceList(user)
+            deviceCollectionView.reloadData()
+            fetchDevicesInBackground()
+        }
+        
     }
     func updateDeviceList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Device")
+        
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-//        let sortDescriptorFour = NSSortDescriptor(key: "curtainGroupID", ascending: true)
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour,sortDescriptorFive]
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
-        let userPredicate = NSPredicate(format: "gateway.location.user == %@", user)
-        let predicateNull = NSPredicate(format: "categoryId != 0") // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
+        predicateArray.append(NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true)))
+        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+        
         // Filtering out PC devices
-        let predicateThree = NSPredicate(format: "type != %@", ControlType.PC)
-        var predicateArray:[NSPredicate] = [userPredicate, predicateNull, predicateOne, predicateTwo, predicateThree]
+        predicateArray.append(NSPredicate(format: "type != %@", ControlType.PC))
+        //filtering by parametars from filter
         if filterParametar.location != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-            predicateArray.append(locationPredicate)
+            predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
         }
         if filterParametar.levelId != 0 {
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId))
-//            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterParametar.levelName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
-            predicateArray.append(copmpoundPredicate)
+            predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId)))
         }
         if filterParametar.zoneId != 0 {
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
-//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterParametar.zoneName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
-            predicateArray.append(copmpoundPredicate)
+            predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId)))
         }
         if filterParametar.categoryId != 0 {
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
-//            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", filterParametar.categoryName)
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
-            predicateArray.append(copmpoundPredicate)
+            predicateArray.append(NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId)))
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate        
+        fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
             devices = fetResults!.map({$0})
@@ -210,7 +212,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
         }
     }
 
@@ -302,7 +303,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     func refreshDevice(sender:AnyObject) {
         if let button = sender as? UIButton {
-            print(button.highlighted)
 //            button.highlighted = !button.highlighted
             let tag = button.tag
             // Light
@@ -385,7 +385,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     func updateCells() {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
             for indexPath in indexPaths {
-                print(indexPath.row)
+                
                 if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                     cell.refreshDevice(devices[indexPath.row])
                     cell.setNeedsDisplay()
@@ -483,7 +483,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     func adjustScrollInsetsPullDownViewAndBackgroudImage() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
-        print(self.view.frame.size.width)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
 //            if self.view.frame.size.width == 480 { // iPhone 4, 4s
 //                let cellWidth = Int(self.view.frame.size.width/4 - 5)
@@ -713,7 +712,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     func changeSliderValueWithTag(tag:Int, withOldValue:Int) {
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-        print(devices[tag])
+
         deviceInControlMode = false
         //   Dimmer
         if devices[tag].controlType == ControlType.Dimmer {
@@ -838,4 +837,131 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
         }
     }
+    
+    func panView(gesture:UIPanGestureRecognizer){
+        
+        switch (gesture.state) {
+        case .Began:
+            self.panStartPoint = gesture.translationInView(self.bottomView)
+            self.startingBottomConstraint = self.bottomConstraint.constant
+            break
+        case .Changed:
+            let currentPoint = gesture.translationInView(self.bottomView)
+            let deltaX = currentPoint.y - self.panStartPoint!.y
+            var panningUp = false
+            if currentPoint.y < self.panStartPoint!.y {
+                panningUp = true
+            }
+
+            if self.startingBottomConstraint == -130 {
+                
+                if !panningUp{
+                    if deltaX == 0{
+                        self.resetConstraintContstants(true, endEditing: true)
+                    }
+                    
+                }else{
+                    let constant = deltaX
+                    if constant < -130 {
+                        self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+                    }else{
+                       self.bottomConstraint.constant = -130 - deltaX
+                    }
+                }
+            }else{
+                if !panningUp{
+                    if -deltaX > -130{
+                        self.bottomConstraint.constant = -deltaX
+                    }else{
+                        self.resetConstraintContstants(true, endEditing: true)
+                    }
+                }else{
+                    if deltaX <= 0{
+                        self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+                    }else{
+                        self.bottomConstraint.constant = -130 - deltaX
+                    }
+                }
+            }
+
+            break
+        case .Ended:
+            if self.startingBottomConstraint == -130 {
+                if bottomConstraint.constant >= -100{
+                    self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+                }else{
+                    self.resetConstraintContstants(true, endEditing: true)
+                }
+            }else{
+                if bottomConstraint.constant <= -30{
+                    self.resetConstraintContstants(true, endEditing: true)
+                }else{
+                    self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+                }
+            }
+
+            break
+        case .Cancelled:
+
+            if self.startingBottomConstraint == -130 {
+                self.resetConstraintContstants(true, endEditing: true)
+            } else {
+                self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+            }
+            break
+        default:
+            break
+        }
+        
+    }
+    
+    func resetConstraintContstants(animated:Bool, endEditing:Bool){
+        if self.startingBottomConstraint == -130 &&
+            self.bottomConstraint.constant == -130 {
+            return
+        }
+        self.bottomConstraint.constant = -130
+        
+        self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
+            self.bottomConstraint.constant = -130
+            
+            self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
+                self.startingBottomConstraint = self.bottomConstraint.constant
+            })
+        })
+    }
+    
+    func setConstraintsToShowBottomView(animated:Bool, notifyDelegate:Bool){
+        if self.startingBottomConstraint == 0 &&
+            self.bottomConstraint.constant == 0 {
+            return
+        }
+        
+        self.bottomConstraint.constant =  0
+        
+        self.updateConstraintsIfNeeded(animated) { (finished) -> Void in
+            self.bottomConstraint.constant = 0
+            
+            self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
+                self.startingBottomConstraint = self.bottomConstraint.constant
+            })
+        }
+        
+    }
+    
+    func updateConstraintsIfNeeded(animated:Bool, completion:(finished: Bool) -> Void){
+        var duration:Float = 0
+        if animated {
+            duration = 0.1
+        }
+        
+        UIView.animateWithDuration(NSTimeInterval(duration), delay: NSTimeInterval(0), options: UIViewAnimationOptions.CurveEaseOut, animations:{ self.bottomView.layoutIfNeeded() }, completion: {
+            success in
+            completion(finished: success)
+        })
+        
+    }
+
+    
+
 }

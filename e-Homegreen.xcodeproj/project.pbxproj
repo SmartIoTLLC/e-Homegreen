@@ -58,6 +58,8 @@
 		2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A32E1C9041CB0019C6FB /* PCControlCell.swift */; };
 		2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */; };
 		2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */; };
+		22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22506E8C1CB7DB37004EB47A /* ScenesCell.swift */; };
+		22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */; };
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -349,6 +351,8 @@
 		2249A32E1C9041CB0019C6FB /* PCControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlCell.swift; sourceTree = "<group>"; };
 		2249A3301C90693C0019C6FB /* PCControlInterfaceXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlInterfaceXIB.swift; sourceTree = "<group>"; };
 		2249A3311C90693C0019C6FB /* PCControlInterfaceXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlInterfaceXIB.xib; sourceTree = "<group>"; };
+		22506E8C1CB7DB37004EB47A /* ScenesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenesCell.swift; sourceTree = "<group>"; };
+		22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseScenesController.swift; sourceTree = "<group>"; };
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
@@ -655,6 +659,7 @@
 				E7AAF7631BBE87A600992A18 /* ScenesXIB */,
 				22495D141CAA75100034FC94 /* Scenes.storyboard */,
 				73DB849E1B30116D000DB4EB /* ScenesViewController.swift */,
+				22506E8C1CB7DB37004EB47A /* ScenesCell.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1087,6 +1092,7 @@
 			children = (
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
+				22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1778,6 +1784,7 @@
 				2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */,
 				73131ED31CA147C6008BC13E /* User+CoreDataProperties.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
+				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
 				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,
@@ -1861,6 +1868,7 @@
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
+				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,

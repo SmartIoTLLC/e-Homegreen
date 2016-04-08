@@ -14,6 +14,7 @@ import CoreData
     optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
     optional func pullDownSearchParametars (filterParametar: FilterItem)
 }
+
 enum FilterFields: Int {
     case Location = 0
     case Gateway = 1
@@ -54,6 +55,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
     
     var locationSearch:[String] = []
     //MARK: Creating a menu
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -103,6 +105,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         categoryLabel.text = "Category"
         categoryLabel.textColor = UIColor.whiteColor()
         self.addSubview(categoryLabel)
+        
         // Filters
         locationButton.titleLabel?.tintColor = UIColor.whiteColor()
         locationButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
@@ -360,6 +363,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         }
         return super.hitTest(point, withEvent: event)
     }
+    
     //MARK: Database handlers
     func returnLocationForName(locationName:String) -> Location? {
         let fetchRequest = NSFetchRequest(entityName: "Location")

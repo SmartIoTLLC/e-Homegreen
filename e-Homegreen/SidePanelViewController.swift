@@ -156,7 +156,7 @@ extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDel
         if indexPath.row < 14{
             return CGSize(width: 88, height: 88)
         }else{
-            return CGSize(width: 190, height: 70)
+            return CGSize(width: 184, height: 70)
         }
     }
 }
@@ -207,7 +207,6 @@ class MenuItemCell: UICollectionViewCell {
             }
         }
         didSet {
-            print("highlighted = \(highlighted)")
             setNeedsDisplay()
         }
     }

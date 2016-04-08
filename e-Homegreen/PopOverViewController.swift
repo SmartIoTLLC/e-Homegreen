@@ -91,6 +91,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var device:Device?
     @IBOutlet weak var table: UITableView!
     
+    let prefs = NSUserDefaults.standardUserDefaults()
+    
     var indexTab: Int = 0
     var delegate : PopOverIndexDelegate?
     
@@ -172,7 +174,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     func returnSuggestions(whatToFetch:String, location:Location, locationSearch:[String]) {
         if whatToFetch == "Level" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
             var predicateArray:[NSPredicate] = []
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(integer: 0))
             predicateArray.append(predicateOne)
@@ -185,18 +187,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                let levelNames = results.map({ (let level) -> String in
-                    if let name = level.name {
-                        return name
-                    }
-                    return ""
-                }).filter({ (let name) -> Bool in
-                    return name != "" ? true : false
-                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in levelNames {
-                    tableList.append(TableList(name: item, id: 3))
+
+                for item in results {
+                    tableList.append(TableList(name: item.name!, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -205,7 +198,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         if whatToFetch == "Zone" {
             let fetchRequest = NSFetchRequest(entityName: "Zone")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
             let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             let predicateTwo = NSPredicate(format: "location.name == %@", location.name!)
             let predicateThree = NSPredicate(format: "level != %@", NSNumber(integer: 0))
@@ -226,21 +219,9 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
-//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-//                for item in distinctSorted {
-//                    tableList.append(TableList(name: item, id: 2))
-//                }
-                let zoneNames = results.map({ (let zone) -> String in
-                    if let name = zone.name {
-                        return name
-                    }
-                    return ""
-                }).filter({ (let name) -> Bool in
-                    return name != "" ? true : false
-                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in zoneNames {
-                    tableList.append(TableList(name: item, id: 3))
+
+                for item in results {
+                    tableList.append(TableList(name: item.name!, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -249,40 +230,20 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         if whatToFetch == "Category" {
             let fetchRequest = NSFetchRequest(entityName: "Category")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
             var predicateArray:[NSPredicate] = []
-            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-            predicateArray.append(predicateOne)
+//            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+//            predicateArray.append(predicateOne)
             let predicateTwo = NSPredicate(format: "location.name == %@", location.name!)
             predicateArray.append(predicateTwo)
-            //            if let levelId = Int(locationSearch[1]) {
-            //                let predicate = NSPredicate(format: "ANY gateway.zones.level == %@", NSNumber(integer: levelId))
-            //                predicateArray.append(predicate)
-            //            }
-            //            if let zoneId = Int(locationSearch[2]) {
-            //                let predicate = NSPredicate(format: "ANY gateway.zones.id == %@", NSNumber(integer: zoneId))
-            //                predicateArray.append(predicate)
-            //            }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-//                let distinct = NSSet(array: results.map { String($0.name) }).allObjects as! [String]
-//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-//                for item in distinctSorted {
-//                    tableList.append(TableList(name: item, id: 4))
-//                }
-                let categoryNames = results.map({ (let category) -> String in
-                    if let name = category.name {
-                        return name
-                    }
-                    return ""
-                }).filter({ (let name) -> Bool in
-                    return name != "" ? true : false
-                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in categoryNames {
-                    tableList.append(TableList(name: item, id: 3))
+
+                for item in results {
+                    tableList.append(TableList(name: item.name!, id: 3))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -316,10 +277,20 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         if whatToFetch == "Location" {
             let fetchRequest = NSFetchRequest(entityName: "Location")
             let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//            let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-//            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne])
+            
             fetchRequest.sortDescriptors = [sortDescriptor]
-//            fetchRequest.predicate = compoundPredicate
+            
+            if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+                if let user = DatabaseUserController.shared.getOtherUser(){                    
+                    fetchRequest.predicate = NSPredicate(format: "user == %@", user)
+                }
+            }else{
+                if let user = DatabaseUserController.shared.getLoggedUser(){
+                    fetchRequest.predicate = NSPredicate(format: "user == %@", user)
+                }
+            }
+
+            
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Location]
                 let locationNames = results.map({ (let location) -> String in

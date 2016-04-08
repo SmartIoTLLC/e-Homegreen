@@ -248,6 +248,20 @@ class IncomingHandler: NSObject {
         }
         return []
     }
+    func fetchCategories() -> [Category] {
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")
+        let predicate = NSPredicate(format: "location == %@", gateways[0].location)
+        fetchRequest.predicate = predicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            return fetResults!
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        return []
+    }
     func fetchDevices (addressOne:Int, addressTwo:Int, addressThree:Int, channel:Int) {
         //        devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7])
         // OVDE ISKACE BUD NA ANY
@@ -766,9 +780,10 @@ class IncomingHandler: NSObject {
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
-                print("Id:\(id) Name:\(name) Description:\(description) Level:\(level)")
+
                 var doesIdExist = false
                 let zones = fetchZones()
+                
                 for zone in zones {
                     if zone.id == NSNumber(integer: Int(id)) {
                         doesIdExist = true
@@ -777,17 +792,20 @@ class IncomingHandler: NSObject {
                         break
                     }
                 }
+                
                 if doesIdExist {
                 } else {
                     let zone = Zone(context: appDel.managedObjectContext!)
                     (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)))
                     saveChanges()
                 }
+                
                 let data = ["zoneId":Int(id)]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveZoneFromGateway, object: self, userInfo: data)
             }
         }
     }
+    
     func getCategories(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
             var name:String = ""
@@ -803,9 +821,23 @@ class IncomingHandler: NSObject {
                 }
             }
             if id > 20 {
-                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                (category.id, category.name, category.categoryDescription, category.location, category.orderId) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)))
-                saveChanges()
+                var doesIdExist = false
+                let categories = fetchCategories()
+                
+                for category in categories {
+                    if category.id == NSNumber(integer: Int(id)) {
+                        doesIdExist = true
+                        (category.name, category.categoryDescription) = (name, description)
+                        saveChanges()
+                        break
+                    }
+                }
+                if !doesIdExist {
+                    let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                    (category.id, category.name, category.categoryDescription, category.location, category.orderId) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)))
+                    saveChanges()
+                }
+                
             }
             
             let data = ["categoryId":Int(id)]

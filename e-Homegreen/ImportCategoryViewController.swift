@@ -36,9 +36,128 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
+        let longpress = UILongPressGestureRecognizer(target: self, action:#selector(ImportCategoryViewController.longPressGestureRecognized(_:)))
+        importCategoryTableView.addGestureRecognizer(longpress)
+        
         refreshCategoryList()
         
         // Do any additional setup after loading the view.
+    }
+    
+    func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer){
+        
+        let longPress = gestureRecognizer as! UILongPressGestureRecognizer
+        let state = longPress.state
+        let locationInView = longPress.locationInView(importCategoryTableView)
+        let indexPath = importCategoryTableView.indexPathForRowAtPoint(locationInView)
+        
+        struct My {
+            static var cellSnapshot : UIView? = nil
+        }
+        struct Path {
+            static var initialIndexPath : NSIndexPath? = nil
+        }
+        
+        
+        
+        switch state {
+        case UIGestureRecognizerState.Began:
+            
+            if indexPath != nil {
+                
+                Path.initialIndexPath = indexPath
+                let cell = importCategoryTableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!
+                My.cellSnapshot  = snapshopOfCell(cell)
+                var center = cell.center
+                
+                My.cellSnapshot!.center = center
+                My.cellSnapshot!.alpha = 0.0
+                importCategoryTableView.addSubview(My.cellSnapshot!)
+                
+                
+                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                    
+                    center.y = locationInView.y
+                    My.cellSnapshot!.center = center
+                    My.cellSnapshot!.transform = CGAffineTransformMakeScale(1.02, 1.02)
+                    My.cellSnapshot!.alpha = 0.98
+                    cell.alpha = 0.0
+                    
+                    }, completion: { (finished) -> Void in
+                        if finished {
+                            cell.hidden = true
+                        }
+                })
+            }
+            
+        case UIGestureRecognizerState.Changed:
+            var center = My.cellSnapshot!.center
+            
+            center.y = locationInView.y
+            
+            My.cellSnapshot!.center = center
+            
+            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
+                if let index = indexPath, let initial = Path.initialIndexPath {
+                    let pom = categories[index.row]
+                    categories[index.row] = categories[initial.row]
+                    categories[initial.row] = pom
+                    let id = categories[index.row].orderId
+                    categories[index.row].orderId = categories[initial.row].orderId
+                    categories[initial.row].orderId = id
+                    saveChanges()
+                    
+                }
+                
+                importCategoryTableView.moveRowAtIndexPath(Path.initialIndexPath!, toIndexPath: indexPath!)
+                Path.initialIndexPath = indexPath
+                
+            }
+            
+        default:
+            let cell = importCategoryTableView.cellForRowAtIndexPath(Path.initialIndexPath!) as! ImportCategoryTableViewCell!
+            cell.hidden = false
+            cell.alpha = 0.0
+            
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                
+                My.cellSnapshot!.center = cell.center
+                My.cellSnapshot!.transform = CGAffineTransformIdentity
+                My.cellSnapshot!.alpha = 0.0
+                
+                cell.alpha = 1.0
+                }, completion: { (finished) -> Void in
+                    
+                    if finished {
+                        
+                        Path.initialIndexPath = nil
+                        My.cellSnapshot!.removeFromSuperview()
+                        My.cellSnapshot = nil
+                        
+                    }
+                    
+            })
+            
+        }
+    }
+    
+    func snapshopOfCell(inputView: UIView) -> UIView {
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
+        
+        inputView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext() as UIImage
+        
+        UIGraphicsEndImageContext()
+        
+        let cellSnapshot : UIView = UIImageView(image: image)
+        cellSnapshot.layer.masksToBounds = false
+        cellSnapshot.layer.cornerRadius = 0.0
+        cellSnapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0)
+        cellSnapshot.layer.shadowRadius = 5.0
+        cellSnapshot.layer.shadowOpacity = 0.4
+        
+        return cellSnapshot
+        
     }
     
     override func viewWillAppear(animated: Bool) {

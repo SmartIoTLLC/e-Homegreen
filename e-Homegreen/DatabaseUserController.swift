@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DatabaseUserController: NSObject {
     
@@ -38,6 +39,29 @@ class DatabaseUserController: NSObject {
                     }
                 }
             }
+            
+        }
+        return nil
+    }
+    
+    func getUser(username:String, password:String) -> User? {
+        let fetchRequest = NSFetchRequest(entityName: "User")
+        let predicateOne = NSPredicate(format: "username == %@", username)
+        let predicateTwo = NSPredicate(format: "password == %@", password)
+        let predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            if fetResults?.count != 0{
+                return fetResults?[0]
+            }else{
+                return nil
+            }
+            
+            
+        } catch  {
             
         }
         return nil

@@ -549,6 +549,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
     }
+    
     // MARK: - Find names
     //   ============================================   Sensor parametar   ============================================
     @IBAction func findNames(sender: AnyObject) {
@@ -582,6 +583,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             alertController("Error", message: "Something went wrong.")
         }
     }
+    
     var alertController:UIAlertController?
     func alertController (title:String, message:String) {
         alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -599,6 +601,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             // ...
         }
     }
+    
     func returnSearchParametars (from:String, to:String, isScaningNamesAndParametars:Bool) throws -> SearchParametars {
         if !isScaningNamesAndParametars {
             guard let from = Int(from), let to = Int(to) else {
@@ -643,6 +646,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
             }
         }
     }
+    
     //MARK:- Table view dlegates and data source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {

@@ -30,10 +30,10 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var scenesCollectionView: UICollectionView!
-    
-//    var locationSearchText = ["", "", "", "", "", "", ""]
+
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+    
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
@@ -62,11 +62,11 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         
         if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
             if let user = DatabaseUserController.shared.getOtherUser(){
-                updateSceneList(user)
+                scenes = DatabaseScenesController.shared.getScene(user, filterParametar: filterParametar)
             }
         }else{
             if let user = DatabaseUserController.shared.getLoggedUser(){
-                updateSceneList(user)
+                scenes = DatabaseScenesController.shared.getScene(user, filterParametar: filterParametar)
             }
         }
     }
@@ -118,52 +118,16 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshScene, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
-    func updateSceneList (user:User) {
-        let fetchRequest = NSFetchRequest(entityName: "Scene")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne]
-        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        if filterParametar.location != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-            predicateArray.append(locationPredicate)
-        }
-        if filterParametar.levelName != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-            predicateArray.append(levelPredicate)
-        }
-        if filterParametar.zoneName != "All" {
-            let zonePredicate = NSPredicate(format: "sceneZone == %@", filterParametar.zoneName)
-            predicateArray.append(zonePredicate)
-        }
-        if filterParametar.categoryName != "All" {
-            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", filterParametar.categoryName)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-            scenes = fetResults!
-        } catch  {
-            
-        }
-        
-    }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+
+//    func saveChanges() {
+//        do {
+//            try appDel.managedObjectContext!.save()
+//        } catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            abort()
+//        }
+//    }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
@@ -189,8 +153,6 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
 //            if self.view.frame.size.width == 320{
@@ -209,8 +171,6 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
@@ -246,35 +206,14 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     }
     
     func closeSideMenu(){
-        
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
             self.revealViewController().revealToggleAnimated(true)
         }
-        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
+
 extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        var address:[UInt8] = []
-//        if scenes[indexPath.row].isBroadcast.boolValue {
-//            address = [0xFF, 0xFF, 0xFF]
-//        } else if scenes[indexPath.row].isLocalcast.boolValue {
-//            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), 0xFF]
-//        } else {
-//            address = [UInt8(Int(scenes[indexPath.row].gateway.addressOne)), UInt8(Int(scenes[indexPath.row].gateway.addressTwo)), UInt8(Int(scenes[indexPath.row].address))]
-//        }
-//        let sceneId = Int(scenes[indexPath.row].sceneId)
-//        if sceneId >= 0 && sceneId <= 32767 {
-//            SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[indexPath.row].sceneId)), gateway: scenes[indexPath.row].gateway)
-//        }
-    }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
@@ -292,56 +231,29 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
-        var sceneLocation = ""
-        var sceneLevel = ""
-        var sceneZone = ""
-        sceneLocation = scenes[indexPath.row].gateway.location.name!
-     
-        if let level = scenes[indexPath.row].entityLevel{
-            sceneLevel = level
-        }
-        if let zone = scenes[indexPath.row].sceneZone{
-            sceneZone = zone
-        }
         
-        if filterParametar.location == "All" {
-            cell.sceneCellLabel.text = sceneLocation + " " + sceneLevel + " " + sceneZone + " " + scenes[indexPath.row].sceneName
-        }else{
-            var sceneTitle = ""
-            if filterParametar.location == "All"{
-                sceneTitle += " " + sceneLocation
-            }
-            if filterParametar.levelName == "All"{
-                sceneTitle += " " + sceneLevel
-            }
-            if filterParametar.zoneName == "All"{
-                sceneTitle += " " + sceneZone
-            }
-            sceneTitle += " " + scenes[indexPath.row].sceneName
-            cell.sceneCellLabel.text = sceneTitle
-        }
+            cell.setItem(scenes[indexPath.row], filterParametar: filterParametar)
         
-        cell.sceneCellLabel.tag = indexPath.row
-        cell.sceneCellLabel.userInteractionEnabled = true
+            cell.sceneCellLabel.tag = indexPath.row
+            cell.sceneCellLabel.userInteractionEnabled = true
+            
+            let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.openCellParametar(_:)))
+            longPress.minimumPressDuration = 0.5
+            cell.getImagesFrom(scenes[indexPath.row])
+            cell.sceneCellLabel.addGestureRecognizer(longPress)
+            cell.sceneCellImageView.tag = indexPath.row
+            cell.sceneCellImageView.userInteractionEnabled = true
+            cell.sceneCellImageView.clipsToBounds = true
+            cell.sceneCellImageView.layer.cornerRadius = 5
+            let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
+            cell.sceneCellImageView.addGestureRecognizer(set)
+            cell.btnSet.tag = indexPath.row
+            let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
+            cell.btnSet.addGestureRecognizer(setTwo)
+            return cell
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.openCellParametar(_:)))
-        longPress.minimumPressDuration = 0.5
-        cell.getImagesFrom(scenes[indexPath.row])
-        cell.sceneCellLabel.addGestureRecognizer(longPress)
-        cell.sceneCellImageView.tag = indexPath.row
-        cell.sceneCellImageView.userInteractionEnabled = true
-        cell.sceneCellImageView.clipsToBounds = true
-        cell.sceneCellImageView.layer.cornerRadius = 5
-        let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
-        cell.sceneCellImageView.addGestureRecognizer(set)
-        cell.btnSet.tag = indexPath.row
-        let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
-        cell.btnSet.addGestureRecognizer(setTwo)
-        cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
-        cell.layer.borderWidth = 0.5
-        return cell
     }
+    
     func setScene (gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             var address:[UInt8] = []
@@ -356,19 +268,6 @@ extension ScenesViewController: UICollectionViewDataSource {
             if sceneId >= 0 && sceneId <= 32767 {
                 SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
             }
-//            UIView.setAnimationsEnabled(false)
-//            self.scenesCollectionView.performBatchUpdates({
-//                let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//                let cell = self.scenesCollectionView.cellForItemAtIndexPath(indexPath)
-//                self.scenesCollectionView.reloadItemsAtIndexPaths([indexPath])
-//                }, completion:  {(completed: Bool) -> Void in
-//                    UIView.setAnimationsEnabled(true)
-//            })
-//            let indexPath = NSIndexPath(forItem: tag, inSection: 0)
-//            let cell = self.scenesCollectionView.cellForItemAtIndexPath(indexPath)
-//            if let cell = cell as? SceneCollectionCell {
-//                cell.sceneCellImageView.image =
-//            }
             let tag = gesture.view!.tag
             let location = gesture.locationInView(scenesCollectionView)
             if let index = scenesCollectionView.indexPathForItemAtPoint(location){
@@ -391,67 +290,4 @@ extension ScenesViewController: UICollectionViewDataSource {
     }
 }
 
-class SceneCollectionCell: UICollectionViewCell {
-    
-    @IBOutlet weak var sceneCellLabel: UILabel!
-    @IBOutlet weak var sceneCellImageView: UIImageView!
-    var imageOne:UIImage?
-    var imageTwo:UIImage?
-    func getImagesFrom(scene:Scene) {
-        if let sceneImage = UIImage(data: scene.sceneImageOne) {
-            imageOne = sceneImage
-        }
-        
-        if let sceneImage = UIImage(data: scene.sceneImageTwo) {
-            imageTwo = sceneImage
-        }
-        sceneCellImageView.image = imageOne
-        setNeedsDisplay()
-    }
-    func changeImageForOneSecond() {
-        sceneCellImageView.image = imageTwo
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(SceneCollectionCell.changeImageToNormal), userInfo: nil, repeats: false)
-    }
-    func changeImageBack() {
-        sceneCellImageView.image = imageOne
-    }
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                sceneCellImageView.image = imageTwo
-//                setNeedsDisplay()
-//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//        }
-//    }
-    func changeImageToNormal () {
-        sceneCellImageView.image = imageOne
-//        setNeedsDisplay()
-    }
-    @IBOutlet weak var btnSet: CustomGradientButtonWhite!
-    @IBAction func btnSet(sender: AnyObject) {
-        
-    }
-    override func drawRect(rect: CGRect) {
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 5.0, height: 5.0))
-        path.addClip()
-        path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        path.stroke()
-    }
-}
+

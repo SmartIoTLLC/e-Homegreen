@@ -251,7 +251,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     func returnIpAddress (url:String) -> String {
-        print("123")
         let host = CFHostCreateWithName(nil,url).takeRetainedValue();
         CFHostStartInfoResolution(host, .Addresses, nil);
         var success: DarwinBoolean = false
@@ -346,38 +345,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[urls.count-1]
     }()
-//    lazy var applicationPrivateDocumentsDirectory:String = {
-//        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-//        let documentsDirectory: AnyObject = paths[0]
-//        let dataPath = documentsDirectory.stringByAppendingPathComponent("MyFolder")
-//        
-//        do {
-//            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
-//        } catch let error as NSError {
-//            print(error.localizedDescription);
-//        }
-////        var path: String
-////        if !path {
-////            NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomainMask.AllDomainsMask, true)
-////            var libraryPath: String = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, true).lastObject()
-////            path = libraryPath.stringByAppendingPathComponent("Private Documents")
-////            var isDirectory: Bool
-////            if !NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: isDirectory) {
-////                var error: NSError? = nil
-////                if !NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil, error: error!) {
-////                    NSLog("Can't create directory %@ [%@]", path, error!)
-////                    abort()
-////                    // replace with proper error handling
-////                }
-////            }
-////            else if !isDirectory {
-////                NSLog("Path %@ exists but is no directory", path)
-////                abort()
-////                // replace with error handling
-////            }
-////        }
-//        return ""
-//    }()
+
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource("e_Homegreen", withExtension: "momd")!

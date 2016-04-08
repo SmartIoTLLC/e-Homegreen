@@ -56,19 +56,16 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
         if devices[indexPathRow].controlType == ControlType.Dimmer {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Relay {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
+
             SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Climate {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.HumanInterfaceSeries || devices[indexPathRow].controlType == ControlType.Gateway {
-            print("\(devices[indexPathRow].channel)---\(devices[indexPathRow].name)---\(devices[indexPathRow].controlType)---\(devices[indexPathRow].stateUpdatedAt)")
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Curtain {
@@ -78,14 +75,12 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     func refreshVisibleDevicesInScrollView () {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-            print(indexPaths.count)
             for indexPath in indexPaths {
                 updateDeviceStatus (indexPathRow: indexPath.row)
             }
         }
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print("scrollViewDidEndDragging willDecelerate \(decelerate)")
         if !decelerate {
             if let collectionView = scrollView as? UICollectionView {
                 if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
@@ -113,7 +108,6 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
     }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        print("scrollViewDidEndDecelerating")
         if let collectionView = scrollView as? UICollectionView {
             if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
                 for indexPath in indexPaths {

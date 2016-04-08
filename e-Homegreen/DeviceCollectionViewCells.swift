@@ -333,8 +333,6 @@ class MultiSensorCell: UICollectionViewCell {
         }
     }
     func returnDigitalInputModeStateinterpreter (device:Device) -> String {
-        print(device.digitalInputMode)
-        print(Int(device.currentValue))
         var digitalInputCurrentValue = " "
         if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.NormallyOpen) {
             digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
