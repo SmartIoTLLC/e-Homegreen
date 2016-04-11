@@ -43,7 +43,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) || user != nil {
+        if AdminController.shared.isAdminLogged() || user != nil {
             navigationItem.leftBarButtonItems = []
         }
         
@@ -56,7 +56,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
         
-        if NSUserDefaults.standardUserDefaults().valueForKey(Admin.IsLogged) as? Bool == false {
+        if !AdminController.shared.isAdminLogged() {
             settingArray.append(.LockProfile)
         }
         
@@ -71,7 +71,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     override func viewWillAppear(animated: Bool) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(Admin.IsLogged) == false && user == nil{
+        if !AdminController.shared.isAdminLogged() && user == nil{
             self.revealViewController().delegate = self
             
             if self.revealViewController() != nil {

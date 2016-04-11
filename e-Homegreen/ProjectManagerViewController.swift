@@ -19,8 +19,6 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     var sidebarMenuOpen : Bool!
     var tap : UITapGestureRecognizer!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     @IBOutlet weak var addButton: UIButton!
     
     override func viewWillAppear(animated: Bool) {
@@ -53,7 +51,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        if prefs.boolForKey(Admin.IsLogged) == false {
+        if !AdminController.shared.isAdminLogged() {
             addButton.hidden = true
         }
         
@@ -74,9 +72,13 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBAction func changeDataBase(sender: AnyObject) {
         if let button = sender as? UIButton{
-            prefs.setValue(users[button.tag].objectID.URIRepresentation().absoluteString, forKey: Admin.OtherUserDatabase)
+            if AdminController.shared.setOtherUser(users[button.tag].objectID.URIRepresentation().absoluteString){
+                self.view.makeToast(message: "\(users[button.tag].username!)'s database is in use!")
+            }else{
+                self.view.makeToast(message: "Error!!")
+            }
             
-            self.view.makeToast(message: "\(users[button.tag].username!)'s database is in use!")
+            
         }
     }
     
@@ -134,14 +136,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         users = []
         let fetchRequest = NSFetchRequest(entityName: "User")
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
-        //        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        //        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
-        //        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        //        var predicateArray:[NSPredicate] = [predicateOne]
-        
-        //        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        //        fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
             users = fetResults!
@@ -237,7 +232,7 @@ class UserCell: UITableViewCell{
         }else{
             userImage.image = UIImage(named: "User")
         }
-        if NSUserDefaults.standardUserDefaults().valueForKey(Admin.IsLogged) as? Bool == false {
+        if !AdminController.shared.isAdminLogged() {
             if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
                 chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
                 editDatabaseButton.enabled = !(user.isLocked as! Bool)

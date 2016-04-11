@@ -481,7 +481,7 @@ struct NotificationKey {
     static let RefreshIBeacon = "refreshIBeaconList"
 }
 
-struct Admin {
+struct AdminConstants {
     static let Username = "username"
     static let Password = "password"
     static let IsLogged = "isAdmin"

@@ -26,8 +26,6 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -65,7 +63,7 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             
         }
         
-        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+        if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 updateSequencesList(user)
             }

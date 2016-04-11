@@ -1416,7 +1416,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0t-8Z-WMG">
-                                <rect key="frame" x="0.0" y="676" width="320" height="160"/>
+                                <rect key="frame" x="0.0" y="806" width="320" height="160"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pullup" translatesAutoresizingMaskIntoConstraints="NO" id="xol-uY-x7r">
                                         <rect key="frame" x="130" y="0.0" width="60" height="30"/>
@@ -1446,8 +1446,8 @@
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
-                                                <rect key="frame" x="8" y="33" width="38" height="19"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="select" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
+                                                <rect key="frame" x="8" y="35" width="38" height="19"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1467,13 +1467,24 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3An-Xt-4si">
+                                                <rect key="frame" x="8" y="5" width="304" height="29"/>
+                                                <segments>
+                                                    <segment title="Zone"/>
+                                                    <segment title="Category"/>
+                                                </segments>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </segmentedControl>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="3An-Xt-4si" firstAttribute="top" secondItem="QEO-B8-hGL" secondAttribute="top" constant="5" id="3ix-nt-vFj"/>
                                             <constraint firstItem="3Em-BI-Ix1" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="6Qi-oc-sNT"/>
                                             <constraint firstAttribute="bottom" secondItem="jUi-ah-jIy" secondAttribute="bottom" constant="8" id="EeX-M9-fcM"/>
-                                            <constraint firstItem="3Em-BI-Ix1" firstAttribute="top" secondItem="DeE-69-Kcm" secondAttribute="bottom" constant="5" id="JaE-Uj-c7v"/>
+                                            <constraint firstItem="3An-Xt-4si" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="Hwp-kq-EsK"/>
+                                            <constraint firstItem="3Em-BI-Ix1" firstAttribute="top" secondItem="DeE-69-Kcm" secondAttribute="bottom" constant="3" id="JaE-Uj-c7v"/>
                                             <constraint firstItem="CY0-LN-aYO" firstAttribute="width" secondItem="jUi-ah-jIy" secondAttribute="width" id="OWR-nE-dvO"/>
+                                            <constraint firstAttribute="trailing" secondItem="3An-Xt-4si" secondAttribute="trailing" constant="8" id="ay1-BP-v9m"/>
                                             <constraint firstItem="CY0-LN-aYO" firstAttribute="leading" secondItem="jUi-ah-jIy" secondAttribute="trailing" constant="10" id="eRf-Rz-juf"/>
                                             <constraint firstItem="jUi-ah-jIy" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="gC6-07-3ae"/>
                                             <constraint firstItem="DeE-69-Kcm" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="lL7-mN-Flh"/>
@@ -1504,7 +1515,7 @@
                         <constraints>
                             <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="xY1-6k-Eai" secondAttribute="bottom" id="6ZK-3d-sVB"/>
                             <constraint firstItem="xY1-6k-Eai" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" id="BQ4-wf-J3K"/>
-                            <constraint firstAttribute="bottom" secondItem="H0t-8Z-WMG" secondAttribute="bottom" id="D1V-Hf-bqH"/>
+                            <constraint firstAttribute="bottom" secondItem="H0t-8Z-WMG" secondAttribute="bottom" constant="-130" id="D1V-Hf-bqH"/>
                             <constraint firstAttribute="trailing" secondItem="H0t-8Z-WMG" secondAttribute="trailing" id="O1D-ZO-hH8"/>
                             <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="HnO-ii-vqM" secondAttribute="bottom" constant="20" id="R0B-JX-7Mq"/>
                             <constraint firstItem="H0t-8Z-WMG" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="SJT-9i-to7"/>

@@ -26,8 +26,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     var timer:NSTimer = NSTimer()
     
     @IBOutlet weak var bottomView: UIView!
@@ -59,7 +57,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
-        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+        if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 userLogged = user
                 updateDeviceList(user)

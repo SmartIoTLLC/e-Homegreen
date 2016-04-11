@@ -25,8 +25,6 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -58,7 +56,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
             
         }
         
-        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+        if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 updateEventsList(user)
             }

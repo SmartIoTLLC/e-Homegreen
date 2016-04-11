@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class LogInViewController: UIViewController {
     
@@ -15,8 +14,6 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: LogInTextField!
     
     var appDel:AppDelegate!
-    
-    let prefs = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,23 +34,31 @@ class LogInViewController: UIViewController {
             return
         }
         
-        if let adminUsername = prefs.stringForKey(Admin.Username) where adminUsername == username, let adminPassword = prefs.stringForKey(Admin.Password) where adminPassword == password{
+        if let admin = AdminController.shared.getAdmin() where admin.username == username && admin.password == password {
             
-            prefs.setValue(true, forKey: Admin.IsLogged)
+            AdminController.shared.loginAdmin()
             
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-            self.presentViewController(sideMenu, animated: true, completion: nil)
-            
-        }else{
-            if let user = DatabaseUserController.shared.getUser(username, password: password){
-                prefs.setValue(true, forKey: Login.IsLoged)
-                prefs.setValue(user.objectID.URIRepresentation().absoluteString, forKey: Login.User)
+            if AdminController.shared.isAdminLogged(){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
                 self.presentViewController(sideMenu, animated: true, completion: nil)
             }else{
-               self.view.makeToast(message: "Check username or password") 
+                self.view.makeToast(message: "Something wrong, try again!")
+                return
+            }
+            
+        }else{
+            if let user = DatabaseUserController.shared.getUser(username, password: password){
+                DatabaseUserController.shared.loginUser()
+                if DatabaseUserController.shared.setUser(user.objectID.URIRepresentation().absoluteString){
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                    self.presentViewController(sideMenu, animated: true, completion: nil)
+                }else{
+                    self.view.makeToast(message: "Error")
+                }
+            }else{
+                self.view.makeToast(message: "Check username or password")
             }
         }
         

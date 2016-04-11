@@ -36,6 +36,7 @@
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
+		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
 		2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2245843A1C96AA3700D2C372 /* PCCommand.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
@@ -328,6 +329,7 @@
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2245843A1C96AA3700D2C372 /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PCCommand.swift; path = ../PCCommand.swift; sourceTree = "<group>"; };
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -1093,6 +1095,7 @@
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
 				22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */,
+				2240DCAF1CBB931800F1F886 /* AdminController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1803,6 +1806,7 @@
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
 				730E90C31C6A1BF400B1D50D /* Image.swift in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
+				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,

@@ -13,8 +13,7 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userNameTextField: LogInTextField!
     @IBOutlet weak var passwordTextField: LogInTextField!
     @IBOutlet weak var confirmPasswordTextField: LogInTextField!
-    
-    let prefs = NSUserDefaults.standardUserDefaults()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,14 +43,21 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        prefs.setValue(username, forKey: Admin.Username)
-        prefs.setValue(password, forKey: Admin.Password)        
-        prefs.setValue(true, forKey: Admin.IsLogged)
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-        self.presentViewController(sideMenu, animated: true, completion: nil)
+        if AdminController.shared.setAdmin(username, password: password) == false{
+            self.view.makeToast(message: "Something wrong, try again!")
+            return
+        }
 
+        AdminController.shared.loginAdmin()
+        
+        if AdminController.shared.isAdminLogged(){
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+            self.presentViewController(sideMenu, animated: true, completion: nil)
+        }else{
+            self.view.makeToast(message: "Something wrong, try again!")
+            return
+        }
         
     }
 

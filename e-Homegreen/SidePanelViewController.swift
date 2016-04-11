@@ -22,8 +22,6 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     var user:User?
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
@@ -114,10 +112,10 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         
         let logoutAction = UIAlertAction(title: "Log Out", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
-            
-            self.prefs.setValue(false, forKey: Login.IsLoged)
-            self.prefs.setValue(nil, forKey: Login.User)
-            self.prefs.setValue(false, forKey: Admin.IsLogged)
+
+            DatabaseUserController.shared.logoutUser()
+            DatabaseUserController.shared.setUser(nil)
+            AdminController.shared.logoutAdmin()
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
             self.presentViewController(logIn, animated: false, completion: nil)
@@ -242,7 +240,7 @@ class LogOutCell: UICollectionViewCell {
             }
             userLabel.text = user.username
         }else{
-            userLabel.text = NSUserDefaults.standardUserDefaults().valueForKey(Admin.Username) as? String
+            userLabel.text = (AdminController.shared.getAdmin())?.username
             if let user = DatabaseUserController.shared.getOtherUser(){
                 dataBaseLabel.text = user.username! + "'s database"
             }else{

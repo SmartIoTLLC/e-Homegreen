@@ -91,8 +91,6 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var device:Device?
     @IBOutlet weak var table: UITableView!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     var indexTab: Int = 0
     var delegate : PopOverIndexDelegate?
     
@@ -280,7 +278,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             fetchRequest.sortDescriptors = [sortDescriptor]
             
-            if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+            if AdminController.shared.isAdminLogged(){
                 if let user = DatabaseUserController.shared.getOtherUser(){                    
                     fetchRequest.predicate = NSPredicate(format: "user == %@", user)
                 }

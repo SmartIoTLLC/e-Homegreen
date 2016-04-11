@@ -19,8 +19,6 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
     private let reuseIdentifier = "SceneCell"
     var pullDown = PullDownView()
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     var appDel:AppDelegate!
     var scenes:[Scene] = []
     var error:NSError? = nil
@@ -60,7 +58,7 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
             
         }
         
-        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+        if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 scenes = DatabaseScenesController.shared.getScene(user, filterParametar: filterParametar)
             }

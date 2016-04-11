@@ -13,8 +13,9 @@ class DatabaseUserController: NSObject {
     
     static let shared = DatabaseUserController()
     
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let prefs = NSUserDefaults.standardUserDefaults()
+    
+    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     func getLoggedUser() -> User?{
         if let stringUrl = prefs.valueForKey(Login.User) as? String{
@@ -31,7 +32,7 @@ class DatabaseUserController: NSObject {
     }
     
     func getOtherUser() -> User?{
-        if let stringUrl = prefs.valueForKey(Admin.OtherUserDatabase) as? String{
+        if let stringUrl = AdminController.shared.getOtherUser(){
             if let url = NSURL(string: stringUrl){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                     if let user = appDel.managedObjectContext?.objectWithID(id) as? User {
@@ -42,6 +43,14 @@ class DatabaseUserController: NSObject {
             
         }
         return nil
+    }
+    func setUser(url:String?) -> Bool{
+        prefs.setValue(url, forKey: Login.User)
+        if let _ = prefs.valueForKey(Login.User){
+            return true
+        }
+        return false
+        
     }
     
     func getUser(username:String, password:String) -> User? {
@@ -66,6 +75,17 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
+    
+    func isLogged() -> Bool{
+        return prefs.boolForKey(Login.IsLoged)
+    }
+    
+    func loginUser(){
+        prefs.setValue(true, forKey: Login.IsLoged)
+    }
 
+    func logoutUser(){    
+        prefs.setValue(false, forKey: Login.IsLoged)
+    }
 
 }

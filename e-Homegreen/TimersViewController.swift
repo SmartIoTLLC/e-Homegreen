@@ -19,8 +19,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     var senderButton:UIButton?
     var sidebarMenuOpen : Bool!
     
-    let prefs = NSUserDefaults.standardUserDefaults()
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
@@ -56,7 +54,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             
         }
         
-        if prefs.valueForKey(Admin.IsLogged) as? Bool == true{
+        if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 updateTimersList(user)
             }
