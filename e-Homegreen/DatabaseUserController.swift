@@ -87,5 +87,31 @@ class DatabaseUserController: NSObject {
     func logoutUser(){    
         prefs.setValue(false, forKey: Login.IsLoged)
     }
+    
+    func getAllUsers() -> [User]{
+        let fetchRequest = NSFetchRequest(entityName: "User")
+        let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne]
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            return fetResults!
+        } catch  {
+            
+        }
+        return []
+    }
+    
+    func logedUserOrAdmin() -> User?{
+        if AdminController.shared.isAdminLogged(){
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                return user
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                return user
+            }
+        }
+        return nil
+    }
 
 }

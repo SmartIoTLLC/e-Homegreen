@@ -1,30 +1,31 @@
 //
-//  DatabaseScenesController.swift
+//  DatabaseFlagsController.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Zivanov on 4/8/16.
+//  Created by Vladimir Zivanov on 4/11/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class DatabaseScenesController: NSObject {
-    
-    static let shared = DatabaseScenesController()
+class DatabaseFlagsController: NSObject {
+    static let shared = DatabaseFlagsController()
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    func getScene(filterParametar:FilterItem) -> [Scene] {
+    func getFlags(filterParametar:FilterItem) -> [Flag] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Scene")
+            let fetchRequest = NSFetchRequest(entityName: "Flag")
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
-            let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-            let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+            let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
+            let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-            
             let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
             var predicateArray:[NSPredicate] = [predicateOne]
+            
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+            
+            
             if filterParametar.location != "All" {
                 let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
                 predicateArray.append(locationPredicate)
@@ -34,25 +35,23 @@ class DatabaseScenesController: NSObject {
                 predicateArray.append(levelPredicate)
             }
             if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "sceneZone == %@", filterParametar.zoneName)
+                let zonePredicate = NSPredicate(format: "flagZone == %@", filterParametar.zoneName)
                 predicateArray.append(zonePredicate)
             }
             if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "sceneCategory == %@", filterParametar.categoryName)
+                let categoryPredicate = NSPredicate(format: "flagCategory == %@", filterParametar.categoryName)
                 predicateArray.append(categoryPredicate)
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-            
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
                 return fetResults!
-            } catch  {
-                
+            } catch _ as NSError {
+                abort()
             }
         }
         return []
-        
     }
-    
+
 }

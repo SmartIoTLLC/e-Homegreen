@@ -1,27 +1,26 @@
 //
-//  DatabaseScenesController.swift
+//  DatabaseTimersController.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Zivanov on 4/8/16.
+//  Created by Vladimir Zivanov on 4/11/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class DatabaseScenesController: NSObject {
+class DatabaseTimersController: NSObject {
     
-    static let shared = DatabaseScenesController()
+    static let shared = DatabaseTimersController()
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    func getScene(filterParametar:FilterItem) -> [Scene] {
+    func getTimers(filterParametar:FilterItem) -> [Timer] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Scene")
-            let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
-            let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-            let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
+            let fetchRequest = NSFetchRequest(entityName: "Timer")
+            let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+            let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
+            let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-            
             let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
             var predicateArray:[NSPredicate] = [predicateOne]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
@@ -34,25 +33,22 @@ class DatabaseScenesController: NSObject {
                 predicateArray.append(levelPredicate)
             }
             if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "sceneZone == %@", filterParametar.zoneName)
+                let zonePredicate = NSPredicate(format: "timeZone == %@", filterParametar.zoneName)
                 predicateArray.append(zonePredicate)
             }
             if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "sceneCategory == %@", filterParametar.categoryName)
+                let categoryPredicate = NSPredicate(format: "timerCategory == %@", filterParametar.categoryName)
                 predicateArray.append(categoryPredicate)
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-            
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
                 return fetResults!
-            } catch  {
-                
+            } catch _ as NSError {
+                abort()
             }
         }
         return []
-        
     }
-    
 }

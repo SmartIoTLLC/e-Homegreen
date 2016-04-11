@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class TimersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
         
@@ -31,8 +30,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-//        updateTimersList()
-        timersCollectionView.reloadData()
+        refreshTimerList()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -53,16 +51,9 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        refreshTimerList()
         
-        if AdminController.shared.isAdminLogged(){
-            if let user = DatabaseUserController.shared.getOtherUser(){
-                updateTimersList(user)
-            }
-        }else{
-            if let user = DatabaseUserController.shared.getLoggedUser(){
-                updateTimersList(user)
-            }
-        }
+
     }
     
     override func viewDidLoad() {
@@ -70,21 +61,11 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
-        //        cyclesTextField.delegate = self
-        
-//        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-//            collectionViewCellSize = CGSize(width: 128, height: 156)
-//        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-//            collectionViewCellSize = CGSize(width: 118, height: 144)
-//        }
-        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        
-        // Do any additional setup after loading the view.
     }
     func refreshTimerList() {
-//        updateTimersList()
+        timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }
     func refreshLocalParametars() {
@@ -93,22 +74,22 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
 //        updateTimersList()
         timersCollectionView.reloadData()
     }
-    override func viewDidAppear(animated: Bool) {
-        refreshLocalParametars()
-        addObservers()
-        refreshTimerList()
-    }
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
-    }
-    func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-    }
-    func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshTimer, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-    }
+//    override func viewDidAppear(animated: Bool) {
+//        refreshLocalParametars()
+//        addObservers()
+//        refreshTimerList()
+//    }
+//    override func viewWillDisappear(animated: Bool) {
+//        removeObservers()
+//    }
+//    func addObservers() {
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
+//    }
+//    func removeObservers() {
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshTimer, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
+//    }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
@@ -116,15 +97,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         return 5
     }
     override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.width == 568{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-//            }else if self.view.frame.size.width == 667{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -134,17 +107,8 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
-//            if self.view.frame.size.width == 320{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }else if self.view.frame.size.width == 375{
-//                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -154,8 +118,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
@@ -166,69 +128,23 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-    var locationSearch:String = "All"
-    var zoneSearch:String = "All"
-    var levelSearch:String = "All"
-    var categorySearch:String = "All"
-    var zoneSearchName:String = "All"
-    var levelSearchName:String = "All"
-    var categorySearchName:String = "All"
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+//    
+//    var locationSearch:String = "All"
+//    var zoneSearch:String = "All"
+//    var levelSearch:String = "All"
+//    var categorySearch:String = "All"
+//    var zoneSearchName:String = "All"
+//    var levelSearchName:String = "All"
+//    var categorySearchName:String = "All"
+//    
+//    override func didReceiveMemoryWarning() {
+//        super.didReceiveMemoryWarning()
+//        // Dispose of any resources that can be recreated.
+//    }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    func updateTimersList (user:User) {
-        let fetchRequest = NSFetchRequest(entityName: "Timer")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne]
-        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        if filterParametar.location != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-            predicateArray.append(locationPredicate)
-        }
-        if filterParametar.levelName != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-            predicateArray.append(levelPredicate)
-        }
-        if filterParametar.zoneName != "All" {
-            let zonePredicate = NSPredicate(format: "timeZone == %@", filterParametar.zoneName)
-            predicateArray.append(zonePredicate)
-        }
-        if filterParametar.categoryName != "All" {
-            let categoryPredicate = NSPredicate(format: "timerCategory == %@", filterParametar.categoryName)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
-            timers = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        
-    }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     func pressedPause (button:UIButton) {
@@ -328,22 +244,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
 
 extension TimersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        var address:[UInt8] = []
-//        if sequences[indexPath.row].isBroadcast.boolValue {
-//            address = [0xFF, 0xFF, 0xFF]
-//        } else {
-//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
-//        }
-//        if let cycles = sequences[indexPath.row].sequenceCycles as? Int {
-//            if cycles >= 0 && cycles <= 255 {
-//                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
-//            }
-//        } else {
-//            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
-//        }
-//        sequenceCollectionView.reloadData()
-    }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
@@ -413,7 +313,6 @@ extension TimersViewController: UICollectionViewDataSource {
         cell.timerButton.tag = indexPath.row
         cell.timerButtonLeft.tag = indexPath.row
         cell.timerButtonRight.tag = indexPath.row
-        print(timers[indexPath.row].type)
         if timers[indexPath.row].type == "Countdown" {
             //   ===   Default   ===
             cell.timerButton.hidden = false
@@ -479,52 +378,3 @@ extension TimersViewController: UICollectionViewDataSource {
     }
 }
 
-
-class TimerCollectionViewCell: UICollectionViewCell {
-    
-    @IBOutlet weak var timerTitle: UILabel!
-    @IBOutlet weak var timerImageView: UIImageView!
-    @IBOutlet weak var timerButton: UIButton!
-    @IBOutlet weak var timerButtonLeft: UIButton!
-    @IBOutlet weak var timerButtonRight: UIButton!
-    var imageOne:UIImage?
-    var imageTwo:UIImage?
-    func getImagesFrom(timer:Timer) {
-        if let timerImage = UIImage(data: timer.timerImageOne) {
-            imageOne = timerImage
-        }
-        if let timerImage = UIImage(data: timer.timerImageTwo) {
-            imageTwo = timerImage
-        }
-        timerImageView.image = imageOne
-        setNeedsDisplay()
-    }
-    func commandSentChangeImage () {
-        timerImageView.image = imageTwo
-        setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
-    }
-    func changeImageToNormal () {
-        timerImageView.image = imageOne
-        setNeedsDisplay()
-    }
-    override func drawRect(rect: CGRect) {
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 5.0, height: 5.0))
-        path.addClip()
-        path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        path.stroke()
-    }
-}

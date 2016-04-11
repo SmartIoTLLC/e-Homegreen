@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889AF1CBBCF84004EBADD /* TimerCell.swift */; };
+		222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */; };
+		222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B31CBBD5E0004EBADD /* FlagCell.swift */; };
+		222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */; };
 		22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */; };
 		2232922B1CABD6790001422B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2232922A1CABD6790001422B /* Settings.storyboard */; };
 		2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2233628C1CA2E477006C80C4 /* EditTextField.swift */; };
@@ -37,6 +41,7 @@
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
+		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
 		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
 		2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2245843A1C96AA3700D2C372 /* PCCommand.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
@@ -67,6 +72,9 @@
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
 		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
 		22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */; };
+		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
+		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
+		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
 		4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */; };
 		730E90C11C6A1BF400B1D50D /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */; };
 		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
@@ -301,6 +309,10 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		222889AF1CBBCF84004EBADD /* TimerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCell.swift; sourceTree = "<group>"; };
+		222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTimersController.swift; sourceTree = "<group>"; };
+		222889B31CBBD5E0004EBADD /* FlagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCell.swift; sourceTree = "<group>"; };
+		222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFlagsController.swift; sourceTree = "<group>"; };
 		22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		2232922A1CABD6790001422B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		2233628C1CA2E477006C80C4 /* EditTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTextField.swift; sourceTree = "<group>"; };
@@ -330,6 +342,7 @@
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
+		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
 		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2245843A1C96AA3700D2C372 /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PCCommand.swift; path = ../PCCommand.swift; sourceTree = "<group>"; };
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -362,6 +375,9 @@
 		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
 		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
 		22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneViewController.xib; sourceTree = "<group>"; };
+		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
+		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
 		4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "HRToast+UIView.swift"; path = "SWRevealViewController/HRToast+UIView.swift"; sourceTree = "<group>"; };
 		730E90BE1C6A1BF400B1D50D /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -672,6 +688,7 @@
 				E7AAF7621BBE878A00992A18 /* EventsXIB */,
 				22495D171CAA75DC0034FC94 /* Events.storyboard */,
 				736F17D11B3AE840003A6A02 /* EventsViewController.swift */,
+				22FD298E1CBBC62400BCE823 /* EventCell.swift */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -682,6 +699,7 @@
 				E7AAF7641BBE87C300992A18 /* SequencesXIB */,
 				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
 				22495D191CAA797C0034FC94 /* Sequences.storyboard */,
+				22FD29901CBBC9D100BCE823 /* SequencesCell.swift */,
 			);
 			name = Sequences;
 			sourceTree = "<group>";
@@ -692,6 +710,7 @@
 				7372EB221BC3F76C0097806D /* TimerXIB */,
 				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
 				22495D1C1CAA7A2E0034FC94 /* Timers.storyboard */,
+				222889AF1CBBCF84004EBADD /* TimerCell.swift */,
 			);
 			name = Timers;
 			sourceTree = "<group>";
@@ -702,6 +721,7 @@
 				73E6CDB61BC56421003A5F55 /* FlagXIB */,
 				22495D1E1CAA7ADA0034FC94 /* Flags.storyboard */,
 				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
+				222889B31CBBD5E0004EBADD /* FlagCell.swift */,
 			);
 			name = Flags;
 			sourceTree = "<group>";
@@ -1096,6 +1116,10 @@
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
 				22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */,
 				2240DCAF1CBB931800F1F886 /* AdminController.swift */,
+				2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */,
+				22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */,
+				222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */,
+				222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1723,6 +1747,7 @@
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
+				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
@@ -1751,6 +1776,7 @@
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
+				22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
@@ -1769,6 +1795,7 @@
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
+				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
@@ -1790,6 +1817,7 @@
 				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
+				22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */,
 				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
 				223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */,
@@ -1810,6 +1838,7 @@
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
+				222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
@@ -1838,6 +1867,7 @@
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
+				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
@@ -1851,6 +1881,7 @@
 				73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
+				2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
@@ -1879,6 +1910,7 @@
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
+				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
 
@@ -34,8 +33,7 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-//        updateSequencesList()
-        sequenceCollectionView.reloadData()
+        updateSequencesList()
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
@@ -62,38 +60,20 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
-        
-        if AdminController.shared.isAdminLogged(){
-            if let user = DatabaseUserController.shared.getOtherUser(){
-                updateSequencesList(user)
-            }
-        }else{
-            if let user = DatabaseUserController.shared.getLoggedUser(){
-                updateSequencesList(user)
-            }
-        }
+
+       updateSequencesList()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        
-//        cyclesTextField.delegate = self
-        
-//        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-//            collectionViewCellSize = CGSize(width: 128, height: 156)
-//        }else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-//            collectionViewCellSize = CGSize(width: 118, height: 144)
-//        }
 
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-        
-        // Do any additional setup after loading the view.
     }
-    func refreshSequenceList() {
-//        updateSequencesList()
+    func updateSequencesList(){
+        sequences = DatabaseSequencesController.shared.getSequences(filterParametar)
         sequenceCollectionView.reloadData()
     }
     func refreshLocalParametars() {
@@ -102,32 +82,9 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
 //        updateSequencesList()
         sequenceCollectionView.reloadData()
     }
-    override func viewDidAppear(animated: Bool) {
-        refreshLocalParametars()
-        addObservers()
-        refreshSequenceList()
-    }
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
-    }
-    func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SequencesViewController.refreshSequenceList), name: NotificationKey.RefreshSequence, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SequencesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-    }
-    func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSequence, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-    }
+
     override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.width == 568{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-//            }else if self.view.frame.size.width == 667{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -137,17 +94,8 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
             
         } else {
-//            if self.view.frame.size.width == 320{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }else if self.view.frame.size.width == 375{
-//                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
             rect.size.width = self.view.frame.size.width
@@ -157,8 +105,6 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
         }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
@@ -169,57 +115,10 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    func updateSequencesList (user:User) {
-        let fetchRequest = NSFetchRequest(entityName: "Sequence")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        var predicateArray:[NSPredicate] = [predicateOne]
-        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        if filterParametar.location != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-            predicateArray.append(locationPredicate)
-        }
-        if filterParametar.levelName != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-            predicateArray.append(levelPredicate)
-        }
-        if filterParametar.zoneName != "All" {
-            let zonePredicate = NSPredicate(format: "sequenceZone == %@", filterParametar.zoneName)
-            predicateArray.append(zonePredicate)
-        }
-        if filterParametar.categoryName != "All" {
-            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", filterParametar.categoryName)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-            sequences = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        
-//        let fetResults = appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-//        if let results = fetResults {
-//            sequences = results
-//        } else {
-//            
-//        }
     }
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
@@ -251,38 +150,10 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
         }
         
     }
-
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
 }
 
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        var address:[UInt8] = []
-//        if sequences[indexPath.row].isBroadcast.boolValue {
-//            address = [0xFF, 0xFF, 0xFF]
-//        } else if sequences[indexPath.row].isLocalcast.boolValue {
-//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), 0xFF]
-//        } else {
-//            address = [UInt8(Int(sequences[indexPath.row].gateway.addressOne)), UInt8(Int(sequences[indexPath.row].gateway.addressTwo)), UInt8(Int(sequences[indexPath.row].address))]
-//        }
-//        if let cycles = sequences[indexPath.row].sequenceCycles as? Int {
-//            if cycles >= 0 && cycles <= 255 {
-//                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: UInt8(cycles)), gateway: sequences[indexPath.row].gateway)
-//            }
-//        } else {
-//            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[indexPath.row].sequenceId), cycle: 0x00), gateway: sequences[indexPath.row].gateway)
-//        }
-    }
+
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
@@ -412,62 +283,3 @@ extension SequencesViewController: UICollectionViewDataSource {
 }
 
 
-class SequenceCollectionViewCell: UICollectionViewCell {
-    
-    @IBOutlet weak var sequenceTitle: UILabel!
-    @IBOutlet weak var sequenceImageView: UIImageView!
-    @IBOutlet weak var sequenceButton: UIButton!
-    var imageOne:UIImage?
-    var imageTwo:UIImage?
-    func getImagesFrom(sequence:Sequence) {
-        if let sequenceImage = UIImage(data: sequence.sequenceImageOne) {
-            imageOne = sequenceImage
-        }
-        
-        if let sequenceImage = UIImage(data: sequence.sequenceImageTwo) {
-            imageTwo = sequenceImage
-        }
-        sequenceImageView.image = imageOne
-        setNeedsDisplay()
-    }
-//    override var highlighted: Bool {
-//        willSet(newValue) {
-//            if newValue {
-//                sequenceImageView.image = imageTwo
-//                setNeedsDisplay()
-//                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "changeImageToNormal", userInfo: nil, repeats: false)
-//            }
-//        }
-//        didSet {
-//            print("highlighted = \(highlighted)")
-//        }
-//    }
-    func commandSentChangeImage() {
-        sequenceImageView.image = imageTwo
-        setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SequenceCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
-    }
-    func changeImageToNormal () {
-        sequenceImageView.image = imageOne
-        setNeedsDisplay()
-    }
-    override func drawRect(rect: CGRect) {        
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 5.0, height: 5.0))
-        path.addClip()
-        path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        path.stroke()
-    }
-}

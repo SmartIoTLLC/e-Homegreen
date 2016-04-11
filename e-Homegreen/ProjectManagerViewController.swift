@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
     
@@ -55,17 +54,11 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             addButton.hidden = true
         }
         
-        updateUserList()
+        users = DatabaseUserController.shared.getAllUsers()
         
         // Do any additional setup after loading the view.
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
+
     @IBAction func addUser(sender: AnyObject) {
         showAddUser(nil).delegate = self
     }
@@ -128,22 +121,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func reloadData(){
-        updateUserList()
+        users = DatabaseUserController.shared.getAllUsers()
         usersTableView.reloadData()
-    }
-    
-    func updateUserList () {
-        users = []
-        let fetchRequest = NSFetchRequest(entityName: "User")
-        let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne]
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
-            users = fetResults!
-        } catch  {
-            
-        }
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
