@@ -85,11 +85,12 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         
         // Do any additional setup after loading the view.
     }
+
     
-    override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        levelFromFilter = levelName
-        zoneFromFilter = zoneName
-        categoryFromFilter = categoryName
+    override func sendFilterParametar(filterParametar: FilterItem) {
+        levelFromFilter = filterParametar.levelName
+        zoneFromFilter = filterParametar.zoneName
+        categoryFromFilter = filterParametar.categoryName
         updateFlagList()
         flagTableView.reloadData()
     }
@@ -101,11 +102,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             broadcastSwitch.on = false
         }
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
     func refreshFlagList() {
         updateFlagList()
@@ -249,10 +246,6 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
     @IBAction func btnEdit(sender: AnyObject) {
         
     }

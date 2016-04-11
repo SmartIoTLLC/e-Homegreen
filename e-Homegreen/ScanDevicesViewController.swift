@@ -30,9 +30,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
     var devices:[Device] = []
     var gateway:Gateway?
     
-    var levelFromFilter:String = "All"
-    var zoneFromFilter:String = "All"
-    var categoryFromFilter:String = "All"
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
     
     func endEditingNow(){
         rangeFrom.resignFirstResponder()
@@ -66,12 +64,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         //
         rangeFrom.inputAccessoryView = keyboardDoneButtonView
         rangeTo.inputAccessoryView = keyboardDoneButtonView
+        
+         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
     }
     
-    override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        levelFromFilter = level
-        zoneFromFilter = zone
-        categoryFromFilter = category
+    override func sendFilterParametar(filterParametar: FilterItem) {
+        self.filterParametar = filterParametar
         refreshDeviceList()
     }
     
@@ -117,15 +115,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, UITableV
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
-        if levelFromFilter != "All" {
-            predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(integer: Int(levelFromFilter)!)))
+        if filterParametar.levelName != "All" {
+            predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId)))
         }
-        if zoneFromFilter != "All" {
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: Int(zoneFromFilter)!))
+        if filterParametar.zoneName != "All" {
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
             predicateArray.append(zonePredicate)
         }
-        if categoryFromFilter != "All" {
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: Int(categoryFromFilter)!))
+        if filterParametar.categoryName != "All" {
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
             predicateArray.append(categoryPredicate)
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)

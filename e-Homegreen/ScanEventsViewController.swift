@@ -88,10 +88,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         // Do any additional setup after loading the view.
     }
     
-    override func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
-        levelFromFilter = levelName
-        zoneFromFilter = zoneName
-        categoryFromFilter = categoryName
+    override func sendFilterParametar(filterParametar: FilterItem) {
+        levelFromFilter = filterParametar.levelName
+        zoneFromFilter = filterParametar.zoneName
+        categoryFromFilter = filterParametar.categoryName
         updateEventList()
         eventTableView.reloadData()
     }

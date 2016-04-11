@@ -32,12 +32,15 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-//    var locationSearchText = ["", "", "", "", "", "", ""]
     var userLogged:User?
     
     var panRecognizer:UIPanGestureRecognizer!
     var panStartPoint:CGPoint?
     var startingBottomConstraint:CGFloat?
+    
+    @IBOutlet weak var selectLabel: UILabel!
+    @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
+    
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -959,7 +962,27 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         })
         
     }
-
     
+    
+    @IBAction func zoneCategoryControlSlider(sender: AnyObject) {
+    }
 
+    @IBAction func on(sender: AnyObject) {
+        
+    }
+    
+    @IBAction func off(sender: AnyObject) {
+        
+    }
+
+    @IBAction func changeZoneCategory(sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+           selectLabel.text = "Select Zone To Control"
+        case 1:
+            selectLabel.text = "Select Category To Control"
+        default:
+            break;
+        }
+    }
 }

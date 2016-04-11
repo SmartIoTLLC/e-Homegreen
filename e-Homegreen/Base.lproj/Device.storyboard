@@ -1436,17 +1436,26 @@
                                                 <state key="normal" title="ON">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="on:" destination="Uhp-dG-rvO" eventType="touchUpInside" id="Yml-A9-7uf"/>
+                                                </connections>
                                             </button>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3Em-BI-Ix1">
                                                 <rect key="frame" x="6" y="57" width="308" height="31"/>
+                                                <connections>
+                                                    <action selector="zoneCategoryControlSlider:" destination="Uhp-dG-rvO" eventType="valueChanged" id="dcP-1c-GA6"/>
+                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CY0-LN-aYO" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                                 <rect key="frame" x="165" y="92" width="147" height="30"/>
                                                 <state key="normal" title="OFF">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="off:" destination="Uhp-dG-rvO" eventType="touchUpInside" id="hLZ-Yr-jEd"/>
+                                                </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="select" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Select Zone To Control" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
                                                 <rect key="frame" x="8" y="35" width="38" height="19"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1474,6 +1483,9 @@
                                                     <segment title="Category"/>
                                                 </segments>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <action selector="changeZoneCategory:" destination="Uhp-dG-rvO" eventType="valueChanged" id="Y6I-FC-QNN"/>
+                                                </connections>
                                             </segmentedControl>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1570,6 +1582,8 @@
                         <outlet property="bottomView" destination="H0t-8Z-WMG" id="7wb-RF-i3T"/>
                         <outlet property="deviceCollectionView" destination="HnO-ii-vqM" id="7WQ-ad-oK8"/>
                         <outlet property="menuButton" destination="mkr-Hy-meR" id="C6l-cK-dh4"/>
+                        <outlet property="selectLabel" destination="DeE-69-Kcm" id="LVb-Ws-IWV"/>
+                        <outlet property="zoneCategoryControl" destination="3An-Xt-4si" id="LER-ft-bvU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f12-kK-PUm" userLabel="First Responder" sceneMemberID="firstResponder"/>

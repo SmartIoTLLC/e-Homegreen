@@ -10,9 +10,7 @@ import Foundation
 
 
 extension UIViewController {
-    func sendFilterParametar(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String){
-        
-    }
+
     func sendFilterParametar(filterParametar:FilterItem){
         
     }

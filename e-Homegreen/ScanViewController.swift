@@ -7,7 +7,22 @@
 // UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
 
 import UIKit
-import CoreData
+
+    enum ChoosedTab {
+        case Devices, Scenes, Events, Sequences
+        func returnStringDescription() -> String {
+            switch self {
+            case .Devices:
+                return ""
+            case .Scenes:
+                return "Scene"
+            case .Events:
+                return "Event"
+            case .Sequences:
+                return "Sequence"
+            }
+        }
+    }
 
 class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate{
     
@@ -20,46 +35,19 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanSequencesViewController: ScanSequencesesViewController!
     var scanEventsViewController: ScanEventsViewController!
     var scanTimersViewController: ScanTimerViewController!
-//    var importZoneViewController:ImportZoneViewController!
-//    var importCategoryViewController: ImportCategoryViewController!
     var scanFlagsViewController: ScanFlagViewController!
     
     var pullDown = PullDownView()
     
     var toViewController:UIViewController = UIViewController()
-    
-//    var appDel:AppDelegate!
-//    var error:NSError? = nil
-//    var choosedTab:ChoosedTab = .Devices
-    var senderButton:UIButton?
 
-    
-//    enum ChoosedTab {
-//        case Devices, Scenes, Events, Sequences, Zones, Categories
-//        func returnStringDescription() -> String {
-//            switch self {
-//            case .Devices:
-//                return ""
-//            case .Scenes:
-//                return "Scene"
-//            case .Events:
-//                return "Event"
-//            case .Sequences:
-//                return "Sequence"
-//            case .Zones:
-//                return "Zones"
-//            case .Categories:
-//                return "Categories"
-//            }
-//        }
-//    }
+    var senderButton:UIButton?
     
     var isPresenting:Bool = true
     var gateway:Gateway?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
 
@@ -68,8 +56,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
         scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier("ScanTimers") as! ScanTimerViewController
-//        importZoneViewController = storyboard.instantiateViewControllerWithIdentifier("ImportZone") as! ImportZoneViewController
-//        importCategoryViewController = storyboard.instantiateViewControllerWithIdentifier("ImportCategory") as! ImportCategoryViewController
         scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanFlags") as! ScanFlagViewController
         
         toViewController = scanDeviceViewController
@@ -79,8 +65,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         scanSequencesViewController.gateway = gateway
         scanEventsViewController.gateway = gateway
         scanTimersViewController.gateway = gateway
-//        importZoneViewController.gateway = gateway
-//        importCategoryViewController.gateway = gateway
         scanFlagsViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
@@ -93,34 +77,21 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
-        
-//        let swipeDismiss = UISwipeGestureRecognizer(target: self, action: "userSwiped:")
-//        swipeDismiss.direction = UISwipeGestureRecognizerDirection.Right
-//        self.view.addGestureRecognizer(swipeDismiss)
-        // Do any additional setup after loading the view.
+
     }
     //FIXME: Radi i sada ali mozda da se promeni na toViewController.sendFilterParametar(filterItem)
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
+    
     func pullDownSearchParametars(filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Database)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
-        toViewController.sendFilterParametar(filterParametar.location, level: "\(filterParametar.levelId)", zone: "\(filterParametar.zoneId)", category: "\(filterParametar.categoryId)", levelName: filterParametar.levelName, zoneName: filterParametar.zoneName, categoryName: filterParametar.categoryName)
-//        toViewController.sendFilterParametar(filterItem)
+        toViewController.sendFilterParametar(filterItem)
         pullDown.drawMenu(filterParametar)
     }
     override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            //            if self.view.frame.size.width == 568{
-            //                sectionInsets = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
-            //            }else if self.view.frame.size.width == 667{
-            //                sectionInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-            //            }else{
-            //                sectionInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            //            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-//            rect.origin.y = 0
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -128,19 +99,10 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
             
         } else {
-            //            if self.view.frame.size.width == 320{
-            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            //            }else if self.view.frame.size.width == 375{
-            //                sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            //            }else{
-            //                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            //            }
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()
-//            rect.origin.y = 0
             rect.size.width = self.view.frame.size.width
             rect.size.height = self.view.frame.size.height
             pullDown.frame = rect
@@ -148,17 +110,9 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             pullDown.customDelegate = self
             self.view.addSubview(pullDown)
             pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
         }
         pullDown.drawMenu(filterParametar)
     }
-
-    
-//    func userSwiped (gesture:UISwipeGestureRecognizer) {
-////        self.performSegueWithIdentifier("scanUnwind", sender: self)
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -203,12 +157,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-//    if let menuItem = sender as? MenuItem {
-
-//    }
     
     func saveText(text: String, id: Int) {
-        print(Array(text.characters.reverse()))
         senderButton?.setTitle(text, forState: .Normal)
         
         switch text {
@@ -220,10 +170,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             toViewController = scanEventsViewController
         case "Sequences":
             toViewController = scanSequencesViewController
-//        case "Zones":
-//            toViewController = importZoneViewController
-//        case "Categories":
-//            toViewController = importCategoryViewController
         case "Timers":
             toViewController = scanTimersViewController
         case "Flag":
@@ -243,8 +189,5 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
             childViewControllers.last!.viewDidAppear(true)
         }
     }
-    
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
+
 }
