@@ -27,11 +27,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Timers)
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        refreshTimerList()
-    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -52,50 +47,27 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             
         }
         refreshTimerList()
-        
-
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
     }
+    
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        refreshTimerList()
+    }
+    
     func refreshTimerList() {
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }
-    func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        pullDown.drawMenu(filterParametar)
-//        updateTimersList()
-        timersCollectionView.reloadData()
-    }
-//    override func viewDidAppear(animated: Bool) {
-//        refreshLocalParametars()
-//        addObservers()
-//        refreshTimerList()
-//    }
-//    override func viewWillDisappear(animated: Bool) {
-//        removeObservers()
-//    }
-//    func addObservers() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-//    }
-//    func removeObservers() {
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshTimer, object: nil)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-//    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
+    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             var rect = self.pullDown.frame
@@ -128,19 +100,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-//    
-//    var locationSearch:String = "All"
-//    var zoneSearch:String = "All"
-//    var levelSearch:String = "All"
-//    var categorySearch:String = "All"
-//    var zoneSearchName:String = "All"
-//    var levelSearchName:String = "All"
-//    var categorySearchName:String = "All"
-//    
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -202,6 +161,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
+    
     func changeImageInCell(button:UIButton) {
         let pointInTable = button.convertPoint(button.bounds.origin, toView: timersCollectionView)
         let indexPath = timersCollectionView.indexPathForItemAtPoint(pointInTable)
@@ -225,7 +185,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             timersCollectionView.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: Selector("closeSideMenu"))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(TimersViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
             timersCollectionView.userInteractionEnabled = false
             sidebarMenuOpen = true
@@ -233,11 +193,17 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     func closeSideMenu(){
-        
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
             self.revealViewController().revealToggleAnimated(true)
         }
+    }
         
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
 
 }
@@ -368,7 +334,6 @@ extension TimersViewController: UICollectionViewDataSource {
         }
         
         // cancel start pause resume
-        //
         cell.timerImageView.layer.cornerRadius = 5
         cell.timerImageView.clipsToBounds = true
         cell.layer.cornerRadius = 5

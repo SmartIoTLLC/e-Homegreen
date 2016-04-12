@@ -226,16 +226,10 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
 
     override func viewWillAppear(animated: Bool) {
         gatewayTableView.reloadData()
-        gatewayTableView.userInteractionEnabled = true
     }
     
     @IBAction func btnSaveConnection(sender: AnyObject) {
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func backButton(sender: AnyObject) {
@@ -347,7 +341,6 @@ extension LocationViewController: UITableViewDataSource {
     
     func scanDevice(gateway: Gateway) {
         performSegueWithIdentifier("scan", sender: gateway)
-        gatewayTableView.userInteractionEnabled = false
     }
     
     func deleteGateway(gateway: Gateway) {

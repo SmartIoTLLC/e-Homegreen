@@ -67,6 +67,8 @@
 		22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22506E8C1CB7DB37004EB47A /* ScenesCell.swift */; };
 		22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */; };
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
+		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
+		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
@@ -369,6 +371,8 @@
 		22506E8C1CB7DB37004EB47A /* ScenesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenesCell.swift; sourceTree = "<group>"; };
 		22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseScenesController.swift; sourceTree = "<group>"; };
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
+		225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserTimerController.swift; sourceTree = "<group>"; };
+		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -788,6 +792,7 @@
 			children = (
 				22495D2B1CAA80F20034FC94 /* Users.storyboard */,
 				223362961CA2E624006C80C4 /* UsersViewController.swift */,
+				225469011CBD19DD00473BC7 /* UsersCell.swift */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -1120,6 +1125,7 @@
 				22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */,
 				222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */,
 				222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */,
+				225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1749,6 +1755,7 @@
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
+				225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
@@ -1850,6 +1857,7 @@
 				73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */,
 				731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
+				225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */,

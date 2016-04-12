@@ -262,13 +262,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if getnameinfo(UnsafePointer(theAddress.bytes), socklen_t(theAddress.length),
                     &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
                         if let numAddress = String.fromCString(hostname) {
-                            print("1234")
                             return numAddress
                         }
                 }
             }
         }
-        print("12345")
         return "255.255.255.255"
     }
     

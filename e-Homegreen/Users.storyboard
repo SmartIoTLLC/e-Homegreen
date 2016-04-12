@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TGc-rv-6X0">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="89" width="320" height="479"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hug-G2-rL3">
                                     <size key="itemSize" width="150" height="180"/>
@@ -30,14 +30,14 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="usersCell" id="dfJ-aU-zsa" customClass="TimerCollectionViewCell" customModule="e_Homegreen" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="usersCell" id="dfJ-aU-zsa" customClass="TimerUserCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bzr-0R-aST" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bzr-0R-aST" userLabel="Timer Button Left" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="142" width="63" height="30"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -48,7 +48,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uGK-rP-6CG" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uGK-rP-6CG" userLabel="Timer Button Right" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="79" y="142" width="63" height="30"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -81,7 +81,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Fhq-Qg-fFz">
-                                                    <rect key="frame" x="24" y="34" width="103" height="103"/>
+                                                    <rect key="frame" x="38" y="34" width="75" height="75"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="Fhq-Qg-fFz" secondAttribute="height" multiplier="1:1" id="zxS-lq-meI"/>
                                                     </constraints>
@@ -100,6 +100,27 @@
                                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QTN-Ll-4vU">
+                                                    <rect key="frame" x="8" y="117" width="134" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="rate">
+                                                            <real key="value" value="20"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                                            <real key="value" value="10"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -107,29 +128,37 @@
                                             <constraint firstAttribute="trailing" secondItem="0dh-bE-a8t" secondAttribute="trailing" constant="8" id="3aa-dS-o0Y"/>
                                             <constraint firstItem="uGK-rP-6CG" firstAttribute="leading" secondItem="Bzr-0R-aST" secondAttribute="trailing" constant="8" id="C2L-Hp-cck"/>
                                             <constraint firstItem="Bzr-0R-aST" firstAttribute="leading" secondItem="dfJ-aU-zsa" secondAttribute="leading" constant="8" id="C3e-2U-9TR"/>
-                                            <constraint firstItem="uGK-rP-6CG" firstAttribute="top" secondItem="Fhq-Qg-fFz" secondAttribute="bottom" constant="5" id="G91-dN-iTr"/>
                                             <constraint firstItem="uGK-rP-6CG" firstAttribute="width" secondItem="Bzr-0R-aST" secondAttribute="width" id="HPg-kN-iwx"/>
                                             <constraint firstAttribute="bottom" secondItem="uGK-rP-6CG" secondAttribute="bottom" constant="8" id="Jfu-Ug-N53"/>
                                             <constraint firstItem="5sa-lE-FPa" firstAttribute="top" secondItem="dfJ-aU-zsa" secondAttribute="top" constant="8" id="KlT-Hf-Nq5"/>
+                                            <constraint firstItem="0dh-bE-a8t" firstAttribute="top" secondItem="QTN-Ll-4vU" secondAttribute="bottom" constant="8" id="N18-1Z-opt"/>
                                             <constraint firstItem="uGK-rP-6CG" firstAttribute="height" secondItem="Bzr-0R-aST" secondAttribute="height" id="SbV-ph-wXh"/>
                                             <constraint firstItem="0dh-bE-a8t" firstAttribute="leading" secondItem="dfJ-aU-zsa" secondAttribute="leading" constant="8" id="SmU-eU-hS2"/>
                                             <constraint firstItem="5sa-lE-FPa" firstAttribute="leading" secondItem="dfJ-aU-zsa" secondAttribute="leading" id="WsQ-Ot-Qki"/>
+                                            <constraint firstItem="QTN-Ll-4vU" firstAttribute="top" secondItem="Fhq-Qg-fFz" secondAttribute="bottom" constant="8" id="Y0s-1m-mVx"/>
                                             <constraint firstAttribute="trailing" secondItem="uGK-rP-6CG" secondAttribute="trailing" constant="8" id="bRB-ik-DJQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="QTN-Ll-4vU" secondAttribute="trailing" constant="8" id="d28-xL-cL1"/>
                                             <constraint firstItem="Fhq-Qg-fFz" firstAttribute="centerX" secondItem="dfJ-aU-zsa" secondAttribute="centerX" id="hll-ve-ESR"/>
                                             <constraint firstAttribute="bottom" secondItem="0dh-bE-a8t" secondAttribute="bottom" constant="8" id="lel-Jl-cIL"/>
                                             <constraint firstAttribute="bottom" secondItem="Bzr-0R-aST" secondAttribute="bottom" constant="8" id="pBM-Sw-qkR"/>
                                             <constraint firstItem="Fhq-Qg-fFz" firstAttribute="top" secondItem="5sa-lE-FPa" secondAttribute="bottom" constant="5" id="uxf-8b-GCb"/>
                                             <constraint firstAttribute="trailing" secondItem="5sa-lE-FPa" secondAttribute="trailing" id="w8Z-mk-l6p"/>
+                                            <constraint firstItem="QTN-Ll-4vU" firstAttribute="leading" secondItem="dfJ-aU-zsa" secondAttribute="leading" constant="8" id="xQc-6F-ufb"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="timerButton" destination="0dh-bE-a8t" id="Hyh-t5-70t"/>
-                                            <outlet property="timerButtonLeft" destination="uGK-rP-6CG" id="eAj-mG-IBU"/>
-                                            <outlet property="timerButtonRight" destination="Bzr-0R-aST" id="zzc-LK-pSo"/>
-                                            <outlet property="timerImageView" destination="Fhq-Qg-fFz" id="2VK-9F-WzL"/>
-                                            <outlet property="timerTitle" destination="5sa-lE-FPa" id="9tR-Yj-gpX"/>
+                                            <outlet property="imageTimer" destination="Fhq-Qg-fFz" id="diK-MN-jdf"/>
+                                            <outlet property="pauseButton" destination="Bzr-0R-aST" id="zK1-cf-PLQ"/>
+                                            <outlet property="playButton" destination="0dh-bE-a8t" id="DXy-Qd-RGX"/>
+                                            <outlet property="stopButton" destination="uGK-rP-6CG" id="n73-DN-cc6"/>
+                                            <outlet property="timeLabel" destination="QTN-Ll-4vU" id="NjF-21-RyF"/>
+                                            <outlet property="titleLabel" destination="5sa-lE-FPa" id="mUi-2Q-XHw"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="5K7-UD-d6c" id="A9X-kX-QIF"/>
+                                    <outlet property="delegate" destination="5K7-UD-d6c" id="KFC-pX-zjd"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -137,7 +166,7 @@
                             <constraint firstItem="krM-GO-GTp" firstAttribute="top" secondItem="TGc-rv-6X0" secondAttribute="bottom" id="0sI-Qw-uIP"/>
                             <constraint firstItem="krM-GO-GTp" firstAttribute="top" secondItem="tNI-Cu-9bU" secondAttribute="bottom" id="7lu-nL-F6r"/>
                             <constraint firstItem="tNI-Cu-9bU" firstAttribute="leading" secondItem="pv3-LN-bte" secondAttribute="leading" id="GK6-Pi-mzi"/>
-                            <constraint firstItem="TGc-rv-6X0" firstAttribute="top" secondItem="KCv-C7-65n" secondAttribute="bottom" id="Tbe-Ak-9p7"/>
+                            <constraint firstItem="TGc-rv-6X0" firstAttribute="top" secondItem="KCv-C7-65n" secondAttribute="bottom" constant="25" id="Tbe-Ak-9p7"/>
                             <constraint firstItem="TGc-rv-6X0" firstAttribute="leading" secondItem="pv3-LN-bte" secondAttribute="leading" id="ch2-xQ-PWt"/>
                             <constraint firstAttribute="trailing" secondItem="TGc-rv-6X0" secondAttribute="trailing" id="dCN-Qf-Tw2"/>
                             <constraint firstItem="tNI-Cu-9bU" firstAttribute="top" secondItem="pv3-LN-bte" secondAttribute="top" id="mqD-5K-QBw"/>

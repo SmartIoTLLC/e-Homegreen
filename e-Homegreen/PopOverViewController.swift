@@ -63,7 +63,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     var levelList:[Zone] = []
     var zoneList:[Zone] = []
     var categoryList:[Category] = []
-    var gatewayList:[Gateway] = []
+    var timerList:[Timer] = []
     var sceneList:[String] = ["Scene 1", "Scene 2", "Scene 3", "All"]
     var chooseList:[TableList] = [TableList(name: "Devices", id: -1),
         TableList(name: "Scenes", id: -1),
@@ -77,7 +77,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Yearly", id: 7),
         TableList(name: "Hourly", id: 7),
         TableList(name: "Minutely", id: 7),
-        TableList(name: "Countdown", id: 7)]
+        TableList(name: "Timer", id: 7),
+        TableList(name: "Stopwatch/User", id: 7)]
     var locationAddOption:[TableList] = [TableList(name: TypeOfLocationDevice.Gateway.description, id: -1),
         TableList(name: TypeOfLocationDevice.Surveillance.description, id: -1)]
     var tableList:[AnyObject] = []
@@ -391,6 +392,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         case PlayOption = 24
         case RunOption = 25
         case LocationOptions = 26
+        case Timers = 27
     }
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Location.rawValue {
@@ -433,6 +435,10 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             updateDeviceList("RunOption")
         } else if indexTab == PopOver.LocationOptions.rawValue {
             tableList = locationAddOption
+        } else if indexTab == PopOver.Timers.rawValue {
+            for item in timerList{
+               tableList.append(TableList(name: item.timerName, id: Int(item.timerId)))
+            }
         } else if indexTab == PopOver.ControlType.rawValue {
             if let type = device?.type {
                 changeControlType(type)

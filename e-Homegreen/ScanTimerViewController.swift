@@ -85,8 +85,6 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
         localcastSwitch.tag = 200
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        
-        // Do any additional setup after loading the view.
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -179,19 +177,11 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
     
     @IBAction func btnEdit(sender: AnyObject) {
     }
+    
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
@@ -258,21 +248,6 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-//        if let timer = selected as? Timer {
-//            appDel.managedObjectContext!.deleteObject(timer)
-//            IDedit.text = ""
-//            nameEdit.text = ""
-//            devAddressThree.text = ""
-//            btnLevel.setTitle("--", forState: UIControlState.Normal)
-//            btnZone.setTitle("--", forState: UIControlState.Normal)
-//            btnCategory.setTitle("--", forState: UIControlState.Normal)
-//            broadcastSwitch.on = false
-//            localcastSwitch.on = false
-//            btnType.setTitle("--", forState: UIControlState.Normal)
-//            saveChanges()
-//            refreshTimerList()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
-//        }
         if timers.count != 0 {
             for timer in timers {
                 appDel.managedObjectContext!.deleteObject(timer)

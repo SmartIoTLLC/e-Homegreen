@@ -21,27 +21,30 @@ class DatabaseTimersController: NSObject {
             let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-            var predicateArray:[NSPredicate] = [predicateOne]
-            predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+            
+            var predicateArrayOr:[NSPredicate] = [NSPredicate(format: "type != %@", "Stopwatch/User")]
+            predicateArrayOr.append(NSPredicate(format: "timerCategory != %@", "User"))
+            let compoundPredicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: predicateArrayOr)
+
+            var predicateArrayAnd:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
+            predicateArrayAnd.append(NSPredicate(format: "gateway.location.user == %@", user))
+            
             if filterParametar.location != "All" {
-                let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-                predicateArray.append(locationPredicate)
+                predicateArrayAnd.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
             }
             if filterParametar.levelName != "All" {
-                let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-                predicateArray.append(levelPredicate)
+                predicateArrayAnd.append(NSPredicate(format: "entityLevel == %@", filterParametar.levelName))
             }
             if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "timeZone == %@", filterParametar.zoneName)
-                predicateArray.append(zonePredicate)
+                predicateArrayAnd.append(NSPredicate(format: "timeZone == %@", filterParametar.zoneName))
             }
             if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "timerCategory == %@", filterParametar.categoryName)
-                predicateArray.append(categoryPredicate)
+                predicateArrayAnd.append(NSPredicate(format: "timerCategory == %@", filterParametar.categoryName))
             }
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate2 = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArrayAnd)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [compoundPredicate1, compoundPredicate2])
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
                 return fetResults!
@@ -50,5 +53,47 @@ class DatabaseTimersController: NSObject {
             }
         }
         return []
+    }
+    
+    func getUserTimers(location:Location) -> [Timer]{
+        let fetchRequest = NSFetchRequest(entityName: "Timer")
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location == %@", location))
+        predicateArray.append(NSPredicate(format: "type == %@", "Stopwatch/User"))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            return fetResults!
+        } catch _ as NSError {
+            abort()
+        }
+        return []
+    }
+    
+    func getTimerByIdAndName(location:Location, name:String, id:Int) -> Timer?{
+        let fetchRequest = NSFetchRequest(entityName: "Timer")
+
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = [predicateOne]
+        predicateArray.append(NSPredicate(format: "gateway.location == %@", location))
+        predicateArray.append(NSPredicate(format: "type == %@", "Stopwatch/User"))
+        predicateArray.append(NSPredicate(format: "timerName == %@", name))
+        predicateArray.append(NSPredicate(format: "timerId == %@", NSNumber(integer: id)))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            return fetResults![0]
+        } catch _ as NSError {
+            abort()
+        }
+        return nil
     }
 }

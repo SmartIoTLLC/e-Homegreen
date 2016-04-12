@@ -20,38 +20,19 @@ class SceneCollectionCell: UICollectionViewCell {
         sceneCellLabel.text = getName(scene, filterParametar: filterParametar)
     }
     
-    func getName(scene:Scene, filterParametar:FilterItem) -> String?{
-        var sceneLocation = ""
-        var sceneLevel = ""
-        var sceneZone = ""
-        
-        sceneLocation = scene.gateway.location.name!
-        
-        if let level = scene.entityLevel{
-            sceneLevel = level
+    func getName(scene:Scene, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if scene.gateway.location.name != filterParametar.location{
+            name += scene.gateway.location.name! + " "
         }
-        if let zone = scene.sceneZone{
-            sceneZone = zone
+        if scene.entityLevel != filterParametar.levelName{
+            name += scene.entityLevel! + " "
         }
-        
-        var sceneTitle = ""
-        
-        if filterParametar.location == "All" {
-            sceneTitle = sceneLocation + " " + sceneLevel + " " + sceneZone + " " + scene.sceneName
-        }else{
-            if filterParametar.location == "All"{
-                sceneTitle += " " + sceneLocation
-            }
-            if filterParametar.levelName == "All"{
-                sceneTitle += " " + sceneLevel
-            }
-            if filterParametar.zoneName == "All"{
-                sceneTitle += " " + sceneZone
-            }
-            sceneTitle += " " + scene.sceneName
+        if scene.sceneZone != filterParametar.zoneName{
+            name += scene.sceneZone! + " "
         }
-
-        return sceneTitle
+        name += scene.sceneName
+        return name
     }
     
     func getImagesFrom(scene:Scene) {

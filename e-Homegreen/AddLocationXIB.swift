@@ -89,16 +89,18 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
-                let location = CLLocation(latitude: Double(latitude), longitude: Double(longitude))
+                let locationCoordinate = CLLocation(latitude: Double(latitude), longitude: Double(longitude))
                 
-                annotation.coordinate = location.coordinate
+                annotation.coordinate = locationCoordinate.coordinate
                 locationMap.addAnnotation(annotation)
                 self.radius = Double(radius)
                 radiusLabel.text = "Radius: \(Int(radius))"
                 radiusSlider.value = Float(radius)
-                addRadiusCircle(location)
+                addRadiusCircle(locationCoordinate)
                 
-                let center = location.coordinate
+                timerLabel.text = location.timer?.timerName
+                
+                let center = locationCoordinate.coordinate
                 let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
                 
                 self.locationMap.setRegion(region, animated: true)
@@ -263,7 +265,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 6
+        popoverVC.indexTab = 27
+        popoverVC.timerList = DatabaseTimersController.shared.getUserTimers(location!)
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -271,6 +274,15 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             popoverController.sourceRect = sender.bounds
             popoverController.backgroundColor = UIColor.lightGrayColor()
             presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func saveText(text: String, id: Int) {
+        if let location = location{
+            if let timer = DatabaseTimersController.shared.getTimerByIdAndName(location, name: text, id: id){
+                location.timer = timer
+                timerLabel.text = location.timer?.timerName
+            }
         }
     }
     

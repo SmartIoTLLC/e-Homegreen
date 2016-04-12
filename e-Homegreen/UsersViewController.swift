@@ -23,13 +23,10 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "TimerCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var locationSearchText = ["", "", "", "", "", "", ""]
-    func pullDownSearchParametars(gateway: String, level: String, zone: String, category: String, levelName: String, zoneName: String, categoryName: String) {
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
 
-    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -49,15 +46,58 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        refreshTimerList()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
 
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        // Do any additional setup after loading the view.
+        
+    }
+    
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        refreshTimerList()
+    }
+    
+    func refreshTimerList() {
+        timers = DatabaseUserTimerController.shared.getTimers(filterParametar)
+        usersCollectionView.reloadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            
+        } else {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        }
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        usersCollectionView.reloadData()
+        pullDown.drawMenu(filterParametar)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -95,11 +135,6 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
             self.revealViewController().revealToggleAnimated(true)
         }
         
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }
@@ -141,33 +176,10 @@ extension UsersViewController: UICollectionViewDataSource {
 //    }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("usersCell", forIndexPath: indexPath) as! TimerCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("usersCell", forIndexPath: indexPath) as! TimerUserCell
         
-//        var timerLevel = ""
-//        var timerZone = ""
-//        let timerLocation = timers[indexPath.row].gateway.name
-//        
-//        if let level = timers[indexPath.row].entityLevel{
-//            timerLevel = level
-//        }
-//        if let zone = timers[indexPath.row].timeZone{
-//            timerZone = zone
-//        }
-//        
-//        if locationSearchText[0] == "All" {
-//            cell.timerTitle.text = timerLocation + " " + timerLevel + " " + timerZone + " " + timers[indexPath.row].timerName
-//        }else{
-//            var timerTitle = ""
-//            if locationSearchText[4] == "All"{
-//                timerTitle += " " + timerLevel
-//            }
-//            if locationSearchText[5] == "All"{
-//                timerTitle += " " + timerZone
-//            }
-//            timerTitle += " " + timers[indexPath.row].timerName
-//            cell.timerTitle.text = timerTitle
-//        }
-//        
+        cell.setItem(timers[indexPath.row], filterParametar:filterParametar)
+
 //        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
 //        longPress.minimumPressDuration = 0.5
 //        cell.timerTitle.userInteractionEnabled = true
@@ -232,15 +244,10 @@ extension UsersViewController: UICollectionViewDataSource {
 //                cell.timerButton.enabled = true
 //            }
 //        }
-//        
-//        // cancel start pause resume
-//        //
-//        cell.timerImageView.layer.cornerRadius = 5
-//        cell.timerImageView.clipsToBounds = true
-//        cell.layer.cornerRadius = 5
-//        cell.layer.borderColor = UIColor.grayColor().CGColor
-//        cell.layer.borderWidth = 0.5
+
         return cell
     }
 }
+
+
 
