@@ -8,13 +8,9 @@
 
 import UIKit
 
-class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, ImportPathDelegate {
+class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ImportPathDelegate {
 
     @IBOutlet weak var listTableView: UITableView!
-    
-    var isPresenting:Bool = true
-    
-    @IBOutlet weak var titleLabel: UILabel!
     
     var filteredArray:[PCCommand] = []
     
@@ -27,10 +23,11 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
-        self.transitioningDelegate = self
-        titleLabel.text = typeOfFile?.description
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+
+        self.navigationItem.title = typeOfFile?.description
         pcCommandFilter()
         // Do any additional setup after loading the view.
     }
@@ -59,11 +56,6 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("device_appCell", forIndexPath: indexPath) as? Device_AppCell{
             cell.setItem(filteredArray[indexPath.row])
@@ -91,7 +83,6 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     @IBAction func backButton(sender: AnyObject) {
-
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -104,50 +95,4 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
         listTableView.reloadData()
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.center.x += containerView!.bounds.size.width
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x -= containerView!.bounds.size.width
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.8, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.center.x += containerView!.bounds.size.width
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-    }
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-
-
 }

@@ -13,9 +13,7 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet weak var eventCollectionView: UICollectionView!
     @IBOutlet weak var broadcastSwitch: UISwitch!
     
-    var appDel:AppDelegate!
     var events:[Event] = []
-    var error:NSError? = nil
     var sidebarMenuOpen : Bool!
     
     var pullDown = PullDownView()
@@ -64,7 +62,6 @@ class EventsViewController: UIViewController, UIPopoverPresentationControllerDel
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
 
     }

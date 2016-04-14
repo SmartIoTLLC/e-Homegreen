@@ -9,16 +9,20 @@
 import UIKit
 import CoreData
 
-class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate {
+class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate, PullDownViewDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     
+    var pullDown = PullDownView()
+    
     @IBOutlet weak var pccontrolCollectionView: UICollectionView!
     var pcs:[Device] = []
     var appDel:AppDelegate?
+    
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .PCControl)
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -38,6 +42,8 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        updatePCList()
 
     }
     
@@ -48,9 +54,50 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         // Not sending zones and categories
-        pcs = fetchSortedPCRequest("", parentZone: 1, zone: 1, category: 1)
+        
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
-        // Do any additional setup after loading the view.
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            
+        } else {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        }
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        pccontrolCollectionView.reloadData()
+        pullDown.drawMenu(filterParametar)
+    }
+    
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+        updatePCList()
+    }
+    
+    func updatePCList(){
+        pcs = DatabaseDeviceController.shared.getPCs(filterParametar)
+        pccontrolCollectionView.reloadData()
     }
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
@@ -82,33 +129,10 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
     }
-
-    
-    func fetchSortedPCRequest (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> [Device] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
-        //        let predicate = NSPredicate(format: "gateway.name == %@", gatewayName)
-        let predicateOne = NSPredicate(format: "type == %@", ControlType.PC)
-        //        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateOne])
-        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne])
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        fetchRequest.predicate = predicateArray
-        do {
-            let fetResults = try appDel!.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]
-            return fetResults
-        } catch let error as NSError {
-            print("Unresolved error \(error), \(error.userInfo)")
-            abort()
-        }
-        return []
-    }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pccontrolCell", forIndexPath: indexPath) as? PCControlCell{
-            cell.setItem(pcs[indexPath.row], tag: indexPath.row)
+            cell.setItem(pcs[indexPath.row], tag: indexPath.row, filterParametar: filterParametar)
             return cell
         }
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionCell", forIndexPath: indexPath)
@@ -126,7 +150,16 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        showPCInterface(pcs[indexPath.row])
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showPCInterface(self.pcs[indexPath.row])
+        })
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
     
     @IBAction func changeSliderValue(sender: AnyObject) {

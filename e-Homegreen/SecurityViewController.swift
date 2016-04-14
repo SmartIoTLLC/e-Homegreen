@@ -56,8 +56,6 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        //                pullDown.scrollsToTop = false
-        //        self.view.addSubview(pullDown)
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
@@ -107,15 +105,19 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
         refreshSecurity()
     }
+    
     override func viewDidDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
+    
     override func viewWillLayoutSubviews() {
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
@@ -147,6 +149,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         }
         securities = tempSecurities
     }
+    
     func refreshSecurity() {
         updateSecurityList()
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -154,6 +157,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         lblAlarmState.text = "Alarm state: \(alarmState!)"
         securityCollectionView.reloadData()
     }
+    
     func refreshSecurityAlarmStateAndSecurityMode () {
         let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
         if let gateway = securities[0].gateway {
@@ -175,7 +179,6 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
             securities = fetResults!
-            print(securities.count)
             reorganizeSecurityArray()
         } catch let error1 as NSError {
             error = error1
@@ -183,6 +186,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
             abort()
         }
     }
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -192,6 +196,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
             abort()
         }
     }
+    
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
@@ -236,6 +241,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         }
         }
     }
+    
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         switch securities[tag].name {
@@ -280,6 +286,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     }
     
 }
+
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -397,41 +404,5 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 0.5
         return cell
-    }
-}
-class SecurityCollectionCell: UICollectionViewCell {
-    @IBOutlet weak var securityTitle: UILabel!
-    @IBOutlet weak var securityImageView: UIImageView!
-    @IBOutlet weak var securityButton: UIButton!
-    func setImageForSecuirity (image:UIImage) {
-        securityImageView.image = image
-        setNeedsDisplay()
-    }
-    override func drawRect(rect: CGRect) {
-        
-        let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
-            cornerRadii: CGSize(width: 5.0, height: 5.0))
-        path.addClip()
-        path.lineWidth = 2
-        
-        UIColor.lightGrayColor().setStroke()
-        
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
-        
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
-        path.stroke()
     }
 }

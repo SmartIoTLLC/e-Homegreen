@@ -55,6 +55,9 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+
     }
     
     func pullDownSearchParametars (filterItem:FilterItem) {

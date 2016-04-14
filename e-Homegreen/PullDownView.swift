@@ -11,7 +11,7 @@ import CoreData
 
 @objc protocol PullDownViewDelegate
 {
-    optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
+//    optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
     optional func pullDownSearchParametars (filterParametar: FilterItem)
 }
 
@@ -246,7 +246,6 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
             let levelName = "\(levelButton.titleLabel!.text!)"
             let zoneName = "\(zoneButton.titleLabel!.text!)"
             let categoryName = "\(categoryButton.titleLabel!.text!)"
-//            customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
             customDelegate?.pullDownSearchParametars?(FilterItem(location: locationButton.titleLabel!.text!, levelId: level, zoneId: zone, categoryId: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName))
         }
     }
@@ -258,7 +257,6 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let levelName = "\(levelButton.titleLabel!.text!)"
         let zoneName = "\(zoneButton.titleLabel!.text!)"
         let categoryName = "\(categoryButton.titleLabel!.text!)"
-//        customDelegate?.pullDownSearchParametars!(locationButton.titleLabel!.text!, level: level, zone: zone, category: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName)
         customDelegate?.pullDownSearchParametars?(FilterItem(location: locationButton.titleLabel!.text!, levelId: level, zoneId: zone, categoryId: category, levelName: levelName, zoneName: zoneName, categoryName: categoryName))
         self.setContentOffset(CGPointMake(0, self.frame.size.height - 2), animated: true)
     }
@@ -411,9 +409,9 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
-//                if let id = Int(fetResults![0].id!) {
-//                    return id
-//                }
+                if let id = fetResults![0].id as? Int {
+                    return id
+                }
             } else {
                 return 0
             }

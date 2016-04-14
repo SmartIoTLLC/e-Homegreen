@@ -40,6 +40,9 @@
 		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
 		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
+		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
+		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
+		22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
 		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
@@ -70,6 +73,8 @@
 		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
+		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
+		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
 		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
@@ -94,7 +99,6 @@
 		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
 		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
 		734E35781C8239990096E043 /* ScanFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734E35771C8239990096E043 /* ScanFunction.swift */; };
-		73556C821BB02C6600428375 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73556C811BB02C6600428375 /* File.swift */; };
 		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
@@ -343,6 +347,9 @@
 		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
+		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
+		22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCell.swift; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
 		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -375,6 +382,8 @@
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; };
+		22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryFunction.swift; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
 		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
 		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
@@ -399,7 +408,6 @@
 		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
 		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
 		734E35771C8239990096E043 /* ScanFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFunction.swift; sourceTree = "<group>"; };
-		73556C811BB02C6600428375 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
@@ -866,12 +874,12 @@
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
 				73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */,
-				73556C811BB02C6600428375 /* File.swift */,
 				73B42AC91BCBBB0500D28621 /* LocalSearchParametar.swift */,
 				E7FE70CE1BB526040098EF65 /* SurveillanceHandler.swift */,
 				E7F5FC211BB985E600071982 /* MoveCameraHandler.swift */,
 				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
 				E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */,
+				22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */,
 			);
 			name = BL;
 			sourceTree = "<group>";
@@ -900,6 +908,7 @@
 				22495D231CAA7C3E0034FC94 /* Security.storyboard */,
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
 				738DECB01BBBFC1100D6B834 /* Security.json */,
+				22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -1080,6 +1089,7 @@
 			isa = PBXGroup;
 			children = (
 				736265E21B4A483E0078C11D /* Function.swift */,
+				22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */,
 			);
 			name = Function;
 			sourceTree = "<group>";
@@ -1126,6 +1136,8 @@
 				222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */,
 				222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */,
 				225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */,
+				22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */,
+				22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1738,6 +1750,7 @@
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
+				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
@@ -1755,6 +1768,7 @@
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
+				22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */,
 				225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
@@ -1834,7 +1848,6 @@
 				2236871A1CB51834005ACDE4 /* Category.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
-				73556C821BB02C6600428375 /* File.swift in Sources */,
 				2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
@@ -1893,6 +1906,7 @@
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
+				22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
@@ -1916,7 +1930,9 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
+				22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
+				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
 				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
 				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,

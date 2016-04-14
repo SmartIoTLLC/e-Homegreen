@@ -19,11 +19,24 @@ class PCControlCell: UICollectionViewCell {
         super.awakeFromNib()
     }
     
-    func setItem(pc:Device, tag:Int){
+    func setItem(pc:Device, tag:Int, filterParametar: FilterItem){
         pccontrolSlider.tag = tag
-        pccontrolTitleLabel.text = pc.name
-//        pccontrollImage.image = pc.name
-//        pccontrolSlider.value = pc.
+        pccontrolTitleLabel.text = getName(pc, filterParametar: filterParametar)
+    }
+    
+    func getName(pc:Device, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if pc.gateway.location.name != filterParametar.location{
+            name += pc.gateway.location.name! + " "
+        }
+        if pc.parentZoneId != filterParametar.levelId{
+            name +=  DatabaseHandler.returnZoneWithId(Int(pc.parentZoneId), location: pc.gateway.location) + " "
+        }
+        if pc.zoneId != filterParametar.zoneId{
+            name += DatabaseHandler.returnZoneWithId(Int(pc.zoneId), location: pc.gateway.location) + " "
+        }
+        name += pc.name
+        return name
     }
     
     override func drawRect(rect: CGRect) {

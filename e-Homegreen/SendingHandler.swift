@@ -67,6 +67,7 @@ class SendingHandler {
         io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
 //        io.socket.close()
     }
+
 }
 
 extension UIDevice {

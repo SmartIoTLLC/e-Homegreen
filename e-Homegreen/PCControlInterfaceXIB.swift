@@ -31,6 +31,7 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     @IBOutlet weak var powerLabel: UILabel!
     @IBOutlet weak var playLabel: UILabel!
     @IBOutlet weak var runLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     var fullScreenByte:Byte = 0x00
     
     @IBOutlet weak var backView: UIView!
@@ -65,6 +66,8 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
         commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         commandTextField.delegate = self
+        
+        titleLabel.text = pc.name
         
         self.view.backgroundColor = UIColor.clearColor()
         
@@ -158,20 +161,23 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
         SendingHandler.sendCommand(byteArray: Function.textToSpeech(pc.moduleAddress, text: text), gateway: pc.gateway)
     }
     
-    @IBAction func addPathForVideo(sender: AnyObject) {
-        if let vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? ListOfDevice_AppViewController {
-            vc.typeOfFile = .Video
-            vc.device = pc
-        self.presentViewController(vc, animated: true, completion: nil)
+    @IBAction func addPathForVideo(sender: AnyObject) {        
+        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
+            if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
+                vc.typeOfFile = .Video
+                vc.device = pc
+                self.presentViewController(navVC, animated: true, completion: nil)
+            }
         }
-        
     }
     
     @IBAction func addPathForRunApp(sender: AnyObject) {
-        if let vc = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? ListOfDevice_AppViewController {
-            vc.typeOfFile = .App
-            vc.device = pc
-            self.presentViewController(vc, animated: true, completion: nil)
+        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
+            if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
+                vc.typeOfFile = .App
+                vc.device = pc
+                self.presentViewController(navVC, animated: true, completion: nil)
+            }
         }
     }
     

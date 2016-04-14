@@ -41,6 +41,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     @IBOutlet weak var selectLabel: UILabel!
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     
+    @IBOutlet weak var zoneAndCategorySlider: UISlider!
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -94,6 +95,8 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        
+        zoneAndCategorySlider.continuous = false
         
         adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
         
@@ -964,15 +967,38 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     
     
-    @IBAction func zoneCategoryControlSlider(sender: AnyObject) {
+    @IBAction func zoneCategoryControlSlider(sender: UISlider) {
+        let sliderValue = Int(sender.value)
+        switch zoneCategoryControl.selectedSegmentIndex{
+        case 0:
+            ZoneAndCategoryControl.shared.changeValueByZone(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
+        case 1:
+            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
+        default:
+            break;
+        }
     }
 
     @IBAction func on(sender: AnyObject) {
-        
+        switch zoneCategoryControl.selectedSegmentIndex{
+        case 0:
+            ZoneAndCategoryControl.shared.turnOnByZone(filterParametar.zoneId, location: filterParametar.location)
+        case 1:
+            ZoneAndCategoryControl.shared.turnOnByCategory(filterParametar.categoryId, location: filterParametar.location)
+        default:
+            break;
+        }
     }
     
     @IBAction func off(sender: AnyObject) {
-        
+        switch zoneCategoryControl.selectedSegmentIndex{
+        case 0:
+            ZoneAndCategoryControl.shared.turnOffByZone(filterParametar.zoneId, location: filterParametar.location)
+        case 1:
+            ZoneAndCategoryControl.shared.turnOffByCategory(filterParametar.categoryId, location: filterParametar.location)
+        default:
+            break;
+        }
     }
 
     @IBAction func changeZoneCategory(sender: UISegmentedControl) {
