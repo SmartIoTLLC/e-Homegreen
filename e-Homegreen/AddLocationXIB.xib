@@ -27,6 +27,7 @@
                 <outlet property="locationNameTextField" destination="qut-Og-mMn" id="49y-2p-DUK"/>
                 <outlet property="radiusLabel" destination="Pgy-Da-wST" id="VW3-7H-vyU"/>
                 <outlet property="radiusSlider" destination="Luh-dV-lER" id="zaw-Rd-Lrt"/>
+                <outlet property="securityLabel" destination="ZTJ-QH-Ngu" id="KQU-Ia-UG6"/>
                 <outlet property="timerLabel" destination="GS2-UM-qYk" id="IFL-qh-l3C"/>
                 <outlet property="topConstraint" destination="REj-Hj-ULK" id="Sxp-JS-MfO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -186,7 +187,7 @@
                                         <action selector="changeRadiusAction:" destination="-1" eventType="valueChanged" id="5hk-9E-lPp"/>
                                     </connections>
                                 </slider>
-                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="One-80-5Lj">
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="One-80-5Lj">
                                     <rect key="frame" x="262" y="75" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="dCD-1V-Ab8"/>
@@ -197,7 +198,7 @@
                                         <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="ScH-ur-UIX"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTJ-QH-Ngu">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTJ-QH-Ngu">
                                     <rect key="frame" x="72" y="80" width="182" height="19"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

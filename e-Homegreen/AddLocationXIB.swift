@@ -35,6 +35,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBOutlet weak var locationMap: MKMapView!
     
     @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var securityLabel: UILabel!
     
     var annotation = MKPointAnnotation()
     
@@ -256,7 +257,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         }
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
+    @IBAction func cancelAction(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -265,8 +266,15 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 27
-        popoverVC.timerList = DatabaseTimersController.shared.getUserTimers(location!)
+        if sender.tag == 1{
+            popoverVC.indexTab = 27
+            popoverVC.popOver = PopOver.Timers
+            popoverVC.timerList = DatabaseTimersController.shared.getUserTimers(location!)
+        }else{
+            popoverVC.indexTab = 28
+            popoverVC.popOver = PopOver.Security
+            popoverVC.gateways = DatabaseGatewayController.shared.getGatewayByLocation(location!.name!)
+        }
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -277,13 +285,27 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         }
     }
     
-    func saveText(text: String, id: Int) {
-        if let location = location{
-            if let timer = DatabaseTimersController.shared.getTimerByIdAndName(location, name: text, id: id){
-                location.timer = timer
-                timerLabel.text = location.timer?.timerName
+    
+    
+    func returnObjectIDandTypePopover(objectId: NSManagedObjectID, popOver:Int) {
+        if popOver == PopOver.Security.rawValue{
+            if let location = location{
+                if let gateway = DatabaseGatewayController.shared.getGatewayByObjectID(objectId){
+                    DatabaseSecurityController.shared.createSecurityForLocation(location, gateway: gateway)
+                    securityLabel.text = gateway.gatewayDescription
+                    
+                }
             }
         }
+        if popOver == PopOver.Timers.rawValue{
+            if let location = location{
+                if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectId){
+                    location.timer = timer
+                    timerLabel.text = location.timer?.timerName
+                }
+            }
+        }
+        
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {

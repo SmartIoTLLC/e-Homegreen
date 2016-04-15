@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         
-        configureStateForTheFirstTime()
+//        configureStateForTheFirstTime()
         
         setFilterBySSIDOrByiBeaconAgain()
         

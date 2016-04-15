@@ -106,7 +106,6 @@
         <relationship name="flags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="gateways" inverseEntity="Location" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
-        <relationship name="security" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Security" inverseName="gateway" inverseEntity="Security" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Timer" inverseName="gateway" inverseEntity="Timer" syncable="YES"/>
     </entity>
@@ -129,6 +128,7 @@
         <attribute name="radius" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
         <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
+        <relationship name="security" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Security" inverseName="location" inverseEntity="Security" syncable="YES"/>
         <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
         <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
         <relationship name="timer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Timer" inverseName="location" inverseEntity="Timer" syncable="YES"/>
@@ -160,7 +160,8 @@
         <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="modeExplanation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="security" inverseEntity="Gateway" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="security" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -251,13 +252,13 @@
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
-        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
+        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="360"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
-        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="225"/>
+        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="240"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="43"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="43"/>
-        <element name="Security" positionX="-650" positionY="-1935" width="128" height="43"/>
+        <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
         <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="43"/>

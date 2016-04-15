@@ -9,7 +9,8 @@
 import UIKit
 import CoreData
 
-@objc protocol PopOverIndexDelegate
+@objc
+protocol PopOverIndexDelegate
 {
     optional func saveText (strText : String)
     optional func saveText (text : String, id:Int)
@@ -17,6 +18,7 @@ import CoreData
     optional func clickedOnGatewayWithIndex (index : Int)
     optional func clickedOnGatewayWithObjectID(objectId:String)
     optional func returnNameAndPath(name:String, path:String?)
+    optional func returnObjectIDandTypePopover(objectId:NSManagedObjectID, popOver:Int)
 }
 
 class PathAndName {
@@ -58,6 +60,42 @@ class SecurityFeedback {
         self.gateway = gateway
     }
 }
+
+enum PopOver: Int {
+    case Location = 0
+    case Gateways = 1
+    case Levels = 2
+    case Zones = 3
+    case Categories = 4
+    case Scenes = 5
+    case ScanGateway = 6
+    case ScanTimerType = 7
+    case iBeacon = 8
+    case LevelsPick = 12
+    case ZonesPick = 13
+    case CategoriesPick = 14
+    case SecurityGateways = 15
+    case ControlType = 21
+    case DeviceInputMode = 22
+    case PowerOption = 23
+    case PlayOption = 24
+    case RunOption = 25
+    case LocationOptions = 26
+    case Timers = 27
+    case Security = 28
+}
+
+class ObjectNameWithID {
+    var name:String
+    var objectID:NSManagedObjectID
+    var popOver:PopOver
+    init(name: String,objectID:NSManagedObjectID, popOver:PopOver) {
+        self.name = name
+        self.objectID = objectID
+        self.popOver = popOver
+    }
+}
+@objc
 class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var levelList:[Zone] = []
@@ -93,6 +131,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var table: UITableView!
     
     var indexTab: Int = 0
+    var popOver:PopOver!
     var delegate : PopOverIndexDelegate?
     
     override func viewDidLoad() {
@@ -372,28 +411,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    enum PopOver: Int {
-        case Location = 0
-        case Gateways = 1
-        case Levels = 2
-        case Zones = 3
-        case Categories = 4
-        case Scenes = 5
-        case ScanGateway = 6
-        case ScanTimerType = 7
-        case iBeacon = 8
-        case LevelsPick = 12
-        case ZonesPick = 13
-        case CategoriesPick = 14
-        case SecurityGateways = 15
-        case ControlType = 21
-        case DeviceInputMode = 22
-        case PowerOption = 23
-        case PlayOption = 24
-        case RunOption = 25
-        case LocationOptions = 26
-        case Timers = 27
-    }
+
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Location.rawValue {
             updateDeviceList("Location")
@@ -437,7 +455,11 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableList = locationAddOption
         } else if indexTab == PopOver.Timers.rawValue {
             for item in timerList{
-               tableList.append(TableList(name: item.timerName, id: Int(item.timerId)))
+               tableList.append(ObjectNameWithID(name: item.timerName, objectID: item.objectID, popOver: popOver))
+            }
+        } else if indexTab == PopOver.Security.rawValue {
+            for item in gateways{
+                tableList.append(ObjectNameWithID(name: item.gatewayDescription, objectID: item.objectID, popOver: popOver))
             }
         } else if indexTab == PopOver.ControlType.rawValue {
             if let type = device?.type {
@@ -474,6 +496,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.tableItem.text = list[indexPath.row].name
             } else if let list = tableList as? [PathAndName]{
                 cell.tableItem.text = list[indexPath.row].name
+            } else if let list = tableList as? [ObjectNameWithID]{
+                cell.tableItem.text = list[indexPath.row].name
             }
             return cell
         }
@@ -489,6 +513,8 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             delegate?.saveText!(list[indexPath.row].name, gateway: list[indexPath.row].gateway)
         } else if let list = tableList as? [PathAndName]{
             delegate?.returnNameAndPath!(list[indexPath.row].name, path: list[indexPath.row].path)
+        }else if let list = tableList as? [ObjectNameWithID]{
+            delegate?.returnObjectIDandTypePopover!(list[indexPath.row].objectID, popOver:list[indexPath.row].popOver.rawValue)
         }
         
     }

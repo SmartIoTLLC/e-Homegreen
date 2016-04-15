@@ -26,5 +26,6 @@ extension Location {
     @NSManaged var timer: Timer?
     @NSManaged var user: User?
     @NSManaged var zones: NSSet?
+    @NSManaged var security: NSSet?
 
 }

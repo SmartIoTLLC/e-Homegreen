@@ -72,6 +72,7 @@
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
+		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
 		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
@@ -380,6 +381,7 @@
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserTimerController.swift; sourceTree = "<group>"; };
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
+		22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSecurityController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; };
@@ -1138,6 +1140,7 @@
 				225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */,
 				22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */,
 				22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */,
+				22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1850,6 +1853,7 @@
 				73EF9F2E1BA1A2DC00A9CF35 /* Device.swift in Sources */,
 				2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
+				22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
 				730E90C31C6A1BF400B1D50D /* Image.swift in Sources */,

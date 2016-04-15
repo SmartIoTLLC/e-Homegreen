@@ -31,4 +31,11 @@ class DatabaseGatewayController: NSObject {
         }
         return []
     }
+    
+    func getGatewayByObjectID(objectID:NSManagedObjectID) -> Gateway?{
+        if let gateway = appDel.managedObjectContext?.objectWithID(objectID) as? Gateway {
+            return gateway
+        }
+        return nil
+    }
 }

@@ -83,7 +83,6 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         return 5
     }
     override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             var rect = self.pullDown.frame
             pullDown.removeFromSuperview()

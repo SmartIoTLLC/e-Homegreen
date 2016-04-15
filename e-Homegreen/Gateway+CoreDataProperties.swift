@@ -31,7 +31,6 @@ extension Gateway {
     @NSManaged var events: NSSet
     @NSManaged var flags: NSSet
     @NSManaged var scenes: NSSet
-    @NSManaged var security: NSSet
     @NSManaged var sequences: NSSet
     @NSManaged var timers: NSSet
     @NSManaged var location: Location

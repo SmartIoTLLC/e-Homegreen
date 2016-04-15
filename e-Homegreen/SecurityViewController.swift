@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
+class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, PullDownViewDelegate {
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SecurityCell"
@@ -19,6 +19,8 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     var securities:[Security] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
+    
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -46,6 +48,9 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        refreshSecurity()
+        
     }
     
     override func viewDidLoad() {
@@ -60,14 +65,15 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         
         // Do any additional setup after loading the view.
+
         
-        refreshSecurity()
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-        lblAlarmState.text = "Alarm state: \(alarmState!)"
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
+//        lblAlarmState.text = "Alarm state: \(alarmState!)"
         
-        refreshSecurityAlarmStateAndSecurityMode()
+//        refreshSecurityAlarmStateAndSecurityMode()
         
     }
     
@@ -119,10 +125,33 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     }
     
     override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            
+        } else {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         securityCollectionView.reloadData()
+        pullDown.drawMenu(filterParametar)
     }
     
     func reorganizeSecurityArray () {
@@ -152,9 +181,9 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
     
     func refreshSecurity() {
         updateSecurityList()
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-        lblAlarmState.text = "Alarm state: \(alarmState!)"
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
+//        lblAlarmState.text = "Alarm state: \(alarmState!)"
         securityCollectionView.reloadData()
     }
     
@@ -166,25 +195,16 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Security)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
+        refreshSecurity()
     }
     
     func updateSecurityList () {
-        let fetchRequest = NSFetchRequest(entityName: "Security")
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
         
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-            securities = fetResults!
-            reorganizeSecurityArray()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
+        securities = DatabaseSecurityController.shared.getSecurity(filterParametar)
+
     }
     
     func saveChanges() {
@@ -310,7 +330,12 @@ extension SecurityViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
-        cell.securityTitle.text = "\(securities[indexPath.row].name)"
+        var name:String = ""
+        if filterParametar.location == "All" {
+            name += securities[indexPath.row].location!.name! + " "
+        }
+        name += securities[indexPath.row].name
+        cell.securityTitle.text = name
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
         let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openParametar:")
