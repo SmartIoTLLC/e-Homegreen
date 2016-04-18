@@ -12,6 +12,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     var appDel:AppDelegate!
     var users:[User] = []
@@ -39,6 +40,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             
         }
         usersTableView.reloadData()
+        
+        changeFullScreeenImage()
     }
     
     override func viewDidLoad() {
@@ -57,6 +60,25 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         users = DatabaseUserController.shared.getAllUsers()
         
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
     }
 
     @IBAction func addUser(sender: AnyObject) {
@@ -88,7 +110,9 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
                 (alert: UIAlertAction!) -> Void in
                 self.appDel.managedObjectContext?.deleteObject(self.users[button.tag])
-                
+                if self.users[button.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
+                    AdminController.shared.setOtherUser(nil)
+                }
                 dispatch_async(dispatch_get_main_queue(),{
                     self.reloadData()
                 })

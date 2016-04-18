@@ -15,6 +15,7 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
     var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -48,7 +49,11 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        changeFullScreeenImage()
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +77,26 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)

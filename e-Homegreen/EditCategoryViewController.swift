@@ -101,11 +101,6 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func fetchCategory(id:Int, location:Location) -> [Category]? {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")

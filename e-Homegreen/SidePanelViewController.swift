@@ -242,7 +242,11 @@ class LogOutCell: UICollectionViewCell {
         }else{
             userLabel.text = (AdminController.shared.getAdmin())?.username
             if let user = DatabaseUserController.shared.getOtherUser(){
-                dataBaseLabel.text = user.username! + "'s database"
+                if let username = user.username{
+                    dataBaseLabel.text = username + "'s database"
+                }else{
+                    dataBaseLabel.text = "null"
+                }
             }else{
                 dataBaseLabel.text = "null"
             }

@@ -106,9 +106,20 @@
                     </view>
                     <navigationItem key="navigationItem" title="PC Control" id="T4y-PY-FX9">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="i76-sY-isv"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="vQO-ga-5OS">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fiG-rE-fe9">
+                                <rect key="frame" x="274" y="7" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="full screen"/>
+                                <connections>
+                                    <action selector="fullScreen:" destination="Sgo-Tg-WdH" eventType="touchUpInside" id="N9F-57-oMM"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="fullScreenButton" destination="fiG-rE-fe9" id="U05-hX-I6M"/>
                         <outlet property="menuButton" destination="i76-sY-isv" id="ljD-ki-qYE"/>
                         <outlet property="pccontrolCollectionView" destination="cYR-oA-AEj" id="OzZ-n0-wAR"/>
                     </connections>
@@ -235,5 +246,6 @@
         <image name="Background" width="1024" height="768"/>
         <image name="Menu button" width="22" height="22"/>
         <image name="add sign" width="30" height="30"/>
+        <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

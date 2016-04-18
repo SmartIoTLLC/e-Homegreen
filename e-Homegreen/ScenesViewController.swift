@@ -11,6 +11,7 @@ import UIKit
 class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPresentationControllerDelegate, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
@@ -58,6 +59,7 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         }
         
         updateSceneList()
+        changeFullScreeenImage()
 
     }
     
@@ -73,6 +75,25 @@ class ScenesViewController: UIViewController, PullDownViewDelegate, UIPopoverPre
         
         pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+    }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
     }
     
     func updateSceneList(){

@@ -92,10 +92,21 @@
                     </view>
                     <navigationItem key="navigationItem" title="Dashboard" id="OUu-kb-2jC">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="Sms-1Q-qgC"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="tUf-lk-Kjp">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1ba-Ic-Kft">
+                                <rect key="frame" x="274" y="7" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="full screen"/>
+                                <connections>
+                                    <action selector="fullScreen:" destination="8R7-g9-9rx" eventType="touchUpInside" id="B9Y-aV-zXj"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backgroundImage" destination="vBj-zS-Ht7" id="ofT-1o-B7W"/>
+                        <outlet property="fullScreenButton" destination="1ba-Ic-Kft" id="YsX-qN-gQF"/>
                         <outlet property="imageWeather" destination="sB3-RW-SNq" id="aTt-Yx-4eq"/>
                         <outlet property="lblMinMaxTemp" destination="BSv-Ug-5l1" id="UD4-1j-Zvt"/>
                         <outlet property="lblPlace" destination="JIc-sj-ESR" id="xhT-3p-Rf5"/>
@@ -111,5 +122,6 @@
     </scenes>
     <resources>
         <image name="Menu button" width="22" height="22"/>
+        <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

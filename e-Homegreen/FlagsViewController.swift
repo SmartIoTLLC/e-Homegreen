@@ -20,6 +20,7 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     var senderButton:UIButton?
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "FlagCell"
@@ -54,6 +55,7 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         }
         
         reloadFlagsList()
+        changeFullScreeenImage()
 
     }
     
@@ -70,6 +72,26 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         flags = DatabaseFlagsController.shared.getFlags(filterParametar)
         flagsCollectionView.reloadData()
     }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         pullDown.drawMenu(filterParametar)

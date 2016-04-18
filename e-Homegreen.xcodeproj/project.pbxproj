@@ -76,6 +76,8 @@
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
 		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
+		22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */; };
+		22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
 		22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */; };
 		22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */; };
@@ -386,6 +388,8 @@
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; };
 		22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryFunction.swift; sourceTree = "<group>"; };
+		22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordXIB.swift; sourceTree = "<group>"; };
+		22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetPasswordXIB.xib; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
 		22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCategoryViewController.xib; sourceTree = "<group>"; };
 		22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditZoneViewController.swift; sourceTree = "<group>"; };
@@ -780,19 +784,22 @@
 		2233628E1CA2E4D2006C80C4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				E7F15B011B8F26970025082D /* SettingsXIB */,
+				22E7B2121CC5044200F813AC /* Menu */,
+				22E7B20D1CC4FC7600F813AC /* Reset Password */,
+				22E7B20C1CC4FC1900F813AC /* Add Zone And Category */,
+				22E7B20B1CC4FBFD00F813AC /* Add iBeacon */,
+				22E7B20A1CC4FBED00F813AC /* Progress Bar */,
+				22E7B2091CC4FBDE00F813AC /* Import Files */,
+				22E7B2081CC4FBC200F813AC /* Gallery */,
+				22E7B2071CC4FBA600F813AC /* Add Surveillance */,
+				22E7B2061CC4FB9200F813AC /* Add e-Homegreen */,
+				22E7B2051CC4FB7F00F813AC /* Add Location */,
+				22E7B2041CC4FB6C00F813AC /* Reset Password */,
 				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
 				2232922D1CABE9400001422B /* Add User */,
 				2232922A1CABD6790001422B /* Settings.storyboard */,
 				223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
-				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
-				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
-				2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */,
-				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
-				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
-				73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */,
-				22359C691CAE98290054434B /* LocationCell.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -865,6 +872,113 @@
 				22CD26791BD53685005BA67D /* DAKeyboardControl.m */,
 			);
 			path = DAKeyboardControl;
+			sourceTree = "<group>";
+		};
+		22E7B2041CC4FB6C00F813AC /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Reset Password";
+			sourceTree = "<group>";
+		};
+		22E7B2051CC4FB7F00F813AC /* Add Location */ = {
+			isa = PBXGroup;
+			children = (
+				73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */,
+				22359C691CAE98290054434B /* LocationCell.swift */,
+				223878A21C919A70001357E0 /* AddLocationXIB.swift */,
+				223878A31C919A70001357E0 /* AddLocationXIB.xib */,
+			);
+			name = "Add Location";
+			sourceTree = "<group>";
+		};
+		22E7B2061CC4FB9200F813AC /* Add e-Homegreen */ = {
+			isa = PBXGroup;
+			children = (
+				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
+				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
+			);
+			name = "Add e-Homegreen";
+			sourceTree = "<group>";
+		};
+		22E7B2071CC4FBA600F813AC /* Add Surveillance */ = {
+			isa = PBXGroup;
+			children = (
+				E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */,
+				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
+			);
+			name = "Add Surveillance";
+			sourceTree = "<group>";
+		};
+		22E7B2081CC4FBC200F813AC /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				E7F15B021B8F27840025082D /* SceneGalleryVC.swift */,
+				E7F15B031B8F27840025082D /* SceneGalleryVC.xib */,
+				E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */,
+				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
+			);
+			name = Gallery;
+			sourceTree = "<group>";
+		};
+		22E7B2091CC4FBDE00F813AC /* Import Files */ = {
+			isa = PBXGroup;
+			children = (
+				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
+				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
+			);
+			name = "Import Files";
+			sourceTree = "<group>";
+		};
+		22E7B20A1CC4FBED00F813AC /* Progress Bar */ = {
+			isa = PBXGroup;
+			children = (
+				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
+				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
+			);
+			name = "Progress Bar";
+			sourceTree = "<group>";
+		};
+		22E7B20B1CC4FBFD00F813AC /* Add iBeacon */ = {
+			isa = PBXGroup;
+			children = (
+				E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */,
+				E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */,
+			);
+			name = "Add iBeacon";
+			sourceTree = "<group>";
+		};
+		22E7B20C1CC4FC1900F813AC /* Add Zone And Category */ = {
+			isa = PBXGroup;
+			children = (
+				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
+				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
+				2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */,
+				223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */,
+				223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */,
+				22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */,
+				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
+				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
+				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
+			);
+			name = "Add Zone And Category";
+			sourceTree = "<group>";
+		};
+		22E7B20D1CC4FC7600F813AC /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+				22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */,
+				22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */,
+			);
+			name = "Reset Password";
+			sourceTree = "<group>";
+		};
+		22E7B2121CC5044200F813AC /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
+			);
+			name = Menu;
 			sourceTree = "<group>";
 		};
 		736265DD1B4A47FE0078C11D /* BL */ = {
@@ -1450,38 +1564,10 @@
 			path = ../Framework;
 			sourceTree = "<group>";
 		};
-		E7F15B011B8F26970025082D /* SettingsXIB */ = {
-			isa = PBXGroup;
-			children = (
-				E77E59451BB2C9070004D263 /* ImportFilesViewController.swift */,
-				E77E59461BB2C9070004D263 /* ImportFilesViewController.xib */,
-				73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */,
-				73ED6AFF1BA068B900E6CE06 /* ProgressBarVC.xib */,
-				73FAAEAC1B57EE7200754810 /* ConnectionSettingsVC.swift */,
-				73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */,
-				E7F15B021B8F27840025082D /* SceneGalleryVC.swift */,
-				E7F15B031B8F27840025082D /* SceneGalleryVC.xib */,
-				E7F15B061B8F4B240025082D /* GalleryCollectionViewCell.swift */,
-				E7F15B071B8F4B240025082D /* GalleryCollectionViewCell.xib */,
-				E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */,
-				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
-				E7AA260A1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift */,
-				E7AA260B1BCD01F500D5C3F0 /* IBeaconSettingsVC.xib */,
-				22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */,
-				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
-				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
-				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
-				223878A21C919A70001357E0 /* AddLocationXIB.swift */,
-				223878A31C919A70001357E0 /* AddLocationXIB.xib */,
-				223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */,
-				223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */,
-			);
-			name = SettingsXIB;
-			sourceTree = "<group>";
-		};
 		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
 				E7F57B0C1BA847D8006B0D71 /* ScanSequencesesViewController.swift */,
@@ -1639,6 +1725,7 @@
 				733E5E861C666F840039B7A8 /* Config.plist in Resources */,
 				22495D111CAA72020034FC94 /* Device.storyboard in Resources */,
 				E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */,
+				22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */,
 				E7DC67CE1B457CD400EA6543 /* day.png in Resources */,
 				738DECA31BBBC39F00D6B834 /* SecuirtyCommandVC.xib in Resources */,
 				E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */,
@@ -1820,6 +1907,7 @@
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				E79AEBBC1B70D1FC00410E2D /* DigitalInput.swift in Sources */,
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
+				22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,

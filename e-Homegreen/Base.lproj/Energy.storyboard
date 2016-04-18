@@ -61,10 +61,21 @@
                     </view>
                     <navigationItem key="navigationItem" title="Energy" id="h8p-nd-3u9">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="qBP-xE-owU"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="vyH-qb-nd1">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YZX-Dm-He8">
+                                <rect key="frame" x="269" y="7" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="full screen"/>
+                                <connections>
+                                    <action selector="fullScreen:" destination="mFk-J4-UKo" eventType="touchUpInside" id="kkB-Eh-bgf"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="current" destination="5gR-A5-pWu" id="ocO-S7-F80"/>
+                        <outlet property="fullScreenButton" destination="YZX-Dm-He8" id="5Ze-IY-6TN"/>
                         <outlet property="menuButton" destination="qBP-xE-owU" id="gWO-P0-9fb"/>
                         <outlet property="powerUsage" destination="BBo-tp-w7d" id="3Kg-j9-nJs"/>
                     </connections>
@@ -77,5 +88,6 @@
     <resources>
         <image name="Background" width="1024" height="768"/>
         <image name="Menu button" width="22" height="22"/>
+        <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

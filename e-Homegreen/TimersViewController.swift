@@ -19,6 +19,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
     var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "TimerCell"
@@ -47,6 +48,7 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             
         }
         refreshTimerList()
+        changeFullScreeenImage()
     }
     
     override func viewDidLoad() {
@@ -58,6 +60,25 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
 
+    }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
     }
     
     func pullDownSearchParametars (filterItem:FilterItem) {

@@ -44,11 +44,17 @@
                                 <constraint firstAttribute="width" constant="50" id="jFp-Tb-2W4"/>
                             </constraints>
                             <state key="normal" image="User"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="changePicture:" destination="-1" eventType="touchUpInside" id="QLt-j9-Pb1"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f4m-nw-LSG" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f4m-nw-LSG" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="85" y="73" width="207" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -109,7 +115,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="khL-HU-HXb" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="khL-HU-HXb" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="85" y="109" width="207" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -131,6 +137,13 @@
                                 <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="IQe-6K-8Oy"/>
                             </connections>
                         </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RaQ-ka-54E" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="85" y="151" width="207" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -139,6 +152,7 @@
                         <constraint firstItem="cp9-1j-F1Y" firstAttribute="width" secondItem="Fm1-Fi-vGL" secondAttribute="width" id="2Zg-0M-rup"/>
                         <constraint firstItem="khL-HU-HXb" firstAttribute="height" secondItem="f4m-nw-LSG" secondAttribute="height" id="3lT-Cy-fUW"/>
                         <constraint firstAttribute="trailing" secondItem="f4m-nw-LSG" secondAttribute="trailing" constant="8" id="5ev-v3-Xo9"/>
+                        <constraint firstItem="RaQ-ka-54E" firstAttribute="leading" secondItem="khL-HU-HXb" secondAttribute="leading" id="7Km-6Z-fhT"/>
                         <constraint firstItem="Fm1-Fi-vGL" firstAttribute="top" secondItem="ZcW-Q7-zDs" secondAttribute="bottom" constant="20" id="8Ye-d2-GnR"/>
                         <constraint firstItem="khL-HU-HXb" firstAttribute="trailing" secondItem="f4m-nw-LSG" secondAttribute="trailing" id="8Zm-zN-7SR"/>
                         <constraint firstItem="ZcW-Q7-zDs" firstAttribute="leading" secondItem="z3w-z4-v8g" secondAttribute="leading" constant="5" id="8fN-g0-Gb9"/>
@@ -151,8 +165,10 @@
                         <constraint firstItem="cp9-1j-F1Y" firstAttribute="leading" secondItem="Fm1-Fi-vGL" secondAttribute="leading" id="PwP-Jd-nIJ"/>
                         <constraint firstItem="zTr-2q-hba" firstAttribute="centerX" secondItem="z3w-z4-v8g" secondAttribute="centerX" constant="50" id="Wfn-bq-AzU"/>
                         <constraint firstItem="fcd-Uz-rNX" firstAttribute="centerX" secondItem="z3w-z4-v8g" secondAttribute="centerX" constant="-50" id="Zs4-bm-aFE"/>
+                        <constraint firstItem="RaQ-ka-54E" firstAttribute="trailing" secondItem="khL-HU-HXb" secondAttribute="trailing" id="avY-iL-p7h"/>
                         <constraint firstAttribute="width" constant="300" id="byC-wa-EKX"/>
                         <constraint firstItem="3vl-FB-7tQ" firstAttribute="centerY" secondItem="DMh-3a-rWs" secondAttribute="centerY" id="d5z-Mi-aOI"/>
+                        <constraint firstItem="RaQ-ka-54E" firstAttribute="centerY" secondItem="cp9-1j-F1Y" secondAttribute="centerY" id="eEl-NO-33c"/>
                         <constraint firstItem="f4m-nw-LSG" firstAttribute="centerY" secondItem="ZcW-Q7-zDs" secondAttribute="centerY" id="eFT-r6-1xN"/>
                         <constraint firstItem="ZcW-Q7-zDs" firstAttribute="top" secondItem="of0-hA-ZRW" secondAttribute="bottom" constant="10" id="f7f-pd-FGM"/>
                         <constraint firstItem="zTr-2q-hba" firstAttribute="centerY" secondItem="fcd-Uz-rNX" secondAttribute="centerY" id="fJH-GR-dNe"/>
@@ -172,22 +188,11 @@
                         </mask>
                     </variation>
                 </view>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RaQ-ka-54E" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="235" y="311" width="207" height="30"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
-                </textField>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="RaQ-ka-54E" firstAttribute="trailing" secondItem="khL-HU-HXb" secondAttribute="trailing" id="JPu-lR-8a8"/>
                 <constraint firstItem="z3w-z4-v8g" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="UI0-TA-x6i"/>
-                <constraint firstItem="RaQ-ka-54E" firstAttribute="leading" secondItem="khL-HU-HXb" secondAttribute="leading" id="Zs9-rA-5hx"/>
-                <constraint firstItem="RaQ-ka-54E" firstAttribute="centerY" secondItem="cp9-1j-F1Y" secondAttribute="centerY" id="o7f-gd-pz3"/>
                 <constraint firstItem="z3w-z4-v8g" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qJe-jV-pnQ"/>
-                <constraint firstItem="RaQ-ka-54E" firstAttribute="height" secondItem="khL-HU-HXb" secondAttribute="height" id="zEs-eN-4mf"/>
             </constraints>
         </view>
     </objects>

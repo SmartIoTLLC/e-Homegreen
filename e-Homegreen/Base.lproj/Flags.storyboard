@@ -114,10 +114,21 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Flags" id="4Ic-AR-fiq">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="Sht-8o-w6w"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="L6b-KS-BRH">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GYm-lh-H3p">
+                                <rect key="frame" x="274" y="7" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="full screen"/>
+                                <connections>
+                                    <action selector="fullScreen:" destination="cWS-a5-l7n" eventType="touchUpInside" id="uDc-3L-UBi"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="flagsCollectionView" destination="dDw-eG-icM" id="YnG-WH-uO7"/>
+                        <outlet property="fullScreenButton" destination="GYm-lh-H3p" id="3W2-Iv-J2z"/>
                         <outlet property="menuButton" destination="Sht-8o-w6w" id="Upu-bi-B3w"/>
                     </connections>
                 </viewController>
@@ -129,5 +140,6 @@
     <resources>
         <image name="Background" width="1024" height="768"/>
         <image name="Menu button" width="22" height="22"/>
+        <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

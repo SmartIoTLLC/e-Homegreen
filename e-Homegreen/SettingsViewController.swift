@@ -9,7 +9,7 @@
 import UIKit
 
 enum SettingsItem{
-    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Broadcast, RefreshConnection, LockProfile
+    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Broadcast, RefreshConnection, LockProfile, ResetPassword
     var description:String{
         switch self{
             case MainMenu: return "Main Menu"
@@ -18,13 +18,14 @@ enum SettingsItem{
             case OpenLastScreen: return "Open Last Screen"
             case Broadcast: return "Broadcast"
             case RefreshConnection: return "Refresh Connection"
-        case .LockProfile: return "Lock Profile"
+            case .LockProfile: return "Lock Profile"
+            case .ResetPassword: return "Reset Password"
         }
     }
     
 }
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate {
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate, SettingsDelegate {
     
     var user:User?
     var appDel:AppDelegate!
@@ -60,6 +61,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             settingArray.append(.LockProfile)
         }
         
+        settingArray.append(.ResetPassword)
+        
         if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
         }
@@ -90,6 +93,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 
             }
         }
+    }
+    
+    func resetPasswordFinished() {
+        self.view.makeToast(message: "Passwords was changed successfully")
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -176,7 +183,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces {
+        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.ResetPassword{
             
             let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
             cell.settingsButton.tag = indexPath.section
@@ -305,15 +312,27 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if let view = sender as? UIButton {
             let tag = view.tag
             
-            if tag == 0 {
+            if settingArray[tag] == SettingsItem.MainMenu {
                 dispatch_async(dispatch_get_main_queue(),{
                     self.performSegueWithIdentifier("mainMenu", sender: self)
                 })
 
             }
-            if tag == 1 {
+            if settingArray[tag] == SettingsItem.Interfaces {
                 dispatch_async(dispatch_get_main_queue(),{
                     self.performSegueWithIdentifier("connection", sender: self)
+                })
+            }
+            if settingArray[tag] == SettingsItem.ResetPassword{
+                dispatch_async(dispatch_get_main_queue(),{
+                    if let user = self.user{
+                        self.showResetPassword(user).delegate = self
+                    }else{
+                        if let tempUser = DatabaseUserController.shared.getLoggedUser(){
+                            self.showResetPassword(tempUser).delegate = self
+                        }                        
+                    }
+                    
                 })
             }
 
@@ -337,14 +356,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
+    
     var isMore = false
     @IBAction func btnMore(sender: AnyObject) {
         isMore = !isMore
         settingsTableView.reloadData()
     }
+    
     @IBAction func broadcastTimeAndDateFromPhone(sender: AnyObject) {
         (UIApplication.sharedApplication().delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
     }
+    
     func textFieldDidBeginEditing(textField: UITextField) {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
             settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)

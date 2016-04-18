@@ -42,6 +42,7 @@ class AdminController: NSObject {
     
     func logoutAdmin(){
         prefs.setValue(false, forKey: AdminConstants.IsLogged)
+        prefs.setValue(nil, forKey: AdminConstants.OtherUserDatabase)
     }
     
     func isAdminLogged() -> Bool{
@@ -53,7 +54,7 @@ class AdminController: NSObject {
         }
         return nil
     }
-    func setOtherUser(url:String) -> Bool{
+    func setOtherUser(url:String?) -> Bool{
         prefs.setValue(url, forKey: AdminConstants.OtherUserDatabase)
         if let _ = prefs.valueForKey(AdminConstants.OtherUserDatabase) as? String{
             return true

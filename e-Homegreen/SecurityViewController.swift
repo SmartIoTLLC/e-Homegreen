@@ -23,6 +23,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
@@ -51,6 +52,8 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
         
         refreshSecurity()
         
+        changeFullScreeenImage()
+        
     }
     
     override func viewDidLoad() {
@@ -75,6 +78,24 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
         
 //        refreshSecurityAlarmStateAndSecurityMode()
         
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
+    @IBAction func fullScreen(sender: AnyObject) {
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
     }
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){

@@ -32,6 +32,8 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    
     var userLogged:User?
     
     var panRecognizer:UIPanGestureRecognizer!
@@ -72,6 +74,9 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
                 updateDeviceList(user)
             }
         }
+        
+        changeFullScreeenImage()
+        
     }
     
     override func viewDidLoad() {
@@ -105,12 +110,28 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         bottomView.addGestureRecognizer(panRecognizer)
     }
     
-    @IBAction func fullScreen(sender: AnyObject) {
-        
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
     }
     
-    @IBAction func reload(sender: AnyObject) {
-        
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    @IBAction func reload(sender: UIButton) {
+        refreshVisibleDevicesInScrollView()
+        sender.rotate(1)
     }
     
     @IBAction func location(sender: AnyObject) {

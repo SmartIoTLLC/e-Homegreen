@@ -17,6 +17,7 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
     var pullDown = PullDownView()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     
     var senderButton:UIButton?
     
@@ -27,6 +28,7 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
     var sumPow:Float = 0
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
+    
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
@@ -51,6 +53,8 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        changeFullScreeenImage()
 
     }
     
@@ -72,9 +76,23 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         // Do any additional setup after loading the view.
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
     }
     
     override func viewWillLayoutSubviews() {

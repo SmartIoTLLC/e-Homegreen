@@ -66,8 +66,6 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         
         if let user = user{
             usernameTextField.text = user.username
-            passwordTextView.text = user.password
-            confirmPasswordtextView.text = user.password
             
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
@@ -76,8 +74,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 userImageButton.setImage(UIImage(data: data), forState: .Normal)
             }
         }
-
-        // Do any additional setup after loading the view.
+        
     }
     
     @IBAction func changePicture(sender: AnyObject) {
@@ -109,26 +106,28 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         
         self.view.endEditing(true)
         
-        guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
-            self.view.makeToast(message: "All fields must be filled")
-            return
-        }
-        
-        if password != confirmpass {
-            self.view.makeToast(message: "Passwords do not match")
-            return
-        }
-        
-        if let user = user {
+        if let user = user{
+            guard let username = usernameTextField.text where username != "" else{
+                self.view.makeToast(message: "Enter username!")
+                return
+            }
             
             user.username = username
-            user.password = password
             user.isLocked = false
             user.isSuperUser = superUserSwitch.on
-            user.profilePicture = imageData
+            if let image = imageData{
+                user.profilePicture = image
+            }
             saveChanges()
-            
         }else{
+            guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
+                self.view.makeToast(message: "All fields must be filled")
+                return
+            }
+            if password != confirmpass {
+                self.view.makeToast(message: "Passwords do not match")
+                return
+            }
             
             if let user = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDel.managedObjectContext!) as? User{
                 
@@ -139,8 +138,10 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 user.profilePicture = imageData
                 saveChanges()
             }
+            
+
         }
-        
+
         delegate?.addUserFinished()
         self.dismissViewControllerAnimated(true, completion: nil)
     }

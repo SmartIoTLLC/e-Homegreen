@@ -21,6 +21,8 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     var locationManager = CLLocationManager()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    
     var sidebarMenuOpen : Bool!
     @IBOutlet weak var backgroundImage: UIImageView!
     
@@ -101,6 +103,26 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
+        }
+        changeFullScreeenImage()
+    }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
     }
     
