@@ -86,7 +86,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         
         if let location = location{
             topConstraint.constant = 150
-            backViewHeight.constant = 577
+            backViewHeight.constant = 553
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -108,7 +108,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             }
         }else{
             topConstraint.constant = 8
-            backViewHeight.constant = 431
+            backViewHeight.constant = 411
             radiusLabel.text = "Radius: \(Int(radius))"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
@@ -201,11 +201,6 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     @IBAction func saveAction(sender: AnyObject) {
        
@@ -287,10 +282,10 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     
     
-    func returnObjectIDandTypePopover(objectId: NSManagedObjectID, popOver:Int) {
+    func returnObjectIDandTypePopover(objectId: NSManagedObjectID?, popOver:Int) {
         if popOver == PopOver.Security.rawValue{
-            if let location = location{
-                if let gateway = DatabaseGatewayController.shared.getGatewayByObjectID(objectId){
+            if let location = location, let objectid = objectId{
+                if let gateway = DatabaseGatewayController.shared.getGatewayByObjectID(objectid){
                     DatabaseSecurityController.shared.createSecurityForLocation(location, gateway: gateway)
                     securityLabel.text = gateway.gatewayDescription
                     
@@ -298,8 +293,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             }
         }
         if popOver == PopOver.Timers.rawValue{
-            if let location = location{
-                if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectId){
+            if let location = location, let objectid = objectId{
+                if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectid){
                     location.timer = timer
                     timerLabel.text = location.timer?.timerName
                 }

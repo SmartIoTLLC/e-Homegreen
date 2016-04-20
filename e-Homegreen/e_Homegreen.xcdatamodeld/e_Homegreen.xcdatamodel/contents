@@ -125,6 +125,7 @@
         <attribute name="locationDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderId" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="radius" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
         <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
@@ -255,13 +256,13 @@
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="360"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
-        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="240"/>
+        <element name="Location" positionX="-1181" positionY="-1504" width="128" height="255"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="43"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="43"/>
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
         <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
-        <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="43"/>
+        <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="465"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="43"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="135"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="165"/>

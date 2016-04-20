@@ -32,7 +32,11 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
                 urlMain = "http://\(surv.ip!):\(surv.port!)"
             }
             var urlExtension = ""
-            if surv.urlGetImage == "" {urlExtension = "/dms?nowprofileid=2"} else {urlExtension = surv.urlGetImage!}
+            if surv.urlGetImage == "" {
+                urlExtension = "/dms?nowprofileid=3"
+            } else {
+                urlExtension = surv.urlGetImage!
+            }
             url = NSURL(string: "\(urlMain)\(urlExtension)")!
             
             let request = NSMutableURLRequest(URL: url)

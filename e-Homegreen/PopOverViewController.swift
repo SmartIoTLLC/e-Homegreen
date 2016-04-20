@@ -18,7 +18,7 @@ protocol PopOverIndexDelegate
     optional func clickedOnGatewayWithIndex (index : Int)
     optional func clickedOnGatewayWithObjectID(objectId:String)
     optional func returnNameAndPath(name:String, path:String?)
-    optional func returnObjectIDandTypePopover(objectId:NSManagedObjectID, popOver:Int)
+    optional func returnObjectIDandTypePopover(objectId:NSManagedObjectID?, popOver:Int)
 }
 
 class PathAndName {
@@ -83,13 +83,16 @@ enum PopOver: Int {
     case LocationOptions = 26
     case Timers = 27
     case Security = 28
+    case Level = 29
+    case Zone = 30
+    case Category = 31
 }
 
 class ObjectNameWithID {
     var name:String
-    var objectID:NSManagedObjectID
+    var objectID:NSManagedObjectID?
     var popOver:PopOver
-    init(name: String,objectID:NSManagedObjectID, popOver:PopOver) {
+    init(name: String,objectID:NSManagedObjectID?, popOver:PopOver) {
         self.name = name
         self.objectID = objectID
         self.popOver = popOver
@@ -170,7 +173,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
             let predicateOne = NSPredicate(format: "level == %@", NSNumber(short: 0))
-//            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             let predicateThree = NSPredicate(format: "location == %@", location)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
@@ -460,6 +463,21 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else if indexTab == PopOver.Security.rawValue {
             for item in gateways{
                 tableList.append(ObjectNameWithID(name: item.gatewayDescription, objectID: item.objectID, popOver: popOver))
+            }
+        } else if indexTab == PopOver.Level.rawValue {
+            tableList.append(ObjectNameWithID(name: "All", objectID: nil, popOver: popOver))
+            for item in levelList{
+                tableList.append(ObjectNameWithID(name: item.name!, objectID: item.objectID, popOver: popOver))
+            }
+        } else if indexTab == PopOver.Zone.rawValue {
+            tableList.append(ObjectNameWithID(name: "All", objectID: nil, popOver: popOver))
+            for item in zoneList{
+                tableList.append(ObjectNameWithID(name: item.name!, objectID: item.objectID, popOver: popOver))
+            }
+        } else if indexTab == PopOver.Category.rawValue {
+            tableList.append(ObjectNameWithID(name: "All", objectID: nil, popOver: popOver))
+            for item in categoryList{
+                tableList.append(ObjectNameWithID(name: item.name!, objectID: item.objectID, popOver: popOver))
             }
         } else if indexTab == PopOver.ControlType.rawValue {
             if let type = device?.type {

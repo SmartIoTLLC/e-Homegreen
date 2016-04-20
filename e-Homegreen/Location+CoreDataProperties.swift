@@ -27,5 +27,6 @@ extension Location {
     @NSManaged var user: User?
     @NSManaged var zones: NSSet?
     @NSManaged var security: NSSet?
+    @NSManaged var orderId: NSNumber?
 
 }

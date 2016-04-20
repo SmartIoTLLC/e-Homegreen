@@ -26,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="U1Y-hf-wHH">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="89" width="320" height="479"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yip-Ts-gH6">
                                     <size key="itemSize" width="150" height="150"/>
@@ -103,7 +103,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="U1Y-hf-wHH" firstAttribute="top" secondItem="WGs-GQ-nYb" secondAttribute="bottom" id="3RU-9p-vhR"/>
+                            <constraint firstItem="U1Y-hf-wHH" firstAttribute="top" secondItem="WGs-GQ-nYb" secondAttribute="bottom" constant="25" id="3RU-9p-vhR"/>
                             <constraint firstItem="U1Y-hf-wHH" firstAttribute="leading" secondItem="iDH-Zu-leq" secondAttribute="leading" id="4z9-fX-92V"/>
                             <constraint firstItem="XTq-I3-AwM" firstAttribute="top" secondItem="U1Y-hf-wHH" secondAttribute="bottom" id="IKg-Yy-sZ2"/>
                             <constraint firstItem="XFc-Vp-gGW" firstAttribute="leading" secondItem="iDH-Zu-leq" secondAttribute="leading" id="aLu-7a-ry6"/>

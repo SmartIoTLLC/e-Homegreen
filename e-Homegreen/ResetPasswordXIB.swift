@@ -14,6 +14,8 @@ protocol SettingsDelegate {
 
 class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
+    @IBOutlet weak var oldPasswordLabel: UILabel!
+    
     @IBOutlet weak var oldPassswordTextField: EditTextField!
     @IBOutlet weak var newPasswordTextField: EditTextField!
     @IBOutlet weak var confirmPasswordTextField: EditTextField!
@@ -28,6 +30,8 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     var user:User!
     
     var delegate:SettingsDelegate?
+    
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     
     init(user:User){
         super.init(nibName: "ResetPasswordXIB", bundle: nil)
@@ -52,6 +56,14 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ResetPasswordXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        
+        if !AdminController.shared.isAdminLogged(){
+            topConstraint.constant = 73
+        }else{
+            topConstraint.constant = 8
+            oldPasswordLabel.hidden = true
+            oldPassswordTextField.hidden = true
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -73,14 +85,22 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     }
     
     @IBAction func save(sender: AnyObject) {
-        guard let oldPass = oldPassswordTextField.text where oldPass != "", let newPass = newPasswordTextField.text where newPass != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
+        if !AdminController.shared.isAdminLogged(){
+            guard let oldPass = oldPassswordTextField.text where oldPass != "" else{
+                self.view.makeToast(message: "All fields must be filled")
+                return
+            }
+            if oldPass != user.password{
+                self.view.makeToast(message: "Your old password is not correct")
+                return
+            }
+        }
+        
+        guard let newPass = newPasswordTextField.text where newPass != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
             self.view.makeToast(message: "All fields must be filled")
             return
         }
-        if oldPass != user.password{
-            self.view.makeToast(message: "Your old password is not correct")
-            return
-        }
+
         
         if newPass != confirmPass {
             self.view.makeToast(message: "Passwords do not match")

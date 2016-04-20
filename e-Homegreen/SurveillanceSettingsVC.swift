@@ -13,30 +13,29 @@ protocol AddEditSurveillanceDelegate{
     func add_editSurveillanceFinished()
 }
 
-class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate {
+class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
     
     @IBOutlet weak var scroll: UIScrollView!
     
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
+    var popoverVC:PopOverViewController = PopOverViewController()
+    
     var isPresenting: Bool = true
     
     var delegate:AddEditSurveillanceDelegate?
     
     @IBOutlet weak var backView: UIView!
-    
-    @IBOutlet weak var editLocation: UITextField!
-    @IBOutlet weak var editLevel: UITextField!
-    @IBOutlet weak var editZone: UITextField!
-    @IBOutlet weak var editCategory: UITextField!
+
     @IBOutlet weak var editName: UITextField!
     
+    @IBOutlet weak var levelButton: CustomGradientButton!
+    @IBOutlet weak var zoneButton: CustomGradientButton!
+    @IBOutlet weak var categoryButton: CustomGradientButton!
     
     @IBOutlet weak var editIPLocal: UITextField!
     @IBOutlet weak var editPortLocal: UITextField!
-    @IBOutlet weak var editSSID: UITextField!
-    
     
     @IBOutlet weak var editIPRemote: UITextField!
     @IBOutlet weak var editPortRemote: UITextField!
@@ -51,6 +50,10 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
     var error:NSError? = nil
     var surv:Surveillance?
     var parentLocation:Location?
+    
+    var levelSelected:Zone?
+    var zoneSelected:Zone?
+    var categorySelected:Category?
     
     init(surv: Surveillance?, location:Location?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
@@ -84,88 +87,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
 
         editPortRemote.inputAccessoryView = keyboardDoneButtonView
         editPortLocal.inputAccessoryView = keyboardDoneButtonView
-        
-        if UIScreen.mainScreen().scale > 2.5{
-            editIPRemote.layer.borderWidth = 1
-            editPortRemote.layer.borderWidth = 1
-            editUserName.layer.borderWidth = 1
-            editPassword.layer.borderWidth = 1
-            editLocation.layer.borderWidth = 1
-            editName.layer.borderWidth = 1
-            editIPLocal.layer.borderWidth = 1
-            editPortLocal.layer.borderWidth = 1
-            editSSID.layer.borderWidth = 1
-            editLevel.layer.borderWidth = 1
-            editZone.layer.borderWidth = 1
-            editCategory.layer.borderWidth = 1
-        }else{
-            editIPRemote.layer.borderWidth = 0.5
-            editPortRemote.layer.borderWidth = 0.5
-            editUserName.layer.borderWidth = 0.5
-            editPassword.layer.borderWidth = 0.5
-            editLocation.layer.borderWidth = 0.5
-            editName.layer.borderWidth = 0.5
-            editIPLocal.layer.borderWidth = 0.5
-            editPortLocal.layer.borderWidth = 0.5
-            editSSID.layer.borderWidth = 0.5
-            editLevel.layer.borderWidth = 0.5
-            editZone.layer.borderWidth = 0.5
-            editCategory.layer.borderWidth = 0.5
-        }
-        
-        editIPRemote.layer.cornerRadius = 2
-        editPortRemote.layer.cornerRadius = 2
-        editUserName.layer.cornerRadius = 2
-        editPassword.layer.cornerRadius = 2
-        editLocation.layer.cornerRadius = 2
-        editName.layer.cornerRadius = 2
-        editIPLocal.layer.cornerRadius = 2
-        editPortLocal.layer.cornerRadius = 2
-        editSSID.layer.cornerRadius = 2
-        editLevel.layer.cornerRadius = 2
-        editZone.layer.cornerRadius = 2
-        editCategory.layer.cornerRadius = 2
-        
-        editIPRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editPortRemote.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editUserName.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editPassword.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editLocation.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editName.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editIPLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editPortLocal.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editSSID.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editLevel.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editZone.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editCategory.layer.borderColor = UIColor.lightGrayColor().CGColor
-        
-        editIPRemote.attributedPlaceholder = NSAttributedString(string:"IP/Host",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editPortRemote.attributedPlaceholder = NSAttributedString(string:"Port",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editUserName.attributedPlaceholder = NSAttributedString(string:"Username",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editPassword.attributedPlaceholder = NSAttributedString(string:"Password",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editLocation.attributedPlaceholder = NSAttributedString(string:"Location",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editName.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editIPLocal.attributedPlaceholder = NSAttributedString(string:"IP local",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editPortLocal.attributedPlaceholder = NSAttributedString(string:"Local Port",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editSSID.attributedPlaceholder = NSAttributedString(string:"SSID",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editLevel.attributedPlaceholder = NSAttributedString(string:"Level",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editZone.attributedPlaceholder = NSAttributedString(string:"Zone",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        editCategory.attributedPlaceholder = NSAttributedString(string:"Category",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
+
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
@@ -173,26 +95,21 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editPortRemote.delegate = self
         editUserName.delegate = self
         editPassword.delegate = self
-        editLocation.delegate = self
         editName.delegate = self
         editIPLocal.delegate = self
         editPortLocal.delegate = self
-        editSSID.delegate = self
-        editLevel.delegate = self
-        editZone.delegate = self
-        editCategory.delegate = self
-        
-        editLocation.enabled = false
-        
         
         if surv != nil{
             
-            editLocation.text = surv?.location?.name
             editIPRemote.text = surv?.ip
             editPortRemote.text = "\(surv!.port!)"
             editUserName.text = surv?.username
             editPassword.text = surv?.password
             editName.text = surv?.name
+            
+            levelButton.setTitle(surv?.surveillanceLevel, forState: .Normal)
+            zoneButton.setTitle(surv?.surveillanceZone, forState: .Normal)
+            categoryButton.setTitle(surv?.surveillanceCategory, forState: .Normal)
 
             if surv?.localIp != nil{
                 editIPLocal.text = surv?.localIp
@@ -200,21 +117,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if surv?.localPort != nil{
                 editPortLocal.text = surv?.localPort
             }
-            if surv?.ssid != nil{
-                editSSID.text = surv?.ssid
-            }
-            if surv?.surveillanceLevel != nil{
-                editLevel.text = surv?.surveillanceLevel
-            }
-            if surv?.surveillanceZone != nil{
-                editZone.text = surv?.surveillanceZone
-            }
-            if surv?.surveillanceCategory != nil{
-                editCategory.text = surv?.surveillanceCategory
-            }
             
-        }else{
-            editLocation.text = parentLocation?.name
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
@@ -259,36 +162,100 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if self.view.frame.size.height < 600{
                 backViewHeightConstraint.constant = 480
             }else{
-                backViewHeightConstraint.constant = 590
+                backViewHeightConstraint.constant = 526
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func btnZoneAction(sender: UIButton) {
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        if sender.tag == 1{
+            popoverVC.indexTab = 29
+            popoverVC.levelList = DatabaseZoneController.shared.getLevels(parentLocation!)
+            popoverVC.popOver = PopOver.Level
+        }else if sender.tag == 2 {
+            if let location = parentLocation, let levelId = levelSelected?.id {
+                popoverVC.indexTab = 30
+                popoverVC.zoneList = DatabaseZoneController.shared.getZonesOnLevel(location, levelId: Int(levelId))
+                popoverVC.popOver = PopOver.Zone
+            }
+        }else{
+            if let location = parentLocation, let levelId = levelSelected?.id {
+                popoverVC.indexTab = 31
+                popoverVC.categoryList = DatabaseCategoryController.shared.getCategories(location)
+                popoverVC.popOver = PopOver.Category
+            }
+        }
+//        popoverVC.indexTab = 13
+//        popoverVC.filterLocation = gateway!.location
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func returnObjectIDandTypePopover(objectId: NSManagedObjectID?, popOver: Int) {
+        if popOver == PopOver.Level.rawValue{
+            if let objectid = objectId{
+                levelSelected = DatabaseZoneController.shared.getZone(objectid)
+                if let level = levelSelected{
+                    levelButton.setTitle(level.name, forState: .Normal)
+                }
+            }else{
+                levelButton.setTitle("All", forState: .Normal)
+            }
+        }
+        if popOver == PopOver.Zone.rawValue{
+            if let objectid = objectId{
+            zoneSelected = DatabaseZoneController.shared.getZone(objectid)
+            if let zone = zoneSelected{
+                zoneButton.setTitle(zone.name, forState: .Normal)
+            }
+            }else{
+                zoneButton.setTitle("All", forState: .Normal)
+            }
+        }
+        if popOver == PopOver.Category.rawValue{
+            if let objectid = objectId{
+            categorySelected = DatabaseCategoryController.shared.getCategory(objectid)
+            if let category = categorySelected{
+                categoryButton.setTitle(category.name, forState: .Normal)
+            }
+            }else{
+                categoryButton.setTitle("All", forState: .Normal)
+            }
+        }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
     @IBAction func btnSave(sender: AnyObject) {
-        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let level = editLevel.text, let zone = editZone.text, let category = editCategory.text, let remotePortNumber = Int(remotePort), let location = editLocation.text,let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort),let ssid = editSSID.text   {
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort)   {
             if surv == nil{
                 if let parentLocation = parentLocation{
                     let surveillance = Surveillance(context: appDel.managedObjectContext!)
                     
-                    surveillance.locationDELETETHIS = location
-                    surveillance.surveillanceLevel = level
-                    surveillance.surveillanceZone = zone
-                    surveillance.surveillanceCategory = category
                     surveillance.name = name
                     surveillance.username = username
                     surveillance.password = password
+                    surveillance.surveillanceLevel = levelButton.titleLabel?.text
+                    surveillance.surveillanceZone = zoneButton.titleLabel?.text
+                    surveillance.surveillanceCategory = categoryButton.titleLabel?.text
                     surveillance.localIp = localIp
                     surveillance.localPort = localPort
-                    surveillance.ssid = ssid
                     surveillance.ip = remoteIp
                     surveillance.port = remotePortNumber
                     
@@ -314,16 +281,16 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 }
             }else if surv != nil{
                 
-                surv!.locationDELETETHIS = location
-                surv!.surveillanceLevel = level
-                surv!.surveillanceZone = zone
-                surv!.surveillanceCategory = category
                 surv!.name = name
                 surv!.username = username
                 surv!.password = password
+                
+                surv!.surveillanceLevel = levelButton.titleLabel?.text
+                surv!.surveillanceZone = zoneButton.titleLabel?.text
+                surv!.surveillanceCategory = categoryButton.titleLabel?.text
+                
                 surv!.localIp = localIp
                 surv!.localPort = localPort
-                surv!.ssid = ssid
                 surv!.ip = remoteIp
                 surv!.port = remotePortNumber
                 
@@ -381,12 +348,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 
             }
         }
-        if editSSID.isFirstResponder(){
-            if backView.frame.origin.y + editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+
         if editUserName.isFirstResponder(){
             if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
@@ -398,32 +360,6 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editSSID.isFirstResponder(){
-            if backView.frame.origin.y + editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSSID.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editLevel.isFirstResponder(){
-            if backView.frame.origin.y + editLevel.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editLevel.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editZone.isFirstResponder(){
-            if backView.frame.origin.y + editZone.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editZone.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editCategory.isFirstResponder(){
-            if backView.frame.origin.y + editCategory.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editCategory.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
@@ -440,7 +376,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
+//        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
         
         appDel.establishAllConnections()
     }

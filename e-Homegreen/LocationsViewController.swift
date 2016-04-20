@@ -19,7 +19,7 @@ enum TypeOfLocationDevice{
     var description:String{
         switch self{
         case Gateway: return "e-Homegreen"
-        case Surveillance: return "Surveillance"
+        case Surveillance: return "IP Camera"
         }
     }
     static let allValues = [Gateway, Surveillance]

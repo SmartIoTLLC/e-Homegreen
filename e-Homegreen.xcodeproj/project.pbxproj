@@ -45,6 +45,10 @@
 		22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
+		2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46B1CC612B400BCD763 /* DatabaseZoneController.swift */; };
+		2241E46E1CC628F300BCD763 /* DatabaseCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */; };
+		2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */; };
+		2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */; };
 		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
 		2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2245843A1C96AA3700D2C372 /* PCCommand.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
@@ -355,6 +359,10 @@
 		22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCell.swift; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
+		2241E46B1CC612B400BCD763 /* DatabaseZoneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseZoneController.swift; sourceTree = "<group>"; };
+		2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCategoryController.swift; sourceTree = "<group>"; };
+		2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceCell.swift; sourceTree = "<group>"; };
+		2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSurveillanceController.swift; sourceTree = "<group>"; };
 		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2245843A1C96AA3700D2C372 /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PCCommand.swift; path = ../PCCommand.swift; sourceTree = "<group>"; };
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -750,6 +758,7 @@
 				E7AAF7671BBE88AD00992A18 /* SurveillanceXIB */,
 				736F17DB1B3AE894003A6A02 /* SurveillenceViewController.swift */,
 				22495D261CAA7F510034FC94 /* Surveillance.storyboard */,
+				2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */,
 			);
 			name = Surveillance;
 			sourceTree = "<group>";
@@ -1255,6 +1264,9 @@
 				22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */,
 				22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */,
 				22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */,
+				2241E46B1CC612B400BCD763 /* DatabaseZoneController.swift */,
+				2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */,
+				2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1838,6 +1850,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
@@ -1895,6 +1908,7 @@
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
 				7372EB351BC410800097806D /* Scene+CoreDataProperties.swift in Sources */,
+				2241E46E1CC628F300BCD763 /* DatabaseCategoryController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
 				73F04ECB1C92CD06009696EF /* DataFrame.swift in Sources */,
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
@@ -2000,6 +2014,7 @@
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				73ECD4A11B33189800767740 /* PullDownView.swift in Sources */,
@@ -2029,6 +2044,7 @@
 				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
+				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
