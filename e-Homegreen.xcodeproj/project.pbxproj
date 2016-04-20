@@ -37,8 +37,8 @@
 		223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 223878A31C919A70001357E0 /* AddLocationXIB.xib */; };
 		223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */; };
 		223887121CB3F6A3003864B8 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223887101CB3F6A3003864B8 /* Zone.swift */; };
-		223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */; };
-		223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223980BA1C89CFB500E02536 /* Surveillance.swift */; };
+		223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */; };
+		223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DB1CC77DBB00BC3905 /* Surveillance.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
 		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
@@ -351,8 +351,8 @@
 		223878A31C919A70001357E0 /* AddLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationXIB.xib; sourceTree = "<group>"; };
 		2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zone+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223887101CB3F6A3003864B8 /* Zone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
-		223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		223980BA1C89CFB500E02536 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
+		223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		223E25DB1CC77DBB00BC3905 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
 		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
@@ -1187,14 +1187,14 @@
 				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
 				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
 				730E90C01C6A1BF400B1D50D /* Image.swift */,
+				223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */,
+				223E25DB1CC77DBB00BC3905 /* Surveillance.swift */,
 				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
 				739D57151C809B30004CC50E /* DeviceImage.swift */,
 				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
 				73F1ECA51C8978B2007CEEAA /* Location.swift */,
 				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
 				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
-				223980B91C89CFB500E02536 /* Surveillance+CoreDataProperties.swift */,
-				223980BA1C89CFB500E02536 /* Surveillance.swift */,
 				73131ED11CA147C6008BC13E /* User+CoreDataProperties.swift */,
 				73131ED21CA147C6008BC13E /* User.swift */,
 			);
@@ -1647,6 +1647,11 @@
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 2JR589G8SK;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					73E206BD1B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -1848,7 +1853,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
-				223980BB1C89CFB500E02536 /* Surveillance+CoreDataProperties.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
@@ -1906,6 +1910,7 @@
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
+				223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
 				7372EB351BC410800097806D /* Scene+CoreDataProperties.swift in Sources */,
 				2241E46E1CC628F300BCD763 /* DatabaseCategoryController.swift in Sources */,
@@ -1915,6 +1920,7 @@
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
 				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
 				73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */,
+				223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */,
 				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
@@ -2040,7 +2046,6 @@
 				22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
-				223980BC1C89CFB500E02536 /* Surveillance.swift in Sources */,
 				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,

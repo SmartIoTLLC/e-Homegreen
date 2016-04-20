@@ -25,12 +25,12 @@ class SurveillanceHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDeleg
             let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             var url:NSURL
             var urlMain = ""
-            if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-                urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-                
-            }else{
+//            if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+//                urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
+//                
+//            }else{
                 urlMain = "http://\(surv.ip!):\(surv.port!)"
-            }
+//            }
             var urlExtension = ""
             if surv.urlGetImage == "" {
                 urlExtension = "/dms?nowprofileid=3"

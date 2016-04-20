@@ -17,16 +17,16 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         var url:NSURL
-        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-            var urlExtension = ""
-            if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
-            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)\(urlExtension)")!
-            
-        }else{
+//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+//            var urlExtension = ""
+//            if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
+//            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)\(urlExtension)")!
+//            
+//        }else{
             var urlExtension = ""
             if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
             url = NSURL(string: "http://\(surv.ip!):\(surv.port!)\(urlExtension)")!
-        }
+//        }
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
@@ -55,11 +55,11 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         
         var url:NSURL
         var urlMain = ""
-        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-        }else{
+//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
+//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-        }
+//        }
         var urlExtension = "/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)"
         if position == "right" {
             if surv.urlMoveRight != "" {urlExtension = surv.urlMoveRight!}
@@ -99,12 +99,12 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         var url:NSURL
         var urlMain = ""
-        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-            
-        }else{
+//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
+//            
+//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-        }
+//        }
         var urlExtension = ""
         if isStopNecessary {
             if surv.urlAutoPanStop == "" {urlExtension = "/cgi-bin/longcctvapn.cgi?action=stop"} else {urlExtension = surv.urlAutoPanStop!}
@@ -194,14 +194,14 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         
         var url:NSURL
         var urlMain = ""
-        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-            url = NSURL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
-            
-        }else{
+//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
+//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
+//            url = NSURL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
+//            
+//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
             url = NSURL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
-        }
+//        }
         var urlExtension = ""
         if isStopNecessary {
             if surv.urlPresetSequenceStop == "" {urlExtension = "/cgi-bin/longcctvseq.cgi?action=stop"} else {urlExtension = surv.urlPresetSequenceStop!}

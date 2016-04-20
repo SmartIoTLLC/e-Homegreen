@@ -143,12 +143,10 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
 
 
     func addObservers () {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.refreshSurveillanceList), name: NotificationKey.RefreshSurveillance, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillenceViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
 
     func removeObservers () {
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSurveillance, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     
@@ -207,6 +205,10 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         longPress.minimumPressDuration = 0.5
         cell.lblName.addGestureRecognizer(longPress)
         
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap:")
+        cell.tag = indexPath.row
+        cell.addGestureRecognizer(tap)
+        
         if let data = surveillance[indexPath.row].imageData {
             cell.setImageForSurveillance(UIImage(data: data))
         }else{
@@ -226,6 +228,13 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         return cell
     }
     
+    func tap(gesture:UITapGestureRecognizer){
+        if let index = gesture.view?.tag{
+            let cell = cameraCollectionView.cellForItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0))
+            showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[index])
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
@@ -242,10 +251,10 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         return collectionViewCellSize
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
-        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
-    }
+//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+//        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
+//    }
     
     //Side menu delegate
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){

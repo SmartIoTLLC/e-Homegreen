@@ -400,7 +400,7 @@ extension LocationViewController: UITableViewDelegate {
             let device = locationList[indexPath.section].children[indexPath.row - 1]
             if let surv = device.device as? Surveillance{
                 dispatch_async(dispatch_get_main_queue(),{
-                    self.showSurveillanceSettings(surv, location: nil).delegate = self
+                    self.showSurveillanceSettings(surv, location: surv.location).delegate = self
                 })
             }
             if let gateway = device.device as? Gateway{

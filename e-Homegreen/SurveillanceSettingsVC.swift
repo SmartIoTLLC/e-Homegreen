@@ -99,23 +99,29 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         editIPLocal.delegate = self
         editPortLocal.delegate = self
         
-        if surv != nil{
+        if let surv = surv{
             
-            editIPRemote.text = surv?.ip
-            editPortRemote.text = "\(surv!.port!)"
-            editUserName.text = surv?.username
-            editPassword.text = surv?.password
-            editName.text = surv?.name
-            
-            levelButton.setTitle(surv?.surveillanceLevel, forState: .Normal)
-            zoneButton.setTitle(surv?.surveillanceZone, forState: .Normal)
-            categoryButton.setTitle(surv?.surveillanceCategory, forState: .Normal)
-
-            if surv?.localIp != nil{
-                editIPLocal.text = surv?.localIp
+            editIPRemote.text = surv.ip
+            if let port = surv.port{
+                editPortRemote.text = "\(port)"
             }
-            if surv?.localPort != nil{
-                editPortLocal.text = surv?.localPort
+            editUserName.text = surv.username
+            editPassword.text = surv.password
+            editName.text = surv.name
+            
+            levelButton.setTitle(surv.surveillanceLevel, forState: .Normal)
+            zoneButton.setTitle(surv.surveillanceZone, forState: .Normal)
+            categoryButton.setTitle(surv.surveillanceCategory, forState: .Normal)
+            
+            levelSelected = surv.cameraLevel
+            zoneSelected = surv.cameraZone
+            categorySelected = surv.cameraCategory
+
+            if let localIp = surv.localIp {
+                editIPLocal.text = localIp
+            }
+            if let localPort = surv.localPort {
+                editPortLocal.text = localPort
             }
             
         }
@@ -185,16 +191,22 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                 popoverVC.indexTab = 30
                 popoverVC.zoneList = DatabaseZoneController.shared.getZonesOnLevel(location, levelId: Int(levelId))
                 popoverVC.popOver = PopOver.Zone
+            }else{
+                popoverVC.indexTab = 30
+                popoverVC.zoneList = []
+                popoverVC.popOver = PopOver.Zone
             }
         }else{
             if let location = parentLocation, let levelId = levelSelected?.id {
                 popoverVC.indexTab = 31
                 popoverVC.categoryList = DatabaseCategoryController.shared.getCategories(location)
                 popoverVC.popOver = PopOver.Category
+            }else{
+                popoverVC.indexTab = 31
+                popoverVC.categoryList = []
+                popoverVC.popOver = PopOver.Category
             }
         }
-//        popoverVC.indexTab = 13
-//        popoverVC.filterLocation = gateway!.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -213,26 +225,29 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                     levelButton.setTitle(level.name, forState: .Normal)
                 }
             }else{
+                levelSelected = nil
                 levelButton.setTitle("All", forState: .Normal)
             }
         }
         if popOver == PopOver.Zone.rawValue{
             if let objectid = objectId{
-            zoneSelected = DatabaseZoneController.shared.getZone(objectid)
-            if let zone = zoneSelected{
-                zoneButton.setTitle(zone.name, forState: .Normal)
-            }
+                zoneSelected = DatabaseZoneController.shared.getZone(objectid)
+                if let zone = zoneSelected{
+                    zoneButton.setTitle(zone.name, forState: .Normal)
+                }
             }else{
+                zoneSelected = nil
                 zoneButton.setTitle("All", forState: .Normal)
             }
         }
         if popOver == PopOver.Category.rawValue{
             if let objectid = objectId{
-            categorySelected = DatabaseCategoryController.shared.getCategory(objectid)
-            if let category = categorySelected{
-                categoryButton.setTitle(category.name, forState: .Normal)
-            }
+                categorySelected = DatabaseCategoryController.shared.getCategory(objectid)
+                if let category = categorySelected{
+                    categoryButton.setTitle(category.name, forState: .Normal)
+                }
             }else{
+                categorySelected = nil
                 categoryButton.setTitle("All", forState: .Normal)
             }
         }
@@ -272,6 +287,10 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                     surveillance.urlPresetSequenceStop = ""
                     surveillance.urlGetImage = ""
                     
+                    surveillance.cameraLevel = levelSelected
+                    surveillance.cameraZone = zoneSelected
+                    surveillance.cameraCategory = categorySelected
+                    
                     surveillance.tiltStep = 1
                     surveillance.panStep = 1
                     surveillance.autSpanStep = 1
@@ -279,20 +298,24 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
                     surveillance.location = parentLocation
                     saveChanges()
                 }
-            }else if surv != nil{
+            }else if let surv = surv{
                 
-                surv!.name = name
-                surv!.username = username
-                surv!.password = password
+                surv.name = name
+                surv.username = username
+                surv.password = password
                 
-                surv!.surveillanceLevel = levelButton.titleLabel?.text
-                surv!.surveillanceZone = zoneButton.titleLabel?.text
-                surv!.surveillanceCategory = categoryButton.titleLabel?.text
+                surv.surveillanceLevel = levelButton.titleLabel?.text
+                surv.surveillanceZone = zoneButton.titleLabel?.text
+                surv.surveillanceCategory = categoryButton.titleLabel?.text
                 
-                surv!.localIp = localIp
-                surv!.localPort = localPort
-                surv!.ip = remoteIp
-                surv!.port = remotePortNumber
+                surv.cameraLevel = levelSelected
+                surv.cameraZone = zoneSelected
+                surv.cameraCategory = categorySelected
+                
+                surv.localIp = localIp
+                surv.localPort = localPort
+                surv.ip = remoteIp
+                surv.port = remotePortNumber
                 
                 saveChanges()
             }
@@ -376,9 +399,7 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSurveillance, object: self, userInfo: nil)
-        
-        appDel.establishAllConnections()
+//        appDel.establishAllConnections()
     }
 
 }

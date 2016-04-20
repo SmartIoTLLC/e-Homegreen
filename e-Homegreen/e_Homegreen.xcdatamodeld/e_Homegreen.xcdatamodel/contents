@@ -189,12 +189,10 @@
         <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="localIp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localPort" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="locationDELETETHIS" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="panStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="ssid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="surveillanceCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="surveillanceLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="surveillanceZone" optional="YES" attributeType="String" syncable="YES"/>
@@ -210,6 +208,9 @@
         <attribute name="urlPresetSequence" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlPresetSequenceStop" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cameraCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" syncable="YES"/>
+        <relationship name="cameraLevel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" syncable="YES"/>
+        <relationship name="cameraZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="surveillances" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
@@ -262,7 +263,7 @@
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
         <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
-        <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="465"/>
+        <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="43"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="135"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="165"/>
