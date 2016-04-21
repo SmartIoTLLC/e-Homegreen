@@ -213,7 +213,7 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showCamera(point:CGPoint, surv:Surveillance) {
         let ad = CameraVC(point: point, surv:surv)
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }
 

@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
-        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast, .RefreshConnection]
+        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast]
         
         if !AdminController.shared.isAdminLogged() {
             settingArray.append(.LockProfile)
@@ -235,14 +235,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
-        } else if settingArray[indexPath.section] == SettingsItem.RefreshConnection {
-            let cell = tableView.dequeueReusableCellWithIdentifier("idRefreshGatewayTimerCell") as! SettingsRefreshConnectionEvery
-            cell.setRefreshCell()
-            cell.txtMinutesField.delegate = self
-            cell.backgroundColor = UIColor.clearColor()
-            cell.layer.cornerRadius = 5
-            return cell
-        }else if settingArray[indexPath.section] == SettingsItem.LockProfile {
+        }
+//        else if settingArray[indexPath.section] == SettingsItem.RefreshConnection {
+//            let cell = tableView.dequeueReusableCellWithIdentifier("idRefreshGatewayTimerCell") as! SettingsRefreshConnectionEvery
+//            cell.setRefreshCell()
+//            cell.txtMinutesField.delegate = self
+//            cell.backgroundColor = UIColor.clearColor()
+//            cell.layer.cornerRadius = 5
+//            return cell
+//        }
+        else if settingArray[indexPath.section] == SettingsItem.LockProfile {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
             
@@ -372,9 +374,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
         }
         
-        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
-            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
-        }
+//        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
+//            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+//        }
     }
     func KeyboardWillShow(notification: NSNotification){
         if let userInfo = notification.userInfo {
@@ -416,9 +418,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell.saveData()
         }
         
-        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
-            cell.saveData()
-        }
+//        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
+//            cell.saveData()
+//        }
         return true
     }
 }
@@ -452,32 +454,32 @@ class SettingsLastScreenTableViewCell: UITableViewCell {
     
 }
 
-class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
-    
-    @IBOutlet weak var txtMinutesField: UITextField!
-    
-    func setRefreshCell() {
-        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
-    }
-    
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-        saveData()
-        return true
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        saveData()
-        return true
-    }
-    
-    func saveData() {
-        self.txtMinutesField.resignFirstResponder()
-        if let minutes = Int(self.txtMinutesField.text!) {
-            RefreshConnectionsPreference.setMinutes(minutes)
-        }
-        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
-    }
-}
+//class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
+//    
+//    @IBOutlet weak var txtMinutesField: UITextField!
+//    
+//    func setRefreshCell() {
+//        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
+//    }
+//    
+//    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+//        saveData()
+//        return true
+//    }
+//    
+//    func textFieldShouldReturn(textField: UITextField) -> Bool {
+//        saveData()
+//        return true
+//    }
+//    
+//    func saveData() {
+//        self.txtMinutesField.resignFirstResponder()
+//        if let minutes = Int(self.txtMinutesField.text!) {
+//            RefreshConnectionsPreference.setMinutes(minutes)
+//        }
+//        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
+//    }
+//}
 
 class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     

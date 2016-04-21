@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //IPGCW02001_000_000_Categories List
-class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate, AddAddressDelegate, ProgressBarDelegate {
+class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate, AddAddressDelegate, ProgressBarDelegate, UITextFieldDelegate {
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -32,6 +32,19 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        txtFrom.delegate = self
+        txtTo.delegate = self
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        txtFrom.inputAccessoryView = keyboardDoneButtonView
+        txtTo.inputAccessoryView = keyboardDoneButtonView
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
@@ -41,9 +54,31 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         
         refreshCategoryList()
         
-        // Do any additional setup after loading the view.
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        addObservers()
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+                   replacementString string: String) -> Bool{
+        let maxLength = 3
+        let currentString: NSString = textField.text!
+        let newString: NSString =
+            currentString.stringByReplacingCharactersInRange(range, withString: string)
+        return newString.length <= maxLength
+    }
+    
+    func endEditingNow(){
+        txtFrom.resignFirstResponder()
+        txtTo.resignFirstResponder()
+    }
+    
+    //move tableview cell on hold and swipe
     func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer){
         
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
@@ -160,16 +195,8 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         
     }
     
-    override func viewWillAppear(animated: Bool) {
-        addObservers()
-    }
-    
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceivedFromGateway:", name: NotificationKey.DidReceiveCategoryFromGateway, object: nil)
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
     }
     
     func removeObservers() {
@@ -435,7 +462,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     func updateCategoryList () {
-        
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
@@ -460,7 +486,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             abort()
         }
     }
-
     
     func isVisibleValueChanged (sender:UISwitch) {
         if sender.on == true {
@@ -473,6 +498,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
 
 }
+
 extension ImportCategoryViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showEditCategory(categories[indexPath.row], location: nil).delegate = self
@@ -506,9 +532,6 @@ extension ImportCategoryViewController: UITableViewDataSource {
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-//        cell.textLabel?.text = "\(categories[indexPath.row].id). \(categories[indexPath.row].name), Desc: \(categories[indexPath.row].categoryDescription)"
-//        cell.backgroundColor = UIColor.clearColor()
-//        cell.textLabel?.textColor = UIColor.whiteColor()
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

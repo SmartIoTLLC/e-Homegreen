@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate {
+class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate, UITextFieldDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -17,10 +17,41 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     var location:Location?
     var popoverVC:PopOverViewController = PopOverViewController()
     
+    @IBOutlet weak var txtFrom: UITextField!
+    @IBOutlet weak var txtTo: UITextField!
+    
     @IBOutlet weak var importZoneTableView: UITableView!
+    
+    var beacon:IBeacon?
+    
+    var choosedIndex = -1
+    
+    var scanZones:ScanFunction?
+    var zoneScanTimer:NSTimer?
+    var idToSearch:Int?
+    var timesRepeatedCounter:Int = 0
+    
+    var currentIndex:Int = 0
+    var from:Int = 0
+    var to:Int = 0
+    
+    var pbSZ:ProgressBarVC?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        txtFrom.delegate = self
+        txtTo.delegate = self
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        txtFrom.inputAccessoryView = keyboardDoneButtonView
+        txtTo.inputAccessoryView = keyboardDoneButtonView
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
@@ -30,10 +61,33 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         importZoneTableView.addGestureRecognizer(longpress)
 
         refreshZoneList()
-        
-        // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        removeObservers()
+        addObservers()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    
+    func endEditingNow(){
+        txtFrom.resignFirstResponder()
+        txtTo.resignFirstResponder()
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+                   replacementString string: String) -> Bool
+    {
+        let maxLength = 3
+        let currentString: NSString = textField.text!
+        let newString: NSString =
+            currentString.stringByReplacingCharactersInRange(range, withString: string)
+        return newString.length <= maxLength
+    }
+    
+    //move tableview cell on hold and swipe
     func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer){
         
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
@@ -47,9 +101,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         struct Path {
             static var initialIndexPath : NSIndexPath? = nil
         }
-        
-        
-        
+    
         switch state {
         case UIGestureRecognizerState.Began:
             
@@ -149,20 +201,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         return cellSnapshot
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        removeObservers()
-        addObservers()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
-    }
     
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "zoneReceivedFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
@@ -230,21 +268,10 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     }
     
     //MARK: - ZONE SCANNING
-    @IBOutlet weak var txtFrom: UITextField!
-    @IBOutlet weak var txtTo: UITextField!
-    var currentIndex:Int = 0
-    var from:Int = 0
-    var to:Int = 0
     
-    var pbSZ:ProgressBarVC?
     func progressBarDidPressedExit () {
         dismissScaningControls()
     }
-    var scanZones:ScanFunction?
-    var zoneScanTimer:NSTimer?
-    var idToSearch:Int?
-    var timesRepeatedCounter:Int = 0
-    
     
     @IBAction func addZone(sender: AnyObject) {
         showEditZone(nil, location: location).delegate = self
@@ -253,7 +280,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     func editZoneFInished() {
         refreshZoneList()
     }
-    
     
     @IBAction func btnScanZones(sender: AnyObject) {
         showAddAddress().delegate = self
@@ -461,7 +487,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
     func createZones(location:Location) {
         if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
             for zoneJSON in zonesJSON {
@@ -538,8 +563,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         }
     }
     
-    var choosedIndex = -1
-    
     func saveText(text: String, id: Int) {
         if choosedIndex != -1 && text != "No iBeacon" {
             beacon = returniBeaconWithName(text)
@@ -552,8 +575,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             importZoneTableView.reloadData()
         }
     }
-    
-    var beacon:IBeacon?
     
     func returniBeaconWithName(name:String) -> IBeacon? {
         let fetchRequest = NSFetchRequest(entityName: "IBeacon")

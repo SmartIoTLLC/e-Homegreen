@@ -174,12 +174,12 @@ class BroadcastPreference {
     }
 }
 // Ovo se vise ne koristi, ali svakako proveri
-class RefreshConnectionsPreference {
-    class func getMinutes() -> Int {
-        let number = NSUserDefaults.standardUserDefaults().integerForKey("kRefreshConnections")
-        return number
-    }
-    class func setMinutes(number:Int) {
-        NSUserDefaults.standardUserDefaults().setInteger(number, forKey: "kRefreshConnections")
-    }
-}
+//class RefreshConnectionsPreference {
+//    class func getMinutes() -> Int {
+//        let number = NSUserDefaults.standardUserDefaults().integerForKey("kRefreshConnections")
+//        return number
+//    }
+//    class func setMinutes(number:Int) {
+//        NSUserDefaults.standardUserDefaults().setInteger(number, forKey: "kRefreshConnections")
+//    }
+//}

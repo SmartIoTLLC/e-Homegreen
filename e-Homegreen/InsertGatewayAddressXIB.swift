@@ -50,9 +50,6 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
         UIView.hr_setToastThemeColor(color: UIColor.redColor())
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
-        scan.layer.cornerRadius = 2
-        cancel.layer.cornerRadius = 2
-        
         addressOne.delegate = self
         addressTwo.delegate = self
         addressThree.delegate = self

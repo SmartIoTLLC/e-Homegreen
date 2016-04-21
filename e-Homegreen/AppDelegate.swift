@@ -85,8 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
-        broadcastTimeAndDate()
-        refreshAllConnections()
+//        broadcastTimeAndDate()
+//        refreshAllConnections()
+        establishAllConnections()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
@@ -275,14 +276,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             for inOutSocket in inOutSockets {
                 inOutSocket.socket.close()
             }
+            for timer in timers{
+                timer.invalidate()
+            }
+            timers = []
             inOutSockets = []
         }
     }
+    var timers:[NSTimer] = []
     func establishAllConnections () {
         disconnectAllConnections()
         fetchGateways()
         if gateways != [] {
             for gateway in gateways {
+                timers.append(NSTimer.scheduledTimerWithTimeInterval(Double(gateway.autoReconnectDelay!) * 60, target: self, selector: "refreshGateways:" , userInfo: ["gateway" :gateway], repeats: true))
                 if inOutSockets != [] {
                     var foundRemote:Bool = false
                     var foundLocal:Bool = false
@@ -309,6 +316,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    func refreshGateways(timer:NSTimer){
+        let userInfo = timer.userInfo as! Dictionary<String, AnyObject>
+        if let gateway = userInfo["gateway"] as? Gateway{
+            let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+            SendingHandler.sendCommand(byteArray: Function.refreshGatewayConnection(address), gateway: gateway)
+
+        }
+    }
+    
     func refreshAllConnectionsToEHomeGreenPLC () {
         fetchGateways()
         // === === === === ===
@@ -332,6 +349,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        //when admin was logged then logout, this is for safe becouse user will have to login again on next start
+        if AdminController.shared.isAdminLogged(){
+            AdminController.shared.logoutAdmin()
+        }
         disconnectAllConnections()
         self.saveContext()
     }

@@ -28,7 +28,7 @@ class EditTextField: UITextField {
         self.font = UIFont(name: "Tahoma", size: 13)
         self.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.layer.borderWidth = 1
-        self.layer.cornerRadius = 2
+        self.layer.cornerRadius = 4
         if let place = self.placeholder{
             self.attributedPlaceholder = NSAttributedString(string: place,
                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])

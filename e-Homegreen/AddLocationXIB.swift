@@ -29,6 +29,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBOutlet weak var btnSave: UIButton!
     
     @IBOutlet weak var locationNameTextField: UITextField!
+    @IBOutlet weak var idTextField: EditTextField!
     
     @IBOutlet weak var backView: CustomGradientBackground!
     
@@ -72,12 +73,17 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         
         locationMap.mapType = MKMapType.Hybrid
         locationMap.showsUserLocation = true
-
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
         
         locationNameTextField.delegate = self
+        
+        let keyboardDoneButtonView = UIToolbar()
+        keyboardDoneButtonView.sizeToFit()
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
+        let toolbarButtons = [item]
+        
+        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+        
+        idTextField.inputAccessoryView = keyboardDoneButtonView
 
         
         let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(AddLocationXIB.handleLongPress(_:)))
@@ -98,6 +104,9 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 radiusLabel.text = "Radius: \(Int(radius))"
                 radiusSlider.value = Float(radius)
                 addRadiusCircle(locationCoordinate)
+                if let orderId = location.orderId {
+                    idTextField.text = "\(orderId)"
+                }
                 
                 timerLabel.text = location.timer?.timerName
                 
@@ -118,8 +127,12 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             }
         }
 
-        // Do any additional setup after loading the view.
     }
+    
+    func endEditingNow(){
+        idTextField.resignFirstResponder()
+    }
+    
     // tap on map and find coordinate
     func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
         if gestureReconizer.state != UIGestureRecognizerState.Began {
@@ -203,42 +216,53 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     }
     
     @IBAction func saveAction(sender: AnyObject) {
-       
-        if locationNameTextField.text != "" {
-            if annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 {
-                
-                if location == nil{
-                    if let user = user{
-                        if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
-                            newLocation.name = locationNameTextField.text!
-                            newLocation.latitude = annotation.coordinate.latitude
-                            newLocation.longitude = annotation.coordinate.longitude
-                            newLocation.radius = radius
-                            newLocation.user = user
-                            createZonesAndCategories(newLocation)
-                            saveChanges()
-                            delegate?.editAddLocationFinished()
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                        }
+        
+        guard let locationName = locationNameTextField.text where locationName != "" else {
+            self.view.makeToast(message: "Write location name")
+            return
+        }
+        
+        guard annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 else{
+            self.view.makeToast(message: "Choose location from map")
+            return
+        }
+        
+        if let location = location{
+            guard let orderId = idTextField.text, let id = Int(orderId) else{
+                self.view.makeToast(message: "Id have to be a number")
+                return
+            }
+            location.name = locationNameTextField.text!
+            location.latitude = annotation.coordinate.latitude
+            location.longitude = annotation.coordinate.longitude
+            location.orderId = id
+            location.radius = radius
+            saveChanges()
+            
+            delegate?.editAddLocationFinished()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }else{
+            if let user = user{
+                if let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: appDel.managedObjectContext!) as? Location{
+                    newLocation.name = locationNameTextField.text!
+                    newLocation.latitude = annotation.coordinate.latitude
+                    newLocation.longitude = annotation.coordinate.longitude
+                    newLocation.radius = radius
+                    newLocation.user = user
+                    if let orderId = idTextField.text, let id = Int(orderId){
+                        newLocation.orderId = id
+                    }else{
+                        newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user)
                     }
-                    
-                }else{
-                    location?.name = locationNameTextField.text!
-                    location?.latitude = annotation.coordinate.latitude
-                    location?.longitude = annotation.coordinate.longitude
-                    location?.radius = radius
+                    createZonesAndCategories(newLocation)
                     saveChanges()
+                    
                     delegate?.editAddLocationFinished()
                     self.dismissViewControllerAnimated(true, completion: nil)
-                    
                 }
-            }else{
-                self.view.makeToast(message: "Choose location from map")
             }
-            
-        }else{
-            self.view.makeToast(message: "Write location name")
         }
+
         
     }
     

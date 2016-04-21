@@ -33,18 +33,20 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var port: EditTextField!
     @IBOutlet weak var localIP: EditTextField!
     @IBOutlet weak var localPort: EditTextField!
+    @IBOutlet weak var txtAutoReconnectDelay: EditTextField!
     
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
     var location:Location?
     var gateway:Gateway?
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
 
     @IBOutlet weak var centarY: NSLayoutConstraint!
-    
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var txtAutoReconnectDelay: EditTextField!
+    @IBOutlet weak var scrollViewConnection: UIScrollView!
     
     init(gateway:Gateway?, location:Location?){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
@@ -56,24 +58,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n"{
-            textView.resignFirstResponder()
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.centarY.constant = 0
-            })
-            return false
-        }
-        return true
-    }
-    
-    func endEditingNow(){
-        port.resignFirstResponder()
-        localPort.resignFirstResponder()
-        txtAutoReconnectDelay.resignFirstResponder()
-        centarY.constant = 0
     }
     
     override func viewDidLoad() {
@@ -89,6 +73,9 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         port.inputAccessoryView = keyboardDoneButtonView
         localPort.inputAccessoryView = keyboardDoneButtonView
         txtAutoReconnectDelay.inputAccessoryView = keyboardDoneButtonView
+        addressFirst.inputAccessoryView = keyboardDoneButtonView
+        addressSecond.inputAccessoryView = keyboardDoneButtonView
+        addressThird.inputAccessoryView = keyboardDoneButtonView
 
         print(UIDevice.currentDevice().SSID)
         
@@ -103,15 +90,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         btnSave.layer.cornerRadius = 2
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
-        
-//        let gradient:CAGradientLayer = CAGradientLayer()
-//        gradient.frame = backView.bounds
-//        gradient.colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-//        backView.layer.insertSublayer(gradient, atIndex: 0)
-//        backView.layer.borderWidth = 1
-//        backView.layer.borderColor = UIColor.lightGrayColor().CGColor
-//        backView.layer.cornerRadius = 10
-//        backView.clipsToBounds = true
         
         ipHost.delegate = self
         port.delegate = self
@@ -128,8 +106,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
 
-        // Do any additional setup after loading the view.
-        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
 
 
@@ -144,6 +120,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             addressThird.text = returnThreeCharactersForByte(Int(gateway.addressThree))
             txtDescription.text = gateway.gatewayDescription
             name.text = gateway.location.name
+            txtAutoReconnectDelay.text = "\(gateway.autoReconnectDelay!)"
         }else{
             name.text = location?.name
             addressFirst.text = returnThreeCharactersForByte(1)
@@ -154,49 +131,68 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             localPort.text = "5101"
             ipHost.text = "192.168.0.181"
             port.text = "5101"
+            txtAutoReconnectDelay.text = "3"
         }
         
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        print("")
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        self.centarY.constant = 0
-        UIView.animateWithDuration(0.3,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
-            animations: { self.view.layoutIfNeeded() },
-            completion: nil)
-        return true
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillLayoutSubviews() {
         
         self.view.layoutIfNeeded()
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.height == 320{
-//                backViewHeightConstraint.constant = 250
-//            }else if self.view.frame.size.height == 375{
-//                backViewHeightConstraint.constant = 300
-//            }else if self.view.frame.size.height == 414{
-//                backViewHeightConstraint.constant = 350
-//            }else{
-//                backViewHeightConstraint.constant = 480
-//            }
-//        }else{
-//            
-//            backViewHeightConstraint.constant = 480
-//            
-//        }
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeightConstraint.constant = 250
+            }else if self.view.frame.size.height == 375{
+                backViewHeightConstraint.constant = 300
+            }else if self.view.frame.size.height == 414{
+                backViewHeightConstraint.constant = 350
+            }else{
+                backViewHeightConstraint.constant = 480
+            }
+        }else{
+            
+            backViewHeightConstraint.constant = 478
+            
+        }
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+        if textField == addressFirst || textField == addressSecond || textField == addressThird{
+            let maxLength = 3
+            let currentString: NSString = textField.text!
+            let newString: NSString =
+                currentString.stringByReplacingCharactersInRange(range, withString: string)
+            return newString.length <= maxLength
+        }
+        return true
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.centarY.constant = 0
+            })
+            return false
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        self.centarY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        return true
+    }
+    
+    func endEditingNow(){
+        port.resignFirstResponder()
+        localPort.resignFirstResponder()
+        txtAutoReconnectDelay.resignFirstResponder()
+        addressFirst.resignFirstResponder()
+        addressSecond.resignFirstResponder()
+        addressThird.resignFirstResponder()
+        centarY.constant = 0
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -204,64 +200,66 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     }
 
     @IBAction func save(sender: AnyObject) {
-        if ipHost.text == "" || port.text == "" || localIP.text == "" || localPort.text == "" || addressFirst.text == "" || addressSecond.text == "" || addressThird.text == "" || name.text == "" || txtAutoReconnectDelay.text == "" {
-            
+        
+        guard let adrFirst = addressFirst.text where adrFirst != "", let adrSecond = addressSecond.text where  adrSecond != "", let adrThird = addressThird.text where adrThird != "", let heartbeat = txtAutoReconnectDelay.text where heartbeat != "", let port = port.text where port != "", let localport = localPort.text where localport != "", let ip = ipHost.text where ip != "", let localip = localIP.text where localip != "" else {
             UIView.hr_setToastThemeColor(color: UIColor.redColor())
             self.view.makeToast(message: "Please fill all text fields")
-            
-        } else {
-            if let adrFirst = Int(addressFirst.text!), let adrSecond = Int(addressSecond.text!), let adrThird = Int(addressThird.text!) {
-                if adrFirst <= 255 && adrSecond <= 255 && adrThird <= 255 {
-                    
-                    if gateway == nil{
-                        if let location = location{
-                            let gateway = Gateway(context: appDel.managedObjectContext!)
-                            gateway.name = name.text!
-                            if ipHost.text == "" {
-                                gateway.remoteIp = "0"
-                            } else {
-                                gateway.remoteIp = ipHost.text!
-                            }
-                            if port.text == "" {
-                                gateway.remotePort = 0
-                            } else {
-                                gateway.remotePort = Int(port.text!)!
-                            }
-                            gateway.localIp = localIP.text!
-                            gateway.localPort = Int(localPort.text!)!
-                            gateway.addressOne = Int(addressFirst.text!)!
-                            gateway.addressTwo = Int(addressSecond.text!)!
-                            gateway.addressThree = Int(addressThird.text!)!
-                            gateway.gatewayDescription = txtDescription.text
-                            gateway.turnedOn = true
-                            gateway.autoReconnectDelay = NSNumber(integer: 3)
-                            gateway.location = location
-                            saveChanges()
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                            delegate?.add_editGatewayFinished()
-                        }
-                    }else{
-                        gateway?.name = name.text!
-                        gateway?.remoteIp = ipHost.text!
-                        gateway?.remotePort = Int(port.text!)!
-                        gateway?.localIp = localIP.text!
-                        gateway?.localPort = Int(localPort.text!)!
-                        gateway?.addressOne = Int(addressFirst.text!)!
-                        gateway?.addressTwo = Int(addressSecond.text!)!
-                        gateway?.addressThree = Int(addressThird.text!)!
-                        gateway?.gatewayDescription = txtDescription.text
-                        saveChanges()
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                        delegate?.add_editGatewayFinished()
-                    }
-                    
-                }
+            return
+        }
+        
+        guard let aFirst = Int(adrFirst) where aFirst <= 255, let aSecond = Int(adrSecond) where aSecond <= 255, let aThird = Int(adrThird) where aThird <= 255 else{
+            UIView.hr_setToastThemeColor(color: UIColor.redColor())
+            self.view.makeToast(message: "Gateway address must be a number and in range from 0 to 255")
+            return
+        }
+        
+        guard let portNumber = Int(port), let localPortNUmber = Int(localport)  else{
+            UIView.hr_setToastThemeColor(color: UIColor.redColor())
+            self.view.makeToast(message: "Port must be number")
+            return
+        }
+        
+        guard let hb = Int(heartbeat) else{
+            UIView.hr_setToastThemeColor(color: UIColor.redColor())
+            self.view.makeToast(message: "Heartbeat must be a number")
+            return
+        }
+
+        if let gateway = gateway{
+            gateway.remoteIp = ip
+            gateway.remotePort = portNumber
+            gateway.localIp = localip
+            gateway.localPort = localPortNUmber
+            gateway.addressOne = aFirst
+            gateway.addressTwo = aSecond
+            gateway.addressThree = aThird
+            gateway.gatewayDescription = txtDescription.text
+            gateway.autoReconnectDelay = hb
+            saveChanges()
+            self.dismissViewControllerAnimated(true, completion: nil)
+            delegate?.add_editGatewayFinished()
+        }else{
+            if let location = location{
+                let gateway = Gateway(context: appDel.managedObjectContext!)
+
+                gateway.remoteIp = ip
+                gateway.remotePort = portNumber
+                gateway.localIp = localip
+                gateway.localPort = localPortNUmber
+                gateway.addressOne = aFirst
+                gateway.addressTwo = aSecond
+                gateway.addressThree = aThird
+                gateway.gatewayDescription = txtDescription.text
+                gateway.turnedOn = true
+                gateway.location = location
+                gateway.autoReconnectDelay = NSNumber(integer: hb)
+                saveChanges()
+                self.dismissViewControllerAnimated(true, completion: nil)
+                delegate?.add_editGatewayFinished()
             }
         }
+        
     }
-
-    var appDel:AppDelegate!
-    var error:NSError? = nil
 
     func saveChanges() {
         do {
@@ -273,8 +271,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         }
         appDel.establishAllConnections()
     }
-    
-    @IBOutlet weak var scrollViewConnection: UIScrollView!
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!

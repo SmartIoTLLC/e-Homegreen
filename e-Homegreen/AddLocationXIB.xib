@@ -25,6 +25,7 @@
                 <outlet property="backViewHeight" destination="GIO-MA-bCL" id="ahN-iO-Ym9"/>
                 <outlet property="btnCancel" destination="aCj-B4-UGJ" id="4JJ-Cd-AyQ"/>
                 <outlet property="btnSave" destination="Lbq-Oa-pTc" id="OvQ-Ta-1Uq"/>
+                <outlet property="idTextField" destination="NNZ-KM-b8S" id="R9G-d8-Smy"/>
                 <outlet property="locationMap" destination="Ptg-uj-GMu" id="rmi-3L-83q"/>
                 <outlet property="locationNameTextField" destination="qut-Og-mMn" id="49y-2p-DUK"/>
                 <outlet property="radiusLabel" destination="Pgy-Da-wST" id="VW3-7H-vyU"/>
@@ -183,7 +184,7 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Luh-dV-lER">
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Luh-dV-lER">
                                     <rect key="frame" x="6" y="473" width="288" height="31"/>
                                     <connections>
                                         <action selector="changeRadiusAction:" destination="-1" eventType="valueChanged" id="5hk-9E-lPp"/>
@@ -233,10 +234,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NNZ-KM-b8S" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="32" y="7" width="40" height="30"/>
+                                    <rect key="frame" x="32" y="7" width="60" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="40" id="Eos-Ke-rLr"/>
+                                        <constraint firstAttribute="width" constant="60" id="Eos-Ke-rLr"/>
                                         <constraint firstAttribute="width" constant="218" id="R0l-Pa-uiY"/>
                                         <constraint firstAttribute="width" constant="220" id="Vel-iL-RaO"/>
                                     </constraints>
@@ -251,10 +252,10 @@
                                     </variation>
                                 </textField>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ptk-zf-TZD">
-                                    <rect key="frame" x="87" y="7" width="51" height="31"/>
+                                    <rect key="frame" x="107" y="7" width="51" height="31"/>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh filter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZh-KJ-lKe">
-                                    <rect key="frame" x="151" y="13" width="85" height="19"/>
+                                    <rect key="frame" x="171" y="13" width="85" height="19"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>

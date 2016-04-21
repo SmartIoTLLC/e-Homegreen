@@ -115,6 +115,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
 
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
+            print(self.locationList[sender.tag].location)
             self.appDel.managedObjectContext?.deleteObject(self.locationList[sender.tag].location)
             self.reloadLocations()
         })
@@ -209,9 +210,10 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
     
     func returnLocations () -> [Location] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
+        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
         let predicate = NSPredicate(format: "user == %@", user)
-        fetchRequest.sortDescriptors = [sortDescriptorTwo]
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
         fetchRequest.predicate = predicate
         do {
             let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
