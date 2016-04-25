@@ -73,6 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }else{
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                let devices = Menu.Devices.controller
+                sideMenu.setFrontViewController(devices, animated: true)
                 self.window?.rootViewController = sideMenu
                 self.window?.makeKeyAndVisible()
             }

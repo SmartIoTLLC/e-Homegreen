@@ -15,6 +15,11 @@ class DatabaseSecurityController: NSObject {
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     func createSecurityForLocation(location:Location, gateway:Gateway){
+        if let securities = location.security?.allObjects as? [Security]{
+            for security in securities{
+                appDel.managedObjectContext?.deleteObject(security)
+            }
+        }
         let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
         for securityJSON in importedData! {
             let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: appDel.managedObjectContext!) as! Security
@@ -25,7 +30,7 @@ class DatabaseSecurityController: NSObject {
             security.addressThree = 254
             security.location = location
             security.gateway = gateway
-            saveChanges()
+//            saveChanges()
         }
     }
     

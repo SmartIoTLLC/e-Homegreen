@@ -8,8 +8,8 @@
 
 import UIKit
 
-enum Menu{
-    case Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings, NotSuperUserSettings
+enum Menu:Int{
+    case Dashboard = 0, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings, NotSuperUserSettings
     var description:String{
         switch self{
             case .Dashboard: return "Dashboard"

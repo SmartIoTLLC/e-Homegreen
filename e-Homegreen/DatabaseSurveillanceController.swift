@@ -49,5 +49,18 @@ class DatabaseSurveillanceController: NSObject {
         }
         return []
     }
+    
+    func deleteSurveillance(surv:Surveillance){
+        appDel.managedObjectContext?.deleteObject(surv)
+        saveChanges()
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch _ as NSError {
+            abort()
+        }
+    }
 
 }

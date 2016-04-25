@@ -27,7 +27,6 @@
                     </view>
                     <connections>
                         <segue destination="tid-St-yaC" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="RzG-2e-KpW"/>
-                        <segue destination="uQN-u9-JqS" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="Qra-yK-sCq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dwx-Jy-f6d" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -665,7 +664,4 @@
         <image name="btn_log_out" width="105" height="105"/>
         <image name="e home logo" width="1032" height="250"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="Qra-yK-sCq"/>
-    </inferredMetricsTieBreakers>
 </document>

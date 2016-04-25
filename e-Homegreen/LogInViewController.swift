@@ -41,6 +41,8 @@ class LogInViewController: UIViewController {
             if AdminController.shared.isAdminLogged(){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                let settings = Menu.Settings.controller
+                sideMenu.setFrontViewController(settings, animated: true)
                 self.presentViewController(sideMenu, animated: true, completion: nil)
             }else{
                 self.view.makeToast(message: "Something wrong, try again!")
@@ -56,6 +58,8 @@ class LogInViewController: UIViewController {
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                    let devices = Menu.Devices.controller
+                    sideMenu.setFrontViewController(devices, animated: true)
                     self.presentViewController(sideMenu, animated: true, completion: nil)
                 }else{
                     self.view.makeToast(message: "Error")

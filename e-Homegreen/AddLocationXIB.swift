@@ -35,8 +35,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     @IBOutlet weak var locationMap: MKMapView!
     
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var securityLabel: UILabel!
+    @IBOutlet weak var timerButton: UIButton!
+    @IBOutlet weak var securityButton: UIButton!
     
     var annotation = MKPointAnnotation()
     
@@ -108,7 +108,11 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                     idTextField.text = "\(orderId)"
                 }
                 
-                timerLabel.text = location.timer?.timerName
+                timerButton.setTitle(location.timer?.timerName, forState: .Normal)
+                if let security = location.security?.allObjects as? [Security]{
+                   securityButton.setTitle(security[0].gateway?.gatewayDescription, forState: .Normal)
+                }
+                
                 
                 let center = locationCoordinate.coordinate
                 let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
@@ -279,6 +283,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     }
     
     @IBAction func cancelAction(sender: UIButton) {
+        appDel.managedObjectContext?.rollback()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -313,7 +318,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             if let location = location, let objectid = objectId{
                 if let gateway = DatabaseGatewayController.shared.getGatewayByObjectID(objectid){
                     DatabaseSecurityController.shared.createSecurityForLocation(location, gateway: gateway)
-                    securityLabel.text = gateway.gatewayDescription
+                    securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
                     
                 }
             }
@@ -322,7 +327,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             if let location = location, let objectid = objectId{
                 if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectid){
                     location.timer = timer
-                    timerLabel.text = location.timer?.timerName
+                    timerButton.setTitle(location.timer?.timerName, forState: .Normal)
                 }
             }
         }

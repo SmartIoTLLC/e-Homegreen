@@ -79,5 +79,34 @@ class DatabaseLocationController: NSObject {
         }
     }
     
+    func deleteLocation(location:Location){
+        appDel.managedObjectContext?.deleteObject(location)
+        saveChanges()
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch _ as NSError {
+            abort()
+        }
+    }
+    
+    func getLocation(user:User) -> [Location]{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
+        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+        let predicate = NSPredicate(format: "user == %@", user)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
+        fetchRequest.predicate = predicate
+        do {
+            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
+            return fetchResults!
+        } catch _ as NSError {
+            abort()
+        }
+        return []
+    }
+    
     
 }
