@@ -19,6 +19,26 @@ class TimerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timerButtonRight: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    
+    func setItem(timer:Timer, filterParametar:FilterItem){
+        timerTitle.text = getName(timer, filterParametar: filterParametar)
+    }
+    
+    func getName(timer:Timer, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if timer.gateway.location.name != filterParametar.location{
+            name += timer.gateway.location.name! + " "
+        }
+        if timer.entityLevel != filterParametar.levelName{
+            name += timer.entityLevel! + " "
+        }
+        if timer.timeZone != filterParametar.zoneName{
+            name += timer.timeZone! + " "
+        }
+        name += timer.timerName
+        return name
+    }
+    
     func getImagesFrom(timer:Timer) {
         if let timerImage = UIImage(data: timer.timerImageOne) {
             imageOne = timerImage
@@ -29,15 +49,18 @@ class TimerCollectionViewCell: UICollectionViewCell {
         timerImageView.image = imageOne
         setNeedsDisplay()
     }
+    
     func commandSentChangeImage () {
         timerImageView.image = imageTwo
         setNeedsDisplay()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
+    
     func changeImageToNormal () {
         timerImageView.image = imageOne
         setNeedsDisplay()
     }
+    
     override func drawRect(rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
                                 byRoundingCorners: UIRectCorner.AllCorners,

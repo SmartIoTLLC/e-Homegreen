@@ -112,7 +112,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         
         let logoutAction = UIAlertAction(title: "Log Out", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
-
+            DatabaseLocationController.shared.stopAllLocationMonitoring()
             DatabaseUserController.shared.logoutUser()
             DatabaseUserController.shared.setUser(nil)
             AdminController.shared.logoutAdmin()

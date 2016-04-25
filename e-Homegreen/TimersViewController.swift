@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealViewControllerDelegate {
         
     var appDel:AppDelegate!
     var timers:[Timer] = []
@@ -62,36 +62,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
 
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        }
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        }
-    }
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        refreshTimerList()
-    }
-    
-    func refreshTimerList() {
-        timers = DatabaseTimersController.shared.getTimers(filterParametar)
-        timersCollectionView.reloadData()
-    }
-    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             var rect = self.pullDown.frame
@@ -121,14 +91,43 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         timersCollectionView.reloadData()
         pullDown.drawMenu(filterParametar)
     }
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        refreshTimerList()
+    }
+    
+    func refreshTimerList() {
+        timers = DatabaseTimersController.shared.getTimers(filterParametar)
+        timersCollectionView.reloadData()
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    
+    //cell action
     
     func pressedPause (button:UIButton) {
         let tag = button.tag
@@ -194,6 +193,8 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
         }
     }
     
+    // side menu delegate
+    
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
             timersCollectionView.userInteractionEnabled = true
@@ -221,14 +222,6 @@ class TimersViewController: UIViewController, UIPopoverPresentationControllerDel
             self.revealViewController().revealToggleAnimated(true)
         }
     }
-        
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
 
 }
 
@@ -237,10 +230,19 @@ extension TimersViewController: UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return collectionViewCellSize
         
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
 }
 
@@ -268,30 +270,7 @@ extension TimersViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TimerCollectionViewCell
         
-        var timerLevel = ""
-        var timerZone = ""
-        let timerLocation = timers[indexPath.row].gateway.name
-        
-        if let level = timers[indexPath.row].entityLevel{
-            timerLevel = level
-        }
-        if let zone = timers[indexPath.row].timeZone{
-            timerZone = zone
-        }
-        
-        if filterParametar.location == "All" {
-            cell.timerTitle.text = timerLocation + " " + timerLevel + " " + timerZone + " " + timers[indexPath.row].timerName
-        }else{
-            var timerTitle = ""
-            if filterParametar.levelName == "All"{
-                timerTitle += " " + timerLevel
-            }
-            if filterParametar.zoneName == "All"{
-                timerTitle += " " + timerZone
-            }
-            timerTitle += " " + timers[indexPath.row].timerName
-            cell.timerTitle.text = timerTitle
-        }
+        cell.setItem(timers[indexPath.row], filterParametar: filterParametar)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TimersViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
@@ -360,9 +339,7 @@ extension TimersViewController: UICollectionViewDataSource {
         // cancel start pause resume
         cell.timerImageView.layer.cornerRadius = 5
         cell.timerImageView.clipsToBounds = true
-        cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
-        cell.layer.borderWidth = 0.5
+        
         return cell
     }
 }

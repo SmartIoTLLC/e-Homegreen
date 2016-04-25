@@ -51,6 +51,9 @@ class LogInViewController: UIViewController {
             if let user = DatabaseUserController.shared.getUser(username, password: password){
                 DatabaseUserController.shared.loginUser()
                 if DatabaseUserController.shared.setUser(user.objectID.URIRepresentation().absoluteString){
+                    
+                    DatabaseLocationController.shared.startMonitoringAllLocationByUser(user)
+                    
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
                     self.presentViewController(sideMenu, animated: true, completion: nil)

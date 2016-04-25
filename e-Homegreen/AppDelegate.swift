@@ -88,16 +88,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        broadcastTimeAndDate()
 //        refreshAllConnections()
         establishAllConnections()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         
 //        configureStateForTheFirstTime()
         
+        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
         setFilterBySSIDOrByiBeaconAgain()
         
         return true
     }
+    
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            handleRegionEvent(region)
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            handleRegionEvent(region)
+        }
+    }
+    
+    func handleRegionEvent(region: CLRegion!) {
+        // Show an alert if application is active
+        if UIApplication.sharedApplication().applicationState == .Active {
+            if let message = notefromRegionIdentifier(region.identifier) {
+                if let viewController = window?.rootViewController {
+                    self.window?.makeKeyAndVisible()
+                    viewController.view.makeToast(message: message)
+                }
+            }
+        } else {
+            // Otherwise present a local notification
+            let notification = UILocalNotification()
+            notification.alertBody = notefromRegionIdentifier(region.identifier)
+            notification.soundName = "Default";
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
+    }
+    
+    func notefromRegionIdentifier(identifier: String) -> String? {
+        if let url = NSURL(string: identifier){
+            if let id = persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+                if let location = managedObjectContext?.objectWithID(id) as? Location {
+                    return location.name
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    
     func setFilterBySSIDOrByiBeaconAgain () {
         fetchIBeacons()
         loadItems()
@@ -321,7 +368,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userInfo = timer.userInfo as! Dictionary<String, AnyObject>
         if let gateway = userInfo["gateway"] as? Gateway{
             let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
-            SendingHandler.sendCommand(byteArray: Function.refreshGatewayConnection(address), gateway: gateway)
+            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address) , gateway: gateway)
 
         }
     }

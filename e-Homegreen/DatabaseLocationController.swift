@@ -8,11 +8,13 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 class DatabaseLocationController: NSObject {
 
     static let shared = DatabaseLocationController()
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let locationManager = CLLocationManager()
     
     func getNextAvailableId(user:User) -> Int{
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
@@ -33,4 +35,49 @@ class DatabaseLocationController: NSObject {
         }
         return 1
     }
+    
+    func startMonitoringLocation(location: Location){
+        if !AdminController.shared.isAdminLogged(){
+            if !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) || CLLocationManager.authorizationStatus() != .AuthorizedAlways {
+                return
+            }
+            let region = regionWithLocation(location)
+            locationManager.startMonitoringForRegion(region)
+        }
+    }
+    
+    func regionWithLocation(location: Location) -> CLCircularRegion {
+        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(Double(location.latitude!), Double(location.longitude!)) , radius: Double(location.radius!), identifier: location.objectID.URIRepresentation().absoluteString)
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        return region
+    }
+    
+    func stopMonitoringLocation(location: Location) {
+        for region in locationManager.monitoredRegions {
+            if let circularRegion = region as? CLCircularRegion {
+                if circularRegion.identifier == location.objectID.URIRepresentation().absoluteString {
+                    locationManager.stopMonitoringForRegion(circularRegion)
+                }
+            }
+        }
+    }
+    
+    func stopAllLocationMonitoring(){
+        for region in locationManager.monitoredRegions {
+            if let circularRegion = region as? CLCircularRegion {
+                locationManager.stopMonitoringForRegion(circularRegion)
+            }
+        }
+    }
+    
+    func startMonitoringAllLocationByUser(user:User){
+        if let locations = user.locations?.allObjects as? [Location] {
+            for location in locations{
+                startMonitoringLocation(location)
+            }
+        }
+    }
+    
+    
 }

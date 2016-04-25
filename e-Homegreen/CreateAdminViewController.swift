@@ -28,11 +28,6 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         return true
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func createAdmin(sender: AnyObject) {
         guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
             self.view.makeToast(message: "All fields must be filled")

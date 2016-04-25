@@ -257,6 +257,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                     createZonesAndCategories(newLocation)
                     saveChanges()
                     
+                    DatabaseLocationController.shared.startMonitoringLocation(newLocation)
+                    
                     delegate?.editAddLocationFinished()
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }

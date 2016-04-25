@@ -115,7 +115,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
 
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
-            print(self.locationList[sender.tag].location)
+            DatabaseLocationController.shared.stopMonitoringLocation(self.locationList[sender.tag].location)
             self.appDel.managedObjectContext?.deleteObject(self.locationList[sender.tag].location)
             self.reloadLocations()
         })
