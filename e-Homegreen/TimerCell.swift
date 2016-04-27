@@ -24,7 +24,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
     
     var cellTimer:Timer!
     var time:NSTimer?
-    var count:Int = 0
+//    var count:Int = 0
     
     func setItem(timer:Timer, filterParametar:FilterItem){
         cellTimer = timer

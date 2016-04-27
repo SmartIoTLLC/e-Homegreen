@@ -138,6 +138,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let url = NSURL(string: identifier){
             if let id = persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                 if let location = managedObjectContext?.objectWithID(id) as? Location {
+                    if let timer = location.timer{
+                        DatabaseTimersController.shared.startTImerOnLocation(timer)
+                    }
                     return location.name
                 }
             }

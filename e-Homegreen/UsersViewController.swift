@@ -48,48 +48,22 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
             
         }
         refreshTimerList()
+        refreshTimersStatus()
         changeFullScreeenImage()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
 
         
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        }
-    }
     
-    func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        }
-    }
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
-        refreshTimerList()
-    }
-    
-    func refreshTimerList() {
-        timers = DatabaseUserTimerController.shared.getTimers(filterParametar)
-        usersCollectionView.reloadData()
-    }
     
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -121,12 +95,130 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         pullDown.drawMenu(filterParametar)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
+    override func viewWillDisappear(animated: Bool) {
+        if let cells = self.usersCollectionView.visibleCells() as? [TimerUserCell]{
+            for cell in cells{
+                cell.time?.invalidate()
+            }
+        }
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
     }
+    
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        refreshTimerList()
+    }
+    
+    @IBAction func refreshTimers(sender: UIButton) {
+        refreshTimersStatus()
+        sender.rotate(1)
+    }
+    
+    func refreshTimersStatus(){
+        for timer in timers{
+            var address:[UInt8] = []
+            if timer.isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if timer.isLocalcast.boolValue {
+                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
+            }
+            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatus(address), gateway: timer.gateway)
+            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatusCountApp(address), gateway: timer.gateway)
+        }
+    }
+    
+    func refreshTimerList() {
+        timers = DatabaseUserTimerController.shared.getTimers(filterParametar)
+        usersCollectionView.reloadData()
+    }
+
+    //cell action
+    
+    func pressedPause (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
+        changeImageInCell(button)
+    }
+    
+    func pressedStart (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
+        changeImageInCell(button)
+    }
+    
+    func pressedResume (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
+        changeImageInCell(button)
+    }
+    
+    func pressedCancel (button:UIButton) {
+        let tag = button.tag
+        var address:[UInt8] = []
+        if timers[tag].isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else if timers[tag].isLocalcast.boolValue {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), 0xFF]
+        } else {
+            address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
+        }
+        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
+        changeImageInCell(button)
+    }
+    
+    func changeImageInCell(button:UIButton) {
+        let pointInTable = button.convertPoint(button.bounds.origin, toView: usersCollectionView)
+        let indexPath = usersCollectionView.indexPathForItemAtPoint(pointInTable)
+        if let cell = usersCollectionView.cellForItemAtIndexPath(indexPath!) as? TimerUserCell {
+            cell.commandSentChangeImage()
+        }
+    }
+
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -169,9 +261,13 @@ extension UsersViewController: UICollectionViewDelegate, UICollectionViewDelegat
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         return collectionViewCellSize
-        
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
 }
 
@@ -185,86 +281,73 @@ extension UsersViewController: UICollectionViewDataSource {
         return timers.count
     }
     
-//    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
-//        let tag = gestureRecognizer.view!.tag
-//        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-//            let location = gestureRecognizer.locationInView(timersCollectionView)
-//            if let index = timersCollectionView.indexPathForItemAtPoint(location){
-//                let cell = timersCollectionView.cellForItemAtIndexPath(index)
-//                showTimerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - timersCollectionView.contentOffset.y), timer: timers[tag])
-//            }
-//        }
-//    }
+    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+        let tag = gestureRecognizer.view!.tag
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            let location = gestureRecognizer.locationInView(usersCollectionView)
+            if let index = usersCollectionView.indexPathForItemAtPoint(location){
+                let cell = usersCollectionView.cellForItemAtIndexPath(index)
+                showTimerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - usersCollectionView.contentOffset.y), timer: timers[tag])
+            }
+        }
+    }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("usersCell", forIndexPath: indexPath) as! TimerUserCell
         
         cell.setItem(timers[indexPath.row], filterParametar:filterParametar)
 
-//        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
-//        longPress.minimumPressDuration = 0.5
-//        cell.timerTitle.userInteractionEnabled = true
-//        cell.timerTitle.addGestureRecognizer(longPress)
-//        
-//        cell.getImagesFrom(timers[indexPath.row])
-//        
-//        cell.timerButton.tag = indexPath.row
-//        cell.timerButtonLeft.tag = indexPath.row
-//        cell.timerButtonRight.tag = indexPath.row
-//        print(timers[indexPath.row].type)
-//        if timers[indexPath.row].type == "Countdown" {
-//            //   ===   Default   ===
-//            cell.timerButton.hidden = false
-//            cell.timerButtonLeft.hidden = true
-//            cell.timerButtonRight.hidden = true
-//            cell.timerButton.enabled = true
-//            cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-//            cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
-//            //   ===================
-//            if timers[indexPath.row].timerState == 1 {
-//                cell.timerButton.hidden = true
-//                cell.timerButtonLeft.hidden = false
-//                cell.timerButtonRight.hidden = false
-//                cell.timerButtonRight.setTitle("Pause", forState: UIControlState.Normal)
-//                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-//                cell.timerButtonRight.addTarget(self, action: "pressedPause:", forControlEvents: UIControlEvents.TouchUpInside)
-//                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//            if timers[indexPath.row].timerState == 240 {
-//                cell.timerButton.hidden = false
-//                cell.timerButtonLeft.hidden = true
-//                cell.timerButtonRight.hidden = true
-//                cell.timerButton.enabled = true
-//                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-//                cell.timerButton.addTarget(self, action: "pressedStart:", forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//            if timers[indexPath.row].timerState == 238 {
-//                cell.timerButton.hidden = true
-//                cell.timerButtonLeft.hidden = false
-//                cell.timerButtonRight.hidden = false
-//                cell.timerButtonRight.setTitle("Resume", forState: UIControlState.Normal)
-//                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-//                cell.timerButtonRight.addTarget(self, action: "pressedResume:", forControlEvents: UIControlEvents.TouchUpInside)
-//                cell.timerButtonLeft.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//        } else {
-//            if timers[indexPath.row].timerState == 240 {
-//                cell.timerButton.hidden = false
-//                cell.timerButtonLeft.hidden = true
-//                cell.timerButtonRight.hidden = true
-//                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
-//                //                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-//                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
-//                cell.timerButton.enabled = false
-//            } else {
-//                cell.timerButton.hidden = false
-//                cell.timerButtonLeft.hidden = true
-//                cell.timerButtonRight.hidden = true
-//                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
-//                cell.timerButton.addTarget(self, action: "pressedCancel:", forControlEvents: UIControlEvents.TouchUpInside)
-//                cell.timerButton.enabled = true
-//            }
-//        }
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        longPress.minimumPressDuration = 0.5
+        cell.titleLabel.userInteractionEnabled = true
+        cell.titleLabel.addGestureRecognizer(longPress)
+
+        cell.getImagesFrom(timers[indexPath.row])
+        
+        
+            //   ===   Default   ===
+            cell.playButton.hidden = false
+            cell.pauseButton.hidden = true
+            cell.stopButton.hidden = true
+            cell.playButton.enabled = true
+            cell.playButton.setTitle("Start", forState: UIControlState.Normal)
+            cell.playButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            
+            if timers[indexPath.row].timerState == 1 {
+                cell.playButton.hidden = true
+                cell.stopButton.hidden = false
+                cell.pauseButton.hidden = false
+                cell.startTimer()
+                cell.pauseButton.setTitle("Pause", forState: UIControlState.Normal)
+                cell.stopButton.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.pauseButton.addTarget(self, action: #selector(TimersViewController.pressedPause(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.stopButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            if timers[indexPath.row].timerState == 240 {
+                cell.playButton.hidden = false
+                cell.pauseButton.hidden = true
+                cell.stopButton.hidden = true
+                cell.stopTimer()
+                cell.playButton.enabled = true
+                cell.playButton.setTitle("Start", forState: UIControlState.Normal)
+                cell.playButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            if timers[indexPath.row].timerState == 238 {
+                cell.playButton.hidden = true
+                cell.stopButton.hidden = false
+                cell.pauseButton.hidden = false
+                cell.stopTimer()
+                cell.pauseButton.setTitle("Resume", forState: UIControlState.Normal)
+                cell.stopButton.setTitle("Cancel", forState: UIControlState.Normal)
+                cell.pauseButton.addTarget(self, action: #selector(TimersViewController.pressedResume(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.stopButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        
+
+        cell.playButton.tag = indexPath.row
+        cell.pauseButton.tag = indexPath.row
+        cell.stopButton.tag = indexPath.row
+
 
         return cell
     }

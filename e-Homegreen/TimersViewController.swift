@@ -12,7 +12,6 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         
     var appDel:AppDelegate!
     var timers:[Timer] = []
-    var timersForLabel:[NSTimer] = []
     var error:NSError? = nil
     
     var pullDown = PullDownView()
@@ -149,10 +148,6 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
     }
     
     func refreshTimerList() {
-        for timer in timersForLabel{
-            timer.invalidate()
-        }
-        timersForLabel = []
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }

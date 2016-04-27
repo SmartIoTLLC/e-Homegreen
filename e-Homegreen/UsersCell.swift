@@ -17,14 +17,47 @@ class TimerUserCell:UICollectionViewCell{
     @IBOutlet weak var pauseButton: CustomGradientButtonWhite!
     @IBOutlet weak var stopButton: CustomGradientButtonWhite!
     
+    var imageOne:UIImage?
+    var imageTwo:UIImage?
+    
+    var cellTimer:Timer!
+    var time:NSTimer?
+    
     override func awakeFromNib() {
         imageTimer.layer.cornerRadius = 5
         imageTimer.clipsToBounds = true
     }
     
     func setItem(timer:Timer, filterParametar:FilterItem){
+        cellTimer = timer
         titleLabel.text = getName(timer, filterParametar: filterParametar)
-        imageTimer.image = UIImage(data: timer.timerImageOne)
+        let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
+        timeLabel.text = "\(h):\(m):\(s)"
+        
+    }
+    
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
+    func startTimer(){
+        time?.invalidate()
+        time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countUp:", userInfo:nil, repeats: true)
+            
+    }
+    
+    func stopTimer(){
+        time?.invalidate()
+    }
+    
+    func countUp(timer:NSTimer){
+        cellTimer.timerCount += 1
+        let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
+        timeLabel.text = "\(h):\(m):\(s)"
+    }
+    
+    override func prepareForReuse() {
+        time?.invalidate()
     }
     
     func getName(timer:Timer, filterParametar:FilterItem) -> String{
@@ -40,8 +73,28 @@ class TimerUserCell:UICollectionViewCell{
         }
         name += timer.timerName
         return name
-        
-        
+    }
+    
+    func getImagesFrom(timer:Timer) {
+        if let timerImage = UIImage(data: timer.timerImageOne) {
+            imageOne = timerImage
+        }
+        if let timerImage = UIImage(data: timer.timerImageTwo) {
+            imageTwo = timerImage
+        }
+        imageTimer.image = imageOne
+        setNeedsDisplay()
+    }
+    
+    func commandSentChangeImage () {
+        imageTimer.image = imageTwo
+        setNeedsDisplay()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+    }
+    
+    func changeImageToNormal () {
+        imageTimer.image = imageOne
+        setNeedsDisplay()
     }
     
     override func drawRect(rect: CGRect) {
