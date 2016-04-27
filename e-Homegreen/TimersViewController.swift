@@ -12,6 +12,7 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         
     var appDel:AppDelegate!
     var timers:[Timer] = []
+    var timersForLabel:[NSTimer] = []
     var error:NSError? = nil
     
     var pullDown = PullDownView()
@@ -48,6 +49,7 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
             
         }
         refreshTimerList()
+        refreshTimersStatus()
         changeFullScreeenImage()
     }
     
@@ -60,6 +62,14 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
 
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if let cells = self.timersCollectionView.visibleCells() as? [TimerCollectionViewCell]{
+            for cell in cells{
+                cell.time?.invalidate()
+            }
+        }        
     }
     
     override func viewWillLayoutSubviews() {
@@ -111,6 +121,27 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         }
     }
     
+    @IBAction func refreshTimers(sender: UIButton) {
+        refreshTimersStatus()
+        sender.rotate(1)
+    }
+    
+    func refreshTimersStatus(){
+        for timer in timers{
+            var address:[UInt8] = []
+            if timer.isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if timer.isLocalcast.boolValue {
+                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
+            }
+            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatus(address), gateway: timer.gateway)
+            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatusCountApp(address), gateway: timer.gateway)
+        }
+    }
+    
+    
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
@@ -118,6 +149,10 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
     }
     
     func refreshTimerList() {
+        for timer in timersForLabel{
+            timer.invalidate()
+        }
+        timersForLabel = []
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }
@@ -282,7 +317,7 @@ extension TimersViewController: UICollectionViewDataSource {
         cell.timerButton.tag = indexPath.row
         cell.timerButtonLeft.tag = indexPath.row
         cell.timerButtonRight.tag = indexPath.row
-        if timers[indexPath.row].type == "Countdown" {
+        if timers[indexPath.row].type == "Timer" || timers[indexPath.row].type == "Stopwatch/User" {
             //   ===   Default   ===
             cell.timerButton.hidden = false
             cell.timerButtonLeft.hidden = true
@@ -290,11 +325,12 @@ extension TimersViewController: UICollectionViewDataSource {
             cell.timerButton.enabled = true
             cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
             cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            //   ===================
+
             if timers[indexPath.row].timerState == 1 {
                 cell.timerButton.hidden = true
                 cell.timerButtonLeft.hidden = false
                 cell.timerButtonRight.hidden = false
+                cell.startTimer()
                 cell.timerButtonRight.setTitle("Pause", forState: UIControlState.Normal)
                 cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
                 cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedPause(_:)), forControlEvents: UIControlEvents.TouchUpInside)
@@ -304,6 +340,7 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButton.hidden = false
                 cell.timerButtonLeft.hidden = true
                 cell.timerButtonRight.hidden = true
+                cell.stopTimer()
                 cell.timerButton.enabled = true
                 cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
                 cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
@@ -312,12 +349,14 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButton.hidden = true
                 cell.timerButtonLeft.hidden = false
                 cell.timerButtonRight.hidden = false
+                cell.stopTimer()
                 cell.timerButtonRight.setTitle("Resume", forState: UIControlState.Normal)
                 cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
                 cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedResume(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }
         } else {
+            cell.timerCOuntingLabel.text = ""
             if timers[indexPath.row].timerState == 240 {
                 cell.timerButton.hidden = false
                 cell.timerButtonLeft.hidden = true

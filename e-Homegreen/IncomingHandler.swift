@@ -183,17 +183,17 @@ class IncomingHandler: NSObject {
     func parseTimerStatus(dataFrame:DataFrame) {
         fetchEntities("Timer")
         // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
-        guard dataFrame.INFO.count == 74 else {
-            return
-        }
+//        guard dataFrame.INFO.count == 74 else {
+//            return
+//        }
         // For loop in data frame INFO block
         for var i = 1; i <= 16; i++ {
-            print(timers.count)
             for item in timers {
                 if  item.gateway.addressOne == Int(dataFrame.ADR1) && item.gateway.addressTwo == Int(dataFrame.ADR2) && item.address == Int(dataFrame.ADR3) && item.timerId == Int(i) {
-                    let position = i - 1
+                    let position = (i - 1)*4
                     let fourBytes = [dataFrame.INFO[1+position], dataFrame.INFO[2+position], dataFrame.INFO[3+position], dataFrame.INFO[4+position]]
                     item.count = NSNumber(unsignedInteger: UInt.convertFourBytesToUInt(fourBytes))
+                    item.timerCount = UInt.convertFourBytesToUInt(fourBytes)
                     saveChanges()
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
                 }
@@ -631,8 +631,6 @@ class IncomingHandler: NSObject {
     //  0xEE Suspend = 238
     //  informacije o parametrima kanala
     func ackTimerStatus (byteArray:[Byte]){
-        print("AOOO")
-        print(byteArray)
         fetchEntities("Timer")
         for var i = 1; i <= 16; i++ {
             print(timers.count)

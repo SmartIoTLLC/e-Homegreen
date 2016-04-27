@@ -38,11 +38,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5cj-Yu-cKO" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="24" width="300" height="553"/>
+                    <rect key="frame" x="38" y="57" width="300" height="553"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZML-dV-M2P">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="553"/>
@@ -71,6 +71,26 @@
                                     <state key="normal" image="down"/>
                                     <connections>
                                         <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="VAU-Q7-G2J"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4K-Vy-2Ue">
+                                    <rect key="frame" x="72" y="84" width="182" height="31"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                    <state key="normal">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="aJR-GB-4pW"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Nn-Zs-nqI">
+                                    <rect key="frame" x="72" y="118" width="182" height="31"/>
+                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                    <state key="normal">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="90Y-vc-Ar8"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1SH-fT-yUK" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
@@ -248,26 +268,6 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4K-Vy-2Ue">
-                                    <rect key="frame" x="72" y="84" width="182" height="31"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <state key="normal">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="aJR-GB-4pW"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Nn-Zs-nqI">
-                                    <rect key="frame" x="72" y="118" width="182" height="31"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <state key="normal" title="Button">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="90Y-vc-Ar8"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="7dX-HD-hje" firstAttribute="top" secondItem="jTf-6s-dl0" secondAttribute="bottom" constant="15" id="7Ph-DX-Kym"/>
@@ -392,6 +392,7 @@
                 <constraint firstItem="5cj-Yu-cKO" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="jV7-U2-Ddj"/>
                 <constraint firstItem="5cj-Yu-cKO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="sb8-aH-bMe"/>
             </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="BgL-ZV-NZv"/>

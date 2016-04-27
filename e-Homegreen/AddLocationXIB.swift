@@ -110,7 +110,9 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 
                 timerButton.setTitle(location.timer?.timerName, forState: .Normal)
                 if let security = location.security?.allObjects as? [Security]{
-                   securityButton.setTitle(security[0].gateway?.gatewayDescription, forState: .Normal)
+                    if security.count != 0{
+                        securityButton.setTitle(security[0].gateway?.gatewayDescription, forState: .Normal)
+                    }
                 }
                 
                 

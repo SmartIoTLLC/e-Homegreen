@@ -16,12 +16,65 @@ class TimerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timerImageView: UIImageView!
     @IBOutlet weak var timerButton: UIButton!
     @IBOutlet weak var timerButtonLeft: UIButton!
-    @IBOutlet weak var timerButtonRight: UIButton!
+    @IBOutlet weak var timerButtonRight: UIButton!    
+    @IBOutlet weak var timerCOuntingLabel: UILabel!
+    
     var imageOne:UIImage?
     var imageTwo:UIImage?
     
+    var cellTimer:Timer!
+    var time:NSTimer?
+    var count:Int = 0
+    
     func setItem(timer:Timer, filterParametar:FilterItem){
+        cellTimer = timer
         timerTitle.text = getName(timer, filterParametar: filterParametar)
+        if cellTimer.type == "Timer" || cellTimer.type == "Stopwatch/User"{
+            let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
+            timerCOuntingLabel.text = "\(h):\(m):\(s)"
+        }else{
+           timerCOuntingLabel.text = ""
+        }
+    }
+    
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
+    func startTimer(){
+        if cellTimer.type == "Timer"{
+            time?.invalidate()
+            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countDown:", userInfo:nil, repeats: true)
+            
+        }
+        if cellTimer.type == "Stopwatch/User"{
+            time?.invalidate()
+            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countUp:", userInfo:nil, repeats: true)
+            
+        }
+    }
+    
+    func stopTimer(){
+        time?.invalidate()
+    }
+    
+    func countUp(timer:NSTimer){
+        cellTimer.timerCount += 1
+        let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
+        timerCOuntingLabel.text = "\(h):\(m):\(s)"
+    }
+    
+    override func prepareForReuse() {
+        time?.invalidate()
+    }
+    
+    func countDown(timer:NSTimer){
+        if cellTimer.timerCount > 0{
+            cellTimer.timerCount -= 1
+            let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
+            timerCOuntingLabel.text = "\(h):\(m):\(s)"
+        }
+        
     }
     
     func getName(timer:Timer, filterParametar:FilterItem) -> String{

@@ -777,7 +777,7 @@ extension Function {
         return message
     }
     static func refreshTimerStatus(address:[Byte]) -> [Byte]{
-        let messageInfo:[Byte] = [0xFF]
+        let messageInfo:[Byte] = [0xFF, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
@@ -796,7 +796,7 @@ extension Function {
         return message
     }
     static func refreshTimerStatusCountApp(address:[Byte]) -> [Byte]{
-        let messageInfo:[Byte] = [0xFF]
+        let messageInfo:[Byte] = [0xFF, 0x01]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)

@@ -338,7 +338,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchGateways()
         if gateways != [] {
             for gateway in gateways {
-                timers.append(NSTimer.scheduledTimerWithTimeInterval(Double(gateway.autoReconnectDelay!) * 60, target: self, selector: "refreshGateways:" , userInfo: ["gateway" :gateway], repeats: true))
+                timers.append(NSTimer.scheduledTimerWithTimeInterval(Double(gateway.autoReconnectDelay!) * 60, target: self, selector: #selector(AppDelegate.refreshGateways(_:)) , userInfo: ["gateway" :gateway], repeats: true))
                 if inOutSockets != [] {
                     var foundRemote:Bool = false
                     var foundLocal:Bool = false
