@@ -16,7 +16,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     var appDel:AppDelegate!
     var users:[User] = []
-    var sidebarMenuOpen : Bool!
+    var sidebarMenuOpen : Bool = false
     var tap : UITapGestureRecognizer!
     
     @IBOutlet weak var addButton: UIButton!
@@ -92,8 +92,6 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             }else{
                 self.view.makeToast(message: "Error!!")
             }
-            
-            
         }
     }
     
@@ -209,13 +207,11 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     func closeSideMenu(){
         
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+        if sidebarMenuOpen == true {
             self.revealViewController().revealToggleAnimated(true)
         }
         
     }
-    
-    
 }
 
 class UserCell: UITableViewCell{

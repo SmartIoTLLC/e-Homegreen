@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EnergyViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var current: UILabel!
     @IBOutlet weak var powerUsage: UILabel!
@@ -28,12 +28,6 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
     var sumPow:Float = 0
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        refreshLocalParametars()
-    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -76,6 +70,41 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        refreshLocalParametars()
+        addObservers()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+            
+        } else {
+            var rect = self.pullDown.frame
+            pullDown.removeFromSuperview()
+            rect.size.width = self.view.frame.size.width
+            rect.size.height = self.view.frame.size.height
+            pullDown.frame = rect
+            pullDown = PullDownView(frame: rect)
+            pullDown.customDelegate = self
+            self.view.addSubview(pullDown)
+            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        }
+        pullDown.drawMenu(filterParametar)
+    }
+    
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {
@@ -95,58 +124,25 @@ class EnergyViewController: UIViewController, UIPopoverPresentationControllerDel
         }
     }
     
-    override func viewWillLayoutSubviews() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-        }
-        pullDown.drawMenu(filterParametar)
+    func pullDownSearchParametars (filterItem:FilterItem) {
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        refreshLocalParametars()
     }
     
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         updateDeviceList()
     }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
-    override func viewDidAppear(animated: Bool) {
-        refreshLocalParametars()
-        addObservers()
-    }
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
-    }
+
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EnergyViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
     }
+    
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
+    
     func updateDeviceList() {
         sumAmp = 0
         sumPow = 0

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		139CC93EF6816E088C240616 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BCDAD58C51E5A3CC1189F2 /* Pods.framework */; };
+		220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */; };
+		2201763A1CD0FED400A1470A /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220176381CD0FED400A1470A /* MenuItem.swift */; };
+		2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201763B1CD1016200A1470A /* DatabaseMenuController.swift */; };
 		222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889AF1CBBCF84004EBADD /* TimerCell.swift */; };
 		222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */; };
 		222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B31CBBD5E0004EBADD /* FlagCell.swift */; };
@@ -323,6 +326,9 @@
 
 /* Begin PBXFileReference section */
 		170E75200A22D49DA5CAC1EC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MenuItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		220176381CD0FED400A1470A /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		2201763B1CD1016200A1470A /* DatabaseMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseMenuController.swift; sourceTree = "<group>"; };
 		222889AF1CBBCF84004EBADD /* TimerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCell.swift; sourceTree = "<group>"; };
 		222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTimersController.swift; sourceTree = "<group>"; };
 		222889B31CBBD5E0004EBADD /* FlagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCell.swift; sourceTree = "<group>"; };
@@ -1163,6 +1169,8 @@
 			children = (
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
 				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
+				220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */,
+				220176381CD0FED400A1470A /* MenuItem.swift */,
 				224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */,
 				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
 				73EF9F2D1BA1A2DC00A9CF35 /* Device.swift */,
@@ -1270,6 +1278,7 @@
 				2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */,
 				2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */,
 				223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */,
+				2201763B1CD1016200A1470A /* DatabaseMenuController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1904,6 +1913,7 @@
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
+				220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
@@ -2018,6 +2028,7 @@
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */,
+				2201763A1CD0FED400A1470A /* MenuItem.swift in Sources */,
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
@@ -2052,6 +2063,7 @@
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
 				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
+				2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,

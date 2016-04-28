@@ -119,6 +119,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 user.profilePicture = image
             }
             saveChanges()
+            DatabaseMenuController.shared.createMenu(user)
         }else{
             guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
                 self.view.makeToast(message: "All fields must be filled")
@@ -137,6 +138,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 user.isSuperUser = superUserSwitch.on
                 user.profilePicture = imageData
                 saveChanges()
+                DatabaseMenuController.shared.createMenu(user)
             }
             
 

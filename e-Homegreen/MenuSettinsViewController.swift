@@ -59,23 +59,23 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var topView: UIView!
     var user:User!
     
+    var menu:[MenuItem] = []
+    
     var menuList:[String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for item in  Menu.allMenuItem {
-            menuList.append(item.description)
-        }
+//        for item in  Menu.allMenuItem {
+//            menuList.append(item.description)
+//        }
+        menu = DatabaseMenuController.shared.getMenuItemByUser(user)
       
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("menuSettingsCell") as? MenuSettingsCell {
-            cell.menuImage.image = UIImage(named: menuList[indexPath.row])
-            cell.menuLabel.text = menuList[indexPath.row]
-            cell.menuSwitch.tag = indexPath.row
-
+            cell.setItem(menu[indexPath.row])
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -85,7 +85,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuList.count
+        return menu.count
     }
 
 
@@ -97,4 +97,24 @@ class MenuSettingsCell:UITableViewCell{
     @IBOutlet weak var menuSwitch: UISwitch!
     @IBOutlet weak var menuLabel: UILabel!
     
+    var menuItem:MenuItem!
+    
+    func setItem(menuItem:MenuItem){
+        self.menuItem = menuItem
+        if let item = Menu(rawValue: Int(menuItem.id)){
+            menuImage.image = UIImage(named: item.description)
+            menuLabel.text = item.description
+            menuSwitch.on = Bool(menuItem.isVisible)
+            if item == Menu.Settings{
+                menuSwitch.enabled = false
+            }else{
+                menuSwitch.enabled = true
+            }
+            
+        }
+    }
+    
+    @IBAction func changeValue(sender: AnyObject) {
+        DatabaseMenuController.shared.changeState(menuItem)
+    }
 }

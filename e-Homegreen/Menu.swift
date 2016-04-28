@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MenuItem:NSObject{
+class MenuItemLocal:NSObject{
     let title: String?
     let image: UIImage?
     let viewController: UIViewController?

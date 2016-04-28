@@ -20,5 +20,6 @@ extension User {
     @NSManaged var isSuperUser: NSNumber?
     @NSManaged var isLocked: NSNumber?
     @NSManaged var locations: NSSet?
+    @NSManaged var menu: NSSet?
 
 }
