@@ -35,33 +35,32 @@
         reloadMenu()
     }
     
-    func reloadMenu(){
-        //check if admin, user or super user and create menu for it
+    override func viewWillDisappear(animated: Bool) {
         if let user = user{
-            //            if user.isSuperUser == true {
+            DatabaseMenuController.shared.changeOrder(menu, user: user)
+        }
+    }
+    
+    func reloadMenu(){
+        //check if admin, user or super user and create menu
+        if let user = user{
             menu = DatabaseMenuController.shared.getVisibleMenuItemByUser(user)
-            //            }else{
-            //                for item in  Menu.allMenuItemNotSuperUser {
-            //                    let menuItem = MenuItemLocal(title: item.description, image:  UIImage(named: item.description), viewController: item.controller, state: true)
-            //                    menuItems.append(menuItem)
-            //                }
-            //            }
         }else{
             menu = DatabaseMenuController.shared.createMenuForAdmin()
         }
         menuCollectionView.reloadData()
+        
     }
     
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, willMoveToIndexPath toIndexPath: NSIndexPath!) {
-        let from = menu[fromIndexPath.row]
-        let to = menu[toIndexPath.row]
-        
-        DatabaseMenuController.shared.changeItems(from, toMenuItem: to)
-        reloadMenu()
-        
+
+        let pom = menu[fromIndexPath.item]
+        menu.removeAtIndex(fromIndexPath.item)
+        menu.insert(pom, atIndex: toIndexPath.item)
+
     }
     
     func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {

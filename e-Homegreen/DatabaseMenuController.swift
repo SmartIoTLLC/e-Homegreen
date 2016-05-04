@@ -94,7 +94,25 @@ class DatabaseMenuController: NSObject {
         return []
     }
     
+    func changeOrder(menu:[MenuItem], user:User){
+        let tempMenu = getMenuItemByUser(user)
+        for (tempIndex,tempItem) in tempMenu.enumerate(){
+            var exist = false
+            for (index,item) in menu.enumerate(){
+                if tempItem.id == item.id && tempItem.id != 13{
+                    tempItem.orderId = index
+                    exist = true
+                }
+            }
+            if !exist && tempItem.id != 13{
+                tempItem.orderId = tempIndex
+            }
+        }
+        saveChanges()
+    }
+    
     func changeItems(fromMenuItem:MenuItem, toMenuItem:MenuItem){
+        
         let pom = fromMenuItem.orderId
         fromMenuItem.orderId = toMenuItem.orderId
         toMenuItem.orderId = pom
