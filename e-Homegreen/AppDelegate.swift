@@ -48,6 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
+        CreateUserFromJSONController.shared.unzipAndDeleteFile(url)
+        
+        return true
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // slider setup
@@ -73,8 +80,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }else{
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-                let devices = Menu.Devices.controller
-                sideMenu.setFrontViewController(devices, animated: true)
+                var controller:UINavigationController = Menu.Settings.controller
+                if let user = DatabaseUserController.shared.getLoggedUser(){
+                    if user.openLastScreen.boolValue == true{
+                        if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
+                            controller = menu.controller
+                        }
+                    }
+                }
+                sideMenu.setFrontViewController(controller, animated: true)
                 self.window?.rootViewController = sideMenu
                 self.window?.makeKeyAndVisible()
             }
@@ -138,9 +152,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let url = NSURL(string: identifier){
             if let id = persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                 if let location = managedObjectContext?.objectWithID(id) as? Location {
-                    if let timer = location.timer{
-                        DatabaseTimersController.shared.startTImerOnLocation(timer)
-                    }
+//                    if let timer = location.timer{
+//                        DatabaseTimersController.shared.startTImerOnLocation(timer)
+//                    }
                     return location.name
                 }
             }

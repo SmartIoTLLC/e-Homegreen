@@ -20,6 +20,7 @@ extension Timer {
     @NSManaged var isLocalcast: NSNumber
     @NSManaged var timerCategory: String?
     @NSManaged var timerId: NSNumber
+    @NSManaged var id: String
     @NSManaged var timerImageOne: NSData
     @NSManaged var timerImageTwo: NSData
     @NSManaged var timerName: String
@@ -28,6 +29,5 @@ extension Timer {
     @NSManaged var type: String
     @NSManaged var count: NSNumber
     @NSManaged var gateway: Gateway
-    @NSManaged var location: Location?
 
 }

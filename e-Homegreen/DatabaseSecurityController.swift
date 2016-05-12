@@ -23,14 +23,13 @@ class DatabaseSecurityController: NSObject {
         let importedData = DataImporter.createSecuritiesFromFile(NSBundle.mainBundle().pathForResource("Security", ofType: "json")!)
         for securityJSON in importedData! {
             let security = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: appDel.managedObjectContext!) as! Security
-            security.name = securityJSON.name
-            security.modeExplanation = securityJSON.modeExplanation
+            security.securityName = securityJSON.name
+            security.securityDescription = securityJSON.modeExplanation
             security.addressOne = gateway.addressOne
             security.addressTwo = gateway.addressTwo
             security.addressThree = 254
             security.location = location
-            security.gateway = gateway
-//            saveChanges()
+            security.gatewayId = gateway.gatewayId
         }
     }
     

@@ -21,5 +21,7 @@ extension User {
     @NSManaged var isLocked: NSNumber?
     @NSManaged var locations: NSSet?
     @NSManaged var menu: NSSet?
+    @NSManaged var openLastScreen: NSNumber
+    @NSManaged var lastScreenId: NSNumber?
 
 }

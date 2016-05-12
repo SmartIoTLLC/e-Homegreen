@@ -14,12 +14,12 @@ import CoreData
 
 extension Security {
 
-    @NSManaged var name: String
-    @NSManaged var modeExplanation: String
+    @NSManaged var securityName: String?
+    @NSManaged var securityDescription: String?
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressTwo: NSNumber
     @NSManaged var addressThree: NSNumber
-    @NSManaged var gateway: Gateway?
+    @NSManaged var gatewayId: String?
     @NSManaged var location: Location?
 
 }

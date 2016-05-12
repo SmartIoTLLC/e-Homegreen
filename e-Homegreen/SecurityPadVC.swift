@@ -73,64 +73,64 @@ class SecurityPadVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnOne(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x01), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x01), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnTwo(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x02), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x02), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnThree(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x03), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x03), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnFour(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x04), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x04), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnFive(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x05), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x05), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnSix(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x06), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x06), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnSeven(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x07), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x07), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnEight(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x08), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x08), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnNine(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x09), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x09), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnStar(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x0B), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x0B), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnNull(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: security.gateway!)
+//        }
     }
     @IBAction func btnHash(sender: AnyObject) {
-        if security.gateway != nil {
-            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x1A), gateway: security.gateway!)
-        }
+//        if security.gateway != nil {
+//            SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x1A), gateway: security.gateway!)
+//        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnCancel(sender: AnyObject) {

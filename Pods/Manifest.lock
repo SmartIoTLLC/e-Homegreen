@@ -3,17 +3,26 @@ PODS:
   - ALCameraViewController (1.1.6)
   - CocoaAsyncSocket (7.4.1)
   - JSQCoreDataKit (2.2.0)
+  - NSManagedObject-HYPPropertyMapper (3.6.2):
+    - NSString-HYPNetworking (~> 0.4.0)
+  - NSString-HYPNetworking (0.4.0)
+  - Zip (0.3.4)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
   - ALCameraViewController
   - CocoaAsyncSocket
   - JSQCoreDataKit
+  - NSManagedObject-HYPPropertyMapper
+  - Zip
 
 SPEC CHECKSUMS:
   Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
   ALCameraViewController: 80368d0d72997d278ba21e1a62d292cfc8e6635e
   CocoaAsyncSocket: 7cbf214b27f8e7f7574db6a3fd96352ffaed433d
   JSQCoreDataKit: 5fc7bfcd7c1f33d83a1caebbbcd87ee3f4a89261
+  NSManagedObject-HYPPropertyMapper: b47eb32a4e9b0feeab69bc42f98fc425aa6428f7
+  NSString-HYPNetworking: 24c3828eebde8a37cc16101a475934a56ac820c0
+  Zip: 99d6f8bdcbcf1fd2f189af929651282bdc42c2f7
 
 COCOAPODS: 0.39.0

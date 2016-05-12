@@ -204,6 +204,7 @@ class ScanTimerViewController: UIViewController, UITextFieldDelegate, SceneGalle
                         timer.isBroadcast = broadcastSwitch.on
                         timer.isLocalcast = localcastSwitch.on
                         timer.type = type
+                        timer.id = NSUUID().UUIDString
                         if btnLevel.titleLabel?.text != "--" {
                             timer.entityLevel = btnLevel.titleLabel!.text!
                         }

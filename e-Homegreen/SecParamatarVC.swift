@@ -42,7 +42,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        popUpTextView.text = security.modeExplanation
+//        popUpTextView.text = security.securityDescription
         popUpTextView.delegate = self
         textViewDidChange(popUpTextView)
         
@@ -70,7 +70,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     
     @IBAction func btnUpdate(sender: AnyObject) {
         if popUpTextView.text != "" {
-            security.modeExplanation = popUpTextView.text
+//            security.securityDescription = popUpTextView.text
             saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
         }

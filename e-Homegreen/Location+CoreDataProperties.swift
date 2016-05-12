@@ -23,10 +23,10 @@ extension Location {
     @NSManaged var gateways: NSSet?
     @NSManaged var ssids: NSSet?
     @NSManaged var surveillances: NSSet?
-    @NSManaged var timer: Timer?
     @NSManaged var user: User?
     @NSManaged var zones: NSSet?
     @NSManaged var security: NSSet?
     @NSManaged var orderId: NSNumber?
+    @NSManaged var timerId: String?
 
 }

@@ -121,6 +121,9 @@
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
+        if let user = user{
+            user.lastScreenId = indexPath.row
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

@@ -55,6 +55,23 @@ class DatabaseTimersController: NSObject {
         return []
     }
     
+    func getTimerByid(id:String) -> Timer?{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Timer")
+        let predicateArray:[NSPredicate] = [NSPredicate(format: "id == %@", id)]
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            if fetResults?.count != 0{
+                return fetResults?.first
+            }
+        } catch _ as NSError {
+            abort()
+        }
+        
+        return nil
+    }
+    
     func getUserTimers(location:Location) -> [Timer]{
         let fetchRequest = NSFetchRequest(entityName: "Timer")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)

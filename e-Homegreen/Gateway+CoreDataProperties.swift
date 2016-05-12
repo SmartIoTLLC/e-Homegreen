@@ -17,6 +17,7 @@ extension Gateway {
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressThree: NSNumber
     @NSManaged var addressTwo: NSNumber
+    @NSManaged var gatewayId: String?
     @NSManaged var autoReconnectDelay: NSNumber?
     @NSManaged var autoReconnectDelayLast: NSDate?
     @NSManaged var gatewayDescription: String

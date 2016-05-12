@@ -178,22 +178,22 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     func reorganizeSecurityArray () {
         var tempSecurities:[Security] = securities
         for security in securities {
-            if security.name == "Away" {
+            if security.securityName == "Away" {
                 tempSecurities[0] = security
             }
-            if security.name == "Night" {
+            if security.securityName == "Night" {
                 tempSecurities[1] = security
             }
-            if security.name == "Day" {
+            if security.securityName == "Day" {
                 tempSecurities[2] = security
             }
-            if security.name == "Vacation" {
+            if security.securityName == "Vacation" {
                 tempSecurities[3] = security
             }
-            if security.name == "Disarm" {
+            if security.securityName == "Disarm" {
                 tempSecurities[4] = security
             }
-            if security.name == "Panic" {
+            if security.securityName == "Panic" {
                 tempSecurities[5] = security
             }
         }
@@ -210,10 +210,13 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     
     func refreshSecurityAlarmStateAndSecurityMode () {
         let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-        if let gateway = securities[0].gateway {
-            SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
-            SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+        if let id = securities[0].gatewayId{
+            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id)  {
+                SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+            }
         }
+        
     }
     
     func pullDownSearchParametars (filterItem:FilterItem) {
@@ -241,7 +244,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-        switch securities[tag].name {
+        switch securities[tag].securityName! {
         case "Away":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
@@ -285,30 +288,30 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     
     func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
-        switch securities[tag].name {
+        switch securities[tag].securityName! {
         case "Away":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         case "Night":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         case "Day":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         case "Vacation":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         case "Disarm":
             let location = gestureRecognizer.locationInView(securityCollectionView)
@@ -320,7 +323,7 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].modeExplanation, security: securities[tag])
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         default: break
         }
@@ -355,7 +358,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         if filterParametar.location == "All" {
             name += securities[indexPath.row].location!.name! + " "
         }
-        name += securities[indexPath.row].name
+        name += securities[indexPath.row].securityName!
         cell.securityTitle.text = name
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
@@ -363,7 +366,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         openParametar.minimumPressDuration = 0.5
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
-        switch securities[indexPath.row].name {
+        switch securities[indexPath.row].securityName! {
         case "Away":
             cell.setImageForSecuirity(UIImage(named: "inactiveaway")!)
             cell.securityButton.tag = indexPath.row
@@ -415,7 +418,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         }
         let defaults = NSUserDefaults.standardUserDefaults()
         if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
-            if securities[indexPath.row].name == securityMode {
+            if securities[indexPath.row].securityName == securityMode {
                 switch securityMode {
                 case "Away":
                     cell.setImageForSecuirity(UIImage(named: "away")!)
@@ -436,7 +439,7 @@ extension SecurityViewController: UICollectionViewDataSource {
                 }
             }
         }
-        if securities[indexPath.row].name == "Panic" {
+        if securities[indexPath.row].securityName == "Panic" {
             if defaults.boolForKey(UserDefaults.Security.IsPanic) {
                 cell.setImageForSecuirity(UIImage(named: "panic")!)
                 cell.securityImageView.image = UIImage(named: "panic")

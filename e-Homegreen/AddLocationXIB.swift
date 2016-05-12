@@ -107,11 +107,18 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 if let orderId = location.orderId {
                     idTextField.text = "\(orderId)"
                 }
-                
-                timerButton.setTitle(location.timer?.timerName, forState: .Normal)
+                if let id = location.timerId{
+                    if let timer = DatabaseTimersController.shared.getTimerByid(id){
+                        timerButton.setTitle(timer.timerName, forState: .Normal)
+                    }
+                }
                 if let security = location.security?.allObjects as? [Security]{
                     if security.count != 0{
-                        securityButton.setTitle(security[0].gateway?.gatewayDescription, forState: .Normal)
+                        if let id = security[0].gatewayId{
+                            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id){
+                                securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
+                            }
+                        }
                     }
                 }
                 
@@ -301,7 +308,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         }else{
             popoverVC.indexTab = 28
             popoverVC.popOver = PopOver.Security
-            popoverVC.gateways = DatabaseGatewayController.shared.getGatewayByLocation(location!.name!)
+            popoverVC.gateways = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
         }
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -328,8 +335,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         if popOver == PopOver.Timers.rawValue{
             if let location = location, let objectid = objectId{
                 if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectid){
-                    location.timer = timer
-                    timerButton.setTitle(location.timer?.timerName, forState: .Normal)
+                    location.timerId = timer.id
+                    timerButton.setTitle(timer.timerName, forState: .Normal)
                 }
             }
         }
@@ -380,11 +387,11 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
 extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
+        return 0.5
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
+        
         if isPresenting == true{
             isPresenting = false
             let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
@@ -403,9 +410,7 @@ extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
             
-            // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)

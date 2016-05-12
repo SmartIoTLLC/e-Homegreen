@@ -216,12 +216,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clearColor()
             cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-            if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.OpenLastScreen) {
-                cell.openLastScreen.on = true
-            }else{
-                cell.openLastScreen.on = false
-            }
             
+            if let user = user{
+                cell.openLastScreen.on = user.openLastScreen.boolValue
+            }else{
+                if let tempUser = DatabaseUserController.shared.getLoggedUser(){
+                    cell.openLastScreen.on = tempUser.openLastScreen.boolValue
+                }
+            }
             cell.backgroundColor = UIColor.clearColor()
             cell.layer.cornerRadius = 5
             return cell
@@ -281,11 +283,19 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func changeValue(sender:UISwitch){
+        if let user = user{
+            user.openLastScreen = sender.on
+        }else{
+            if let tempUser = DatabaseUserController.shared.getLoggedUser(){
+                tempUser.openLastScreen = sender.on
+            }
+        }
         if sender.on == true {
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.OpenLastScreen)
+            
+//            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.OpenLastScreen)
 
         }else {
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey:UserDefaults.OpenLastScreen)
+//            NSUserDefaults.standardUserDefaults().setBool(false, forKey:UserDefaults.OpenLastScreen)
 
         }
     }
@@ -354,7 +364,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         if segue.identifier == "mainMenu"{
             if let destinationVC = segue.destinationViewController as? MenuSettingsViewController{
-                destinationVC.user = user
+                if let user = user{
+                    destinationVC.user = user
+                }else{
+                    let tempUser = DatabaseUserController.shared.getLoggedUser()
+                    destinationVC.user = tempUser
+                }
             }
         }
     }

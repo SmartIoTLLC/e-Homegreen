@@ -58,8 +58,14 @@ class LogInViewController: UIViewController {
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-                    let devices = Menu.Devices.controller
-                    sideMenu.setFrontViewController(devices, animated: true)
+                    var controller:UINavigationController = Menu.Settings.controller
+                    if user.openLastScreen.boolValue == true{
+                        if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
+                            controller = menu.controller
+                        }
+                    }
+                    
+                    sideMenu.setFrontViewController(controller, animated: true)
                     self.presentViewController(sideMenu, animated: true, completion: nil)
                 }else{
                     self.view.makeToast(message: "Error")

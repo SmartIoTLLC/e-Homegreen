@@ -252,6 +252,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 gateway.gatewayDescription = txtDescription.text
                 gateway.turnedOn = true
                 gateway.location = location
+                gateway.gatewayId = NSUUID().UUIDString
                 gateway.autoReconnectDelay = NSNumber(integer: hb)
                 saveChanges()
                 self.dismissViewControllerAnimated(true, completion: nil)

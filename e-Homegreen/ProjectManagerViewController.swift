@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Foundation
+import NSManagedObject_HYPPropertyMapper
+import Zip
 
 class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
     
@@ -127,6 +130,135 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             
         }
     }
+    
+    @IBAction func shareUser(sender: AnyObject) {
+        if let button = sender as? UIButton{
+            let user = self.users[button.tag]
+            var user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
+            
+//            for item in user_value{
+//                if item.value is NSData{
+//                    user_value.setValue(nil, forKey: item.key as! String)
+//                }
+//            }
+
+//            for item in user_value{
+//                if let stringData = item.1 as? NSData{
+//                    if let key = item.0 as? String{
+//                        user_value[key] = nil
+//                       
+//                    }
+//                    
+//                }
+//            }
+            
+            write(user_value)
+            
+            print(user_value)
+            
+//            do {
+//
+//                let jsonData = try NSJSONSerialization.dataWithJSONObject(user_value, options: NSJSONWritingOptions.PrettyPrinted)
+//                
+//                writeFile(jsonData)
+//                
+                let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+                let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
+                
+                var activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
+                self.presentViewController(activityViewController, animated: true, completion: nil)
+//                // here "jsonData" is the dictionary encoded in JSON data
+//            } catch let error as NSError {
+//                print(error)
+//            }
+        }
+    }
+    
+    func write(userData:NSDictionary){
+        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
+        let documentsDirectoryPath = NSURL(string: documentsDirectoryPathString)!
+        
+        let jsonFilePath = documentsDirectoryPath.URLByAppendingPathComponent("test.json")
+        let fileManager = NSFileManager.defaultManager()
+        var isDirectory: ObjCBool = false
+        
+        // creating a .json file in the Documents folder
+        if !fileManager.fileExistsAtPath(jsonFilePath.absoluteString, isDirectory: &isDirectory) {
+            let created = fileManager.createFileAtPath(jsonFilePath.absoluteString, contents: nil, attributes: nil)
+            if created {
+                print("File created ")
+            } else {
+                print("Couldn't create file for some reason")
+            }
+        } else {
+            print("File already exists")
+        }
+        
+        var data:NSData? = NSKeyedArchiver.archivedDataWithRootObject(userData)
+        if let data = data{
+            data.writeToFile(jsonFilePath.path!, atomically: true)
+        }
+        
+        do {
+            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
+            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+                print(progress)
+            })
+        }
+        catch {
+            print("Something went wrong")
+        }
+        
+        do {
+            try fileManager.removeItemAtPath(jsonFilePath.path!)
+        } catch let error as NSError {
+            print("ERROR: \(error)")
+        }
+
+        
+    }
+    
+//    func writeFile(jsonData: NSData){
+//        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
+//        let documentsDirectoryPath = NSURL(string: documentsDirectoryPathString)!
+//        
+//        let jsonFilePath = documentsDirectoryPath.URLByAppendingPathComponent("test.json")
+//        let fileManager = NSFileManager.defaultManager()
+//        var isDirectory: ObjCBool = false
+//        
+//        // creating a .json file in the Documents folder
+//        if !fileManager.fileExistsAtPath(jsonFilePath.absoluteString, isDirectory: &isDirectory) {
+//            let created = fileManager.createFileAtPath(jsonFilePath.absoluteString, contents: nil, attributes: nil)
+//            if created {
+//                print("File created ")
+//            } else {
+//                print("Couldn't create file for some reason")
+//            }
+//        } else {
+//            print("File already exists")
+//        }
+//
+//        do {
+//            let file = try NSFileHandle(forWritingToURL: jsonFilePath)
+//            file.writeData(jsonData)
+//            print("JSON data was written to teh file successfully!")
+//            
+//        } catch let error as NSError {
+//            print("Couldn't write to file: \(error.localizedDescription)")
+//        }
+//        do {
+//            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
+//            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+//                print(progress)
+//            })
+//        }
+//        catch {
+//            print("Something went wrong")
+//        }
+//        
+///
+//        
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "settings"{

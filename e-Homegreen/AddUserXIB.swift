@@ -115,6 +115,8 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
             user.username = username
             user.isLocked = false
             user.isSuperUser = superUserSwitch.on
+            user.openLastScreen = false
+            user.lastScreenId = 13
             if let image = imageData{
                 user.profilePicture = image
             }

@@ -88,10 +88,16 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/Alamofire.framework"
   install_framework "Pods/CocoaAsyncSocket.framework"
   install_framework "Pods/JSQCoreDataKit.framework"
+  install_framework "Pods/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods/NSString_HYPNetworking.framework"
+  install_framework "Pods/Zip.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/ALCameraViewController.framework"
   install_framework "Pods/Alamofire.framework"
   install_framework "Pods/CocoaAsyncSocket.framework"
   install_framework "Pods/JSQCoreDataKit.framework"
+  install_framework "Pods/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods/NSString_HYPNetworking.framework"
+  install_framework "Pods/Zip.framework"
 fi
