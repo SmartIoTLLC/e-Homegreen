@@ -205,9 +205,9 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         longPress.minimumPressDuration = 0.5
         cell.lblName.addGestureRecognizer(longPress)
         
-        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap:")
-        cell.tag = indexPath.row
-        cell.addGestureRecognizer(tap)
+//        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap:")
+//        cell.tag = indexPath.row
+//        cell.addGestureRecognizer(tap)
         
         if let data = surveillance[indexPath.row].imageData {
             cell.setImageForSurveillance(UIImage(data: data))
@@ -251,10 +251,10 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         return collectionViewCellSize
     }
     
-//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
-//        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
-//    }
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
+    }
     
     //Side menu delegate
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){

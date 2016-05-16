@@ -20,7 +20,8 @@ extension Event {
     @NSManaged var eventImageTwo: NSData
     @NSManaged var eventName: String
     @NSManaged var isBroadcast: NSNumber
-    @NSManaged var isLocalcast: NSNumber
+    @NSManaged var isLocalcast: NSNumber    
+    @NSManaged var report: NSNumber
     @NSManaged var entityLevel: String?
     @NSManaged var eventZone: String?
     @NSManaged var eventCategory: String?

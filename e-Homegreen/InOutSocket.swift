@@ -56,10 +56,8 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
-        print("Nemoj mi samo reci da je ovo problem!")
     }
     func setupConnection1(){
-//        var error : NSError?
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
         do {
             try socket.bindToPort(port)

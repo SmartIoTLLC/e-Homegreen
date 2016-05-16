@@ -23,6 +23,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
+    @IBOutlet weak var reportSwitch: UISwitch!
     
     @IBOutlet weak var eventTableView: UITableView!
     
@@ -284,6 +285,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                         event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                         event.isBroadcast = broadcastSwitch.on
                         event.isLocalcast = localcastSwitch.on
+                        event.report = reportSwitch.on
                         if btnLevel.titleLabel?.text != "--" {
                             event.entityLevel = btnLevel.titleLabel!.text!
                         }
@@ -307,6 +309,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                         existingEvent!.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
                         existingEvent!.isBroadcast = broadcastSwitch.on
                         existingEvent!.isLocalcast = localcastSwitch.on
+                        existingEvent!.report = reportSwitch.on
                         if btnLevel.titleLabel?.text != "--" {
                             existingEvent!.entityLevel = btnLevel.titleLabel!.text!
                         }
@@ -393,6 +396,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
         broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = events[indexPath.row].isLocalcast.boolValue
+        reportSwitch.on = events[indexPath.row].report.boolValue
         if let level = events[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         } else {

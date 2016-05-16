@@ -12,9 +12,13 @@ class EventsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventImageView: UIImageView!
     @IBOutlet weak var eventButton: UIButton!
+    var reportEvent:Bool = false
+    var eventId:Int!
     var imageOne:UIImage?
     var imageTwo:UIImage?
     func getImagesFrom(event:Event) {
+        self.reportEvent = event.report.boolValue
+        self.eventId = event.eventId as Int
         if let eventImage = UIImage(data: event.eventImageOne) {
             imageOne = eventImage
         }
@@ -26,9 +30,28 @@ class EventsCollectionViewCell: UICollectionViewCell {
         setNeedsDisplay()
     }
     func commandSentChangeImage () {
-        eventImageView.image = imageTwo
-        setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(EventsCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+        
+        if reportEvent {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EventsCollectionViewCell.changeImage(_:)), name:"ReportEvent", object: nil)
+        }else{
+            eventImageView.image = imageTwo
+            setNeedsDisplay()
+            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(EventsCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+
+        }
+    }
+    func changeImage(notification:NSNotification) {
+        if let info = notification.userInfo! as? [String:Int] {
+            if info["value"] == 1{
+                eventImageView.image = imageTwo
+                setNeedsDisplay()
+            }else{
+                if info["id"] == eventId{
+                    eventImageView.image = imageOne
+                    setNeedsDisplay()
+                }
+            }
+        }
     }
     func changeImageToNormal () {
         eventImageView.image = imageOne

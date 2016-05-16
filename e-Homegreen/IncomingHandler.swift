@@ -172,6 +172,9 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
                     self.getCategories(self.byteArray)
                 }
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x12 {
+                    self.refreshEvent(self.byteArray)
+                }
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
                     self.parseTimerStatus(dataFrame)
                     //FIXME: Popravi me
@@ -180,6 +183,12 @@ class IncomingHandler: NSObject {
             }
         }
     }
+    
+    func refreshEvent(byteArray:[Byte]){
+        let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
+        NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
+    }
+    
     func parseTimerStatus(dataFrame:DataFrame) {
         fetchEntities("Timer")
         // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
@@ -719,6 +728,7 @@ class IncomingHandler: NSObject {
     var timers:[Timer] = []
     var flags:[Flag] = []
     var securities:[Security] = []
+    var events:[Event] = []
     func fetchEntities (whatToFetch:String) {
         if whatToFetch == "Flag" {
             let fetchRequest = NSFetchRequest(entityName: "Flag")
@@ -753,6 +763,19 @@ class IncomingHandler: NSObject {
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
                 securities = fetResults!
+            } catch let error1 as NSError {
+                error = error1
+                print("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
+        }
+        if whatToFetch == "Event" {
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
+            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptorTwo]
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+                events = fetResults!
             } catch let error1 as NSError {
                 error = error1
                 print("Unresolved error \(error), \(error!.userInfo)")

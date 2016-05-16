@@ -70,6 +70,7 @@
         <attribute name="eventZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="report" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="events" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="Flag" representedClassName=".Flag" syncable="YES">
@@ -262,7 +263,7 @@
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="135"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="690"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
-        <element name="Event" positionX="-587" positionY="-1717" width="128" height="43"/>
+        <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
