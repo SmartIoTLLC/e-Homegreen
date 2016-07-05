@@ -101,7 +101,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                 annotation.coordinate = locationCoordinate.coordinate
                 locationMap.addAnnotation(annotation)
                 self.radius = Double(radius)
-                radiusLabel.text = "Radius: \(Int(radius))"
+                radiusLabel.text = "Radius: \(Int(radius))m"
                 radiusSlider.value = Float(radius)
                 addRadiusCircle(locationCoordinate)
                 if let orderId = location.orderId {
@@ -131,7 +131,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         }else{
             topConstraint.constant = 8
             backViewHeight.constant = 411
-            radiusLabel.text = "Radius: \(Int(radius))"
+            radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -349,7 +349,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     
     @IBAction func changeRadiusAction(sender: UISlider) {
         radius = Double(sender.value)
-        radiusLabel.text = "Radius: \(Int(radius))"
+        radiusLabel.text = "Radius: \(Int(radius))m"
         addRadiusCircle(CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude))
     }
     

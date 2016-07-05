@@ -25,8 +25,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var addressSecond: EditTextField!
     @IBOutlet weak var addressThird: EditTextField!
     
-    @IBOutlet weak var name: EditTextField!
-    
     @IBOutlet weak var txtDescription: UITextView!
 
     @IBOutlet weak var ipHost: EditTextField!
@@ -98,11 +96,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         addressFirst.delegate = self
         addressSecond.delegate = self
         addressThird.delegate = self
-        name.delegate = self
         txtDescription.delegate = self
         txtAutoReconnectDelay.delegate = self
-        
-        name.enabled = false
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
 
@@ -119,10 +114,8 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             addressSecond.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
             addressThird.text = returnThreeCharactersForByte(Int(gateway.addressThree))
             txtDescription.text = gateway.gatewayDescription
-            name.text = gateway.location.name
             txtAutoReconnectDelay.text = "\(gateway.autoReconnectDelay!)"
         }else{
-            name.text = location?.name
             addressFirst.text = returnThreeCharactersForByte(1)
             addressSecond.text = returnThreeCharactersForByte(0)
             addressThird.text = returnThreeCharactersForByte(0)
@@ -151,7 +144,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             }
         }else{
             
-            backViewHeightConstraint.constant = 478
+            backViewHeightConstraint.constant = 440
             
         }
     }
@@ -284,13 +277,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 
             }
         }
-        if name.isFirstResponder(){
-            if backView.frame.origin.y + name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.name.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-                
-            }
-        }
+
         if ipHost.isFirstResponder(){
             if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 

@@ -53,6 +53,19 @@ class DatabaseUserController: NSObject {
         
     }
     
+    func getUserForDropDownMenu() -> [User] {
+        let fetchRequest = NSFetchRequest(entityName: "User")
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            return fetResults!
+            
+        } catch  {
+            
+        }
+        return []
+    }
+    
     func getUser(username:String, password:String) -> User? {
         let fetchRequest = NSFetchRequest(entityName: "User")
         let predicateOne = NSPredicate(format: "username == %@", username)

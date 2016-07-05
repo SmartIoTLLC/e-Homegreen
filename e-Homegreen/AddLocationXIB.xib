@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -242,10 +242,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NNZ-KM-b8S" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="32" y="7" width="60" height="30"/>
+                                    <rect key="frame" x="32" y="7" width="40" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="Eos-Ke-rLr"/>
+                                        <constraint firstAttribute="width" constant="40" id="Eos-Ke-rLr"/>
                                         <constraint firstAttribute="width" constant="218" id="R0l-Pa-uiY"/>
                                         <constraint firstAttribute="width" constant="220" id="Vel-iL-RaO"/>
                                     </constraints>
@@ -260,10 +260,10 @@
                                     </variation>
                                 </textField>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ptk-zf-TZD">
-                                    <rect key="frame" x="107" y="7" width="51" height="31"/>
+                                    <rect key="frame" x="82" y="7" width="51" height="31"/>
                                 </switch>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh filter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZh-KJ-lKe">
-                                    <rect key="frame" x="171" y="13" width="85" height="19"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Filter on Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZh-KJ-lKe">
+                                    <rect key="frame" x="141" y="13" width="141" height="19"/>
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -287,8 +287,8 @@
                                 <constraint firstItem="qut-Og-mMn" firstAttribute="leading" secondItem="Mx5-Y3-22n" secondAttribute="trailing" constant="8" id="RVH-ow-Vvd"/>
                                 <constraint firstItem="eBO-Fn-sEK" firstAttribute="trailing" secondItem="One-80-5Lj" secondAttribute="trailing" id="RZo-Ms-Xhj"/>
                                 <constraint firstItem="qut-Og-mMn" firstAttribute="centerY" secondItem="Mx5-Y3-22n" secondAttribute="centerY" id="S0x-fM-nXF"/>
-                                <constraint firstItem="ptk-zf-TZD" firstAttribute="leading" secondItem="NNZ-KM-b8S" secondAttribute="trailing" constant="15" id="SPc-k8-rM3"/>
-                                <constraint firstItem="eZh-KJ-lKe" firstAttribute="leading" secondItem="ptk-zf-TZD" secondAttribute="trailing" constant="15" id="SWe-ML-V2r"/>
+                                <constraint firstItem="ptk-zf-TZD" firstAttribute="leading" secondItem="NNZ-KM-b8S" secondAttribute="trailing" constant="10" id="SPc-k8-rM3"/>
+                                <constraint firstItem="eZh-KJ-lKe" firstAttribute="leading" secondItem="ptk-zf-TZD" secondAttribute="trailing" constant="10" id="SWe-ML-V2r"/>
                                 <constraint firstItem="Lbq-Oa-pTc" firstAttribute="centerX" secondItem="ZML-dV-M2P" secondAttribute="centerX" constant="45" id="TuR-q8-fGu"/>
                                 <constraint firstItem="V4K-Vy-2Ue" firstAttribute="leading" secondItem="qut-Og-mMn" secondAttribute="leading" id="V7J-6B-J32"/>
                                 <constraint firstItem="aCj-B4-UGJ" firstAttribute="top" secondItem="Luh-dV-lER" secondAttribute="bottom" constant="8" id="WNv-ob-ETr"/>

@@ -111,7 +111,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Events", id: -1),
         TableList(name: "Sequences", id: -1),
         TableList(name: "Timers", id: -1),
-        TableList(name: "Flag", id: -1)]
+        TableList(name: "Flags", id: -1)]
     var chooseTimerTypeList:[TableList] = [TableList(name: "Once", id: 7),
         TableList(name: "Daily", id: 7),
         TableList(name: "Monthly", id: 7),
@@ -120,7 +120,7 @@ class PopOverViewController: UIViewController, UITableViewDelegate, UITableViewD
         TableList(name: "Minutely", id: 7),
         TableList(name: "Timer", id: 7),
         TableList(name: "Stopwatch/User", id: 7)]
-    var locationAddOption:[TableList] = [TableList(name: TypeOfLocationDevice.Gateway.description, id: -1),
+    var locationAddOption:[TableList] = [TableList(name: TypeOfLocationDevice.Ehomegreen.description, id: -1),
         TableList(name: TypeOfLocationDevice.Surveillance.description, id: -1)]
     var tableList:[AnyObject] = []
     

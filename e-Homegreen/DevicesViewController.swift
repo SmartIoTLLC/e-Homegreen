@@ -206,7 +206,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao nebi trebalo da izlazi uredjaj bez parametara?
+        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao ne bi trebalo da izlazi uredjaj bez parametara?
         predicateArray.append(NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true)))
         predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
         

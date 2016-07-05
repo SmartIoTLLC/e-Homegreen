@@ -8,21 +8,11 @@
 
 import UIKit
 
-    enum ChoosedTab {
-        case Devices, Scenes, Events, Sequences
-        func returnStringDescription() -> String {
-            switch self {
-            case .Devices:
-                return ""
-            case .Scenes:
-                return "Scene"
-            case .Events:
-                return "Event"
-            case .Sequences:
-                return "Sequence"
-            }
-        }
-    }
+enum ChoosedTab:String {
+    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags"
+    
+    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags]
+}
 
 class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate{
     
@@ -38,6 +28,8 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     var scanFlagsViewController: ScanFlagViewController!
     
     var pullDown = PullDownView()
+    
+    var popoverVC:PopOverViewController = PopOverViewController()
     
     var toViewController:UIViewController = UIViewController()
 
@@ -79,6 +71,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
 
     }
+    
     //FIXME: Radi i sada ali mozda da se promeni na toViewController.sendFilterParametar(filterItem)
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
     
@@ -113,27 +106,6 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
         pullDown.drawMenu(filterParametar)
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    @IBOutlet weak var btnScreenMode: UIButton!
-    
-    @IBAction func btnScreenMode(sender: AnyObject) {
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            btnScreenMode.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            btnScreenMode.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        }
-    }
-    
-    @IBAction func backButton(sender: UIStoryboardSegue) {
-        self.performSegueWithIdentifier("scanUnwind", sender: self)
-    }
-    var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBAction func btnScenes(sender: AnyObject) {
         senderButton = sender as? UIButton
@@ -160,33 +132,35 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     func saveText(text: String, id: Int) {
         senderButton?.setTitle(text, forState: .Normal)
-        
-        switch text {
-        case "Devices":
-            toViewController = scanDeviceViewController
-        case "Scenes":
-            toViewController = scanSceneViewController
-        case "Events":
-            toViewController = scanEventsViewController
-        case "Sequences":
-            toViewController = scanSequencesViewController
-        case "Timers":
-            toViewController = scanTimersViewController
-        case "Flag":
-            toViewController = scanFlagsViewController
-        default: break
-        }
-        let fromViewController = childViewControllers.last!
-        if toViewController != fromViewController {
-            self.addChildViewController(toViewController)
-            self.transitionFromViewController(fromViewController, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
-                fromViewController.removeFromParentViewController()
-                self.toViewController.didMoveToParentViewController(self)
-                self.toViewController.view.frame = self.container.bounds
-            })
-        } else {
-            childViewControllers.last!.viewWillAppear(true)
-            childViewControllers.last!.viewDidAppear(true)
+        if let to = ChoosedTab(rawValue: text){
+            
+            switch to {
+            case .Devices:
+                toViewController = scanDeviceViewController
+            case .Scenes:
+                toViewController = scanSceneViewController
+            case .Events:
+                toViewController = scanEventsViewController
+            case .Sequences:
+                toViewController = scanSequencesViewController
+            case .Timers:
+                toViewController = scanTimersViewController
+            case .Flags:
+                toViewController = scanFlagsViewController
+            }
+            
+            let fromViewController = childViewControllers.last!
+            if toViewController != fromViewController {
+                self.addChildViewController(toViewController)
+                self.transitionFromViewController(fromViewController, toViewController: toViewController, duration: 0.0, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: nil, completion: {finished in
+                    fromViewController.removeFromParentViewController()
+                    self.toViewController.didMoveToParentViewController(self)
+                    self.toViewController.view.frame = self.container.bounds
+                })
+            } else {
+                childViewControllers.last!.viewWillAppear(true)
+                childViewControllers.last!.viewDidAppear(true)
+            }
         }
     }
 

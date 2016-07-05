@@ -8,24 +8,44 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate  {
     
     @IBOutlet weak var userNameTextField: LogInTextField!
     @IBOutlet weak var passwordTextField: LogInTextField!
     
+    @IBOutlet weak var tableView: UITableView!
+    
     var appDel:AppDelegate!
+    
+    var users:[User] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        tableView.layer.borderWidth = 1
+        tableView.hidden = true
+        
+        userNameTextField.delegate = self
+        
+        users = DatabaseUserController.shared.getUserForDropDownMenu()
 
-        // Do any additional setup after loading the view.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(LogInViewController.dismissKeyboard))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func dismissKeyboard(){
+        tableView.hidden = true
+        self.view.endEditing(true)
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(tableView){
+            return false
+        }
+        return true
     }
     
     @IBAction func logInAction(sender: AnyObject) {
@@ -77,6 +97,33 @@ class LogInViewController: UIViewController {
         
     }
     
+    func textFieldDidBeginEditing(textField: UITextField) {
+        tableView.hidden = false
+    }
+    
+//    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+//        passwordTextField.resignFirstResponder()
+//        tableView.hidden = false
+//        return false
+//    }
 
+}
 
+extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "defaultCell")
+        cell.textLabel?.text = users[indexPath.row].username
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        userNameTextField.text = cell?.textLabel?.text
+        self.dismissKeyboard()
+        tableView.hidden = true
+    }
 }
