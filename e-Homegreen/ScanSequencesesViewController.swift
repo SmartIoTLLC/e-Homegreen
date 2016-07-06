@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScanSequencesesViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -27,8 +27,6 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     
     @IBOutlet weak var sequencesTableView: UITableView!
     
-    var popoverVC:PopOverViewController = PopOverViewController()
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
     
@@ -36,7 +34,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     var zoneFromFilter:String = "All"
     var categoryFromFilter:String = "All"
     
-    var gateway:Gateway?
+    var gateway:Gateway!
     var sequences:[Sequence] = []
     
     var selected:AnyObject?
@@ -68,8 +66,8 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
         
         // Do any additional setup after loading the view.
     }
@@ -102,7 +100,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
         if levelFromFilter != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
             predicateArray.append(levelPredicate)
@@ -165,7 +163,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
         return true
     }
     
-    func saveText(text: String, id: Int) {
+    override func saveText(text: String, id: Int) {
         switch id {
         case 2:
             btnLevel.setTitle(text, forState: UIControlState.Normal)
@@ -178,54 +176,15 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 12
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 12, location: gateway.location)
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 14
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 14, location: gateway.location)
     }
     
     @IBAction func btnZoneAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 13
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 13, location: gateway.location)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -252,7 +211,7 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                     sequence.entityLevel = btnLevel.titleLabel!.text!
                     sequence.sequenceZone = btnZone.titleLabel!.text!
                     sequence.sequenceCategory = btnCategory.titleLabel!.text!
-                    sequence.gateway = gateway!
+                    sequence.gateway = gateway
                     saveChanges()
                     refreshSequenceList()
                 } else {
@@ -267,17 +226,13 @@ class ScanSequencesesViewController: UIViewController, UITextFieldDelegate, Scen
                     existingSequence!.entityLevel = btnLevel.titleLabel!.text!
                     existingSequence!.sequenceZone = btnZone.titleLabel!.text!
                     existingSequence!.sequenceCategory = btnCategory.titleLabel!.text!
-                    existingSequence!.gateway = gateway!
+                    existingSequence!.gateway = gateway
                     saveChanges()
                     refreshSequenceList()
                     
                 }
             }
         }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
     }
     
     @IBAction func btnRemove(sender: AnyObject) {

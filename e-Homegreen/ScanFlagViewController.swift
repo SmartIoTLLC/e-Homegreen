@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScanFlagViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -25,8 +25,6 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     @IBOutlet weak var btnLevel: CustomGradientButton!
     
     @IBOutlet weak var flagTableView: UITableView!
-    
-    var popoverVC:PopOverViewController = PopOverViewController()
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -95,7 +93,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         flagTableView.reloadData()
     }
     
-    func saveText(text: String, id: Int) {
+    override func saveText(text: String, id: Int) {
         switch id {
         case 2:
             btnLevel.setTitle(text, forState: UIControlState.Normal)
@@ -179,58 +177,14 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 12
-        popoverVC.filterLocation = gateway.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
+        openPopover(sender, indexTab: 12, location: gateway.location)    }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 14
-        popoverVC.filterLocation = gateway.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 14, location: gateway.location)
     }
     
     @IBAction func btnZoneAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 13
-        popoverVC.filterLocation = gateway.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+        openPopover(sender, indexTab: 13, location: gateway.location)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {

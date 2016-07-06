@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScanScenesViewController: PopoverVC,UITextFieldDelegate, SceneGalleryDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -26,12 +26,10 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     
     @IBOutlet weak var sceneTableView: UITableView!
     
-    var popoverVC:PopOverViewController = PopOverViewController()
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    var gateway:Gateway?
+    var gateway:Gateway!
     var scenes:[Scene] = []
     
     var levelFromFilter:String = "All"
@@ -66,8 +64,8 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: #selector(ScanScenesViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
         
     }
     
@@ -99,7 +97,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
         if levelFromFilter != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
             predicateArray.append(levelPredicate)
@@ -163,7 +161,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
         return true
     }
     
-    func saveText(text: String, id: Int) {
+    override func saveText(text: String, id: Int) {
         switch id {
         case 2:
             btnLevel.setTitle(text, forState: UIControlState.Normal)
@@ -176,59 +174,15 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
-        
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 12
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 12, location: gateway.location)
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 14
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)            
-        }
+        openPopover(sender, indexTab: 14, location: gateway.location)
     }
     
     @IBAction func btnZoneAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 13
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+        openPopover(sender, indexTab: 13, location: gateway.location)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -254,7 +208,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                     scene.entityLevel = btnLevel.titleLabel!.text!
                     scene.sceneZone = btnZone.titleLabel!.text!
                     scene.sceneCategory = btnCategory.titleLabel!.text!
-                    scene.gateway = gateway!
+                    scene.gateway = gateway
                     saveChanges()
                     refreshSceneList()
                 } else {
@@ -268,7 +222,7 @@ class ScanScenesViewController: UIViewController,UITextFieldDelegate, SceneGalle
                     existingScene!.entityLevel = btnLevel.titleLabel!.text!
                     existingScene!.sceneZone = btnZone.titleLabel!.text!
                     existingScene!.sceneCategory = btnCategory.titleLabel!.text!
-                    existingScene!.gateway = gateway!
+                    existingScene!.gateway = gateway
                     saveChanges()
                     refreshSceneList()
                 }

@@ -14,7 +14,7 @@ enum ChoosedTab:String {
     static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags]
 }
 
-class ScanViewController: UIViewController, PopOverIndexDelegate, PullDownViewDelegate{
+class ScanViewController: PopoverVC, PullDownViewDelegate{
     
     @IBOutlet weak var topView: UIView!
     
@@ -29,7 +29,7 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, PullDownViewDe
     
     var pullDown = PullDownView()
     
-    var popoverVC:PopOverViewController = PopOverViewController()
+//    var popoverVC:PopOverViewController = PopOverViewController()
     
     var toViewController:UIViewController = UIViewController()
 
@@ -97,30 +97,11 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, PullDownViewDe
     
     //popup controller
     @IBAction func btnScenes(sender: AnyObject) {
-//        senderButton = sender as? UIButton
-//        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
-//        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-//        popoverVC.modalPresentationStyle = .Popover
-//        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-//        popoverVC.delegate = self
-//        popoverVC.indexTab = 6
-//        if let popoverController = popoverVC.popoverPresentationController {
-//            popoverController.delegate = self
-//            popoverController.permittedArrowDirections = .Any
-//            popoverController.sourceView = sender as? UIView
-//            popoverController.sourceRect = sender.bounds
-//            popoverController.backgroundColor = UIColor.lightGrayColor()
-//            presentViewController(popoverVC, animated: true, completion: nil)
-//        }
-        
-        openPopover(sender, indexTab: 6)
+        openPopover(sender, indexTab: 6, location:  nil)
     }
-
-//    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-//        return .None
-//    }
     
-    func saveText(text: String, id: Int) {
+    //
+    override func saveText(text: String, id: Int) {
         senderButton?.setTitle(text, forState: .Normal)
         if let to = ChoosedTab(rawValue: text){
             
@@ -156,16 +137,22 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, PullDownViewDe
 
 }
 
-extension ScanViewController: UIPopoverPresentationControllerDelegate{
+class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate{
     
-    func openPopover(sender: AnyObject, indexTab:Int) {
-        senderButton = sender as? UIButton
+    var popoverVC:PopOverViewController = PopOverViewController()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    func openPopover(sender: AnyObject, indexTab:Int, location:Location?) {
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = indexTab
+        popoverVC.filterLocation = location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -175,8 +162,12 @@ extension ScanViewController: UIPopoverPresentationControllerDelegate{
             presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
-
+    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
+    }
+    
+    func saveText(text: String, id: Int) {
+        
     }
 }

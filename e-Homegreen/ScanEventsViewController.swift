@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -27,12 +27,10 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     
     @IBOutlet weak var eventTableView: UITableView!
     
-    var popoverVC:PopOverViewController = PopOverViewController()
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    var gateway:Gateway?
+    var gateway:Gateway!
     var events:[Event] = []
     
     var selected:AnyObject?
@@ -60,8 +58,8 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
@@ -100,9 +98,9 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
         let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-//        let predicate = NSPredicate(format: "gateway == %@", gateway!.objectID)
+//        let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
         if levelFromFilter != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
             predicateArray.append(levelPredicate)
@@ -167,57 +165,18 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
     }
     
     @IBAction func btnLevel(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 12
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 12, location: gateway.location)
     }
     
     @IBAction func btnCategoryAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 14
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 14, location: gateway.location)
     }
     
     @IBAction func btnZoneAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 13
-        popoverVC.filterLocation = gateway!.location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        openPopover(sender, indexTab: 13, location: gateway.location)
     }
     
-    func saveText(text: String, id: Int) {
+    override func saveText(text: String, id: Int) {
         switch id {
         case 2:
             btnLevel.setTitle(text, forState: UIControlState.Normal)
@@ -227,10 +186,6 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
             btnCategory.setTitle(text, forState: UIControlState.Normal)
         default: break
         }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -257,7 +212,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                     event.entityLevel = btnLevel.titleLabel!.text!
                     event.eventZone = btnZone.titleLabel!.text!
                     event.eventCategory = btnCategory.titleLabel!.text!
-                    event.gateway = gateway!
+                    event.gateway = gateway
                     saveChanges()
                     refreshEventList()
                 } else {
@@ -272,7 +227,7 @@ class ScanEventsViewController: UIViewController, UITextFieldDelegate, SceneGall
                     existingEvent!.entityLevel = btnLevel.titleLabel!.text!
                     existingEvent!.eventZone = btnZone.titleLabel!.text!
                     existingEvent!.eventCategory = btnCategory.titleLabel!.text!
-                    existingEvent!.gateway = gateway!
+                    existingEvent!.gateway = gateway
                     saveChanges()
                     refreshEventList()
                 }
