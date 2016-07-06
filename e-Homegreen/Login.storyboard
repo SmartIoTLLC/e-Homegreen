@@ -54,11 +54,11 @@
                                     <action selector="logInAction:" destination="kfV-JL-2ii" eventType="touchUpInside" id="g6d-5m-Gt1"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MkH-VF-8N0">
-                                <rect key="frame" x="10" y="225" width="300" height="200"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MkH-VF-8N0">
+                                <rect key="frame" x="10" y="190" width="300" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="2hV-Al-osI"/>
+                                    <constraint firstAttribute="height" constant="150" id="0Yo-UL-Lru"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="kfV-JL-2ii" id="QGw-zx-HPw"/>
@@ -72,16 +72,16 @@
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="height" secondItem="Ulk-Zs-xlJ" secondAttribute="height" id="4dZ-D2-6eL"/>
                             <constraint firstItem="J66-Bx-0ML" firstAttribute="centerX" secondItem="PCI-cv-QHk" secondAttribute="centerX" id="5WQ-WB-eVb"/>
                             <constraint firstItem="J66-Bx-0ML" firstAttribute="top" secondItem="Gcx-ue-jbd" secondAttribute="bottom" constant="87" id="ERc-VO-SZ2"/>
+                            <constraint firstItem="MkH-VF-8N0" firstAttribute="top" secondItem="J66-Bx-0ML" secondAttribute="bottom" constant="-35" id="KQo-w5-g3N"/>
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="width" secondItem="J66-Bx-0ML" secondAttribute="width" id="KxW-gk-0F2"/>
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="top" secondItem="J66-Bx-0ML" secondAttribute="bottom" constant="5" id="MsB-bB-MmD"/>
+                            <constraint firstItem="MkH-VF-8N0" firstAttribute="trailing" secondItem="J66-Bx-0ML" secondAttribute="trailing" id="T52-xC-sty"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="width" secondItem="Ulk-Zs-xlJ" secondAttribute="width" id="VKO-dT-NLr"/>
                             <constraint firstItem="Gcx-ue-jbd" firstAttribute="leading" secondItem="PCI-cv-QHk" secondAttribute="leading" constant="20" id="Wyj-FX-Dxt"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="top" secondItem="Ulk-Zs-xlJ" secondAttribute="bottom" constant="15" id="an2-Eg-qJg"/>
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="centerX" secondItem="J66-Bx-0ML" secondAttribute="centerX" id="bOE-CL-KOp"/>
-                            <constraint firstItem="MkH-VF-8N0" firstAttribute="trailing" secondItem="J66-Bx-0ML" secondAttribute="trailing" id="gtP-Cu-s2M"/>
-                            <constraint firstItem="MkH-VF-8N0" firstAttribute="leading" secondItem="J66-Bx-0ML" secondAttribute="leading" id="hlw-XZ-5YN"/>
+                            <constraint firstItem="MkH-VF-8N0" firstAttribute="leading" secondItem="J66-Bx-0ML" secondAttribute="leading" id="edm-ix-DRe"/>
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="height" secondItem="J66-Bx-0ML" secondAttribute="height" id="qbZ-wl-cCZ"/>
-                            <constraint firstItem="MkH-VF-8N0" firstAttribute="top" secondItem="J66-Bx-0ML" secondAttribute="bottom" id="rDR-SR-Jx0"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="centerX" secondItem="Ulk-Zs-xlJ" secondAttribute="centerX" id="yku-PK-XIQ"/>
                         </constraints>
                     </view>

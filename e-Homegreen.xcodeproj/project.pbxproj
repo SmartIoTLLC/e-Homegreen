@@ -81,6 +81,7 @@
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
+		2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */; };
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
@@ -401,6 +402,7 @@
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserTimerController.swift; sourceTree = "<group>"; };
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
+		2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomToolBar.swift; sourceTree = "<group>"; };
 		22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSecurityController.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
@@ -883,6 +885,14 @@
 			name = "PC Controll";
 			sourceTree = "<group>";
 		};
+		2260FB9F1D2CF5C800576513 /* UIToolBar */ = {
+			isa = PBXGroup;
+			children = (
+				2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */,
+			);
+			name = UIToolBar;
+			sourceTree = "<group>";
+		};
 		22CD26771BD53685005BA67D /* DAKeyboardControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -1345,6 +1355,7 @@
 		E76B57651BBD1DAC00A70F69 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				2260FB9F1D2CF5C800576513 /* UIToolBar */,
 				E79309B91BC571470009EFB1 /* UILabel */,
 				E7C9CDFB1BC28CDC007D8FE8 /* TextView */,
 				E76B576A1BBD245400A70F69 /* ScrollView */,
@@ -2047,6 +2058,7 @@
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
+				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
 				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,

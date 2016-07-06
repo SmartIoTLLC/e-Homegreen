@@ -36,11 +36,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var pbFD:ProgressBarVC?
     var pbFN:ProgressBarVC?
     
-    func endEditingNow(){
-        rangeFrom.resignFirstResponder()
-        rangeTo.resignFirstResponder()
-    }
-    
     deinit {
         print("deinit - ScanDevicesViewController.swift")
 //        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
@@ -58,19 +53,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         
         refreshDeviceList()
         
-        let keyboardDoneButtonView = UIToolbar()
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ScanDevicesViewController.endEditingNow) )
-        let toolbarButtons = [flexibleSpace, item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
         rangeFrom.text = "\(Int(gateway.addressThree)+1)"
         rangeTo.text = "\(Int(gateway.addressThree)+1)"
         
-        rangeFrom.inputAccessoryView = keyboardDoneButtonView
-        rangeTo.inputAccessoryView = keyboardDoneButtonView
+        rangeFrom.inputAccessoryView = CustomToolBar()
+        rangeTo.inputAccessoryView = CustomToolBar()
         
          filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
     }

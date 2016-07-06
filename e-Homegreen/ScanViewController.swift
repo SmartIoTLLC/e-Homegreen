@@ -37,18 +37,20 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     var isPresenting:Bool = true
     var gateway:Gateway?
+    
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
 
-        scanSceneViewController = storyboard.instantiateViewControllerWithIdentifier("ScanScenes") as! ScanScenesViewController
-        scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier("ScanDevices") as! ScanDevicesViewController
-        scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier("ScanSequences") as! ScanSequencesesViewController
-        scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanEvents") as! ScanEventsViewController
-        scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier("ScanTimers") as! ScanTimerViewController
-        scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier("ScanFlags") as! ScanFlagViewController
+        scanSceneViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanScenesViewController)) as! ScanScenesViewController
+        scanDeviceViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanDevicesViewController)) as! ScanDevicesViewController
+        scanSequencesViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanSequencesesViewController)) as! ScanSequencesesViewController
+        scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanEventsViewController)) as! ScanEventsViewController
+        scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanTimerViewController)) as! ScanTimerViewController
+        scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanFlagViewController)) as! ScanFlagViewController
         
         toViewController = scanDeviceViewController
         
@@ -72,41 +74,28 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
 
     }
     
-    //FIXME: Radi i sada ali mozda da se promeni na toViewController.sendFilterParametar(filterItem)
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
-    
+    override func viewWillLayoutSubviews() {
+        var rect = self.pullDown.frame
+        pullDown.removeFromSuperview()
+        rect.size.width = self.view.frame.size.width
+        rect.size.height = self.view.frame.size.height
+        pullDown.frame = rect
+        pullDown = PullDownView(frame: rect)
+        pullDown.customDelegate = self
+        self.view.addSubview(pullDown)
+        pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+
+        pullDown.drawMenu(filterParametar)
+    }
+
     func pullDownSearchParametars(filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Database)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
         toViewController.sendFilterParametar(filterItem)
         pullDown.drawMenu(filterParametar)
     }
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        pullDown.drawMenu(filterParametar)
-    }
     
+    //popup controller
     @IBAction func btnScenes(sender: AnyObject) {
         senderButton = sender as? UIButton
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
