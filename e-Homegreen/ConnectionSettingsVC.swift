@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 protocol AddEditGatewayDelegate{
-    func add_editGatewayFinished()
+    func addEditGatewayFinished()
 }
 
 class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
@@ -24,9 +24,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var addressFirst: EditTextField!
     @IBOutlet weak var addressSecond: EditTextField!
     @IBOutlet weak var addressThird: EditTextField!
-    
     @IBOutlet weak var txtDescription: UITextView!
-
     @IBOutlet weak var ipHost: EditTextField!
     @IBOutlet weak var port: EditTextField!
     @IBOutlet weak var localIP: EditTextField!
@@ -35,16 +33,15 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
+    @IBOutlet weak var centarY: NSLayoutConstraint!
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewConnection: UIScrollView!
     
     var location:Location?
     var gateway:Gateway?
     
     var appDel:AppDelegate!
     var error:NSError? = nil
-
-    @IBOutlet weak var centarY: NSLayoutConstraint!
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var scrollViewConnection: UIScrollView!
     
     init(gateway:Gateway?, location:Location?){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
@@ -187,11 +184,70 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         addressThird.resignFirstResponder()
         centarY.constant = 0
     }
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+        appDel.establishAllConnections()
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if txtDescription.isFirstResponder(){
+            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                
+            }
+        }
+        if ipHost.isFirstResponder(){
+            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                
+            }
+        }
+        if port.isFirstResponder(){
+            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                
+            }
+        }
+        if localIP.isFirstResponder(){
+            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                
+            }
+        }
+        if localPort.isFirstResponder(){
+            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if txtAutoReconnectDelay.isFirstResponder(){
+            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
     
     @IBAction func cancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     @IBAction func save(sender: AnyObject) {
         
         guard let adrFirst = addressFirst.text where adrFirst != "", let adrSecond = addressSecond.text where  adrSecond != "", let adrThird = addressThird.text where adrThird != "", let heartbeat = txtAutoReconnectDelay.text where heartbeat != "", let port = port.text where port != "", let localport = localPort.text where localport != "", let ip = ipHost.text where ip != "", let localip = localIP.text where localip != "" else {
@@ -230,7 +286,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             gateway.autoReconnectDelay = hb
             saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.add_editGatewayFinished()
+            delegate?.addEditGatewayFinished()
         }else{
             if let location = location{
                 let gateway = Gateway(context: appDel.managedObjectContext!)
@@ -249,75 +305,13 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 gateway.autoReconnectDelay = NSNumber(integer: hb)
                 saveChanges()
                 self.dismissViewControllerAnimated(true, completion: nil)
-                delegate?.add_editGatewayFinished()
+                delegate?.addEditGatewayFinished()
             }
         }
         
     }
 
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        appDel.establishAllConnections()
-    }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        if txtDescription.isFirstResponder(){
-            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-                
-            }
-        }
-
-        if ipHost.isFirstResponder(){
-            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-                
-            }
-        }
-        if port.isFirstResponder(){
-            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-                
-            }
-        }
-        if localIP.isFirstResponder(){
-            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
-                
-            }
-        }
-        if localPort.isFirstResponder(){
-            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        if txtAutoReconnectDelay.isFirstResponder(){
-            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
-    }
 
 }
 
