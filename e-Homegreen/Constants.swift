@@ -464,6 +464,8 @@ struct NotificationKey {
     static let RefreshScene = "refreshSceneListNotification"
     static let RefreshSurveillance = "refreshSurveillanceListNotification"
     
+    static let IndicatorLamp = "indicatorGreen"
+    
     struct Surveillance {
         static let Refresh = "refreshSurveillanceListNotification"
         static let Run = "runTimer"

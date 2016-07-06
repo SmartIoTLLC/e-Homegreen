@@ -30,6 +30,8 @@ class AdminController: NSObject {
     }
     
     func getAdmin() -> Admin?{
+        print("admin username: \(prefs.stringForKey(AdminConstants.Username))")
+        print("admin password: \(prefs.stringForKey(AdminConstants.Password))")
         if  let username = prefs.stringForKey(AdminConstants.Username), let password = prefs.stringForKey(AdminConstants.Password){
             return Admin(username: username, password: password)
         }
@@ -46,7 +48,10 @@ class AdminController: NSObject {
     }
     
     func isAdminLogged() -> Bool{
-        return (prefs.valueForKey(AdminConstants.IsLogged) as? Bool)!
+        if let isLogged = prefs.valueForKey(AdminConstants.IsLogged) as? Bool{
+            return isLogged
+        }
+        return false
     }
     func getOtherUser() -> String?{
         if let str = prefs.valueForKey(AdminConstants.OtherUserDatabase) as? String{

@@ -15,14 +15,14 @@ struct LocationDevice {
 }
 
 enum TypeOfLocationDevice{
-    case Gateway, Surveillance
+    case Ehomegreen, Surveillance
     var description:String{
         switch self{
-        case Gateway: return "e-Homegreen"
+        case Ehomegreen: return "e-Homegreen"
         case Surveillance: return "IP Camera"
         }
     }
-    static let allValues = [Gateway, Surveillance]
+    static let allValues = [Ehomegreen, Surveillance]
 }
 
 class CollapsableViewModel {
@@ -30,7 +30,7 @@ class CollapsableViewModel {
     var children: [LocationDevice]
     var isCollapsed: Bool
     
-    init(location: Location, children: [LocationDevice] = [], isCollapsed: Bool = false) {
+    init(location: Location, children: [LocationDevice] = [], isCollapsed: Bool = true) {
         self.location = location
         self.children = children
         self.isCollapsed = isCollapsed
@@ -138,7 +138,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
     //delegate which return what we add(camera or gateway)
     
     func saveText(text: String, id: Int) {
-        if TypeOfLocationDevice.Gateway.description == text{
+        if TypeOfLocationDevice.Ehomegreen.description == text{
             self.showConnectionSettings(nil, location: locationList[index].location).delegate = self
         }
         if TypeOfLocationDevice.Surveillance.description == text{
@@ -214,7 +214,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
             var listOfChildrenDevice:[LocationDevice] = []
             if let listOfGateway = item.gateways {
                 for gateway in listOfGateway{
-                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Gateway))
+                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
                 }
             }
             if let listOfSurveillance = item.surveillances {
@@ -233,7 +233,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         var listOfChildrenDevice:[LocationDevice] = []
         if let listOfGateway = locationEdit.gateways {
             for gateway in listOfGateway{
-                listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Gateway))
+                listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
             }
         }
         if let listOfSurveillance = locationEdit.surveillances {
@@ -307,7 +307,7 @@ extension LocationViewController: UITableViewDataSource {
             let location = locationList[indexPath.section]
             let device = location.children[indexPath.row - 1]
             switch device.typeOfLocationDevice{
-            case TypeOfLocationDevice.Gateway:
+            case TypeOfLocationDevice.Ehomegreen:
                 if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
                     if let gateway = device.device as? Gateway{
                         cell.delegate = self

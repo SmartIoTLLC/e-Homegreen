@@ -47,6 +47,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             print(filterContext)
         }
         print("INOUT SOCKET incoming message: \(address.convertToBytes())")
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.IndicatorLamp, object: self, userInfo: ["lamp":"red"])
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
@@ -80,10 +81,12 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     func send(message:String){
         let data = message.dataUsingEncoding(NSUTF8StringEncoding)
         socket.sendData(data, withTimeout: -1, tag: 0)
+        
     }
     func sendByte(ip:String, arrayByte: [UInt8]) {
         let data = NSData(bytes: arrayByte, length: arrayByte.count)
         socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 1)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.IndicatorLamp, object: self, userInfo: ["lamp":"green"])
     }
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {

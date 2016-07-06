@@ -72,25 +72,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //whether there admin exist and if exist check if user logged in
         if let _ = AdminController.shared.getAdmin() {
-            if !DatabaseUserController.shared.isLogged(){
-                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
-                self.window?.rootViewController = logIn
-                self.window?.makeKeyAndVisible()
-            }else{
+            if AdminController.shared.isAdminLogged(){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-                var controller:UINavigationController = Menu.Settings.controller
-                if let user = DatabaseUserController.shared.getLoggedUser(){
-                    if user.openLastScreen.boolValue == true{
-                        if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
-                            controller = menu.controller
-                        }
-                    }
-                }
+                let controller:UINavigationController = Menu.Settings.controller
                 sideMenu.setFrontViewController(controller, animated: true)
                 self.window?.rootViewController = sideMenu
                 self.window?.makeKeyAndVisible()
+            }else{
+                if !DatabaseUserController.shared.isLogged(){
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
+                    self.window?.rootViewController = logIn
+                    self.window?.makeKeyAndVisible()
+                }else{
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
+                    var controller:UINavigationController = Menu.Settings.controller
+                    if let user = DatabaseUserController.shared.getLoggedUser(){
+                        if user.openLastScreen.boolValue == true{
+                            if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
+                                controller = menu.controller
+                            }
+                        }
+                    }
+                    sideMenu.setFrontViewController(controller, animated: true)
+                    self.window?.rootViewController = sideMenu
+                    self.window?.makeKeyAndVisible()
+                }
             }
         }else{
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -418,9 +427,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         //when admin was logged then logout, this is for safe becouse user will have to login again on next start
-        if AdminController.shared.isAdminLogged(){
-            AdminController.shared.logoutAdmin()
-        }
+//        if AdminController.shared.isAdminLogged(){
+//            AdminController.shared.logoutAdmin()4
+//        }
         disconnectAllConnections()
         self.saveContext()
     }

@@ -42,6 +42,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        usersTableView.tableFooterView = UIView()
         usersTableView.reloadData()
         
         changeFullScreeenImage()
