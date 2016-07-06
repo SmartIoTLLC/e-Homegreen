@@ -202,19 +202,16 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
 "Scene - Movie - 01"]
     var galleryImages:[AnyObject] = []
     var imageIndex:Int!
-    
-    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
-
     var imagePicker = UIImagePickerController()
-    
     var isPresenting: Bool = true
+    var appDel:AppDelegate
+    var images:[Image] = []
+    let defaults = NSUserDefaults.standardUserDefaults()
     
     @IBOutlet weak var gallery: UICollectionView!
-    
+    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
     @IBOutlet weak var backview: UIView!
     
-    let defaults = NSUserDefaults.standardUserDefaults()
-    var appDel:AppDelegate
     init(){
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         super.init(nibName: "SceneGalleryVC", bundle: nil)
@@ -225,14 +222,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(gallery){
-            return false
-        }
-        return true
-    }
-    var images:[Image] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -253,7 +243,38 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
             galleryImages.append(item)
         }
     }
+    override func viewWillAppear(animated: Bool) {
+
+        if let offset = defaults.valueForKey(UserDefaults.GalleryContentOffset) as? CGFloat  {
+            self.gallery.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+        }
+
+    }
+    override func viewWillLayoutSubviews() {
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            if self.view.frame.size.height == 320{
+                backViewHeight.constant = 300
+                
+            }else if self.view.frame.size.height == 375{
+                backViewHeight.constant = 340
+            }else if self.view.frame.size.height == 414{
+                backViewHeight.constant = 390
+            }else{
+                backViewHeight.constant = 420
+            }
+        }else{
+            
+            self.backViewHeight.constant = 400
+            
+        }
+    }
     
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(gallery){
+            return false
+        }
+        return true
+    }
     func returnImages () -> [Image] {
         let fetchRequest = NSFetchRequest(entityName: "Image")
         do {
@@ -264,19 +285,9 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         }
         return []
     }
-    
-    override func viewWillAppear(animated: Bool) {
-
-        if let offset = defaults.valueForKey(UserDefaults.GalleryContentOffset) as? CGFloat  {
-            self.gallery.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
-        }
-
-    }
-    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
     }
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
     }
@@ -286,6 +297,73 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
         galleryImages.append(newImage)
         gallery.reloadData()
     }
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        let newImage = Image(context: appDel.managedObjectContext!)
+        newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
+        galleryImages.append(newImage)
+        gallery.reloadData()
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+        } else {
+            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+        }
+        
+        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.drawInRect(rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+        
+    }
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return galleryImages.count
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
+        if let image = galleryImages[indexPath.row] as? Image {
+            cell.cellImage.image = UIImage(data: image.imageData!)
+        }
+        if let string = galleryImages[indexPath.row] as? String {
+            cell.cellImage.image = UIImage(named:string)
+        }
+        cell.layer.borderColor = UIColor.lightGrayColor().CGColor
+        cell.layer.borderWidth = 1
+        cell.layer.cornerRadius = 5
+        
+        return cell
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+    }
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let image = galleryImages[indexPath.row] as? Image {
+            delegate?.backImage?(image, imageIndex: imageIndex)
+            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
+        }
+        if let string = galleryImages[indexPath.row] as? String {
+            delegate?.backString?(string, imageIndex: imageIndex)
+            delegate?.backImageFromGallery?(UIImageJPEGRepresentation(UIImage(named: string)!, 0.5)!, imageIndex: imageIndex)
+        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func handleTap(gesture:UITapGestureRecognizer){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     @IBAction func openGallery(sender: AnyObject) {
         let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
             if let backImage = image{
@@ -302,7 +380,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     @IBAction func takePhoto(sender: AnyObject) {
-        
         let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
             if let backImage = image{
                 self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
@@ -330,102 +407,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
 
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        let newImage = Image(context: appDel.managedObjectContext!)
-        newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
-        galleryImages.append(newImage)
-        gallery.reloadData()
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / image.size.width
-        let heightRatio = targetSize.height / image.size.height
-        
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
-        } else {
-            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
-        }
-        
-        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.drawInRect(rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-        
-    }
-
-    
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeight.constant = 300
-                
-            }else if self.view.frame.size.height == 375{
-                backViewHeight.constant = 340
-            }else if self.view.frame.size.height == 414{
-                backViewHeight.constant = 390
-            }else{
-                backViewHeight.constant = 420
-            }
-        }else{
-            
-            self.backViewHeight.constant = 400
-            
-        }
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryImages.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = gallery.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! GalleryCollectionViewCell
-        if let image = galleryImages[indexPath.row] as? Image {
-            cell.cellImage.image = UIImage(data: image.imageData!)
-        }
-        if let string = galleryImages[indexPath.row] as? String {
-            cell.cellImage.image = UIImage(named:string)
-        }
-        cell.layer.borderColor = UIColor.lightGrayColor().CGColor
-        cell.layer.borderWidth = 1
-        cell.layer.cornerRadius = 5
-        
-        return cell
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let image = galleryImages[indexPath.row] as? Image {
-            delegate?.backImage?(image, imageIndex: imageIndex)
-            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
-        }
-        if let string = galleryImages[indexPath.row] as? String {
-            delegate?.backString?(string, imageIndex: imageIndex)
-            delegate?.backImageFromGallery?(UIImageJPEGRepresentation(UIImage(named: string)!, 0.5)!, imageIndex: imageIndex)
-        }
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
 
 extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
