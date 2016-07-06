@@ -24,25 +24,33 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     
     var senderButton:UIButton?
     
-    @IBOutlet weak var deviceCollectionView: UICollectionView!
-    
+    var deviceInControlMode = false
     var timer:NSTimer = NSTimer()
-    
-    @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    
     var userLogged:User?
     
     var panRecognizer:UIPanGestureRecognizer!
     var panStartPoint:CGPoint?
     var startingBottomConstraint:CGFloat?
     
+    var appDel:AppDelegate!
+    var devices:[Device] = []
+    var error:NSError? = nil
+    var inte = 0
+    
+    var changeSliderValueOldValue = 0
+    
+    var longTouchOldValue = 0
+    
+    
+    @IBOutlet weak var deviceCollectionView: UICollectionView!
+    @IBOutlet weak var indicatorGreen: UIView!
+    @IBOutlet weak var indicatorRed: UIView!
+    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var selectLabel: UILabel!
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
-    
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     
     override func viewWillAppear(animated: Bool) {
@@ -78,7 +86,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         changeFullScreeenImage()
         
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -108,41 +115,10 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
         panRecognizer.delegate = self
         bottomView.addGestureRecognizer(panRecognizer)
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        }
-    }
-    
-    @IBAction func fullScreen(sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-        }
-    }
-    
-    @IBAction func reload(sender: UIButton) {
-        refreshVisibleDevicesInScrollView()
-        sender.rotate(1)
-    }
-    
-    @IBAction func location(sender: AnyObject) {
         
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
+        // Initialize Indicators
+        indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
+        indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
     }
     override func viewDidAppear(animated: Bool) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -153,9 +129,31 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
-    
+    override func viewWillLayoutSubviews() {
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+    }
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
+    }
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
+    }
+
+    func changeFullScreeenImage(){
+        if UIApplication.sharedApplication().statusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
     
     func refreshLocalParametars () {
@@ -168,22 +166,41 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
     }
-    
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
     }
     
-    var appDel:AppDelegate!
-    var devices:[Device] = []
-    var error:NSError? = nil
-    var inte = 0
     
-    func fetchDevicesInBackground () {
+    func updateIndicator(notification:NSNotification){
+        if let info = notification.userInfo as? [String:String]{
+            if let lamp = info["lamp"]{
+                if lamp == "red" {
+                    self.indicatorRed.alpha = 1
+                    UIView.animateWithDuration(0.5, animations: { 
+                        self.indicatorRed.alpha = 0
+                    })
+                }else if lamp == "green" {
+                    self.indicatorGreen.alpha = 1
+                    UIView.animateWithDuration(0.5, animations: {
+                        self.indicatorGreen.alpha = 0
+                    })
+                }else{
+                    print("INDICATOR ERROR")
+                }
+            }
+        }
+        //indicatorGreen.backgroundColor = UIColor.greenColor()
+    }
+    
+    func fetchDevicesInBackground(){
         updateCells()
     }
+
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     func pullDownSearchParametars (filterItem:FilterItem) {
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
@@ -274,7 +291,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             }
         }
     }
-    var longTouchOldValue = 0
+    
     
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
@@ -406,6 +423,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
 //        deviceCollectionView.reloadData()
         updateCells()
     }
+    
 //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
@@ -501,11 +519,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         let cellWidth = Int(self.view.frame.size.width/i - (2/i + (i*5-5)/i))
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
-    override func viewWillLayoutSubviews() {
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-    }
+    
     func adjustScrollInsetsPullDownViewAndBackgroudImage() {
         //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
@@ -613,9 +627,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         pullDown.drawMenu(filterParametar)
     }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
-    }
+    
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -650,7 +662,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
         
     }
-    
     
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
@@ -699,10 +710,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     func changeSliderValueOnOneTap (gesture:UIGestureRecognizer) {
         if let slider = gesture.view as? UISlider {
             deviceInControlMode = false
@@ -784,7 +791,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         deviceInControlMode = false
     }
     
-    var changeSliderValueOldValue = 0
+    
     
     func changeSliderValue(sender: UISlider){
         let tag = sender.tag
@@ -822,7 +829,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             cell.setNeedsDisplay()
         }
     }
-    
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
         // Appliance?
@@ -845,7 +851,9 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             }
         }
     }
-    var deviceInControlMode = false
+    
+    
+    
     //MARK: Setting names for devices according to filter
     func returnNameForDeviceAccordingToFilter (device:Device) -> String {
         if filterParametar.location != "All" {
@@ -1031,5 +1039,25 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         default:
             break;
         }
+    }
+    
+    @IBAction func fullScreen(sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        }
+    }
+    
+    @IBAction func reload(sender: UIButton) {
+        refreshVisibleDevicesInScrollView()
+        sender.rotate(1)
+    }
+    
+    @IBAction func location(sender: AnyObject) {
+        
     }
 }
