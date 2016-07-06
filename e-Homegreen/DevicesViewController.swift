@@ -22,6 +22,10 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     var shouldUpdate:Bool = false
     var sidebarMenuOpen : Bool!
     
+    let headerTitleSubtitleView = UIView(frame: CGRectMake(0, 0, 180, 44))
+    let titleView = UILabel(frame: CGRectMake(0, 2, 180, 24))
+    let subtitleView = UILabel(frame: CGRectMake(0, 24, 180, 44-24))
+    
     var senderButton:UIButton?
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
@@ -100,6 +104,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        addTitleView(filterParametar.location, level: filterParametar.levelName, zone: filterParametar.zoneName)
         
         zoneAndCategorySlider.continuous = false
         
@@ -116,6 +121,41 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         } else {
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
+    }
+    
+    
+    
+    func addTitleView(location: String, level: String, zone: String){
+
+        headerTitleSubtitleView.backgroundColor = UIColor.clearColor()
+        headerTitleSubtitleView.autoresizesSubviews = false
+        
+        titleView.backgroundColor = UIColor.clearColor()
+        titleView.font = UIFont.boldSystemFontOfSize(20)
+        titleView.textAlignment = NSTextAlignment.Center
+        titleView.textColor = UIColor.whiteColor()
+        titleView.shadowColor = UIColor.darkGrayColor()
+        titleView.shadowOffset = CGSizeMake(0, -1)
+        titleView.text = "Devices"
+        titleView.adjustsFontSizeToFitWidth = true
+        headerTitleSubtitleView.addSubview(titleView)
+        
+        subtitleView.backgroundColor = UIColor.clearColor()
+        subtitleView.font = UIFont.boldSystemFontOfSize(13)
+        subtitleView.textAlignment = NSTextAlignment.Center
+        subtitleView.textColor = UIColor.whiteColor()
+        subtitleView.shadowColor = UIColor.darkGrayColor()
+        subtitleView.shadowOffset = CGSizeMake(0, -1)
+        subtitleView.text = location + ", " + level + ", " + zone
+        subtitleView.adjustsFontSizeToFitWidth = true
+        headerTitleSubtitleView.addSubview(subtitleView)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        subtitleView.text = location + ", " + level + ", " + zone
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -186,6 +226,9 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     func pullDownSearchParametars (filterItem:FilterItem) {
+        
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         if let user = userLogged{

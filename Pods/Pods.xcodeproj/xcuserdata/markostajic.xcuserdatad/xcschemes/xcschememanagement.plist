@@ -6,33 +6,53 @@
 	<dict>
 		<key>ALCameraViewController.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>CocoaAsyncSocket.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>JSQCoreDataKit.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>NSManagedObject-HYPPropertyMapper.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>NSString-HYPNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-e-Homegreen.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Zip.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6146EFA45623743641CD4080BE645AEB</key>
+		<key>169EA598790B9EFDA94A104BCCD4C7C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5E4A4B913340E9BC4380791AE6AF4C78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -43,6 +63,16 @@
 			<true/>
 		</dict>
 		<key>87330B1DCE9E3653334A1C392975BFB8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>93049FF27C0427C5082372942AD2DB0C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A19B430A5EA1D74E499E6CD13E31D701</key>
 		<dict>
 			<key>primary</key>
 			<true/>

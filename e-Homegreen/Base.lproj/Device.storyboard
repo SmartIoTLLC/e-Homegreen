@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -61,7 +61,7 @@
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Device-->
+        <!--Devices View Controller-->
         <scene sceneID="EMR-It-1R9">
             <objects>
                 <viewController storyboardIdentifier="DevicesViewController" id="Uhp-dG-rvO" customClass="DevicesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -1539,7 +1539,8 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Device" id="jVJ-5R-CkK">
+                    <navigationItem key="navigationItem" id="jVJ-5R-CkK">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="mkr-Hy-meR"/>
                         <rightBarButtonItems>
                             <barButtonItem style="plain" id="gdx-Fo-YqH">
