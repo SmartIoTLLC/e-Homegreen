@@ -14,7 +14,7 @@ enum ChoosedTab:String {
     static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags]
 }
 
-class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate{
+class ScanViewController: UIViewController, PopOverIndexDelegate, PullDownViewDelegate{
     
     @IBOutlet weak var topView: UIView!
     
@@ -97,27 +97,28 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
     
     //popup controller
     @IBAction func btnScenes(sender: AnyObject) {
-        senderButton = sender as? UIButton
-        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
-        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = 6
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+//        senderButton = sender as? UIButton
+//        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
+//        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+//        popoverVC.modalPresentationStyle = .Popover
+//        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+//        popoverVC.delegate = self
+//        popoverVC.indexTab = 6
+//        if let popoverController = popoverVC.popoverPresentationController {
+//            popoverController.delegate = self
+//            popoverController.permittedArrowDirections = .Any
+//            popoverController.sourceView = sender as? UIView
+//            popoverController.sourceRect = sender.bounds
+//            popoverController.backgroundColor = UIColor.lightGrayColor()
+//            presentViewController(popoverVC, animated: true, completion: nil)
+//        }
+        
+        openPopover(sender, indexTab: 6)
     }
-    
-    @available(iOS 8.0, *)
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
+
+//    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+//        return .None
+//    }
     
     func saveText(text: String, id: Int) {
         senderButton?.setTitle(text, forState: .Normal)
@@ -153,4 +154,29 @@ class ScanViewController: UIViewController, PopOverIndexDelegate, UIPopoverPrese
         }
     }
 
+}
+
+extension ScanViewController: UIPopoverPresentationControllerDelegate{
+    
+    func openPopover(sender: AnyObject, indexTab:Int) {
+        senderButton = sender as? UIButton
+        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
+        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = indexTab
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
 }

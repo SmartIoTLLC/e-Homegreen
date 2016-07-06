@@ -545,7 +545,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     func chooseGateway (gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
-            let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+            let storyboard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
             popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
             popoverVC.modalPresentationStyle = .Popover
             popoverVC.preferredContentSize = CGSizeMake(300, 200)

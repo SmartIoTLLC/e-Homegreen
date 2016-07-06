@@ -3,7 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -1460,8 +1459,8 @@
                                                     <action selector="off:" destination="Uhp-dG-rvO" eventType="touchUpInside" id="hLZ-Yr-jEd"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Select Zone To Control" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
-                                                <rect key="frame" x="8" y="35" width="38" height="19"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Select Zone To Control" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
+                                                <rect key="frame" x="8" y="35" width="149" height="19"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1527,12 +1526,12 @@
                                     <constraint firstItem="QEO-B8-hGL" firstAttribute="top" secondItem="xol-uY-x7r" secondAttribute="bottom" id="fId-zi-hC7"/>
                                 </constraints>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="neL-6V-LuI" userLabel="indicatorGreen">
-                                <rect key="frame" x="270" y="7" width="8" height="8"/>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="neL-6V-LuI" userLabel="indicatorGreen">
+                                <rect key="frame" x="274" y="7" width="8" height="8"/>
                                 <color key="backgroundColor" red="0.096014219019107033" green="0.79071907722513091" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGM-7n-U7N" userLabel="indicatorRed">
-                                <rect key="frame" x="289" y="7" width="8" height="8"/>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GGM-7n-U7N" userLabel="indicatorRed">
+                                <rect key="frame" x="293" y="7" width="8" height="8"/>
                                 <color key="backgroundColor" red="1" green="0.0018889119528316956" blue="0.03221689662338667" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="Vb1-tF-ZPm"/>
@@ -1542,20 +1541,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="neL-6V-LuI" firstAttribute="top" secondItem="GGM-7n-U7N" secondAttribute="bottom" constant="-8" id="3SR-q0-ml0"/>
+                            <constraint firstItem="GGM-7n-U7N" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" constant="7" id="0Hb-Fz-oFR"/>
+                            <constraint firstAttribute="trailing" secondItem="GGM-7n-U7N" secondAttribute="trailing" constant="19" id="3BW-Ca-TlH"/>
                             <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="xY1-6k-Eai" secondAttribute="bottom" id="6ZK-3d-sVB"/>
+                            <constraint firstItem="neL-6V-LuI" firstAttribute="centerY" secondItem="GGM-7n-U7N" secondAttribute="centerY" id="8O8-pF-HBV"/>
                             <constraint firstItem="xY1-6k-Eai" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" id="BQ4-wf-J3K"/>
                             <constraint firstAttribute="bottom" secondItem="H0t-8Z-WMG" secondAttribute="bottom" constant="-130" id="D1V-Hf-bqH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GGM-7n-U7N" secondAttribute="trailing" constant="3" id="H71-IL-jla"/>
                             <constraint firstAttribute="trailing" secondItem="H0t-8Z-WMG" secondAttribute="trailing" id="O1D-ZO-hH8"/>
                             <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="HnO-ii-vqM" secondAttribute="bottom" constant="20" id="R0B-JX-7Mq"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="height" secondItem="GGM-7n-U7N" secondAttribute="height" id="SFP-86-Slr"/>
                             <constraint firstItem="H0t-8Z-WMG" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="SJT-9i-to7"/>
-                            <constraint firstItem="GGM-7n-U7N" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" constant="7" id="YXM-Sh-IGO"/>
                             <constraint firstItem="HnO-ii-vqM" firstAttribute="top" secondItem="Kjq-wI-lY9" secondAttribute="top" constant="25" id="YhM-lN-dO9"/>
                             <constraint firstItem="xY1-6k-Eai" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="bfK-Yw-mUR"/>
+                            <constraint firstItem="GGM-7n-U7N" firstAttribute="leading" secondItem="neL-6V-LuI" secondAttribute="trailing" constant="11" id="eA7-7p-uyX"/>
                             <constraint firstAttribute="trailing" secondItem="HnO-ii-vqM" secondAttribute="trailing" id="fwA-Lg-urB"/>
-                            <constraint firstItem="GGM-7n-U7N" firstAttribute="leading" secondItem="neL-6V-LuI" secondAttribute="trailing" constant="11" id="i8t-Kd-ccS"/>
                             <constraint firstAttribute="trailing" secondItem="xY1-6k-Eai" secondAttribute="trailing" id="jSw-ad-rb1"/>
                             <constraint firstItem="HnO-ii-vqM" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="mMe-Km-NPk"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="width" secondItem="GGM-7n-U7N" secondAttribute="width" id="roj-Zv-LIB"/>
@@ -1616,7 +1615,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f12-kK-PUm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="523" y="-528"/>
+            <point key="canvasLocation" x="594" y="-655"/>
         </scene>
     </scenes>
     <resources>

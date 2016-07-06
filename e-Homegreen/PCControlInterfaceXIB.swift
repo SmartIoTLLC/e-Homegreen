@@ -182,7 +182,7 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     }
     
     @IBAction func chooseOptionAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self

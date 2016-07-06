@@ -159,8 +159,8 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
         
         table.layer.cornerRadius = 8
         
-        // Do any additional setup after loading the view.
     }
+    
     override func viewWillAppear(animated: Bool) {
         if indexTab == PopOver.Location.rawValue {
             updateDeviceList("Location")
@@ -518,6 +518,7 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
         }
     }
 }
+
 extension PopOverViewController: UITableViewDelegate{
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="w6J-AF-9Ay">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="w6J-AF-9Ay">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -611,14 +611,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cif-Tg-Kn7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="891" y="280"/>
-        </scene>
-        <!--codePopover-->
-        <scene sceneID="LIe-ns-VMN">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="codePopover" storyboardName="Popover" referencedIdentifier="codePopover" id="Mks-7j-Ymy" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BFK-Zk-8Fu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1162.5" y="841"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ecI-xV-PaI">

@@ -322,7 +322,7 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         let categoryName = "\(categoryButton.titleLabel!.text!)"
         locationSearch = ["\(locationButton.titleLabel!.text)", level, zone, category, levelName, zoneName, categoryName]
         senderButton = sender
-        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let storyboard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)

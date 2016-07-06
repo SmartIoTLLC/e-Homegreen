@@ -103,7 +103,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
     @IBAction func addNewElementInLocation(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self

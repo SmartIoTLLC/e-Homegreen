@@ -172,7 +172,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     }
     
     @IBAction func changeDeviceInputMode(sender: AnyObject) {
-        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
@@ -190,7 +190,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         }
     }
     @IBAction func changeControlType(sender: AnyObject) {
-        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
@@ -209,7 +209,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     }
     
     @IBAction func btnLevel (sender: AnyObject) {
-        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
@@ -231,7 +231,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     }
     
     @IBAction func btnZone (sender: AnyObject) {
-        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
@@ -249,7 +249,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     }
     
     @IBAction func btnCategory (sender: AnyObject) {
-        let mainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
         popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
