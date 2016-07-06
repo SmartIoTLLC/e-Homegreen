@@ -906,7 +906,7 @@
                                                         <constraint firstAttribute="width" constant="35" id="uJC-uX-aAW"/>
                                                         <constraint firstAttribute="width" secondItem="xX0-Xk-B5e" secondAttribute="height" multiplier="1:1" id="ySp-rq-eY4"/>
                                                     </constraints>
-                                                    <state key="normal" image="optionsss">
+                                                    <state key="normal" image="details_button">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1671,7 +1671,7 @@
         <!--Scan Devices View Controller-->
         <scene sceneID="f0P-DX-O4o">
             <objects>
-                <viewController storyboardIdentifier="ScanDevices" id="mfI-XX-UFz" customClass="ScanDevicesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanDevicesViewController" id="mfI-XX-UFz" customClass="ScanDevicesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NSx-KH-Pex"/>
                         <viewControllerLayoutGuide type="bottom" id="7dr-FM-Eg6"/>
@@ -1917,7 +1917,7 @@
         <!--Scan Flag View Controller-->
         <scene sceneID="bkq-XC-G0h">
             <objects>
-                <viewController storyboardIdentifier="ScanFlags" id="yJV-dU-pTu" customClass="ScanFlagViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanFlagViewController" id="yJV-dU-pTu" customClass="ScanFlagViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rJS-9m-aJJ"/>
                         <viewControllerLayoutGuide type="bottom" id="sxT-eb-Q1q"/>
@@ -1948,7 +1948,7 @@
                                                 <rect key="frame" x="92" y="142" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1997,7 +1997,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULz-ik-Ntm">
-                                                <rect key="frame" x="85" y="183" width="47" height="22"/>
+                                                <rect key="frame" x="93" y="183" width="47" height="22"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -2011,15 +2011,15 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0D0-uw-Qzb">
-                                                <rect key="frame" x="35" y="179" width="40" height="30"/>
+                                                <rect key="frame" x="35" y="179" width="48" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="DNm-CV-wna"/>
+                                                    <constraint firstAttribute="width" constant="48" id="DNm-CV-wna"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="o3k-iE-Z26">
-                                                <rect key="frame" x="142" y="179" width="168" height="30"/>
+                                                <rect key="frame" x="150" y="179" width="160" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
@@ -2027,7 +2027,7 @@
                                                 <rect key="frame" x="92" y="107" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2179,18 +2179,6 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-is-lxC" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="92" y="71" width="218" height="31"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="btnLevel:" destination="yJV-dU-pTu" eventType="touchUpInside" id="5Ky-tb-O6k"/>
-                                                </connections>
-                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default/ Positive" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTE-4M-bVc">
                                                 <rect key="frame" x="206" y="267" width="42" height="29"/>
                                                 <constraints>
@@ -2211,6 +2199,18 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-is-lxC" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="92" y="71" width="218" height="31"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="All">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="yJV-dU-pTu" eventType="touchUpInside" id="5Ky-tb-O6k"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -2316,7 +2316,7 @@
         <!--Scan Timer View Controller-->
         <scene sceneID="6VQ-S7-Zvo">
             <objects>
-                <viewController storyboardIdentifier="ScanTimers" id="a6y-ip-ICy" customClass="ScanTimerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanTimerViewController" id="a6y-ip-ICy" customClass="ScanTimerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2QC-d6-xvg"/>
                         <viewControllerLayoutGuide type="bottom" id="CZh-ni-xjU"/>
@@ -2425,7 +2425,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWK-2v-PnM">
-                                                <rect key="frame" x="87" y="183" width="47" height="22"/>
+                                                <rect key="frame" x="95" y="183" width="47" height="22"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -2439,15 +2439,15 @@
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="toe-zY-Zf3">
-                                                <rect key="frame" x="37" y="179" width="40" height="30"/>
+                                                <rect key="frame" x="37" y="179" width="48" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="zAd-e9-s8h"/>
+                                                    <constraint firstAttribute="width" constant="48" id="zAd-e9-s8h"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rkr-lc-Dqe">
-                                                <rect key="frame" x="144" y="179" width="168" height="30"/>
+                                                <rect key="frame" x="152" y="179" width="160" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
@@ -2539,7 +2539,7 @@
                                                 <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2551,7 +2551,7 @@
                                                 <rect key="frame" x="94" y="141" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2575,7 +2575,7 @@
                                                 <rect key="frame" x="94" y="73" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2731,7 +2731,7 @@
         <!--Scan Events View Controller-->
         <scene sceneID="TTr-nu-D8A">
             <objects>
-                <viewController storyboardIdentifier="ScanEvents" id="A4e-cx-i9Z" customClass="ScanEventsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanEventsViewController" id="A4e-cx-i9Z" customClass="ScanEventsViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="znf-JK-vdN"/>
                         <viewControllerLayoutGuide type="bottom" id="eJy-gu-8Q5"/>
@@ -2798,7 +2798,7 @@
                                                 <rect key="frame" x="94" y="142" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2833,21 +2833,21 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QQt-wH-DJB">
-                                                <rect key="frame" x="95" y="188" width="47" height="22"/>
+                                                <rect key="frame" x="103" y="188" width="47" height="22"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qy5-1V-MEp">
-                                                <rect key="frame" x="45" y="184" width="40" height="30"/>
+                                                <rect key="frame" x="45" y="184" width="48" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="B2o-GL-L8P"/>
+                                                    <constraint firstAttribute="width" constant="48" id="B2o-GL-L8P"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KBm-9T-fdB">
-                                                <rect key="frame" x="152" y="184" width="160" height="30"/>
+                                                <rect key="frame" x="160" y="184" width="152" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
@@ -2883,7 +2883,7 @@
                                                 <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2907,7 +2907,7 @@
                                                 <rect key="frame" x="94" y="73" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3142,7 +3142,7 @@
         <!--Scan Sequenceses View Controller-->
         <scene sceneID="EPY-qL-yLt">
             <objects>
-                <viewController storyboardIdentifier="ScanSequences" id="veY-Nt-C7b" customClass="ScanSequencesesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanSequencesesViewController" id="veY-Nt-C7b" customClass="ScanSequencesesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MHG-KD-HZj"/>
                         <viewControllerLayoutGuide type="bottom" id="Z6G-MH-TFD"/>
@@ -3223,7 +3223,7 @@
                                                 <rect key="frame" x="94" y="142" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3244,12 +3244,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RCi-oC-4Wm">
-                                                <rect key="frame" x="189" y="185" width="123" height="30"/>
+                                                <rect key="frame" x="157" y="185" width="155" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vob-eP-gGa">
-                                                <rect key="frame" x="127" y="188" width="52" height="22"/>
+                                                <rect key="frame" x="95" y="188" width="52" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="52" id="UlU-qz-nuz"/>
                                                 </constraints>
@@ -3258,9 +3258,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kfa-OL-CNa">
-                                                <rect key="frame" x="37" y="184" width="80" height="30"/>
+                                                <rect key="frame" x="37" y="184" width="48" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="80" id="udz-Oy-Esq"/>
+                                                    <constraint firstAttribute="width" constant="48" id="udz-Oy-Esq"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
@@ -3379,7 +3379,7 @@
                                                 <rect key="frame" x="94" y="107" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3423,7 +3423,7 @@
                                                 <rect key="frame" x="94" y="72" width="218" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3560,7 +3560,7 @@
         <!--Scan Scenes View Controller-->
         <scene sceneID="Et9-gk-qC8">
             <objects>
-                <viewController storyboardIdentifier="ScanScenes" id="SuO-gZ-XEb" customClass="ScanScenesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanScenesViewController" id="SuO-gZ-XEb" customClass="ScanScenesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TiW-fb-Bx2"/>
                         <viewControllerLayoutGuide type="bottom" id="bum-Jj-Fzv"/>
@@ -3621,7 +3621,7 @@
                                                 <rect key="frame" x="94" y="142" width="220" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3636,12 +3636,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RmC-wc-ub8">
-                                                <rect key="frame" x="184" y="183" width="130" height="30"/>
+                                                <rect key="frame" x="152" y="183" width="162" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dl5-Aw-ltt">
-                                                <rect key="frame" x="127" y="187" width="47" height="22"/>
+                                                <rect key="frame" x="95" y="187" width="47" height="22"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -3653,9 +3653,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JM6-Ad-4c0">
-                                                <rect key="frame" x="37" y="184" width="80" height="30"/>
+                                                <rect key="frame" x="37" y="184" width="48" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="80" id="Xwj-1l-n5A"/>
+                                                    <constraint firstAttribute="width" constant="48" id="Xwj-1l-n5A"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
@@ -3777,18 +3777,6 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2g4-ZE-dBO" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="94" y="73" width="220" height="31"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="btnLevel:" destination="SuO-gZ-XEb" eventType="touchUpInside" id="q2E-DJ-XoU"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pz1-s2-QUy" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="235" width="75" height="30"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3819,7 +3807,7 @@
                                                 <rect key="frame" x="94" y="108" width="220" height="31"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                <state key="normal" title="--">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -3853,6 +3841,18 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2g4-ZE-dBO" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="94" y="73" width="220" height="31"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                                <state key="normal" title="All">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnLevel:" destination="SuO-gZ-XEb" eventType="touchUpInside" id="q2E-DJ-XoU"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -3971,13 +3971,13 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="DB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqn-Lc-Cew">
-                                <rect key="frame" x="8" y="79" width="30" height="27"/>
+                                <rect key="frame" x="8" y="89" width="30" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="heo-bR-aDY" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="69" y="77" width="131" height="31"/>
+                                <rect key="frame" x="69" y="87" width="131" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="131" id="hhl-ou-toV"/>
@@ -3992,7 +3992,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iwg-n7-cqT" userLabel="Container">
-                                <rect key="frame" x="0.0" y="113" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="128" width="320" height="440"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -4003,11 +4003,11 @@
                             <constraint firstItem="ySs-Qu-XPy" firstAttribute="top" secondItem="iwg-n7-cqT" secondAttribute="bottom" id="FQo-6I-RpJ"/>
                             <constraint firstItem="rqn-Lc-Cew" firstAttribute="leading" secondItem="JTr-uc-1R9" secondAttribute="leading" constant="8" id="IDm-JE-cgW"/>
                             <constraint firstItem="akf-Ek-hnG" firstAttribute="top" secondItem="v4A-so-6So" secondAttribute="bottom" id="Lfb-a2-PwP"/>
-                            <constraint firstItem="iwg-n7-cqT" firstAttribute="top" secondItem="heo-bR-aDY" secondAttribute="bottom" constant="5" id="O3v-2d-rLY"/>
+                            <constraint firstItem="iwg-n7-cqT" firstAttribute="top" secondItem="heo-bR-aDY" secondAttribute="bottom" constant="10" id="O3v-2d-rLY"/>
                             <constraint firstItem="iwg-n7-cqT" firstAttribute="leading" secondItem="JTr-uc-1R9" secondAttribute="leading" id="SHF-AV-ooi"/>
                             <constraint firstItem="akf-Ek-hnG" firstAttribute="leading" secondItem="JTr-uc-1R9" secondAttribute="leading" id="azP-EX-9IQ"/>
                             <constraint firstAttribute="trailing" secondItem="iwg-n7-cqT" secondAttribute="trailing" id="dky-Kf-Wy4"/>
-                            <constraint firstItem="rqn-Lc-Cew" firstAttribute="top" secondItem="v4A-so-6So" secondAttribute="bottom" constant="15" id="jrf-KJ-5KO"/>
+                            <constraint firstItem="rqn-Lc-Cew" firstAttribute="top" secondItem="v4A-so-6So" secondAttribute="bottom" constant="25" id="jrf-KJ-5KO"/>
                             <constraint firstItem="ySs-Qu-XPy" firstAttribute="top" secondItem="akf-Ek-hnG" secondAttribute="bottom" id="m6G-PX-C34"/>
                             <constraint firstItem="heo-bR-aDY" firstAttribute="leading" secondItem="rqn-Lc-Cew" secondAttribute="trailing" constant="31" id="s7Y-uG-rdz"/>
                         </constraints>

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGalleryDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -31,7 +31,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    var gateway:Gateway?
+    var gateway:Gateway!
     var flags:[Flag] = []
     
     var levelFromFilter:String = "All"
@@ -39,30 +39,16 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     var categoryFromFilter:String = "All"
     
     var selected:AnyObject?
-    
-    func endEditingNow(){
-        //        devAddressOne.resignFirstResponder()
-        //        devAddressTwo.resignFirstResponder()
-        devAddressThree.resignFirstResponder()
-        IDedit.resignFirstResponder()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ScanFlagViewController.endEditingNow) )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
         updateFlagList()
         
-        devAddressThree.inputAccessoryView = keyboardDoneButtonView
-        IDedit.inputAccessoryView = keyboardDoneButtonView
+        devAddressThree.inputAccessoryView = CustomToolBar()
+        IDedit.inputAccessoryView = CustomToolBar()
         
         nameEdit.delegate = self
         
@@ -73,8 +59,10 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanFlagViewController.handleTap(_:))))
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway!.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway!.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressOne.enabled = false
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressTwo.enabled = false
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
@@ -82,8 +70,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         localcastSwitch.tag = 200
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: #selector(ScanFlagViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        
-        // Do any additional setup after loading the view.
+
     }
 
     
@@ -102,7 +89,6 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             broadcastSwitch.on = false
         }
     }
-
     
     func refreshFlagList() {
         updateFlagList()
@@ -128,7 +114,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway!.objectID))
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
         if levelFromFilter != "All" {
             let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
             predicateArray.append(levelPredicate)
@@ -198,7 +184,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 12
-        popoverVC.filterLocation = gateway!.location
+        popoverVC.filterLocation = gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -215,7 +201,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 14
-        popoverVC.filterLocation = gateway!.location
+        popoverVC.filterLocation = gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -232,7 +218,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
         popoverVC.indexTab = 13
-        popoverVC.filterLocation = gateway!.location
+        popoverVC.filterLocation = gateway.location
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any
@@ -245,9 +231,6 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
-    }
-    @IBAction func btnEdit(sender: AnyObject) {
-        
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -262,73 +245,41 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
                     }
                 }
                 if !itExists {
-                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                        let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
-                        flag.flagId = flagId
-                        flag.flagName = flagName
-                        flag.address = address
-                        flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                        flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                        flag.isBroadcast = broadcastSwitch.on
-                        flag.isLocalcast = localcastSwitch.on
-                        if btnLevel.titleLabel?.text != "--" {
-                            flag.entityLevel = btnLevel.titleLabel!.text!
-                        }
-                        if btnZone.titleLabel?.text != "--" {
-                            flag.flagZone = btnZone.titleLabel!.text!
-                        }
-                        if btnCategory.titleLabel?.text != "--" {
-                            flag.flagCategory = btnCategory.titleLabel!.text!
-                        }
-                        flag.gateway = gateway!
-                        saveChanges()
-                        refreshFlagList()
-                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
-                    }
+                    let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
+                    flag.flagId = flagId
+                    flag.flagName = flagName
+                    flag.address = address
+                    flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    flag.isBroadcast = broadcastSwitch.on
+                    flag.isLocalcast = localcastSwitch.on
+                    flag.entityLevel = btnLevel.titleLabel!.text!
+                    flag.flagZone = btnZone.titleLabel!.text!
+                    flag.flagCategory = btnCategory.titleLabel!.text!
+                    flag.gateway = gateway
+                    saveChanges()
+                    refreshFlagList()
                 } else {
-                    if btnLevel.titleLabel!.text != "--" && btnCategory.titleLabel!.text != "--" {
-                        existingFlag!.flagId = flagId
-                        existingFlag!.flagName = flagName
-                        existingFlag!.address = address
-                        existingFlag!.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                        existingFlag!.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
-                        existingFlag!.isBroadcast = broadcastSwitch.on
-                        existingFlag!.isLocalcast = localcastSwitch.on
-                        if btnLevel.titleLabel?.text != "--" {
-                            existingFlag!.entityLevel = btnLevel.titleLabel!.text!
-                        }
-                        if btnZone.titleLabel?.text != "--" {
-                            existingFlag!.flagZone = btnZone.titleLabel!.text!
-                        }
-                        if btnCategory.titleLabel?.text != "--" {
-                            existingFlag!.flagCategory = btnCategory.titleLabel!.text!
-                        }
-                        existingFlag!.gateway = gateway!
-                        saveChanges()
-                        refreshFlagList()
-                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
-                    }
+                    existingFlag!.flagId = flagId
+                    existingFlag!.flagName = flagName
+                    existingFlag!.address = address
+                    existingFlag!.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
+                    existingFlag!.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    existingFlag!.isBroadcast = broadcastSwitch.on
+                    existingFlag!.isLocalcast = localcastSwitch.on
+                    existingFlag!.entityLevel = btnLevel.titleLabel!.text!
+                    existingFlag!.flagZone = btnZone.titleLabel!.text!
+                    existingFlag!.flagCategory = btnCategory.titleLabel!.text!
+                    existingFlag!.gateway = gateway
+                    saveChanges()
+                    refreshFlagList()
                 }
             }
         }
-        resignFirstRespondersOnTextFields()
+        self.view.endEditing(true)
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
-//        if let flag = selected as? Flag {
-//            appDel.managedObjectContext!.deleteObject(flag)
-//            IDedit.text = ""
-//            nameEdit.text = ""
-//            devAddressThree.text = ""
-//            btnLevel.setTitle("--", forState: UIControlState.Normal)
-//            btnZone.setTitle("--", forState: UIControlState.Normal)
-//            btnCategory.setTitle("--", forState: UIControlState.Normal)
-//            broadcastSwitch.on = false
-//            localcastSwitch.on = false
-//            saveChanges()
-//            refreshFlagList()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
-//        }
         if flags.count != 0 {
             for flag in flags {
                 appDel.managedObjectContext!.deleteObject(flag)
@@ -337,17 +288,13 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
         }
-        resignFirstRespondersOnTextFields()
+        self.view.endEditing(true)
     }
-    
-    func resignFirstRespondersOnTextFields() {
-        IDedit.resignFirstResponder()
-        nameEdit.resignFirstResponder()
-        devAddressOne.resignFirstResponder()
-        devAddressTwo.resignFirstResponder()
-        devAddressThree.resignFirstResponder()
-    }
-    
+
+
+}
+
+extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("flagCell") as? FlagCell {
@@ -365,7 +312,6 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "sequnces"
         return cell
         
     }
@@ -379,18 +325,12 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
         localcastSwitch.on = flags[indexPath.row].isLocalcast.boolValue
         if let level = flags[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
-        } else {
-            btnLevel.setTitle("--", forState: .Normal)
         }
         if let zone = flags[indexPath.row].flagZone {
             btnZone.setTitle(zone, forState: .Normal)
-        } else {
-            btnZone.setTitle("--", forState: .Normal)
         }
         if let category = flags[indexPath.row].flagCategory {
             btnCategory.setTitle(category, forState: .Normal)
-        } else {
-            btnCategory.setTitle("--", forState: .Normal)
         }
         if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
             imageSceneOne.image = flagImage
@@ -403,6 +343,7 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return flags.count
     }
+    
     func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -424,17 +365,13 @@ class ScanFlagViewController: UIViewController, UITextFieldDelegate, SceneGaller
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         if editingStyle == .Delete {
-            // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(flags[indexPath.row])
             saveChanges()
             refreshFlagList()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
         }
         
     }
-
 }
 
 class FlagCell:UITableViewCell{

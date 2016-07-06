@@ -17,7 +17,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
     
     var appDel:AppDelegate!
     
-    var users:[User] = []
+    var users:[String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +25,17 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         tableView.layer.borderWidth = 1
+        tableView.layer.cornerRadius = 5
         tableView.hidden = true
         
         userNameTextField.delegate = self
         
-        users = DatabaseUserController.shared.getUserForDropDownMenu()
+        if let admin = AdminController.shared.getAdmin(){
+            users.append(admin.username)
+        }
+        for user in DatabaseUserController.shared.getUserForDropDownMenu(){
+            users.append(user.username!)
+        }
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(LogInViewController.dismissKeyboard))
         tap.delegate = self
@@ -97,15 +103,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        passwordTextField.resignFirstResponder()
         tableView.hidden = false
+        return false
     }
-    
-//    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-//        passwordTextField.resignFirstResponder()
-//        tableView.hidden = false
-//        return false
-//    }
 
 }
 
@@ -116,7 +118,7 @@ extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "defaultCell")
-        cell.textLabel?.text = users[indexPath.row].username
+        cell.textLabel?.text = users[indexPath.row]
         return cell
     }
     
@@ -125,5 +127,6 @@ extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
         userNameTextField.text = cell?.textLabel?.text
         self.dismissKeyboard()
         tableView.hidden = true
+        passwordTextField.becomeFirstResponder()
     }
 }

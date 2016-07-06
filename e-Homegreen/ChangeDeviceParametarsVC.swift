@@ -17,7 +17,7 @@ struct EditedDevice {
     var digitalInputMode:Int
 }
 
-class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate {
     
     
     @IBOutlet weak var txtFieldName: UITextField!
@@ -96,7 +96,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         btnZone.setTitle("\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location))", forState: UIControlState.Normal)
         btnCategory.setTitle("\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))", forState: UIControlState.Normal)
         btnControlType.setTitle("\(device.controlType)", forState: UIControlState.Normal)
-        txtFieldName.becomeFirstResponder()
+        txtFieldName.delegate = self
         // Do any additional setup after loading the view.
         let chn = Int(device.channel)
         if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
@@ -119,6 +119,11 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             hideImageButton(true)
         }
         //TODO: Dodaj i za gateway
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
