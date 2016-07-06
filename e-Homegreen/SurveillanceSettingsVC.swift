@@ -10,47 +10,36 @@ import UIKit
 import CoreData
 
 protocol AddEditSurveillanceDelegate{
-    func add_editSurveillanceFinished()
+    func addEditSurveillanceFinished()
 }
 
-class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
+class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
     
     @IBOutlet weak var scroll: UIScrollView!
-    
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
-    
-    var popoverVC:PopOverViewController = PopOverViewController()
-    
-    var isPresenting: Bool = true
-    
-    var delegate:AddEditSurveillanceDelegate?
-    
     @IBOutlet weak var backView: UIView!
-
     @IBOutlet weak var editName: UITextField!
-    
     @IBOutlet weak var levelButton: CustomGradientButton!
     @IBOutlet weak var zoneButton: CustomGradientButton!
     @IBOutlet weak var categoryButton: CustomGradientButton!
-    
     @IBOutlet weak var editIPLocal: UITextField!
     @IBOutlet weak var editPortLocal: UITextField!
-    
     @IBOutlet weak var editIPRemote: UITextField!
     @IBOutlet weak var editPortRemote: UITextField!
-    
     @IBOutlet weak var editUserName: UITextField!
     @IBOutlet weak var editPassword: UITextField!
-    
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
+    var popoverVC:PopOverViewController = PopOverViewController()
+    var isPresenting: Bool = true
+    var delegate:AddEditSurveillanceDelegate?
     var appDel:AppDelegate!
     var error:NSError? = nil
     var surv:Surveillance?
     var parentLocation:Location?
-    
+
     var levelSelected:Zone?
     var zoneSelected:Zone?
     var categorySelected:Category?
@@ -62,17 +51,10 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func endEditingNow(){
-        editPortRemote.resignFirstResponder()
-        editPortLocal.resignFirstResponder()
-        centarConstraint.constant = 0
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -134,22 +116,6 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         
         // Do any additional setup after loading the view.
     }
-    
-    func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        self.centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
-            animations: { self.view.layoutIfNeeded() },
-            completion: nil)
-        return true
-    }
-    
     override func viewWillLayoutSubviews() {
         if UIDevice.currentDevice().orientation.isLandscape {
             print("UIDevice.currentDevice().orientation.isLandscape")
@@ -173,48 +139,13 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         }
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func endEditingNow(){
+        editPortRemote.resignFirstResponder()
+        editPortLocal.resignFirstResponder()
+        centarConstraint.constant = 0
     }
-    
-    @IBAction func btnZoneAction(sender: UIButton) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        if sender.tag == 1{
-            popoverVC.indexTab = 29
-            popoverVC.levelList = DatabaseZoneController.shared.getLevels(parentLocation!)
-            popoverVC.popOver = PopOver.Level
-        }else if sender.tag == 2 {
-            if let location = parentLocation, let levelId = levelSelected?.id {
-                popoverVC.indexTab = 30
-                popoverVC.zoneList = DatabaseZoneController.shared.getZonesOnLevel(location, levelId: Int(levelId))
-                popoverVC.popOver = PopOver.Zone
-            }else{
-                popoverVC.indexTab = 30
-                popoverVC.zoneList = []
-                popoverVC.popOver = PopOver.Zone
-            }
-        }else{
-            if let location = parentLocation, let levelId = levelSelected?.id {
-                popoverVC.indexTab = 31
-                popoverVC.categoryList = DatabaseCategoryController.shared.getCategories(location)
-                popoverVC.popOver = PopOver.Category
-            }else{
-                popoverVC.indexTab = 31
-                popoverVC.categoryList = []
-                popoverVC.popOver = PopOver.Category
-            }
-        }
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func returnObjectIDandTypePopover(objectId: NSManagedObjectID?, popOver: Int) {
@@ -252,79 +183,9 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
             }
         }
     }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-    @IBAction func btnSave(sender: AnyObject) {
-        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort)   {
-            if surv == nil{
-                if let parentLocation = parentLocation{
-                    let surveillance = Surveillance(context: appDel.managedObjectContext!)
-                    
-                    surveillance.name = name
-                    surveillance.username = username
-                    surveillance.password = password
-                    surveillance.surveillanceLevel = levelButton.titleLabel?.text
-                    surveillance.surveillanceZone = zoneButton.titleLabel?.text
-                    surveillance.surveillanceCategory = categoryButton.titleLabel?.text
-                    surveillance.localIp = localIp
-                    surveillance.localPort = localPort
-                    surveillance.ip = remoteIp
-                    surveillance.port = remotePortNumber
-                    
-                    surveillance.isVisible = true
-                    
-                    surveillance.urlHome = ""
-                    surveillance.urlMoveUp = ""
-                    surveillance.urlMoveRight = ""
-                    surveillance.urlMoveLeft = ""
-                    surveillance.urlMoveDown = ""
-                    surveillance.urlAutoPan = ""
-                    surveillance.urlAutoPanStop = ""
-                    surveillance.urlPresetSequence = ""
-                    surveillance.urlPresetSequenceStop = ""
-                    surveillance.urlGetImage = ""
-                    
-                    surveillance.cameraLevel = levelSelected
-                    surveillance.cameraZone = zoneSelected
-                    surveillance.cameraCategory = categorySelected
-                    
-                    surveillance.tiltStep = 1
-                    surveillance.panStep = 1
-                    surveillance.autSpanStep = 1
-                    surveillance.dwellTime = 15
-                    surveillance.location = parentLocation
-                    saveChanges()
-                }
-            }else if let surv = surv{
-                
-                surv.name = name
-                surv.username = username
-                surv.password = password
-                
-                surv.surveillanceLevel = levelButton.titleLabel?.text
-                surv.surveillanceZone = zoneButton.titleLabel?.text
-                surv.surveillanceCategory = categoryButton.titleLabel?.text
-                
-                surv.cameraLevel = levelSelected
-                surv.cameraZone = zoneSelected
-                surv.cameraCategory = categorySelected
-                
-                surv.localIp = localIp
-                surv.localPort = localPort
-                surv.ip = remoteIp
-                surv.port = remotePortNumber
-                
-                saveChanges()
-            }
-            
-            self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.add_editSurveillanceFinished()
-        }
-    }
-    
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -390,7 +251,6 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
-    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -401,7 +261,116 @@ class SurveillanceSettingsVC: UIViewController,UITextFieldDelegate, UIGestureRec
         }
 //        appDel.establishAllConnections()
     }
-
+    
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func btnZoneAction(sender: UIButton) {
+        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        if sender.tag == 1{
+            popoverVC.indexTab = 29
+            popoverVC.levelList = DatabaseZoneController.shared.getLevels(parentLocation!)
+            popoverVC.popOver = PopOver.Level
+        }else if sender.tag == 2 {
+            if let location = parentLocation, let levelId = levelSelected?.id {
+                popoverVC.indexTab = 30
+                popoverVC.zoneList = DatabaseZoneController.shared.getZonesOnLevel(location, levelId: Int(levelId))
+                popoverVC.popOver = PopOver.Zone
+            }else{
+                popoverVC.indexTab = 30
+                popoverVC.zoneList = []
+                popoverVC.popOver = PopOver.Zone
+            }
+        }else{
+            if let location = parentLocation, let levelId = levelSelected?.id {
+                popoverVC.indexTab = 31
+                popoverVC.categoryList = DatabaseCategoryController.shared.getCategories(location)
+                popoverVC.popOver = PopOver.Category
+            }else{
+                popoverVC.indexTab = 31
+                popoverVC.categoryList = []
+                popoverVC.popOver = PopOver.Category
+            }
+        }
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    @IBAction func btnSave(sender: AnyObject) {
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort)   {
+            if surv == nil{
+                if let parentLocation = parentLocation{
+                    let surveillance = Surveillance(context: appDel.managedObjectContext!)
+                    
+                    surveillance.name = name
+                    surveillance.username = username
+                    surveillance.password = password
+                    surveillance.surveillanceLevel = levelButton.titleLabel?.text
+                    surveillance.surveillanceZone = zoneButton.titleLabel?.text
+                    surveillance.surveillanceCategory = categoryButton.titleLabel?.text
+                    surveillance.localIp = localIp
+                    surveillance.localPort = localPort
+                    surveillance.ip = remoteIp
+                    surveillance.port = remotePortNumber
+                    
+                    surveillance.isVisible = true
+                    
+                    surveillance.urlHome = ""
+                    surveillance.urlMoveUp = ""
+                    surveillance.urlMoveRight = ""
+                    surveillance.urlMoveLeft = ""
+                    surveillance.urlMoveDown = ""
+                    surveillance.urlAutoPan = ""
+                    surveillance.urlAutoPanStop = ""
+                    surveillance.urlPresetSequence = ""
+                    surveillance.urlPresetSequenceStop = ""
+                    surveillance.urlGetImage = ""
+                    
+                    surveillance.cameraLevel = levelSelected
+                    surveillance.cameraZone = zoneSelected
+                    surveillance.cameraCategory = categorySelected
+                    
+                    surveillance.tiltStep = 1
+                    surveillance.panStep = 1
+                    surveillance.autSpanStep = 1
+                    surveillance.dwellTime = 15
+                    surveillance.location = parentLocation
+                    saveChanges()
+                }
+            }else if let surv = surv{
+                
+                surv.name = name
+                surv.username = username
+                surv.password = password
+                
+                surv.surveillanceLevel = levelButton.titleLabel?.text
+                surv.surveillanceZone = zoneButton.titleLabel?.text
+                surv.surveillanceCategory = categoryButton.titleLabel?.text
+                
+                surv.cameraLevel = levelSelected
+                surv.cameraZone = zoneSelected
+                surv.cameraCategory = categorySelected
+                
+                surv.localIp = localIp
+                surv.localPort = localPort
+                surv.ip = remoteIp
+                surv.port = remotePortNumber
+                
+                saveChanges()
+            }
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
+            delegate?.addEditSurveillanceFinished()
+        }
+    }
 }
 
 extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
@@ -458,6 +427,19 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
         }
     }
     
+}
+
+extension SurveillanceSettingsVC: UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        self.centarConstraint.constant = 0
+        UIView.animateWithDuration(0.3,
+                                   delay: 0,
+                                   options: UIViewAnimationOptions.CurveLinear,
+                                   animations: { self.view.layoutIfNeeded() },
+                                   completion: nil)
+        return true
+    }
 }
 
 extension UIViewController {

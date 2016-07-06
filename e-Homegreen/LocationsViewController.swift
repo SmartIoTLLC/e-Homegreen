@@ -25,7 +25,7 @@ enum TypeOfLocationDevice{
     static let allValues = [Ehomegreen, Surveillance]
 }
 
-class CollapsableViewModel {
+struct CollapsableViewModel {
     let location: Location
     var children: [LocationDevice]
     var isCollapsed: Bool
@@ -37,27 +37,19 @@ class CollapsableViewModel {
     }
 }
 
-class LocationViewController: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate, GatewayCellDelegate, SurveillanceCellDelegate, AddEditLocationDelegate, AddEditGatewayDelegate, AddEditSurveillanceDelegate  {
+class LocationViewController: UIViewController, UIPopoverPresentationControllerDelegate  {
     
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
+    @IBOutlet weak var gatewayTableView: UITableView!
     
     var gateways:[Gateway] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
     var user:User!
-    
-    @IBOutlet weak var gatewayTableView: UITableView!
-    
     var locationList:[CollapsableViewModel] = []
-    
     var popoverVC:PopOverViewController = PopOverViewController()
-    
-    //which section is selected
-    var index = 0
-    
-//    @IBOutlet weak var btnScreenMode: UIButton!
+    var index = 0   // Which section is selected
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,21 +59,26 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        
         updateLocationList()
     }
-    
     override func viewWillAppear(animated: Bool) {
         gatewayTableView.reloadData()
     }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "scan" {
+            if let vc = segue.destinationViewController as? ScanViewController {
+                if let gateway = sender as? Gateway{
+                    vc.gateway = gateway
+                }
+            }
+        }
+    }
     
     // add, edit and delete location
-    
     @IBAction func btnAddNewLocation(sender: AnyObject) {
         self.showAddLocation(nil, user: user).delegate = self
         
     }
-    
     @IBAction func deleteLocation(sender: AnyObject) {
         let optionMenu = UIAlertController(title: nil, message: "Delete location?", preferredStyle: .ActionSheet)
         
@@ -102,17 +99,9 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         self.presentViewController(optionMenu, animated: true, completion: nil)
         
     }
-    
     @IBAction func editLocation(sender: AnyObject) {
         self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
-    
-    func editAddLocationFinished() {
-        reloadLocations()
-    }
-    
-    // add camera or gateway
-    
     @IBAction func addNewElementInLocation(sender: AnyObject) {
         popoverVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
@@ -129,83 +118,16 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
             presentViewController(popoverVC, animated: true, completion: nil)
         }
         
-    }
+    }   // add camera or gateway
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
-    
-    //delegate which return what we add(camera or gateway)
-    
-    func saveText(text: String, id: Int) {
-        if TypeOfLocationDevice.Ehomegreen.description == text{
-            self.showConnectionSettings(nil, location: locationList[index].location).delegate = self
-        }
-        if TypeOfLocationDevice.Surveillance.description == text{
-            showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
-        }
-    }
-    
-    //delegate for add/delete/edit camera/gateway
-    
-    func add_editGatewayFinished() {
-        editLocation()
-    }
-    
-    func add_editSurveillanceFinished(){
-        editLocation()
-    }
-    
     func reloadLocations(){
         updateLocationList()
         gatewayTableView.reloadData()
     }
     
-    func deleteSurveillance(surveillance:Surveillance){
-        let optionMenu = UIAlertController(title: nil, message: "Delete camera?", preferredStyle: .ActionSheet)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
-            dispatch_async(dispatch_get_main_queue(),{
-                self.editLocation()
-            })
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-    }
-    
-    func deleteGateway(gateway: Gateway) {
-        let optionMenu = UIAlertController(title: nil, message: "Delete e-Homegreen?", preferredStyle: .ActionSheet)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            DatabaseGatewayController.shared.deleteGateway(gateway)
-            dispatch_async(dispatch_get_main_queue(),{
-                self.editLocation()
-            })
-            
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-        
-    }
-    
-   //fill the location list with location element, get camera and gateway from each location
     func updateLocationList(){
         locationList = []
         let location = DatabaseLocationController.shared.getLocation(user)
@@ -226,7 +148,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         }
     }
     
-    //edit location, when delete or add camera/gateway remember index and reload only that section
+    // Edit location, when delete or add camera/gateway remember index and reload only that section
     func editLocation(){
         let locationEdit = locationList[index].location
         locationList[index].children = []
@@ -244,7 +166,6 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         locationList[index].children = listOfChildrenDevice
         gatewayTableView.reloadData()
     }
-    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -254,42 +175,6 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
             abort()
         }
     }
-    
-    //delegatfor device scan and camera parametar
-    
-    func scanURL(surveillance:Surveillance){
-        showCameraUrls(self.view.center, surveillance: surveillance)
-    }
-    
-    func scanDevice(gateway: Gateway) {
-        performSegueWithIdentifier("scan", sender: gateway)
-    }
-    
-    //turn on/off gateway
-    
-    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch){
-        if gatewaySwitch.on == true {
-            gateway.turnedOn = true
-        }else {
-            gateway.turnedOn = false
-        }
-        saveChanges()
-        gatewayTableView.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "scan" {
-            if let vc = segue.destinationViewController as? ScanViewController {
-                if let gateway = sender as? Gateway{
-                    vc.gateway = gateway
-                }
-            }
-        }
-    }
-
-    
-
 }
 
 extension LocationViewController: UITableViewDataSource {
@@ -316,7 +201,6 @@ extension LocationViewController: UITableViewDataSource {
                     return cell
                 }
                 break
-            
             case TypeOfLocationDevice.Surveillance:
                 if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
                     if let surv = device.device as? Surveillance{
@@ -331,10 +215,9 @@ extension LocationViewController: UITableViewDataSource {
             
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
+        cell.textLabel?.text = ""
         return cell
     }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if locationList[section].isCollapsed{
             return (locationList[section].children).count + 1
@@ -351,11 +234,9 @@ extension LocationViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 10
     }
-    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return locationList.count
     }
-    
 }
 
 extension LocationViewController: UITableViewDelegate {
@@ -379,8 +260,98 @@ extension LocationViewController: UITableViewDelegate {
         }
         index = indexPath.section
     }
-
 }
 
+extension LocationViewController: GatewayCellDelegate{
+    func deleteGateway(gateway: Gateway) {
+        let optionMenu = UIAlertController(title: nil, message: "Delete e-Homegreen?", preferredStyle: .ActionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            DatabaseGatewayController.shared.deleteGateway(gateway)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+    }
+    func scanDevice(gateway: Gateway) {
+        performSegueWithIdentifier("scan", sender: gateway)
+    }
+    // Turn on/off gateway
+    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch){
+        if gatewaySwitch.on == true {
+            gateway.turnedOn = true
+        }else {
+            gateway.turnedOn = false
+        }
+        saveChanges()
+        gatewayTableView.reloadData()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+    }
+}
 
+extension LocationViewController: SurveillanceCellDelegate {
+    func deleteSurveillance(surveillance:Surveillance){
+        let optionMenu = UIAlertController(title: nil, message: "Delete camera?", preferredStyle: .ActionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.editLocation()
+            })
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+    }
+    func scanURL(surveillance:Surveillance){
+        showCameraUrls(self.view.center, surveillance: surveillance)
+    }
+}
 
+extension LocationViewController: AddEditLocationDelegate{
+    func editAddLocationFinished() {
+        reloadLocations()
+    }
+}
+
+extension LocationViewController: AddEditGatewayDelegate{
+    func addEditGatewayFinished() {
+        editLocation()
+    }
+}
+
+extension LocationViewController: AddEditSurveillanceDelegate{
+    func addEditSurveillanceFinished(){
+        editLocation()
+    }
+}
+
+extension LocationViewController: PopOverIndexDelegate{
+    func saveText(text: String, id: Int) {
+        if TypeOfLocationDevice.Ehomegreen.description == text{
+            self.showConnectionSettings(nil, location: locationList[index].location).delegate = self
+        }
+        if TypeOfLocationDevice.Surveillance.description == text{
+            showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
+        }
+    }
+}
