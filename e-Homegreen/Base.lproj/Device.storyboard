@@ -62,7 +62,7 @@
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Device-->
+        <!--Devices View Controller-->
         <scene sceneID="EMR-It-1R9">
             <objects>
                 <viewController storyboardIdentifier="DevicesViewController" id="Uhp-dG-rvO" customClass="DevicesViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -1562,7 +1562,8 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Device" id="jVJ-5R-CkK">
+                    <navigationItem key="navigationItem" id="jVJ-5R-CkK">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="mkr-Hy-meR"/>
                         <rightBarButtonItems>
                             <barButtonItem style="plain" id="gdx-Fo-YqH">
