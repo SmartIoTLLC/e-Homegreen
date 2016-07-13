@@ -43,6 +43,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBOutlet weak var radiusLabel: UILabel!
     @IBOutlet weak var radiusSlider: UISlider!
     
+    @IBOutlet weak var setFilterSwitch: UISwitch!
+    
     let locationManager = CLLocationManager()
     
     var appDel:AppDelegate!
@@ -120,6 +122,9 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                             }
                         }
                     }
+                }
+                if let filter = location.filterOnLocation as? Bool{
+                    setFilterSwitch.on = filter
                 }
                 
                 
@@ -250,6 +255,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
             location.longitude = annotation.coordinate.longitude
             location.orderId = id
             location.radius = radius
+            location.filterOnLocation = setFilterSwitch.on
             saveChanges()
             
             delegate?.editAddLocationFinished()
@@ -262,6 +268,7 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
                     newLocation.longitude = annotation.coordinate.longitude
                     newLocation.radius = radius
                     newLocation.user = user
+                    newLocation.filterOnLocation = setFilterSwitch.on
                     if let orderId = idTextField.text, let id = Int(orderId){
                         newLocation.orderId = id
                     }else{

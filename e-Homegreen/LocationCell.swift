@@ -23,6 +23,8 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var lblGatewayDescription: MarqueeLabel!
     var gradientLayer: CAGradientLayer?
     
+    var backColor:CGColor = UIColor().e_homegreenColor().CGColor
+    
     @IBOutlet weak var buttonGatewayScan: UIButton!
     @IBOutlet weak var switchGatewayState: UISwitch!
     
@@ -83,6 +85,16 @@ class GatewayCell: UITableViewCell {
         }
     }
     
+    func setEhomeblue(){
+        backColor = UIColor().e_homeblueColor().CGColor
+        setNeedsDisplay()
+    }
+    
+    func setEhomegreen(){
+        backColor = UIColor().e_homegreenColor().CGColor
+        setNeedsDisplay()
+    }
+    
     override func drawRect(rect: CGRect) {
         var rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
         let path = UIBezierPath(roundedRect: rectNew,
@@ -93,7 +105,7 @@ class GatewayCell: UITableViewCell {
         
         UIColor.darkGrayColor().setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor().e_homegreenColor().CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
+        let colors = [backColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 0.35, 1.0]
         let gradient = CGGradientCreateWithColors(colorSpace,

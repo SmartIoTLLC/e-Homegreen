@@ -28,5 +28,6 @@ extension Location {
     @NSManaged var security: NSSet?
     @NSManaged var orderId: NSNumber?
     @NSManaged var timerId: String?
-
+    @NSManaged var filterOnLocation: NSNumber?
+    
 }

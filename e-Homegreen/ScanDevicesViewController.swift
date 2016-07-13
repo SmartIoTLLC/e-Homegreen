@@ -652,13 +652,15 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = deviceTableView.cellForRowAtIndexPath(indexPath)
-        showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceTableView.contentOffset.y), device: devices[indexPath.row])
+        dispatch_async(dispatch_get_main_queue(),{
+            let cell = self.deviceTableView.cellForRowAtIndexPath(indexPath)
+            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[indexPath.row])
+        })
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

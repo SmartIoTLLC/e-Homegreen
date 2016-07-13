@@ -15,14 +15,15 @@ struct LocationDevice {
 }
 
 enum TypeOfLocationDevice{
-    case Ehomegreen, Surveillance
+    case Ehomegreen, Surveillance, Ehomeblue
     var description:String{
         switch self{
         case Ehomegreen: return "e-Homegreen"
         case Surveillance: return "IP Camera"
+        case Ehomeblue: return "e-Homeblue"
         }
     }
-    static let allValues = [Ehomegreen, Surveillance]
+    static let allValues = [Ehomegreen, Surveillance, Ehomeblue]
 }
 
 struct CollapsableViewModel {
@@ -61,9 +62,11 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         
         updateLocationList()
     }
+    
     override func viewWillAppear(animated: Bool) {
         gatewayTableView.reloadData()
     }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "scan" {
             if let vc = segue.destinationViewController as? ScanViewController {
@@ -79,6 +82,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         self.showAddLocation(nil, user: user).delegate = self
         
     }
+    
     @IBAction func deleteLocation(sender: AnyObject) {
         let optionMenu = UIAlertController(title: nil, message: "Delete location?", preferredStyle: .ActionSheet)
         
@@ -99,9 +103,11 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         self.presentViewController(optionMenu, animated: true, completion: nil)
         
     }
+    
     @IBAction func editLocation(sender: AnyObject) {
         self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
+    
     @IBAction func addNewElementInLocation(sender: AnyObject) {
         popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
@@ -134,9 +140,13 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         
         for item in location{
             var listOfChildrenDevice:[LocationDevice] = []
-            if let listOfGateway = item.gateways {
+            if let listOfGateway = item.gateways?.allObjects as? [Gateway]{
                 for gateway in listOfGateway{
-                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                    if gateway.gatewayType == TypeOfLocationDevice.Ehomegreen.description{
+                        listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                    }else{
+                        listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
+                    }
                 }
             }
             if let listOfSurveillance = item.surveillances {
@@ -153,9 +163,13 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         let locationEdit = locationList[index].location
         locationList[index].children = []
         var listOfChildrenDevice:[LocationDevice] = []
-        if let listOfGateway = locationEdit.gateways {
+        if let listOfGateway = locationEdit.gateways?.allObjects as? [Gateway] {
             for gateway in listOfGateway{
-                listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                if gateway.gatewayType == TypeOfLocationDevice.Ehomegreen.description{
+                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                }else{
+                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
+                }
             }
         }
         if let listOfSurveillance = locationEdit.surveillances {
@@ -166,6 +180,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         locationList[index].children = listOfChildrenDevice
         gatewayTableView.reloadData()
     }
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -195,6 +210,7 @@ extension LocationViewController: UITableViewDataSource {
             case TypeOfLocationDevice.Ehomegreen:
                 if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
                     if let gateway = device.device as? Gateway{
+                        cell.setEhomegreen()
                         cell.delegate = self
                         cell.setItem(gateway)
                     }
@@ -210,7 +226,16 @@ extension LocationViewController: UITableViewDataSource {
                     return cell
                 }
                 break
-            
+            case TypeOfLocationDevice.Ehomeblue:
+                if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
+                    if let gateway = device.device as? Gateway{
+                        cell.setEhomeblue()
+                        cell.delegate = self
+                        cell.setItem(gateway)
+                    }
+                    return cell
+                }
+                break
             }
             
         }
@@ -254,7 +279,7 @@ extension LocationViewController: UITableViewDelegate {
             }
             if let gateway = device.device as? Gateway{
                 dispatch_async(dispatch_get_main_queue(),{
-                    self.showConnectionSettings(gateway, location: nil).delegate = self
+                    self.showConnectionSettings(gateway, location: nil, gatewayType: gateway.gatewayType).delegate = self
                 })
             }
         }
@@ -285,9 +310,11 @@ extension LocationViewController: GatewayCellDelegate{
         self.presentViewController(optionMenu, animated: true, completion: nil)
         
     }
+    
     func scanDevice(gateway: Gateway) {
         performSegueWithIdentifier("scan", sender: gateway)
     }
+    
     // Turn on/off gateway
     func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch){
         if gatewaySwitch.on == true {
@@ -348,10 +375,13 @@ extension LocationViewController: AddEditSurveillanceDelegate{
 extension LocationViewController: PopOverIndexDelegate{
     func saveText(text: String, id: Int) {
         if TypeOfLocationDevice.Ehomegreen.description == text{
-            self.showConnectionSettings(nil, location: locationList[index].location).delegate = self
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen.description).delegate = self
         }
         if TypeOfLocationDevice.Surveillance.description == text{
             showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
+        }
+        if TypeOfLocationDevice.Ehomeblue.description == text{
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue.description).delegate = self
         }
     }
 }

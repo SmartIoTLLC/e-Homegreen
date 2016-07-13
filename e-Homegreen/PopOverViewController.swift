@@ -137,7 +137,8 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
         TableList(name: "Timer", id: 7),
         TableList(name: "Stopwatch/User", id: 7)]
     var locationAddOption:[TableList] = [TableList(name: TypeOfLocationDevice.Ehomegreen.description, id: -1),
-        TableList(name: TypeOfLocationDevice.Surveillance.description, id: -1)]
+        TableList(name: TypeOfLocationDevice.Surveillance.description, id: -1),
+        TableList(name: TypeOfLocationDevice.Ehomeblue.description, id: -1)]
     var tableList:[AnyObject] = []
     
     var appDel:AppDelegate!

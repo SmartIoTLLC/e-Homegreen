@@ -174,12 +174,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return nil
     }
     
-    
     func setFilterBySSIDOrByiBeaconAgain () {
         fetchIBeacons()
         loadItems()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
     }
+    
     func setFilterBySSIDOrByiBeacon () {
         checkIfThereIsLocationWithExistingSSID()
         var beacon:IBeacon?
@@ -427,9 +427,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         //when admin was logged then logout, this is for safe becouse user will have to login again on next start
-//        if AdminController.shared.isAdminLogged(){
-//            AdminController.shared.logoutAdmin()4
-//        }
         disconnectAllConnections()
         self.saveContext()
     }

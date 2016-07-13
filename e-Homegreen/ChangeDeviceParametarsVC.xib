@@ -29,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uxQ-GK-AHI" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="145" y="43" width="310" height="375"/>
+                    <rect key="frame" x="145" y="113" width="310" height="375"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg3-IJ-sKD">
                             <rect key="frame" x="8" y="28" width="104" height="30"/>
@@ -295,8 +295,14 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="uxQ-GK-AHI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="43" id="28F-lo-dWk"/>
+                <constraint firstItem="uxQ-GK-AHI" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="bzf-9o-1RI"/>
                 <constraint firstItem="uxQ-GK-AHI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rGn-Aq-XtO"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="28F-lo-dWk"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="285" y="206"/>
         </view>
     </objects>

@@ -9,7 +9,7 @@
 import UIKit
 
 enum Menu:Int{
-    case Dashboard = 0, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings, NotSuperUserSettings
+    case Dashboard = 0, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, Settings, NotSuperUserSettings
     var description:String{
         switch self{
             case .Dashboard: return "Dashboard"
@@ -50,8 +50,8 @@ enum Menu:Int{
         }
     }
     
-    static let allMenuItem = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, Settings]
-    static let allMenuItemNotSuperUser = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, Users, PCControl, NotSuperUserSettings]
+    static let allMenuItem = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, Settings]
+    static let allMenuItemNotSuperUser = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, NotSuperUserSettings]
 }
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {

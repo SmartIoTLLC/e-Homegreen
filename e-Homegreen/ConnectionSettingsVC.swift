@@ -39,16 +39,18 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     
     var location:Location?
     var gateway:Gateway?
+    var gatewayType:String!
     
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(gateway:Gateway?, location:Location?){
+    init(gateway:Gateway?, location:Location?,gatewayType:String){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.location = location
         self.gateway = gateway
+        self.gatewayType = gatewayType
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -284,6 +286,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             gateway.addressThree = aThird
             gateway.gatewayDescription = txtDescription.text
             gateway.autoReconnectDelay = hb
+            gateway.gatewayType = gatewayType
             saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
             delegate?.addEditGatewayFinished()
@@ -303,6 +306,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 gateway.location = location
                 gateway.gatewayId = NSUUID().UUIDString
                 gateway.autoReconnectDelay = NSNumber(integer: hb)
+                gateway.gatewayType = gatewayType
                 saveChanges()
                 self.dismissViewControllerAnimated(true, completion: nil)
                 delegate?.addEditGatewayFinished()
@@ -372,8 +376,8 @@ extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showConnectionSettings(gateway: Gateway?, location:Location?) -> ConnectionSettingsVC{
-        let connSettVC = ConnectionSettingsVC(gateway: gateway, location: location)
+    func showConnectionSettings(gateway: Gateway?, location:Location?, gatewayType:String) -> ConnectionSettingsVC{
+        let connSettVC = ConnectionSettingsVC(gateway: gateway, location: location, gatewayType: gatewayType)
         self.presentViewController(connSettVC, animated: true, completion: nil)
         return connSettVC
     }

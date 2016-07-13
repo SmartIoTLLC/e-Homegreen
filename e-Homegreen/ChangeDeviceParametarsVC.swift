@@ -35,6 +35,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
     @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
     @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
+    
     func hideDeviceInput(isHidden:Bool) {
         if isHidden {
             deviceInputHeight.constant = 0
@@ -45,6 +46,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         }
         backView.layoutIfNeeded()
     }
+    
     func hideImageButton(isHidden:Bool) {
         if isHidden {
             deviceImageHeight.constant = 0
@@ -55,6 +57,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
         }
         backView.layoutIfNeeded()
     }
+    
     var point:CGPoint?
     var oldPoint:CGPoint?
     var device:Device
@@ -129,6 +132,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     func saveText (text : String, id:Int) {
         print("\(text) \(id)")
         if text != "All" {
@@ -303,14 +307,7 @@ class ChangeDeviceParametarsVC: UIViewController, PopOverIndexDelegate, UIPopove
             abort()
         }
     }
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     func handleTap(gesture:UITapGestureRecognizer){
         let point:CGPoint = gesture.locationInView(self.view)
         let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
@@ -367,6 +364,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
         }
     }
 }
+
 extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -380,10 +378,10 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
         }
     }
 }
+
 extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device) {
         let cdp = ChangeDeviceParametarsVC(device: device, point: point)
-//        self.view.window?.rootViewController?.presentViewController(cdp, animated: true, completion: nil)
         self.presentViewController(cdp, animated: true, completion: nil)
     }
 }
