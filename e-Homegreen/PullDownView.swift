@@ -11,7 +11,6 @@ import CoreData
 
 @objc protocol PullDownViewDelegate
 {
-//    optional func pullDownSearchParametars (gateway:String, level:String, zone:String, category:String, levelName:String, zoneName:String, categoryName:String)
     optional func pullDownSearchParametars (filterParametar: FilterItem)
 }
 

@@ -20,6 +20,22 @@ class DeviceCollectionCell: UICollectionViewCell {
     func getDevice (device:Device) {
         self.device = device
     }
+    
+    func setTitle(filter: FilterItem){
+        var title = ""
+        if filter.location == "All"{
+            title = (device?.gateway.location.name)! + " "
+        }
+//        if filter.levelName == "All"{
+//            title = device. + " "
+//        }
+//        if filter.zoneName == "All"{
+//            title = filter.zoneName + " "
+//        }
+        title += (device?.name)!
+        self.typeOfLight.text = title
+    }
+    
     func refreshDevice(device:Device) {
 //        let deviceValue = Double(device.currentValue) / 100
         let deviceValue:Double = {
@@ -58,17 +74,20 @@ class DeviceCollectionCell: UICollectionViewCell {
             disabledCellView.hidden = false
         }
     }
+    
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
+    
     @IBAction func btnRefresh(sender: AnyObject) {
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
         SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: device!.gateway)
         SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: device!.gateway)
     }
 }
+
 //Appliance on/off
 class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var backView: CustomGradientBackground!

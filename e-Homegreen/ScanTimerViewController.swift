@@ -9,7 +9,13 @@
 import UIKit
 import CoreData
 
-class ScanTimerViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDelegate {
+enum TimerType:String{
+    case Once = "Once", Daily = "Daily", Monthly = "Monthly", Yearly = "Yearly", Hourly = "Hourly", Minutely = "Minutely", Timer = "Timer", Stopwatch = "Stopwatch/User"
+    
+    static let allItem:[TimerType] = [Once, Daily, Monthly, Yearly, Hourly, Minutely, Timer, Stopwatch]
+}
+
+class ScanTimerViewController: PopoverVC {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -38,6 +44,12 @@ class ScanTimerViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDeleg
     var categoryFromFilter:String = "All"
     
     var selected:AnyObject?
+    
+    var button:UIButton!
+    
+    var level:Zone?
+    var zoneSelected:Zone?
+    var category:Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +81,11 @@ class ScanTimerViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDeleg
         localcastSwitch.tag = 200
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
+        btnLevel.tag = 1
+        btnZone.tag = 2
+        btnCategory.tag = 3
+        btnType.tag = 4
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -140,29 +157,6 @@ class ScanTimerViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDeleg
         }
     }
     
-    func backString(strText: String, imageIndex:Int) {
-        if imageIndex == 1 {
-            self.imageTimerOne.image = UIImage(named: strText)
-        }
-        if imageIndex == 2 {
-            self.imageTimerTwo.image = UIImage(named: strText)
-        }
-    }
-    
-    func backImageFromGallery(data: NSData, imageIndex:Int ) {
-        if imageIndex == 1 {
-            self.imageTimerOne.image = UIImage(data: data)
-        }
-        if imageIndex == 2 {
-            self.imageTimerTwo.image = UIImage(data: data)
-        }
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
     @IBAction func btnAdd(sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
@@ -224,35 +218,99 @@ class ScanTimerViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDeleg
         }
     }
     
-    @IBAction func btnLevel(sender: AnyObject) {
-        openPopover(sender, indexTab: 12, location: gateway.location)
+    @IBAction func btnLevel(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZone(sender: AnyObject) {
-        openPopover(sender, indexTab: 13, location: gateway.location)
+    @IBAction func btnCategory(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Category] = FilterController.shared.getCategoriesByLocation(gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-  
-    @IBAction func btnCategory(sender: AnyObject) {
-        openPopover(sender, indexTab: 14, location: gateway.location)
+    @IBAction func btnZone(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let level = level{
+            let list:[Zone] = FilterController.shared.getZoneByLevel(gateway.location, parentZone: level)
+            for item in list {
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            }
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-    
-    @IBAction func btnTimerType(sender: AnyObject) {
-        openPopover(sender, indexTab: 7, location: gateway.location)
-    }
-    
-    override func saveText(text: String, id: Int) {
-        switch id {
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
         case 2:
-            btnLevel.setTitle(text, forState: UIControlState.Normal)
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
         case 3:
-            btnZone.setTitle(text, forState: UIControlState.Normal)
-        case 4:
-            btnCategory.setTitle(text, forState: UIControlState.Normal)
-        case 7:
-            btnType.setTitle(text, forState: UIControlState.Normal)
-        default: break
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
+    
+    @IBAction func btnTimerType(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        for item in TimerType.allItem{
+            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
+        }
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+
+}
+
+extension ScanTimerViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension ScanTimerViewController: SceneGalleryDelegate{
+    
+    func backString(strText: String, imageIndex:Int) {
+        if imageIndex == 1 {
+            self.imageTimerOne.image = UIImage(named: strText)
+        }
+        if imageIndex == 2 {
+            self.imageTimerTwo.image = UIImage(named: strText)
+        }
+    }
+    
+    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+        if imageIndex == 1 {
+            self.imageTimerOne.image = UIImage(data: data)
+        }
+        if imageIndex == 2 {
+            self.imageTimerTwo.image = UIImage(data: data)
         }
     }
 }

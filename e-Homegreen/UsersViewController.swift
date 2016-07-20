@@ -8,14 +8,12 @@
 
 import UIKit
 
-class UsersViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class UsersViewController: PopoverVC {
     
-    var appDel:AppDelegate!
     var timers:[Timer] = []
-    var error:NSError? = nil
     
-    var pullDown = PullDownView()
-    var senderButton:UIButton?
+    var scrollView = FilterPullDown()
+
     var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var usersCollectionView: UICollectionView!
@@ -28,6 +26,19 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -51,48 +62,35 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         refreshTimersStatus()
         changeFullScreeenImage()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
-
-        
+    
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
-    
-    
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
         }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         usersCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
+        
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -111,6 +109,10 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -120,12 +122,6 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         } else {
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
-    }
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
-        refreshTimerList()
     }
     
     @IBAction func refreshTimers(sender: UIButton) {
@@ -219,6 +215,18 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         }
     }
 
+}
+
+// Parametar from filter and relaod data
+extension UsersViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        refreshTimerList()
+    }
+}
+
+extension UsersViewController: SWRevealViewControllerDelegate{
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -249,7 +257,6 @@ class UsersViewController: UIViewController, UIPopoverPresentationControllerDele
         }
         
     }
-
 }
 
 extension UsersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -297,7 +304,7 @@ extension UsersViewController: UICollectionViewDataSource {
         
         cell.setItem(timers[indexPath.row], filterParametar:filterParametar)
 
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openCellParametar:")
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(UsersViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.titleLabel.userInteractionEnabled = true
         cell.titleLabel.addGestureRecognizer(longPress)

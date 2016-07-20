@@ -12,12 +12,12 @@ import AVFoundation
 import Crashlytics
 
 
-class DevicesViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
     var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
-    var pullDown = PullDownView()
+    var scrollView = FilterPullDown()
     var isScrolling:Bool = false
     var shouldUpdate:Bool = false
     var sidebarMenuOpen : Bool!
@@ -96,16 +96,16 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
-        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-            collectionViewCellSize = CGSize(width: 128, height: 156)
-        } else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-            collectionViewCellSize = CGSize(width: 121, height: 150)
-        }
+//        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
+//            collectionViewCellSize = CGSize(width: 128, height: 156)
+//        } else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
+//            collectionViewCellSize = CGSize(width: 121, height: 150)
+//        }
         
-        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        self.view.addSubview(pullDown)
-
-        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
         
         deviceCollectionView.delaysContentTouches = false
         deviceCollectionView.delegate = self
@@ -115,7 +115,6 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         
         zoneAndCategorySlider.continuous = false
         
-        adjustScrollInsetsPullDownViewAndBackgroudImage() //   <- had to put it because of insets and other things...
         
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
         panRecognizer.delegate = self
@@ -125,8 +124,11 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
         indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
     }
+    
     override func viewDidAppear(animated: Bool) {
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+        
         deviceCollectionView.reloadData()
         addObservers()
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
@@ -134,16 +136,34 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         }
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
+    
     override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
+        deviceCollectionView.reloadData()
+        
     }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
-    }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
     }
 
     func changeFullScreeenImage(){
@@ -153,13 +173,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
     }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
+
     
     func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
@@ -236,19 +250,21 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
 
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        
-        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        
-        if let user = userLogged{
-            updateDeviceList(user)
-            deviceCollectionView.reloadData()
-            fetchDevicesInBackground()
-        }
-        
-    }
+    
+//    func pullDownSearchParametars (filterItem:FilterItem) {
+//        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+//        
+//        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+//        
+//        if let user = userLogged{
+//            updateDeviceList(user)
+//            deviceCollectionView.reloadData()
+//            fetchDevicesInBackground()
+//        }
+//        
+//    }
+    
     func updateDeviceList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Device")
         
@@ -260,7 +276,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao ne bi trebalo da izlazi uredjaj bez parametara?
+//        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao ne bi trebalo da izlazi uredjaj bez parametara?
         predicateArray.append(NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true)))
         predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
         
@@ -538,13 +554,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
             }
         }
     }
-    
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-//        return 2
-//    }
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-//        return 2
-//    }
+
     func calculateCellSize(inout size:CGSize) {
         var i:CGFloat = 2
         while i >= 2 {
@@ -556,149 +566,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         let cellWidth = Int(self.view.frame.size.width/i - (2/i + (i*5-5)/i))
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
-    
-    func adjustScrollInsetsPullDownViewAndBackgroudImage() {
-        //        popoverVC.dismissViewControllerAnimated(true, completion: nil)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.width == 480 { // iPhone 4, 4s
-//                let cellWidth = Int(self.view.frame.size.width/4 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 568 { // iPhone 5, 5s
-//                let cellWidth = Int(self.view.frame.size.width/5 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 667 { // iPhone 6
-//                let cellWidth = Int(self.view.frame.size.width/5 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 736 { // iPhone 6 plus
-//                let cellWidth = Int(self.view.frame.size.width/6 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 1024 { // iPad
-//                let cellWidth = Int(self.view.frame.size.width/8 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 1366 { // iPad Pro
-//                let cellWidth = Int(self.view.frame.size.width/11 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
-//            } else {
-//                collectionViewCellSize = CGSize(width: 10, height: 10)
-//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
-//            }
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-            deviceCollectionView.reloadData()
-//            CGRectIn
-        } else {
-//            if self.view.frame.size.width == 320{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }else if self.view.frame.size.width == 375{
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            }else{
-//                sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-//            }
-//            if self.view.frame.size.width == 375 {
-//                let cellWidth = Int(self.view.frame.size.width/3 - 4)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//            }
-//            if self.view.frame.size.width == 320 { // iPhone 4, 4s... iPhone 5, 5s
-//                let cellWidth = Int(self.view.frame.size.width/2 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 375 { // iPhone 6
-//                let cellWidth = Int(self.view.frame.size.width/3 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 414 { // iPhone 6 plus
-//                let cellWidth = Int(self.view.frame.size.width/3 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 768 { // iPad
-//                let cellWidth = Int(self.view.frame.size.width/6 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            } else if self.view.frame.size.width == 1024 {
-//                let cellWidth = Int(self.view.frame.size.width/8 - 5)
-//                collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
-//            }  else {
-//                collectionViewCellSize = CGSize(width: 10, height: 10)
-//                sectionInsets = UIEdgeInsets(top: 5, left: 1, bottom: 0, right: 1)
-//            }
-//            var i:CGFloat = 2
-//            while i >= 2 {
-//                if (self.view.frame.size.width / i) >= 120 && (self.view.frame.size.width / i) <= 160 {
-//                    break
-//                }
-//                i++
-//            }
-//            let cellWidth = Int(self.view.frame.size.width/i - 5)
-//            collectionViewCellSize = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-//            sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//            print("\(cellWidth):\(collectionViewCellSize):\(sectionInsets)")
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            //  This is from viewcontroller superclass:
-//            backgroundImageView.frame = CGRectMake(0, 0, Common.screenWidth , Common.screenHeight-64)
-            deviceCollectionView.reloadData()
-        }
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        pullDown.drawMenu(filterParametar)
-    }
-    
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            deviceCollectionView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            deviceCollectionView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            deviceCollectionView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
-            deviceCollectionView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
-        }
-        
-    }
+
     
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
@@ -904,7 +772,7 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
                 return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
             }
         } else {
-            return "\(device.gateway.name) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
+            return "\(device.gateway.location.name!) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
         }
     }
     
@@ -1086,6 +954,11 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
+
         }
     }
     
@@ -1095,6 +968,57 @@ class DevicesViewController: UIViewController, UIPopoverPresentationControllerDe
     }
     
     @IBAction func location(sender: AnyObject) {
+        
+    }
+}
+
+extension DevicesViewController: SWRevealViewControllerDelegate{
+    
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            deviceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            deviceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            deviceCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            deviceCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
+}
+
+// Parametar from filter and relaod data
+extension DevicesViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        
+        if let user = userLogged{
+            updateDeviceList(user)
+            deviceCollectionView.reloadData()
+            fetchDevicesInBackground()
+        }
         
     }
 }

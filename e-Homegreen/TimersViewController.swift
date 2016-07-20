@@ -8,14 +8,12 @@
 
 import UIKit
 
-class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealViewControllerDelegate {
-        
-    var appDel:AppDelegate!
-    var timers:[Timer] = []
-    var error:NSError? = nil
+class TimersViewController: PopoverVC, PullDownViewDelegate {
     
-    var pullDown = PullDownView()
-    var senderButton:UIButton?
+    var timers:[Timer] = []
+    
+    var scrollView = FilterPullDown()
+    
     var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -59,6 +57,11 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
 
     }
@@ -71,35 +74,65 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         }        
     }
     
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
         }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         timersCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
+        
     }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+    
+//    override func viewWillLayoutSubviews() {
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            var rect = self.pullDown.frame
+//            pullDown.removeFromSuperview()
+//            rect.size.width = self.view.frame.size.width
+//            rect.size.height = self.view.frame.size.height
+//            pullDown.frame = rect
+//            pullDown = PullDownView(frame: rect)
+//            pullDown.customDelegate = self
+//            self.view.addSubview(pullDown)
+//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+//            
+//        } else {
+//            var rect = self.pullDown.frame
+//            pullDown.removeFromSuperview()
+//            rect.size.width = self.view.frame.size.width
+//            rect.size.height = self.view.frame.size.height
+//            pullDown.frame = rect
+//            pullDown = PullDownView(frame: rect)
+//            pullDown.customDelegate = self
+//            self.view.addSubview(pullDown)
+//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+//        }
+//        var size:CGSize = CGSize()
+//        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+//        collectionViewCellSize = size
+//        timersCollectionView.reloadData()
+//        pullDown.drawMenu(filterParametar)
+//    }
     
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
@@ -109,6 +142,10 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -141,20 +178,15 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
     }
     
     
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-        refreshTimerList()
-    }
+//    func pullDownSearchParametars (filterItem:FilterItem) {
+//        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+//        refreshTimerList()
+//    }
     
     func refreshTimerList() {
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
-    }
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
     //cell action
@@ -222,8 +254,19 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
             cell.commandSentChangeImage()
         }
     }
-    
-    // side menu delegate
+
+}
+
+// Parametar from filter and relaod data
+extension TimersViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        refreshTimerList()
+    }
+}
+
+extension TimersViewController: SWRevealViewControllerDelegate{
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -252,7 +295,6 @@ class TimersViewController: UIViewController, PullDownViewDelegate, SWRevealView
             self.revealViewController().revealToggleAnimated(true)
         }
     }
-
 }
 
 extension TimersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

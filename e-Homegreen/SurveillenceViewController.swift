@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SurveillenceViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PullDownViewDelegate, UIPopoverPresentationControllerDelegate, SWRevealViewControllerDelegate {
+class SurveillenceViewController: PopoverVC {
     
     var data:NSData?
     var sidebarMenuOpen : Bool!
@@ -24,11 +24,24 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
     @IBOutlet weak var imageBack: UIImageView!
     var timer:NSTimer = NSTimer()
     
-    var pullDown = PullDownView()
+    var scrollView = FilterPullDown()
     
     var surveillance:[Surveillance] = []
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -54,47 +67,39 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         changeFullScreeenImage()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        cameraCollectionView.reloadData()
+        
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
     override func viewWillDisappear(animated: Bool) {
         stopTimer()
         removeObservers()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        } else {
-            
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        cameraCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
     }
     
     //full screen button from navigation bar
@@ -106,6 +111,10 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -118,16 +127,9 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         }
     }
     
-    //return parametars from filter
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
-        fetchSurveillance()
-    }
-    
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
-        pullDown.drawMenu(filterParametar)
+//        pullDown.drawMenu(filterParametar)
         fetchSurveillance()
     }
     
@@ -188,75 +190,20 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
             }
         }
     }
-    
-    //collection view delegate
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return surveillance.count
+
+}
+
+// Parametar from filter and relaod data
+extension SurveillenceViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        fetchSurveillance()
     }
+}
+
+extension SurveillenceViewController: SWRevealViewControllerDelegate{
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
-        
-        cell.setItem(surveillance[indexPath.row], filterParametar: filterParametar)
-        cell.lblName.userInteractionEnabled = true
-        cell.lblName.tag = indexPath.row
-        
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SurveillenceViewController.cameraParametar(_:)))
-        longPress.minimumPressDuration = 0.5
-        cell.lblName.addGestureRecognizer(longPress)
-        
-//        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap:")
-//        cell.tag = indexPath.row
-//        cell.addGestureRecognizer(tap)
-        
-        if let data = surveillance[indexPath.row].imageData {
-            cell.setImageForSurveillance(UIImage(data: data))
-        }else{
-            cell.setImageForSurveillance(UIImage(named: "loading")!)
-        }
-        
-        if surveillance[indexPath.row].lastDate != nil {
-            let formatter = NSDateFormatter()
-            formatter.timeZone = NSTimeZone.localTimeZone()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            cell.lblTime.text = formatter.stringFromDate(surveillance[indexPath.row].lastDate!)
-        } else {
-            cell.lblTime.text = ""
-        }
-        cell.layer.cornerRadius = 5
-        
-        return cell
-    }
-    
-    func tap(gesture:UITapGestureRecognizer){
-        if let index = gesture.view?.tag{
-            let cell = cameraCollectionView.cellForItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0))
-            showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[index])
-        }
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return collectionViewCellSize
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
-        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
-    }
-    
-    //Side menu delegate
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
             cameraCollectionView.userInteractionEnabled = true
@@ -286,7 +233,64 @@ class SurveillenceViewController: UIViewController, UICollectionViewDataSource, 
         }
         
     }
+}
 
+extension SurveillenceViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return surveillance.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Surveillance", forIndexPath: indexPath) as! SurveillenceCell
+        
+        cell.setItem(surveillance[indexPath.row], filterParametar: filterParametar)
+        cell.lblName.userInteractionEnabled = true
+        cell.lblName.tag = indexPath.row
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SurveillenceViewController.cameraParametar(_:)))
+        longPress.minimumPressDuration = 0.5
+        cell.lblName.addGestureRecognizer(longPress)
+        
+        if let data = surveillance[indexPath.row].imageData {
+            cell.setImageForSurveillance(UIImage(data: data))
+        }else{
+            cell.setImageForSurveillance(UIImage(named: "loading")!)
+        }
+        
+        if surveillance[indexPath.row].lastDate != nil {
+            let formatter = NSDateFormatter()
+            formatter.timeZone = NSTimeZone.localTimeZone()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            cell.lblTime.text = formatter.stringFromDate(surveillance[indexPath.row].lastDate!)
+        } else {
+            cell.lblTime.text = ""
+        }
+        cell.layer.cornerRadius = 5
+        
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return collectionViewCellSize
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = cameraCollectionView.cellForItemAtIndexPath(indexPath)
+        showCamera(CGPoint(x: cell!.center.x, y: cell!.center.y - self.cameraCollectionView.contentOffset.y), surv: surveillance[indexPath.row])
+    }
 }
 
 extension String {

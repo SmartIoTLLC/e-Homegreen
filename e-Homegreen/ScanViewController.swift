@@ -29,8 +29,6 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
     
     var pullDown = PullDownView()
     
-//    var popoverVC:PopOverViewController = PopOverViewController()
-    
     var toViewController:UIViewController = UIViewController()
 
     var senderButton:UIButton?
@@ -96,14 +94,18 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
     }
     
     //popup controller
-    @IBAction func btnScenes(sender: AnyObject) {
-        openPopover(sender, indexTab: 6, location:  nil)
+    @IBAction func btnScenes(sender: UIButton) {
+        senderButton = sender
+        var popoverList:[PopOverItem] = []
+        for item in ChoosedTab.allItem{
+            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
+        }
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-    //
-    override func saveText(text: String, id: Int) {
-        senderButton?.setTitle(text, forState: .Normal)
-        if let to = ChoosedTab(rawValue: text){
+    override func nameAndId(name: String, id: String) {
+        senderButton?.setTitle(name, forState: .Normal)
+        if let to = ChoosedTab(rawValue: name){
             
             switch to {
             case .Devices:
@@ -162,12 +164,52 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
             presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
+    func openFilterPopover(sender: AnyObject, popOverList:[PopOverItem]) {
+        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
+        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = 200
+        popoverVC.popOverList = popOverList
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+    
+    func openParametarPopover(sender: AnyObject, indexTab:Int, location:Location?, device:Device){
+        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
+        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.indexTab = indexTab
+        popoverVC.device = device
+        popoverVC.filterLocation = location
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
     
     func saveText(text: String, id: Int) {
+        
+    }
+    
+    func nameAndId(name : String, id:String){
         
     }
 }

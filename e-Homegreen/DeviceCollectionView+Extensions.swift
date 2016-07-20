@@ -10,6 +10,14 @@ import Foundation
 
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if devices[indexPath.row].isEnabled.boolValue {
             if devices[indexPath.row].controlType == ControlType.Climate {
@@ -142,7 +150,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
 
-            cell.typeOfLight.text = devices[indexPath.row].cellTitle
+            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row]) //devices[indexPath.row].cellTitle
+            
+//            cell.setTitle(filterParametar)
+            
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row

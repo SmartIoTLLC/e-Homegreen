@@ -14,13 +14,14 @@ class CustomGradientButton: UIButton {
     var defaultColorTwo = Colors.DarkGray
     var colorOne = Colors.MediumGray
     var colorTwo = Colors.DarkGray
+    
     override func drawRect(rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
-        path.lineWidth = 2
+        path.lineWidth = 1
         
         UIColor.darkGrayColor().setStroke()
     

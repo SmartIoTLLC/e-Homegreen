@@ -9,17 +9,15 @@
 import UIKit
 import CoreData
 
-class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class EnergyViewController: PopoverVC  {
     
     @IBOutlet weak var current: UILabel!
     @IBOutlet weak var powerUsage: UILabel!
     
-    var pullDown = PullDownView()
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
-    var senderButton:UIButton?
+    var scrollView = FilterPullDown()
     
     var appDel:AppDelegate!
     var devices:[Device] = []
@@ -28,6 +26,22 @@ class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealView
     var sumPow:Float = 0
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        // Do any additional setup after loading the view.
+    }
+    
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -49,60 +63,39 @@ class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealView
         }
         
         changeFullScreeenImage()
-
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        
-        var pullDown = PullDownView()
-        
-        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        //                pullDown.scrollsToTop = false
-        self.view.addSubview(pullDown)
-        
-        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         refreshLocalParametars()
         addObservers()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
+        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
         }
-        pullDown.drawMenu(filterParametar)
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+
+    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -113,6 +106,10 @@ class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealView
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -122,12 +119,6 @@ class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealView
         } else {
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
-    }
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        refreshLocalParametars()
     }
     
     func refreshLocalParametars() {
@@ -201,4 +192,17 @@ class EnergyViewController: UIViewController, PullDownViewDelegate, SWRevealView
     }
     
 
+}
+
+// Parametar from filter and relaod data
+extension EnergyViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        refreshLocalParametars()
+    }
+}
+
+extension EnergyViewController : SWRevealViewControllerDelegate{
+    
 }

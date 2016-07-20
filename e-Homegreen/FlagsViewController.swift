@@ -8,16 +8,12 @@
 
 import UIKit
 
-class FlagsViewController: UIViewController, UIPopoverPresentationControllerDelegate, PullDownViewDelegate,SWRevealViewControllerDelegate {
+class FlagsViewController: PopoverVC {
     
-    var appDel:AppDelegate!
     var flags:[Flag] = []
-    var error:NSError? = nil
     var sidebarMenuOpen : Bool!
     
-    var pullDown = PullDownView()
-    
-    var senderButton:UIButton?
+    var scrollView = FilterPullDown()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
@@ -29,10 +25,18 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Flags)
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()        
+        scrollView.setItem(self.view)
+        
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-        reloadFlagsList()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,18 +60,39 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         
         reloadFlagsList()
         changeFullScreeenImage()
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        flagsCollectionView.reloadData()
+        
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
 
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-    }
-    
     func reloadFlagsList(){
         flags = DatabaseFlagsController.shared.getFlags(filterParametar)
         flagsCollectionView.reloadData()
@@ -81,6 +106,10 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -94,53 +123,15 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
     
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-        pullDown.drawMenu(filterParametar)
+//        pullDown.drawMenu(filterParametar)
 //        updateFlagsList()
         flagsCollectionView.reloadData()
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        flagsCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
-    }
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
+
+
+}
+
+extension FlagsViewController: SWRevealViewControllerDelegate {
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
             flagsCollectionView.userInteractionEnabled = true
@@ -170,7 +161,15 @@ class FlagsViewController: UIViewController, UIPopoverPresentationControllerDele
         }
         
     }
+}
 
+// Parametar from filter and relaod data
+extension FlagsViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        reloadFlagsList()
+    }
 }
 
 extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -198,6 +197,13 @@ extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegat
         
         return collectionViewCellSize
         
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
 }
 
@@ -227,7 +233,7 @@ extension FlagsViewController: UICollectionViewDataSource {
         
         var flagLevel = ""
         var flagZone = ""
-        let flagLocation = flags[indexPath.row].gateway.name
+        let flagLocation = flags[indexPath.row].gateway.location.name!
         
         if let level = flags[indexPath.row].entityLevel{
             flagLevel = level

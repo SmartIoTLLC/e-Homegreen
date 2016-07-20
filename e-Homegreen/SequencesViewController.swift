@@ -8,18 +8,14 @@
 
 import UIKit
 
-class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PullDownViewDelegate, SWRevealViewControllerDelegate {
+class SequencesViewController: PopoverVC {
 
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
-//    @IBOutlet weak var broadcastSwitch: UISwitch!
-//    @IBOutlet weak var cyclesTextField: UITextField!
     
-    var pullDown = PullDownView()
+    var scrollView = FilterPullDown()
     var senderButton:UIButton?
     
-    var appDel:AppDelegate!
     var sequences:[Sequence] = []
-    var error:NSError? = nil
     
     var sidebarMenuOpen : Bool!
     
@@ -31,16 +27,18 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-        updateSequencesList()
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -61,18 +59,39 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
-
-       updateSequencesList()
-       changeFullScreeenImage()
+        
+        updateSequencesList()
+        changeFullScreeenImage()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        sequenceCollectionView.reloadData()
+        
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -83,6 +102,10 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -98,51 +121,26 @@ class SequencesViewController: UIViewController, UITextFieldDelegate, UIPopoverP
         sequences = DatabaseSequencesController.shared.getSequences(filterParametar)
         sequenceCollectionView.reloadData()
     }
+    
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-        pullDown.drawMenu(filterParametar)
+//        pullDown.drawMenu(filterParametar)
 //        updateSequencesList()
         sequenceCollectionView.reloadData()
-    }
+    } 
 
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        sequenceCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
-    }
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
+}
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+// Parametar from filter and relaod data
+extension SequencesViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        updateSequencesList()
     }
-    
+}
+
+extension SequencesViewController: SWRevealViewControllerDelegate{
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
             sequenceCollectionView.userInteractionEnabled = true
@@ -212,7 +210,7 @@ extension SequencesViewController: UICollectionViewDataSource {
         
         var sequenceLevel = ""
         var sequenceZone = ""
-        let sequenceLocation = sequences[indexPath.row].gateway.name
+        let sequenceLocation = sequences[indexPath.row].gateway.location.name!
         
         if let level = sequences[indexPath.row].entityLevel{
             sequenceLevel = level
@@ -257,6 +255,15 @@ extension SequencesViewController: UICollectionViewDataSource {
         cell.layer.borderWidth = 0.5
         return cell
     }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
     func setSequence (gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             var address:[UInt8] = []

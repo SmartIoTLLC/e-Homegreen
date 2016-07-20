@@ -9,16 +9,15 @@
 import UIKit
 import CoreData
 
-class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, PullDownViewDelegate {
+class SecurityViewController: PopoverVC{
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     private let reuseIdentifier = "SecurityCell"
-    var pullDown = PullDownView()
     
     var sidebarMenuOpen : Bool!
     var securities:[Security] = []
-    var appDel:AppDelegate!
-    var error:NSError? = nil
+
+    var scrollView = FilterPullDown()
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
     
@@ -30,6 +29,26 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     @IBOutlet weak var lblAlarmState: UILabel!
     
     @IBOutlet weak var securityCollectionView: UICollectionView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
+        
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
+//        lblAlarmState.text = "Alarm state: \(alarmState!)"
+        
+//        refreshSecurityAlarmStateAndSecurityMode()
+        
+    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -56,29 +75,39 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
+        refreshSecurity()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        
-        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        
-        // Do any additional setup after loading the view.
-
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
-        
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-//        lblAlarmState.text = "Alarm state: \(alarmState!)"
-        
-//        refreshSecurityAlarmStateAndSecurityMode()
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        securityCollectionView.reloadData()
         
     }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+
     
     func changeFullScreeenImage(){
         if UIApplication.sharedApplication().statusBarHidden {
@@ -95,84 +124,15 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            securityCollectionView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            securityCollectionView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            securityCollectionView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
-            securityCollectionView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
-        }
-        
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
-        refreshSecurity()
     }
     
     override func viewDidDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 5
-    }
-    
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        securityCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
     }
     
     func reorganizeSecurityArray () {
@@ -219,26 +179,10 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
         
     }
     
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Security)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
-        refreshSecurity()
-    }
-    
     func updateSecurityList () {
         
         securities = DatabaseSecurityController.shared.getSecurity(filterParametar)
 
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
@@ -331,6 +275,47 @@ class SecurityViewController: UIViewController, SWRevealViewControllerDelegate, 
     
 }
 
+// Parametar from filter and relaod data
+extension SecurityViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Security)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
+        refreshSecurity()
+    }
+}
+
+extension SecurityViewController: SWRevealViewControllerDelegate {
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            securityCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            securityCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if(position == FrontViewPosition.Left) {
+            securityCollectionView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.closeSideMenu))
+            self.view.addGestureRecognizer(tap)
+            securityCollectionView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func closeSideMenu(){
+        
+        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
+            self.revealViewController().revealToggleAnimated(true)
+        }
+        
+    }
+}
+
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -340,6 +325,14 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
         return sectionInsets
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
 }
 

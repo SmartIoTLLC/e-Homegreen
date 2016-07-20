@@ -12,6 +12,7 @@ import CoreData
 @objc
 protocol PopOverIndexDelegate
 {
+    optional func nameAndId(name : String, id:String)
     optional func saveText (strText : String)
     optional func saveText (text : String, id:Int)
     optional func saveText (text : String, gateway:Gateway)
@@ -112,6 +113,12 @@ class ObjectNameWithID {
         self.popOver = popOver
     }
 }
+
+struct PopOverItem {
+    var name:String
+    var id:String
+}
+
 @objc
 class PopOverViewController: UIViewController, UITableViewDataSource {
     
@@ -152,6 +159,8 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
     var indexTab: Int = 0
     var popOver:PopOver!
     var delegate : PopOverIndexDelegate?
+    
+    var popOverList:[PopOverItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -287,18 +296,18 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
         
         if whatToFetch == WhatToFetch.Category.rawValue {
             let fetchRequest = NSFetchRequest(entityName: "Category")
-            let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
-            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+            let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
+//            let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
             let predicateThree = NSPredicate(format: "location == %@", location)
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne, predicateThree])
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateThree])
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
                 let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
-                let distinct = NSSet(array: results.map { String($0.name!) }).allObjects as! [String]
-                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
-                for item in distinctSorted {
-                    tableList.append(TableList(name: item, id: 4))
+//                let distinct = NSSet(array: results.map { String($0.name!) }).allObjects as! [String]
+//                let distinctSorted = distinct.sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
+                for item in results {
+                    tableList.append(TableList(name: item.name!, id: 4))
                 }
             } catch let catchedError as NSError {
                 error = catchedError
@@ -523,15 +532,16 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
 extension PopOverViewController: UITableViewDelegate{
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
-            if let list = tableList as? [TableList] {
-                cell.tableItem.text = list[indexPath.row].name
-            } else if let list = tableList as? [SecurityFeedback] {
-                cell.tableItem.text = list[indexPath.row].name
-            } else if let list = tableList as? [PathAndName]{
-                cell.tableItem.text = list[indexPath.row].name
-            } else if let list = tableList as? [ObjectNameWithID]{
-                cell.tableItem.text = list[indexPath.row].name
-            }
+//            if let list = tableList as? [TableList] {
+//                cell.tableItem.text = list[indexPath.row].name
+//            } else if let list = tableList as? [SecurityFeedback] {
+//                cell.tableItem.text = list[indexPath.row].name
+//            } else if let list = tableList as? [PathAndName]{
+//                cell.tableItem.text = list[indexPath.row].name
+//            } else if let list = tableList as? [ObjectNameWithID]{
+//                cell.tableItem.text = list[indexPath.row].name
+//            }
+            cell.tableItem.text = popOverList[indexPath.row].name
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
@@ -539,18 +549,20 @@ extension PopOverViewController: UITableViewDelegate{
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.dismissViewControllerAnimated(true, completion: nil)
-        if let list = tableList as? [TableList] {
-            delegate?.saveText!(list[indexPath.row].name, id: list[indexPath.row].id)
-        } else if let list = tableList as? [SecurityFeedback] {
-            delegate?.saveText!(list[indexPath.row].name, gateway: list[indexPath.row].gateway)
-        } else if let list = tableList as? [PathAndName]{
-            delegate?.returnNameAndPath!(list[indexPath.row].name, path: list[indexPath.row].path)
-        }else if let list = tableList as? [ObjectNameWithID]{
-            delegate?.returnObjectIDandTypePopover!(list[indexPath.row].objectID, popOver:list[indexPath.row].popOver.rawValue)
-        }
+        delegate?.nameAndId!(popOverList[indexPath.row].name, id: popOverList[indexPath.row].id)
+//        delegate?.saveText!(popOverList[indexPath.row].name, id: popOverList[indexPath.row].id)
+//        if let list = tableList as? [TableList] {
+//            delegate?.saveText!(list[indexPath.row].name, id: list[indexPath.row].id)
+//        } else if let list = tableList as? [SecurityFeedback] {
+//            delegate?.saveText!(list[indexPath.row].name, gateway: list[indexPath.row].gateway)
+//        } else if let list = tableList as? [PathAndName]{
+//            delegate?.returnNameAndPath!(list[indexPath.row].name, path: list[indexPath.row].path)
+//        }else if let list = tableList as? [ObjectNameWithID]{
+//            delegate?.returnObjectIDandTypePopover!(list[indexPath.row].objectID, popOver:list[indexPath.row].popOver.rawValue)
+//        }
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableList.count
+        return popOverList.count
     }
 }
 

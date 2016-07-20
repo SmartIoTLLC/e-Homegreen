@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDelegate {
+class ScanEventsViewController: PopoverVC {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -38,6 +38,12 @@ class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDele
     var levelFromFilter:String = "All"
     var zoneFromFilter:String = "All"
     var categoryFromFilter:String = "All"
+    
+    var button:UIButton!
+    
+    var level:Zone?
+    var zoneSelected:Zone?
+    var category:Category?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +73,10 @@ class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDele
         localcastSwitch.tag = 200
         localcastSwitch.on = false
         localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        btnLevel.tag = 1
+        btnZone.tag = 2
+        btnCategory.tag = 3
         
         // Do any additional setup after loading the view.
     }
@@ -141,51 +151,62 @@ class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDele
         }
     }
     
-    func backString(strText: String, imageIndex:Int) {
-        if imageIndex == 1 {
-            self.imageSceneOne.image = UIImage(named: strText)
+    @IBAction func btnLevel(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
-        if imageIndex == 2 {
-            self.imageSceneTwo.image = UIImage(named: strText)
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+    
+    @IBAction func btnCategoryAction(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Category] = FilterController.shared.getCategoriesByLocation(gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-    func backImageFromGallery(data: NSData, imageIndex:Int ) {
-        if imageIndex == 1 {
-            self.imageSceneOne.image = UIImage(data: data)
+    @IBAction func btnZoneAction(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let level = level{
+            let list:[Zone] = FilterController.shared.getZoneByLevel(gateway.location, parentZone: level)
+            for item in list {
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            }
         }
-        if imageIndex == 2 {
-            self.imageSceneTwo.image = UIImage(data: data)
-        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    @IBAction func btnLevel(sender: AnyObject) {
-        openPopover(sender, indexTab: 12, location: gateway.location)
-    }
-    
-    @IBAction func btnCategoryAction(sender: AnyObject) {
-        openPopover(sender, indexTab: 14, location: gateway.location)
-    }
-    
-    @IBAction func btnZoneAction(sender: AnyObject) {
-        openPopover(sender, indexTab: 13, location: gateway.location)
-    }
-    
-    override func saveText(text: String, id: Int) {
-        switch id {
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
         case 2:
-            btnLevel.setTitle(text, forState: UIControlState.Normal)
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
         case 3:
-            btnZone.setTitle(text, forState: UIControlState.Normal)
-        case 4:
-            btnCategory.setTitle(text, forState: UIControlState.Normal)
-        default: break
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
         }
+        
+        button.setTitle(name, forState: .Normal)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -244,6 +265,34 @@ class ScanEventsViewController: PopoverVC, UITextFieldDelegate, SceneGalleryDele
             refreshEventList()
             self.view.endEditing(true)
         }
+    }
+}
+
+extension ScanEventsViewController: SceneGalleryDelegate{
+    
+    func backString(strText: String, imageIndex:Int) {
+        if imageIndex == 1 {
+            self.imageSceneOne.image = UIImage(named: strText)
+        }
+        if imageIndex == 2 {
+            self.imageSceneTwo.image = UIImage(named: strText)
+        }
+    }
+    
+    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+        if imageIndex == 1 {
+            self.imageSceneOne.image = UIImage(data: data)
+        }
+        if imageIndex == 2 {
+            self.imageSceneTwo.image = UIImage(data: data)
+        }
+    }
+}
+
+extension ScanEventsViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 

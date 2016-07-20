@@ -9,22 +9,35 @@
 import UIKit
 import CoreData
 
-class PCControlViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate, PullDownViewDelegate {
+class PCControlViewController: PopoverVC {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
+    
+    var scrollView = FilterPullDown()
     
     var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     
-    var pullDown = PullDownView()
-    
     @IBOutlet weak var pccontrolCollectionView: UICollectionView!
     var pcs:[Device] = []
-    var appDel:AppDelegate?
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view)
+        
+        pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+    }
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -47,19 +60,37 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         
         updatePCList()
         changeFullScreeenImage()
-
+        
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if scrollView.contentOffset.y != 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        var size:CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        collectionViewCellSize = size
+        pccontrolCollectionView.reloadData()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        // Not sending zones and categories
-        
-        pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+    }
+    
+    override func nameAndId(name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -70,6 +101,10 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         } else {
             UIApplication.sharedApplication().statusBarHidden = true
             sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
         }
     }
     
@@ -81,46 +116,40 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
     
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-            
-        } else {
-            var rect = self.pullDown.frame
-            pullDown.removeFromSuperview()
-            rect.size.width = self.view.frame.size.width
-            rect.size.height = self.view.frame.size.height
-            pullDown.frame = rect
-            pullDown = PullDownView(frame: rect)
-            pullDown.customDelegate = self
-            self.view.addSubview(pullDown)
-            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        pccontrolCollectionView.reloadData()
-        pullDown.drawMenu(filterParametar)
-    }
-    
-    func pullDownSearchParametars (filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
-        updatePCList()
-    }
-    
     func updatePCList(){
         pcs = DatabaseDeviceController.shared.getPCs(filterParametar)
         pccontrolCollectionView.reloadData()
     }
+    
+    @IBAction func changeSliderValue(sender: AnyObject) {
+        guard let slider = sender as? UISlider else {
+            return
+        }
+        guard let tag = sender.tag else {
+            return
+        }
+        let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
+        let value = Byte(Int(slider.value * 100))
+        if value == 0x00 {
+            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
+        } else {
+            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: value), gateway: pcs[tag].gateway)
+            pcs[tag].pcVolume = value
+        }
+    }
+
+}
+
+// Parametar from filter and relaod data
+extension PCControlViewController: FilterPullDownDelegate{
+    func filterParametars(filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+        updatePCList()
+    }
+}
+
+extension PCControlViewController: SWRevealViewControllerDelegate{
     
     func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
@@ -151,7 +180,9 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
     }
-    
+}
+
+extension PCControlViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pccontrolCell", forIndexPath: indexPath) as? PCControlCell{
             cell.setItem(pcs[indexPath.row], tag: indexPath.row, filterParametar: filterParametar)
@@ -160,9 +191,11 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionCell", forIndexPath: indexPath)
         return cell
     }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pcs.count
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
@@ -180,25 +213,8 @@ class PCControlViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
-    
-    @IBAction func changeSliderValue(sender: AnyObject) {
-        guard let slider = sender as? UISlider else {
-            return
-        }
-        guard let tag = sender.tag else {
-            return
-        }
-        let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
-        let value = Byte(Int(slider.value * 100))
-        if value == 0x00 {
-            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
-        } else {
-            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: value), gateway: pcs[tag].gateway)
-            pcs[tag].pcVolume = value
-        }
-    }
-
 }
