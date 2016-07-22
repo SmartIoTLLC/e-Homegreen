@@ -31,6 +31,8 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var scrollView = FilterPullDown()
     
     var chatList:[ChatItem] = []
@@ -67,6 +69,9 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         scrollView.setItem(self.view)
         
         calculateHeight()
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All, All, All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
@@ -111,13 +116,20 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
-//        flagsCollectionView.reloadData()
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         
     }
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + ", " + level + ", " + zone)
     }
     
     func updateConstraints() {
@@ -768,6 +780,7 @@ extension ChatViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         chatTableView.reloadData()
     }
 }

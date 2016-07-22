@@ -32,10 +32,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     var panStartPoint:CGPoint?
     var startingBottomConstraint:CGFloat?
     
-    let headerTitleSubtitleView = UIView(frame: CGRectMake(0, 0, 180, 44))
-    let titleView = UILabel(frame: CGRectMake(0, 2, 180, 24))
-    let subtitleView = UILabel(frame: CGRectMake(0, 24, 180, 44-24))
-    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
@@ -45,6 +41,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
     var longTouchOldValue = 0
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     @IBOutlet weak var indicatorGreen: UIView!
@@ -96,12 +93,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
-//        if self.view.frame.size.width == 414 || self.view.frame.size.height == 414 {
-//            collectionViewCellSize = CGSize(width: 128, height: 156)
-//        } else if self.view.frame.size.width == 375 || self.view.frame.size.height == 375 {
-//            collectionViewCellSize = CGSize(width: 121, height: 150)
-//        }
-        
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
         updateConstraints()
@@ -111,10 +102,11 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         deviceCollectionView.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        addTitleView(filterParametar.location, level: filterParametar.levelName, zone: filterParametar.zoneName)
         
-        zoneAndCategorySlider.continuous = false
+        zoneAndCategorySlider.continuous = false        
         
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: "All, All, All")
         
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
         panRecognizer.delegate = self
@@ -143,7 +135,11 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -193,36 +189,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
     }
-    func addTitleView(location: String, level: String, zone: String){
-        
-        headerTitleSubtitleView.backgroundColor = UIColor.clearColor()
-        headerTitleSubtitleView.autoresizesSubviews = false
-        
-        titleView.backgroundColor = UIColor.clearColor()
-        titleView.font = UIFont.boldSystemFontOfSize(20)
-        titleView.textAlignment = NSTextAlignment.Center
-        titleView.textColor = UIColor.whiteColor()
-        titleView.shadowColor = UIColor.darkGrayColor()
-        titleView.shadowOffset = CGSizeMake(0, -1)
-        titleView.text = "Devices"
-        titleView.adjustsFontSizeToFitWidth = true
-        headerTitleSubtitleView.addSubview(titleView)
-        
-        subtitleView.backgroundColor = UIColor.clearColor()
-        subtitleView.font = UIFont.boldSystemFontOfSize(13)
-        subtitleView.textAlignment = NSTextAlignment.Center
-        subtitleView.textColor = UIColor.whiteColor()
-        subtitleView.shadowColor = UIColor.darkGrayColor()
-        subtitleView.shadowOffset = CGSizeMake(0, -1)
-        subtitleView.text = location + ", " + level + ", " + zone
-        subtitleView.adjustsFontSizeToFitWidth = true
-        headerTitleSubtitleView.addSubview(subtitleView)
-        
-        self.navigationItem.titleView = headerTitleSubtitleView
-        
-    }
+
     func updateSubtitle(location: String, level: String, zone: String){
-        subtitleView.text = location + ", " + level + ", " + zone
+        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
     }
     func updateIndicator(notification:NSNotification){
         if let info = notification.userInfo as? [String:String]{
@@ -250,20 +219,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
 
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
-    
-//    func pullDownSearchParametars (filterItem:FilterItem) {
-//        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Device)
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-//        
-//        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-//        
-//        if let user = userLogged{
-//            updateDeviceList(user)
-//            deviceCollectionView.reloadData()
-//            fetchDevicesInBackground()
-//        }
-//        
-//    }
     
     func updateDeviceList (user:User) {
         let fetchRequest = NSFetchRequest(entityName: "Device")

@@ -415,6 +415,18 @@ struct CellSize {
         let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
+    
+    static func calculateSurvCellSize(inout size:CGSize, screenWidth:CGFloat) {
+        var i:CGFloat = 2
+        while i >= 2 {
+            if (screenWidth / i) >= 120 && (screenWidth / i) <= 220 {
+                break
+            }
+            i++
+        }
+        let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
+        size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+    }
 }
 //MARK: Filter constants
 struct FilterKey {

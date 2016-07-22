@@ -13,7 +13,7 @@ protocol AddEditSurveillanceDelegate{
     func addEditSurveillanceFinished()
 }
 
-class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
+class SurveillanceSettingsVC: PopoverVC {
     
     @IBOutlet weak var scroll: UIScrollView!
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
@@ -32,17 +32,18 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
-    var popoverVC:PopOverViewController = PopOverViewController()
     var isPresenting: Bool = true
     var delegate:AddEditSurveillanceDelegate?
     var appDel:AppDelegate!
     var error:NSError? = nil
     var surv:Surveillance?
-    var parentLocation:Location?
-
-    var levelSelected:Zone?
+    var parentLocation:Location!
+    
+    var button:UIButton!
+    
+    var level:Zone?
     var zoneSelected:Zone?
-    var categorySelected:Category?
+    var category:Category?
     
     init(surv: Surveillance?, location:Location?){
         super.init(nibName: "SurveillanceSettingsVC", bundle: nil)
@@ -51,6 +52,7 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -59,16 +61,9 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
 
-        editPortRemote.inputAccessoryView = keyboardDoneButtonView
-        editPortLocal.inputAccessoryView = keyboardDoneButtonView
+        editPortRemote.inputAccessoryView = CustomToolBar()
+        editPortLocal.inputAccessoryView = CustomToolBar()
 
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
@@ -95,9 +90,9 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
             zoneButton.setTitle(surv.surveillanceZone, forState: .Normal)
             categoryButton.setTitle(surv.surveillanceCategory, forState: .Normal)
             
-            levelSelected = surv.cameraLevel
+            level = surv.cameraLevel
             zoneSelected = surv.cameraZone
-            categorySelected = surv.cameraCategory
+            category = surv.cameraCategory
 
             if let localIp = surv.localIp {
                 editIPLocal.text = localIp
@@ -108,18 +103,10 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
             
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
-        
-//        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
-//        tapGesture.delegate = self
-//        self.view.addGestureRecognizer(tapGesture)
-        
-        // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+
     }
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation.isLandscape {
-            print("UIDevice.currentDevice().orientation.isLandscape")
-        }
         if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
             if self.view.frame.size.height == 320{
                 backViewHeightConstraint.constant = 250
@@ -138,54 +125,11 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
             }
         }
     }
-    
-    func endEditingNow(){
-        editPortRemote.resignFirstResponder()
-        editPortLocal.resignFirstResponder()
-        centarConstraint.constant = 0
-    }
+
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func returnObjectIDandTypePopover(objectId: NSManagedObjectID?, popOver: Int) {
-        if popOver == PopOver.Level.rawValue{
-            if let objectid = objectId{
-                levelSelected = DatabaseZoneController.shared.getZone(objectid)
-                if let level = levelSelected{
-                    levelButton.setTitle(level.name, forState: .Normal)
-                }
-            }else{
-                levelSelected = nil
-                levelButton.setTitle("All", forState: .Normal)
-            }
-        }
-        if popOver == PopOver.Zone.rawValue{
-            if let objectid = objectId{
-                zoneSelected = DatabaseZoneController.shared.getZone(objectid)
-                if let zone = zoneSelected{
-                    zoneButton.setTitle(zone.name, forState: .Normal)
-                }
-            }else{
-                zoneSelected = nil
-                zoneButton.setTitle("All", forState: .Normal)
-            }
-        }
-        if popOver == PopOver.Category.rawValue{
-            if let objectid = objectId{
-                categorySelected = DatabaseCategoryController.shared.getCategory(objectid)
-                if let category = categorySelected{
-                    categoryButton.setTitle(category.name, forState: .Normal)
-                }
-            }else{
-                categorySelected = nil
-                categoryButton.setTitle("All", forState: .Normal)
-            }
-        }
-    }
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
-    }
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -251,6 +195,7 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
         UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
+    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -259,51 +204,70 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-//        appDel.establishAllConnections()
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    @IBAction func btnZoneAction(sender: UIButton) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        if sender.tag == 1{
-            popoverVC.indexTab = 29
-            popoverVC.levelList = DatabaseZoneController.shared.getLevels(parentLocation!)
-            popoverVC.popOver = PopOver.Level
-        }else if sender.tag == 2 {
-            if let location = parentLocation, let levelId = levelSelected?.id {
-                popoverVC.indexTab = 30
-                popoverVC.zoneList = DatabaseZoneController.shared.getZonesOnLevel(location, levelId: Int(levelId))
-                popoverVC.popOver = PopOver.Zone
-            }else{
-                popoverVC.indexTab = 30
-                popoverVC.zoneList = []
-                popoverVC.popOver = PopOver.Zone
-            }
-        }else{
-            if let location = parentLocation, let levelId = levelSelected?.id {
-                popoverVC.indexTab = 31
-                popoverVC.categoryList = DatabaseCategoryController.shared.getCategories(location)
-                popoverVC.popOver = PopOver.Category
-            }else{
-                popoverVC.indexTab = 31
-                popoverVC.categoryList = []
-                popoverVC.popOver = PopOver.Category
-            }
+    
+    @IBAction func btnLevel(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(parentLocation)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
     }
+    
+    @IBAction func btnCategoryAction(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Category] = FilterController.shared.getCategoriesByLocation(parentLocation)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+    
+    @IBAction func btnZoneAction(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let level = level{
+            let list:[Zone] = FilterController.shared.getZoneByLevel(parentLocation, parentZone: level)
+            for item in list {
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            }
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+    
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            zoneButton.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
+    
     @IBAction func btnSave(sender: AnyObject) {
         if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort)   {
             if surv == nil{
@@ -334,9 +298,9 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
                     surveillance.urlPresetSequenceStop = ""
                     surveillance.urlGetImage = ""
                     
-                    surveillance.cameraLevel = levelSelected
+                    surveillance.cameraLevel = level
                     surveillance.cameraZone = zoneSelected
-                    surveillance.cameraCategory = categorySelected
+                    surveillance.cameraCategory = category
                     
                     surveillance.tiltStep = 1
                     surveillance.panStep = 1
@@ -355,9 +319,9 @@ class SurveillanceSettingsVC: UIViewController, UIGestureRecognizerDelegate, UIP
                 surv.surveillanceZone = zoneButton.titleLabel?.text
                 surv.surveillanceCategory = categoryButton.titleLabel?.text
                 
-                surv.cameraLevel = levelSelected
+                surv.cameraLevel = level
                 surv.cameraZone = zoneSelected
-                surv.cameraCategory = categorySelected
+                surv.cameraCategory = category
                 
                 surv.localIp = localIp
                 surv.localPort = localPort

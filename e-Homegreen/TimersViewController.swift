@@ -25,6 +25,8 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
     
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Timers)
     
     override func viewWillAppear(animated: Bool) {
@@ -62,6 +64,9 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
         updateConstraints()
         scrollView.setItem(self.view)
         
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: "All, All, All")
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
 
     }
@@ -85,7 +90,11 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -103,36 +112,6 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
-    
-//    override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//            
-//        } else {
-//            var rect = self.pullDown.frame
-//            pullDown.removeFromSuperview()
-//            rect.size.width = self.view.frame.size.width
-//            rect.size.height = self.view.frame.size.height
-//            pullDown.frame = rect
-//            pullDown = PullDownView(frame: rect)
-//            pullDown.customDelegate = self
-//            self.view.addSubview(pullDown)
-//            pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-//        }
-//        var size:CGSize = CGSize()
-//        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-//        collectionViewCellSize = size
-//        timersCollectionView.reloadData()
-//        pullDown.drawMenu(filterParametar)
-//    }
     
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
@@ -177,12 +156,9 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
         }
     }
     
-    
-//    func pullDownSearchParametars (filterItem:FilterItem) {
-//        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
-//        refreshTimerList()
-//    }
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: location + ", " + level + ", " + zone)
+    }
     
     func refreshTimerList() {
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
@@ -262,6 +238,7 @@ extension TimersViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         refreshTimerList()
     }
 }

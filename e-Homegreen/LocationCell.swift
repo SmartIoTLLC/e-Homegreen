@@ -9,7 +9,7 @@
 import Foundation
 
 protocol GatewayCellDelegate{
-    func deleteGateway(gateway:Gateway)
+    func deleteGateway(gateway:Gateway, sender:UIButton)
     func scanDevice(gateway:Gateway)
     func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch)
 }
@@ -38,9 +38,9 @@ class GatewayCell: UITableViewCell {
         }
     }
     
-    @IBAction func deleteGateway(sender: AnyObject) {
+    @IBAction func deleteGateway(sender: UIButton) {
         if let gate = gateway{
-            delegate?.deleteGateway(gate)
+            delegate?.deleteGateway(gate, sender: sender)
         }
     }
     
@@ -69,7 +69,7 @@ class GatewayCell: UITableViewCell {
     }
     
     func setItem(gateway:Gateway){
-        
+        self.backgroundColor = UIColor.clearColor()
         self.gateway = gateway
         
         self.lblGatewayDescription.text = gateway.gatewayDescription
@@ -140,7 +140,7 @@ class LocationCell: UITableViewCell {
 
 //surveillance cell
 protocol SurveillanceCellDelegate{
-    func deleteSurveillance(surveillance:Surveillance)
+    func deleteSurveillance(surveillance:Surveillance, sender:UIButton)
     func scanURL(surveillance:Surveillance)
 }
 
@@ -153,12 +153,13 @@ class SurvCell: UITableViewCell{
     @IBOutlet weak var btnUrl: CustomGradientButton!
     
     func setItem(surveillance:Surveillance){
+        self.backgroundColor = UIColor.clearColor()
         self.surveillance = surveillance
         self.lblName.text = surveillance.name
     }
-    @IBAction func deleteSurveillance(sender: AnyObject) {
+    @IBAction func deleteSurveillance(sender: UIButton) {
         if let surv  = surveillance{
-            delegate?.deleteSurveillance(surv)
+            delegate?.deleteSurveillance(surv, sender: sender)
         }
     }
     

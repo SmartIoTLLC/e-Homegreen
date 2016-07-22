@@ -22,6 +22,8 @@ class FlagsViewController: PopoverVC {
     private let reuseIdentifier = "FlagCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Flags)
@@ -35,6 +37,9 @@ class FlagsViewController: PopoverVC {
         view.addSubview(scrollView)
         updateConstraints()        
         scrollView.setItem(self.view)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: "All, All, All")
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
     }
@@ -74,7 +79,11 @@ class FlagsViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -111,6 +120,10 @@ class FlagsViewController: PopoverVC {
                 scrollView.setContentOffset(bottomOffset, animated: false)
             }
         }
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + ", " + level + ", " + zone)
     }
     
     func changeFullScreeenImage(){
@@ -168,6 +181,7 @@ extension FlagsViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         reloadFlagsList()
     }
 }

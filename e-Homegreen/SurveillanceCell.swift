@@ -14,8 +14,37 @@ class SurveillenceCell:UICollectionViewCell{
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var image: UIImageView!
     
+    var camera:Surveillance!
+    var timer:NSTimer?
+    
     func setItem(surv:Surveillance, filterParametar:FilterItem){
+        camera = surv
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SurveillenceCell.update), userInfo: nil, repeats: true)
         lblName.text = getName(surv, filterParametar: filterParametar)
+    }
+    
+    func update(){
+        print(camera.name)
+        SurveillanceHandler(surv: camera)
+        
+//        SurveillanceHandler.shared.getCameraImage(camera) { (success) in
+        
+            if let data = self.camera.imageData {
+                self.setImageForSurveillance(UIImage(data: data))
+            }else{
+                self.setImageForSurveillance(UIImage(named: "loading")!)
+            }
+            
+            if self.camera.lastDate != nil {
+                let formatter = NSDateFormatter()
+                formatter.timeZone = NSTimeZone.localTimeZone()
+                formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                self.lblTime.text = formatter.stringFromDate(self.camera.lastDate!)
+            } else {
+                self.lblTime.text = " "
+            }
+
+//        }
     }
     
     func getName(surv:Surveillance, filterParametar:FilterItem) -> String{
@@ -37,32 +66,10 @@ class SurveillenceCell:UICollectionViewCell{
         self.image.image = image
         setNeedsDisplay()
     }
-    override func drawRect(rect: CGRect) {
-        
-        let path = UIBezierPath(roundedRect: rect,
-                                byRoundingCorners: UIRectCorner.AllCorners,
-                                cornerRadii: CGSize(width: 8.0, height: 8.0))
-        path.addClip()
-        path.lineWidth = 2
-        
-        UIColor.lightGrayColor().setStroke()
-        
-        let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor]
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.0, 1.0]
-        
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
-        
-        let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
-        
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
-        
-        path.stroke()
+    
+    override func prepareForReuse() {
+        timer?.invalidate()
     }
+
     
 }

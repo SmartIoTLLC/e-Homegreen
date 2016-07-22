@@ -19,6 +19,8 @@ class EnergyViewController: PopoverVC  {
     
     var scrollView = FilterPullDown()
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
@@ -37,11 +39,13 @@ class EnergyViewController: PopoverVC  {
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All, All, All")
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         // Do any additional setup after loading the view.
     }
-    
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -74,12 +78,17 @@ class EnergyViewController: PopoverVC  {
     }
     
     override func viewWillLayoutSubviews() {
-        if scrollView.contentOffset.y != 0 {
+        if scrollView.contentOffset.y > 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
+
     }
     
     override func nameAndId(name : String, id:String){
@@ -96,6 +105,10 @@ class EnergyViewController: PopoverVC  {
     
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: location + ", " + level + ", " + zone)
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -199,6 +212,9 @@ extension EnergyViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        
         refreshLocalParametars()
     }
 }

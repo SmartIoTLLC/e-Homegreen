@@ -83,7 +83,7 @@
         return true
     }
     
-    @IBAction func logOutAction(sender: AnyObject) {
+    @IBAction func logOutAction(sender: UIButton) {
         let optionMenu = UIAlertController(title: nil, message: "Are you sure to want to log out?", preferredStyle: .ActionSheet)
         
         let logoutAction = UIAlertAction(title: "Log Out", style: .Default, handler: {
@@ -102,6 +102,11 @@
             (alert: UIAlertAction!) -> Void in
             print("Cancelled")
         })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+        }
         
         optionMenu.addAction(logoutAction)
         optionMenu.addAction(cancelAction)

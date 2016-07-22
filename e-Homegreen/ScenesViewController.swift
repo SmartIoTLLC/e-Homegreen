@@ -23,6 +23,8 @@ class ScenesViewController: PopoverVC {
     var scenes:[Scene] = []
     var sidebarMenuOpen : Bool!
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var scenesCollectionView: UICollectionView!
 
@@ -63,6 +65,8 @@ class ScenesViewController: PopoverVC {
         updateConstraints()
         scrollView.setItem(self.view)
         
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: "All, All, All")
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
     }
@@ -78,7 +82,11 @@ class ScenesViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -112,6 +120,10 @@ class ScenesViewController: PopoverVC {
         }
     }
     
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: location + ", " + level + ", " + zone)
+    }
+    
     func changeFullScreeenImage(){
         if UIApplication.sharedApplication().statusBarHidden {
             fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
@@ -139,6 +151,7 @@ extension ScenesViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         updateSceneList()
     }
 }

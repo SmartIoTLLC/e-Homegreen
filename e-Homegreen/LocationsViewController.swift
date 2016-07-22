@@ -14,8 +14,8 @@ struct LocationDevice {
     var typeOfLocationDevice:TypeOfLocationDevice
 }
 
-enum TypeOfLocationDevice{
-    case Ehomegreen, Surveillance, Ehomeblue
+enum TypeOfLocationDevice:String{
+    case Ehomegreen = "e-Homegreen", Surveillance = "IP Camera", Ehomeblue = "e-Homeblue"
     var description:String{
         switch self{
         case Ehomegreen: return "e-Homegreen"
@@ -38,7 +38,7 @@ struct CollapsableViewModel {
     }
 }
 
-class LocationViewController: UIViewController, UIPopoverPresentationControllerDelegate  {
+class LocationViewController: PopoverVC  {
     
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
@@ -49,7 +49,6 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
     var error:NSError? = nil
     var user:User!
     var locationList:[CollapsableViewModel] = []
-    var popoverVC:PopOverViewController = PopOverViewController()
     var index = 0   // Which section is selected
     
     override func viewDidLoad() {
@@ -83,7 +82,7 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         
     }
     
-    @IBAction func deleteLocation(sender: AnyObject) {
+    @IBAction func deleteLocation(sender: UIButton) {
         let optionMenu = UIAlertController(title: nil, message: "Delete location?", preferredStyle: .ActionSheet)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
@@ -98,6 +97,12 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
             print("Cancelled")
         })
         
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+            
+        }
+        
         optionMenu.addAction(deleteAction)
         optionMenu.addAction(cancelAction)
         self.presentViewController(optionMenu, animated: true, completion: nil)
@@ -108,27 +113,28 @@ class LocationViewController: UIViewController, UIPopoverPresentationControllerD
         self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
     
-    @IBAction func addNewElementInLocation(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
+    @IBAction func addNewElementInLocation(sender: UIButton) {
         index = sender.tag
-        popoverVC.indexTab = 26
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
+        var popoverList:[PopOverItem] = []
+        for item in TypeOfLocationDevice.allValues{
+            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
         }
         
+        openFilterPopover(sender, popOverList:popoverList)
     }   // add camera or gateway
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+
+    override func nameAndId(name: String, id: String) {
+        if TypeOfLocationDevice.Ehomegreen.rawValue == name{
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen.description).delegate = self
+        }
+        if TypeOfLocationDevice.Surveillance.rawValue == name{
+            showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
+        }
+        if TypeOfLocationDevice.Ehomeblue.rawValue == name{
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue.description).delegate = self
+        }
     }
+    
     func reloadLocations(){
         updateLocationList()
         gatewayTableView.reloadData()
@@ -288,7 +294,7 @@ extension LocationViewController: UITableViewDelegate {
 }
 
 extension LocationViewController: GatewayCellDelegate{
-    func deleteGateway(gateway: Gateway) {
+    func deleteGateway(gateway: Gateway, sender:UIButton) {
         let optionMenu = UIAlertController(title: nil, message: "Delete e-Homegreen?", preferredStyle: .ActionSheet)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
@@ -304,6 +310,12 @@ extension LocationViewController: GatewayCellDelegate{
             (alert: UIAlertAction!) -> Void in
             print("Cancelled")
         })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+            
+        }
         
         optionMenu.addAction(deleteAction)
         optionMenu.addAction(cancelAction)
@@ -329,7 +341,7 @@ extension LocationViewController: GatewayCellDelegate{
 }
 
 extension LocationViewController: SurveillanceCellDelegate {
-    func deleteSurveillance(surveillance:Surveillance){
+    func deleteSurveillance(surveillance:Surveillance, sender:UIButton){
         let optionMenu = UIAlertController(title: nil, message: "Delete camera?", preferredStyle: .ActionSheet)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
@@ -344,6 +356,12 @@ extension LocationViewController: SurveillanceCellDelegate {
             (alert: UIAlertAction!) -> Void in
             print("Cancelled")
         })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+
+        }
         
         optionMenu.addAction(deleteAction)
         optionMenu.addAction(cancelAction)
@@ -369,19 +387,5 @@ extension LocationViewController: AddEditGatewayDelegate{
 extension LocationViewController: AddEditSurveillanceDelegate{
     func addEditSurveillanceFinished(){
         editLocation()
-    }
-}
-
-extension LocationViewController: PopOverIndexDelegate{
-    func saveText(text: String, id: Int) {
-        if TypeOfLocationDevice.Ehomegreen.description == text{
-            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen.description).delegate = self
-        }
-        if TypeOfLocationDevice.Surveillance.description == text{
-            showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
-        }
-        if TypeOfLocationDevice.Ehomeblue.description == text{
-            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue.description).delegate = self
-        }
     }
 }

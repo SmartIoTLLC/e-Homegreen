@@ -18,6 +18,8 @@ class UsersViewController: PopoverVC {
     
     @IBOutlet weak var usersCollectionView: UICollectionView!
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
@@ -36,6 +38,9 @@ class UsersViewController: PopoverVC {
         view.addSubview(scrollView)
         updateConstraints()
         scrollView.setItem(self.view)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: "All, All, All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
     }
@@ -74,7 +79,11 @@ class UsersViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -84,6 +93,10 @@ class UsersViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: location + ", " + level + ", " + zone)
     }
     
     func updateConstraints() {
@@ -222,6 +235,7 @@ extension UsersViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         refreshTimerList()
     }
 }

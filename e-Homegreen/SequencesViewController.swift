@@ -19,6 +19,8 @@ class SequencesViewController: PopoverVC {
     
     var sidebarMenuOpen : Bool!
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
@@ -37,6 +39,9 @@ class SequencesViewController: PopoverVC {
         view.addSubview(scrollView)
         updateConstraints()
         scrollView.setItem(self.view)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All, All, All")
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
     }
@@ -75,7 +80,11 @@ class SequencesViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -117,6 +126,10 @@ class SequencesViewController: PopoverVC {
         }
     }
     
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + ", " + level + ", " + zone)
+    }
+    
     func updateSequencesList(){
         sequences = DatabaseSequencesController.shared.getSequences(filterParametar)
         sequenceCollectionView.reloadData()
@@ -136,6 +149,7 @@ extension SequencesViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         updateSequencesList()
     }
 }

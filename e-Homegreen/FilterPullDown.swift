@@ -169,6 +169,7 @@ class FilterPullDown: UIScrollView {
         //reset location
         resetLocationButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetLocationButton.translatesAutoresizingMaskIntoConstraints = false
+        resetLocationButton.addTarget(self, action: #selector(FilterPullDown.resetLocations(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetLocationButton)
         
         //level label
@@ -188,6 +189,7 @@ class FilterPullDown: UIScrollView {
         //reset level
         resetLevelButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetLevelButton.translatesAutoresizingMaskIntoConstraints = false
+        resetLevelButton.addTarget(self, action: #selector(FilterPullDown.resetLevel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetLevelButton)
         
         //zone label
@@ -207,6 +209,7 @@ class FilterPullDown: UIScrollView {
         //reset zone
         resetZoneButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetZoneButton.translatesAutoresizingMaskIntoConstraints = false
+        resetZoneButton.addTarget(self, action: #selector(FilterPullDown.resetZone(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetZoneButton)
         
         //category label
@@ -226,6 +229,7 @@ class FilterPullDown: UIScrollView {
         //reset category
         resetCategoryButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetCategoryButton.translatesAutoresizingMaskIntoConstraints = false
+        resetCategoryButton.addTarget(self, action: #selector(FilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetCategoryButton)
         
     }
@@ -427,6 +431,17 @@ class FilterPullDown: UIScrollView {
         }
     }
     
+    func resetLocations(sender : UIButton){
+        location = nil
+        level = nil
+        zoneSelected = nil
+        category = nil
+        chooseLocationButon.setTitle("All", forState: .Normal)
+        chooseZoneButon.setTitle("All", forState: .Normal)
+        chooseLevelButon.setTitle("All", forState: .Normal)
+        chooseCategoryButon.setTitle("All", forState: .Normal)
+    }
+    
     func openLevels(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
@@ -441,6 +456,13 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC{
             vc.openFilterPopover(sender, popOverList:popoverList)
         }
+    }
+    
+    func resetLevel(sender : UIButton){
+        level = nil
+        zoneSelected = nil
+        chooseZoneButon.setTitle("All", forState: .Normal)
+        chooseLevelButon.setTitle("All", forState: .Normal)
     }
     
     func openZones(sender : UIButton){
@@ -459,6 +481,11 @@ class FilterPullDown: UIScrollView {
         }
     }
     
+    func resetZone(sender : UIButton){
+        zoneSelected = nil
+        chooseZoneButon.setTitle("All", forState: .Normal)
+    }
+    
     func openCategories(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
@@ -473,6 +500,11 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC{
             vc.openFilterPopover(sender, popOverList:popoverList)
         }
+    }
+    
+    func resetCategory(sender : UIButton){
+        category = nil
+        chooseCategoryButon.setTitle("All", forState: .Normal)
     }
     
     func setButtonTitle(text:String, id:String){

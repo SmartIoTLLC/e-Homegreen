@@ -65,7 +65,7 @@
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cga-6t-tyM">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="526"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfT-WA-yDl" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfT-WA-yDl" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="158" y="487" width="75" height="31"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -86,7 +86,7 @@
                                         <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="hLt-Di-LBz"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9P-OO-ftl" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9P-OO-ftl" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="68" y="487" width="75" height="31"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -117,7 +117,7 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Gj-6H-2Gq" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Gj-6H-2Gq" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="97" y="411" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -134,7 +134,7 @@
                                         </mask>
                                     </variation>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HRp-Si-HEi" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HRp-Si-HEi" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="97" y="449" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -151,7 +151,7 @@
                                         </mask>
                                     </variation>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJE-T5-qCJ">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJE-T5-qCJ">
                                     <rect key="frame" x="8" y="417" width="50" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="DpM-ZS-NyA"/>
@@ -167,7 +167,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfc-Hs-uBd">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfc-Hs-uBd">
                                     <rect key="frame" x="8" y="455" width="27" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="27" id="KLa-mN-ZBf"/>
@@ -183,7 +183,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zEP-Lm-AEy" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zEP-Lm-AEy" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="97" y="342" width="195" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -194,7 +194,7 @@
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXt-k6-TL6">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="IP/Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXt-k6-TL6">
                                     <rect key="frame" x="8" y="308" width="50" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="dme-S8-ESu"/>
@@ -210,7 +210,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="le5-Eb-cAc">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Port" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="le5-Eb-cAc">
                                     <rect key="frame" x="8" y="347" width="27" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="27" id="9gg-zT-8Eu"/>
@@ -226,7 +226,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="WiFi Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0E-Pb-Fm7">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="WiFi Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0E-Pb-Fm7">
                                     <rect key="frame" x="0.0" y="275" width="300" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="bae-Co-Ehm"/>
@@ -242,7 +242,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gD-zD-91H">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gD-zD-91H">
                                     <rect key="frame" x="8" y="80" width="67" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="67" id="UDR-of-95H"/>
@@ -282,7 +282,7 @@
                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kp7-Mf-Oer">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kp7-Mf-Oer">
                                     <rect key="frame" x="8" y="118" width="63" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="63" id="7Ve-6O-2Du"/>
@@ -315,7 +315,7 @@
                                         </mask>
                                     </variation>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiG-IU-ZQu">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Zone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiG-IU-ZQu">
                                     <rect key="frame" x="8" y="196" width="33" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="67" id="0YB-f6-2pS"/>
@@ -331,7 +331,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feF-ZE-TaG">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feF-ZE-TaG">
                                     <rect key="frame" x="8" y="235" width="60" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="63" id="G9q-Qm-jdz"/>
@@ -347,7 +347,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SxH-0d-NWX" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SxH-0d-NWX" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="98" y="302" width="194" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -364,7 +364,7 @@
                                         </mask>
                                     </variation>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAB-wr-ICs">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAB-wr-ICs">
                                     <rect key="frame" x="8" y="157" width="35" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="39" id="Cpb-AX-bKc"/>
@@ -380,7 +380,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N5q-H0-Crg">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N5q-H0-Crg">
                                     <rect key="frame" x="8" y="42" width="70" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="C5H-E7-tYW"/>
@@ -397,7 +397,7 @@
                                         </mask>
                                     </variation>
                                 </label>
-                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zX3-dC-mX9" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zX3-dC-mX9" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="98" y="151" width="194" height="31"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -414,10 +414,10 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="btnZoneAction:" destination="-1" eventType="touchUpInside" id="UNx-vA-M04"/>
+                                        <action selector="btnLevel:" destination="-1" eventType="touchUpInside" id="jlQ-1I-hG8"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2xn-6H-FbD" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2xn-6H-FbD" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="98" y="190" width="194" height="31"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -434,10 +434,10 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="btnZoneAction:" destination="-1" eventType="touchUpInside" id="e7k-IW-Lp6"/>
+                                        <action selector="btnZoneAction:" destination="-1" eventType="touchUpInside" id="bVh-yh-SXF"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAo-AZ-jee" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                <button opaque="NO" tag="3" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAo-AZ-jee" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                     <rect key="frame" x="98" y="229" width="194" height="31"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -454,10 +454,10 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="btnZoneAction:" destination="-1" eventType="touchUpInside" id="9A2-o5-h2U"/>
+                                        <action selector="btnCategoryAction:" destination="-1" eventType="touchUpInside" id="vZ4-Yt-Oeb"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Remote/LAN Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jjn-1G-jKd">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Remote/LAN Connection Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jjn-1G-jKd">
                                     <rect key="frame" x="0.0" y="382" width="300" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="300" id="TC0-im-JXK"/>

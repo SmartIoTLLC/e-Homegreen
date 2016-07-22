@@ -24,6 +24,8 @@ class SurveillenceViewController: PopoverVC {
     @IBOutlet weak var imageBack: UIImageView!
     var timer:NSTimer = NSTimer()
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var scrollView = FilterPullDown()
     
     var surveillance:[Surveillance] = []
@@ -37,6 +39,9 @@ class SurveillenceViewController: PopoverVC {
         view.addSubview(scrollView)
         updateConstraints()
         scrollView.setItem(self.view)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: "All, All, All")
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
@@ -63,7 +68,6 @@ class SurveillenceViewController: PopoverVC {
         }
         
         fetchSurveillance()
-        runTimer()
         changeFullScreeenImage()
     }
     
@@ -73,14 +77,19 @@ class SurveillenceViewController: PopoverVC {
     }
     
     override func viewWillLayoutSubviews() {
-        if scrollView.contentOffset.y != 0 {
+        if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < scrollView.bounds.size.height {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         
         var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
+        CellSize.calculateSurvCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
         cameraCollectionView.reloadData()
         
@@ -98,8 +107,14 @@ class SurveillenceViewController: PopoverVC {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        stopTimer()
+        for cell in cameraCollectionView.visibleCells() as! [SurveillenceCell] {
+            cell.timer?.invalidate()
+        }
         removeObservers()
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: location + ", " + level + ", " + zone)
     }
     
     //full screen button from navigation bar
@@ -152,35 +167,6 @@ class SurveillenceViewController: PopoverVC {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
     }
     
-    //run timer and repeat on every one second
-    func runTimer(){
-        if timer.valid == false{
-            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SurveillenceViewController.update), userInfo: nil, repeats: true)
-        }
-    }
-    
-    //stop timer when we dont need to refresh screen, on disappear
-    func stopTimer(){
-        if timer.valid{
-            timer.invalidate()
-        }
-    }
-    
-    //get data from api, refresh image for show
-    func getData(){
-        if surveillance != []{
-            for item in surveillance{
-                SurveillanceHandler(surv: item)
-            }
-        }
-    }
-    
-    //timer function
-    func update(){
-        getData()
-        cameraCollectionView.reloadItemsAtIndexPaths(self.cameraCollectionView.indexPathsForVisibleItems())
-    }
-    
     func cameraParametar(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(cameraCollectionView)
@@ -198,6 +184,7 @@ extension SurveillenceViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         fetchSurveillance()
     }
 }
@@ -252,21 +239,7 @@ extension SurveillenceViewController: UICollectionViewDataSource, UICollectionVi
         longPress.minimumPressDuration = 0.5
         cell.lblName.addGestureRecognizer(longPress)
         
-        if let data = surveillance[indexPath.row].imageData {
-            cell.setImageForSurveillance(UIImage(data: data))
-        }else{
-            cell.setImageForSurveillance(UIImage(named: "loading")!)
-        }
-        
-        if surveillance[indexPath.row].lastDate != nil {
-            let formatter = NSDateFormatter()
-            formatter.timeZone = NSTimeZone.localTimeZone()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            cell.lblTime.text = formatter.stringFromDate(surveillance[indexPath.row].lastDate!)
-        } else {
-            cell.lblTime.text = ""
-        }
-        cell.layer.cornerRadius = 5
+        cell.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.3)
         
         return cell
     }

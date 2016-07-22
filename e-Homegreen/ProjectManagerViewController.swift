@@ -105,14 +105,14 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    @IBAction func deleteUser(sender: AnyObject) {
-        if let button = sender as? UIButton{
+    @IBAction func deleteUser(sender: UIButton) {
+        
             let optionMenu = UIAlertController(title: nil, message: "Delete user?", preferredStyle: .ActionSheet)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
                 (alert: UIAlertAction!) -> Void in
-                self.appDel.managedObjectContext?.deleteObject(self.users[button.tag])
-                if self.users[button.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
+                self.appDel.managedObjectContext?.deleteObject(self.users[sender.tag])
+                if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
                     AdminController.shared.setOtherUser(nil)
                 }
                 dispatch_async(dispatch_get_main_queue(),{
@@ -125,54 +125,39 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
                 print("Cancelled")
             })
             
+            if let popoverController = optionMenu.popoverPresentationController {
+                popoverController.sourceView = sender
+                popoverController.sourceRect = sender.bounds
+            }
+            
+            
             optionMenu.addAction(deleteAction)
             optionMenu.addAction(cancelAction)
             self.presentViewController(optionMenu, animated: true, completion: nil)
             
-        }
+        
     }
     
-    @IBAction func shareUser(sender: AnyObject) {
-        if let button = sender as? UIButton{
-            let user = self.users[button.tag]
-            var user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
-            
-//            for item in user_value{
-//                if item.value is NSData{
-//                    user_value.setValue(nil, forKey: item.key as! String)
-//                }
-//            }
+    @IBAction func shareUser(sender: UIButton) {
+        let user = self.users[sender.tag]
+        var user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
+        
+        write(user_value)
+        
+        print(user_value)
 
-//            for item in user_value{
-//                if let stringData = item.1 as? NSData{
-//                    if let key = item.0 as? String{
-//                        user_value[key] = nil
-//                       
-//                    }
-//                    
-//                }
-//            }
-            
-            write(user_value)
-            
-            print(user_value)
-            
-//            do {
-//
-//                let jsonData = try NSJSONSerialization.dataWithJSONObject(user_value, options: NSJSONWritingOptions.PrettyPrinted)
-//                
-//                writeFile(jsonData)
-//                
-                let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-                let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
-                
-                var activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
-                self.presentViewController(activityViewController, animated: true, completion: nil)
-//                // here "jsonData" is the dictionary encoded in JSON data
-//            } catch let error as NSError {
-//                print(error)
-//            }
+        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
+        
+        var activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
+        if let presentationController = activityViewController.popoverPresentationController {
+            presentationController.sourceView = sender
+            presentationController.sourceRect = sender.bounds
         }
+        
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+
+        
     }
     
     func write(userData:NSDictionary){
@@ -218,48 +203,6 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
 
         
     }
-    
-//    func writeFile(jsonData: NSData){
-//        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
-//        let documentsDirectoryPath = NSURL(string: documentsDirectoryPathString)!
-//        
-//        let jsonFilePath = documentsDirectoryPath.URLByAppendingPathComponent("test.json")
-//        let fileManager = NSFileManager.defaultManager()
-//        var isDirectory: ObjCBool = false
-//        
-//        // creating a .json file in the Documents folder
-//        if !fileManager.fileExistsAtPath(jsonFilePath.absoluteString, isDirectory: &isDirectory) {
-//            let created = fileManager.createFileAtPath(jsonFilePath.absoluteString, contents: nil, attributes: nil)
-//            if created {
-//                print("File created ")
-//            } else {
-//                print("Couldn't create file for some reason")
-//            }
-//        } else {
-//            print("File already exists")
-//        }
-//
-//        do {
-//            let file = try NSFileHandle(forWritingToURL: jsonFilePath)
-//            file.writeData(jsonData)
-//            print("JSON data was written to teh file successfully!")
-//            
-//        } catch let error as NSError {
-//            print("Couldn't write to file: \(error.localizedDescription)")
-//        }
-//        do {
-//            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
-//            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
-//                print(progress)
-//            })
-//        }
-//        catch {
-//            print("Something went wrong")
-//        }
-//        
-///
-//        
-//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "settings"{
@@ -358,6 +301,8 @@ class UserCell: UITableViewCell{
     @IBOutlet weak var shareUser: UIButton!
     
     func setItem(user:User){
+        self.backgroundColor = UIColor.clearColor()
+        
         userNameLabel.text = user.username
         if let data = user.profilePicture{
             userImage.image = UIImage(data: data)

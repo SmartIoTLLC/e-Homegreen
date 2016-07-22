@@ -16,6 +16,8 @@ class PCControlViewController: PopoverVC {
     
     var scrollView = FilterPullDown()
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
@@ -34,6 +36,9 @@ class PCControlViewController: PopoverVC {
         view.addSubview(scrollView)
         updateConstraints()
         scrollView.setItem(self.view)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: "All, All, All")
         
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
@@ -74,7 +79,11 @@ class PCControlViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
         var size:CGSize = CGSize()
         CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
         collectionViewCellSize = size
@@ -84,6 +93,10 @@ class PCControlViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: location + ", " + level + ", " + zone)
     }
     
     func updateConstraints() {
@@ -145,6 +158,7 @@ extension PCControlViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         updatePCList()
     }
 }

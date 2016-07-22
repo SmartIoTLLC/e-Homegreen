@@ -80,6 +80,11 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("Cancelled")
             })
             
+            if let presentationController = optionMenu.popoverPresentationController {
+                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
+                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+            }
+            
             optionMenu.addAction(deleteAction)
             optionMenu.addAction(cancelAction)
             self.presentViewController(optionMenu, animated: true, completion: nil)
