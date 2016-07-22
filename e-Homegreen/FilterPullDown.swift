@@ -540,23 +540,30 @@ extension FilterPullDown: UIScrollViewDelegate{
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0{
+            
+            let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
             guard let location = location else{
-                filterDelegate?.filterParametars(FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All"))
+                filterDelegate?.filterParametars(filterItem)
                 return
+            }
+            filterItem.location = location.name!
+            if let category = category{
+                filterItem.categoryId = category.id!.integerValue
+                filterItem.categoryName = category.name!
             }
             guard let level = level else{
-                filterDelegate?.filterParametars(FilterItem(location: location.name!, levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All"))
+                filterDelegate?.filterParametars(filterItem)
                 return
             }
+            filterItem.levelId = level.id!.integerValue
+            filterItem.levelName = level.name!
             guard let zone = zoneSelected else{
-                filterDelegate?.filterParametars(FilterItem(location: location.name!, levelId: level.id!.integerValue, zoneId: 0, categoryId: 0, levelName: level.name!, zoneName: "All", categoryName: "All"))
+                filterDelegate?.filterParametars(filterItem)
                 return
             }
-            guard let category = category else{
-                filterDelegate?.filterParametars(FilterItem(location: location.name!, levelId: level.id!.integerValue, zoneId: zone.id!.integerValue, categoryId: 0, levelName: level.name!, zoneName: zone.name!, categoryName: "All"))
-                return
-            }
-            filterDelegate?.filterParametars(FilterItem(location: location.name!, levelId: level.id!.integerValue, zoneId: zone.id!.integerValue, categoryId: category.id!.integerValue, levelName: level.name!, zoneName: zone.name!, categoryName: category.name!))
+            filterItem.zoneId = zone.id!.integerValue
+            filterItem.zoneName = zone.name!
+            filterDelegate?.filterParametars(filterItem)
         }
     }
     

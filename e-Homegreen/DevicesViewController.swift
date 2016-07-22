@@ -46,6 +46,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     @IBOutlet weak var deviceCollectionView: UICollectionView!
     @IBOutlet weak var indicatorGreen: UIView!
     @IBOutlet weak var indicatorRed: UIView!
+    
+    //Zone and category control
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -108,6 +110,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: "All, All, All")
         
+        bottomView.hidden = true
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
         panRecognizer.delegate = self
         bottomView.addGestureRecognizer(panRecognizer)
@@ -731,6 +734,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
     }
     
+    //MARK: Zone and category controll
+    
+    //gesture delegate function
     func panView(gesture:UIPanGestureRecognizer){
         
         switch (gesture.state) {
@@ -856,6 +862,28 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
     
     
+    //Controll zone and category
+    
+    func checkZoneAndCategoryFromFilter(){
+        if (filterParametar.location != "All") && (filterParametar.zoneName != "All" || filterParametar.categoryName != "All"){
+            bottomView.hidden = false
+            zoneCategoryControl.setEnabled(true, forSegmentAtIndex: 0)
+            zoneCategoryControl.setEnabled(true, forSegmentAtIndex: 1)
+            if filterParametar.zoneName == "All"{
+                zoneCategoryControl.setEnabled(false, forSegmentAtIndex: 0)
+                zoneCategoryControl.selectedSegmentIndex = 1
+                selectLabel.text = "Selected Category:" + filterParametar.categoryName
+            }
+            if filterParametar.categoryName == "All"{
+                zoneCategoryControl.setEnabled(false, forSegmentAtIndex: 1)
+                zoneCategoryControl.selectedSegmentIndex = 0
+                selectLabel.text = "Selected Zone:" + filterParametar.zoneName
+            }
+        }else{
+            bottomView.hidden = true
+        }
+    }
+    
     @IBAction func zoneCategoryControlSlider(sender: UISlider) {
         let sliderValue = Int(sender.value)
         switch zoneCategoryControl.selectedSegmentIndex{
@@ -893,9 +921,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     @IBAction func changeZoneCategory(sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-           selectLabel.text = "Select Zone To Control"
+           selectLabel.text = "Selected Zone:" + filterParametar.zoneName
         case 1:
-            selectLabel.text = "Select Category To Control"
+            selectLabel.text = "Selected Category:" + filterParametar.categoryName
         default:
             break;
         }
@@ -968,6 +996,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        checkZoneAndCategoryFromFilter()
         
         if let user = userLogged{
             updateDeviceList(user)

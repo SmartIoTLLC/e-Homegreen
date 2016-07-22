@@ -19,7 +19,7 @@ class NavigationTitleView: UIView {
     var subtitleLeadingConstraint = NSLayoutConstraint()
     
     var titleCenterConstraint = NSLayoutConstraint()
-    var subtitleBottomConstraint = NSLayoutConstraint()
+    var subtitleCenterConstraint = NSLayoutConstraint()
     var subtitleLeadingConstraintLandscape = NSLayoutConstraint()
 
     override init(frame: CGRect) {
@@ -41,7 +41,6 @@ class NavigationTitleView: UIView {
         titleView.font = UIFont.boldSystemFontOfSize(20)
         titleView.textColor = UIColor.whiteColor()
         titleView.setContentHuggingPriority(1000, forAxis: .Horizontal)
-        titleView.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
         self.addSubview(titleView)
         
         subtitleView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +59,7 @@ class NavigationTitleView: UIView {
         //set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
-        subtitleBottomConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
+        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10)
         
         self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
@@ -73,7 +72,7 @@ class NavigationTitleView: UIView {
         
         self.removeConstraint(titleLeadingConstraint)
         self.removeConstraint(titleCenterConstraint)
-        self.removeConstraint(subtitleBottomConstraint)
+        self.removeConstraint(subtitleCenterConstraint)
         self.removeConstraint(subtitleLeadingConstraintLandscape)
         
         self.addConstraint(titleTopConstraint)
@@ -92,7 +91,7 @@ class NavigationTitleView: UIView {
         
         self.addConstraint(titleCenterConstraint)
         self.addConstraint(titleLeadingConstraint)
-        self.addConstraint(subtitleBottomConstraint)
+        self.addConstraint(subtitleCenterConstraint)
         self.addConstraint(subtitleLeadingConstraintLandscape)
         
     }
