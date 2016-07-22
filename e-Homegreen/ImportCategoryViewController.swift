@@ -9,6 +9,17 @@
 import UIKit
 import CoreData
 
+enum TypeOfControl:Int{
+    case Allowed = 1, Confirm, NotAllowed
+    var description:String{
+        switch self{
+        case Allowed: return "Allowed"
+        case Confirm: return "Confirm"
+        case NotAllowed: return "Not Allowed"
+        }
+    }
+}
+
 //IPGCW02001_000_000_Categories List
 class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate, AddAddressDelegate, ProgressBarDelegate, UITextFieldDelegate {
     
@@ -409,6 +420,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     category.id = categoryJSON.id
                     category.name = categoryJSON.name
                     category.categoryDescription = categoryJSON.description
+                    category.allowOption = 3
                     if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
                         category.isVisible = NSNumber(bool: false)
                     } else {
@@ -435,9 +447,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             for categoryJSON in categoriesJSON {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
                 if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), location, categoryJSON.id)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), location, categoryJSON.id, 3)
                 } else {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id, 3)
                 }
                 saveChanges()
             }
@@ -527,6 +539,7 @@ extension ImportCategoryViewController: UITableViewDataSource {
             cell.lblName.text = "\(categories[indexPath.row].id!)" + ", \(categories[indexPath.row].name!)"
             cell.lblDescription.text = categories[indexPath.row].categoryDescription
 //            cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
+            cell.setItem(categories[indexPath.row])
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
             return cell
@@ -542,7 +555,32 @@ class ImportCategoryTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblDescription: UILabel!
-    @IBOutlet weak var switchEnable: UISwitch!
     @IBOutlet weak var switchVisible: UISwitch!
+    @IBOutlet weak var controlTypeButton: CustomGradientButton!
+    var category:Category!
     
+    func setItem(category: Category){
+        self.category = category
+        if let type = TypeOfControl(rawValue: (category.allowOption.integerValue)){
+            controlTypeButton.setTitle(type.description, forState: .Normal)
+        }
+    }
+    
+    @IBAction func changeControlType(sender: AnyObject) {
+        if category.allowOption.integerValue == 1{
+            DatabaseCategoryController.shared.changeAllowOption(2, category: category)
+            controlTypeButton.setTitle(TypeOfControl.Confirm.description , forState: .Normal)
+            return
+        }
+        if category.allowOption.integerValue == 2{
+            DatabaseCategoryController.shared.changeAllowOption(3, category: category)
+            controlTypeButton.setTitle(TypeOfControl.NotAllowed.description , forState: .Normal)
+            return
+        }
+        if category.allowOption.integerValue == 3{
+            DatabaseCategoryController.shared.changeAllowOption(1, category: category)
+            controlTypeButton.setTitle(TypeOfControl.Allowed.description , forState: .Normal)
+            return
+        }
+    }
 }

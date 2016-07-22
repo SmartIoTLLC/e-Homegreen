@@ -20,5 +20,6 @@ extension Category {
     @NSManaged var name: String?
     @NSManaged var orderId: NSNumber?
     @NSManaged var location: Location?
+    @NSManaged var allowOption: NSNumber!
 
 }

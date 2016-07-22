@@ -162,6 +162,7 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
                             zoneInsert.level = levelValid
                             zoneInsert.location = loc
                             zoneInsert.orderId = idValid
+                            zoneInsert.allowOption = 1
                         }
                     }
                 }

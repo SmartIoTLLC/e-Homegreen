@@ -64,5 +64,19 @@ class DatabaseZoneController: NSObject {
         }
         return nil
     }
+    
+    func changeAllowOption(option:Int, zone:Zone){
+        zone.allowOption = option
+        saveChanges()
+    }
+    
+    func saveChanges() {
+        
+        do{
+            try appDel.managedObjectContext?.save()
+        }catch{
+            
+        }
+    }
 
 }

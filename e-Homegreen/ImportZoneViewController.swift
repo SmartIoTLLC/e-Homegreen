@@ -245,6 +245,7 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
                     zone.zoneDescription = zoneJSON.description
                     zone.level = zoneJSON.level
                     zone.location = location!
+                    zone.orderId = 1
                     if zoneJSON.id == 254 || zoneJSON.id == 255 {
                         zone.isVisible = NSNumber(bool: false)
                     } else {
@@ -492,9 +493,9 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
             for zoneJSON in zonesJSON {
                 let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
                 if zoneJSON.id == 254 || zoneJSON.id == 255 {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), location, zoneJSON.id)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), location, zoneJSON.id, 1)
                 } else {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id, 1)
                 }
                 saveChanges()
             }
@@ -622,6 +623,7 @@ extension ImportZoneViewController: UITableViewDataSource {
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
             cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)
+            cell.setItem(zones[indexPath.row])
             if let iBeaconName = zones[indexPath.row].iBeacon?.name {
                 cell.btnZonePicker.setTitle(iBeaconName, forState: UIControlState.Normal)
             }
@@ -651,5 +653,33 @@ class ImportZoneTableViewCell: UITableViewCell {
     @IBOutlet weak var switchEnable: UISwitch!
     @IBOutlet weak var switchVisible: UISwitch!
     @IBOutlet weak var btnZonePicker: CustomGradientButton!
+    
+    @IBOutlet weak var controlTypeButton: CustomGradientButton!
+    var zoneItem:Zone!
+    
+    func setItem(zone: Zone){
+        self.zoneItem = zone
+        if let type = TypeOfControl(rawValue: (zone.allowOption.integerValue)){
+            controlTypeButton.setTitle(type.description, forState: .Normal)
+        }
+    }
+    
+    @IBAction func changeControlType(sender: AnyObject) {
+        if zoneItem.allowOption.integerValue == 1{
+            DatabaseZoneController.shared.changeAllowOption(2, zone: zoneItem)
+            controlTypeButton.setTitle(TypeOfControl.Confirm.description , forState: .Normal)
+            return
+        }
+        if zoneItem.allowOption.integerValue == 2{
+            DatabaseZoneController.shared.changeAllowOption(3, zone: zoneItem)
+            controlTypeButton.setTitle(TypeOfControl.NotAllowed.description , forState: .Normal)
+            return
+        }
+        if zoneItem.allowOption.integerValue == 3{
+            DatabaseZoneController.shared.changeAllowOption(1, zone: zoneItem)
+            controlTypeButton.setTitle(TypeOfControl.Allowed.description , forState: .Normal)
+            return
+        }
+    }
     
 }

@@ -22,5 +22,6 @@ extension Zone {
     @NSManaged var orderId: NSNumber?
     @NSManaged var iBeacon: IBeacon?
     @NSManaged var location: Location?
+    @NSManaged var allowOption: NSNumber!
 
 }

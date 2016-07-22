@@ -715,6 +715,7 @@ class CreateUserFromJSONController: NSObject {
                 if let orderId = zone["order_id"] as? Int{
                     newZone.orderId = orderId
                 }
+                newZone.allowOption = 1
                 newZone.location = location
             }
         }
@@ -738,6 +739,7 @@ class CreateUserFromJSONController: NSObject {
                 if let orderId = category["order_id"] as? Int{
                     newCategory.orderId = orderId
                 }
+                newCategory.allowOption = 3
                 newCategory.location = location
             }
         }

@@ -139,11 +139,13 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
                             }
                             categoryNew.location = location
                             categoryNew.orderId = idValid
+                            categoryNew.allowOption = 3
                         }
                     }
                 }else if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
                     categoryNew.id = idValid
                     categoryNew.name = name
+                    categoryNew.allowOption = 3
                     if let desc = descriptionTextField.text{
                         categoryNew.categoryDescription = desc
                     }

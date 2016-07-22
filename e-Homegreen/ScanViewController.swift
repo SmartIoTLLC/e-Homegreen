@@ -146,24 +146,7 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    func openPopover(sender: AnyObject, indexTab:Int, location:Location?) {
-        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
-        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = indexTab
-        popoverVC.filterLocation = location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
+
     func openFilterPopover(sender: AnyObject, popOverList:[PopOverItem]) {
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController

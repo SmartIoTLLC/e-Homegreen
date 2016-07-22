@@ -36,6 +36,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
     @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
     
+    var button:UIButton!
+    
+    var level:Zone?
+    var zoneSelected:Zone?
+    var category:Category?
+    
     func hideDeviceInput(isHidden:Bool) {
         if isHidden {
             deviceInputHeight.constant = 0
@@ -143,6 +149,10 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             hideImageButton(true)
         }
         //TODO: Dodaj i za gateway
+        
+        btnLevel.tag = 1
+        btnZone.tag = 2
+        btnCategory.tag = 3
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -152,6 +162,30 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            editedDevice?.levelId = (level?.id?.integerValue)!
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            editedDevice?.categoryId = (category?.id?.integerValue)!
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
     }
     
     override func saveText (text : String, id:Int) {
@@ -205,16 +239,44 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         openParametarPopover(sender, indexTab: 21, location: device.gateway.location, device: device)
     }
     
-    @IBAction func btnLevel (sender: AnyObject) {
-        openPopover(sender, indexTab: 12, location: device.gateway.location)
+    @IBAction func btnLevel (sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(device.gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+//        openPopover(sender, indexTab: 12, location: device.gateway.location)
     }
     
-    @IBAction func btnZone (sender: AnyObject) {
-        openPopover(sender, indexTab: 13, location: device.gateway.location)
+    @IBAction func btnZone (sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let level = level{
+            let list:[Zone] = FilterController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
+            for item in list {
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            }
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+//        openPopover(sender, indexTab: 13, location: device.gateway.location)
     }
     
-    @IBAction func btnCategory (sender: AnyObject) {
-        openPopover(sender, indexTab: 14, location: device.gateway.location)
+    @IBAction func btnCategory (sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Category] = FilterController.shared.getCategoriesByLocation(device.gateway.location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+//        openPopover(sender, indexTab: 14, location: device.gateway.location)
     }
     
     @IBAction func btnSave(sender: AnyObject) {

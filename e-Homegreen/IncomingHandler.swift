@@ -817,7 +817,7 @@ class IncomingHandler: NSObject {
                 if doesIdExist {
                 } else {
                     let zone = Zone(context: appDel.managedObjectContext!)
-                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)))
+                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)), 1)
                     saveChanges()
                 }
                 
@@ -855,7 +855,7 @@ class IncomingHandler: NSObject {
                 }
                 if !doesIdExist {
                     let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                    (category.id, category.name, category.categoryDescription, category.location, category.orderId) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)))
+                    (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)), 3)
                     saveChanges()
                 }
                 
