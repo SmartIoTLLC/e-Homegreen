@@ -79,6 +79,12 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Chat)
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -130,6 +136,12 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + ", " + level + ", " + zone)
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Chat)
+        }
     }
     
     func updateConstraints() {
@@ -781,6 +793,7 @@ extension ChatViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Chat)
         chatTableView.reloadData()
     }
 }

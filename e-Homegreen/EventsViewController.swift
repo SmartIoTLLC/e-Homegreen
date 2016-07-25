@@ -43,6 +43,12 @@ class EventsViewController: PopoverVC{
         headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All, All, All")
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EventsViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Events)
 
     }
     
@@ -104,6 +110,12 @@ class EventsViewController: PopoverVC{
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Events)
+        }
+    }
+    
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: location + ", " + level + ", " + zone)
     }
@@ -151,6 +163,7 @@ extension EventsViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Events)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Events)
         updateEventsList()
     }
 }

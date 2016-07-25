@@ -19,6 +19,8 @@ class SecurityViewController: PopoverVC{
 
     var scrollView = FilterPullDown()
     
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -42,11 +44,20 @@ class SecurityViewController: PopoverVC{
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
         
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All, All, All")
+        
 //        let defaults = NSUserDefaults.standardUserDefaults()
 //        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
 //        lblAlarmState.text = "Alarm state: \(alarmState!)"
         
 //        refreshSecurityAlarmStateAndSecurityMode()
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Security)
         
     }
     
@@ -101,13 +112,22 @@ class SecurityViewController: PopoverVC{
         scrollView.setButtonTitle(name, id: id)
     }
     
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Security)
+        }
+    }
+
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: location + ", " + level + ", " + zone)
+    }
+    
     func updateConstraints() {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
-
     
     func changeFullScreeenImage(){
         if UIApplication.sharedApplication().statusBarHidden {
@@ -280,6 +300,9 @@ extension SecurityViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Security)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Security)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Security)
         refreshSecurity()
     }
 }
@@ -355,7 +378,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         cell.securityTitle.text = name
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
-        let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "openParametar:")
+        let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.openParametar(_:)))
         openParametar.minimumPressDuration = 0.5
         cell.securityImageView.image = UIImage(named: "maaa")
         cell.securityButton.setTitle("ARG", forState: UIControlState.Normal)
@@ -365,7 +388,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityButton.tag = indexPath.row
             cell.securityImageView.image = UIImage(named: "inactiveaway")
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Night":
@@ -373,7 +396,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityImageView.image = UIImage(named: "inactivenight")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Day":
@@ -381,7 +404,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityImageView.image = UIImage(named: "inactiveday")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Vacation":
@@ -389,7 +412,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityImageView.image = UIImage(named: "inactivevacation")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ARM", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         case "Disarm":
@@ -397,14 +420,14 @@ extension SecurityViewController: UICollectionViewDataSource {
             cell.securityImageView.image = UIImage(named: "inactivedisarm")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("ENTER CODE", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
         case "Panic":
             cell.setImageForSecuirity(UIImage(named: "inactivepanic")!)
             cell.securityImageView.image = UIImage(named: "inactivepanic")
             cell.securityButton.tag = indexPath.row
             cell.securityButton.setTitle("TRIGGER", forState: UIControlState.Normal)
-            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+            let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.buttonPressed(_:)))
             cell.securityButton.addGestureRecognizer(tap)
             cell.securityTitle.addGestureRecognizer(openParametar)
         default: break

@@ -82,11 +82,10 @@ extension DevicesViewController: UICollectionViewDataSource {
         saveChanges()
     }
     func refreshVisibleDevicesInScrollView () {
-        if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-            for indexPath in indexPaths {
-                updateDeviceStatus (indexPathRow: indexPath.row)
-            }
-        }
+        let indexPaths = deviceCollectionView.indexPathsForVisibleItems()
+        for indexPath in indexPaths {
+            updateDeviceStatus (indexPathRow: indexPath.row)
+        }        
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {

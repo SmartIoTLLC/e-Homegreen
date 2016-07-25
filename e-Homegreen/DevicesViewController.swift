@@ -118,6 +118,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         // Initialize Indicators
         indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
         indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Devices)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -170,6 +176,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
         } else {
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Devices)
         }
     }
 
@@ -996,6 +1008,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Devices)
         checkZoneAndCategoryFromFilter()
         
         if let user = userLogged{

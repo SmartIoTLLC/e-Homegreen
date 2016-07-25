@@ -42,6 +42,12 @@ class FlagsViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: "All, All, All")
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Flags)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -93,6 +99,12 @@ class FlagsViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Flags)
+        }
     }
     
     func updateConstraints() {
@@ -182,6 +194,7 @@ extension FlagsViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Flags)
         reloadFlagsList()
     }
 }

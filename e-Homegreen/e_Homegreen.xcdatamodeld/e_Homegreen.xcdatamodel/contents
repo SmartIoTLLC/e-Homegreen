@@ -74,6 +74,15 @@
         <attribute name="report" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="events" inverseEntity="Gateway" syncable="YES"/>
     </entity>
+    <entity name="FilterParametar" representedClassName=".FilterParametar" syncable="YES">
+        <attribute name="categoryId" attributeType="String" syncable="YES"/>
+        <attribute name="filterId" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isDefault" attributeType="Boolean" syncable="YES"/>
+        <attribute name="levelId" attributeType="String" syncable="YES"/>
+        <attribute name="locationId" attributeType="String" syncable="YES"/>
+        <attribute name="zoneId" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="filters" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="Flag" representedClassName=".Flag" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
@@ -248,6 +257,7 @@
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profilePicture" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="user" inverseEntity="Location" syncable="YES"/>
         <relationship name="menu" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="user" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
@@ -280,7 +290,8 @@
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="270"/>
-        <element name="User" positionX="-675" positionY="-1764" width="128" height="180"/>
+        <element name="User" positionX="-675" positionY="-1764" width="128" height="195"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
+        <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
     </elements>
 </model>

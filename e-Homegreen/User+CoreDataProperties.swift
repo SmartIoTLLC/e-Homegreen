@@ -23,5 +23,6 @@ extension User {
     @NSManaged var menu: NSSet?
     @NSManaged var openLastScreen: NSNumber
     @NSManaged var lastScreenId: NSNumber?
+    @NSManaged var filters: NSSet?
 
 }

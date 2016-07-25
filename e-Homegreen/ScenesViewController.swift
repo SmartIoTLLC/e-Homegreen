@@ -69,6 +69,12 @@ class ScenesViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: "All, All, All")
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Scenes)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -96,6 +102,12 @@ class ScenesViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Scenes)
+        }
     }
     
     func updateConstraints() {
@@ -152,6 +164,7 @@ extension ScenesViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Scenes)
         updateSceneList()
     }
 }
@@ -250,7 +263,7 @@ extension ScenesViewController: UICollectionViewDataSource {
             if sceneId >= 0 && sceneId <= 32767 {
                 SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
             }
-            let tag = gesture.view!.tag
+            _ = gesture.view!.tag
             let location = gesture.locationInView(scenesCollectionView)
             if let index = scenesCollectionView.indexPathForItemAtPoint(location){
                 if let cell = scenesCollectionView.cellForItemAtIndexPath(index) as? SceneCollectionCell {

@@ -42,6 +42,12 @@ class PCControlViewController: PopoverVC {
         
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.PCControl)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -106,6 +112,12 @@ class PCControlViewController: PopoverVC {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.PCControl)
+        }
+    }
+    
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {
@@ -159,6 +171,7 @@ extension PCControlViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.PCControl)
         updatePCList()
     }
 }

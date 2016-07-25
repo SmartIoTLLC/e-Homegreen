@@ -21,7 +21,6 @@ class FilterController: NSObject {
         if objectId != ""{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    print("usao")
                     if let location = appDel.managedObjectContext?.objectWithID(id) as? Location {
                         return location
                     }

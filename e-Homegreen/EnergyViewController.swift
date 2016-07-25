@@ -37,6 +37,7 @@ class EnergyViewController: PopoverVC  {
         updateConstraints()
         scrollView.setItem(self.view)
         
+        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         self.navigationItem.titleView = headerTitleSubtitleView
@@ -44,7 +45,13 @@ class EnergyViewController: PopoverVC  {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.        
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EnergyViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Energy)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,7 +70,7 @@ class EnergyViewController: PopoverVC  {
             
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
+         
         }
         
         changeFullScreeenImage()
@@ -100,6 +107,12 @@ class EnergyViewController: PopoverVC  {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){        
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Energy)
+        }
     }
 
     
@@ -214,7 +227,7 @@ extension EnergyViewController: FilterPullDownDelegate{
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Energy)
         refreshLocalParametars()
     }
 }

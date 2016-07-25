@@ -43,6 +43,12 @@ class UsersViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: "All, All, All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(UsersViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Users)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -93,6 +99,12 @@ class UsersViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Users)
+        }
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
@@ -236,6 +248,7 @@ extension UsersViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Users)
         refreshTimerList()
     }
 }

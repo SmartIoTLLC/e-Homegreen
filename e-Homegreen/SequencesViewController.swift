@@ -44,6 +44,12 @@ class SequencesViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All, All, All")
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Sequences)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,6 +109,12 @@ class SequencesViewController: PopoverVC {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
     
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Sequences)
+        }
+    }
+    
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {
@@ -150,6 +162,7 @@ extension SequencesViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Sequences)
         updateSequencesList()
     }
 }

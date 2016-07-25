@@ -16,6 +16,10 @@ class FilterItem: NSObject {
     var levelName:String = "All"
     var zoneName:String = "All"
     var categoryName:String = "All"
+    var locationObjectId:String = "All"
+    var levelObjectId:String = "All"
+    var zoneObjectId:String = "All"
+    var categoryObjectId:String = "All"
     
     init(location:String, levelId:Int, zoneId:Int, categoryId:Int, levelName:String, zoneName:String, categoryName:String) {
         self.location = location

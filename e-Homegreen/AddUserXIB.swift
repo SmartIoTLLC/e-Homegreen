@@ -141,6 +141,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 user.profilePicture = imageData
                 saveChanges()
                 DatabaseMenuController.shared.createMenu(user)
+                DatabaseFilterController.shared.createFilters(user)
             }
             
 

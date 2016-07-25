@@ -68,6 +68,12 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
         headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: "All, All, All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TimersViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Timers)
 
     }
     
@@ -125,6 +131,12 @@ class TimersViewController: PopoverVC, PullDownViewDelegate {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
             }
+        }
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Timers)
         }
     }
     
@@ -239,6 +251,7 @@ extension TimersViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Timers)
         refreshTimerList()
     }
 }

@@ -59,6 +59,8 @@ class FilterPullDown: UIScrollView {
     var zoneSelected:Zone?
     var category:Category?
     
+    var menuItem:Menu!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -150,6 +152,7 @@ class FilterPullDown: UIScrollView {
         setAsDefaultButton.titleLabel!.lineBreakMode = NSLineBreakMode.ByClipping
         setAsDefaultButton.titleLabel?.font.fontWithSize(8)
         setAsDefaultButton.translatesAutoresizingMaskIntoConstraints = false
+        setAsDefaultButton.addTarget(self, action: #selector(FilterPullDown.setDefaultParametar), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(setAsDefaultButton)
         
         //location label
@@ -526,6 +529,135 @@ class FilterPullDown: UIScrollView {
 
         button.setTitle(text, forState: .Normal)
     }
+    
+    func setFilterItem(menu:Menu){
+        self.menuItem = menu
+        if let filter = DatabaseFilterController.shared.getFilterByMenu(menu){
+            if filter.locationId != "All"{
+                if let location = FilterController.shared.getLocationByObjectId(filter.locationId){
+                    chooseLocationButon.setTitle(location.name, forState: .Normal)
+                    self.location = location
+                }
+            }
+            if filter.levelId != "All"{
+                if let level = FilterController.shared.getZoneByObjectId(filter.levelId){
+                    chooseLevelButon.setTitle(level.name, forState: .Normal)
+                    self.level = level
+                }
+            }
+            if filter.zoneId != "All"{
+                if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId){
+                    chooseZoneButon.setTitle(zone.name, forState: .Normal)
+                    self.zoneSelected = zone
+                }
+            }
+            if filter.categoryId != "All"{
+                if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId){
+                    chooseCategoryButon.setTitle(category.name, forState: .Normal)
+                    self.category = category
+                }
+            }
+        }
+        returnFilter()
+    }
+    
+    func setDefaultFilterItem(menu:Menu){
+        if let filter = DatabaseFilterController.shared.getDefaultFilterByMenu(menu){
+            if filter.locationId != "All"{
+                if let location = FilterController.shared.getLocationByObjectId(filter.locationId){
+                    chooseLocationButon.setTitle(location.name, forState: .Normal)
+                    self.location = location
+                }
+            }else{
+                chooseLocationButon.setTitle("All", forState: .Normal)
+                self.location = nil
+            }
+            if filter.levelId != "All"{
+                if let level = FilterController.shared.getZoneByObjectId(filter.levelId){
+                    chooseLevelButon.setTitle(level.name, forState: .Normal)
+                    self.level = level
+                }
+            }else{
+                chooseLevelButon.setTitle("All", forState: .Normal)
+                self.level = nil
+            }
+            if filter.zoneId != "All"{
+                if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId){
+                    chooseZoneButon.setTitle(zone.name, forState: .Normal)
+                    self.zoneSelected = zone
+                }
+            }else{
+                chooseZoneButon.setTitle("All", forState: .Normal)
+                self.zoneSelected = nil
+            }
+            if filter.categoryId != "All"{
+                if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId){
+                    chooseCategoryButon.setTitle(category.name, forState: .Normal)
+                    self.category = category
+                }
+            }else{
+                chooseCategoryButon.setTitle("All", forState: .Normal)
+                self.category = nil
+            }
+        }
+        returnFilter()
+    }
+    
+    func setDefaultParametar(){
+        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+        if let location = location {
+            filterItem.location = location.name!
+            filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
+        }
+        if let category = category{
+            filterItem.categoryId = category.id!.integerValue
+            filterItem.categoryName = category.name!
+            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
+        }
+        if let level = level {
+            filterItem.levelId = level.id!.integerValue
+            filterItem.levelName = level.name!
+            filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
+        }
+
+        if let zone = zoneSelected {
+            filterItem.zoneId = zone.id!.integerValue
+            filterItem.zoneName = zone.name!
+            filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
+        }
+
+        DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
+    }
+    
+    func returnFilter(){
+        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+        guard let location = location else{
+            filterDelegate?.filterParametars(filterItem)
+            return
+        }
+        filterItem.location = location.name!
+        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
+        if let category = category{
+            filterItem.categoryId = category.id!.integerValue
+            filterItem.categoryName = category.name!
+            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
+        }
+        guard let level = level else{
+            filterDelegate?.filterParametars(filterItem)
+            return
+        }
+        filterItem.levelId = level.id!.integerValue
+        filterItem.levelName = level.name!
+        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
+        guard let zone = zoneSelected else{
+            filterDelegate?.filterParametars(filterItem)
+            return
+        }
+        filterItem.zoneId = zone.id!.integerValue
+        filterItem.zoneName = zone.name!
+        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
+        filterDelegate?.filterParametars(filterItem)
+    }
 
 }
 
@@ -541,29 +673,7 @@ extension FilterPullDown: UIScrollViewDelegate{
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0{
             
-            let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
-            guard let location = location else{
-                filterDelegate?.filterParametars(filterItem)
-                return
-            }
-            filterItem.location = location.name!
-            if let category = category{
-                filterItem.categoryId = category.id!.integerValue
-                filterItem.categoryName = category.name!
-            }
-            guard let level = level else{
-                filterDelegate?.filterParametars(filterItem)
-                return
-            }
-            filterItem.levelId = level.id!.integerValue
-            filterItem.levelName = level.name!
-            guard let zone = zoneSelected else{
-                filterDelegate?.filterParametars(filterItem)
-                return
-            }
-            filterItem.zoneId = zone.id!.integerValue
-            filterItem.zoneName = zone.name!
-            filterDelegate?.filterParametars(filterItem)
+            returnFilter()
         }
     }
     

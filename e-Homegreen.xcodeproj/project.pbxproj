@@ -50,6 +50,9 @@
 		22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
+		2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */; };
+		2240EAC91D46084E0062AC2F /* FilterParametar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240EAC71D46084E0062AC2F /* FilterParametar.swift */; };
+		2240EACB1D4609720062AC2F /* DatabaseFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240EACA1D4609720062AC2F /* DatabaseFilterController.swift */; };
 		2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46B1CC612B400BCD763 /* DatabaseZoneController.swift */; };
 		2241E46E1CC628F300BCD763 /* DatabaseCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */; };
 		2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */; };
@@ -374,6 +377,9 @@
 		22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCell.swift; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
+		2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterParametar+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2240EAC71D46084E0062AC2F /* FilterParametar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterParametar.swift; sourceTree = "<group>"; };
+		2240EACA1D4609720062AC2F /* DatabaseFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFilterController.swift; sourceTree = "<group>"; };
 		2241E46B1CC612B400BCD763 /* DatabaseZoneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseZoneController.swift; sourceTree = "<group>"; };
 		2241E46D1CC628F300BCD763 /* DatabaseCategoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCategoryController.swift; sourceTree = "<group>"; };
 		2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceCell.swift; sourceTree = "<group>"; };
@@ -1222,6 +1228,8 @@
 				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
 				73131ED11CA147C6008BC13E /* User+CoreDataProperties.swift */,
 				73131ED21CA147C6008BC13E /* User.swift */,
+				2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */,
+				2240EAC71D46084E0062AC2F /* FilterParametar.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1294,6 +1302,7 @@
 				2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */,
 				223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */,
 				2201763B1CD1016200A1470A /* DatabaseMenuController.swift */,
+				2240EACA1D4609720062AC2F /* DatabaseFilterController.swift */,
 				223DC0C51CE2089A00C5E2F6 /* CreateUserFromJSONController.swift */,
 				223BAD461D3E5395003E9365 /* FilterController.swift */,
 			);
@@ -1971,6 +1980,8 @@
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
+				2240EAC91D46084E0062AC2F /* FilterParametar.swift in Sources */,
+				2240EACB1D4609720062AC2F /* DatabaseFilterController.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
@@ -2005,6 +2016,7 @@
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
+				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,

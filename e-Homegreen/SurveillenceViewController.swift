@@ -46,6 +46,12 @@ class SurveillenceViewController: PopoverVC {
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SurveillenceViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.Surveillance)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -97,6 +103,12 @@ class SurveillenceViewController: PopoverVC {
     
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            scrollView.setDefaultFilterItem(Menu.Surveillance)
+        }
     }
     
     func updateConstraints() {
@@ -185,6 +197,7 @@ extension SurveillenceViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Surveillance)
         fetchSurveillance()
     }
 }

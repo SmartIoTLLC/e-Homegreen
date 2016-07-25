@@ -40,9 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         API.shared.sendRequest(.GET, url: "") { (completion) -> () in
             switch completion {
-            case .Success(let response):
+            case .Success( _):
                 print("")
-            case .Error(let error):
+            case .Error( _):
                 print("")
             }
         }
