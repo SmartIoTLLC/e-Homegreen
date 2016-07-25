@@ -21,8 +21,11 @@ class FilterController: NSObject {
         if objectId != ""{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let location = appDel.managedObjectContext?.objectWithID(id) as? Location {
+                    do{
+                        let location = try appDel.managedObjectContext?.existingObjectWithID(id) as? Location
                         return location
+                    }catch {
+                        
                     }
                 }
             }
@@ -34,8 +37,11 @@ class FilterController: NSObject {
         if objectId != ""{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let zone = appDel.managedObjectContext?.objectWithID(id) as? Zone {
+                    do{
+                        let zone = try appDel.managedObjectContext?.existingObjectWithID(id) as? Zone
                         return zone
+                    }catch {
+                        
                     }
                 }
             }
@@ -47,8 +53,11 @@ class FilterController: NSObject {
         if objectId != ""{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let category = appDel.managedObjectContext?.objectWithID(id) as? Category {
+                    do{
+                        let category = try appDel.managedObjectContext?.existingObjectWithID(id) as? Category
                         return category
+                    }catch {
+                        
                     }
                 }
             }
@@ -74,14 +83,6 @@ class FilterController: NSObject {
         do {
             let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Location]
             return results
-            //                let locationNames = results.map({ (let location) -> String in
-            //                    if let name = location.name {
-            //                        return name
-            //                    }
-            //                    return ""
-            //                }).filter({ (let name) -> Bool in
-            //                    return name != "" ? true : false
-            //                }).sort{ $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
             
         } catch  {
         }

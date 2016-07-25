@@ -538,24 +538,36 @@ class FilterPullDown: UIScrollView {
                     chooseLocationButon.setTitle(location.name, forState: .Normal)
                     self.location = location
                 }
+            }else{
+                chooseLocationButon.setTitle("All", forState: .Normal)
+                self.location = nil
             }
             if filter.levelId != "All"{
                 if let level = FilterController.shared.getZoneByObjectId(filter.levelId){
                     chooseLevelButon.setTitle(level.name, forState: .Normal)
                     self.level = level
                 }
+            }else{
+                chooseLevelButon.setTitle("All", forState: .Normal)
+                self.level = nil
             }
             if filter.zoneId != "All"{
                 if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId){
                     chooseZoneButon.setTitle(zone.name, forState: .Normal)
                     self.zoneSelected = zone
                 }
+            }else{
+                chooseZoneButon.setTitle("All", forState: .Normal)
+                self.zoneSelected = nil
             }
             if filter.categoryId != "All"{
                 if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId){
                     chooseCategoryButon.setTitle(category.name, forState: .Normal)
                     self.category = category
                 }
+            }else{
+                chooseCategoryButon.setTitle("All", forState: .Normal)
+                self.category = nil
             }
         }
         returnFilter()
@@ -646,8 +658,9 @@ class FilterPullDown: UIScrollView {
             filterDelegate?.filterParametars(filterItem)
             return
         }
+        
         filterItem.levelId = level.id!.integerValue
-        filterItem.levelName = level.name!
+        filterItem.levelName = level.name!        
         filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
         guard let zone = zoneSelected else{
             filterDelegate?.filterParametars(filterItem)
