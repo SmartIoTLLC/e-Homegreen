@@ -153,6 +153,8 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
+        btnControlType.tag = 4
+        changeDeviceInputMode.tag = 5
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -180,6 +182,14 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
             editedDevice?.categoryId = (category?.id?.integerValue)!
+            break
+        case 4:
+            editedDevice?.controlType = name
+            btnControlType.setTitle(name, forState: UIControlState.Normal)
+            break
+        case 5:
+            editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
+            changeDeviceInputMode.setTitle(name,forState: UIControlState.Normal)
             break
         default:
             break
@@ -231,12 +241,24 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
 //                showDeviceImagesPicker(device!, point: pointInView)
 //        }
     }
-    
-    @IBAction func changeDeviceInputMode(sender: AnyObject) {
-        openParametarPopover(sender, indexTab: 22, location: device.gateway.location, device: device)
+    @IBAction func changeDeviceInputMode(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
+        openFilterPopover(sender, popOverList:popoverList)
     }
-    @IBAction func changeControlType(sender: AnyObject) {
-        openParametarPopover(sender, indexTab: 21, location: device.gateway.location, device: device)
+    @IBAction func changeControlType(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.Curtain, id: ""))
+        openFilterPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnLevel (sender: UIButton) {
@@ -248,7 +270,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openFilterPopover(sender, popOverList:popoverList)
-//        openPopover(sender, indexTab: 12, location: device.gateway.location)
     }
     
     @IBAction func btnZone (sender: UIButton) {
@@ -263,7 +284,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openFilterPopover(sender, popOverList:popoverList)
-//        openPopover(sender, indexTab: 13, location: device.gateway.location)
     }
     
     @IBAction func btnCategory (sender: UIButton) {
@@ -276,7 +296,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openFilterPopover(sender, popOverList:popoverList)
-//        openPopover(sender, indexTab: 14, location: device.gateway.location)
     }
     
     @IBAction func btnSave(sender: AnyObject) {

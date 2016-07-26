@@ -21,7 +21,7 @@ enum FilterFields: Int {
     case Zone = 3
     case Category = 4
 }
-class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
+class PullDownView: UIScrollView, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     var senderButton:UIButton?
     var customDelegate : PullDownViewDelegate?
@@ -325,10 +325,10 @@ class PullDownView: UIScrollView, PopOverIndexDelegate, UIPopoverPresentationCon
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = sender.tag
-        popoverVC.locationSearch = locationSearch
-        popoverVC.filterLocation = choosedLocation
+//        popoverVC.delegate = self
+//        popoverVC.indexTab = sender.tag
+//        popoverVC.locationSearch = locationSearch
+//        popoverVC.filterLocation = choosedLocation
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .Any

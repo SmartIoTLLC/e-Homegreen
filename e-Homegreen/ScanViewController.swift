@@ -153,7 +153,7 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-        popoverVC.indexTab = 200
+//        popoverVC.indexTab = 200
         popoverVC.popOverList = popOverList
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -165,24 +165,24 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
         }
     }
     
-    func openParametarPopover(sender: AnyObject, indexTab:Int, location:Location?, device:Device){
-        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
-        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.indexTab = indexTab
-        popoverVC.device = device
-        popoverVC.filterLocation = location
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
-    }
+//    func openParametarPopover(sender: AnyObject, indexTab:Int, location:Location?, device:Device){
+//        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
+//        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+//        popoverVC.modalPresentationStyle = .Popover
+//        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+//        popoverVC.delegate = self
+//        popoverVC.indexTab = indexTab
+//        popoverVC.device = device
+//        popoverVC.filterLocation = location
+//        if let popoverController = popoverVC.popoverPresentationController {
+//            popoverController.delegate = self
+//            popoverController.permittedArrowDirections = .Any
+//            popoverController.sourceView = sender as? UIView
+//            popoverController.sourceRect = sender.bounds
+//            popoverController.backgroundColor = UIColor.lightGrayColor()
+//            presentViewController(popoverVC, animated: true, completion: nil)
+//        }
+//    }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
