@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimersViewController: PopoverVC, PullDownViewDelegate {
+class TimersViewController: PopoverVC {
     
     var timers:[Timer] = []
     

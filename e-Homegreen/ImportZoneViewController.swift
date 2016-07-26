@@ -43,15 +43,8 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
         txtFrom.delegate = self
         txtTo.delegate = self
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        txtFrom.inputAccessoryView = keyboardDoneButtonView
-        txtTo.inputAccessoryView = keyboardDoneButtonView
+        txtFrom.inputAccessoryView = CustomToolBar()
+        txtTo.inputAccessoryView = CustomToolBar()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
