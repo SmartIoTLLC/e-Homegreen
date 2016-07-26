@@ -91,6 +91,22 @@ class DatabaseGatewayController: NSObject {
         return nil
     }
     
+    func getGatewayByStringObjectID(objectId:String) -> Gateway?{
+        if objectId != ""{
+            if let url = NSURL(string: objectId){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+                    do{
+                        let gateway = try appDel.managedObjectContext?.existingObjectWithID(id) as? Gateway
+                        return gateway
+                    }catch {
+                        
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
     func deleteGateway(gateway:Gateway){
         appDel.managedObjectContext?.deleteObject(gateway)
         saveChanges()

@@ -33,6 +33,14 @@ class DatabaseSecurityController: NSObject {
         }
     }
     
+    func removeSecurityForLocation(location:Location){
+        if let securities = location.security?.allObjects as? [Security]{
+            for security in securities{
+                appDel.managedObjectContext?.deleteObject(security)
+            }
+        }
+    }
+    
     func getSecurity(filterParametar:FilterItem) -> [Security]{
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")

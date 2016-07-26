@@ -15,13 +15,12 @@ protocol AddEditLocationDelegate{
     func editAddLocationFinished()
 }
 
-class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
+class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var isPresenting: Bool = true
     
     var delegate:AddEditLocationDelegate?
     
-    var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
@@ -46,6 +45,8 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
     @IBOutlet weak var setFilterSwitch: UISwitch!
     
     let locationManager = CLLocationManager()
+    
+    var button:UIButton!
     
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -303,55 +304,49 @@ class AddLocationXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizer
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func chooseTimerAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        if sender.tag == 1{
-            popoverVC.indexTab = 27
-            popoverVC.popOver = PopOver.Timers
-            popoverVC.timerList = DatabaseTimersController.shared.getUserTimers(location!)
-        }else{
-            popoverVC.indexTab = 28
-            popoverVC.popOver = PopOver.Security
-            popoverVC.gateways = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
+    @IBAction func chooseTimerAction(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Timer] = DatabaseTimersController.shared.getUserTimers(location!)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.timerName, id: item.objectID.URIRepresentation().absoluteString))
         }
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
-        }
+        popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+
     }
     
-    
-    
-    func returnObjectIDandTypePopover(objectId: NSManagedObjectID?, popOver:Int) {
-        if popOver == PopOver.Security.rawValue{
-            if let location = location, let objectid = objectId{
-                if let gateway = DatabaseGatewayController.shared.getGatewayByObjectID(objectid){
-                    DatabaseSecurityController.shared.createSecurityForLocation(location, gateway: gateway)
-                    securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
-                    
-                }
-            }
+    @IBAction func chooseSecurity(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.URIRepresentation().absoluteString))
         }
-        if popOver == PopOver.Timers.rawValue{
-            if let location = location, let objectid = objectId{
-                if let timer = DatabaseTimersController.shared.getTimerByObjectID(objectid){
-                    location.timerId = timer.id
-                    timerButton.setTitle(timer.timerName, forState: .Normal)
-                }
-            }
-        }
-        
+        popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+
     }
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+    override func nameAndId(name: String, id: String) {
+        if button.tag == 2{
+            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id){
+                DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
+                securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
+            }else{
+                DatabaseSecurityController.shared.removeSecurityForLocation(location!)
+                securityButton.setTitle("", forState: .Normal)
+            }
+        }
+        if button.tag == 1{
+            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id){
+                location!.timerId = timer.id
+                timerButton.setTitle(timer.timerName, forState: .Normal)
+            }else{
+                location!.timerId = nil
+                timerButton.setTitle("", forState: .Normal)
+            }
+        }
     }
     
     @IBAction func changeRadiusAction(sender: UISlider) {

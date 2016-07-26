@@ -101,6 +101,22 @@ class DatabaseTimersController: NSObject {
         return nil
     }
     
+    func getTimerByStringObjectID(objectId:String) -> Timer?{
+        if objectId != ""{
+            if let url = NSURL(string: objectId){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+                    do{
+                        let timer = try appDel.managedObjectContext?.existingObjectWithID(id) as? Timer
+                        return timer
+                    }catch {
+                        
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
     func startTImerOnLocation(timer:Timer){
         var address:[UInt8] = []
         if timer.isBroadcast.boolValue {

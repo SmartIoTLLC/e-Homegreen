@@ -21,11 +21,24 @@ enum FileType{
     }
 }
 
-class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate {
+enum PowerOption{
+    case ShutDown, Restart, Sleep, Hibernate, LogOff
+    var description:String{
+        switch self{
+        case ShutDown: return "Shut Down"
+        case Restart: return "Restart"
+        case Sleep: return "Sleep"
+        case Hibernate: return "Hibernate"
+        case LogOff: return "LogOff"
+        }
+    }
+    static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
+}
+
+class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
     
     var isPresenting: Bool = true
     
-    var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var fullScreenSwitch: UISwitch!
     @IBOutlet weak var powerLabel: UILabel!
@@ -43,6 +56,8 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
     var pathForVideo:String? // putanja selektovanog videa
     
     var pc:Device
+    
+    var button:UIButton!
     
     init(pc:Device){
         self.pc = pc
@@ -181,27 +196,57 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
         }
     }
     
-    @IBAction func chooseOptionAction(sender: AnyObject) {
-        popoverVC = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-        popoverVC.modalPresentationStyle = .Popover
-        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-        popoverVC.delegate = self
-        popoverVC.device = pc
-        tagIndex = sender.tag
-        if sender.tag == 1{
-           popoverVC.indexTab = 23
-        }else if sender.tag == 2{
-            popoverVC.indexTab = 24
-        }else{
-           popoverVC.indexTab = 25
+    @IBAction func powerOption(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        for option in PowerOption.allValues{
+            popoverList.append(PopOverItem(name: option.description, id: ""))
         }
-        if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .Any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGrayColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
+        openFilterPopover(sender, popOverList:popoverList)
+
+    }
+    
+    @IBAction func playOption(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let list = pc.pcCommands {
+            if let commandArray = Array(list) as? [PCCommand] {
+                for item in commandArray{
+                    if item.isRunCommand == false{
+                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
+                    }
+                }
+            }
+        }
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+    
+    @IBAction func runOption(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let list = pc.pcCommands {
+            if let commandArray = Array(list) as? [PCCommand] {
+                for item in commandArray{
+                    if item.isRunCommand == true{
+                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
+                    }
+                }
+            }
+        }
+        openFilterPopover(sender, popOverList:popoverList)
+    }
+    
+    override func nameAndId(name: String, id: String) {
+        if button.tag == 1{
+            powerLabel.text = name
+        }
+        if button.tag == 2{
+            playLabel.text = name
+            pathForVideo = id + name
+        }
+        if button.tag == 3{
+            runLabel.text = name
+            runCommand = id
         }
     }
     
@@ -217,10 +262,6 @@ class PCControlInterfaceXIB: UIViewController, UIGestureRecognizerDelegate, UITe
             runLabel.text = name
             runCommand = path
         }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
     }
 }
 

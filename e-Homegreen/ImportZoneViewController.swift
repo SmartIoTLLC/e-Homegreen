@@ -9,13 +9,12 @@
 import UIKit
 import CoreData
 
-class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIndexDelegate, UIPopoverPresentationControllerDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate, UITextFieldDelegate {
+class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate, UITextFieldDelegate {
 
     var appDel:AppDelegate!
     var error:NSError? = nil
     var zones:[Zone] = []
     var location:Location?
-    var popoverVC:PopOverViewController = PopOverViewController()
     
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
@@ -202,10 +201,6 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "zoneReceivedFromGateway:", object: nil)
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
     }
     
     func backURL(strText: String) {
@@ -539,36 +534,34 @@ class ImportZoneViewController: UIViewController, ImportFilesDelegate, PopOverIn
     func chooseGateway (gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
-            let storyboard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
-            popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-            popoverVC.modalPresentationStyle = .Popover
-            popoverVC.preferredContentSize = CGSizeMake(300, 200)
-            popoverVC.delegate = self
-            popoverVC.indexTab = 8
-//            popoverVC.filterGateway = zones[tag].gateway
-            if let popoverController = popoverVC.popoverPresentationController {
-                popoverController.delegate = self
-                popoverController.permittedArrowDirections = .Any
-                popoverController.sourceView = gestureRecognizer.view! as UIView
-                popoverController.sourceRect = gestureRecognizer.view!.bounds
-                popoverController.backgroundColor = UIColor.lightGrayColor()
-                self.parentViewController!.presentViewController(popoverVC, animated: true, completion: nil)
-            }
+            
+//            button = sender
+            var popoverList:[PopOverItem] = []
+//            let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
+//            for item in list {
+//                popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.URIRepresentation().absoluteString))
+//            }
+            popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
+            openFilterPopover(gestureRecognizer.view!, popOverList:popoverList)
         }
     }
     
-    func saveText(text: String, id: Int) {
-        if choosedIndex != -1 && text != "No iBeacon" {
-            beacon = returniBeaconWithName(text)
-            zones[choosedIndex].iBeacon = beacon
-            saveChanges()
-            importZoneTableView.reloadData()
-        } else if text == "No iBeacon" {
-            zones[choosedIndex].iBeacon = nil
-            saveChanges()
-            importZoneTableView.reloadData()
-        }
+    override func nameAndId(name: String, id: String) {
+        
     }
+    
+//    func saveText(text: String, id: Int) {
+//        if choosedIndex != -1 && text != "No iBeacon" {
+//            beacon = returniBeaconWithName(text)
+//            zones[choosedIndex].iBeacon = beacon
+//            saveChanges()
+//            importZoneTableView.reloadData()
+//        } else if text == "No iBeacon" {
+//            zones[choosedIndex].iBeacon = nil
+//            saveChanges()
+//            importZoneTableView.reloadData()
+//        }
+//    }
     
     func returniBeaconWithName(name:String) -> IBeacon? {
         let fetchRequest = NSFetchRequest(entityName: "IBeacon")

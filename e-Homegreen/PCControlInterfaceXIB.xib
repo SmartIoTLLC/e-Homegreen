@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -86,7 +86,7 @@
                             </constraints>
                             <state key="normal" image="down"/>
                             <connections>
-                                <action selector="chooseOptionAction:" destination="-1" eventType="touchUpInside" id="fuU-f0-Gih"/>
+                                <action selector="runOption:" destination="-1" eventType="touchUpInside" id="tOK-J5-qtL"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4w-uP-F05">
@@ -97,7 +97,7 @@
                             </constraints>
                             <state key="normal" image="down"/>
                             <connections>
-                                <action selector="chooseOptionAction:" destination="-1" eventType="touchUpInside" id="VFt-U2-3pH"/>
+                                <action selector="powerOption:" destination="-1" eventType="touchUpInside" id="Cf5-6k-mrm"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tg8-sz-xWq">
@@ -108,7 +108,7 @@
                             </constraints>
                             <state key="normal" image="down"/>
                             <connections>
-                                <action selector="chooseOptionAction:" destination="-1" eventType="touchUpInside" id="WDS-P0-2Ge"/>
+                                <action selector="playOption:" destination="-1" eventType="touchUpInside" id="KfH-o4-cnZ"/>
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K91-d2-BYw">

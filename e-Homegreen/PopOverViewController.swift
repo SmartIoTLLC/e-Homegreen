@@ -31,20 +31,6 @@ class PathAndName {
     }
 }
 
-enum PowerOption{
-    case ShutDown, Restart, Sleep, Hibernate, LogOff
-    var description:String{
-        switch self{
-        case ShutDown: return "Shut Down"
-        case Restart: return "Restart"
-        case Sleep: return "Sleep"
-        case Hibernate: return "Hibernate"
-        case LogOff: return "LogOff"
-        }
-    }
-    static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
-}
-
 class TableList {
     var name:String
     var id:Int
