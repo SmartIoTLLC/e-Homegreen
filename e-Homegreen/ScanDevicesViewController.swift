@@ -148,8 +148,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - FINDING DEVICES FOR GATEWAY
-    // ======================= *** FINDING DEVICES FOR GATEWAY *** =======================
-    
     var searchDeviceTimer:NSTimer?
     var searchForDeviceWithId:Int?
     var fromAddress:Int?
@@ -318,22 +316,29 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
         let howMuchOf = arrayOfDevicesToBeSearched.count
         let index = indexOfDevicesToBeSearched+1
-        pbFD?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
-        pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
-        pbFD?.progressView.progress = Float(index)/Float(howMuchOf)
+        if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+            pbFD?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
+            pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
+            pbFD?.progressView.progress = Float(index)/Float(howMuchOf)
+        }
     }
     func setProgressBarParametarsForFindingNames (var index:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(index){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-            pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched) / \(arrayOfNamesToBeSearched.count)"
-            pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
-            pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched)/Float(arrayOfNamesToBeSearched.count)
+            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
+                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
+                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
+            }
+            
         }
     }
     func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-            pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched) / \(arrayOfSensorAdresses.count)"
-            pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched)/Float(arrayOfSensorAdresses.count)*100) + " %"
-            pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched)/Float(arrayOfSensorAdresses.count)
+            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
+                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)*100) + " %"
+                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)
+            }
         }
     }
     
@@ -358,10 +363,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
-    // ======================= *** FINDING NAMES FOR DEVICE *** =======================
-    
     var deviceNameTimer:NSTimer?
-//    var index:Int = 0
     var timesRepeatedCounter:Int = 0
     var searchForNameWithIndexInDevices = 0
     var arrayOfNamesToBeSearched = [Int]()
@@ -386,6 +388,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     to = Int(rangeTo.text!)!-1
                 }
                 for i in from...to{
+                    if i < devices.count{
                         arrayOfNamesToBeSearched.append(i)
                         if devices[i].controlType == ControlType.Sensor
                             || devices[i].controlType == ControlType.HumanInterfaceSeries
@@ -394,6 +397,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                             || devices[i].controlType == ControlType.DigitalInput{
                             findSensorParametar = true
                         }
+                    }
                 }
                 
                 arrayOfSensorAdresses = []
@@ -435,6 +439,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         to = Int(rangeTo.text!)!-1
                     }
                     for i in from...to{
+                        if i < devices.count{
 //                        if devices[i].address.integerValue >= Int(rangeFrom.text!) && devices[i].address.integerValue <= Int(rangeTo.text!){ // if it is in good range
                             if devices[i].name == "Unknown"{
                                 arrayOfNamesToBeSearched.append(i)
@@ -446,7 +451,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                                 || devices[i].controlType == ControlType.DigitalInput{
                                 findSensorParametar = true
                             }
-//                        }
+                        }
                     }
                     arrayOfSensorAdresses = []
                     UIApplication.sharedApplication().idleTimerDisabled = true
@@ -531,7 +536,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     func sendCommandForFindingName(index index:Int) {
-        setProgressBarParametarsForFindingNames(index+1)
+        setProgressBarParametarsForFindingNames(index)
         if devices[index].type == ControlType.Dimmer {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -576,7 +581,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         updateDeviceList()
         deviceTableView.reloadData()
     }
-    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -592,8 +596,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     
     // MARK: - DELETING DEVICES FOR GATEWAY
-    // ======================= *** DELETING DEVICES FOR GATEWAY *** =======================
-    
     func changeValueEnable (sender:UISwitch) {
         if sender.on {
             devices[sender.tag].isEnabled = NSNumber(bool: true)
@@ -624,15 +626,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - Sensor parametar
-    //   ============================================   Sensor parametar   ============================================
-    
     func findParametarsForSensor() {
         do {
             arrayOfSensorAdresses = []
-            // Go through all devices and store only those which are in defined range and which don't have name parameter
-            // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
-            // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
-            // arrayOfNamesToBeSearched = [0, 2]
+            // Go through all devices and store only those which are in defined range and which ar of type:HumanInterfaceSeries, Gateway, AnalogInput or DigitalInput
+            // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
+            // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
+            // arrayOfSensorAdresses = [0, 2]
             var from = 0
             var to = 255
             if rangeFrom.text != nil && rangeFrom.text != "" && rangeTo.text != nil && rangeTo.text != ""{
@@ -651,16 +651,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
             
             UIApplication.sharedApplication().idleTimerDisabled = true
-            if arrayOfNamesToBeSearched.count != 0{
+            if arrayOfSensorAdresses.count != 0{
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSensorParametars)
                 let index = 0
+                let deviceIndex = arrayOfSensorAdresses[index]
                 timesRepeatedCounter = 0
-                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: index, repeats: false)
+                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
                     self.pbFN = ProgressBarVC(title: "Finding sensor parametars", percentage: Float(1)/Float(self.arrayOfSensorAdresses.count), howMuchOf: "1 / \(self.arrayOfSensorAdresses.count)")
                     self.pbFN?.delegate = self
                     self.presentViewController(self.pbFN!, animated: true, completion: nil)
-                    self.sendComandForSensorZone(deviceIndex:self.arrayOfSensorAdresses[index])
+                    self.sendComandForSensorZone(deviceIndex: deviceIndex)
                 }
             }
         } catch let error as InputError {
@@ -713,6 +714,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         }else{
                             dismissScaningControls()
                         }
+                    }else{
+                        dismissScaningControls()
                     }
                 }
             }else{
@@ -727,14 +730,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     }else{
                         dismissScaningControls()
                     }
+                }else{
+                    dismissScaningControls()
                 }
             }
         }
     }
     
-    // MARK: - Find names
-    //   ============================================   Sensor parametar   ============================================
-    
+    //   ============================================      ============================================
     var alertController:UIAlertController?
     func alertController (title:String, message:String) {
         alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -861,7 +864,6 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         }
     }
 }
-
 
 class ScanCell:UITableViewCell{
     @IBOutlet weak var lblRow: UILabel!
