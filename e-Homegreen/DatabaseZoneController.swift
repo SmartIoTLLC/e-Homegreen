@@ -58,6 +58,26 @@ class DatabaseZoneController: NSObject {
         return []
     }
     
+    func getZoneById(id:Int, location:Location) -> Zone? {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(bool: true))]
+        predicateArray.append(NSPredicate(format: "location == %@", location))
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))        
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            if results.count != 0{
+                return results[0]
+            }
+        } catch _ as NSError {
+            
+        }
+        return nil
+    }
+    
     func getZone(objectId:NSManagedObjectID) -> Zone?{
         if let zone = appDel.managedObjectContext?.objectWithID(objectId) as? Zone {
             return zone

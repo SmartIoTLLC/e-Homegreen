@@ -87,6 +87,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
         idTextField.inputAccessoryView = keyboardDoneButtonView
+        
+        idTextField.placeholder = "aa"
 
         
         let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(AddLocationXIB.handleLongPress(_:)))

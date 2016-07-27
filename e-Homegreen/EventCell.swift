@@ -16,6 +16,26 @@ class EventsCollectionViewCell: UICollectionViewCell {
     var eventId:Int!
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    
+    func setItem(event:Event, filterParametar:FilterItem){
+        eventTitle.text = getName(event, filterParametar: filterParametar)
+    }
+    
+    func getName(event:Event, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if event.gateway.location.name != filterParametar.location{
+            name += event.gateway.location.name! + " "
+        }
+        if event.entityLevel != filterParametar.levelName{
+            name += event.entityLevel! + " "
+        }
+        if event.eventZone != filterParametar.zoneName{
+            name += event.eventZone! + " "
+        }
+        name += event.eventName
+        return name
+    }
+    
     func getImagesFrom(event:Event) {
         self.reportEvent = event.report.boolValue
         self.eventId = event.eventId as Int

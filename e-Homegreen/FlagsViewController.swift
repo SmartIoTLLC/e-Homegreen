@@ -257,32 +257,8 @@ extension FlagsViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! FlagCollectionViewCell
-        
-        var flagLevel = ""
-        var flagZone = ""
-        let flagLocation = flags[indexPath.row].gateway.location.name!
-        
-        if let level = flags[indexPath.row].entityLevel{
-            flagLevel = level
-        }
-        if let zone = flags[indexPath.row].flagZone{
-            flagZone = zone
-        }
-        
-        if filterParametar.location == "All" {
-            cell.flagTitle.text = flagLocation + " " + flagLevel + " " + flagZone + " " + flags[indexPath.row].flagName
-        }else{
-            var flagTitle = ""
-            if filterParametar.levelName == "All"{
-                flagTitle += " " + flagLevel
-            }
-            if filterParametar.zoneName == "All"{
-                flagTitle += " " + flagZone
-            }
-            flagTitle += " " + flags[indexPath.row].flagName
-            cell.flagTitle.text = flagTitle
-        }
-        
+
+        cell.setItem(flags[indexPath.row], filterParametar: filterParametar)
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.flagTitle.userInteractionEnabled = true

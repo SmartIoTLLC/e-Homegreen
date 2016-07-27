@@ -529,9 +529,9 @@ extension ImportCategoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblName.text = "\(categories[indexPath.row].id!)" + ", \(categories[indexPath.row].name!)"
+            cell.lblName.text = "\(categories[indexPath.row].name!)"
+            cell.lblNo.text = "\(categories[indexPath.row].id!)"
             cell.lblDescription.text = categories[indexPath.row].categoryDescription
-//            cell.switchVisible.on = categories[indexPath.row].isVisible.boolValue
             cell.setItem(categories[indexPath.row])
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
@@ -549,6 +549,7 @@ class ImportCategoryTableViewCell: UITableViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
+    @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var controlTypeButton: CustomGradientButton!
     var category:Category!
     

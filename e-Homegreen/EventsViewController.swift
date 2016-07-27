@@ -229,34 +229,8 @@ extension EventsViewController: UICollectionViewDataSource {
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! EventsCollectionViewCell
-    
-        var eventLevel = ""
-        var eventZone = ""
-        let eventLocation = events[indexPath.row].gateway.location.name!
-        
-        if let level = events[indexPath.row].entityLevel{
-            eventLevel = level
-        }
-        if let zone = events[indexPath.row].eventZone{
-            eventZone = zone
-        }
-        
-        if filterParametar.location == "All" {
-            cell.eventTitle.text = eventLocation + " " + eventLevel + " " + eventZone + " " + events[indexPath.row].eventName
-        }else{
-            var eventTitle = ""
-            if filterParametar.location == "All"{
-                eventTitle += " " + eventLocation
-            }
-            if filterParametar.levelName == "All"{
-                eventTitle += " " + eventLevel
-            }
-            if filterParametar.zoneName == "All"{
-                eventTitle += " " + eventZone
-            }
-            eventTitle += " " + events[indexPath.row].eventName
-            cell.eventTitle.text = eventTitle
-        }
+
+        cell.setItem(events[indexPath.row], filterParametar: filterParametar)
         
         cell.eventTitle.tag = indexPath.row
         cell.eventTitle.userInteractionEnabled = true

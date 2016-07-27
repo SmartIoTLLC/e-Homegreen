@@ -425,7 +425,7 @@ struct CellSize {
             i++
         }
         let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
-        size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+        size = CGSize(width: cellWidth, height: cellWidth)
     }
 }
 //MARK: Filter constants

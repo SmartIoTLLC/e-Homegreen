@@ -14,7 +14,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     var appDel:AppDelegate!
     var error:NSError? = nil
     var zones:[Zone] = []
-    var location:Location?
+    var location:Location!
     
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
@@ -263,7 +263,9 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     @IBAction func addZone(sender: AnyObject) {
-        showEditZone(nil, location: location).delegate = self
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showEditZone(nil, location: self.location).delegate = self
+        })
     }
     
     func editZoneFInished() {
@@ -580,7 +582,9 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
 extension ImportZoneViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showEditZone(zones[indexPath.row], location: nil).delegate = self
+        dispatch_async(dispatch_get_main_queue(),{
+            self.showEditZone(self.zones[indexPath.row], location: self.location).delegate = self
+        })
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -603,9 +607,18 @@ extension ImportZoneViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
             cell.backgroundColor = UIColor.clearColor()
-            cell.lblName.text = "\(zones[indexPath.row].id!). \(zones[indexPath.row].name!)"
-            cell.lblLevel.text = "Level: \(zones[indexPath.row].level!)"
-            cell.lblDescription.text = ""
+            var name = ""
+            if let id = zones[indexPath.row].level?.integerValue{
+                if id != 0 {
+                    if let level = DatabaseZoneController.shared.getZoneById(id, location: location){
+                        name = level.name! + " "
+                    }
+                }
+            }
+            
+            cell.lblName.text = name + "\(zones[indexPath.row].name!)"
+            cell.lblLevel.text = zones[indexPath.row].zoneDescription
+            cell.lblNo.text = "\(zones[indexPath.row].id!)"
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
             cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)
@@ -619,9 +632,6 @@ extension ImportZoneViewController: UITableViewDataSource {
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text =  "\(zones[indexPath.row].id). \(zones[indexPath.row].name!), Level: \(zones[indexPath.row].level!), Desc: \(zones[indexPath.row].zoneDescription!)"
-        cell.textLabel?.textColor = UIColor.whiteColor()
-        cell.backgroundColor = UIColor.clearColor()
         return cell
         
     }
@@ -635,8 +645,7 @@ class ImportZoneTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
-    @IBOutlet weak var lblDescription: UILabel!
-    @IBOutlet weak var switchEnable: UISwitch!
+    @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
     @IBOutlet weak var btnZonePicker: CustomGradientButton!
     

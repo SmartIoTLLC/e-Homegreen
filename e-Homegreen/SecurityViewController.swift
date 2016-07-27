@@ -376,6 +376,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         }
         name += securities[indexPath.row].securityName!
         cell.securityTitle.text = name
+        
         cell.securityTitle.tag = indexPath.row
         cell.securityTitle.userInteractionEnabled = true
         let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.openParametar(_:)))

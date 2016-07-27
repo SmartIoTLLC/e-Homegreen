@@ -14,6 +14,26 @@ class FlagCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var flagButton: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    
+    func setItem(flag:Flag, filterParametar:FilterItem){
+        flagTitle.text = getName(flag, filterParametar: filterParametar)
+    }
+    
+    func getName(flag:Flag, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if flag.gateway.location.name != filterParametar.location{
+            name += flag.gateway.location.name! + " "
+        }
+        if flag.entityLevel != filterParametar.levelName{
+            name += flag.entityLevel! + " "
+        }
+        if flag.flagZone != filterParametar.zoneName{
+            name += flag.flagZone! + " "
+        }
+        name += flag.flagName
+        return name
+    }
+    
     func getImagesFrom(flag:Flag) {
         if let flagImage = UIImage(data: flag.flagImageOne) {
             imageOne = flagImage

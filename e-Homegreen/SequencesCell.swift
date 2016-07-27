@@ -15,6 +15,26 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var sequenceButton: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    
+    func setItem(sequence:Sequence, filterParametar:FilterItem){
+        sequenceTitle.text = getName(sequence, filterParametar: filterParametar)
+    }
+    
+    func getName(sequence:Sequence, filterParametar:FilterItem) -> String{
+        var name:String = ""
+        if sequence.gateway.location.name != filterParametar.location{
+            name += sequence.gateway.location.name! + " "
+        }
+        if sequence.entityLevel != filterParametar.levelName{
+            name += sequence.entityLevel! + " "
+        }
+        if sequence.sequenceZone != filterParametar.zoneName{
+            name += sequence.sequenceZone! + " "
+        }
+        name += sequence.sequenceName
+        return name
+    }
+    
     func getImagesFrom(sequence:Sequence) {
         if let sequenceImage = UIImage(data: sequence.sequenceImageOne) {
             imageOne = sequenceImage

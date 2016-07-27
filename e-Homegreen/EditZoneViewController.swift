@@ -13,18 +13,20 @@ protocol EditZoneDelegate{
     func editZoneFInished()
 }
 
-class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class EditZoneViewController: PopoverVC {
     
     var isPresenting: Bool = true
     
     var delegate:EditZoneDelegate?
     
     var editZone:Zone?
-    var location:Location?
+    var level:Zone?
+    var location:Location!
     
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var levelTextField: UITextField!
+    @IBOutlet weak var levelButton: CustomGradientButton!
     
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
@@ -33,7 +35,7 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(zone:Zone?, location:Location?){
+    init(zone:Zone?, location:Location){
         super.init(nibName: "EditZoneViewController", bundle: nil)
         transitioningDelegate = self
         self.editZone = zone
@@ -44,72 +46,34 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            return false
-        }
-        return true
-    }
-    
-    func endEditingNow(){
-        idTextField.resignFirstResponder()
-        levelTextField.resignFirstResponder()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(EditZoneViewController.endEditingNow) )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        idTextField.inputAccessoryView = keyboardDoneButtonView
-        levelTextField.inputAccessoryView = keyboardDoneButtonView
+        idTextField.inputAccessoryView = CustomToolBar()
+        levelTextField.inputAccessoryView = CustomToolBar()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
-        
-        if UIScreen.mainScreen().scale > 2.5{
-            nameTextField.layer.borderWidth = 1
-            levelTextField.layer.borderWidth = 1
-            idTextField.layer.borderWidth = 1
-        }else{
-            nameTextField.layer.borderWidth = 0.5
-            levelTextField.layer.borderWidth = 0.5
-            idTextField.layer.borderWidth = 0.5
-        }
-        
-        nameTextField.layer.cornerRadius = 2
-        levelTextField.layer.cornerRadius = 2
-        idTextField.layer.cornerRadius = 2
-        
-        nameTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        levelTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        idTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        
-        nameTextField.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        levelTextField.attributedPlaceholder = NSAttributedString(string:"Level",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        idTextField.attributedPlaceholder = NSAttributedString(string:"Descprition",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
         
         nameTextField.delegate = self
         levelTextField.delegate = self
         idTextField.delegate = self
         
         if let zoneForEdit = editZone {
-            idTextField.text = "\(zoneForEdit.id!)"
+            idTextField.text = "\(zoneForEdit.id!.integerValue)"
             nameTextField.text = zoneForEdit.name!
-            levelTextField.text = "\(zoneForEdit.level!)"
+            levelTextField.text = zoneForEdit.zoneDescription
+            levelButton.setTitle("", forState: .Normal)
+            if let id = zoneForEdit.level?.integerValue{
+                if id != 0 {
+                    if let level = DatabaseZoneController.shared.getZoneById(id, location: location){
+                        self.level = level
+                        levelButton.setTitle(level.name, forState: .Normal)
+                    }
+                }
+            }
             idTextField.enabled = false
         }
         
@@ -117,12 +81,24 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
 
-        // Do any additional setup after loading the view.
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    @IBAction func levelButton(sender: AnyObject) {
+        var popoverList:[PopOverItem] = []
+        
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+        }
+        
+        popoverList.insert(PopOverItem(name: "", id: ""), atIndex: 0)
+        openFilterPopover(sender, popOverList:popoverList)
+        
+    }
+    
+    override func nameAndId(name: String, id: String) {
+        level = FilterController.shared.getZoneByObjectId(id)
+        levelButton.setTitle(name, forState: .Normal)
     }
     
     func dismissViewController () {
@@ -145,44 +121,58 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         }
         return nil
     }
-    //FIXME: Ove zone i kategorije su promenjene i nemaju vise gejtvej vec imaju samo lokacije
+    
     @IBAction func saveAction(sender: AnyObject) {
-        if let name = nameTextField.text, let id = idTextField.text, let level = levelTextField.text, let levelValid = Int(level), let idValid = Int(id) {
-            if editZone == nil{
-                if let loc = location, let zones = fetchZones(idValid, location: loc){
-                    if zones != []{
-                        for item in zones{
-                            item.name = name
-                            item.level = levelValid
+        
+        guard let name = nameTextField.text where name != "" else{
+            return
+        }
+        
+        guard let idTemp = idTextField.text, let id = Int(idTemp) else{
+            return
+        }
+        
+        if editZone == nil{
+            if let zones = fetchZones(id, location: location){
+                if zones != []{
+                    for item in zones{
+                        item.name = name
+                        if let level = level{
+                            item.level = level.id
+                        }else{
+                            item.level = 0
                         }
-                    }else{
-                        if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-                            zoneInsert.id = idValid
-                            zoneInsert.name = name
-                            zoneInsert.level = levelValid
-                            zoneInsert.location = loc
-                            zoneInsert.orderId = idValid
-                            zoneInsert.allowOption = 1
+                    }
+                }else{
+                    if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
+                        zoneInsert.id = id
+                        zoneInsert.name = name
+                        zoneInsert.location = location
+                        zoneInsert.orderId = id
+                        zoneInsert.allowOption = 1
+                        zoneInsert.zoneDescription = levelTextField.text
+                        if let level = level{
+                            zoneInsert.level = level.id
+                        }else{
+                            zoneInsert.level = 0
                         }
                     }
                 }
-//                else if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-//                    zoneInsert.id = idValid
-//                    zoneInsert.name = name
-//                    zoneInsert.level = levelValid
-//        
-//                }
-                
-                saveChanges()
-            }else{
-                editZone?.name = name
-                editZone?.level = levelValid
-                
-                saveChanges()
             }
-            delegate?.editZoneFInished()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            saveChanges()
+        }else{
+            editZone?.name = name
+            editZone?.zoneDescription = levelTextField.text
+            if let level = level{
+                editZone?.level = level.id
+            }else{
+                editZone?.level = 0
+            }
+            
+            saveChanges()
         }
+        delegate?.editZoneFInished()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
@@ -201,6 +191,22 @@ class EditZoneViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     }
 
 
+}
+
+extension EditZoneViewController : UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension EditZoneViewController : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            return false
+        }
+        return true
+    }
 }
 
 extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
@@ -263,7 +269,7 @@ extension EditZoneViewController : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showEditZone(zone:Zone?, location:Location?) -> EditZoneViewController {
+    func showEditZone(zone:Zone?, location:Location) -> EditZoneViewController {
         let editzone = EditZoneViewController(zone: zone, location: location)
         self.presentViewController(editzone, animated: true, completion: nil)
         return editzone

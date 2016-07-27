@@ -234,33 +234,8 @@ extension SequencesViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
-        
-        var sequenceLevel = ""
-        var sequenceZone = ""
-        let sequenceLocation = sequences[indexPath.row].gateway.location.name!
-        
-        if let level = sequences[indexPath.row].entityLevel{
-            sequenceLevel = level
-        }
-        if let zone = sequences[indexPath.row].sequenceZone{
-            sequenceZone = zone
-        }
-        
-        if filterParametar.location == "All" {
-            cell.sequenceTitle.text = sequenceLocation + " " + sequenceLevel + " " + sequenceZone + " " + sequences[indexPath.row].sequenceName
-        }else{
-            var sequenceTitle = ""
-            if filterParametar.levelName == "All"{
-                sequenceTitle += " " + sequenceLevel
-            }
-            if filterParametar.zoneName == "All"{
-                sequenceTitle += " " + sequenceZone
-            }
-            sequenceTitle += " " + sequences[indexPath.row].sequenceName
-            cell.sequenceTitle.text = sequenceTitle
-        }
 
-        
+        cell.setItem(sequences[indexPath.row], filterParametar:filterParametar)
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
         cell.sequenceTitle.userInteractionEnabled = true
