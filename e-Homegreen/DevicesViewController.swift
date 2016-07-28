@@ -365,27 +365,28 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         }
         if devices[tag].controlType == ControlType.Curtain {
-            if gestureRecognizer.state == UIGestureRecognizerState.Began {
-                longTouchOldValue = Int(devices[tag].currentValue)
-                deviceInControlMode = true
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(DevicesViewController.updateCurtain(_:)), userInfo: tag, repeats: true)
-            }
-            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-                longTouchOldValue = 0
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
-                    })
-                })
-                timer.invalidate()
-                deviceInControlMode = false
-                if devices[tag].opening == true {
-                    devices[tag].opening = false
-                }else {
-                    devices[tag].opening = true
-                }
-                return
-            }
+// TODO: MAKE (REVISE) FUNCTIONALITY
+//            if gestureRecognizer.state == UIGestureRecognizerState.Began {
+//                longTouchOldValue = Int(devices[tag].currentValue)
+//                deviceInControlMode = true
+//                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(DevicesViewController.updateCurtain(_:)), userInfo: tag, repeats: true)
+//            }
+//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+//                longTouchOldValue = 0
+//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+//                    })
+//                })
+//                timer.invalidate()
+//                deviceInControlMode = false
+//                if devices[tag].opening == true {
+//                    devices[tag].opening = false
+//                }else {
+//                    devices[tag].opening = true
+//                }
+//                return
+//            }
         }
     }
     func refreshDevice(sender:AnyObject) {
@@ -452,20 +453,20 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
         // Curtain?
         if devices[tag].controlType == ControlType.Curtain {
-            var setDeviceValue:UInt8 = 0
-            if Int(devices[tag].currentValue) > 0 {
-                setDeviceValue = UInt8(0)
-            } else {
-                setDeviceValue = UInt8(100)
-            }
-            let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = Int(setDeviceValue)
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
-            })
+// TODO: MAKE (REVISE) FUNCTIONALITY
+//            var setDeviceValue:UInt8 = 0
+//            if Int(devices[tag].currentValue) > 0 {
+//                setDeviceValue = UInt8(0)
+//            } else {
+//                setDeviceValue = UInt8(100)
+//            }
+//            let deviceCurrentValue = Int(devices[tag].currentValue)
+//            devices[tag].currentValue = Int(setDeviceValue)
+//            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+//            dispatch_async(dispatch_get_main_queue(), {
+//                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+//            })
         }
-//        deviceCollectionView.reloadData()
         updateCells()
     }
     
@@ -514,7 +515,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
-                cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
         }
@@ -541,7 +541,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
-                cell.curtainSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             }
         }
@@ -576,8 +575,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             } else if devices[index.row].controlType == ControlType.Curtain {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
-                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
+// TODO: MAKE (REVISE) FUNCTIONALITY
+//                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
+//                UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             }
             
             devices[index.row].info = true
@@ -600,8 +600,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ClimateCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             } else if devices[index.row].controlType == ControlType.Curtain {
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
-                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
+// TODO: MAKE (REVISE) FUNCTIONALITY
+//                let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! CurtainCollectionCell
+//                UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             }
             devices[index.row].info = false
         }
@@ -633,7 +634,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.curtainImage.image = devices[tag].returnImage(Double(value))
-                cell.curtainSlider.value = slider.value
                 cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -720,7 +720,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 }
             }()
             cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
-            cell.curtainSlider.value = Float(deviceValue)
             cell.setNeedsDisplay()
         }
     }

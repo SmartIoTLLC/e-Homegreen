@@ -141,10 +141,31 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
-    @IBOutlet weak var curtainSlider: UISlider!
-    @IBOutlet weak var curtainState: MarqueeLabel!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var openButton: UIButton!
+    
+    override func awakeFromNib() {
+        closeButton.layer.cornerRadius = 5
+        openButton.layer.cornerRadius = 5
+        
+        let tapGesture = UITapGestureRecognizer(target: self.curtainImage, action: Selector("stopCurtainMotor:"))
+        self.curtainImage.addGestureRecognizer(tapGesture)
+    }
+    
+    @IBAction func openCurtain(sender: AnyObject) {
+        curtainImage.image = UIImage(named: "curtain0")
+    }
+    
+    @IBAction func cloaseCurtain(sender: AnyObject) {
+        curtainImage.image = UIImage(named: "curtain4")
+    }
+    
+    func stopCurtainMotor(gesture:UITapGestureRecognizer){
+        curtainImage.image = UIImage(named: "curtain2")
+    }
     
     func refreshDevice(device:Device) {
+
         let deviceValue:Double = {
             if Double(device.currentValue) > 100 {
                 return Double(device.currentValue) / 255
@@ -153,13 +174,11 @@ class CurtainCollectionCell: UICollectionViewCell {
             }
         }()
         curtainImage.image = device.returnImage(Double(device.currentValue))
-        curtainState.text = "\(CurtainModuleState.returnState(Int(device.currentValue)))"
         if device.filterWarning {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
         } else {
             backView.colorTwo = Colors.DirtyRedColor
         }
-        curtainSlider.value = Float(deviceValue)
 //        labelRunningTime.text = "\(device.runningTime)"
 //        lblElectricity.text = "\(Float(device.current) * 0.01) A"
 //        lblVoltage.text = "\(Float(device.voltage)) V"

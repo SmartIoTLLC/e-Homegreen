@@ -228,7 +228,6 @@ extension DevicesViewController: UICollectionViewDataSource {
 
             cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
-            cell.curtainSlider.tag = indexPath.row
             let deviceValue:Double = {
                 if Double(devices[indexPath.row].currentValue) > 100 {
                     return Double(devices[indexPath.row].currentValue) / 255
@@ -238,13 +237,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             }()
             cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
             cell.curtainName.userInteractionEnabled = true
-            cell.curtainSlider.value = Float(deviceValue)
             cell.curtainImage.userInteractionEnabled = true
-            
-//            cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-//            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
-//            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
-//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+
             cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address)))"
             cell.lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location))"
             cell.lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location))"
@@ -253,29 +247,23 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
-                cell.curtainSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
-                cell.curtainSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
-                cell.curtainSlider.addTarget(self, action: "changeSliderValueEnded:", forControlEvents:  UIControlEvents.TouchUpInside)
-                cell.curtainSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "changeSliderValueOnOneTap:"))
-                let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-                let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-                lpgr.minimumPressDuration = 0.5
-                lpgr.delegate = self
-                cell.curtainImage.addGestureRecognizer(lpgr)
-                cell.curtainImage.addGestureRecognizer(tap)
+                let curtainImageTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
+                let curtainImageLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+                curtainImageLongPress.minimumPressDuration = 0.5
+                curtainImageLongPress.delegate = self
+                cell.curtainImage.addGestureRecognizer(curtainImageLongPress)
+                cell.curtainImage.addGestureRecognizer(curtainImageTap)
                 
-                let oneTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-                oneTap.numberOfTapsRequired = 2
-                cell.curtainName.addGestureRecognizer(oneTap)
+                let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
+                curtainNameTap.numberOfTapsRequired = 2
+                cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
                 
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
-                longPress.minimumPressDuration = 0.5
-                cell.curtainName.addGestureRecognizer(longPress)
+                let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+                curtainNameLongPress.minimumPressDuration = 0.5
+                cell.curtainName.addGestureRecognizer(curtainNameLongPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-//                cell.btnRefresh.tag = indexPath.row
-                //                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-//                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
+
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
