@@ -57,7 +57,6 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
-            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -410,9 +409,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K02-Ib-2gO" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
-                                                        <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FPC-Qx-77a">
-                                                            <rect key="frame" x="18" y="142" width="114" height="31"/>
-                                                        </slider>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbk-5J-of7" customClass="MarqueeLabel">
                                                             <rect key="frame" x="2" y="8" width="146" height="19"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
@@ -435,7 +431,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="curtain0" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Lk-PX4">
-                                                            <rect key="frame" x="35" y="32" width="81" height="81"/>
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="6yc-Lk-PX4" secondAttribute="height" multiplier="1:1" id="aXd-C8-bcU"/>
                                                             </constraints>
@@ -445,41 +441,48 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtJ-xA-KTu" customClass="MarqueeLabel">
-                                                            <rect key="frame" x="0.0" y="118" width="150" height="19"/>
-                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="rate">
-                                                                    <real key="value" value="20"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
-                                                                    <real key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
-                                                                    <real key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
-                                                                    <real key="value" value="10"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48R-sb-ZFa">
+                                                            <rect key="frame" x="20" y="142" width="55" height="28"/>
+                                                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="28" id="38i-df-9Fb"/>
+                                                                <constraint firstAttribute="width" constant="55" id="XIt-Pj-Rqi"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <state key="normal" title="CLOSE">
+                                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="cloaseCurtain:" destination="wcg-Qu-60Z" eventType="touchUpInside" id="iEk-Lg-AWd"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yrc-ew-iUX">
+                                                            <rect key="frame" x="75" y="142" width="55" height="28"/>
+                                                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="55" id="fbj-Oh-Ud0"/>
+                                                                <constraint firstAttribute="height" constant="28" id="rr4-za-FyT"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <state key="normal" title="OPEN">
+                                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="openCurtain:" destination="wcg-Qu-60Z" eventType="touchUpInside" id="7Kd-81-ZOU"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="FPC-Qx-77a" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="20" id="4xY-lK-85h"/>
-                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="centerX" secondItem="tbk-5J-of7" secondAttribute="centerX" id="735-LY-Hil"/>
-                                                        <constraint firstAttribute="trailing" secondItem="FPC-Qx-77a" secondAttribute="trailing" constant="20" id="7BT-Ui-0Ks"/>
+                                                        <constraint firstAttribute="trailing" secondItem="6yc-Lk-PX4" secondAttribute="trailing" constant="20" id="00m-oZ-M2R"/>
+                                                        <constraint firstItem="48R-sb-ZFa" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="20" id="6lR-hJ-p8d"/>
                                                         <constraint firstAttribute="trailing" secondItem="tbk-5J-of7" secondAttribute="trailing" constant="2" id="8Gg-nE-ouQ"/>
-                                                        <constraint firstItem="AtJ-xA-KTu" firstAttribute="top" secondItem="6yc-Lk-PX4" secondAttribute="bottom" constant="5" id="F2u-fE-4Wv"/>
+                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="20" id="JHd-SH-gMM"/>
                                                         <constraint firstItem="tbk-5J-of7" firstAttribute="top" secondItem="K02-Ib-2gO" secondAttribute="top" constant="8" id="Kes-Zq-9fq"/>
-                                                        <constraint firstAttribute="trailing" secondItem="AtJ-xA-KTu" secondAttribute="trailing" id="Ofp-WF-N0u"/>
-                                                        <constraint firstItem="AtJ-xA-KTu" firstAttribute="centerX" secondItem="K02-Ib-2gO" secondAttribute="centerX" id="WAz-Wu-Cb3"/>
-                                                        <constraint firstAttribute="bottom" secondItem="FPC-Qx-77a" secondAttribute="bottom" constant="8" id="aO1-JH-H9w"/>
-                                                        <constraint firstItem="AtJ-xA-KTu" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" id="g72-Ax-7cX"/>
-                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="top" secondItem="tbk-5J-of7" secondAttribute="bottom" constant="5" id="m7e-eP-lUi"/>
-                                                        <constraint firstItem="FPC-Qx-77a" firstAttribute="top" secondItem="AtJ-xA-KTu" secondAttribute="bottom" constant="5" id="wUt-bc-ghe"/>
+                                                        <constraint firstItem="6yc-Lk-PX4" firstAttribute="centerY" secondItem="K02-Ib-2gO" secondAttribute="centerY" id="cGG-5F-pvq"/>
+                                                        <constraint firstAttribute="bottom" secondItem="48R-sb-ZFa" secondAttribute="bottom" constant="10" id="kfb-6b-DH8"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Yrc-ew-iUX" secondAttribute="trailing" constant="20" id="lsh-0F-CIG"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Yrc-ew-iUX" secondAttribute="bottom" constant="10" id="uEm-hk-MpB"/>
                                                         <constraint firstItem="tbk-5J-of7" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="2" id="y67-hX-Zh2"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -506,16 +509,16 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="backView" destination="K02-Ib-2gO" id="TIn-jG-vLe"/>
+                                            <outlet property="closeButton" destination="48R-sb-ZFa" id="a2j-Z9-HZk"/>
                                             <outlet property="curtainImage" destination="6yc-Lk-PX4" id="YbN-jr-3sP"/>
                                             <outlet property="curtainName" destination="tbk-5J-of7" id="tza-zI-cBv"/>
-                                            <outlet property="curtainSlider" destination="FPC-Qx-77a" id="jgx-eZ-hnM"/>
-                                            <outlet property="curtainState" destination="AtJ-xA-KTu" id="61J-bG-TTT"/>
                                             <outlet property="disabledCellView" destination="tSY-CN-WCT" id="wmL-8u-3Vi"/>
                                             <outlet property="infoView" destination="66l-f6-pas" id="lxJ-Hr-82d"/>
                                             <outlet property="lblAddress" destination="5mA-oP-XGV" id="rSo-cO-VLK"/>
                                             <outlet property="lblCategory" destination="L4t-1h-uek" id="ocf-14-j6z"/>
                                             <outlet property="lblLevel" destination="G2D-x3-mY8" id="jnc-jU-QUq"/>
                                             <outlet property="lblZone" destination="n1g-iW-8Hy" id="aqn-qE-mkc"/>
+                                            <outlet property="openButton" destination="Yrc-ew-iUX" id="99i-aq-6NU"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="applianceCell" id="ymB-1e-PPO" customClass="ApplianceCollectionCell" customModule="e_Homegreen" customModuleProvider="target">

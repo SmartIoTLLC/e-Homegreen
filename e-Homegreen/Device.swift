@@ -83,7 +83,7 @@ class Device: NSManagedObject {
     // MARK: Return image for specific state
     func returnImage(newDeviceValue:Double) -> UIImage {
         // Convert device images to array
-        let deviceValue:Double = {
+        let deviceValue: Double = {
             if newDeviceValue <= 100 {
                 return Double(newDeviceValue)
             } else {
