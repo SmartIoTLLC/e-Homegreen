@@ -152,7 +152,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var searchForDeviceWithId:Int?
     var fromAddress:Int?
     var toAddress:Int?
-    
     var arrayOfDevicesToBeSearched = [Int]()
     var indexOfDevicesToBeSearched = 0
     
@@ -234,6 +233,28 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
+    func deviceReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            if let info = notification.userInfo! as? [String:Int] {
+                if let deviceIndex = info["deviceAddresInGateway"] {
+                    if deviceIndex == searchForDeviceWithId {
+                        if indexOfDevicesToBeSearched+1 < arrayOfDevicesToBeSearched.count {
+                            indexOfDevicesToBeSearched += 1
+                            let deviceIdToBeSearched = arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched]
+                            timesRepeatedCounter = 0
+                            searchDeviceTimer?.invalidate()
+                            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
+                            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
+                            setProgressBarParametarsForSearchingDevices(address)
+                            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                        }else{
+                            dismissScaningControls()
+                        }
+                    }
+                }
+            }
+        }
+    }
     func checkIfGatewayDidGetDevice (timer:NSTimer) {
         if let index = timer.userInfo as? Int {
             updateDeviceList()
@@ -290,29 +311,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    func deviceReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
-            if let info = notification.userInfo! as? [String:Int] {
-                if let deviceIndex = info["deviceAddresInGateway"] {
-                    if deviceIndex == searchForDeviceWithId {
-                        if indexOfDevicesToBeSearched+1 < arrayOfDevicesToBeSearched.count {
-                            indexOfDevicesToBeSearched += 1
-                            let deviceIdToBeSearched = arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched]
-                            timesRepeatedCounter = 0
-                            searchDeviceTimer?.invalidate()
-                            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
-                            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
-                            setProgressBarParametarsForSearchingDevices(address)
-                            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
-                        }else{
-                            dismissScaningControls()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
         let howMuchOf = arrayOfDevicesToBeSearched.count
         let index = indexOfDevicesToBeSearched+1
@@ -322,44 +321,35 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             pbFD?.progressView.progress = Float(index)/Float(howMuchOf)
         }
     }
-    func setProgressBarParametarsForFindingNames (var index:Int) {
-        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(index){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
-                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
-                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
-                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
-            }
-            
+    
+    // MARK: - DELETING DEVICES FOR GATEWAY
+    func changeValueEnable (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isEnabled = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isEnabled = NSNumber(bool: false)
         }
+        saveChanges()
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
-    func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
-        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
-                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
-                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)*100) + " %"
-                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)
-            }
+    func changeValueVisible (sender:UISwitch) {
+        if sender.on {
+            devices[sender.tag].isVisible = NSNumber(bool: true)
+        } else {
+            devices[sender.tag].isVisible = NSNumber(bool: false)
         }
+        saveChanges()
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
-    func dismissScaningControls() {
-        timesRepeatedCounter = 0
-        //   For finding names
-//        index = 0
-        deviceNameTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
-        pbFN?.dissmissProgressBar()
-        
-        //   For finding devices
-        searchForDeviceWithId = 0
-        searchDeviceTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDevice)
-        pbFD?.dissmissProgressBar()
-        if !findSensorParametar {
-            UIApplication.sharedApplication().idleTimerDisabled = false
-        } else {
-            findParametarsForSensor()
+    @IBAction func deleteAll(sender: AnyObject) {
+        for var item = 0; item < devices.count; item += 1 {
+            if devices[item].gateway.objectID == gateway.objectID {
+                appDel.managedObjectContext!.deleteObject(devices[item])
+            }
         }
+        saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
@@ -473,6 +463,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
+    
     func nameReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             if let info = notification.userInfo! as? [String:Int] {
@@ -577,52 +568,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func refreshDeviceList() {
-        updateDeviceList()
-        deviceTableView.reloadData()
-    }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    func progressBarDidPressedExit() {
-        dismissScaningControls()
-    }
-    
-    
-    // MARK: - DELETING DEVICES FOR GATEWAY
-    func changeValueEnable (sender:UISwitch) {
-        if sender.on {
-            devices[sender.tag].isEnabled = NSNumber(bool: true)
-        } else {
-            devices[sender.tag].isEnabled = NSNumber(bool: false)
-        }
-        saveChanges()
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
-    }
-    func changeValueVisible (sender:UISwitch) {
-        if sender.on {
-            devices[sender.tag].isVisible = NSNumber(bool: true)
-        } else {
-            devices[sender.tag].isVisible = NSNumber(bool: false)
-        }
-        saveChanges()
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
-    }
-    
-    @IBAction func deleteAll(sender: AnyObject) {
-        for var item = 0; item < devices.count; item += 1 {
-            if devices[item].gateway.objectID == gateway.objectID {
-                appDel.managedObjectContext!.deleteObject(devices[item])
+    func setProgressBarParametarsForFindingNames (var index:Int) {
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(index){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
+                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
+                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
             }
+            
         }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     
     // MARK: - Sensor parametar
@@ -670,29 +624,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             alertController("Error", message: "Something went wrong.")
         }
     }
-    func sensorParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars) {
-            if let info = notification.userInfo! as? [String:Int] {
-                if let deviceIndex = info["sensorIndexForFoundParametar"] {
-                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
-                            indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfSensorAdresses+1
-                            let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfNamesToBeSearched]
-                            
-                            timesRepeatedCounter = 0
-                            deviceNameTimer?.invalidate()
-                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-                            NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
-                            sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
-                        }else{
-                            findSensorParametar = false
-                            dismissScaningControls()
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     func checkIfSensorDidGotParametar (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
@@ -736,8 +667,77 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
+    func sensorParametarReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars) {
+            if let info = notification.userInfo! as? [String:Int] {
+                if let deviceIndex = info["sensorIndexForFoundParametar"] {
+                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
+                            indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfSensorAdresses+1
+                            let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfNamesToBeSearched]
+                            
+                            timesRepeatedCounter = 0
+                            deviceNameTimer?.invalidate()
+                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
+                            NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
+                            sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
+                        }else{
+                            findSensorParametar = false
+                            dismissScaningControls()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    //   ============================================      ============================================
+    func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
+                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)*100) + " %"
+                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)
+            }
+        }
+    }
+    
+    // MARK: - Other
+    func refreshDeviceList() {
+        updateDeviceList()
+        deviceTableView.reloadData()
+    }
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+    func progressBarDidPressedExit() {
+        dismissScaningControls()
+    }
+    func dismissScaningControls() {
+        timesRepeatedCounter = 0
+        //   For finding names
+        //        index = 0
+        deviceNameTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        pbFN?.dissmissProgressBar()
+        
+        //   For finding devices
+        searchForDeviceWithId = 0
+        searchDeviceTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDevice)
+        pbFD?.dissmissProgressBar()
+        if !findSensorParametar {
+            UIApplication.sharedApplication().idleTimerDisabled = false
+        } else {
+            findParametarsForSensor()
+        }
+    }
+    
     var alertController:UIAlertController?
     func alertController (title:String, message:String) {
         alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
