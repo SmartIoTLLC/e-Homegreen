@@ -314,7 +314,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
             popoverList.append(PopOverItem(name: item.timerName, id: item.objectID.URIRepresentation().absoluteString))
         }
         popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
 
     }
     
@@ -326,7 +326,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
             popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.URIRepresentation().absoluteString))
         }
         popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
 
     }
     

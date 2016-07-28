@@ -15,6 +15,10 @@ extension UIViewController {
         
     }
     
+    func sendSearchBarText(text:String){
+        
+    }
+    
     func imageLayerForGradientBackground() -> UIImage {
         
         var updatedFrame = self.navigationController?.navigationBar.bounds

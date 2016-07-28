@@ -226,7 +226,7 @@ class ScanTimerViewController: PopoverVC {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnCategory(sender: UIButton) {
@@ -238,7 +238,7 @@ class ScanTimerViewController: PopoverVC {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnZone(sender: UIButton) {
@@ -252,7 +252,7 @@ class ScanTimerViewController: PopoverVC {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     override func nameAndId(name: String, id: String) {
@@ -282,7 +282,7 @@ class ScanTimerViewController: PopoverVC {
         for item in TimerType.allItem{
             popoverList.append(PopOverItem(name: item.rawValue, id: ""))
         }
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
 
 }

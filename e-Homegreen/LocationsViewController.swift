@@ -120,7 +120,7 @@ class LocationViewController: PopoverVC  {
             popoverList.append(PopOverItem(name: item.rawValue, id: ""))
         }
         
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }   // add camera or gateway
 
     override func nameAndId(name: String, id: String) {

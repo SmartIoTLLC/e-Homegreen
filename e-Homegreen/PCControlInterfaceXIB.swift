@@ -202,7 +202,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         for option in PowerOption.allValues{
             popoverList.append(PopOverItem(name: option.description, id: ""))
         }
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
 
     }
     
@@ -218,7 +218,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
                 }
             }
         }
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func runOption(sender: UIButton) {
@@ -233,7 +233,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
                 }
             }
         }
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     override func nameAndId(name: String, id: String) {
