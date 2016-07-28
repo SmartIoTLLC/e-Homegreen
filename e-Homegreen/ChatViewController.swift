@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import CoreData
+import AudioToolbox
 import AVFoundation
 
 struct ChatItem {
@@ -140,6 +140,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.Chat)
         }
     }

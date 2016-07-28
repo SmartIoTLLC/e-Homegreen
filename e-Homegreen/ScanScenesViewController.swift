@@ -87,6 +87,22 @@ class ScanScenesViewController: PopoverVC {
         sceneTableView.reloadData()
     }
     
+    override func sendSearchBarText(text: String) {
+        updateSceneList()
+        if !text.isEmpty{
+            scenes = self.scenes.filter() {
+                scene in
+                if scene.sceneName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
+        
+        sceneTableView.reloadData()
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class TimersViewController: PopoverVC {
     
@@ -137,6 +138,7 @@ class TimersViewController: PopoverVC {
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             scrollView.setDefaultFilterItem(Menu.Timers)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     

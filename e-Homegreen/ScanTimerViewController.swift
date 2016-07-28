@@ -96,6 +96,22 @@ class ScanTimerViewController: PopoverVC {
         timerTableView.reloadData()
     }
     
+    override func sendSearchBarText(text: String) {
+        updateTimerList()
+        if !text.isEmpty{
+            timers = self.timers.filter() {
+                timer in
+                if timer.timerName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
+        timerTableView.reloadData()
+        
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false

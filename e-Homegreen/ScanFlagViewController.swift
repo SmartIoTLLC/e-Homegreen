@@ -90,6 +90,22 @@ class ScanFlagViewController: PopoverVC {
         flagTableView.reloadData()
     }
     
+    override func sendSearchBarText(text: String) {
+        updateFlagList()
+        if !text.isEmpty{
+            flags = self.flags.filter() {
+                flag in
+                if flag.flagName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
+        flagTableView.reloadData()
+        
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false

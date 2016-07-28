@@ -90,6 +90,22 @@ class ScanSequencesesViewController: PopoverVC {
         sequencesTableView.reloadData()
     }
     
+    override func sendSearchBarText(text: String) {
+        updateSequenceList()
+        if !text.isEmpty{
+            sequences = self.sequences.filter() {
+                sequence in
+                if sequence.sequenceName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
+        sequencesTableView.reloadData()
+        
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false
