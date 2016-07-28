@@ -544,7 +544,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
 //                popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.URIRepresentation().absoluteString))
 //            }
             popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
-            openFilterPopover(gestureRecognizer.view!, popOverList:popoverList)
+            openPopover(gestureRecognizer.view!, popOverList:popoverList)
         }
     }
     

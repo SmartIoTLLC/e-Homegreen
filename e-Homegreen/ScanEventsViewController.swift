@@ -159,7 +159,7 @@ class ScanEventsViewController: PopoverVC {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnCategoryAction(sender: UIButton) {
@@ -171,7 +171,7 @@ class ScanEventsViewController: PopoverVC {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnZoneAction(sender: UIButton) {
@@ -185,7 +185,7 @@ class ScanEventsViewController: PopoverVC {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     override func nameAndId(name: String, id: String) {

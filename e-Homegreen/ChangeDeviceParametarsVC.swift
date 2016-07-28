@@ -198,33 +198,33 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         button.setTitle(name, forState: .Normal)
     }
     
-    override func saveText (text : String, id:Int) {
-        print("\(text) \(id)")
-        if text != "All" {
-            if id == 2 {
-                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
-                    editedDevice?.levelId = levelId
-                }
-                btnLevel.setTitle(text, forState: UIControlState.Normal)
-            } else if id == 3 {
-                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
-                    editedDevice?.zoneId = zoneId
-                }
-                btnZone.setTitle(text, forState: UIControlState.Normal)
-            } else if id == 4 {
-                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, location: device.gateway.location)) {
-                    editedDevice?.categoryId = categoryId
-                }
-                btnCategory.setTitle(text, forState: UIControlState.Normal)
-            } else if id == 21 {
-                editedDevice?.controlType = text
-                btnControlType.setTitle(text,forState: UIControlState.Normal)
-            } else if id == 22 {
-                editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[text]!
-                changeDeviceInputMode.setTitle(text,forState: UIControlState.Normal)
-            }
-        }
-    }
+//    override func saveText (text : String, id:Int) {
+//        print("\(text) \(id)")
+//        if text != "All" {
+//            if id == 2 {
+//                if let levelId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
+//                    editedDevice?.levelId = levelId
+//                }
+//                btnLevel.setTitle(text, forState: UIControlState.Normal)
+//            } else if id == 3 {
+//                if let zoneId = Int(DatabaseHandler.returnZoneIdWithName(text, location: device.gateway.location)) {
+//                    editedDevice?.zoneId = zoneId
+//                }
+//                btnZone.setTitle(text, forState: UIControlState.Normal)
+//            } else if id == 4 {
+//                if let categoryId = Int(DatabaseHandler.returnCategoryIdWithName(text, location: device.gateway.location)) {
+//                    editedDevice?.categoryId = categoryId
+//                }
+//                btnCategory.setTitle(text, forState: UIControlState.Normal)
+//            } else if id == 21 {
+//                editedDevice?.controlType = text
+//                btnControlType.setTitle(text,forState: UIControlState.Normal)
+//            } else if id == 22 {
+//                editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[text]!
+//                changeDeviceInputMode.setTitle(text,forState: UIControlState.Normal)
+//            }
+//        }
+//    }
     
     @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
         let touches = event.touchesForView(sender as! UIView)
@@ -250,7 +250,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
@@ -258,7 +258,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
         popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
         popoverList.append(PopOverItem(name: ControlType.Curtain, id: ""))
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnLevel (sender: UIButton) {
@@ -269,7 +269,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnZone (sender: UIButton) {
@@ -283,7 +283,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnCategory (sender: UIButton) {
@@ -295,7 +295,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnSave(sender: AnyObject) {

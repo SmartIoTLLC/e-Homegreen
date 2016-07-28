@@ -1,36 +1,28 @@
 //
-//  FilterPullDown.swift
+//  ScanFilterPullDown.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Zivanov on 7/15/16.
+//  Created by Vladimir Zivanov on 7/28/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-protocol FilterPullDownDelegate{
-    func filterParametars (filterItem: FilterItem)
+protocol ScanFilterPullDownDelegate{
+    func scanFilterParametars (filterItem: FilterItem)
 }
 
-class FilterPullDown: UIScrollView {
-    
-    var filterDelegate : FilterPullDownDelegate?
+class ScanFilterPullDown: UIScrollView {
+
+    var scanFilterDelegate : ScanFilterPullDownDelegate?
     
     var bottom = NSLayoutConstraint()
+    
+    var height = NSLayoutConstraint()
     
     let contentView = UIView()
     let bottomLine = UIView()
     let pullView:UIImageView = UIImageView()
-    
-    //default value element
-    let resetTimeButton:UIButton = UIButton()
-    let secundsLabel:UILabel = UILabel()
-    let secundsTextField:UITextField = UITextField()
-    let minLabel:UILabel = UILabel()
-    let minTextField:UITextField = UITextField()
-    let hoursLabel:UILabel = UILabel()
-    let hoursTextField:UITextField = UITextField()
-    var setAsDefaultButton:CustomGradientButton = CustomGradientButton()
     
     //location
     let locationLabel:UILabel = UILabel()
@@ -51,10 +43,10 @@ class FilterPullDown: UIScrollView {
     let categoryLabel:UILabel = UILabel()
     let chooseCategoryButon:CustomGradientButton = CustomGradientButton()
     let resetCategoryButton:UIButton = UIButton()
-
+    
     var button:UIButton!
     
-    var location:Location?
+    var location:Location!
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
@@ -83,6 +75,7 @@ class FilterPullDown: UIScrollView {
         //Create and add content view
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.9)
+        contentView.clipsToBounds = true
         self.addSubview(contentView)
         
         //create and add bottom gray line
@@ -95,66 +88,6 @@ class FilterPullDown: UIScrollView {
         pullView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(pullView)
         
-        //reset default button
-        resetTimeButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
-        resetTimeButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(resetTimeButton)
-        
-        // secunds label
-        secundsLabel.text = "s"
-        secundsLabel.textAlignment = .Center
-        secundsLabel.textColor = UIColor.whiteColor()
-        secundsLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(secundsLabel)
-        
-        //secunds textfield
-        secundsTextField.borderStyle = .RoundedRect
-        secundsTextField.translatesAutoresizingMaskIntoConstraints = false
-        secundsTextField.inputAccessoryView = CustomToolBar()
-        secundsTextField.keyboardType = .NumberPad
-        contentView.addSubview(secundsTextField)
-        secundsTextField.backgroundColor = UIColor.whiteColor()
-        
-        //minutes label
-        minLabel.text = "m"
-        minLabel.textAlignment = .Center
-        minLabel.textColor = UIColor.whiteColor()
-        minLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(minLabel)
-        
-        //minutes textfield
-        minTextField.borderStyle = .RoundedRect
-        minTextField.translatesAutoresizingMaskIntoConstraints = false
-        minTextField.inputAccessoryView = CustomToolBar()
-        minTextField.keyboardType = .NumberPad
-        contentView.addSubview(minTextField)
-        minTextField.backgroundColor = UIColor.whiteColor()
-        
-        //hours label
-        hoursLabel.text = "h"
-        hoursLabel.textAlignment = .Center
-        hoursLabel.textColor = UIColor.whiteColor()
-        hoursLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(hoursLabel)
-        
-        //hours text field
-        hoursTextField.borderStyle = .RoundedRect
-        hoursTextField.translatesAutoresizingMaskIntoConstraints = false
-        hoursTextField.inputAccessoryView = CustomToolBar()
-        hoursTextField.keyboardType = .NumberPad
-        contentView.addSubview(hoursTextField)
-        hoursTextField.backgroundColor = UIColor.whiteColor()
-        
-        //set as default button
-        setAsDefaultButton.setTitle("SET AS DEFAULT", forState: .Normal)
-        setAsDefaultButton.titleLabel!.numberOfLines = 1
-        setAsDefaultButton.titleLabel!.adjustsFontSizeToFitWidth = true
-        setAsDefaultButton.titleLabel!.lineBreakMode = NSLineBreakMode.ByClipping
-        setAsDefaultButton.titleLabel?.font.fontWithSize(8)
-        setAsDefaultButton.translatesAutoresizingMaskIntoConstraints = false
-        setAsDefaultButton.addTarget(self, action: #selector(FilterPullDown.setDefaultParametar), forControlEvents: UIControlEvents.TouchUpInside)
-        contentView.addSubview(setAsDefaultButton)
-        
         //location label
         locationLabel.text = "Location"
         locationLabel.textAlignment = .Left
@@ -164,7 +97,6 @@ class FilterPullDown: UIScrollView {
         
         //choose location button
         chooseLocationButon.setTitle("All", forState: .Normal)
-        chooseLocationButon.addTarget(self, action: #selector(FilterPullDown.openLocations(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         chooseLocationButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLocationButon.tag = 0
         contentView.addSubview(chooseLocationButon)
@@ -172,7 +104,6 @@ class FilterPullDown: UIScrollView {
         //reset location
         resetLocationButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetLocationButton.translatesAutoresizingMaskIntoConstraints = false
-        resetLocationButton.addTarget(self, action: #selector(FilterPullDown.resetLocations(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetLocationButton)
         
         //level label
@@ -185,14 +116,14 @@ class FilterPullDown: UIScrollView {
         //choose level button
         chooseLevelButon.setTitle("All", forState: .Normal)
         chooseLevelButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseLevelButon.addTarget(self, action: #selector(FilterPullDown.openLevels(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseLevelButon.addTarget(self, action: #selector(ScanFilterPullDown.openLevels(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         chooseLevelButon.tag = 1
         contentView.addSubview(chooseLevelButon)
         
         //reset level
         resetLevelButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetLevelButton.translatesAutoresizingMaskIntoConstraints = false
-        resetLevelButton.addTarget(self, action: #selector(FilterPullDown.resetLevel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetLevelButton.addTarget(self, action: #selector(ScanFilterPullDown.resetLevel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetLevelButton)
         
         //zone label
@@ -205,14 +136,14 @@ class FilterPullDown: UIScrollView {
         //choose zone button
         chooseZoneButon.setTitle("All", forState: .Normal)
         chooseZoneButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseZoneButon.addTarget(self, action: #selector(FilterPullDown.openZones(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseZoneButon.addTarget(self, action: #selector(ScanFilterPullDown.openZones(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         chooseZoneButon.tag = 2
         contentView.addSubview(chooseZoneButon)
         
         //reset zone
         resetZoneButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetZoneButton.translatesAutoresizingMaskIntoConstraints = false
-        resetZoneButton.addTarget(self, action: #selector(FilterPullDown.resetZone(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetZoneButton.addTarget(self, action: #selector(ScanFilterPullDown.resetZone(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetZoneButton)
         
         //category label
@@ -225,21 +156,22 @@ class FilterPullDown: UIScrollView {
         //choose category button
         chooseCategoryButon.setTitle("All", forState: .Normal)
         chooseCategoryButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseCategoryButon.addTarget(self, action: #selector(FilterPullDown.openCategories(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseCategoryButon.addTarget(self, action: #selector(ScanFilterPullDown.openCategories(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         chooseCategoryButon.tag = 3
         contentView.addSubview(chooseCategoryButon)
         
         //reset category
         resetCategoryButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
         resetCategoryButton.translatesAutoresizingMaskIntoConstraints = false
-        resetCategoryButton.addTarget(self, action: #selector(FilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetCategoryButton.addTarget(self, action: #selector(ScanFilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetCategoryButton)
         
     }
     
-    //MARK: Seetup constraint
-    
-    func setItem(view: UIView){
+    func setItem(view: UIView, location: Location){
+        
+        self.location = location
+        chooseLocationButon.setTitle(location.name, forState: .Normal)
         
         //set content view constraint
         self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
@@ -251,13 +183,11 @@ class FilterPullDown: UIScrollView {
         
         view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
-
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0))
         
+        height = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+        view.addConstraint(height)
         
         setBottomLineAndPullDownImageConstraint()
-        
-        setDefaultValueConstraint()
         
         setLocationConstraint()
         
@@ -267,7 +197,7 @@ class FilterPullDown: UIScrollView {
         
         setCategoryConstraint()
         
-
+        
     }
     
     func setBottomLineAndPullDownImageConstraint(){
@@ -287,61 +217,11 @@ class FilterPullDown: UIScrollView {
         pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 60))
     }
     
-    func setDefaultValueConstraint(){
-        
-        //reset value button
-        contentView.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetTimeButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
-        resetTimeButton.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        resetTimeButton.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        
-        //secunds label
-        contentView.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: secundsLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: resetTimeButton, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        secundsLabel.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        secundsLabel.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20))
-        
-        //secunds text field
-        contentView.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: secundsTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: secundsLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        
-        //minutes label
-        contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: minLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: minLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: secundsTextField, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        minLabel.addConstraint(NSLayoutConstraint(item: minLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        minLabel.addConstraint(NSLayoutConstraint(item: minLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20))
- 
-        //minutes text field
-        contentView.addConstraint(NSLayoutConstraint(item: minLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: minTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: minLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        
-        //hours lebel
-        contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: hoursLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: minTextField, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        hoursLabel.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        hoursLabel.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20))
-        
-        //hours text field
-        contentView.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: hoursTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: hoursLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        
-        //set as default button
-        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: setAsDefaultButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 5))
-        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: hoursTextField, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-    }
-    
     func setLocationConstraint(){
         
         //location label
         contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: setAsDefaultButton, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 20))
         locationLabel.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
         
         //choose location button
@@ -359,7 +239,7 @@ class FilterPullDown: UIScrollView {
     }
     
     func setLevelConstraint(){
-
+        
         // level label
         contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
         contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
@@ -368,7 +248,7 @@ class FilterPullDown: UIScrollView {
         //choose level button
         contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
         contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-
+        
         //reset level button
         contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseLevelButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
         contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetLevelButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
@@ -380,12 +260,12 @@ class FilterPullDown: UIScrollView {
     }
     
     func setZonesConstraint(){
-
+        
         //zone label
         contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
         contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
         zoneLabel.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
-
+        
         //choose zone butoon
         contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
         contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
@@ -401,16 +281,16 @@ class FilterPullDown: UIScrollView {
     }
     
     func setCategoryConstraint(){
-
+        
         //category label
         contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
         contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
         categoryLabel.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
-
+        
         //choose category label
         contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: categoryLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
         contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: categoryLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-
+        
         //reset category
         contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
         contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetCategoryButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
@@ -421,38 +301,12 @@ class FilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
     }
     
-    func openLocations(sender : UIButton){
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Location] = FilterController.shared.getLocationForFilterByUser()
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
-        }
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
-        if let vc = self.parentViewController as? PopoverVC{
-            vc.openPopover(sender, popOverList:popoverList)
-        }
-    }
-    
-    func resetLocations(sender : UIButton){
-        location = nil
-        level = nil
-        zoneSelected = nil
-        category = nil
-        chooseLocationButon.setTitle("All", forState: .Normal)
-        chooseZoneButon.setTitle("All", forState: .Normal)
-        chooseLevelButon.setTitle("All", forState: .Normal)
-        chooseCategoryButon.setTitle("All", forState: .Normal)
-    }
-    
     func openLevels(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
-        if let location = location{
-            let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
-            }
+        let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
@@ -471,13 +325,13 @@ class FilterPullDown: UIScrollView {
     func openZones(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
-        if let location = location, let level = level{
+        if let level = level{
             let list:[Zone] = FilterController.shared.getZoneByLevel(location, parentZone: level)
             for item in list {
                 popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
             }
         }
-
+        
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         if let vc = self.parentViewController as? PopoverVC{
             vc.openPopover(sender, popOverList:popoverList)
@@ -492,11 +346,9 @@ class FilterPullDown: UIScrollView {
     func openCategories(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
-        if let location = location{
-            let list:[Category] = FilterController.shared.getCategoriesByLocation(location)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
-            }
+        let list:[Category] = FilterController.shared.getCategoriesByLocation(location)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
@@ -512,142 +364,28 @@ class FilterPullDown: UIScrollView {
     
     func setButtonTitle(text:String, id:String){
         switch button.tag{
-        case 0:
-            location = FilterController.shared.getLocationByObjectId(id)
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
+            button.setTitle(text, forState: .Normal)
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            button.setTitle(text, forState: .Normal)
             break
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
+            button.setTitle(text, forState: .Normal)
             break
         default:
             break
         }
-
-        button.setTitle(text, forState: .Normal)
-    }
-    
-    func setFilterItem(menu:Menu){
-        self.menuItem = menu
-        if let filter = DatabaseFilterController.shared.getFilterByMenu(menu){
-            if filter.locationId != "All"{
-                if let location = FilterController.shared.getLocationByObjectId(filter.locationId){
-                    chooseLocationButon.setTitle(location.name, forState: .Normal)
-                    self.location = location
-                }
-            }else{
-                chooseLocationButon.setTitle("All", forState: .Normal)
-                self.location = nil
-            }
-            if filter.levelId != "All"{
-                if let level = FilterController.shared.getZoneByObjectId(filter.levelId){
-                    chooseLevelButon.setTitle(level.name, forState: .Normal)
-                    self.level = level
-                }
-            }else{
-                chooseLevelButon.setTitle("All", forState: .Normal)
-                self.level = nil
-            }
-            if filter.zoneId != "All"{
-                if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId){
-                    chooseZoneButon.setTitle(zone.name, forState: .Normal)
-                    self.zoneSelected = zone
-                }
-            }else{
-                chooseZoneButon.setTitle("All", forState: .Normal)
-                self.zoneSelected = nil
-            }
-            if filter.categoryId != "All"{
-                if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId){
-                    chooseCategoryButon.setTitle(category.name, forState: .Normal)
-                    self.category = category
-                }
-            }else{
-                chooseCategoryButon.setTitle("All", forState: .Normal)
-                self.category = nil
-            }
-        }
-        returnFilter()
-    }
-    
-    func setDefaultFilterItem(menu:Menu){
-        if let filter = DatabaseFilterController.shared.getDefaultFilterByMenu(menu){
-            if filter.locationId != "All"{
-                if let location = FilterController.shared.getLocationByObjectId(filter.locationId){
-                    chooseLocationButon.setTitle(location.name, forState: .Normal)
-                    self.location = location
-                }
-            }else{
-                chooseLocationButon.setTitle("All", forState: .Normal)
-                self.location = nil
-            }
-            if filter.levelId != "All"{
-                if let level = FilterController.shared.getZoneByObjectId(filter.levelId){
-                    chooseLevelButon.setTitle(level.name, forState: .Normal)
-                    self.level = level
-                }
-            }else{
-                chooseLevelButon.setTitle("All", forState: .Normal)
-                self.level = nil
-            }
-            if filter.zoneId != "All"{
-                if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId){
-                    chooseZoneButon.setTitle(zone.name, forState: .Normal)
-                    self.zoneSelected = zone
-                }
-            }else{
-                chooseZoneButon.setTitle("All", forState: .Normal)
-                self.zoneSelected = nil
-            }
-            if filter.categoryId != "All"{
-                if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId){
-                    chooseCategoryButon.setTitle(category.name, forState: .Normal)
-                    self.category = category
-                }
-            }else{
-                chooseCategoryButon.setTitle("All", forState: .Normal)
-                self.category = nil
-            }
-        }
-        returnFilter()
-    }
-    
-    func setDefaultParametar(){
-        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
-        if let location = location {
-            filterItem.location = location.name!
-            filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
-        }
-        if let category = category{
-            filterItem.categoryId = category.id!.integerValue
-            filterItem.categoryName = category.name!
-            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
-        }
-        if let level = level {
-            filterItem.levelId = level.id!.integerValue
-            filterItem.levelName = level.name!
-            filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
-        }
-
-        if let zone = zoneSelected {
-            filterItem.zoneId = zone.id!.integerValue
-            filterItem.zoneName = zone.name!
-            filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
-        }
-
-        DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
+        
+        
     }
     
     func returnFilter(){
-        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
-        guard let location = location else{
-            filterDelegate?.filterParametars(filterItem)
-            return
-        }
-        filterItem.location = location.name!
+        let filterItem = FilterItem(location: location.name!, levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+
         filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
         if let category = category{
             filterItem.categoryId = category.id!.integerValue
@@ -655,26 +393,28 @@ class FilterPullDown: UIScrollView {
             filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
         }
         guard let level = level else{
-            filterDelegate?.filterParametars(filterItem)
+            scanFilterDelegate?.scanFilterParametars(filterItem)
             return
         }
         
         filterItem.levelId = level.id!.integerValue
-        filterItem.levelName = level.name!        
+        filterItem.levelName = level.name!
         filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
         guard let zone = zoneSelected else{
-            filterDelegate?.filterParametars(filterItem)
+            scanFilterDelegate?.scanFilterParametars(filterItem)
             return
         }
         filterItem.zoneId = zone.id!.integerValue
         filterItem.zoneName = zone.name!
         filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
-        filterDelegate?.filterParametars(filterItem)
+        scanFilterDelegate?.scanFilterParametars(filterItem)
     }
+
+    
 
 }
 
-extension FilterPullDown: UIScrollViewDelegate{
+extension ScanFilterPullDown: UIScrollViewDelegate{
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
         if point.y > contentView.frame.size.height + 30 {
@@ -691,5 +431,3 @@ extension FilterPullDown: UIScrollViewDelegate{
     }
     
 }
-
-

@@ -14,7 +14,7 @@ enum ChoosedTab:String {
     static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags]
 }
 
-class ScanViewController: PopoverVC, PullDownViewDelegate{
+class ScanViewController: PopoverVC {
     
     @IBOutlet weak var topView: UIView!
     
@@ -27,19 +27,34 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
     var scanTimersViewController: ScanTimerViewController!
     var scanFlagsViewController: ScanFlagViewController!
     
-    var pullDown = PullDownView()
+    var scrollView = ScanFilterPullDown()
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var toViewController:UIViewController = UIViewController()
 
-    var senderButton:UIButton?
+    @IBOutlet weak var senderButton:UIButton!
+    
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
     var isPresenting:Bool = true
-    var gateway:Gateway?
+    var gateway:Gateway!
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.scanFilterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints()
+        scrollView.setItem(self.view, location: gateway.location)
+        scrollView.hidden = true
+
+        searchBar.barTintColor = UIColor.clearColor()
+        searchBar.backgroundImage = UIImage()
+        searchBar.tintColor = UIColor.whiteColor()
+        searchBar.delegate = self
         
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
 
@@ -64,33 +79,42 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMoveToParentViewController(self)
         
-        pullDown = PullDownView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64))
-        self.view.addSubview(pullDown)
-        pullDown.setContentOffset(CGPointMake(0, self.view.frame.size.height - 2), animated: false)
-        
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
+        
+        self.navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: gateway.location.name! + ", All, All")
 
     }
     
-    override func viewWillLayoutSubviews() {
-        var rect = self.pullDown.frame
-        pullDown.removeFromSuperview()
-        rect.size.width = self.view.frame.size.width
-        rect.size.height = self.view.frame.size.height
-        pullDown.frame = rect
-        pullDown = PullDownView(frame: rect)
-        pullDown.customDelegate = self
-        self.view.addSubview(pullDown)
-        pullDown.setContentOffset(CGPointMake(0, rect.size.height - 2), animated: false)
-
-        pullDown.drawMenu(filterParametar)
+    override func viewDidAppear(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+        scrollView.hidden = false
     }
-
-    func pullDownSearchParametars(filterItem:FilterItem) {
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Database)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
-        toViewController.sendFilterParametar(filterItem)
-        pullDown.drawMenu(filterParametar)
+    
+    override func viewDidLayoutSubviews() {
+        if scrollView.contentOffset.y > 0 {
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+            scrollView.setContentOffset(bottomOffset, animated: false)
+        }
+        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            headerTitleSubtitleView.setLandscapeTitle()
+        }else{
+            headerTitleSubtitleView.setPortraitTitle()
+        }
+        
+    }
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+    
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: location + ", " + level + ", " + zone)
     }
     
     //popup controller
@@ -100,7 +124,7 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
         for item in ChoosedTab.allItem{
             popoverList.append(PopOverItem(name: item.rawValue, id: ""))
         }
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
     }
     
     override func nameAndId(name: String, id: String) {
@@ -134,9 +158,34 @@ class ScanViewController: PopoverVC, PullDownViewDelegate{
                 childViewControllers.last!.viewWillAppear(true)
                 childViewControllers.last!.viewDidAppear(true)
             }
+        }else{
+            scrollView.setButtonTitle(name, id: id)
         }
     }
 
+}
+
+extension ScanViewController: ScanFilterPullDownDelegate{
+    func scanFilterParametars(filterItem: FilterItem) {
+        toViewController.sendFilterParametar(filterItem)
+        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+    }
+
+}
+
+extension ScanViewController: UISearchBarDelegate{
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true  // show cancel buttton when search bar being active
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false // hide cancel buttton when search bar being inactive
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        toViewController.sendSearchBarText(searchText)
+    }
 }
 
 class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate{
@@ -147,13 +196,12 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
         super.viewDidLoad()
     }
 
-    func openFilterPopover(sender: AnyObject, popOverList:[PopOverItem]) {
+    func openPopover(sender: AnyObject, popOverList:[PopOverItem]) {
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
         popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .Popover
         popoverVC.preferredContentSize = CGSizeMake(300, 200)
         popoverVC.delegate = self
-//        popoverVC.indexTab = 200
         popoverVC.popOverList = popOverList
         if let popoverController = popoverVC.popoverPresentationController {
             popoverController.delegate = self
@@ -164,32 +212,10 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
             presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
-    
-//    func openParametarPopover(sender: AnyObject, indexTab:Int, location:Location?, device:Device){
-//        let mainStoryBoard = UIStoryboard(name: "Popover", bundle: NSBundle.mainBundle())
-//        popoverVC = mainStoryBoard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
-//        popoverVC.modalPresentationStyle = .Popover
-//        popoverVC.preferredContentSize = CGSizeMake(300, 200)
-//        popoverVC.delegate = self
-//        popoverVC.indexTab = indexTab
-//        popoverVC.device = device
-//        popoverVC.filterLocation = location
-//        if let popoverController = popoverVC.popoverPresentationController {
-//            popoverController.delegate = self
-//            popoverController.permittedArrowDirections = .Any
-//            popoverController.sourceView = sender as? UIView
-//            popoverController.sourceRect = sender.bounds
-//            popoverController.backgroundColor = UIColor.lightGrayColor()
-//            presentViewController(popoverVC, animated: true, completion: nil)
-//        }
-//    }
+
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
-    }
-    
-    func saveText(text: String, id: Int) {
-        
     }
     
     func nameAndId(name : String, id:String){

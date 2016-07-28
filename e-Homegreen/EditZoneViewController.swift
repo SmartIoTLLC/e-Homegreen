@@ -92,7 +92,7 @@ class EditZoneViewController: PopoverVC {
         }
         
         popoverList.insert(PopOverItem(name: "", id: ""), atIndex: 0)
-        openFilterPopover(sender, popOverList:popoverList)
+        openPopover(sender, popOverList:popoverList)
         
     }
     

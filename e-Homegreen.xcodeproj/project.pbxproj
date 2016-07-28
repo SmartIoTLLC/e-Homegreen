@@ -87,6 +87,7 @@
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
 		2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */; };
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
+		22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
 		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
@@ -415,6 +416,7 @@
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
 		2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomToolBar.swift; sourceTree = "<group>"; };
 		22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSecurityController.swift; sourceTree = "<group>"; };
+		22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFilterPullDown.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; };
@@ -1416,6 +1418,7 @@
 			children = (
 				73ECD4A01B33189800767740 /* PullDownView.swift */,
 				22453A9E1D391E33009DCB07 /* FilterPullDown.swift */,
+				22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */,
 			);
 			name = ScrollView;
 			sourceTree = "<group>";
@@ -1896,6 +1899,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
