@@ -57,39 +57,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     
-    override func viewWillAppear(animated: Bool) {
-        self.revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-        }
-        if AdminController.shared.isAdminLogged(){
-            if let user = DatabaseUserController.shared.getOtherUser(){
-                userLogged = user
-                updateDeviceList(user)
-            }
-        }else{
-            if let user = DatabaseUserController.shared.getLoggedUser(){
-                userLogged = user
-                updateDeviceList(user)
-            }
-        }
-        
-        changeFullScreeenImage()
-        
-    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -126,7 +94,39 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         scrollView.setFilterItem(Menu.Devices)
     }
-    
+    override func viewWillAppear(animated: Bool) {
+        self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                revealViewController().rearViewRevealWidth = 200
+            }else{
+                revealViewController().rearViewRevealWidth = 200
+            }
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        if AdminController.shared.isAdminLogged(){
+            if let user = DatabaseUserController.shared.getOtherUser(){
+                userLogged = user
+                updateDeviceList(user)
+            }
+        }else{
+            if let user = DatabaseUserController.shared.getLoggedUser(){
+                userLogged = user
+                updateDeviceList(user)
+            }
+        }
+        
+        changeFullScreeenImage()
+        
+    }
     override func viewDidAppear(animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
@@ -138,7 +138,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
         appDel.setFilterBySSIDOrByiBeaconAgain()
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -156,9 +155,24 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         deviceCollectionView.reloadData()
         
     }
-    
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
+    }
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
     }
     
     func updateConstraints() {
@@ -167,11 +181,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
-
-    override func viewWillDisappear(animated: Bool) {
-        removeObservers()
-    }
-
+    
     func changeFullScreeenImage(){
         if UIApplication.sharedApplication().statusBarHidden {
             fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
@@ -187,25 +197,13 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
     }
 
-    
     func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
 //        updateDeviceList()
         deviceCollectionView.reloadData()
     }
     
-    func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
-    }
-    func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
-    }
+    
 
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
@@ -238,8 +236,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     
     func updateDeviceList (user:User) {
-        let fetchRequest = NSFetchRequest(entityName: "Device")
-        
+        let fetchRequest = NSFetchRequest(entityName: String(Device))
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
@@ -248,13 +245,13 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-//        predicateArray.append(NSPredicate(format: "categoryId != 0")) // s ovim kao ne bi trebalo da izlazi uredjaj bez parametara?
         predicateArray.append(NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true)))
         predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
         
         // Filtering out PC devices
         predicateArray.append(NSPredicate(format: "type != %@", ControlType.PC))
-        //filtering by parametars from filter
+        
+        // Filtering by parametars from filter
         if filterParametar.location != "All" {
             predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
         }
@@ -273,6 +270,29 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
             devices = fetResults!.map({$0})
+            
+            // filter Curtain devices that are, actually, one device
+            
+            // All curtains
+            let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain || $0.controlType == ControlType.CurtainsRelay})
+            if curtainDevices.count > 0{
+                for i in 0...curtainDevices.count-1{
+                    if i+1 < curtainDevices.count{ // if next exist
+                        for j in i+1...curtainDevices.count-1{
+                            if (curtainDevices[i].address == curtainDevices[j].address
+                                && curtainDevices[i].controlType == curtainDevices[j].controlType
+                                && curtainDevices[i].isCurtainModeAllowed.boolValue
+                                && curtainDevices[j].isCurtainModeAllowed.boolValue
+                                && curtainDevices[i].curtainGroupID == curtainDevices[j].curtainGroupID) {
+                                
+                                if let indexOfDeviceToBeNotShown = devices.indexOf(curtainDevices[j]){
+                                    devices.removeAtIndex(indexOfDeviceToBeNotShown)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             for device in devices {
                 device.cellTitle = returnNameForDeviceAccordingToFilter(device)
             }
@@ -668,8 +688,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         deviceInControlMode = false
     }
     
-    
-    
     func changeSliderValue(sender: UISlider){
         let tag = sender.tag
         devices[tag].currentValue = Int(sender.value * 100)
@@ -752,7 +770,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
     //gesture delegate function
     func panView(gesture:UIPanGestureRecognizer){
-        
         switch (gesture.state) {
         case .Began:
             self.panStartPoint = gesture.translationInView(self.bottomView)
@@ -876,7 +893,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
     
     
-    //Controll zone and category
+    // Controll zone and category
+    // Pull up menu. Setting elements which need to be presented.
     
     func checkZoneAndCategoryFromFilter(filterParametar: FilterItem){
         bottomView.hidden = true
@@ -1202,12 +1220,14 @@ extension DevicesViewController: SWRevealViewControllerDelegate{
 
 // Parametar from filter and relaod data
 extension DevicesViewController: FilterPullDownDelegate{
+    
+    // Function is called when filter is defined
     func filterParametars(filterItem: FilterItem){
-        
         filterParametar = filterItem
         
+        // Update the subtitle in navigation in order for user to see what filter parameters are selected.
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        
+        // Saves filter to database for later
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Devices)
         
         checkZoneAndCategoryFromFilter(filterItem)

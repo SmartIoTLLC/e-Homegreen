@@ -144,7 +144,6 @@ extension DevicesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
         if devices[indexPath.row].controlType == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
             cell.getDevice(devices[indexPath.row])
@@ -200,9 +199,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 let oneTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
                 oneTap.numberOfTapsRequired = 2
                 cell.typeOfLight.addGestureRecognizer(oneTap)
-                
-                
-                
                 cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueEnded:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
@@ -226,7 +222,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-        } else if devices[indexPath.row].type == ControlType.Curtain {
+        }
+        else if devices[indexPath.row].controlType == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
 
             cell.curtainName.text = devices[indexPath.row].cellTitle
@@ -295,7 +292,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             return cell
-        } else if devices[indexPath.row].controlType == ControlType.Relay || devices[indexPath.row].controlType == ControlType.Curtain {
+        }
+        else if devices[indexPath.row].controlType == ControlType.Relay {//|| devices[indexPath.row].controlType == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
 //            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.name.text = devices[indexPath.row].name
@@ -357,7 +355,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
             
-        } else if devices[indexPath.row].controlType == ControlType.Climate {
+        }
+        else if devices[indexPath.row].controlType == ControlType.Climate {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
             cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
             cell.climateName.text = devices[indexPath.row].cellTitle
@@ -473,7 +472,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
-        } else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway {
+        }
+        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
