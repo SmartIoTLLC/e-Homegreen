@@ -41,7 +41,7 @@ extension IncomingHandler {
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
          if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
-            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let name = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 let MAC:[Byte] = Array(byteArray[9...14])
                 if devices != [] {
                     for device in devices {
@@ -51,36 +51,36 @@ extension IncomingHandler {
                 if !deviceExists {
                     for var i=1 ; i<=channel ; i++ {
                         var isClimate = false
-                        if name == ControlType.Climate {
+                        if controlType == ControlType.Climate {
                             isClimate = true
                         }
-                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: name, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
-                        if channel == 10 && name == ControlType.Sensor && i > 1 {
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
+                        if channel == 10 && controlType == ControlType.Sensor && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             //FIXME:
                             saveChanges()
-                        } else if channel == 6 && name == ControlType.Sensor && i > 1 {
+                        } else if channel == 6 && controlType == ControlType.Sensor && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name == ControlType.Climate {
+                        } else if controlType == ControlType.Climate {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name == ControlType.Access || name == ControlType.AnalogInput || name == ControlType.AnalogOutput || name == ControlType.DigitalInput || name == ControlType.DigitalOutput || name == ControlType.IRTransmitter {
+                        } else if controlType == ControlType.Access || controlType == ControlType.AnalogInput || controlType == ControlType.AnalogOutput || controlType == ControlType.DigitalInput || controlType == ControlType.DigitalOutput || controlType == ControlType.IRTransmitter {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if channel == 3 && name == ControlType.Gateway && i > 1 {
+                        } else if channel == 3 && controlType == ControlType.Gateway && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        }  else if channel == 5 && name == ControlType.HumanInterfaceSeries && i > 1 {
+                        }  else if channel == 5 && controlType == ControlType.HumanInterfaceSeries && i > 1 {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name == ControlType.Curtain {
+                        } else if controlType == ControlType.Curtain {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name == ControlType.PC {
+                        } else if controlType == ControlType.PC {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
-                        } else if name != ControlType.Climate && name != ControlType.Sensor && name != ControlType.HumanInterfaceSeries && name != ControlType.Gateway {
+                        } else if controlType != ControlType.Climate && controlType != ControlType.Sensor && controlType != ControlType.HumanInterfaceSeries && controlType != ControlType.Gateway {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             saveChanges()
                         }

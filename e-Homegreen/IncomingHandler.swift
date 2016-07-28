@@ -225,7 +225,6 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func fetchDevices () {
-        // OVDE ISKACE BUD NA ANY
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -623,8 +622,8 @@ class IncomingHandler: NSObject {
                         devices[i].isCurtainModeAllowed = NSNumber(bool: true)
                         devices[i].controlType = ControlType.Curtain
                     }
-                    devices[i].curtainGroupID = Int(byteArray[34])
-                    devices[i].curtainControlMode = Int(byteArray[35])
+                    devices[i].curtainGroupID = Int(byteArray[34])          // CurtainGroupID defines the curtain device. Ic curtain group is the same on 2 channels then that is the same Curtain
+                    devices[i].curtainControlMode = Int(byteArray[35])      // Will be used later (17.07.2016)
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
