@@ -31,7 +31,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         timerTitle.text = getName(timer, filterParametar: filterParametar)
         if cellTimer.type == "Timer" || cellTimer.type == "Stopwatch/User"{
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
-            timerCOuntingLabel.text = "\(h):\(m):\(s)"
+            timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
         }else{
            timerCOuntingLabel.text = ""
         }
@@ -61,7 +61,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
     func countUp(timer:NSTimer){
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
-        timerCOuntingLabel.text = "\(h):\(m):\(s)"
+        timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
     }
     
     override func prepareForReuse() {
@@ -72,7 +72,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         if cellTimer.timerCount > 0{
             cellTimer.timerCount -= 1
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
-            timerCOuntingLabel.text = "\(h):\(m):\(s)"
+            timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
         }
         
     }
