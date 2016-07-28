@@ -84,6 +84,22 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         refreshDeviceList()
     }
     
+    override func sendSearchBarText(text: String) {
+        refreshDeviceList()
+        if !text.isEmpty{
+            devices = self.devices.filter() {
+                device in
+                if device.name.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+            deviceTableView.reloadData()
+        }
+        
+    }
+    
     override func viewDidAppear(animated: Bool) {
         removeObservers()
         addObservers()

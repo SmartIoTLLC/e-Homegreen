@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class EventsViewController: PopoverVC{
     
@@ -113,6 +114,7 @@ class EventsViewController: PopoverVC{
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             scrollView.setDefaultFilterItem(Menu.Events)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AudioToolbox
 
 class EnergyViewController: PopoverVC  {
     
@@ -112,6 +113,7 @@ class EnergyViewController: PopoverVC  {
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){        
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             scrollView.setDefaultFilterItem(Menu.Energy)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
 

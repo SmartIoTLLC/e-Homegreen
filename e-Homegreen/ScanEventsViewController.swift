@@ -89,6 +89,22 @@ class ScanEventsViewController: PopoverVC {
         eventTableView.reloadData()
     }
     
+    override func sendSearchBarText(text: String) {
+        updateEventList()
+        if !text.isEmpty{
+            events = self.events.filter() {
+                event in
+                if event.eventName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
+        eventTableView.reloadData()
+        
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false

@@ -53,7 +53,8 @@ class ScanViewController: PopoverVC {
 
         searchBar.barTintColor = UIColor.clearColor()
         searchBar.backgroundImage = UIImage()
-        searchBar.tintColor = UIColor.whiteColor()
+        searchBar.tintColor = UIColor.lightGrayColor()
+        searchBar.returnKeyType = .Done
         searchBar.delegate = self
         
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
@@ -128,9 +129,10 @@ class ScanViewController: PopoverVC {
     }
     
     override func nameAndId(name: String, id: String) {
-        senderButton?.setTitle(name, forState: .Normal)
+        
         if let to = ChoosedTab(rawValue: name){
-            
+            searchBar.text = ""
+            senderButton.setTitle(name, forState: .Normal)
             switch to {
             case .Devices:
                 toViewController = scanDeviceViewController
@@ -185,6 +187,10 @@ extension ScanViewController: UISearchBarDelegate{
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         toViewController.sendSearchBarText(searchText)
+    }
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
     }
 }
 
