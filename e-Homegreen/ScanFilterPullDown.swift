@@ -44,6 +44,9 @@ class ScanFilterPullDown: UIScrollView {
     let chooseCategoryButon:CustomGradientButton = CustomGradientButton()
     let resetCategoryButton:UIButton = UIButton()
     
+    // go button
+    let goButon:CustomGradientButton = CustomGradientButton()
+    
     var button:UIButton!
     
     var location:Location!
@@ -166,6 +169,12 @@ class ScanFilterPullDown: UIScrollView {
         resetCategoryButton.addTarget(self, action: #selector(ScanFilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetCategoryButton)
         
+        //GO button
+        goButon.setTitle("Go", forState: .Normal)
+        goButon.translatesAutoresizingMaskIntoConstraints = false
+        goButon.addTarget(self, action: #selector(FilterPullDown.go), forControlEvents: UIControlEvents.TouchUpInside)
+        contentView.addSubview(goButon)
+        
     }
     
     func setItem(view: UIView, location: Location){
@@ -197,6 +206,7 @@ class ScanFilterPullDown: UIScrollView {
         
         setCategoryConstraint()
         
+        setGo()        
         
     }
     
@@ -301,6 +311,14 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
     }
     
+    func setGo(){
+        
+        //set go button constraints
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Width, multiplier: 0.5, constant: 0))
+    }
+    
     func openLevels(sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
@@ -380,6 +398,15 @@ class ScanFilterPullDown: UIScrollView {
             break
         }
         
+        
+    }
+    
+    func go(){
+        
+        returnFilter()
+        
+        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
+        self.setContentOffset(bottomOffset, animated: true)
         
     }
     
