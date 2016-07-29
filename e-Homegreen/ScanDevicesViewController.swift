@@ -822,18 +822,27 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
 extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("scanCell") as? ScanCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.lblRow.text = "\(indexPath.row+1)."
-            cell.lblDesc.text = "\(devices[indexPath.row].name)"
-            cell.lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
-            cell.lblType.text = "Control Type: \(devices[indexPath.row].controlType)"
-            cell.isEnabledSwitch.on = devices[indexPath.row].isEnabled.boolValue
-            cell.lblZone.text = "Zone: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)) Level: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location))"
-            cell.lblCategory.text = "Category: \(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location))"
+            let row = "\(indexPath.row+1)"
+            let description = devices[indexPath.row].name
+            let deviceAddress = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
+            
+            
+            var type = "Control Type: \(devices[indexPath.row].controlType)"
+            
+            if devices[indexPath.row].controlType == ControlType.Curtain {
+                type = "Control Type: \(ControlType.Relay)"
+            }
+            
+            let isEnabledSwitch = devices[indexPath.row].isEnabled.boolValue
+            let zone = "Zone: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)) Level: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location))"
+            let category = "Category: \(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location))"
+            let isVisibleSwitch = devices[indexPath.row].isVisible.boolValue
+            
+            cell.setItemWithParameters(row: row, description: description, address: deviceAddress, type: type, isEnabledSwitch: isEnabledSwitch, zone: zone, category: category, isVisibleSwitch: isVisibleSwitch)
+
+            cell.isVisibleSwitch.tag = indexPath.row
             cell.isEnabledSwitch.tag = indexPath.row
             cell.isEnabledSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueEnable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-            cell.isVisibleSwitch.on = devices[indexPath.row].isVisible.boolValue
-            cell.isVisibleSwitch.tag = indexPath.row
             cell.isVisibleSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueVisible(_:)), forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
@@ -890,4 +899,16 @@ class ScanCell:UITableViewCell{
     @IBOutlet weak var lblCategory: UILabel!
     @IBOutlet weak var isEnabledSwitch: UISwitch!
     @IBOutlet weak var isVisibleSwitch: UISwitch!
+    
+    func setItemWithParameters(row row: String, description: String, address: String, type: String, isEnabledSwitch: Bool, zone: String, category: String, isVisibleSwitch: Bool){
+        self.backgroundColor = UIColor.clearColor()
+        self.lblRow.text = row
+        self.lblDesc.text = description
+        self.lblAddress.text = address
+        self.lblType.text = type
+        self.isEnabledSwitch.on = isEnabledSwitch
+        self.lblZone.text = zone
+        self.lblCategory.text = category
+        self.isVisibleSwitch.on = isVisibleSwitch
+    }
 }

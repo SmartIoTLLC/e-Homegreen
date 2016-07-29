@@ -1,23 +1,15 @@
 //
-//  ChangeDeviceParametarsVC.swift
+//  RelayParametersCell.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 11/8/15.
-//  Copyright © 2015 Teodor Stevic. All rights reserved.
+//  Created by Damir Djozic on 7/29/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-struct EditedDevice {
-    var levelId:Int
-    var zoneId:Int
-    var categoryId:Int
-    var controlType:String
-    var digitalInputMode:Int
-}
-
-class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
+class RelayParametersCell: PopoverVC, UITextFieldDelegate {
+    
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -28,59 +20,35 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
     @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
+    @IBOutlet weak var switchAllowCurtainControl: UISwitch!
+    @IBOutlet weak var txtCurtainGroupId: UITextField!
     
-    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
+//    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
+//    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
+//    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
+//    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
     
     var button:UIButton!
-    
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
-    
-    func hideDeviceInput(isHidden:Bool) {
-        if isHidden {
-            deviceInputHeight.constant = 0
-            deviceInputTopSpace.constant = 0
-        } else {
-            deviceInputHeight.constant = 30
-            deviceInputTopSpace.constant = 8
-        }
-        backView.layoutIfNeeded()
-    }
-    
-    func hideImageButton(isHidden:Bool) {
-        if isHidden {
-            deviceImageHeight.constant = 0
-            deviceImageLeading.constant = 0
-        } else {
-            deviceImageHeight.constant = 30
-            deviceImageLeading.constant = 7
-        }
-        backView.layoutIfNeeded()
-    }
-    
     var point:CGPoint?
     var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
-    
     var isPresenting: Bool = true
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     init(device: Device, point:CGPoint){
         self.device = device
         self.point = point
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
-        super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
+        super.init(nibName: "RelayParametersCell", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -116,7 +84,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         if category != ""{
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }else{
-           btnCategory.setTitle("All", forState: UIControlState.Normal)
+            btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
@@ -125,6 +93,9 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         
         txtFieldName.delegate = self
+        
+        switchAllowCurtainControl.on = device.isCurtainModeAllowed.boolValue
+        txtCurtainGroupId.text = "\(device.curtainGroupID.integerValue)"
         
         let chn = Int(device.channel)
         if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
@@ -145,6 +116,14 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
             hideImageButton(true)
+        }
+        if device.controlType == ControlType.Curtain && (chn == 2 || chn == 3) {
+            hideDeviceInput(false)
+            if let diMode = device.digitalInputMode as? Int {
+                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+            }
+        } else {
+            hideDeviceInput(true)
         }
         //TODO: Dodaj i za gateway
         
@@ -186,30 +165,22 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         button.setTitle(name, forState: .Normal)
     }
     
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
         let touches = event.touchesForView(sender as! UIView)
         let touch:UITouch = touches!.first!
         let touchPoint = touch.locationInView(self.view)
-//        let touchPoint2 = touch.locationInView(sender as! UIView)
-//        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
+        //        let touchPoint2 = touch.locationInView(sender as! UIView)
+        //        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
         showDeviceImagesPicker(device, point: touchPoint)
     }
-    
     @IBAction func btnImages(sender: AnyObject) {
-//        if let button = sender as? UIButton {
-//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-//                showDeviceImagesPicker(device!, point: pointInView)
-//        }
+        //        if let button = sender as? UIButton {
+        //            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
+        //                showDeviceImagesPicker(device!, point: pointInView)
+        //        }
     }
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender
@@ -230,7 +201,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.append(PopOverItem(name: ControlType.Curtain, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnLevel (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -241,7 +211,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnZone (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -255,7 +224,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnCategory (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -267,38 +235,63 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
+            device.isCurtainModeAllowed = switchAllowCurtainControl.on
+            if let groupId = txtCurtainGroupId.text{
+                if let _ = Int(groupId){
+                    device.curtainGroupID = Int(groupId)!
+                }
+            }
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
-//            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-//            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-//            if let checkDeviceImages = device.deviceImages {
-//                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-//                    if devImages.count > 0 {
-//                        for deviceImage in devImages {
-//                            appDel.managedObjectContext!.deleteObject(deviceImage)
-//                        }
-//                        for defaultDeviceImage in defaultDeviceImages {
-//                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-//                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-//                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-//                            deviceImage.device = device
-//                        }
-//                    }
-//                }
-//            }
+            //            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
+            //            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
+            //            if let checkDeviceImages = device.deviceImages {
+            //                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
+            //                    if devImages.count > 0 {
+            //                        for deviceImage in devImages {
+            //                            appDel.managedObjectContext!.deleteObject(deviceImage)
+            //                        }
+            //                        for defaultDeviceImage in defaultDeviceImages {
+            //                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+            //                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
+            //                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            //                            deviceImage.device = device
+            //                        }
+            //                    }
+            //                }
+            //            }
             saveChanges()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
+    func hideDeviceInput(isHidden:Bool) {
+//        if isHidden {
+//            deviceInputHeight.constant = 0
+//            deviceInputTopSpace.constant = 0
+//        } else {
+//            deviceInputHeight.constant = 30
+//            deviceInputTopSpace.constant = 8
+//        }
+//        backView.layoutIfNeeded()
+    }
+    func hideImageButton(isHidden:Bool) {
+//        if isHidden {
+//            deviceImageHeight.constant = 0
+////            deviceImageLeading.constant = 0
+//        } else {
+//            deviceImageHeight.constant = 30
+////            deviceImageLeading.constant = 7
+//        }
+//        backView.layoutIfNeeded()
+    }
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -307,7 +300,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             abort()
         }
     }
-
     func handleTap(gesture:UITapGestureRecognizer){
         let point:CGPoint = gesture.locationInView(self.view)
         let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
@@ -315,10 +307,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
-
-extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
+extension RelayParametersCell : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -366,7 +360,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
+extension RelayParametersCell : UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
@@ -376,18 +370,6 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
         }
         else {
             return nil
-        }
-    }
-}
-
-extension UIViewController {
-    func showChangeDeviceParametar(point:CGPoint, device:Device) {
-        if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
-            let cdp = RelayParametersCell(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
-        }else{
-            let cdp = ChangeDeviceParametarsVC(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
         }
     }
 }

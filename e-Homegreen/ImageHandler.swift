@@ -65,14 +65,16 @@ class ImageHandler: NSObject {
                         return UIImage(named: "applianceon")!
                     }
 //                return [UIImage(named: "")!, UIImage(named: "")!]
-            } else if categoryId == 4 {
+            }
+            else if categoryId == 4 {
                 if deviceValue == 0 {
                     return UIImage(named: "04 Climate Control - HVAC - 00")!
                 } else {
                     return UIImage(named: "04 Climate Control - HVAC - 01")!
                 }
 //                return [UIImage(named: "04 Climate Control - HVAC - 00")!, UIImage(named: "04 Climate Control - HVAC - 01")!]
-            } else if categoryId == 11 {
+            }
+            else if categoryId == 11 {
                 if deviceValue == 0 {
                     return UIImage(named: "lightBulb")
                 } else if deviceValue > 0 && deviceValue < 0.1 {
@@ -108,31 +110,27 @@ class ImageHandler: NSObject {
                 //                11 Lighting - Bulb - 08
                 //                11 Lighting - Bulb - 09
                 //                11 Lighting - Bulb - 10
-            } else if categoryId == 12 {
+            }
+            else if categoryId == 12 {
                 if deviceValue == 0 {
                     return UIImage(named: "12 Appliance - Power - 00")!
                 } else {
                     return UIImage(named: "12 Appliance - Power - 01")!
                 }
 //                return [UIImage(named: "12 Appliance - Power - 00")!, UIImage(named: "12 Appliance - Power - 01")!]
-            } else if categoryId == 13 {
-//                return [UIImage(named: "13 Curtain - Curtain - 00")!, UIImage(named: "13 Curtain - Curtain - 04")!]
+            }
+            else if categoryId == 13 {
                 if deviceValue == 0 {
-                    return UIImage(named: "13 Curtain - Curtain - 00")
+                    return UIImage(named: "curtain0")
                 } else if deviceValue <= 1/3 {
-                    return UIImage(named: "13 Curtain - Curtain - 01")
+                    return UIImage(named: "curtain1")
                 } else if deviceValue <= 2/3 {
-                    return UIImage(named: "13 Curtain - Curtain - 02")
+                    return UIImage(named: "curtain2")
                 } else if deviceValue < 3/3 {
-                    return UIImage(named: "13 Curtain - Curtain - 03")
+                    return UIImage(named: "curtain3")
                 } else {
-                    return UIImage(named: "13 Curtain - Curtain - 04")
+                    return UIImage(named: "curtain4")
                 }
-                //                13 Curtain - Curtain - 00
-                //                13 Curtain - Curtain - 01
-                //                13 Curtain - Curtain - 02
-                //                13 Curtain - Curtain - 03
-                //                13 Curtain - Curtain - 04
             } else if categoryId == 14 {
                 if motionSensor {
 //                    if devices[indexPath.row].currentValue == 1 {
@@ -164,35 +162,40 @@ class ImageHandler: NSObject {
 //                //                14 Security - Motion Sensor - 02
 //                //                14 Security - Lock - 00
 //                //                14 Security - Lock - 01
-            } else if categoryId == 15 {
+            }
+            else if categoryId == 15 {
                 if deviceValue == 0 {
                     return UIImage(named: "15 Timer - CLock - 00")!
                 } else {
                     return UIImage(named: "15 Timer - CLock - 01")!
                 }
 //                return [UIImage(named: "15 Timer - CLock - 00")!, UIImage(named: "15 Timer - CLock - 01")!]
-            } else if categoryId == 16 {
+            }
+            else if categoryId == 16 {
                 if deviceValue == 0 {
                     return UIImage(named: "16 Flag - Flag - 00")!
                 } else {
                     return UIImage(named: "16 Flag - Flag - 01")!
                 }
 //                return [UIImage(named: "16 Flag - Flag - 00")!, UIImage(named: "16 Flag - Flag - 01")!]
-            } else if categoryId == 17 {
+            }
+            else if categoryId == 17 {
                 if deviceValue == 0 {
                     return UIImage(named: "17 Event - Up Down - 00")!
                 } else {
                     return UIImage(named: "17 Event - Up Down - 01")!
                 }
 //                return [UIImage(named: "17 Event - Up Down - 00")!, UIImage(named: "17 Event - Up Down - 01")!]
-            } else if categoryId == 18 {
+            }
+            else if categoryId == 18 {
                 if deviceValue == 0 {
                     return UIImage(named: "18 Media - LCD TV - 00")!
                 } else {
                     return UIImage(named: "18 Media - LCD TV - 01")!
                 }
 //                return [UIImage(named: "18 Media - LCD TV - 00")!, UIImage(named: "18 Media - LCD TV - 01")!]
-            } else if categoryId == 19 {
+            }
+            else if categoryId == 19 {
                 if deviceValue == 0 {
                     return UIImage(named: "19 Blind - Blind - 00")
                 } else if deviceValue <= 0.2 {

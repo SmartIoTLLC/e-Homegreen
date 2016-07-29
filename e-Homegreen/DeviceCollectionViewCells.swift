@@ -173,7 +173,8 @@ class CurtainCollectionCell: UICollectionViewCell {
                 return Double(device.currentValue) / 100
             }
         }()
-        curtainImage.image = device.returnImage(Double(device.currentValue))
+        //curtainImage.image = device.returnImage(Double(device.currentValue))
+        curtainImage.image = UIImage(named: "curtain2") // TODO: Delete this when functionality is implemented
         if device.filterWarning {
             backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
         } else {

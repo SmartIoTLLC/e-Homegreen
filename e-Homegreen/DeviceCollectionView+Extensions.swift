@@ -235,7 +235,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                     return Double(devices[indexPath.row].currentValue) / 100
                 }
             }()
-            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
+            // cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
+            
+            cell.curtainImage.image = UIImage(named: "curtain0")    // TODO: Izbrisati kada se uradi funkcionalnost
             cell.curtainName.userInteractionEnabled = true
             cell.curtainImage.userInteractionEnabled = true
 

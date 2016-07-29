@@ -103,6 +103,27 @@ class ScanScenesViewController: PopoverVC {
         sceneTableView.reloadData()
     }
     
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false
@@ -199,27 +220,6 @@ class ScanScenesViewController: PopoverVC {
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        
-        switch button.tag{
-        case 1:
-            level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
-            break
-        case 2:
-            zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            break
-        case 3:
-            category = FilterController.shared.getCategoryByObjectId(id)
-            break
-        default:
-            break
-        }
-        
-        button.setTitle(name, forState: .Normal)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
