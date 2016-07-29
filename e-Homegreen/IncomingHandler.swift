@@ -482,6 +482,11 @@ class IncomingHandler: NSObject {
                     } else {
                         devices[i].name = "Unknown"
                     }
+                    
+                    // PLC doesn't send info about this, so we put TRUE as default
+                    devices[i].isEnabled = NSNumber(bool: true)
+                    devices[i].isVisible = NSNumber(bool: true)
+                    
                     devices[i].zoneId = Int(byteArray[33])
                     devices[i].parentZoneId = Int(byteArray[34])
                     devices[i].categoryId = Int(byteArray[32])
