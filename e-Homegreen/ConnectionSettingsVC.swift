@@ -25,10 +25,13 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var addressSecond: EditTextField!
     @IBOutlet weak var addressThird: EditTextField!
     @IBOutlet weak var txtDescription: UITextView!
+    
     @IBOutlet weak var ipHost: EditTextField!
     @IBOutlet weak var port: EditTextField!
+    
     @IBOutlet weak var localIP: EditTextField!
     @IBOutlet weak var localPort: EditTextField!
+    
     @IBOutlet weak var txtAutoReconnectDelay: EditTextField!
     
     @IBOutlet weak var btnCancel: UIButton!

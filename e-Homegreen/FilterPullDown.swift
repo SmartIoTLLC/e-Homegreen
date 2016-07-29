@@ -51,7 +51,10 @@ class FilterPullDown: UIScrollView {
     let categoryLabel:UILabel = UILabel()
     let chooseCategoryButon:CustomGradientButton = CustomGradientButton()
     let resetCategoryButton:UIButton = UIButton()
-
+    
+    // go button
+    let goButon:CustomGradientButton = CustomGradientButton()
+    
     var button:UIButton!
     
     var location:Location?
@@ -235,6 +238,12 @@ class FilterPullDown: UIScrollView {
         resetCategoryButton.addTarget(self, action: #selector(FilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         contentView.addSubview(resetCategoryButton)
         
+        //GO button
+        goButon.setTitle("Go", forState: .Normal)
+        goButon.translatesAutoresizingMaskIntoConstraints = false
+        goButon.addTarget(self, action: #selector(FilterPullDown.go), forControlEvents: UIControlEvents.TouchUpInside)
+        contentView.addSubview(goButon)
+        
     }
     
     //MARK: Seetup constraint
@@ -267,6 +276,7 @@ class FilterPullDown: UIScrollView {
         
         setCategoryConstraint()
         
+        setGo()
 
     }
     
@@ -341,7 +351,7 @@ class FilterPullDown: UIScrollView {
         
         //location label
         contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: setAsDefaultButton, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: setAsDefaultButton, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
         locationLabel.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
         
         //choose location button
@@ -362,7 +372,7 @@ class FilterPullDown: UIScrollView {
 
         // level label
         contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
         levelLabel.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
         
         //choose level button
@@ -383,7 +393,7 @@ class FilterPullDown: UIScrollView {
 
         //zone label
         contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
         zoneLabel.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
 
         //choose zone butoon
@@ -404,7 +414,7 @@ class FilterPullDown: UIScrollView {
 
         //category label
         contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
         categoryLabel.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
 
         //choose category label
@@ -419,6 +429,14 @@ class FilterPullDown: UIScrollView {
         
         // choose button trailing
         contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
+    }
+    
+    func setGo(){
+        
+        //set go button constraints
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 10))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Width, multiplier: 0.5, constant: 0))
     }
     
     func openLocations(sender : UIButton){
@@ -639,6 +657,15 @@ class FilterPullDown: UIScrollView {
         }
 
         DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
+    }
+    
+    func go(){
+        
+        returnFilter()
+        
+        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
+        self.setContentOffset(bottomOffset, animated: true)
+        
     }
     
     func returnFilter(){
