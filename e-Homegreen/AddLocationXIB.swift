@@ -53,7 +53,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
     var location:Location?
     var user:User?
     
-    var radius:Double = 0
+    var radius:Double = 50
+    
     init(location:Location?, user:User?){
         super.init(nibName: "AddLocationXIB", bundle: nil)
         transitioningDelegate = self
@@ -97,7 +98,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         
         if let location = location{
             topConstraint.constant = 150
-            backViewHeight.constant = 553
+            backViewHeight.constant = 540
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -138,7 +139,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
             }
         }else{
             topConstraint.constant = 8
-            backViewHeight.constant = 411
+            backViewHeight.constant = 412
             radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
