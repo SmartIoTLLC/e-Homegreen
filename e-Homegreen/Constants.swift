@@ -525,12 +525,13 @@ struct Colors {
     static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).CGColor    //   #5bb7e5
     static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).CGColor    //   #fb5757
 }
+// 0-255
 struct DeviceValue {
     struct MotionSensor {
-        static let Idle = 0x00
-        static let Motion = 0x01
-        static let IdleWarning = 0xFE
-        static let ResetTimer = 0xEF
+        static let Idle = Int(0x00)/255*100
+        static let Motion = (0x01)/255*100
+        static let IdleWarning = (0xFE)/255*100
+        static let ResetTimer = (0xEF)/255*100
     }
 //    enum MotionSensor:Int {
 //        case Idle = 0x00

@@ -155,14 +155,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
-                if Double(devices[indexPath.row].currentValue) > 100 {
-                    return Double(Double(devices[indexPath.row].currentValue)/255)
-                } else {
-                    return Double(devices[indexPath.row].currentValue)/100
-                }
+                return Double(devices[indexPath.row].currentValue)
+//                if Double(devices[indexPath.row].currentValue) > 100 {
+//                    return Double(Double(devices[indexPath.row].currentValue)/255)
+//                } else {
+//                    return Double(devices[indexPath.row].currentValue)/100
+//                }
             }()
             cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
-            let img = cell.picture.image
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
@@ -230,11 +230,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.openButton.tag = indexPath.row
             cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
-                if Double(devices[indexPath.row].currentValue) > 100 {
-                    return Double(devices[indexPath.row].currentValue) / 255
-                } else {
-                    return Double(devices[indexPath.row].currentValue) / 100
-                }
+                return Double(devices[indexPath.row].currentValue)
+//                if Double(devices[indexPath.row].currentValue) > 100 {
+//                    return Double(devices[indexPath.row].currentValue) / 255
+//                } else {
+//                    return Double(devices[indexPath.row].currentValue) / 100
+//                }
             }()
             cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
             let img = cell.curtainImage.image
@@ -296,14 +297,15 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue:Double = {
-                if Double(devices[indexPath.row].currentValue) <= 100 {
-                    return Double(devices[indexPath.row].currentValue)/100
-                } else {
-                    return Double(devices[indexPath.row].currentValue)/255
-                }
+                return Double(devices[indexPath.row].currentValue)
+//                if Double(devices[indexPath.row].currentValue) <= 100 {
+//                    return Double(devices[indexPath.row].currentValue)/100
+//                } else {
+//                    return Double(devices[indexPath.row].currentValue)/255
+//                }
             }()
             cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
-            if deviceValue == 1 {
+            if deviceValue == 100 {
                 cell.onOff.setTitle("ON", forState: .Normal)
             } else if devices[indexPath.row].currentValue == 0 {
                 cell.onOff.setTitle("OFF", forState: .Normal)

@@ -42,11 +42,12 @@ class CurtainCollectionCell: UICollectionViewCell {
     func refreshDevice(device:Device) {
         
         let deviceValue:Double = {
-            if Double(device.currentValue) > 100 {
-                return Double(device.currentValue) / 255
-            } else {
-                return Double(device.currentValue) / 100
-            }
+            return Double(device.currentValue)
+//            if Double(device.currentValue) > 100 {
+//                return Double(device.currentValue) / 255
+//            } else {
+//                return Double(device.currentValue) / 100
+//            }
         }()
         curtainImage.image = device.returnImage(Double(device.currentValue))
 //        curtainImage.image = UIImage(named: "curtain2") // TODO: Delete this when functionality is implemented

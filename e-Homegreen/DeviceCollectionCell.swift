@@ -31,14 +31,15 @@ class DeviceCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
-            if Double(device.currentValue) <= 100 {
-                return Double(device.currentValue)/100
-            } else {
-                return Double(device.currentValue)/255
-            }
+            Double(device.currentValue)
+//            if Double(device.currentValue) <= 100 {
+//                return Double(device.currentValue)/100
+//            } else {
+//                return Double(device.currentValue)/255
+//            }
         }()
         picture.image = device.returnImage(Double(device.currentValue))
-        lightSlider.value = Float(deviceValue)
+        lightSlider.value = Float(deviceValue)//*100/255)
         lblElectricity.text = "\(Float(device.current) * 0.01) A"
         lblVoltage.text = "\(Float(device.voltage)) V"
         labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"

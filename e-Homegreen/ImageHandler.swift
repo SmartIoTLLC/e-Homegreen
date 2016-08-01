@@ -37,23 +37,23 @@ class ImageHandler: NSObject {
             if categoryId == 2 {
                 if deviceValue == 0 {
                     return UIImage(named: "lightBulb")
-                } else if deviceValue > 0 && deviceValue < 0.1 {
+                } else if deviceValue > 0 && deviceValue < 10{ //0.1 {
                     return UIImage(named: "lightBulb1")
-                } else if deviceValue >= 0.1 && deviceValue < 0.2 {
+                } else if deviceValue >= 0.1 && deviceValue < 20{//0.2 {
                     return UIImage(named: "lightBulb2")
-                } else if deviceValue >= 0.2 && deviceValue < 0.3 {
+                } else if deviceValue >= 0.2 && deviceValue < 30{//0.3 {
                     return UIImage(named: "lightBulb3")
-                } else if deviceValue >= 0.3 && deviceValue < 0.4 {
+                } else if deviceValue >= 0.3 && deviceValue < 40{//0.4 {
                     return UIImage(named: "lightBulb4")
-                } else if deviceValue >= 0.4 && deviceValue < 0.5 {
+                } else if deviceValue >= 0.4 && deviceValue < 50{//0.5 {
                     return UIImage(named: "lightBulb5")
-                } else if deviceValue >= 0.5 && deviceValue < 0.6 {
+                } else if deviceValue >= 0.5 && deviceValue < 60{//0.6 {
                     return UIImage(named: "lightBulb6")
-                } else if deviceValue >= 0.6 && deviceValue < 0.7 {
+                } else if deviceValue >= 0.6 && deviceValue < 70{//0.7 {
                     return UIImage(named: "lightBulb7")
-                } else if deviceValue >= 0.7 && deviceValue < 0.8 {
+                } else if deviceValue >= 0.7 && deviceValue < 80{//0.8 {
                     return UIImage(named: "lightBulb8")
-                } else if deviceValue >= 0.8 && deviceValue < 0.9 {
+                } else if deviceValue >= 0.8 && deviceValue < 90{//0.9 {
                     return UIImage(named: "lightBulb9")
                 } else {
                     return UIImage(named: "lightBulb10")
@@ -77,23 +77,23 @@ class ImageHandler: NSObject {
             else if categoryId == 11 {
                 if deviceValue == 0 {
                     return UIImage(named: "lightBulb")
-                } else if deviceValue > 0 && deviceValue < 0.1 {
+                } else if deviceValue > 0 && deviceValue < 10{//0.1 {
                     return UIImage(named: "lightBulb1")
-                } else if deviceValue >= 0.1 && deviceValue < 0.2 {
+                } else if deviceValue >= 0.1 && deviceValue < 20{//0.2 {
                     return UIImage(named: "lightBulb2")
-                } else if deviceValue >= 0.2 && deviceValue < 0.3 {
+                } else if deviceValue >= 0.2 && deviceValue < 30{//0.3 {
                     return UIImage(named: "lightBulb3")
-                } else if deviceValue >= 0.3 && deviceValue < 0.4 {
+                } else if deviceValue >= 0.3 && deviceValue < 40{//0.4 {
                     return UIImage(named: "lightBulb4")
-                } else if deviceValue >= 0.4 && deviceValue < 0.5 {
+                } else if deviceValue >= 0.4 && deviceValue < 50{//0.5 {
                     return UIImage(named: "lightBulb5")
-                } else if deviceValue >= 0.5 && deviceValue < 0.6 {
+                } else if deviceValue >= 0.5 && deviceValue < 60{//0.6 {
                     return UIImage(named: "lightBulb6")
-                } else if deviceValue >= 0.6 && deviceValue < 0.7 {
+                } else if deviceValue >= 0.6 && deviceValue < 70{//0.7 {
                     return UIImage(named: "lightBulb7")
-                } else if deviceValue >= 0.7 && deviceValue < 0.8 {
+                } else if deviceValue >= 0.7 && deviceValue < 80{//0.8 {
                     return UIImage(named: "lightBulb8")
-                } else if deviceValue >= 0.8 && deviceValue < 0.9 {
+                } else if deviceValue >= 0.8 && deviceValue < 90{//0.9 {
                     return UIImage(named: "lightBulb9")
                 } else {
                     return UIImage(named: "lightBulb10")
@@ -138,7 +138,7 @@ class ImageHandler: NSObject {
 //                    }
                     if deviceValue == 0 {
                         return UIImage(named: "14 Security - Motion Sensor - 00")!
-                    } else if deviceValue == 1 {
+                    } else if deviceValue == 100 { //1 {
                         return UIImage(named: "14 Security - Motion Sensor - 01")!
                     } else {
                         return UIImage(named: "14 Security - Motion Sensor - 02")!
@@ -194,15 +194,15 @@ class ImageHandler: NSObject {
             else if categoryId == 19 {
                 if deviceValue == 0 {
                     return UIImage(named: "19 Blind - Blind - 00")
-                } else if deviceValue <= 0.2 {
+                } else if deviceValue <= 20{//{0.2 {
                     return UIImage(named: "19 Blind - Blind - 01")!
-                } else if deviceValue <= 0.4 {
+                } else if deviceValue <= 40{//{0.4 {
                     return UIImage(named: "19 Blind - Blind - 02")!
-                } else if deviceValue <= 0.6 {
+                } else if deviceValue <= 60{//{0.6 {
                     return UIImage(named: "19 Blind - Blind - 03")!
-                } else if deviceValue <= 0.8 {
+                } else if deviceValue <= 80{//{0.8 {
                     return UIImage(named: "19 Blind - Blind - 04")!
-                } else if deviceValue < 1 {
+                } else if deviceValue < 100{//{1 {
                     return UIImage(named: "19 Blind - Blind - 05")!
                 } else {
                     return UIImage(named: "19 Blind - Blind - 06")

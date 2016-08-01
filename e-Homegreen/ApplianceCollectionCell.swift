@@ -16,14 +16,15 @@ class ApplianceCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
-            if Double(device.currentValue) <= 100 {
-                return Double(device.currentValue)/100
-            } else {
-                return Double(device.currentValue)/255
-            }
+            return Double(device.currentValue)
+//            if Double(device.currentValue) <= 100 {
+//                return Double(device.currentValue)/100
+//            } else {
+//                return Double(device.currentValue)/255
+//            }
         }()
         image.image = device.returnImage(Double(device.currentValue))
-        if deviceValue == 1 {
+        if deviceValue == 100 {
             onOff.setTitle("ON", forState: .Normal)
         } else if device.currentValue == 0 {
             onOff.setTitle("OFF", forState: .Normal)
