@@ -92,8 +92,8 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         //        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
-        
         self.view.backgroundColor = UIColor.clearColor()
+        self.title = "Device Parameters"
         
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"

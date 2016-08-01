@@ -17,7 +17,6 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     var isPresenting: Bool = true
     var appDel:AppDelegate
     
-    
     @IBAction func btnBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true) { () -> Void in
         }
@@ -25,6 +24,29 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     @IBAction func addNewImage(sender: AnyObject) {
         showGallery(-1).delegate = self
     }
+    @IBOutlet weak var tableView: UITableView!
+        var deviceImages:[DeviceImage]
+
+    init(device:Device, point:CGPoint){
+        self.device = device
+        self.point = point
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        let sort = NSSortDescriptor(key: "state", ascending: true)
+        deviceImages = device.deviceImages!.sortedArrayUsingDescriptors([sort]) as! [DeviceImage]
+        super.init(nibName: "DeviceImagesPickerVC", bundle: nil)
+        transitioningDelegate = self
+        modalPresentationStyle = UIModalPresentationStyle.Custom
+//        deviceImages = device.deviceImages
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.registerNib(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
+        // Do any additional setup after loading the view.
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == -1 {
             let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
@@ -63,70 +85,100 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         tableView.reloadData()
     }
-    @IBOutlet weak var tableView: UITableView!
-        var deviceImages:[DeviceImage]
-    init(device:Device, point:CGPoint){
-        self.device = device
-        self.point = point
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let sort = NSSortDescriptor(key: "state", ascending: true)
-        deviceImages = device.deviceImages!.sortedArrayUsingDescriptors([sort]) as! [DeviceImage]
-        super.init(nibName: "DeviceImagesPickerVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
-//        deviceImages = device.deviceImages
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.registerNib(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return deviceImages.count
     }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deviceImageCell", forIndexPath: indexPath) as! DeviceImagePickerTVC
-        if deviceImages.count == 2 {
-            if indexPath.row == 0 {
-                cell.deviceState.text = "\(0)"
+        
+        if device.controlType == ControlType.Curtain {
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Open"
             }
-            if indexPath.row == deviceImages.count-1 {
-                cell.deviceState.text = "\(100)"
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "Stop"
+            }
+            if imags[indexPath.row].state == 2{
+                cell.deviceState.text = "Close"
+            }
+        }else if device.controlType == ControlType.Relay{
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Off"
+            }
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "On"
+            }
+            
+        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 2{ // Digitl input 1
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Off"
+            }
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "On"
+            }
+        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 3{ // Digital input 2
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Off"
+            }
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "On"
+            }
+        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 4{ // Temperature
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Off"
+            }
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "On"
+            }
+        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 5{ // IR Receiver
+            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+            cell.deviceState.text = ""
+            if imags[indexPath.row].state == 0{
+                cell.deviceState.text = "Locked"
+            }
+            if imags[indexPath.row].state == 1{
+                cell.deviceState.text = "Unlocked"
+            }
+        }else{
+            if deviceImages.count == 2 {
+                if indexPath.row == 0 {
+                    cell.deviceState.text = "\(0)"
+                }
+                if indexPath.row == deviceImages.count-1 {
+                    cell.deviceState.text = "\(100)"
+                }
+            }
+            if deviceImages.count > 2 {
+                if indexPath.row == 0 {
+                    cell.deviceState.text = "\(0)"
+                } else if indexPath.row == deviceImages.count-1 {
+                    cell.deviceState.text = "\(100)"
+                } else {
+                    let part:Double = Double(100) / Double(deviceImages.count-2)
+                    let number1 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row-1))
+                    let number2 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row))
+                    cell.deviceState.text = number1 + " - " + number2
+                }
             }
         }
-        if deviceImages.count > 2 {
-            if indexPath.row == 0 {
-                cell.deviceState.text = "\(0)"
-            } else if indexPath.row == deviceImages.count-1 {
-                cell.deviceState.text = "\(100)"
-            } else {
-                let part:Double = Double(100) / Double(deviceImages.count-2)
-                let number1 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row-1))
-                let number2 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row))
-                cell.deviceState.text = number1 + " - " + number2
-            }
-        }
+        
         cell.deviceImage.image = UIImage().returnImage(forDeviceImage: deviceImages[indexPath.row])
         return cell
     }
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showGallery(indexPath.row).delegate = self
     }
-    
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -158,16 +210,6 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 extension DeviceImagesPickerVC : UIViewControllerAnimatedTransitioning {
     

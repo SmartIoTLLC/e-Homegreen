@@ -21,63 +21,20 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var defaults = NSUserDefaults.standardUserDefaults()
     var isPresenting: Bool = true
     
-    
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var popUpTextView: UITextView!
-    init(point:CGPoint){
+    
+    
+    init(point:CGPoint, security: Security){
         super.init(nibName: "SecuirtyCommandVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
+        self.security = security
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    @IBAction func btnOk(sender: AnyObject) {
-        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
-//        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
-//        switch security.securityName! {
-//        case "Away":
-//            if security.gateway != nil {
-//                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
-//            }
-//        case "Night":
-//            if security.gateway != nil {
-//                
-//            }
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: security.gateway!)
-//        case "Day":
-//            if security.gateway != nil {
-//                
-//            }
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: security.gateway!)
-//        case "Vacation":
-//            if security.gateway != nil {
-//                
-//            }
-//            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: security.gateway!)
-//        case "Panic":
-//            if defaults.boolForKey(UserDefaults.Security.IsPanic) {
-//                if security.gateway != nil {
-//                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
-//                    defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
-//                }
-//            } else {
-//                if security.gateway != nil {
-//                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
-//                    defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
-//                }
-//            }
-//        default: break
-//        }
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func viewDidLoad() {
@@ -88,13 +45,10 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-//        popUpTextView.text = security.securityDescription
+        self.popUpTextView.text = security.securityDescription
         sizeText()
         
 //        popUpTextView.delegate = self
-
-        // Do any additional setup after loading the view.
     }
     
     func sizeText(){
@@ -114,15 +68,55 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     func handleTap(gesture:UITapGestureRecognizer){
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(popUpView){
             return false
         }
         return true
     }
-
-
+    
+    @IBAction func btnOk(sender: AnyObject) {
+        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
+        //        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
+        //        switch security.securityName! {
+        //        case "Away":
+        //            if security.gateway != nil {
+        //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
+        //            }
+        //        case "Night":
+        //            if security.gateway != nil {
+        //
+        //            }
+        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: security.gateway!)
+        //        case "Day":
+        //            if security.gateway != nil {
+        //
+        //            }
+        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: security.gateway!)
+        //        case "Vacation":
+        //            if security.gateway != nil {
+        //
+        //            }
+        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: security.gateway!)
+        //        case "Panic":
+        //            if defaults.boolForKey(UserDefaults.Security.IsPanic) {
+        //                if security.gateway != nil {
+        //                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
+        //                    defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
+        //                }
+        //            } else {
+        //                if security.gateway != nil {
+        //                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
+        //                    defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
+        //                }
+        //            }
+        //        default: break
+        //        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
@@ -191,8 +185,7 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showSecurityCommand(point:CGPoint, text:String, security: Security) {
-        let sc = SecuirtyCommandVC(point: point)
-        sc.security = security
+        let sc = SecuirtyCommandVC(point: point, security: security)
         self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
     }
 }

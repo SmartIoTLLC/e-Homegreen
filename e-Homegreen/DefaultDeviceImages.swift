@@ -72,10 +72,10 @@ class DefaultDeviceImages: NSObject {
         }
         if categoryId == CategoryId.Curtain {
             return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0),
-                DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1),
-                DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 2),
-                DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3),
-                DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 4)]
+//                DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1),
+                DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1),
+//                DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3),
+                DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2)]
         }
         if categoryId == CategoryId.Security {
             return [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 0),
@@ -121,6 +121,13 @@ class DefaultDeviceImages: NSObject {
                 DeviceImageState(defaultImage: "11 Lighting - Bulb - 08", state: 8),
                 DeviceImageState(defaultImage: "11 Lighting - Bulb - 09", state: 9),
                 DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 10)]
+        }
+        if controlType == ControlType.Curtain {
+            return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0),
+                    //                DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1),
+                DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1),
+                //                DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3),
+                DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2)]
         }
         if controlType == ControlType.Relay {
             return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0),

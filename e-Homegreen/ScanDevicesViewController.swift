@@ -248,7 +248,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    
     func deviceReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             if let info = notification.userInfo! as? [String:Int] {
@@ -327,7 +326,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
         let howMuchOf = arrayOfDevicesToBeSearched.count
         let index = indexOfDevicesToBeSearched+1
@@ -479,12 +477,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    
     func nameReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["deviceIndexForFoundName"] {
                     if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                        devices[deviceIndex].resetImages(appDel.managedObjectContext!)
                         if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                             indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
                             let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
@@ -541,7 +539,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    
     func sendCommandForFindingName(index index:Int) {
         setProgressBarParametarsForFindingNames(index)
         if devices[index].type == ControlType.Dimmer {
@@ -583,7 +580,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
     }
-    
     func setProgressBarParametarsForFindingNames (var index:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(index){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
@@ -640,7 +636,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             alertController("Error", message: "Something went wrong.")
         }
     }
-    
     func checkIfSensorDidGotParametar (timer:NSTimer) {
         if let deviceIndex = timer.userInfo as? Int {
             // if name not found search again
@@ -706,7 +701,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    
     func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{

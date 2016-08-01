@@ -122,12 +122,8 @@ class ImageHandler: NSObject {
             else if categoryId == 13 {
                 if deviceValue == 0 {
                     return UIImage(named: "curtain0")
-                } else if deviceValue <= 1/3 {
-                    return UIImage(named: "curtain1")
-                } else if deviceValue <= 2/3 {
+                } else if deviceValue <= 95 {
                     return UIImage(named: "curtain2")
-                } else if deviceValue < 3/3 {
-                    return UIImage(named: "curtain3")
                 } else {
                     return UIImage(named: "curtain4")
                 }

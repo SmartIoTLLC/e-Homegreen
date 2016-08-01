@@ -12,6 +12,7 @@ import CoreData
 
 protocol PopOverIndexDelegate
 {
+    /// Function returns name and ID of item selected
     func nameAndId(name : String, id:String)
 }
 

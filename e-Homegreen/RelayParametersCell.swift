@@ -177,10 +177,10 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         showDeviceImagesPicker(device, point: touchPoint)
     }
     @IBAction func btnImages(sender: AnyObject) {
-        //        if let button = sender as? UIButton {
-        //            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-        //                showDeviceImagesPicker(device!, point: pointInView)
-        //        }
+//        if let button = sender as? UIButton {
+//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
+//            showDeviceImagesPicker(device!, point: pointInView)
+//        }
     }
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender

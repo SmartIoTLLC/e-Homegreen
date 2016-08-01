@@ -101,6 +101,12 @@
 		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
 		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
 		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
+		495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */; };
+		495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */; };
+		495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */; };
+		495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B61D4F493C004F2A3D /* ClimateCell.swift */; };
+		495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B81D4F4966004F2A3D /* MultiSensorCell.swift */; };
+		495726BB1D4F49A6004F2A3D /* CurtainModuleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726BA1D4F49A6004F2A3D /* CurtainModuleCell.swift */; };
 		4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */; };
 		4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */; };
 		49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4055A1D2D0A870031130B /* PullDownViewCell.swift */; };
@@ -432,6 +438,12 @@
 		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
 		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
+		495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionCell.swift; sourceTree = "<group>"; };
+		495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionCell.swift; sourceTree = "<group>"; };
+		495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainCollectionCell.swift; sourceTree = "<group>"; };
+		495726B61D4F493C004F2A3D /* ClimateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimateCell.swift; sourceTree = "<group>"; };
+		495726B81D4F4966004F2A3D /* MultiSensorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSensorCell.swift; sourceTree = "<group>"; };
+		495726BA1D4F49A6004F2A3D /* CurtainModuleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainModuleCell.swift; sourceTree = "<group>"; };
 		4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametersCell.swift; sourceTree = "<group>"; };
 		4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametersCell.xib; sourceTree = "<group>"; };
 		49E4055A1D2D0A870031130B /* PullDownViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownViewCell.swift; sourceTree = "<group>"; };
@@ -1023,6 +1035,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		495726AF1D4F4827004F2A3D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */,
+				495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */,
+				495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */,
+				495726B61D4F493C004F2A3D /* ClimateCell.swift */,
+				495726B81D4F4966004F2A3D /* MultiSensorCell.swift */,
+				495726BA1D4F49A6004F2A3D /* CurtainModuleCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		4983C7E21D4B4C7A00C8E865 /* Relay */ = {
 			isa = PBXGroup;
 			children = (
@@ -1597,6 +1622,7 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
+				495726AF1D4F4827004F2A3D /* Cells */,
 				E76B576C1BBD24BB00A70F69 /* DeviceXIB */,
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
@@ -1911,6 +1937,7 @@
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */,
 				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
@@ -1932,6 +1959,7 @@
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
+				495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */,
@@ -2065,6 +2093,7 @@
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
+				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
@@ -2072,7 +2101,9 @@
 				730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
+				495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
+				495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */,
 				73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */,
 				731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */,
 				73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */,
@@ -2123,6 +2154,7 @@
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
+				495726BB1D4F49A6004F2A3D /* CurtainModuleCell.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

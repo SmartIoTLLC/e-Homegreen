@@ -146,12 +146,11 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].controlType == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
+            
+            // Set cell data
             cell.getDevice(devices[indexPath.row])
-
             cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row]) //devices[indexPath.row].cellTitle
-            
 //            cell.setTitle(filterParametar)
-            
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
@@ -163,6 +162,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
             }()
             cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
+            let img = cell.picture.image
             cell.lightSlider.value = Float(deviceValue)
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
@@ -225,9 +225,10 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else if devices[indexPath.row].controlType == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-
             cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
+            cell.openButton.tag = indexPath.row
+            cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
                 if Double(devices[indexPath.row].currentValue) > 100 {
                     return Double(devices[indexPath.row].currentValue) / 255
@@ -235,9 +236,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                     return Double(devices[indexPath.row].currentValue) / 100
                 }
             }()
-            // cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
+            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
+            let img = cell.curtainImage.image
             
-            cell.curtainImage.image = UIImage(named: "curtain0")    // TODO: Izbrisati kada se uradi funkcionalnost
+//            cell.curtainImage.image = UIImage(named: "curtain0")    // TODO: Izbrisati kada se uradi funkcionalnost
             cell.curtainName.userInteractionEnabled = true
             cell.curtainImage.userInteractionEnabled = true
 
@@ -249,12 +251,16 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
-                let curtainImageTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
-                let curtainImageLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-                curtainImageLongPress.minimumPressDuration = 0.5
-                curtainImageLongPress.delegate = self
-                cell.curtainImage.addGestureRecognizer(curtainImageLongPress)
-                cell.curtainImage.addGestureRecognizer(curtainImageTap)
+                let curtainOpenTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "openCurtain:")
+                let curtainCloseTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "closeCurtain:")
+                let curtainStopTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "stopCurtain:")
+                
+//                let curtainImageLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
+//                curtainImageLongPress.minimumPressDuration = 0.5
+//                curtainImageLongPress.delegate = self
+                cell.openButton.addGestureRecognizer(curtainOpenTap)
+                cell.closeButton.addGestureRecognizer(curtainCloseTap)
+                cell.curtainImage.addGestureRecognizer(curtainStopTap)
                 
                 let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
                 curtainNameTap.numberOfTapsRequired = 2

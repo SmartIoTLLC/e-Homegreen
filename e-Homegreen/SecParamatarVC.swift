@@ -19,18 +19,19 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     var error:NSError? = nil
     var security:Security!
     
+    var isPresenting: Bool = true
+    
     @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var popUpViewHeight: NSLayoutConstraint!
     @IBOutlet weak var centarY: NSLayoutConstraint!
     @IBOutlet weak var popUpTextView: CustomTextView!
     
-    var isPresenting: Bool = true
-    
-    init(point:CGPoint){
+    init(point:CGPoint, security: Security, newDescription: String? = nil){
         super.init(nibName: "SecParamatarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
+        self.security = security
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -42,17 +43,14 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-//        popUpTextView.text = security.securityDescription
+        popUpTextView.text = security.securityDescription
         popUpTextView.delegate = self
         textViewDidChange(popUpTextView)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
 
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillLayoutSubviews() {
@@ -63,14 +61,9 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func btnUpdate(sender: AnyObject) {
         if popUpTextView.text != "" {
-//            security.securityDescription = popUpTextView.text
+            security.securityDescription = popUpTextView.text
             saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -124,9 +117,6 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         return true
     }
     
-
-
-
 }
 extension SecParamatarVC : UIViewControllerAnimatedTransitioning {
     
@@ -195,8 +185,7 @@ extension SecParamatarVC : UIViewControllerTransitioningDelegate {
 }
 extension UIViewController {
     func showSecurityParametar (point:CGPoint, security: Security) {
-        let sp = SecParamatarVC(point: point)
-        sp.security = security
+        let sp = SecParamatarVC(point: point, security: security)
         self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
     }
 }

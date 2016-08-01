@@ -17,22 +17,29 @@ class SecurityViewController: PopoverVC{
     
     var sidebarMenuOpen : Bool!
     var securities:[Security] = []
-
     var scrollView = FilterPullDown()
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
-    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
-    
-    var collectionViewCellSize = CGSize(width: 150, height: 180)
-    
     @IBOutlet weak var lblAlarmState: UILabel!
-    
     @IBOutlet weak var securityCollectionView: UICollectionView!
-    
+    @IBAction func fullScreen(sender: AnyObject) {
+        if UIApplication.sharedApplication().statusBarHidden {
+            UIApplication.sharedApplication().statusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        } else {
+            UIApplication.sharedApplication().statusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +68,6 @@ class SecurityViewController: PopoverVC{
         scrollView.setFilterItem(Menu.Security)
         
     }
-    
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -86,7 +92,6 @@ class SecurityViewController: PopoverVC{
         changeFullScreeenImage()
         
     }
-    
     override func viewDidAppear(animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
@@ -94,7 +99,6 @@ class SecurityViewController: PopoverVC{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
         refreshSecurity()
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -108,9 +112,11 @@ class SecurityViewController: PopoverVC{
         securityCollectionView.reloadData()
         
     }
-    
     override func nameAndId(name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
     }
     
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
@@ -137,24 +143,6 @@ class SecurityViewController: PopoverVC{
         } else {
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
-    }
-    
-    @IBAction func fullScreen(sender: AnyObject) {
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
-        } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
-        }
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
     }
     
     func reorganizeSecurityArray () {
@@ -366,7 +354,6 @@ extension SecurityViewController: UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return securities.count
     }
