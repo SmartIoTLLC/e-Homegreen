@@ -235,7 +235,7 @@
                                 <constraint firstAttribute="width" constant="30" id="aLT-zC-kW7"/>
                                 <constraint firstAttribute="height" constant="30" id="wQY-Vs-ns0"/>
                             </constraints>
-                            <state key="normal" image="Menu button"/>
+                            <state key="normal" image="pictureBtn"/>
                             <connections>
                                 <action selector="btnImages:" destination="-1" eventType="touchUpInside" id="8av-SM-Qdh"/>
                                 <action selector="btnImages:forEvent:" destination="-1" eventType="touchUpInside" id="Zfu-ie-Sva"/>
@@ -307,6 +307,6 @@
         </view>
     </objects>
     <resources>
-        <image name="Menu button" width="22" height="22"/>
+        <image name="pictureBtn" width="192" height="192"/>
     </resources>
 </document>
