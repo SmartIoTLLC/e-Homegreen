@@ -307,7 +307,6 @@ extension SecurityViewController: SWRevealViewControllerDelegate {
             sidebarMenuOpen = true
         }
     }
-    
     func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
         if(position == FrontViewPosition.Left) {
             securityCollectionView.userInteractionEnabled = true
@@ -319,7 +318,6 @@ extension SecurityViewController: SWRevealViewControllerDelegate {
             sidebarMenuOpen = true
         }
     }
-    
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
@@ -339,11 +337,9 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
     }
-    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }
-    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5
     }

@@ -761,8 +761,8 @@ class IncomingHandler: NSObject {
             return
         }
         if whatToFetch == "Security" {
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Security")
-            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
+            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Security))
+            let sortDescriptorTwo = NSSortDescriptor(key: "securityName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorTwo]
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
