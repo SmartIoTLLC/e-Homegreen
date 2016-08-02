@@ -244,8 +244,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
-            
-            
         }catch let error as InputError {
             
         } catch {
@@ -259,7 +257,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 if zoneId["zoneId"] > idToSearch {
                     // nesto nije dobro
                     dismissScaningControls()
-                    
                     return
                 }
                 if zoneId["zoneId"] == idToSearch {

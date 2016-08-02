@@ -35,8 +35,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var indexOfSensorAddresses = 0
     var arrayOfSensorAdresses:[Int] = []
     
-    var pbFD:ProgressBarVC?
-    var pbFN:ProgressBarVC?
+    var pbFD:ProgressBarVC?     // Device
+    var pbFN:ProgressBarVC?     // Names
     
     deinit {
         print("deinit - ScanDevicesViewController.swift")
@@ -175,23 +175,39 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         arrayOfDevicesToBeSearched = [Int]()
         indexOfDevicesToBeSearched = 0
         do {
-            let sp = try returnSearchParametars(rangeFrom.text!, to: rangeTo.text!, isScaningNamesAndParametars: false)
+//            let sp = try returnSearchParametars(rangeFrom.text!, to: rangeTo.text!, isScaningNamesAndParametars: false)
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDevice)
             UIApplication.sharedApplication().idleTimerDisabled = true
             
-            for i in sp.from ... sp.to {
+            
+            var from = 1
+            var to = 255
+            if rangeFrom.text != nil && rangeFrom.text != ""{
+                from = Int(rangeFrom.text!)!
+            }
+            if rangeTo.text != nil && rangeTo.text != ""{
+                to = Int(rangeTo.text!)!
+            }
+            for i in from ... to {
                 arrayOfDevicesToBeSearched.append(i)
             }
-            fromAddress = sp.from
-            toAddress = sp.to
+            let initialPercentage = Float(0)//Float(1)/Float(arrayOfDevicesToBeSearched.count)*100
+            
+//            for i in sp.from ... sp.to {
+//                arrayOfDevicesToBeSearched.append(i)
+//            }
+            fromAddress = from
+            toAddress = to
             if arrayOfDevicesToBeSearched.count > 0{
                 searchForDeviceWithId = arrayOfDevicesToBeSearched[0]
                 timesRepeatedCounter = 0
-                pbFD = ProgressBarVC(title: "Finding devices", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
+                
+                pbFD = ProgressBarVC(title: "Finding devices", percentage: initialPercentage, howMuchOf: "1 / \(arrayOfDevicesToBeSearched.count)")
                 pbFD?.delegate = self
                 self.presentViewController(pbFD!, animated: true, completion: nil)
                 searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                 let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
+                self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                 SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
             }else{
                 alertController("Info", message: "No devices to search")
@@ -236,6 +252,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     self.presentViewController(pbFD!, animated: true, completion: nil)
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
+                    self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                 }else{
                     alertController("Info", message: "No devices to search")
@@ -287,6 +304,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     }
                 }
             }
+            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
             // If device found, see whether next exists, go to next.
             // If device not fount, try again four times. If four times done, see if next exists, if not dismiss, if yes go to next.
             if deviceFound {
@@ -296,17 +314,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     timesRepeatedCounter = 0
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
-                    let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
                     setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                 }else{
+                    indexOfDevicesToBeSearched += 1
+                    setProgressBarParametarsForSearchingDevices(address)
                     dismissScaningControls()
                 }
             } else {
                 if (timesRepeatedCounter + 1) != 4 {
                     timesRepeatedCounter = timesRepeatedCounter + 1
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
-                    let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(deviceIdToBeSearched)]
                     setProgressBarParametarsForSearchingDevices(address)
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                 }else{
@@ -316,10 +334,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         timesRepeatedCounter = 0
                         searchDeviceTimer?.invalidate()
                         searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
-                        let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
                         setProgressBarParametarsForSearchingDevices(address)
                         SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                     }else{
+                        setProgressBarParametarsForSearchingDevices(address)
+                        indexOfDevicesToBeSearched += 1
                         dismissScaningControls()
                     }
                 }
@@ -329,7 +348,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     func setProgressBarParametarsForSearchingDevices (address:[UInt8]) {
         let howMuchOf = arrayOfDevicesToBeSearched.count
         let index = indexOfDevicesToBeSearched+1
-        if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
+        if let _ = pbFD?.lblHowMuchOf, let _ = pbFD?.lblPercentage, let _ = pbFD?.progressView{
             pbFD?.lblHowMuchOf.text = "\(index) / \(howMuchOf)"
             pbFD?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
             pbFD?.progressView.progress = Float(index)/Float(howMuchOf)
@@ -387,8 +406,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 // arrayOfNamesToBeSearched = [0, 2]
                 var from = 0
                 var to = 255
-                if rangeFrom.text != nil && rangeFrom.text != "" && rangeTo.text != nil && rangeTo.text != ""{
+                if rangeFrom.text != nil && rangeFrom.text != ""{
                     from = Int(rangeFrom.text!)!-1
+                }
+                if rangeTo.text != nil && rangeTo.text != ""{
                     to = Int(rangeTo.text!)!-1
                 }
                 for i in from...to{
@@ -428,7 +449,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             do {
                 arrayOfNamesToBeSearched = [Int]()
                 indexOfNamesToBeSearched = 0
-
                 if devices.count != 0 {
                     NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
                     
@@ -436,10 +456,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
                     // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
                     // arrayOfNamesToBeSearched = [0, 2]
-                    var from = 0
+                    var from = 1
                     var to = 255
-                    if rangeFrom.text != nil && rangeFrom.text != "" && rangeTo.text != nil && rangeTo.text != ""{
+                    if rangeFrom.text != nil && rangeFrom.text != "" {
                         from = Int(rangeFrom.text!)!-1
+                    }
+                    if rangeTo.text != nil && rangeTo.text != ""{
                         to = Int(rangeTo.text!)!-1
                     }
                     for i in from...to{
@@ -482,7 +504,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["deviceIndexForFoundName"] {
                     if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                        devices[deviceIndex].resetImages(appDel.managedObjectContext!)
+                        devices[deviceIndex].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
                         if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                             indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
                             let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
@@ -599,20 +621,25 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
             // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
             // arrayOfSensorAdresses = [0, 2]
-            var from = 0
+            var from = 1
             var to = 255
-            if rangeFrom.text != nil && rangeFrom.text != "" && rangeTo.text != nil && rangeTo.text != ""{
+            if rangeFrom.text != nil && rangeFrom.text != ""{
                 from = Int(rangeFrom.text!)!-1
+            }
+            if rangeTo.text != nil && rangeTo.text != ""{
                 to = Int(rangeTo.text!)!-1
             }
+            
             for i in from...to{
-                if devices[i].controlType == ControlType.Sensor
-                    || devices[i].controlType == ControlType.HumanInterfaceSeries
-                    || devices[i].controlType == ControlType.Gateway
-                    || devices[i].controlType == ControlType.AnalogInput
-                    || devices[i].controlType == ControlType.DigitalInput{
-                    
-                    arrayOfSensorAdresses.append(i)
+                if i < devices.count{
+                    if devices[i].controlType == ControlType.Sensor
+                        || devices[i].controlType == ControlType.HumanInterfaceSeries
+                        || devices[i].controlType == ControlType.Gateway
+                        || devices[i].controlType == ControlType.AnalogInput
+                        || devices[i].controlType == ControlType.DigitalInput{
+                        
+                        arrayOfSensorAdresses.append(i)
+                    }
                 }
             }
             
@@ -648,7 +675,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){
                         if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
                             indexOfSensorAddresses = indexOfDeviceIndexInArrayOfSensorAdresses+1
-                            let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfSensorAdresses+1]
+                            let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfDeviceIndexInArrayOfSensorAdresses+1]
                             timesRepeatedCounter = 0
                             deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
                             NSLog("func checkIfSensorDidGotParametar \(nextDeviceIndexToBeSearched)")
@@ -664,7 +691,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){
                     if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
                         indexOfSensorAddresses = indexOfDeviceIndexInArrayOfSensorAdresses+1
-                        let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfSensorAdresses+1]
+                        let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfDeviceIndexInArrayOfSensorAdresses+1]
                         timesRepeatedCounter = 0
                         deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
                         NSLog("func checkIfSensorDidGotParametar \(nextDeviceIndexToBeSearched)")
@@ -702,6 +729,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
+        var counterOfAttempts = 0
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
                 pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
@@ -731,7 +759,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         //   For finding names
-        //        index = 0
         deviceNameTimer?.invalidate()
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
         pbFN?.dissmissProgressBar()

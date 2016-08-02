@@ -39,6 +39,7 @@ extension IncomingHandler {
 extension IncomingHandler {
     //  informacije o novim uredjajima
     func acknowledgementAboutNewDevices (byteArray:[Byte]) {
+        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice))
          if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
             if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
