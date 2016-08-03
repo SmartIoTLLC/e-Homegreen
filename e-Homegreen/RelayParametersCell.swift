@@ -89,9 +89,6 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
-        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay{
-            btnControlType.enabled = false
-        }
         
         txtFieldName.delegate = self
         
@@ -167,11 +164,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     }
     
     @IBAction func switchTrigered(sender: AnyObject) {
-        if switchAllowCurtainControl.on == false {
-            btnControlType.enabled = true
-        }else{
-            btnControlType.enabled = false
-        }
+
     }
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -206,7 +199,6 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
         popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
-        popoverList.append(PopOverItem(name: ControlType.Curtain, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func btnLevel (sender: UIButton) {
@@ -255,8 +247,13 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
-            device.controlType = editedDevice!.controlType
+            if editedDevice!.controlType == ControlType.Relay && device.isCurtainModeAllowed.boolValue {
+                device.controlType = ControlType.Curtain
+            }else{
+                device.controlType = editedDevice!.controlType
+            }
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
+            
             //            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
             //            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
             //            if let checkDeviceImages = device.deviceImages {
