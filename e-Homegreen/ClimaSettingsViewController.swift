@@ -66,6 +66,22 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     var coolTemperature = 28
     var heatTemperature = 18
     
+    @IBOutlet weak var modeView: UIView!
+    @IBOutlet weak var modeViewHeight: NSLayoutConstraint! //58
+    
+    @IBOutlet weak var speedView: UIView!
+    @IBOutlet weak var speedViewHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var thresholdView: UIView!
+    @IBOutlet weak var thresholdCoolView: UIView!
+    @IBOutlet weak var thresholdHeatView: UIView!
+    @IBOutlet weak var thresholdViewHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var temperatureHumidityView: UIView!
+    @IBOutlet weak var temperatureHumidityViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var humidityView: UIView!
+    @IBOutlet weak var temperatureView: UIView!
+    
     @IBOutlet weak var lblClimateName: UILabel!
     @IBOutlet weak var settingsView: UIView!
     var appDel:AppDelegate!
@@ -152,6 +168,62 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         
         
         getACState()
+        
+        if device.coolModeVisible == false {
+            
+            btnCool.hidden = true
+            thresholdCoolView.hidden = true
+            
+            if device.coolModeVisible == false && device.heatModeVisible == false {
+                
+                btnHeat.hidden = true
+                thresholdViewHeight.constant = 0
+                
+                if device.fanModeVisible == false && device.autoModeVisible == false {
+                    modeViewHeight.constant = 0
+                }
+            }
+        }
+        
+        if device.heatModeVisible == false {
+            btnHeat.hidden = true
+            thresholdHeatView.hidden = true
+        }
+        if device.fanModeVisible == false {
+            btnFan.hidden = true
+        }
+        if device.autoModeVisible == false {
+            btnAuto.hidden = true
+        }
+
+        if device.lowSpeedVisible == false && device.medSpeedVisible == false && device.highSpeedVisible == false && device.autoSpeedVisible == false {
+            speedViewHeight.constant = 0
+        }else{
+            if device.lowSpeedVisible == false {
+                btnLow.hidden = true
+            }
+            if device.medSpeedVisible == false {
+                btnMed.hidden = true
+            }
+            if device.highSpeedVisible == false {
+                btnHigh.hidden = true
+            }
+            if device.autoSpeedVisible == false {
+                btnAutoFan.hidden = true
+            }
+
+        }
+        
+        if device.temperatureVisible == false && device.humidityVisible == false {
+            temperatureHumidityViewHeight.constant = 0
+        }else if device.temperatureVisible == false {
+            temperatureView.hidden = true
+        }else if device.humidityVisible == false {
+            humidityView.hidden = true
+        }
+
+        
+        print("Stanje klime - temperatura + humidity: \(device.temperatureVisible) \(device.humidityVisible)")
         
         
         

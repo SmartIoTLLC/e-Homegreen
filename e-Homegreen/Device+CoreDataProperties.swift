@@ -2,7 +2,7 @@
 //  Device+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 2/26/16.
+//  Created by Marko Stajic on 8/3/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,6 +13,7 @@ import Foundation
 import CoreData
 
 extension Device {
+
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
@@ -56,4 +57,16 @@ extension Device {
     @NSManaged var digitalInputMode: NSNumber?
     @NSManaged var pcCommands: NSSet?
     @NSManaged var mac: NSData?
+    @NSManaged var humidityVisible: NSNumber?
+    @NSManaged var temperatureVisible: NSNumber?
+    @NSManaged var coolModeVisible: NSNumber?
+    @NSManaged var heatModeVisible: NSNumber?
+    @NSManaged var fanModeVisible: NSNumber?
+    @NSManaged var autoModeVisible: NSNumber?
+    @NSManaged var lowSpeedVisible: NSNumber?
+    @NSManaged var medSpeedVisible: NSNumber?
+    @NSManaged var highSpeedVisible: NSNumber?
+    @NSManaged var autoSpeedVisible: NSNumber?
+
+
 }

@@ -9,6 +9,19 @@
 import UIKit
 import CoreData
 
+enum SwitchTag : Int {
+    case Humidity
+    case Temperature
+    case Cool
+    case Fan
+    case Heat
+    case AutoMode
+    case Low
+    case High
+    case Med
+    case AutoSpeed
+}
+
 class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
@@ -38,7 +51,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var switchLow: UISwitch!
     @IBOutlet weak var switchHigh: UISwitch!
     @IBOutlet weak var switchMed: UISwitch!
-    @IBOutlet weak var switchAuto: UISwitch!
+    @IBOutlet weak var switchAutoSpeed: UISwitch!
     
     var button:UIButton!
     
@@ -91,6 +104,19 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        switchHumidity.tag = SwitchTag.Humidity.rawValue
+        switchTemperature.tag = SwitchTag.Temperature.rawValue
+        switchCool.tag = SwitchTag.Cool.rawValue
+        switchFan.tag = SwitchTag.Fan.rawValue
+        switchHeat.tag = SwitchTag.Heat.rawValue
+        switchAutoMode.tag = SwitchTag.AutoMode.rawValue
+        switchLow.tag = SwitchTag.Low.rawValue
+        switchHigh.tag = SwitchTag.High.rawValue
+        switchMed.tag = SwitchTag.Med.rawValue
+        switchAutoSpeed.tag = SwitchTag.AutoSpeed.rawValue
+
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -156,6 +182,60 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         }
         //TODO: Dodaj i za gateway
         
+        if device.humidityVisible == true {
+            switchHumidity.setOn(true, animated: false)
+        }else{
+            switchHumidity.setOn(false, animated: false)
+        }
+        
+        if device.temperatureVisible == true {
+            switchTemperature.setOn(true, animated: false)
+        }else{
+            switchTemperature.setOn(false, animated: false)
+        }
+        
+        if device.coolModeVisible == true {
+            switchCool.setOn(true, animated: false)
+        }else{
+            switchCool.setOn(false, animated: false)
+        }
+        
+        if device.heatModeVisible == true {
+            switchHeat.setOn(true, animated: false)
+        }else{
+            switchHeat.setOn(false, animated: false)
+        }
+        if device.fanModeVisible == true {
+            switchFan.setOn(true, animated: false)
+        }else{
+            switchFan.setOn(false, animated: false)
+        }
+        if device.autoModeVisible == true {
+            switchAutoMode.setOn(true, animated: false)
+        }else{
+            switchAutoMode.setOn(false, animated: false)
+        }
+        if device.lowSpeedVisible == true {
+            switchLow.setOn(true, animated: false)
+        }else{
+            switchLow.setOn(false, animated: false)
+        }
+        if device.medSpeedVisible == true {
+            switchMed.setOn(true, animated: false)
+        }else{
+            switchMed.setOn(false, animated: false)
+        }
+        if device.highSpeedVisible == true {
+            switchHigh.setOn(true, animated: false)
+        }else{
+            switchHigh.setOn(false, animated: false)
+        }
+        if device.autoSpeedVisible == true {
+            switchAutoSpeed.setOn(true, animated: false)
+        }else{
+            switchAutoSpeed.setOn(false, animated: false)
+        }
+
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
@@ -300,6 +380,17 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             //                    }
             //                }
             //            }
+            device.humidityVisible = switchHumidity.on
+            device.temperatureVisible = switchTemperature.on
+            device.coolModeVisible = switchCool.on
+            device.fanModeVisible = switchFan.on
+            device.heatModeVisible = switchHeat.on
+            device.autoModeVisible = switchAutoMode.on
+            device.lowSpeedVisible = switchLow.on
+            device.highSpeedVisible = switchHigh.on
+            device.medSpeedVisible = switchMed.on
+            device.autoSpeedVisible = switchAutoSpeed.on
+            
             saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -322,26 +413,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
-    @IBAction func humidityControlSwitch(sender: AnyObject) {
-        if sender.on == false {
-            print("Iskljuci")
-            
-            device.humidity = 0
-            
-        }else{
-            print("Ukljuci")
-            
-            device.humidity = 1
-        }
-    }
-    
-    @IBAction func temperatureControlSwitch(sender: AnyObject) {
-    }
-    
-    
-    
-    
     
 }
 

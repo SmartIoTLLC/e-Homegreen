@@ -19,15 +19,15 @@
                 <outlet property="deviceInputTopSpace" destination="USN-ug-eGU" id="AJX-bo-jZg"/>
                 <outlet property="lblAddress" destination="zdm-me-7ed" id="oMk-I3-gMZ"/>
                 <outlet property="lblChannel" destination="3cg-OM-yUx" id="jeI-On-faA"/>
-                <outlet property="switchAuto" destination="W6b-7a-2Ie" id="niq-Ng-PCN"/>
-                <outlet property="switchAutoMode" destination="eJK-y8-fQF" id="h4Q-C0-LHY"/>
+                <outlet property="switchAutoMode" destination="eJK-y8-fQF" id="WvG-FN-Gua"/>
+                <outlet property="switchAutoSpeed" destination="W6b-7a-2Ie" id="VlH-wp-jRI"/>
                 <outlet property="switchCool" destination="TmB-8b-Uj4" id="Sko-D2-tqO"/>
-                <outlet property="switchFan" destination="vjN-Le-J2D" id="l2f-Kt-aNh"/>
-                <outlet property="switchHeat" destination="9op-HR-vkH" id="wzz-8a-3cm"/>
-                <outlet property="switchHigh" destination="B0g-bx-OFb" id="IZV-xK-Krg"/>
+                <outlet property="switchFan" destination="9op-HR-vkH" id="o7j-8c-H2L"/>
+                <outlet property="switchHeat" destination="vjN-Le-J2D" id="XH6-Tq-Xyu"/>
+                <outlet property="switchHigh" destination="1zl-Qn-DWv" id="X2H-Iw-Ufk"/>
                 <outlet property="switchHumidity" destination="g6I-Iu-TQy" id="c80-kf-ivw"/>
                 <outlet property="switchLow" destination="wp8-mS-x7U" id="iLZ-kw-SYn"/>
-                <outlet property="switchMed" destination="1zl-Qn-DWv" id="KbA-wj-9XP"/>
+                <outlet property="switchMed" destination="B0g-bx-OFb" id="rDA-fn-0dl"/>
                 <outlet property="switchTemperature" destination="6z0-B9-brE" id="ZE4-SN-Oz0"/>
                 <outlet property="txtFieldName" destination="6Eh-iA-vyV" id="HXV-5M-GpB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -159,21 +159,11 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSe-gu-2ZY">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSe-gu-2ZY">
                             <rect key="frame" x="176" y="434" width="33" height="18"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="1p4-8g-zT0"/>
                                 <constraint firstAttribute="width" constant="33" id="4B4-gC-qRS"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Med" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghB-be-qSd">
-                            <rect key="frame" x="177" y="514" width="31" height="18"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="18" id="Ecx-XM-XrP"/>
-                                <constraint firstAttribute="width" constant="31" id="sVc-W6-HUR"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -199,7 +189,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5A-4x-PcM">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Med" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5A-4x-PcM">
                             <rect key="frame" x="94" y="514" width="40" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="0F8-b2-mEJ"/>
@@ -218,6 +208,9 @@
                             <state key="normal" title="Button">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnLevel:" destination="-1" eventType="touchUpInside" id="d0f-hP-XIU"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uhy-zw-xXh" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="171" y="236" width="131" height="30"/>
@@ -228,6 +221,9 @@
                             <state key="normal" title="Button">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnZone:" destination="-1" eventType="touchUpInside" id="xUS-Nw-Iwh"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCo-0O-OC6" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="171" y="274" width="131" height="30"/>
@@ -238,6 +234,9 @@
                             <state key="normal" title="Button">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnCategory:" destination="-1" eventType="touchUpInside" id="D6I-0N-ejQ"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeb-Nq-IC5">
                             <rect key="frame" x="8" y="236" width="104" height="30"/>
@@ -268,6 +267,9 @@
                             <state key="normal" title="Button">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="changeControlType:" destination="-1" eventType="touchUpInside" id="1hp-Ei-WPG"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Plc-fy-rrr" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="60" y="535" width="70" height="30"/>
@@ -278,6 +280,9 @@
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnCancel:" destination="-1" eventType="touchUpInside" id="xWx-Cs-6cI"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bne-qf-4P4" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="184" y="535" width="67" height="30"/>
@@ -288,6 +293,9 @@
                             <state key="normal" title="Save">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="aJ6-NB-3s9"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Input Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bz7-jx-3NN">
                             <rect key="frame" x="8" y="160" width="155" height="30"/>
@@ -307,6 +315,9 @@
                             <state key="normal" title="Button">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="changeDeviceInputMode:" destination="-1" eventType="touchUpInside" id="q79-UO-JeX"/>
+                            </connections>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lD-NZ-kaL">
                             <rect key="frame" x="272" y="8" width="30" height="30"/>
@@ -315,8 +326,12 @@
                                 <constraint firstAttribute="width" constant="30" id="bvu-3e-D9s"/>
                             </constraints>
                             <state key="normal" image="pictureBtn"/>
+                            <connections>
+                                <action selector="btnImages:" destination="-1" eventType="touchUpInside" id="qeY-TM-QNe"/>
+                                <action selector="btnImages:forEvent:" destination="-1" eventType="touchUpInside" id="zFb-iQ-eRQ"/>
+                            </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RI2-el-hbe">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RI2-el-hbe">
                             <rect key="frame" x="94" y="432" width="40" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="DFD-53-zNE"/>
@@ -350,9 +365,6 @@
                         </switch>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6z0-B9-brE">
                             <rect key="frame" x="104" y="340" width="51" height="31"/>
-                            <connections>
-                                <action selector="temperatureControlSwitch:" destination="-1" eventType="valueChanged" id="iCC-t4-r15"/>
-                            </connections>
                         </switch>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wp8-mS-x7U">
                             <rect key="frame" x="13" y="482" width="51" height="31"/>
@@ -378,10 +390,17 @@
                         </label>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g6I-Iu-TQy">
                             <rect key="frame" x="104" y="307" width="51" height="31"/>
-                            <connections>
-                                <action selector="humidityControlSwitch:" destination="-1" eventType="valueChanged" id="SHf-jS-SIH"/>
-                            </connections>
                         </switch>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghB-be-qSd">
+                            <rect key="frame" x="175" y="514" width="32" height="18"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="18" id="Ecx-XM-XrP"/>
+                                <constraint firstAttribute="width" constant="32" id="sVc-W6-HUR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -427,7 +446,7 @@
                         <constraint firstItem="Plc-fy-rrr" firstAttribute="leading" secondItem="MIb-78-LAN" secondAttribute="leading" constant="60" id="QPR-On-KRe"/>
                         <constraint firstItem="7Cf-dk-Lbg" firstAttribute="leading" secondItem="MIb-78-LAN" secondAttribute="leading" constant="8" id="Qcx-b3-Gpo"/>
                         <constraint firstItem="GSe-gu-2ZY" firstAttribute="centerX" secondItem="9op-HR-vkH" secondAttribute="centerX" id="R4J-d6-Ury"/>
-                        <constraint firstItem="ghB-be-qSd" firstAttribute="centerX" secondItem="1zl-Qn-DWv" secondAttribute="centerX" id="RhS-hs-ek7"/>
+                        <constraint firstItem="ghB-be-qSd" firstAttribute="centerX" secondItem="1zl-Qn-DWv" secondAttribute="centerX" constant="-1.5" id="RhS-hs-ek7"/>
                         <constraint firstItem="9op-HR-vkH" firstAttribute="leading" secondItem="vjN-Le-J2D" secondAttribute="trailing" constant="29" id="RiC-h8-ISV"/>
                         <constraint firstItem="Bz7-jx-3NN" firstAttribute="leading" secondItem="MIb-78-LAN" secondAttribute="leading" constant="8" id="TEi-Wq-DzI"/>
                         <constraint firstItem="52b-jY-SB1" firstAttribute="centerY" secondItem="aCo-0O-OC6" secondAttribute="centerY" id="UJT-A7-aHD"/>

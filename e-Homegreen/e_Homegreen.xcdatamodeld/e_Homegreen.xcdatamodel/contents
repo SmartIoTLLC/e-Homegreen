@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G31" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
         <attribute name="allowOption" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,10 +13,13 @@
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="allowEnergySaving" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="amp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="autoModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="autoSpeedVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="categoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="controlType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coolModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="coolTemperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="current" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="currentValue" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -24,13 +27,19 @@
         <attribute name="curtainGroupID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="digitalInputMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="fanModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="heatModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="heatTemperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="highSpeedVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="humidity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="humidityVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCurtainModeAllowed" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isDimmerModeAllowed" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isEnabled" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="lowSpeedVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mac" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="medSpeedVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modeState" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -47,6 +56,7 @@
         <attribute name="speedState" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stateUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="temperature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="temperatureVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="voltage" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -274,9 +284,10 @@
     </entity>
     <elements>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
-        <element name="Device" positionX="-677" positionY="-1989" width="128" height="690"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="840"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
+        <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
@@ -292,6 +303,5 @@
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="270"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="195"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
-        <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
     </elements>
 </model>

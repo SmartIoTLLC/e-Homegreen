@@ -2,12 +2,14 @@
 //  Device.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/10/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Marko Stajic on 8/3/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import Foundation
 import CoreData
+
+
 enum EmployeeStatus: Int {
     case ReadyForHire, Hired, Retired, Resigned, Fired, Deceased
 }
@@ -52,6 +54,16 @@ class Device: NSManagedObject {
             self.heatTemperature = 0
             self.roomTemperature = 0
             self.humidity = 0
+            self.humidityVisible = true
+            self.temperatureVisible = true
+            self.coolModeVisible = true
+            self.heatModeVisible = true
+            self.fanModeVisible = true
+            self.autoModeVisible = true
+            self.lowSpeedVisible = true
+            self.medSpeedVisible = true
+            self.highSpeedVisible = true
+            self.autoSpeedVisible = true
         }
         let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
         for defaultDeviceImage in defaultDeviceImages {
@@ -85,11 +97,11 @@ class Device: NSManagedObject {
         // Convert device images to array
         let deviceValue: Double = {
             return Double(newDeviceValue)
-//            if newDeviceValue <= 100 {
-//                return Double(newDeviceValue)
-//            } else {
-//                return Double(newDeviceValue)/255 * 100
-//            }
+            //            if newDeviceValue <= 100 {
+            //                return Double(newDeviceValue)
+            //            } else {
+            //                return Double(newDeviceValue)/255 * 100
+            //            }
         }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!
@@ -121,7 +133,7 @@ class Device: NSManagedObject {
             if result1.stateValue < result2.stateValue {return true}
             return false
         }
-         let result = sortedFilteredMapedResult[0]
+        let result = sortedFilteredMapedResult[0]
         if let image = result.imageData {
             return image
         }
