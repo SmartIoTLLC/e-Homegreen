@@ -799,8 +799,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
     }
     
-    
-    
     //MARK: Setting names for devices according to filter
     func returnNameForDeviceAccordingToFilter (device:Device) -> String {
         if filterParametar.location != "All" {

@@ -18,7 +18,7 @@ class FilterController: NSObject {
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     func getLocationByObjectId(objectId:String) -> Location?{
-        if objectId != ""{
+        if objectId != "" && objectId != "0"{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                     do{
@@ -34,7 +34,7 @@ class FilterController: NSObject {
     }
     
     func getZoneByObjectId(objectId:String) -> Zone?{
-        if objectId != ""{
+        if objectId != "" && objectId != "0"{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                     do{
@@ -50,7 +50,7 @@ class FilterController: NSObject {
     }
     
     func getCategoryByObjectId(objectId:String) -> Category?{
-        if objectId != ""{
+        if objectId != "" && objectId != "0"{
             if let url = NSURL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
                     do{
