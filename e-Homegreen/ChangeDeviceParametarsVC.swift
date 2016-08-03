@@ -386,6 +386,9 @@ extension UIViewController {
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device, point: point)
             self.presentViewController(cdp, animated: true, completion: nil)
+        }else if device.controlType == ControlType.Climate {
+            let cdp = HvacParametersCell(device: device, point: point)
+            self.presentViewController(cdp, animated: true, completion: nil)
         }else{
             let cdp = ChangeDeviceParametarsVC(device: device, point: point)
             self.presentViewController(cdp, animated: true, completion: nil)

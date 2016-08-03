@@ -57,7 +57,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChangeDeviceParametarsVC.handleTap(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RelayParametersCell.handleTap(_:)))
         //        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
