@@ -437,7 +437,6 @@ class IncomingHandler: NSObject {
                 device.parentZoneId = Int(byteArray[10])
                 device.categoryId = Int(byteArray[8])
                 // When we change category it will reset images
-                device.resetImages(appDel.managedObjectContext!)
                 device.digitalInputMode = Int(byteArray[14])
                 //                var interfaceParametar:[Byte] = []
                 //                for var i = 7; i < byteArray.count-2; i++ {

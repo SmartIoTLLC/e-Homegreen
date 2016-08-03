@@ -156,8 +156,7 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
-        popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.HumanInterfaceSeries, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func btnLevel (sender: UIButton) {
