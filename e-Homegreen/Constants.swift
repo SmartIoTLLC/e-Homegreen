@@ -107,7 +107,28 @@ struct SomethingSomethingSomething {
 }
 //MARK:- Multisensor
 struct DigitalInput {
-    
+    // This is used to populate
+    enum DigitalInputNames: String {
+        case Generic
+        case NormalyOpen
+        case NormalyClosed
+        case MotionSensor
+        case ButtonNormallyOpen
+        case ButtonNormallyClosed
+        
+    }
+    struct ControlMode {
+        static func returnControlModeForId(id:Int) -> String {
+            switch id {
+            case 2:
+                return "Normally Open"
+            case 4:
+                return "NO and Reset"
+            default:
+                return ""
+            }
+        }
+    }
     static let modeInfo: [Int:String] = [0x00:DigitalInput.Generic.description(),
         0x01:DigitalInput.NormallyOpen.description(),
         0x02:DigitalInput.NormallyClosed.description(),

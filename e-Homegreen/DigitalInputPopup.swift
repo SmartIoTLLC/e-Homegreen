@@ -1,23 +1,15 @@
 //
-//  ChangeDeviceParametarsVC.swift
+//  DigitalInputPopup.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 11/8/15.
-//  Copyright © 2015 Teodor Stevic. All rights reserved.
+//  Created by Damir Djozic on 8/3/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-struct EditedDevice {
-    var levelId:Int
-    var zoneId:Int
-    var categoryId:Int
-    var controlType:String
-    var digitalInputMode:Int
-}
-
-class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
+class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
+    
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -29,59 +21,29 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var btnImages: UIButton!
     @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
     
-    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
-    
     var button:UIButton!
-    
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
-    
-    func hideDeviceInput(isHidden:Bool) {
-        if isHidden {
-            deviceInputHeight.constant = 0
-            deviceInputTopSpace.constant = 0
-        } else {
-            deviceInputHeight.constant = 30
-            deviceInputTopSpace.constant = 8
-        }
-        backView.layoutIfNeeded()
-    }
-    
-    func hideImageButton(isHidden:Bool) {
-        if isHidden {
-            deviceImageHeight.constant = 0
-            deviceImageLeading.constant = 0
-        } else {
-            deviceImageHeight.constant = 30
-            deviceImageLeading.constant = 7
-        }
-        backView.layoutIfNeeded()
-    }
-    
     var point:CGPoint?
     var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
-    
     var isPresenting: Bool = true
-    
-    init(device: Device, point:CGPoint){
-        self.device = device
-        self.point = point
-        editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
-        super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
-    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    init(device: Device, point:CGPoint){
+        self.device = device
+        self.point = point
+        editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
+        super.init(nibName: "DigitalInputPopup", bundle: nil)
+        transitioningDelegate = self
+        modalPresentationStyle = UIModalPresentationStyle.Custom
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,8 +54,8 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         //        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         self.view.tag = 1
+        
         self.view.backgroundColor = UIColor.clearColor()
-        self.title = "Device Parameters"
         
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
@@ -116,40 +78,21 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         if category != ""{
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }else{
-           btnCategory.setTitle("All", forState: UIControlState.Normal)
+            btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
-//        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay || device.controlType != ControlType.Curtain{
-//            btnControlType.enabled = false
-//        }else{
-//            btnControlType.enabled = true
-//        }
+        
+        
+        // Set current device input mode.
+        // In DigitalInput struct is defined "ids" and "values" for digitalInputMode
+        if let diMode = device.digitalInputMode as? Int {
+            changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+        }
         
         txtFieldName.delegate = self
         
-        let chn = Int(device.channel)
-        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
-            hideImageButton(true)
-        }
         //TODO: Dodaj i za gateway
-        
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
@@ -159,37 +102,20 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     override func nameAndId(name: String, id: String) {
         
         switch button.tag{
-        case 1: // "All" selected
-            if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
-                editedDevice?.levelId = (id.integerValue)
-                level = levelTemp
-                break
-            }else{
-                editedDevice?.levelId = 0
-                btnZone.setTitle("All", forState: .Normal)
-                level = nil
-                break
-            }
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            editedDevice?.levelId = (level?.id?.integerValue)!
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
         case 2:
-            if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
-                editedDevice?.zoneId = (id.integerValue)
-                zoneSelected = zoneTemp
-                break
-            }else{
-                editedDevice?.zoneId = 0
-                zoneSelected = nil
-                break
-            }
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+            break
         case 3:
-            if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
-                editedDevice?.categoryId = (id.integerValue)
-                category = categoryTemp
-                break
-            }else{
-                editedDevice?.categoryId = 0
-                category = nil
-                break
-            }
+            category = FilterController.shared.getCategoryByObjectId(id)
+            editedDevice?.categoryId = (category?.id?.integerValue)!
+            break
         case 4:
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)
@@ -205,50 +131,34 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         button.setTitle(name, forState: .Normal)
     }
     
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
         let touches = event.touchesForView(sender as! UIView)
         let touch:UITouch = touches!.first!
         let touchPoint = touch.locationInView(self.view)
-//        let touchPoint2 = touch.locationInView(sender as! UIView)
-//        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
         showDeviceImagesPicker(device, point: touchPoint)
     }
-    
     @IBAction func btnImages(sender: AnyObject) {
-//        if let button = sender as? UIButton {
-//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-//                showDeviceImagesPicker(device!, point: pointInView)
-//        }
     }
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-//        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
-//        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.Generic]!))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.NormallyOpen]!))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.NormallyClosed]!))
+        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.MotionSensor]!))
+        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.ButtonNormallyOpen]!))
+        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: DigitalInput.modeInfo[DigitalInput.DigitalInputMode.ButtonNormallyClosed]!))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
-        popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
+        popoverList.append(PopOverItem(name: ControlType.HumanInterfaceSeries, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnLevel (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -256,10 +166,9 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnZone (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -270,10 +179,9 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnCategory (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -282,38 +190,22 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
-            
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
-            device.controlType = editedDevice!.controlType
+            if editedDevice!.controlType == ControlType.Relay && device.isCurtainModeAllowed.boolValue {
+                device.controlType = ControlType.Curtain
+            }else{
+                device.controlType = editedDevice!.controlType
+            }
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
-//            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-//            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-//            if let checkDeviceImages = device.deviceImages {
-//                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-//                    if devImages.count > 0 {
-//                        for deviceImage in devImages {
-//                            appDel.managedObjectContext!.deleteObject(deviceImage)
-//                        }
-//                        for defaultDeviceImage in defaultDeviceImages {
-//                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-//                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-//                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-//                            deviceImage.device = device
-//                        }
-//                    }
-//                }
-//            }
             saveChanges()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -326,7 +218,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             abort()
         }
     }
-
     func handleTap(gesture:UITapGestureRecognizer){
         let point:CGPoint = gesture.locationInView(self.view)
         let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
@@ -334,10 +225,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
-
-extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
+extension DigitalInputPopup : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -385,7 +278,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
+extension DigitalInputPopup : UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
@@ -395,25 +288,6 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
         }
         else {
             return nil
-        }
-    }
-}
-
-extension UIViewController {
-    func showChangeDeviceParametar(point:CGPoint, device:Device) {
-        if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
-            let cdp = RelayParametersCell(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
-
-        }else if device.controlType == ControlType.HumanInterfaceSeries {
-            let cdp = DigitalInputPopup(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
-        }else if device.controlType == ControlType.Climate {
-            let cdp = HvacParametersCell(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
-        }else{
-            let cdp = ChangeDeviceParametarsVC(device: device, point: point)
-            self.presentViewController(cdp, animated: true, completion: nil)
         }
     }
 }
