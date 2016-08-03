@@ -19,7 +19,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
-    @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
+    @IBOutlet weak var changeControlMode: CustomGradientButton!
     @IBOutlet weak var switchAllowCurtainControl: UISwitch!
     @IBOutlet weak var txtCurtainGroupId: UITextField!
     
@@ -50,6 +50,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +102,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
             hideDeviceInput(false)
             if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
             }
         } else {
             hideDeviceInput(true)
@@ -109,7 +110,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
             hideDeviceInput(false)
             if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
             }
         } else {
             hideDeviceInput(true)
@@ -120,7 +121,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         if device.controlType == ControlType.Curtain && (chn == 2 || chn == 3) {
             hideDeviceInput(false)
             if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
             }
         } else {
             hideDeviceInput(true)
@@ -131,7 +132,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
-        changeDeviceInputMode.tag = 5
+        changeControlMode.tag = 5
     }
     override func nameAndId(name: String, id: String) {
         
@@ -156,7 +157,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             break
         case 5:
             editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
-            changeDeviceInputMode.setTitle(name,forState: UIControlState.Normal)
+            changeControlMode.setTitle(name,forState: UIControlState.Normal)
             break
         default:
             break
@@ -165,6 +166,13 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         button.setTitle(name, forState: .Normal)
     }
     
+    @IBAction func switchTrigered(sender: AnyObject) {
+        if switchAllowCurtainControl.on == false {
+            btnControlType.enabled = true
+        }else{
+            btnControlType.enabled = false
+        }
+    }
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -182,15 +190,15 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
 //            showDeviceImagesPicker(device!, point: pointInView)
 //        }
     }
-    @IBAction func changeDeviceInputMode(sender: UIButton) {
+    @IBAction func changeControlMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {

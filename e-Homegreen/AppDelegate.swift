@@ -14,9 +14,6 @@ import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    
-
     var window: UIWindow?
     let locationManager = CLLocationManager()
     var timer: dispatch_source_t!

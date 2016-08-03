@@ -203,7 +203,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         deviceCollectionView.reloadData()
     }
     
-    
 
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
@@ -952,263 +951,260 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     func checkZoneAndCategoryFromFilter(filterParametar: FilterItem){
         bottomView.hidden = true
         if filterParametar.locationObjectId != "All"{
-            zoneCategoryControl.setEnabled(false, forSegmentAtIndex: 0)
-            zoneCategoryControl.setEnabled(false, forSegmentAtIndex: 1)
+            zoneCategoryControl.removeAllSegments()
             if filterParametar.zoneObjectId != "All"{
+                zoneCategoryControl.insertSegmentWithTitle("Zone", atIndex: zoneCategoryControl.numberOfSegments, animated: false)
                 if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
                     if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue || zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                         bottomView.hidden = false
-                        zoneCategoryControl.setEnabled(true, forSegmentAtIndex: 0)
-                        zoneCategoryControl.selectedSegmentIndex = 0
+                        zoneCategoryControl.setEnabled(true, forSegmentAtIndex: zoneCategoryControl.numberOfSegments-1)
+                        zoneCategoryControl.selectedSegmentIndex = zoneCategoryControl.numberOfSegments-1
                     }
                 }
-
             }
             
             if filterParametar.categoryObjectId != "All"{
+                zoneCategoryControl.insertSegmentWithTitle("Category", atIndex: zoneCategoryControl.numberOfSegments, animated: false)
                 if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
                     if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue || category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                         bottomView.hidden = false
-                        zoneCategoryControl.setEnabled(true, forSegmentAtIndex: 1)
-                        zoneCategoryControl.selectedSegmentIndex = 1
+                        zoneCategoryControl.setEnabled(true, forSegmentAtIndex: zoneCategoryControl.numberOfSegments-1)
+                        zoneCategoryControl.selectedSegmentIndex = zoneCategoryControl.numberOfSegments-1
                     }
                 }
             }
         }else{
             bottomView.hidden = true
         }
-
     }
     
     @IBAction func zoneCategoryControlSlider(sender: UISlider) {
         let sliderValue = Int(sender.value)
-        switch zoneCategoryControl.selectedSegmentIndex{
-        case 0:
-            if filterParametar.zoneObjectId != "All"{
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.changeValueByZone(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
-                    }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+        
+        if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
+            if title == "Zone" {
+                if filterParametar.zoneObjectId != "All"{
+                    if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                        if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.changeValueByZone(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
+                        }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                            ZoneAndCategoryControl.shared.changeValueByZone(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.changeValueByZone(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Cancelled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
-            }
-            
-        case 1:
-            
-            if filterParametar.categoryObjectId != "All"{
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
-                    }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+            }else if title == "Category"{
+                if filterParametar.categoryObjectId != "All"{
+                    if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                        if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
+                        }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                            ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Cancelled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
+            }else{
+                // nothing
             }
-            
-        default:
-            break;
         }
     }
 
     @IBAction func on(sender: AnyObject) {
-        switch zoneCategoryControl.selectedSegmentIndex{
-        case 0:
-            if filterParametar.zoneObjectId != "All"{
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.turnOnByZone(filterParametar.zoneId, location: filterParametar.location)
-                    }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+        if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
+            if title == "Zone" {
+                if filterParametar.zoneObjectId != "All"{
+                    if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                        if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.turnOnByZone(filterParametar.zoneId, location: filterParametar.location)
+                        }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                            ZoneAndCategoryControl.shared.turnOnByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.turnOnByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender as? UIView
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Cancelled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender as? UIView
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
-            }
-            
-        case 1:
-            if filterParametar.categoryObjectId != "All"{
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.turnOnByCategory(filterParametar.categoryId, location: filterParametar.location)
-                    }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+            }else if title == "Category"{
+                if filterParametar.categoryObjectId != "All"{
+                    if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                        if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.turnOnByCategory(filterParametar.categoryId, location: filterParametar.location)
+                        }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                            ZoneAndCategoryControl.shared.turnOnByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.turnOnByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender as? UIView
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Cancelled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender as? UIView
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
+            }else{
+                //nothing
             }
-            
-        default:
-            break;
         }
     }
     
     @IBAction func off(sender: AnyObject) {
-        switch zoneCategoryControl.selectedSegmentIndex{
-        case 0:
-            if filterParametar.zoneObjectId != "All"{
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.turnOffByZone(filterParametar.zoneId, location: filterParametar.location)
-                    }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+        if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
+            if title == "Zone" {
+                if filterParametar.zoneObjectId != "All"{
+                    if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                        if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.turnOffByZone(filterParametar.zoneId, location: filterParametar.location)
+                        }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                           ZoneAndCategoryControl.shared.turnOffByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.turnOffByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender as? UIView
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Canceled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender as? UIView
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
-            }
-            
-        case 1:
-            if filterParametar.categoryObjectId != "All"{
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                        ZoneAndCategoryControl.shared.turnOffByCategory(filterParametar.categoryId, location: filterParametar.location)
-                    }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                        
-                        let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                            (alert: UIAlertAction!) -> Void in
+            }else if title == "Category"{
+                if filterParametar.categoryObjectId != "All"{
+                    if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                        if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
+                            ZoneAndCategoryControl.shared.turnOffByCategory(filterParametar.categoryId, location: filterParametar.location)
+                        }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
+                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
-                            ZoneAndCategoryControl.shared.turnOffByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                
+                                ZoneAndCategoryControl.shared.turnOffByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                                
+                            })
                             
-                        })
-                        
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                            (alert: UIAlertAction!) -> Void in
-                            print("Cancelled")
-                        })
-                        
-                        if let presentationController = optionMenu.popoverPresentationController {
-                            presentationController.sourceView = sender as? UIView
-                            presentationController.sourceRect = sender.bounds
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                                (alert: UIAlertAction!) -> Void in
+                                print("Cancelled")
+                            })
+                            
+                            if let presentationController = optionMenu.popoverPresentationController {
+                                presentationController.sourceView = sender as? UIView
+                                presentationController.sourceRect = sender.bounds
+                            }
+                            
+                            optionMenu.addAction(okAction)
+                            optionMenu.addAction(cancelAction)
+                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
-                        
-                        optionMenu.addAction(okAction)
-                        optionMenu.addAction(cancelAction)
-                        self.presentViewController(optionMenu, animated: true, completion: nil)
                     }
+                    
                 }
-                
+            }else{
+                // nothing
             }
-            
-        default:
-            break;
         }
     }
 
     @IBAction func changeZoneCategory(sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-           selectLabel.text = "Selected Zone:" + filterParametar.zoneName
-        case 1:
-            selectLabel.text = "Selected Category:" + filterParametar.categoryName
-        default:
-            break;
+        if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
+            if title == "Zone" {
+                selectLabel.text = "Selected Zone:" + filterParametar.zoneName
+            }else if title == "Category"{
+                selectLabel.text = "Selected Category:" + filterParametar.categoryName
+            }else{
+                // nothing
+            }
         }
     }
     

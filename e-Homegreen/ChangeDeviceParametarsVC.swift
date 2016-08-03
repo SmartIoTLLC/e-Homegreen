@@ -120,9 +120,11 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
-        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay{
-            btnControlType.enabled = false
-        }
+//        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay || device.controlType != ControlType.Curtain{
+//            btnControlType.enabled = false
+//        }else{
+//            btnControlType.enabled = true
+//        }
         
         txtFieldName.delegate = self
         
@@ -214,12 +216,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
@@ -227,7 +229,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
         popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
-        popoverList.append(PopOverItem(name: ControlType.Curtain, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     

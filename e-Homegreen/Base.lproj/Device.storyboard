@@ -1432,8 +1432,8 @@
                                             <constraint firstAttribute="height" constant="30" id="wwP-5F-11A"/>
                                         </constraints>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QEO-B8-hGL" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="30" width="320" height="130"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QEO-B8-hGL" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="27" width="320" height="130"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUi-ah-jIy" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="92" width="147" height="30"/>
