@@ -1049,7 +1049,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         }
     }
-
     @IBAction func on(sender: AnyObject) {
         if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
             if title == "Zone" {
@@ -1121,7 +1120,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         }
     }
-    
     @IBAction func off(sender: AnyObject) {
         if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
             if title == "Zone" {
@@ -1193,7 +1191,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         }
     }
-
     @IBAction func changeZoneCategory(sender: UISegmentedControl) {
         if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
             if title == "Zone" {
@@ -1205,7 +1202,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         }
     }
-    
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {
@@ -1221,12 +1217,10 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
 
         }
     }
-    
     @IBAction func reload(sender: UIButton) {
         refreshVisibleDevicesInScrollView()
         sender.rotate(1)
     }
-    
     @IBAction func location(sender: AnyObject) {
         
     }
