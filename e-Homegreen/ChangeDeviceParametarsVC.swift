@@ -159,20 +159,37 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     override func nameAndId(name: String, id: String) {
         
         switch button.tag{
-        case 1:
-            level = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.levelId = (level?.id?.integerValue)!
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
-            break
+        case 1: // "All" selected
+            if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
+                editedDevice?.levelId = (id.integerValue)
+                level = levelTemp
+                break
+            }else{
+                editedDevice?.levelId = 0
+                btnZone.setTitle("All", forState: .Normal)
+                level = nil
+                break
+            }
         case 2:
-            zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
-            break
+            if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
+                editedDevice?.zoneId = (id.integerValue)
+                zoneSelected = zoneTemp
+                break
+            }else{
+                editedDevice?.zoneId = 0
+                zoneSelected = nil
+                break
+            }
         case 3:
-            category = FilterController.shared.getCategoryByObjectId(id)
-            editedDevice?.categoryId = (category?.id?.integerValue)!
-            break
+            if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
+                editedDevice?.categoryId = (id.integerValue)
+                category = categoryTemp
+                break
+            }else{
+                editedDevice?.categoryId = 0
+                category = nil
+                break
+            }
         case 4:
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)
@@ -217,8 +234,8 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         button = sender
         var popoverList:[PopOverItem] = []
 //        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
 //        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
 //        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
 //        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
@@ -227,8 +244,8 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
-        popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
+        popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
         openPopover(sender, popOverList:popoverList)
     }
     
@@ -239,7 +256,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
@@ -253,7 +270,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
@@ -265,13 +282,14 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
+            
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)

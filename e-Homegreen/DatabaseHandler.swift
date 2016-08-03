@@ -38,24 +38,29 @@ class DatabaseHandler: NSObject {
     }
     
     class func returnZoneWithId(id:Int, location:Location) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        let predicateTwo = NSPredicate(format: "location == %@", location)
-        let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name!)"
-            } else {
-                return ""
+        // "All" should have id: 0
+        if id == 0{
+            return "All"
+        }else{
+            let fetchRequest = NSFetchRequest(entityName: "Zone")
+            let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+            let predicateTwo = NSPredicate(format: "location == %@", location)
+            let predicateArray = [predicateOne, predicateTwo]
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+                if fetResults!.count != 0 {
+                    return "\(fetResults![0].name!)"
+                } else {
+                    return ""
+                }
+            } catch _ as NSError {
+                print("Unresolved error")
+                abort()
             }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
+            return ""
         }
-        return ""
     }
     
     class func returnLevelWithId(id:Int, location:Location) -> Zone? {
