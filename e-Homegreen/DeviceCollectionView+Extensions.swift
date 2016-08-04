@@ -230,12 +230,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.openButton.tag = indexPath.row
             cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue)
-//                if Double(devices[indexPath.row].currentValue) > 100 {
-//                    return Double(devices[indexPath.row].currentValue) / 255
-//                } else {
-//                    return Double(devices[indexPath.row].currentValue) / 100
-//                }
+//                return Double(devices[indexPath.row].currentValue)
+                if Double(devices[indexPath.row].currentValue) > 100 {
+                    return Double(devices[indexPath.row].currentValue) / 255
+                } else {
+                    return Double(devices[indexPath.row].currentValue) / 100
+                }
             }()
             cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
             let img = cell.curtainImage.image
@@ -290,7 +290,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Relay {//|| devices[indexPath.row].controlType == ControlType.Curtain {
+        else if devices[indexPath.row].controlType == ControlType.Relay {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
 //            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
 //                        cell.name.text = devices[indexPath.row].name
@@ -471,7 +471,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway {
+        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
