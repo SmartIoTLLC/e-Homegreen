@@ -82,6 +82,17 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     @IBOutlet weak var humidityView: UIView!
     @IBOutlet weak var temperatureView: UIView!
     
+    @IBOutlet weak var coolWidth: NSLayoutConstraint!
+    @IBOutlet weak var heatWidth: NSLayoutConstraint!
+    @IBOutlet weak var fanWidth: NSLayoutConstraint!
+    @IBOutlet weak var autoModeWidth: NSLayoutConstraint!
+    @IBOutlet weak var thresholdCoolWidth: NSLayoutConstraint!
+    @IBOutlet weak var humidityWidth: NSLayoutConstraint!
+    @IBOutlet weak var lowWidth: NSLayoutConstraint!
+    @IBOutlet weak var medWidth: NSLayoutConstraint!
+    @IBOutlet weak var highWidth: NSLayoutConstraint!
+    @IBOutlet weak var autoSpeedWidth: NSLayoutConstraint!
+    
     @IBOutlet weak var lblClimateName: UILabel!
     @IBOutlet weak var settingsView: UIView!
     var appDel:AppDelegate!
@@ -173,6 +184,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             
             btnCool.hidden = true
             thresholdCoolView.hidden = true
+            thresholdCoolWidth.constant = 0
+            coolWidth.constant = 0
             
             if device.coolModeVisible == false && device.heatModeVisible == false {
                 
@@ -186,13 +199,19 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         if device.heatModeVisible == false {
+            
+            heatWidth.constant = 0
             btnHeat.hidden = true
             thresholdHeatView.hidden = true
         }
         if device.fanModeVisible == false {
+            
+            fanWidth.constant = 0
             btnFan.hidden = true
         }
         if device.autoModeVisible == false {
+            
+            autoModeWidth.constant = 0
             btnAuto.hidden = true
         }
 
@@ -200,15 +219,19 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             speedViewHeight.constant = 0
         }else{
             if device.lowSpeedVisible == false {
+                lowWidth.constant = 0
                 btnLow.hidden = true
             }
             if device.medSpeedVisible == false {
+                medWidth.constant = 0
                 btnMed.hidden = true
             }
             if device.highSpeedVisible == false {
+                highWidth.constant = 0
                 btnHigh.hidden = true
             }
             if device.autoSpeedVisible == false {
+                autoSpeedWidth.constant = 0
                 btnAutoFan.hidden = true
             }
 
@@ -220,6 +243,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             temperatureView.hidden = true
         }else if device.humidityVisible == false {
             humidityView.hidden = true
+            humidityWidth.constant = 0
         }
 
         
