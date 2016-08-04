@@ -96,12 +96,12 @@ class Device: NSManagedObject {
     func returnImage(newDeviceValue:Double) -> UIImage {
         // Convert device images to array
         let deviceValue: Double = {
-            return Double(newDeviceValue)
-            //            if newDeviceValue <= 100 {
-            //                return Double(newDeviceValue)
-            //            } else {
-            //                return Double(newDeviceValue)/255 * 100
-            //            }
+//            return Double(newDeviceValue)
+                        if newDeviceValue <= 100 {
+                            return Double(newDeviceValue)
+                        } else {
+                            return Double(newDeviceValue)/255 * 100
+                        }
         }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!
