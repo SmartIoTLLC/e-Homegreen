@@ -442,7 +442,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
             
-            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false

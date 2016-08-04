@@ -109,7 +109,7 @@ class ClimateCell: UICollectionViewCell {
         } else {
             imageOnOff.image = UIImage(named: "poweron")
         }
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+//        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         if device.info {
             infoView.hidden = false
             backView.hidden = true
@@ -129,7 +129,6 @@ class ClimateCell: UICollectionViewCell {
     
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblVoltage: UILabel!
-    @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
 }
