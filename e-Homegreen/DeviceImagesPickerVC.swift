@@ -16,6 +16,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 //    var appDel:AppDelegate!
     var isPresenting: Bool = true
     var appDel:AppDelegate
+    var imags = [DeviceImageState]()
     
     @IBAction func btnBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true) { () -> Void in
@@ -25,7 +26,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         showGallery(-1).delegate = self
     }
     @IBOutlet weak var tableView: UITableView!
-        var deviceImages:[DeviceImage]
+    var deviceImages:[DeviceImage]
 
     init(device:Device, point:CGPoint){
         self.device = device
@@ -44,7 +45,9 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
+        imags = DefaultDeviceImages().getNewImagesForDevice(device)
         // Do any additional setup after loading the view.
+        tableView.reloadData()
     }
     
     func backString(strText: String, imageIndex:Int) {
@@ -87,94 +90,110 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deviceImages.count
+//        return deviceImages.count
+        return imags.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deviceImageCell", forIndexPath: indexPath) as! DeviceImagePickerTVC
         
-        if device.controlType == ControlType.Curtain {
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Open"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "Stop"
-            }
-            if imags[indexPath.row].state == 2{
-                cell.deviceState.text = "Close"
-            }
-        }else if device.controlType == ControlType.Relay{
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Off"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "On"
-            }
-            
-        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 2{ // Digitl input 1
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Off"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "On"
-            }
-        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 3{ // Digital input 2
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Off"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "On"
-            }
-        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 4{ // Temperature
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Off"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "On"
-            }
-        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 5{ // IR Receiver
-            let imags = device.deviceImages?.allObjects as! [DeviceImage]
-            cell.deviceState.text = ""
-            if imags[indexPath.row].state == 0{
-                cell.deviceState.text = "Locked"
-            }
-            if imags[indexPath.row].state == 1{
-                cell.deviceState.text = "Unlocked"
-            }
-        }else{
-            if deviceImages.count == 2 {
-                if indexPath.row == 0 {
-                    cell.deviceState.text = "\(0)"
-                }
-                if indexPath.row == deviceImages.count-1 {
-                    cell.deviceState.text = "\(100)"
-                }
-            }
-            if deviceImages.count > 2 {
-                if indexPath.row == 0 {
-                    cell.deviceState.text = "\(0)"
-                } else if indexPath.row == deviceImages.count-1 {
-                    cell.deviceState.text = "\(100)"
-                } else {
-                    let part:Double = Double(100) / Double(deviceImages.count-2)
-                    let number1 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row-1))
-                    let number2 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row))
-                    cell.deviceState.text = number1 + " - " + number2
-                }
-            }
-        }
+//        if imags[indexPath.row].state == 0{
+//            cell.deviceState.text = "Off"
+//        }
+//        if imags[indexPath.row].state == 1{
+//            cell.deviceState.text = "On"
+//        }
         
-        cell.deviceImage.image = UIImage().returnImage(forDeviceImage: deviceImages[indexPath.row])
+        if let stateText = imags[indexPath.row].text {
+            cell.deviceState.text = stateText
+        }else{
+            cell.deviceState.text = "\(imags[indexPath.row].state)"
+        }
+        cell.deviceImage.image = UIImage(named: imags[indexPath.row].defaultImage)
         return cell
+        
+        
+//        if device.controlType == ControlType.Curtain {
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Open"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "Stop"
+//            }
+//            if imags[indexPath.row].state == 2{
+//                cell.deviceState.text = "Close"
+//            }
+//        }else if device.controlType == ControlType.Relay{
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Off"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "On"
+//            }
+//            
+//        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 2{ // Digitl input 1
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Off"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "On"
+//            }
+//        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 3{ // Digital input 2
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Off"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "On"
+//            }
+//        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 4{ // Temperature
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Off"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "On"
+//            }
+//        }else if device.controlType == ControlType.HumanInterfaceSeries && device.channel.intValue == 5{ // IR Receiver
+//            let imags = device.deviceImages?.allObjects as! [DeviceImage]
+//            cell.deviceState.text = ""
+//            if imags[indexPath.row].state == 0{
+//                cell.deviceState.text = "Locked"
+//            }
+//            if imags[indexPath.row].state == 1{
+//                cell.deviceState.text = "Unlocked"
+//            }
+//        }else{
+//            if deviceImages.count == 2 {
+//                if indexPath.row == 0 {
+//                    cell.deviceState.text = "\(0)"
+//                }
+//                if indexPath.row == deviceImages.count-1 {
+//                    cell.deviceState.text = "\(100)"
+//                }
+//            }
+//            if deviceImages.count > 2 {
+//                if indexPath.row == 0 {
+//                    cell.deviceState.text = "\(0)"
+//                } else if indexPath.row == deviceImages.count-1 {
+//                    cell.deviceState.text = "\(100)"
+//                } else {
+//                    let part:Double = Double(100) / Double(deviceImages.count-2)
+//                    let number1 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row-1))
+//                    let number2 = String.localizedStringWithFormat("%.01f", part*Double(indexPath.row))
+//                    cell.deviceState.text = number1 + " - " + number2
+//                }
+//            }
+//        }
+
+        
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showGallery(indexPath.row).delegate = self

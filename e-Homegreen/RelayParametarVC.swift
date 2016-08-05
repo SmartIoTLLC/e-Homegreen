@@ -264,4 +264,3 @@ extension UIViewController {
         self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
     }
 }
-
