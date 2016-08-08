@@ -155,11 +155,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue)
+//                return Double(devices[indexPath.row].currentValue)
 //                if Double(devices[indexPath.row].currentValue) > 100 {
 //                    return Double(Double(devices[indexPath.row].currentValue)/255)
 //                } else {
-//                    return Double(devices[indexPath.row].currentValue)/100
+                    return Double(devices[indexPath.row].currentValue)/255
 //                }
             }()
             cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
@@ -231,11 +231,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
 //                return Double(devices[indexPath.row].currentValue)
-                if Double(devices[indexPath.row].currentValue) > 100 {
+//                if Double(devices[indexPath.row].currentValue) > 100 {
                     return Double(devices[indexPath.row].currentValue) / 255
-                } else {
-                    return Double(devices[indexPath.row].currentValue) / 100
-                }
+//                } else {
+//                    return Double(devices[indexPath.row].currentValue) / 100
+//                }
             }()
             cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
             let img = cell.curtainImage.image
@@ -267,7 +267,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 curtainNameTap.numberOfTapsRequired = 2
                 cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
-                
                 let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
                 curtainNameLongPress.minimumPressDuration = 0.5
                 cell.curtainName.addGestureRecognizer(curtainNameLongPress)
@@ -297,15 +296,15 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue)
+//                return Double(devices[indexPath.row].currentValue)
 //                if Double(devices[indexPath.row].currentValue) <= 100 {
 //                    return Double(devices[indexPath.row].currentValue)/100
 //                } else {
-//                    return Double(devices[indexPath.row].currentValue)/255
+                    return Double(devices[indexPath.row].currentValue)/255
 //                }
             }()
             cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
-            if deviceValue == 100 {
+            if deviceValue == 255 {
                 cell.onOff.setTitle("ON", forState: .Normal)
             } else if devices[indexPath.row].currentValue == 0 {
                 cell.onOff.setTitle("OFF", forState: .Normal)

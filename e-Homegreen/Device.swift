@@ -96,12 +96,12 @@ class Device: NSManagedObject {
     func returnImage(newDeviceValue:Double) -> UIImage {
         // Convert device images to array
         let deviceValue: Double = {
-//            return Double(newDeviceValue)
-                        if newDeviceValue <= 100 {
-                            return Double(newDeviceValue)
-                        } else {
-                            return Double(newDeviceValue)/255 * 100
-                        }
+            return Double(newDeviceValue)
+//                        if newDeviceValue <= 100 {
+//                            return Double(newDeviceValue)
+//                        } else {
+//                            return Double(newDeviceValue)/255 * 100
+//                        }
         }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!
@@ -111,6 +111,7 @@ class Device: NSManagedObject {
         }
         let sumOfDeviceImages = devImages.count
         let dblSection:Double = 100/Double(sumOfDeviceImages)
+        // sort by state: 1 2 3 4 5 6
         let preSort = devImages.sort { (let result1, let result2) -> Bool in
             if result1.state?.integerValue < result2.state?.integerValue {return true}
             return false

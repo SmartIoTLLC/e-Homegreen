@@ -15,6 +15,10 @@ struct DeviceImageState {
     let text : String?
 }
 
+struct DeviceImages {
+    
+}
+
 class DefaultDeviceImages: NSObject {
     func getNewImagesForDevice (device:Device) -> [DeviceImageState] {
         
@@ -24,7 +28,22 @@ class DefaultDeviceImages: NSObject {
         
         switch controlType {
         case ControlType.Dimmer:
-            
+            switch categoryId {
+            case CategoryId.Blind:
+                return [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 1, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 02", state: 2, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 03", state: 3, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 04", state: 4, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 05", state: 5, text: nil),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 6, text: nil)]
+            case CategoryId.Curtain:
+                return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: nil),
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1, text: nil),
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 2, text: nil),
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3, text: nil),
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 4, text: nil)]
+            default:
             return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: nil),
                     DeviceImageState(defaultImage: "11 Lighting - Bulb - 01", state: 1, text: nil),
                     DeviceImageState(defaultImage: "11 Lighting - Bulb - 02", state: 2, text: nil),
@@ -36,22 +55,16 @@ class DefaultDeviceImages: NSObject {
                     DeviceImageState(defaultImage: "11 Lighting - Bulb - 08", state: 8, text: nil),
                     DeviceImageState(defaultImage: "11 Lighting - Bulb - 09", state: 9, text: nil),
                     DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 10, text: nil)]
+            }
         case ControlType.Curtain:
             switch categoryId {
             case CategoryId.Blind:
                 return [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 1, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 02", state: 2, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 03", state: 3, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 04", state: 4, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 05", state: 5, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 6, text: nil)]
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: nil)]
             default:
                 return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 2, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 4, text: nil)]
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: nil),
+                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: nil)]
 
             }
             
