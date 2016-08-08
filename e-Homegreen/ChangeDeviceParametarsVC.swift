@@ -139,7 +139,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
             hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
+            if let diMode = device.digitalInputMode?.integerValue {
                 changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
             }
         } else {
@@ -163,33 +163,33 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
                 editedDevice?.levelId = (id.integerValue)
                 level = levelTemp
-                break
             }else{
-                editedDevice?.levelId = 0
+                // Set default levelId
+                editedDevice?.levelId = 255
                 btnZone.setTitle("All", forState: .Normal)
                 level = nil
-                break
             }
+            break
         case 2:
             if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
                 editedDevice?.zoneId = (id.integerValue)
                 zoneSelected = zoneTemp
-                break
             }else{
-                editedDevice?.zoneId = 0
+                // Set default zoneId
+                editedDevice?.zoneId = 255
                 zoneSelected = nil
-                break
             }
+            break
         case 3:
             if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
                 editedDevice?.categoryId = (id.integerValue)
                 category = categoryTemp
-                break
             }else{
-                editedDevice?.categoryId = 0
+                // Set default categoryId
+                editedDevice?.categoryId = 255
                 category = nil
-                break
             }
+            break
         case 4:
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)

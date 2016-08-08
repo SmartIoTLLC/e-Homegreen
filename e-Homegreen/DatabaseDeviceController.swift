@@ -31,13 +31,13 @@ class DatabaseDeviceController: NSObject {
             if filterParametar.location != "All" {
                 predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
             }
-            if filterParametar.levelId != 0 {
+            if filterParametar.levelId != 0 && filterParametar.levelId != 255{
                 predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId)))
             }
-            if filterParametar.zoneId != 0 {
+            if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
                 predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId)))
             }
-            if filterParametar.categoryId != 0 {
+            if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
                 predicateArray.append(NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId)))
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)

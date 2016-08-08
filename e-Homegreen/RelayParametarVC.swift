@@ -96,26 +96,30 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func returnZoneWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
+
+    // Vec postoji u DatabaseController, treba izbrisati ako ne pravi problem
+//    func returnZoneWithId(id:Int) -> String {
+//        let fetchRequest = NSFetchRequest(entityName: "Zone")
+//        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+//        fetchRequest.predicate = predicate
+//        do {
+//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+//            if fetResults!.count != 0 {
+//                return "\(fetResults![0].name)"
+//            } else {
+//                return "\(id)"
+//            }
+//        } catch _ as NSError {
+//            print("Unresolved error")
+//            abort()
+//        }
+//        return ""
+//    }
     
     func returnCategoryWithId(id:Int) -> String {
+        if id == 0{
+            return "All"
+        }
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
         fetchRequest.predicate = predicate

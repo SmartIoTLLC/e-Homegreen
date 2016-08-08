@@ -104,6 +104,9 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
     
     func returnZoneWithId(id:Int) -> String {
+        if id == 0{
+            return "All"
+        }
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
         fetchRequest.predicate = predicate
@@ -112,7 +115,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             if fetResults!.count != 0 {
                 return "\(fetResults![0].name)"
             } else {
-                return "\(id)"
+                return ""
             }
         } catch _ as NSError {
             print("Unresolved error")

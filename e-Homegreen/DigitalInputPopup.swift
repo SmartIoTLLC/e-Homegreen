@@ -81,6 +81,15 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
+        if let digInputMode = device.digitalInputMode?.integerValue{
+            let controlType = DigitalInput.modeInfo[digInputMode]
+            if controlType != ""{
+                changeDeviceInputMode.setTitle(controlType, forState: UIControlState.Normal)
+            }else{
+                changeDeviceInputMode.setTitle("All", forState: UIControlState.Normal)
+            }
+        }
+        
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
         
         
@@ -104,17 +113,37 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.levelId = (level?.id?.integerValue)!
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
+            if let level = level {
+                editedDevice?.levelId = (level.id?.integerValue)!
+                btnZone.setTitle("All", forState: .Normal)
+                zoneSelected = nil
+            }else{
+                // set default
+                editedDevice?.levelId = 255
+                btnZone.setTitle("All", forState: .Normal)
+                zoneSelected = nil
+            }
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+            if let zoneSelected = zoneSelected {
+                editedDevice?.zoneId = (zoneSelected.id?.integerValue)!
+            }else{
+                // set default
+                self.zoneSelected = nil
+                 editedDevice?.zoneId = 255
+            }
             break
+            
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
-            editedDevice?.categoryId = (category?.id?.integerValue)!
+            if let category = category{
+                editedDevice?.categoryId = (category.id?.integerValue)!
+            }else{
+                // set default
+                editedDevice?.categoryId = 255
+            }
+            
             break
         case 4:
             editedDevice?.controlType = name
