@@ -1043,6 +1043,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		4952C1301D589131006C29F2 /* HVAC */ = {
+			isa = PBXGroup;
+			children = (
+				4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */,
+				4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */,
+			);
+			name = HVAC;
+			sourceTree = "<group>";
+		};
 		495726AF1D4F4827004F2A3D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1496,6 +1505,7 @@
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
 			isa = PBXGroup;
 			children = (
+				4952C1301D589131006C29F2 /* HVAC */,
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
 				E7E242111B68B35400CEAB9A /* CellParametarVC.swift */,
@@ -1518,8 +1528,6 @@
 				73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */,
 				73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */,
 				73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */,
-				4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */,
-				4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */,
 			);
 			name = "Device Parametars";
 			sourceTree = "<group>";
