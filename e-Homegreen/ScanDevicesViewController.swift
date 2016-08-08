@@ -706,7 +706,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func sensorParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars) {
+        let parameter = NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars)
+        if parameter {
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["sensorIndexForFoundParametar"] {
                     if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
@@ -754,13 +755,16 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func progressBarDidPressedExit() {
+        findSensorParametar = false
         dismissScaningControls()
     }
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         //   For finding names
         deviceNameTimer?.invalidate()
+
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSensorParametars)
         pbFN?.dissmissProgressBar()
         
         //   For finding devices
