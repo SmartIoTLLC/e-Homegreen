@@ -150,15 +150,7 @@ class ScanSequencesesViewController: PopoverVC {
             abort()
         }
     }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+    
     
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
@@ -249,7 +241,6 @@ class ScanSequencesesViewController: PopoverVC {
                     sequence.sequenceZone = btnZone.titleLabel!.text!
                     sequence.sequenceCategory = btnCategory.titleLabel!.text!
                     sequence.gateway = gateway
-                    saveChanges()
                     refreshSequenceList()
                 } else {
                     existingSequence!.sequenceId = sceneId
@@ -264,10 +255,9 @@ class ScanSequencesesViewController: PopoverVC {
                     existingSequence!.sequenceZone = btnZone.titleLabel!.text!
                     existingSequence!.sequenceCategory = btnCategory.titleLabel!.text!
                     existingSequence!.gateway = gateway
-                    saveChanges()
                     refreshSequenceList()
-                    
                 }
+                CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -277,7 +267,7 @@ class ScanSequencesesViewController: PopoverVC {
             for sequence in sequences {
                 appDel.managedObjectContext!.deleteObject(sequence)
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshSequenceList()
             self.view.endEditing(true)
         }
@@ -388,7 +378,7 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
         
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(sequences[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshSequenceList()
         }
         

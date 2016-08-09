@@ -306,19 +306,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }else if let user = DatabaseUserController.shared.getLoggedUser(){
             user.isLocked = sender.on
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+
     
     func didTouchSettingButton (sender:AnyObject) {
         if let view = sender as? UIButton {

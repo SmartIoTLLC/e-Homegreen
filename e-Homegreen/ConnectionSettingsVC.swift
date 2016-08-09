@@ -189,16 +189,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         addressThird.resignFirstResponder()
         centarY.constant = 0
     }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        appDel.establishAllConnections()
-    }
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
@@ -290,7 +280,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             gateway.gatewayDescription = txtDescription.text
             gateway.autoReconnectDelay = hb
             gateway.gatewayType = gatewayType
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
             delegate?.addEditGatewayFinished()
         }else{
@@ -310,7 +300,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 gateway.gatewayId = NSUUID().UUIDString
                 gateway.autoReconnectDelay = NSNumber(integer: hb)
                 gateway.gatewayType = gatewayType
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
                 self.dismissViewControllerAnimated(true, completion: nil)
                 delegate?.addEditGatewayFinished()
             }

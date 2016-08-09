@@ -38,7 +38,7 @@ class DatabaseFilterController: NSObject {
                 }
             }
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
     
     func saveFilter(filterItem:FilterItem, menu:Menu){
@@ -57,7 +57,7 @@ class DatabaseFilterController: NSObject {
                     results[0].levelId = filterItem.levelObjectId
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             } catch {
                 
@@ -82,7 +82,7 @@ class DatabaseFilterController: NSObject {
                     results[0].levelId = filterItem.levelObjectId
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             } catch {
                 
@@ -132,13 +132,4 @@ class DatabaseFilterController: NSObject {
         }
         return nil
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch _ as NSError {
-            abort()
-        }
-    }
-    
 }

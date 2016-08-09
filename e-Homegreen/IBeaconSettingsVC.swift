@@ -187,29 +187,18 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
                         iBeaconNew.uuid = editUUID.text!
                         iBeaconNew.major = NSNumber(unsignedShort: major)
                         iBeaconNew.minor =  NSNumber(unsignedShort: minor)
-                        saveChanges()
                     } else {
                         iBeacon!.name = editName.text!
                         iBeacon!.uuid = editUUID.text!
                         iBeacon!.major =  NSNumber(unsignedShort: major)
                         iBeacon!.minor = NSNumber(unsignedShort: minor)
-                        saveChanges()
                     }
+                    CoreDataController.shahredInstance.saveChanges()
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
             }
         }
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
     }
     
     func keyboardWillShow(notification: NSNotification) {

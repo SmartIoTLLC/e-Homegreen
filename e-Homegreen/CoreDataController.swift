@@ -81,13 +81,13 @@ class CoreDataController: NSObject {
         }
         return []
     }
-    
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
         } catch let error1 as NSError {
             let error = error1
             print("Unresolved error \(error), \(error.userInfo)")
+            abort()
         }
     }
 }

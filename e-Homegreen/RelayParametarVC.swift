@@ -147,16 +147,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
             device = deviceObject
             print(device)
             device!.delay = numberOne
-            saveChanges()
-        }
-    }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+            CoreDataController.shahredInstance.saveChanges()
         }
     }
     

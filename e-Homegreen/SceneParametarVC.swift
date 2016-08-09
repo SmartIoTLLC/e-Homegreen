@@ -64,7 +64,7 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         } else {
             scene?.isLocalcast = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshScene, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -87,16 +87,6 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     override func didReceiveMemoryWarning() {

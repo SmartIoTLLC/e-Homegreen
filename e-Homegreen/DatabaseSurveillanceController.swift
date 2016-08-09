@@ -17,50 +17,41 @@ class DatabaseSurveillanceController: NSObject {
     func getSurveillace(filterParametar:FilterItem) -> [Surveillance]{
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             
-        let fetchRequest = NSFetchRequest(entityName: "Surveillance")
+            let fetchRequest = NSFetchRequest(entityName: "Surveillance")
             
-        let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
+            let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
+            let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
             
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "location.user == %@", user)]
-        if filterParametar.location != "All" {
-            predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location))
-        }
-        if filterParametar.levelName != "All" {
-            let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)
-            predicateArray.append(levelPredicate)
-        }
-        if filterParametar.zoneName != "All" {
-            let zonePredicate = NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)
-            predicateArray.append(zonePredicate)
-        }
-        if filterParametar.categoryName != "All" {
-            let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", filterParametar.categoryName)
-            predicateArray.append(categoryPredicate)
-        }
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveillance]
-            return fetResults!
-        } catch _ as NSError {
-            abort()
-        }
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "location.user == %@", user)]
+            if filterParametar.location != "All" {
+                predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location))
+            }
+            if filterParametar.levelName != "All" {
+                let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)
+                predicateArray.append(levelPredicate)
+            }
+            if filterParametar.zoneName != "All" {
+                let zonePredicate = NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)
+                predicateArray.append(zonePredicate)
+            }
+            if filterParametar.categoryName != "All" {
+                let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", filterParametar.categoryName)
+                predicateArray.append(categoryPredicate)
+            }
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveillance]
+                return fetResults!
+            } catch _ as NSError {
+                abort()
+            }
         }
         return []
     }
     
     func deleteSurveillance(surv:Surveillance){
         appDel.managedObjectContext?.deleteObject(surv)
-        saveChanges()
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch _ as NSError {
-            abort()
-        }
-    }
-
 }

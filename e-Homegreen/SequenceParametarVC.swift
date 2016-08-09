@@ -104,7 +104,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
                 sequence?.sequenceCycles = cycles
             }
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -114,16 +114,6 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
             return false
         }
         return true
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     override func didReceiveMemoryWarning() {

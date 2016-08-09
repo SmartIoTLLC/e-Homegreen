@@ -190,22 +190,12 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             device!.delay = numberOne
             device!.runtime = numberTwo
             device!.skipState = numberThree
-            saveChanges()
-        }
-    }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+            CoreDataController.shahredInstance.saveChanges()
         }
     }
 }
 
 extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
-    
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }

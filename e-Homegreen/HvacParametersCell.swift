@@ -406,18 +406,9 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             device.medSpeedVisible = switchMed.on
             device.autoSpeedVisible = switchAutoSpeed.on
             
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1.userInfo)")
-            abort()
         }
     }
     

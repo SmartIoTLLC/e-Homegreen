@@ -149,14 +149,14 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
                     if let desc = descriptionTextField.text{
                         categoryNew.categoryDescription = desc
                     }
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             }else{
                 category?.name = name
                 if let desc = descriptionTextField.text{
                     category?.categoryDescription = desc
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
             delegate?.editCategoryFInished()
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -165,17 +165,6 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
     
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
     }
 
 }

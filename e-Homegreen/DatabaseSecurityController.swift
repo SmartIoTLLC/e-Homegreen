@@ -64,12 +64,4 @@ class DatabaseSecurityController: NSObject {
         return []
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch _ as NSError {
-            abort()
-        }
-    }
-
 }

@@ -169,16 +169,6 @@ class ScanScenesViewController: PopoverVC {
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index).delegate = self
@@ -246,7 +236,7 @@ class ScanScenesViewController: PopoverVC {
                     scene.sceneZone = btnZone.titleLabel!.text!
                     scene.sceneCategory = btnCategory.titleLabel!.text!
                     scene.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshSceneList()
                 } else {
                     existingScene!.sceneId = sceneId
@@ -260,7 +250,7 @@ class ScanScenesViewController: PopoverVC {
                     existingScene!.sceneZone = btnZone.titleLabel!.text!
                     existingScene!.sceneCategory = btnCategory.titleLabel!.text!
                     existingScene!.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshSceneList()
                 }
             }
@@ -273,7 +263,7 @@ class ScanScenesViewController: PopoverVC {
             for scene in scenes {
                 appDel.managedObjectContext!.deleteObject(scene)
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshSceneList()
         }
         self.view.endEditing(true)
@@ -383,7 +373,7 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(scenes[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshSceneList()
         }
     }

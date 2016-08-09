@@ -79,7 +79,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         } else {
             event?.isLocalcast = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshEvent, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -94,17 +94,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         }
         return true
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

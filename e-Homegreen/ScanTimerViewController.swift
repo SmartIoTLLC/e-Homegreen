@@ -157,16 +157,6 @@ class ScanTimerViewController: PopoverVC {
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index).delegate = self
@@ -199,7 +189,7 @@ class ScanTimerViewController: PopoverVC {
                     timer.timeZone = btnZone.titleLabel!.text!
                     timer.timerCategory = btnCategory.titleLabel!.text!
                     timer.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshTimerList()
                     
                 } else {
@@ -215,7 +205,7 @@ class ScanTimerViewController: PopoverVC {
                     existingTimer!.timeZone = btnZone.titleLabel!.text!
                     existingTimer!.timerCategory = btnCategory.titleLabel!.text!
                     existingTimer!.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshTimerList()
                     
                 }
@@ -228,7 +218,7 @@ class ScanTimerViewController: PopoverVC {
             for timer in timers {
                 appDel.managedObjectContext!.deleteObject(timer)
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshTimerList()
             self.view.endEditing(true)
         }
@@ -407,7 +397,7 @@ extension ScanTimerViewController: UITableViewDataSource {
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(timers[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshTimerList()
         }
         

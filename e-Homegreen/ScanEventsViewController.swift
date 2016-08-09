@@ -151,16 +151,6 @@ class ScanEventsViewController: PopoverVC {
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index).delegate = self
@@ -255,7 +245,7 @@ class ScanEventsViewController: PopoverVC {
                     event.eventZone = btnZone.titleLabel!.text!
                     event.eventCategory = btnCategory.titleLabel!.text!
                     event.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshEventList()
                 } else {
                     existingEvent!.eventId = sceneId
@@ -270,7 +260,7 @@ class ScanEventsViewController: PopoverVC {
                     existingEvent!.eventZone = btnZone.titleLabel!.text!
                     existingEvent!.eventCategory = btnCategory.titleLabel!.text!
                     existingEvent!.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshEventList()
                 }
             }
@@ -282,7 +272,7 @@ class ScanEventsViewController: PopoverVC {
             for event in events {
                 appDel.managedObjectContext!.deleteObject(event)
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshEventList()
             self.view.endEditing(true)
         }
@@ -397,7 +387,7 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(events[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshEventList()
         }
         

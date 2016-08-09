@@ -105,15 +105,6 @@ class MultisensorParametarVC: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1.userInfo)")
-            abort()
-        }
-    }
-    
     func handleTap(gesture:UITapGestureRecognizer){
         let point:CGPoint = gesture.locationInView(self.view)
         let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!

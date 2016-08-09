@@ -45,17 +45,6 @@ extension DevicesViewController: UICollectionViewDataSource {
         return devices.count
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-            
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func updateDeviceStatus (indexPathRow indexPathRow: Int) {
         for device in devices {
             if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address {
@@ -79,7 +68,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if devices[indexPathRow].controlType == ControlType.Curtain {
             SendingHandler.sendCommand(byteArray: Function.getCurtainStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
     func refreshVisibleDevicesInScrollView () {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems()

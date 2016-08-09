@@ -180,7 +180,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
                 } else {
                     (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id, 1)
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
                 
             }
         }
@@ -192,7 +192,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
                 } else {
                     (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id, 3)
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -260,7 +260,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
             location.orderId = id
             location.radius = radius
             location.filterOnLocation = setFilterSwitch.on
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             
             delegate?.editAddLocationFinished()
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -279,7 +279,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
                         newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user)
                     }
                     createZonesAndCategories(newLocation)
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     
                     DatabaseLocationController.shared.startMonitoringLocation(newLocation)
                     
@@ -290,16 +290,6 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         }
 
         
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     @IBAction func cancelAction(sender: UIButton) {
