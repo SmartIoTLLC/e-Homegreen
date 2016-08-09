@@ -28,7 +28,7 @@ class DatabaseMenuController: NSObject {
                     menu.orderId = item.rawValue
                     menu.isVisible = true
                     menu.user = user
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             }
         }else{
@@ -38,7 +38,7 @@ class DatabaseMenuController: NSObject {
                     menu.orderId = item.rawValue
                     menu.isVisible = true
                     menu.user = user
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             }
         }
@@ -108,7 +108,7 @@ class DatabaseMenuController: NSObject {
                 tempItem.orderId = tempIndex
             }
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
     
     func changeItems(fromMenuItem:MenuItem, toMenuItem:MenuItem){
@@ -116,7 +116,7 @@ class DatabaseMenuController: NSObject {
         let pom = fromMenuItem.orderId
         fromMenuItem.orderId = toMenuItem.orderId
         toMenuItem.orderId = pom
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
     
     func changeState(menuItem:MenuItem){
@@ -125,16 +125,7 @@ class DatabaseMenuController: NSObject {
         }else{
             menuItem.isVisible = true
         }        
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch _ as NSError {
-            abort()
-        }
-    }
-
 
 }

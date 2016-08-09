@@ -196,16 +196,6 @@ class SurveillanceSettingsVC: PopoverVC {
         
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -307,7 +297,7 @@ class SurveillanceSettingsVC: PopoverVC {
                     surveillance.autSpanStep = 1
                     surveillance.dwellTime = 15
                     surveillance.location = parentLocation
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             }else if let surv = surv{
                 
@@ -328,7 +318,7 @@ class SurveillanceSettingsVC: PopoverVC {
                 surv.ip = remoteIp
                 surv.port = remotePortNumber
                 
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
             
             self.dismissViewControllerAnimated(true, completion: nil)

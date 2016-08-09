@@ -64,18 +64,8 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     @IBAction func btnUpdate(sender: AnyObject) {
         if popUpTextView.text != "" {
             security.securityDescription = popUpTextView.text
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             self.dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
         }
     }
     

@@ -111,7 +111,6 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 self.view.makeToast(message: "Enter username!")
                 return
             }
-            
             user.username = username
             user.isLocked = false
             user.isSuperUser = superUserSwitch.on
@@ -120,7 +119,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
             if let image = imageData{
                 user.profilePicture = image
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             DatabaseMenuController.shared.createMenu(user)
         }else{
             guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
@@ -139,7 +138,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
                 user.isLocked = false
                 user.isSuperUser = superUserSwitch.on
                 user.profilePicture = imageData
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
                 DatabaseMenuController.shared.createMenu(user)
                 DatabaseFilterController.shared.createFilters(user)
             }
@@ -150,17 +149,6 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         delegate?.addUserFinished()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

@@ -71,7 +71,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
                 (alert: UIAlertAction!) -> Void in
                 
             self.appDel.managedObjectContext?.deleteObject(self.ssidList[indexPath.row])
-                self.saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
                 
             })
             
@@ -104,7 +104,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         if let ssid = NSEntityDescription.insertNewObjectForEntityForName("SSID", inManagedObjectContext: appDel.managedObjectContext!) as? SSID{
                 ssid.name = name
                 ssid.location = location
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -113,20 +113,8 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         for item in ssidList{
             appDel.managedObjectContext?.deleteObject(item)
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-            updateSSID()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     
 }
 

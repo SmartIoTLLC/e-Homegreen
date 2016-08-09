@@ -362,7 +362,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } else {
             devices[sender.tag].isEnabled = NSNumber(bool: false)
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     func changeValueVisible (sender:UISwitch) {
@@ -371,7 +371,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } else {
             devices[sender.tag].isVisible = NSNumber(bool: false)
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
@@ -381,7 +381,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 appDel.managedObjectContext!.deleteObject(devices[item])
             }
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     
@@ -745,15 +745,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         updateDeviceList()
         deviceTableView.reloadData()
     }
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+
     func progressBarDidPressedExit() {
         findSensorParametar = false
         dismissScaningControls()
@@ -910,7 +902,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             updateDeviceList()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }

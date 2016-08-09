@@ -135,22 +135,11 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
             command?.name = name
             command?.comand = commandText
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         delegate?.importFinished()
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
-
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-
     
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

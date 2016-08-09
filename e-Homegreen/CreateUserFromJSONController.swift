@@ -81,7 +81,7 @@ class CreateUserFromJSONController: NSObject {
                         print(jsonObject)
                     }
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -755,14 +755,4 @@ class CreateUserFromJSONController: NSObject {
             }
         }
     }
-    
-    func saveChanges() {
-        
-        do{
-            try appDel.managedObjectContext?.save()
-        }catch{
-            
-        }
-    }
-
 }

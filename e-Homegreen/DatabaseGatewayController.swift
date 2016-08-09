@@ -109,14 +109,7 @@ class DatabaseGatewayController: NSObject {
     
     func deleteGateway(gateway:Gateway){
         appDel.managedObjectContext?.deleteObject(gateway)
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch _ as NSError {
-            abort()
-        }
-    }
 }

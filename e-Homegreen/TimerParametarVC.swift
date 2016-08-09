@@ -10,20 +10,17 @@ import UIKit
 import CoreData
 
 class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
+
+    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var isBroadcast: UISwitch!
+    @IBOutlet weak var isLocalcast: UISwitch!
     
     var point:CGPoint?
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
     var timer:Timer?
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
-    @IBOutlet weak var backView: UIView!
-    
-    @IBOutlet weak var isBroadcast: UISwitch!
-    @IBOutlet weak var isLocalcast: UISwitch!
-    
     var isPresenting: Bool = true
     
     init(point:CGPoint){
@@ -32,10 +29,10 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,22 +50,6 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
-        if isBroadcast.on {
-            timer?.isBroadcast = true
-        } else {
-            timer?.isBroadcast = false
-        }
-        if isLocalcast.on {
-            timer?.isLocalcast = true
-        } else {
-            timer?.isLocalcast = false
-        }
-        saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             if sender.on == true {
@@ -84,26 +65,9 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
             }
         }
     }
-    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
             return false
@@ -111,16 +75,21 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
     
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+    @IBAction func btnSave(sender: AnyObject) {
+        if isBroadcast.on {
+            timer?.isBroadcast = true
+        } else {
+            timer?.isBroadcast = false
+        }
+        if isLocalcast.on {
+            timer?.isLocalcast = true
+        } else {
+            timer?.isLocalcast = false
+        }
+        CoreDataController.shahredInstance.saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
-    */
-    
 }
 
 extension TimerParametarVC : UIViewControllerAnimatedTransitioning {

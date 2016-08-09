@@ -98,21 +98,9 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         surv!.tiltStep = tiltStepSlider.value
         surv!.autSpanStep = autoPanStepSlider.value
         surv!.dwellTime = dwellTimeSlider.value
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        
-        appDel.establishAllConnections()
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {

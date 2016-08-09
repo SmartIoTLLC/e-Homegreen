@@ -131,14 +131,6 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
     
     func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        
         appDel.establishAllConnections()
     }
     
@@ -178,7 +170,9 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 //        txtStopPresetSequence.resignFirstResponder()
 //        txtHome.resignFirstResponder()
         print(surv!)
+        CoreDataController.shahredInstance.saveChanges()
         saveChanges()
+        
         resignFirstResponder()
         self.dismissViewControllerAnimated(true, completion: nil)
     }

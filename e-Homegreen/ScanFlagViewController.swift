@@ -150,16 +150,7 @@ class ScanFlagViewController: PopoverVC {
             abort()
         }
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+
     
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
@@ -250,7 +241,7 @@ class ScanFlagViewController: PopoverVC {
                     flag.flagZone = btnZone.titleLabel!.text!
                     flag.flagCategory = btnCategory.titleLabel!.text!
                     flag.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshFlagList()
                 } else {
                     existingFlag!.flagId = flagId
@@ -264,7 +255,7 @@ class ScanFlagViewController: PopoverVC {
                     existingFlag!.flagZone = btnZone.titleLabel!.text!
                     existingFlag!.flagCategory = btnCategory.titleLabel!.text!
                     existingFlag!.gateway = gateway
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     refreshFlagList()
                 }
             }
@@ -277,7 +268,7 @@ class ScanFlagViewController: PopoverVC {
             for flag in flags {
                 appDel.managedObjectContext!.deleteObject(flag)
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshFlagList()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
         }
@@ -388,7 +379,7 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(flags[indexPath.row])
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             refreshFlagList()
         }
         

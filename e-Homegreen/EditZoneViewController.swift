@@ -159,7 +159,7 @@ class EditZoneViewController: PopoverVC {
                     }
                 }
             }
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
         }else{
             editZone?.name = name
             editZone?.zoneDescription = levelTextField.text
@@ -169,6 +169,7 @@ class EditZoneViewController: PopoverVC {
                 editZone?.level = 0
             }
             
+            CoreDataController.shahredInstance.saveChanges()
             saveChanges()
         }
         delegate?.editZoneFInished()
@@ -180,13 +181,6 @@ class EditZoneViewController: PopoverVC {
     }
     
     func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
     }
 

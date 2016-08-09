@@ -186,16 +186,6 @@ class LocationViewController: PopoverVC  {
         locationList[index].children = listOfChildrenDevice
         gatewayTableView.reloadData()
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
 }
 
 extension LocationViewController: UITableViewDataSource {
@@ -334,7 +324,7 @@ extension LocationViewController: GatewayCellDelegate{
         }else {
             gateway.turnedOn = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         gatewayTableView.reloadData()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }

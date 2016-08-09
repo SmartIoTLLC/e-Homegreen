@@ -493,7 +493,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
             devicePair!.currentValue = 0xFF
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
@@ -528,7 +528,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[tag].currentValue = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
             devicePair?.currentValue = 0
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             updateCells()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
@@ -563,7 +563,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[tag].currentValue = 0x00
             devicePair?.currentValue = 0x00
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             updateCells()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)

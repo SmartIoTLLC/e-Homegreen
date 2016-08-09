@@ -139,7 +139,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     let id = zones[index.row].orderId
                     zones[index.row].orderId = zones[initial.row].orderId
                     zones[initial.row].orderId = id
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     
                 }
                 
@@ -239,7 +239,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     } else {
                         zone.isVisible = NSNumber(bool: true)
                     }
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             } else {
                 let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -466,7 +466,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             }
         }
         createZones(location!)
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         refreshZoneList()
     }
 
@@ -487,7 +487,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 } else {
                     (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id, 1)
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -513,23 +513,13 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func isVisibleValueChanged (sender:UISwitch) {
         if sender.on == true {
             zones[sender.tag].isVisible = true
         }else {
             zones[sender.tag].isVisible = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         importZoneTableView.reloadData()
     }
     

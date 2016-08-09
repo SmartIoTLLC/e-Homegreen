@@ -73,28 +73,19 @@ class RepeatSendingHandler: NSObject {
             } else {
                 didGetResponseTimer!.invalidate()
                 device.currentValue = deviceOldValue
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
             }
         }else{
             didGetResponseTimer!.invalidate()
             device.currentValue = deviceOldValue
-            saveChanges()
+            CoreDataController.shahredInstance.saveChanges()
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
         }
     }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+
     deinit {
         print("UPRAVO SE GASIM - class RepeatSendingHandler: NSObject")
     }

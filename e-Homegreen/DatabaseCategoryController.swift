@@ -41,16 +41,6 @@ class DatabaseCategoryController: NSObject {
     
     func changeAllowOption(option:Int, category:Category){
         category.allowOption = option
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
     }
-    
-    func saveChanges() {
-        
-        do{
-            try appDel.managedObjectContext?.save()
-        }catch{
-            
-        }
-    }
-
 }

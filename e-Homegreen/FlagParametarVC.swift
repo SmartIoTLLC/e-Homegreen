@@ -63,7 +63,7 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
         } else {
             flag?.isLocalcast = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -86,16 +86,6 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     override func didReceiveMemoryWarning() {

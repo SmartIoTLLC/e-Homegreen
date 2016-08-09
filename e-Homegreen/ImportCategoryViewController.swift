@@ -144,7 +144,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     let id = categories[index.row].orderId
                     categories[index.row].orderId = categories[initial.row].orderId
                     categories[initial.row].orderId = id
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                     
                 }
                 
@@ -373,7 +373,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }
 
         createCategories()
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         refreshCategoryList()
     }
     
@@ -417,7 +417,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                         category.isVisible = NSNumber(bool: true)
                     }
 //                    category.gateway = gateway!
-                    saveChanges()
+                    CoreDataController.shahredInstance.saveChanges()
                 }
             } else {
 //                createCategories(gateway!)
@@ -441,7 +441,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 } else {
                     (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id, 3)
                 }
-                saveChanges()
+                CoreDataController.shahredInstance.saveChanges()
             }
         }
     }
@@ -479,23 +479,13 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }
     }
     
-    func saveChanges() {
-        do {
-            try appDel.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     func isVisibleValueChanged (sender:UISwitch) {
         if sender.on == true {
             categories[sender.tag].isVisible = true
         }else {
             categories[sender.tag].isVisible = false
         }
-        saveChanges()
+        CoreDataController.shahredInstance.saveChanges()
         importCategoryTableView.reloadData()
     }
 
