@@ -1,41 +1,15 @@
 //
-//  PCControlInterfaceXIB.swift
+//  PCControlNotificationsXIB.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Zivanov on 3/9/16.
+//  Created by Marko Stajic on 8/9/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 //import wol.h
 
-enum FileType{
-    case Video
-    case App
-    
-    var description:String{
-        switch self {
-        case Video: return "Video"
-        case App: return "Application"
-        }
-    }
-}
-
-enum PowerOption{
-    case ShutDown, Restart, Sleep, Hibernate, LogOff
-    var description:String{
-        switch self{
-        case ShutDown: return "Shut Down"
-        case Restart: return "Restart"
-        case Sleep: return "Sleep"
-        case Hibernate: return "Hibernate"
-        case LogOff: return "LogOff"
-        }
-    }
-    static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
-}
-
-class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
     
     var isPresenting: Bool = true
     
@@ -61,16 +35,16 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     init(pc:Device){
         self.pc = pc
         socketIO = InOutSocket(port: 5000)
-        super.init(nibName: "PCControlInterfaceXIB", bundle: nil)
+        super.init(nibName: "PCControlNotificationsXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
-
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,14 +52,14 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         commandTextField.layer.cornerRadius = 2
         commandTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
         commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+                                                                    attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         commandTextField.delegate = self
         
-        titleLabel.text = pc.name
+        titleLabel.text = "LAZNI KONTROLER"
         
         self.view.backgroundColor = UIColor.clearColor()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlInterfaceXIB.dismissViewController))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlNotificationsXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         // Do any additional setup after loading the view.
@@ -108,7 +82,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         textField.resignFirstResponder()
         return true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -149,21 +123,21 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         }
         SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: 0x01), gateway: pc.gateway)
     }
-
+    
     @IBAction func runAction(sender: AnyObject) {
         guard let appName = runLabel.text where appName != "-", let command =  runCommand  else {
             return
         }
         SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
-//        let s1 = "192.168.0.7"
-//        let cs1 = (s1 as NSString).UTF8String
-//        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
-//        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
-//
-//        let s2 = convertByteArrayToMacAddress(byteArray)
-//        let cs2 = (s2 as NSString).UTF8String
-//        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
-//        send_wol_packet(first_parametar, second_parametar)
+        //        let s1 = "192.168.0.7"
+        //        let cs1 = (s1 as NSString).UTF8String
+        //        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
+        //        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
+        //
+        //        let s2 = convertByteArrayToMacAddress(byteArray)
+        //        let cs2 = (s2 as NSString).UTF8String
+        //        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
+        //        send_wol_packet(first_parametar, second_parametar)
     }
     
     var socketIO:InOutSocket
@@ -175,7 +149,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         SendingHandler.sendCommand(byteArray: Function.textToSpeech(pc.moduleAddress, text: text), gateway: pc.gateway)
     }
     
-    @IBAction func addPathForVideo(sender: AnyObject) {        
+    @IBAction func addPathForVideo(sender: AnyObject) {
         if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
             if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
                 vc.typeOfFile = .Video
@@ -202,7 +176,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             popoverList.append(PopOverItem(name: option.description, id: ""))
         }
         openPopover(sender, popOverList:popoverList)
-
+        
     }
     
     @IBAction func playOption(sender: UIButton) {
@@ -264,7 +238,7 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     }
 }
 
-extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
+extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -284,7 +258,7 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
             containerView!.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-
+                
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 
@@ -310,7 +284,7 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
+extension PCControlNotificationsXIB : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -324,12 +298,12 @@ extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
             return nil
         }
     }
-   
+    
 }
 
 extension UIViewController {
-    func showPCInterface(pc:Device) {
-        let pci = PCControlInterfaceXIB(pc:pc)
+    func showPCNotifications(pc:Device) {
+        let pci = PCControlNotificationsXIB(pc:pc)
         self.view.window?.rootViewController?.presentViewController(pci, animated: true, completion: nil)
     }
 }

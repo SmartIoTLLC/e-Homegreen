@@ -113,6 +113,8 @@
 		49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */; };
 		49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */; };
 		4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */; };
+		4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D14B0CF1D59E50B0004E10A /* PCControlNotificationsXIB.swift */; };
+		4D14B0D21D59E50B0004E10A /* PCControlNotificationsXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D14B0D01D59E50B0004E10A /* PCControlNotificationsXIB.xib */; };
 		4D16A1281D51CB8D00817477 /* HvacParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */; };
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D2E3F221D51FC730080A383 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2E3F201D51FC730080A383 /* Device+CoreDataProperties.swift */; };
@@ -454,6 +456,8 @@
 		49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInputPopup.swift; sourceTree = "<group>"; };
 		49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInputPopup.xib; sourceTree = "<group>"; };
 		4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "HRToast+UIView.swift"; path = "SWRevealViewController/HRToast+UIView.swift"; sourceTree = "<group>"; };
+		4D14B0CF1D59E50B0004E10A /* PCControlNotificationsXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlNotificationsXIB.swift; sourceTree = "<group>"; };
+		4D14B0D01D59E50B0004E10A /* PCControlNotificationsXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlNotificationsXIB.xib; sourceTree = "<group>"; };
 		4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HvacParametersCell.swift; sourceTree = "<group>"; };
 		4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacParametersCell.xib; sourceTree = "<group>"; };
 		4D2E3F201D51FC730080A383 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -912,6 +916,7 @@
 				22495D2D1CAA81490034FC94 /* PCControl.storyboard */,
 				2249A32E1C9041CB0019C6FB /* PCControlCell.swift */,
 				223878A71C91A714001357E0 /* PC Control Interface */,
+				4D14B0D31D59F03E0004E10A /* PC Control Notifications */,
 				223878A61C91A6C9001357E0 /* Add Video/App */,
 			);
 			name = "PC Controll";
@@ -1081,6 +1086,15 @@
 				49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */,
 			);
 			name = "Digital Input";
+			sourceTree = "<group>";
+		};
+		4D14B0D31D59F03E0004E10A /* PC Control Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				4D14B0CF1D59E50B0004E10A /* PCControlNotificationsXIB.swift */,
+				4D14B0D01D59E50B0004E10A /* PCControlNotificationsXIB.xib */,
+			);
+			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
 		736265DD1B4A47FE0078C11D /* BL */ = {
@@ -1854,6 +1868,7 @@
 				22495D111CAA72020034FC94 /* Device.storyboard in Resources */,
 				E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */,
 				22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */,
+				4D14B0D21D59E50B0004E10A /* PCControlNotificationsXIB.xib in Resources */,
 				E7DC67CE1B457CD400EA6543 /* day.png in Resources */,
 				738DECA31BBBC39F00D6B834 /* SecuirtyCommandVC.xib in Resources */,
 				E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */,
@@ -2070,6 +2085,7 @@
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
+				4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
 				22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */,
 				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,

@@ -104,13 +104,13 @@ class FilterPullDown: UIScrollView {
         contentView.addSubview(bottomLine)
         
         //create signal indicators
-        greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
+        greenIndicator.backgroundColor = UIColor.clearColor()
         greenIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(greenIndicator)
-        redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+        redIndicator.backgroundColor = UIColor.clearColor()
         redIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(redIndicator)
-
+        
         //create pull down image
         pullView.image = UIImage(named: "pulldown")
         pullView.translatesAutoresizingMaskIntoConstraints = false
@@ -741,11 +741,13 @@ class FilterPullDown: UIScrollView {
         if let info = notification.userInfo as? [String:String]{
             if let lamp = info["lamp"]{
                 if lamp == "red" {
+                    redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
                     self.redIndicator.alpha = 1
                     UIView.animateWithDuration(0.5, animations: {
                         self.redIndicator.alpha = 0
                     })
                 }else if lamp == "green" {
+                    greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
                     self.greenIndicator.alpha = 1
                     UIView.animateWithDuration(0.5, animations: {
                         self.greenIndicator.alpha = 0

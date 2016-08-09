@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Tahoma.ttf">
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PCControlNotificationsXIB" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="due-xF-D4p" id="tCt-3A-xSJ"/>
+                <outlet property="commandTextField" destination="cGf-to-w9C" id="jgC-pZ-Uev"/>
+                <outlet property="fullScreenSwitch" destination="IhA-FK-t4t" id="Erf-rk-fJu"/>
+                <outlet property="playLabel" destination="IZJ-S3-A5L" id="geS-F4-yF3"/>
+                <outlet property="powerLabel" destination="r6D-ah-1J9" id="AUW-2d-gbh"/>
+                <outlet property="runLabel" destination="hJb-TB-n3l" id="YR0-bG-HXt"/>
+                <outlet property="titleLabel" destination="BSX-sK-YH7" id="8Gf-9F-72s"/>
+                <outlet property="view" destination="DPg-m4-L9K" id="a9T-oT-VRA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="DPg-m4-L9K">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="due-xF-D4p" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="20" y="201" width="335" height="205"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0by-fa-0Ou" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="10" y="37" width="122" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="3Os-cP-nhy"/>
+                                <constraint firstAttribute="width" constant="100" id="uI2-h7-GHk"/>
+                            </constraints>
+                            <state key="normal" title="POWER">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="uI2-h7-GHk"/>
+                                </mask>
+                            </variation>
+                            <connections>
+                                <action selector="powerAction:" destination="-1" eventType="touchUpInside" id="dnb-A8-RhG"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jgb-5Q-7r2" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="10" y="82" width="65" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="65" id="rR6-AQ-hSg"/>
+                            </constraints>
+                            <state key="normal" title="PLAY">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="playAction:" destination="-1" eventType="touchUpInside" id="Ay4-e6-qG7"/>
+                            </connections>
+                        </button>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IhA-FK-t4t">
+                            <rect key="frame" x="83" y="81" width="51" height="31"/>
+                        </switch>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6D-ah-1J9">
+                            <rect key="frame" x="140" y="41" width="107" height="21"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZJ-S3-A5L">
+                            <rect key="frame" x="140" y="86" width="107" height="21"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmT-g4-p6m">
+                            <rect key="frame" x="255" y="128" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="lqQ-eF-UuV"/>
+                                <constraint firstAttribute="height" constant="30" id="yzD-Ud-q6b"/>
+                            </constraints>
+                            <state key="normal" image="down"/>
+                            <connections>
+                                <action selector="runOption:" destination="-1" eventType="touchUpInside" id="0dJ-NA-mkC"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9cg-LG-KUh">
+                            <rect key="frame" x="255" y="37" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="7wF-n4-w0v"/>
+                                <constraint firstAttribute="height" constant="30" id="Tgb-op-cRW"/>
+                            </constraints>
+                            <state key="normal" image="down"/>
+                            <connections>
+                                <action selector="powerOption:" destination="-1" eventType="touchUpInside" id="XLh-hw-Vhp"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCT-jP-Rq4">
+                            <rect key="frame" x="255" y="82" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="XSf-at-b7F"/>
+                                <constraint firstAttribute="width" constant="30" id="bdC-Og-d2w"/>
+                            </constraints>
+                            <state key="normal" image="down"/>
+                            <connections>
+                                <action selector="playOption:" destination="-1" eventType="touchUpInside" id="pAw-tQ-hH2"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cGf-to-w9C">
+                            <rect key="frame" x="10" y="166" width="255" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jp6-NJ-G6g" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="295" y="82" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="7Lh-lU-qUL"/>
+                                <constraint firstAttribute="width" constant="30" id="82x-WX-yPb"/>
+                                <constraint firstAttribute="height" constant="30" id="ild-7e-aS8"/>
+                            </constraints>
+                            <state key="normal" title="...">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="7Lh-lU-qUL"/>
+                                </mask>
+                            </variation>
+                            <connections>
+                                <action selector="addPathForVideo:" destination="-1" eventType="touchUpInside" id="Tzg-9b-7GB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sBI-Ld-SQi" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="275" y="166" width="50" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="6K7-l7-mVD"/>
+                            </constraints>
+                            <state key="normal" title="SEND">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="sendAction:" destination="-1" eventType="touchUpInside" id="aSj-a8-LdJ"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSX-sK-YH7">
+                            <rect key="frame" x="8" y="8" width="319" height="21"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-TB-n3l">
+                            <rect key="frame" x="236" y="132" width="6" height="21"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="pmT-g4-p6m" firstAttribute="centerY" secondItem="hJb-TB-n3l" secondAttribute="centerY" id="2fD-ce-4Yd"/>
+                        <constraint firstItem="BSX-sK-YH7" firstAttribute="leading" secondItem="due-xF-D4p" secondAttribute="leading" constant="8" id="3J0-HQ-PIM"/>
+                        <constraint firstItem="qCT-jP-Rq4" firstAttribute="leading" secondItem="IZJ-S3-A5L" secondAttribute="trailing" constant="8" id="3bS-77-yIx"/>
+                        <constraint firstAttribute="width" constant="200" id="463-NC-eKD"/>
+                        <constraint firstAttribute="trailing" secondItem="Jp6-NJ-G6g" secondAttribute="trailing" constant="10" id="5P5-nD-hZH"/>
+                        <constraint firstItem="9cg-LG-KUh" firstAttribute="leading" secondItem="r6D-ah-1J9" secondAttribute="trailing" constant="8" id="6C6-mp-0eE"/>
+                        <constraint firstItem="9cg-LG-KUh" firstAttribute="centerY" secondItem="r6D-ah-1J9" secondAttribute="centerY" id="6NC-tV-j46"/>
+                        <constraint firstItem="IhA-FK-t4t" firstAttribute="trailing" secondItem="0by-fa-0Ou" secondAttribute="trailing" id="83p-IQ-jun"/>
+                        <constraint firstItem="IZJ-S3-A5L" firstAttribute="centerY" secondItem="IhA-FK-t4t" secondAttribute="centerY" id="8SC-bp-bWK"/>
+                        <constraint firstAttribute="trailing" secondItem="BSX-sK-YH7" secondAttribute="trailing" constant="8" id="9g5-g1-Jpw"/>
+                        <constraint firstItem="sBI-Ld-SQi" firstAttribute="top" secondItem="pmT-g4-p6m" secondAttribute="bottom" constant="8" symbolic="YES" id="AJR-jX-nwD"/>
+                        <constraint firstItem="jgb-5Q-7r2" firstAttribute="leading" secondItem="0by-fa-0Ou" secondAttribute="leading" id="C6W-S6-hnz"/>
+                        <constraint firstItem="r6D-ah-1J9" firstAttribute="centerY" secondItem="0by-fa-0Ou" secondAttribute="centerY" id="FRS-GV-xsb"/>
+                        <constraint firstItem="IhA-FK-t4t" firstAttribute="leading" secondItem="jgb-5Q-7r2" secondAttribute="trailing" constant="8" id="Laq-gG-dcF"/>
+                        <constraint firstItem="qCT-jP-Rq4" firstAttribute="leading" secondItem="9cg-LG-KUh" secondAttribute="leading" id="OaO-a7-2Ym"/>
+                        <constraint firstItem="sBI-Ld-SQi" firstAttribute="leading" secondItem="cGf-to-w9C" secondAttribute="trailing" constant="10" id="Tfs-xw-yFw"/>
+                        <constraint firstItem="jgb-5Q-7r2" firstAttribute="top" secondItem="0by-fa-0Ou" secondAttribute="bottom" constant="15" id="Xxb-jS-FO7"/>
+                        <constraint firstItem="pmT-g4-p6m" firstAttribute="leading" secondItem="hJb-TB-n3l" secondAttribute="trailing" constant="13" id="YTF-rs-TXX"/>
+                        <constraint firstItem="IhA-FK-t4t" firstAttribute="centerY" secondItem="jgb-5Q-7r2" secondAttribute="centerY" id="YUa-Jp-Fga"/>
+                        <constraint firstItem="BSX-sK-YH7" firstAttribute="top" secondItem="due-xF-D4p" secondAttribute="top" constant="8" id="dRq-4F-CK9"/>
+                        <constraint firstItem="0by-fa-0Ou" firstAttribute="leading" secondItem="due-xF-D4p" secondAttribute="leading" constant="10" id="dZq-s8-QEz"/>
+                        <constraint firstAttribute="height" constant="205" id="ffG-ba-tb2"/>
+                        <constraint firstItem="qCT-jP-Rq4" firstAttribute="centerY" secondItem="IZJ-S3-A5L" secondAttribute="centerY" id="hWj-Q3-9jH"/>
+                        <constraint firstItem="r6D-ah-1J9" firstAttribute="leading" secondItem="0by-fa-0Ou" secondAttribute="trailing" constant="8" id="mpB-B5-ZAA"/>
+                        <constraint firstItem="0by-fa-0Ou" firstAttribute="top" secondItem="BSX-sK-YH7" secondAttribute="bottom" constant="8" id="p3g-v6-TcW"/>
+                        <constraint firstItem="Jp6-NJ-G6g" firstAttribute="leading" secondItem="qCT-jP-Rq4" secondAttribute="trailing" constant="10" id="rrn-ud-rHa"/>
+                        <constraint firstItem="sBI-Ld-SQi" firstAttribute="centerY" secondItem="cGf-to-w9C" secondAttribute="centerY" id="tdk-NM-NOQ"/>
+                        <constraint firstItem="qCT-jP-Rq4" firstAttribute="centerY" secondItem="Jp6-NJ-G6g" secondAttribute="centerY" id="vS3-7u-dej"/>
+                        <constraint firstItem="IZJ-S3-A5L" firstAttribute="leading" secondItem="r6D-ah-1J9" secondAttribute="leading" id="xtZ-mZ-84Q"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="463-NC-eKD"/>
+                        </mask>
+                    </variation>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sqj-fu-Opg" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="30" y="328" width="122" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="BfR-OU-ZGf"/>
+                    </constraints>
+                    <state key="normal" title="RUN">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="BfR-OU-ZGf"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="runAction:" destination="-1" eventType="touchUpInside" id="npc-q2-Ogg"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGI-uf-RYc" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="315" y="329" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="WAw-LG-CLC"/>
+                        <constraint firstAttribute="width" constant="100" id="z0L-G0-OMd"/>
+                    </constraints>
+                    <state key="normal" title="...">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="z0L-G0-OMd"/>
+                            <exclude reference="WAw-LG-CLC"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="addPathForRunApp:" destination="-1" eventType="touchUpInside" id="wmh-nh-b6h"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="sBI-Ld-SQi" firstAttribute="trailing" secondItem="qGI-uf-RYc" secondAttribute="trailing" id="4iO-vo-Xdn"/>
+                <constraint firstItem="due-xF-D4p" firstAttribute="leading" secondItem="DPg-m4-L9K" secondAttribute="leading" constant="20" id="7pD-1k-0Lc"/>
+                <constraint firstItem="cGf-to-w9C" firstAttribute="top" secondItem="Sqj-fu-Opg" secondAttribute="bottom" constant="9" id="C4b-Rq-B6U"/>
+                <constraint firstItem="qGI-uf-RYc" firstAttribute="width" secondItem="Jp6-NJ-G6g" secondAttribute="width" id="CcS-Ub-uu5"/>
+                <constraint firstItem="Sqj-fu-Opg" firstAttribute="trailing" secondItem="IhA-FK-t4t" secondAttribute="trailing" id="GRy-2y-9ko"/>
+                <constraint firstItem="Sqj-fu-Opg" firstAttribute="top" secondItem="jgb-5Q-7r2" secondAttribute="bottom" constant="15" id="MZE-TY-uaA"/>
+                <constraint firstItem="cGf-to-w9C" firstAttribute="leading" secondItem="Sqj-fu-Opg" secondAttribute="leading" id="Xid-vJ-jrP"/>
+                <constraint firstItem="qGI-uf-RYc" firstAttribute="leading" secondItem="pmT-g4-p6m" secondAttribute="trailing" constant="10" id="Z7G-Qh-WCv"/>
+                <constraint firstAttribute="trailing" secondItem="due-xF-D4p" secondAttribute="trailing" constant="20" id="gd5-fo-J61"/>
+                <constraint firstItem="qGI-uf-RYc" firstAttribute="centerY" secondItem="pmT-g4-p6m" secondAttribute="centerY" id="hZu-og-V0V"/>
+                <constraint firstItem="qGI-uf-RYc" firstAttribute="trailing" secondItem="Jp6-NJ-G6g" secondAttribute="trailing" id="kwg-ei-vMS"/>
+                <constraint firstItem="due-xF-D4p" firstAttribute="centerY" secondItem="DPg-m4-L9K" secondAttribute="centerY" constant="-30" id="lBh-S3-rEC"/>
+                <constraint firstItem="Sqj-fu-Opg" firstAttribute="leading" secondItem="jgb-5Q-7r2" secondAttribute="leading" id="pDv-FG-n9H"/>
+                <constraint firstItem="qGI-uf-RYc" firstAttribute="height" secondItem="Jp6-NJ-G6g" secondAttribute="height" id="wkL-0U-ghy"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="down" width="40" height="40"/>
+    </resources>
+</document>
