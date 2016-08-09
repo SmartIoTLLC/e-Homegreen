@@ -31,11 +31,7 @@ class DeviceCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
-//            if Double(device.currentValue) <= 100 {
-//                return Double(device.currentValue)/100
-//            } else {
-                return Double(device.currentValue)/255
-//            }
+            return Double(device.currentValue)/255
         }()
         print(device.currentValue)
         picture.image = device.returnImage(Double(device.currentValue))

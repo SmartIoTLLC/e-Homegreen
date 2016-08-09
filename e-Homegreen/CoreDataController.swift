@@ -11,12 +11,35 @@ import CoreData
 
 class CoreDataController: NSObject {
     var context:NSManagedObjectContext
+    static let shahredInstance = CoreDataController()
+    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override init() {
         context = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
     }
     
+    func fetchGatewaysForHost(host:String, port:UInt16) -> [Gateway]{
+        var gateways: [Gateway] = []
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
+        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo,predicateThree])
+        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            if let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]{
+                gateways = fetResults
+            }
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return gateways
+    }
     func fetchDevices (gateway:Gateway) -> [Device] {
-        let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         let fetchRequest = fetchDevicesRequest(gateway)
         do {
             let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]

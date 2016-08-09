@@ -181,7 +181,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
     }
-    
     func changeFullScreeenImage(){
         if UIApplication.sharedApplication().statusBarHidden {
             fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
@@ -189,20 +188,17 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
         }
     }
-    
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.Devices)
         }
     }
-
     func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
 //        updateDeviceList()
         deviceCollectionView.reloadData()
     }
-    
 
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
@@ -474,13 +470,30 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
+        // Find the device that is the pair of this device for reley control
+        // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
+        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        var devicePair: Device? = nil
+        for deviceTemp in allDevices{
+            if deviceTemp.address == devices[tag].address {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                    
+                    devicePair = deviceTemp
+                }
+            }
+        }
+        guard let _ = devicePair else{
+            print("Error, no pair device found for curtain relay control")
+            return
+        }
+        
         if devices[tag].controlType == ControlType.Curtain {
             var setDeviceValue:UInt8 = 0xFF
             let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 255 // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
+            devicePair!.currentValue = 0xFF
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            updateCells()
+            saveChanges()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
@@ -492,12 +505,30 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
+        // Find the device that is the pair of this device for reley control
+        // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
+        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        var devicePair: Device? = nil
+        for deviceTemp in allDevices{
+            if deviceTemp.address == devices[tag].address {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                    
+                    devicePair = deviceTemp
+                }
+            }
+        }
+        guard let _ = devicePair else{
+            print("Error, no pair device found for curtain relay control")
+            return
+        }
+        
         if devices[tag].controlType == ControlType.Curtain {
             var setDeviceValue:UInt8 = 0x00
             let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 255// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            devices[tag].currentValue = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
+            devicePair?.currentValue = 0
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
+            saveChanges()
             updateCells()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
@@ -509,12 +540,30 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         // Light
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        // Find the device that is the pair of this device for reley control
+        // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
+        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        var devicePair: Device? = nil
+        for deviceTemp in allDevices{
+            if deviceTemp.address == devices[tag].address {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                    
+                    devicePair = deviceTemp
+                }
+            }
+        }
+        guard let _ = devicePair else{
+            print("Error, no pair device found for curtain relay control")
+            return
+        }
+        
         if devices[tag].controlType == ControlType.Curtain {
             var setDeviceValue:UInt8 = 0xEF
             let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 0
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+            devices[tag].currentValue = 0x00
+            devicePair?.currentValue = 0x00
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
+            saveChanges()
             updateCells()
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
@@ -566,12 +615,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
+                cell.setImageForDevice(devices[tag])
+//                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.setNeedsDisplay()
             }
         }
     }
-    
     func updateCurtain(timer: NSTimer){
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)///100
@@ -592,12 +641,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.lightSlider.value = Float(deviceValue)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
+                cell.setImageForDevice(devices[tag])
+//                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.setNeedsDisplay()
             }
         }
     }
-
     func calculateCellSize(inout size:CGSize) {
         var i:CGFloat = 2
         while i >= 2 {
@@ -609,7 +658,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let cellWidth = Int(self.view.frame.size.width/i - (2/i + (i*5-5)/i))
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
-
     
     func handleTap (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
@@ -635,7 +683,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[index.row].info = true
         }
     }
-
     func handleTap2 (gesture:UIGestureRecognizer) {
         let location = gesture.locationInView(deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItemAtPoint(location){
@@ -685,7 +732,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                cell.curtainImage.image = devices[tag].returnImage(Double(value))
+                cell.setImageForDevice(devices[tag])
+//                cell.curtainImage.image = devices[tag].returnImage(Double(value))
                 cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -773,7 +821,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
 //                    return Double(devices[tag].currentValue)/100
 //                }
             }()
-            cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
+            cell.setImageForDevice(devices[tag])
+//            cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
             cell.setNeedsDisplay()
         }
     }
@@ -793,8 +842,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             if isScrolling {
                 shouldUpdate = true
             } else {
-                //                updateDeviceList()
-                //                self.deviceCollectionView.reloadData()
                 fetchDevicesInBackground()
             }
         }
@@ -818,7 +865,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
     
     //MARK: Zone and category controll
-    
     //gesture delegate function
     func panView(gesture:UIPanGestureRecognizer){
         switch (gesture.state) {
@@ -895,7 +941,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
         
     }
-    
     func resetConstraintContstants(animated:Bool, endEditing:Bool){
         if self.startingBottomConstraint == -130 &&
             self.bottomConstraint.constant == -130 {
@@ -911,7 +956,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             })
         })
     }
-    
     func setConstraintsToShowBottomView(animated:Bool, notifyDelegate:Bool){
         if self.startingBottomConstraint == 0 &&
             self.bottomConstraint.constant == 0 {
@@ -929,7 +973,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
         
     }
-    
     func updateConstraintsIfNeeded(animated:Bool, completion:(finished: Bool) -> Void){
         var duration:Float = 0
         if animated {
@@ -1225,6 +1268,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     @IBAction func location(sender: AnyObject) {
         
     }
+    
 }
 
 extension DevicesViewController: SWRevealViewControllerDelegate{

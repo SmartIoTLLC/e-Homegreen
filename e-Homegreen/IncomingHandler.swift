@@ -43,7 +43,7 @@ class IncomingHandler: NSObject {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         self.host = host
         self.port = port
-        fetchGateways(host, port: port)
+        gateways = CoreDataController.shahredInstance.fetchGatewaysForHost(host, port: port)
         
         // NEW
         guard let dataFrame = DataFrame(byteArray: byteArrayToHandle) else {
@@ -68,7 +68,7 @@ class IncomingHandler: NSObject {
         }
         //  Checks if there are any gateways
         if gateways != [] {
-            fetchDevices()
+            self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
             self.byteArray = byteArrayToHandle
             // Check if byteArray is correct one (check byte also, which is missing)
             if self.byteArray[0] == 0xFC && self.byteArray[self.byteArray.count-1] == 0x10 {
@@ -213,7 +213,7 @@ class IncomingHandler: NSObject {
         
     }
     func ackChannelWarnings (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                 //                var number = Int(byteArray[6+5*Int(device.channel)])
@@ -223,24 +223,6 @@ class IncomingHandler: NSObject {
         }
         saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-    }
-    func fetchDevices () {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
-        let predicate = NSPredicate(format: "gateway == %@", gateways[0].objectID)
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
-            devices = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     func fetchZones() -> [Zone] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
@@ -290,24 +272,25 @@ class IncomingHandler: NSObject {
             abort()
         }
     }
-    func fetchGateways (host:String, port:UInt16) {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
-        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
-        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo,predicateThree])
-        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-            gateways = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+    
+//    func fetchGateways (host:String, port:UInt16) {
+//        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+//        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
+//        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
+//        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
+//        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo,predicateThree])
+//        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])
+//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        do {
+//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+//            gateways = fetResults!
+//        } catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            abort()
+//        }
+//    }
     func saveChanges() {
         do {
             try appDel.managedObjectContext!.save()
@@ -318,7 +301,7 @@ class IncomingHandler: NSObject {
         }
     }
     func ackACstatus (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channel = Int(devices[i].channel)
@@ -351,7 +334,7 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func ackDimmerGetRunningTime (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
@@ -392,7 +375,7 @@ class IncomingHandler: NSObject {
     func ackADICmdGetInterfaceName (byteArray:[Byte]) {
         print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
-            fetchDevices()
+            self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
             var string:String = ""
             for var j = 9; j < byteArray.count-2; j++ {
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
@@ -408,14 +391,15 @@ class IncomingHandler: NSObject {
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
+                    saveChanges()
                 }
             }
-            saveChanges()
+            
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     func ackInterfaceEnableStatus (byteArray: [Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
                 if byteArray[8] >= 0x80 {
@@ -429,7 +413,7 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         var counter = 0
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
@@ -452,19 +436,20 @@ class IncomingHandler: NSObject {
                 }
                 device.resetImages(appDel.managedObjectContext!)
                 let data = ["sensorIndexForFoundParametar":counter]
+                saveChanges()
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshInterface, object: self, userInfo: nil)
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindSensorParametar, object: self, userInfo: data)
                 
             }
             counter = counter + 1
         }
-        saveChanges()
+        
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     func ackACParametar (byteArray:[Byte]) {
         print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
-            fetchDevices()
+            self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
             var string:String = ""
             for var i = 9; i < byteArray.count-2; i++ {
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
@@ -498,16 +483,17 @@ class IncomingHandler: NSObject {
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
+                    saveChanges()
                 }
             }
-            saveChanges()
+            
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
-        self.fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         print(byteArray)
         for var i = 0; i < self.devices.count; i++ {
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
@@ -520,7 +506,7 @@ class IncomingHandler: NSObject {
     }
     func acknowledgementAboutCurtainParametar (byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
-            self.fetchDevices()
+            self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
             for (i, device) in devices.enumerate() {
                 if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                     var string:String = ""
@@ -548,7 +534,7 @@ class IncomingHandler: NSObject {
     }
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelState (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
@@ -559,13 +545,14 @@ class IncomingHandler: NSObject {
             } else {
                 
             }
+            saveChanges()
         }
-        saveChanges()
+        
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
@@ -575,16 +562,17 @@ class IncomingHandler: NSObject {
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
                 let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                saveChanges()
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveDataForRepeatSendingHandler, object: self, userInfo: data)
             }
         }
-        saveChanges()
+        
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
     func acknowledgementAboutChannelParametar (byteArray:[Byte]){
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
-            fetchDevices()
+            self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
             for var i = 0; i < devices.count; i++ {
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     var string:String = ""
@@ -630,10 +618,11 @@ class IncomingHandler: NSObject {
                     devices[i].curtainControlMode = Int(byteArray[35])      // Will be used later (17.07.2016)
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
+                    saveChanges()
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
             }
-            saveChanges()
+            
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }

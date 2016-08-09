@@ -106,9 +106,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
             }
             if shouldUpdate {
-                //            fetchDevicesInBackground()
-                //            updateDeviceList()
-                //                self.deviceCollectionView.reloadData()
                 shouldUpdate = false
             }
             isScrolling = false
@@ -230,17 +227,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.openButton.tag = indexPath.row
             cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
-//                return Double(devices[indexPath.row].currentValue)
-//                if Double(devices[indexPath.row].currentValue) > 100 {
-                    return Double(devices[indexPath.row].currentValue) / 255
-//                } else {
-//                    return Double(devices[indexPath.row].currentValue) / 100
-//                }
+                return Double(devices[indexPath.row].currentValue) / 255
             }()
-            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
-            let img = cell.curtainImage.image
-            
-//            cell.curtainImage.image = UIImage(named: "curtain0")    // TODO: Izbrisati kada se uradi funkcionalnost
+            cell.setImageForDevice(devices[indexPath.row])
+//            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
+//            let img = cell.curtainImage.image
+        
             cell.curtainName.userInteractionEnabled = true
             cell.curtainImage.userInteractionEnabled = true
 

@@ -22,7 +22,7 @@ struct DeviceInformation {
 // Curtain
 extension IncomingHandler {
     func ackonowledgementAboutCurtainState(byteArray:[Byte]) {
-        fetchDevices()
+        self.devices = CoreDataController.shahredInstance.fetchDevices(self.gateways[0])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                 device.currentValue = Int(byteArray[8])
