@@ -211,7 +211,10 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
     }
     
     func openNotificationSettings(sender: UILongPressGestureRecognizer){
-        print("DUGO DRZANJE LABELE TAG: \(sender.view?.tag)")
+        if let index = sender.view?.tag {
+            print("DUGO DRZANJE LABELE TAG: \(index)")
+            self.showPCNotifications(self.pcs[index])
+        }
     }
 }
 
