@@ -245,9 +245,10 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         if device.controlType == ControlType.Sensor{
 
             popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
+        }else if device.controlType == ControlType.Dimmer{
+            popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
+            popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
         }
-//        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
-//        popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
         openPopover(sender, popOverList:popoverList)
     }
     
