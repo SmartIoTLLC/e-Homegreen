@@ -45,6 +45,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
+        
         self.popUpTextView.text = security.securityDescription
         sizeText()
         
@@ -77,41 +78,31 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func btnOk(sender: AnyObject) {
         let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
-        //        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
-        //        switch security.securityName! {
-        //        case "Away":
-        //            if security.gateway != nil {
-        //                SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: security.gateway!)
-        //            }
-        //        case "Night":
-        //            if security.gateway != nil {
-        //
-        //            }
-        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: security.gateway!)
-        //        case "Day":
-        //            if security.gateway != nil {
-        //
-        //            }
-        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: security.gateway!)
-        //        case "Vacation":
-        //            if security.gateway != nil {
-        //
-        //            }
-        //            SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: security.gateway!)
-        //        case "Panic":
-        //            if defaults.boolForKey(UserDefaults.Security.IsPanic) {
-        //                if security.gateway != nil {
-        //                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: security.gateway!)
-        //                    defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
-        //                }
-        //            } else {
-        //                if security.gateway != nil {
-        //                    SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: security.gateway!)
-        //                    defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
-        //                }
-        //            }
-        //        default: break
-        //        }
+        if let gatewayId = self.security.gatewayId {
+            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
+                switch security.securityName! {
+                case "Away":
+                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
+                case "Night":
+                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+                case "Day":
+                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+                case "Vacation":
+                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+                case "Panic":
+                    if defaults.boolForKey(UserDefaults.Security.IsPanic) {
+                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+                        defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
+                    } else {
+                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+                        defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
+                    }
+                default: break
+                }
+            }
+        }
+        
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnCancel(sender: AnyObject) {
