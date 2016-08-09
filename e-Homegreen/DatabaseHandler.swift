@@ -12,6 +12,37 @@ import CoreData
 class DatabaseHandler: NSObject {
     
     class func returnCategoryWithId(id:Int, location:Location) -> String {
+        // 255: default
+        // 0: when there is no category defined
+        if id == 255 || id == 0{
+            return "All"
+        }else{
+            let fetchRequest = NSFetchRequest(entityName: "Category")
+            let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+            let predicateTwo = NSPredicate(format: "location == %@", location)
+            let predicateArray = [predicateOne, predicateTwo]
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+                if fetResults!.count != 0 {
+                    if let name = fetResults![0].name{
+                        return name
+                    }else{
+                        return ""
+                    }
+                    
+                } else {
+                    return ""
+                }
+            } catch _ as NSError {
+                print("Unresolved error")
+                abort()
+            }
+            return ""
+        }
+    }
+    class func returnCategoryWithIdForScanDevicesCell(id:Int, location:Location) -> String {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
         let predicateTwo = NSPredicate(format: "location == %@", location)
@@ -26,20 +57,19 @@ class DatabaseHandler: NSObject {
                 }else{
                     return ""
                 }
-                
             } else {
                 return ""
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
         }
         return ""
     }
     
     class func returnZoneWithId(id:Int, location:Location) -> String {
-        // "All" should have id: 0
-        if id == 0{
+        // 255: default
+        // 0: when there is no zone defined
+        if id == 255 || id == 0{
             return "All"
         }else{
             let fetchRequest = NSFetchRequest(entityName: "Zone")
@@ -61,6 +91,26 @@ class DatabaseHandler: NSObject {
             }
             return ""
         }
+    }
+    class func returnZoneWithIdForScanDevicesCell(id:Int, location:Location) -> String {
+        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "location == %@", location)
+        let predicateArray = [predicateOne, predicateTwo]
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            if fetResults!.count != 0 {
+                return "\(fetResults![0].name!)"
+            } else {
+                return ""
+            }
+        } catch _ as NSError {
+            print("Unresolved error")
+            abort()
+        }
+        return ""
     }
     
     class func returnLevelWithId(id:Int, location:Location) -> Zone? {
@@ -133,7 +183,7 @@ class DatabaseHandler: NSObject {
             if fetResults!.count != 0 {
                 return Int(fetResults![0].id!)
             } else {
-                return -1
+                return 255
             }
         } catch _ as NSError {
             print("Unresolved error")

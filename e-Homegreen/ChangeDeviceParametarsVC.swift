@@ -120,15 +120,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
-//        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay || device.controlType != ControlType.Curtain{
-//            btnControlType.enabled = false
-//        }else{
-//            btnControlType.enabled = true
-//        }
         
         txtFieldName.delegate = self
         
         let chn = Int(device.channel)
+        // When DigitalInput, then DeviceInputMode should be presented
+        // Digital input on Sensor can be on one of the following channels: 2, 3, 7 and 10
         if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
             hideDeviceInput(false)
             if let diMode = device.digitalInputMode as? Int {
@@ -137,9 +134,11 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         } else {
             hideDeviceInput(true)
         }
+        // When DigitalInput, then DeviceInputMode should be presented
+        // Digital input on Intelligent Switch can be on one of the following channels: 2, 3, 7 and 10
         if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
             hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
+            if let diMode = device.digitalInputMode?.integerValue {
                 changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
             }
         } else {
@@ -148,8 +147,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
             hideImageButton(true)
         }
-        //TODO: Dodaj i za gateway
-        
+        //TODO: Add for gateway when it is defined
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
@@ -163,33 +161,33 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
                 editedDevice?.levelId = (id.integerValue)
                 level = levelTemp
-                break
             }else{
-                editedDevice?.levelId = 0
+                // Set default levelId
+                editedDevice?.levelId = 255
                 btnZone.setTitle("All", forState: .Normal)
                 level = nil
-                break
             }
+            break
         case 2:
             if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
                 editedDevice?.zoneId = (id.integerValue)
                 zoneSelected = zoneTemp
-                break
             }else{
-                editedDevice?.zoneId = 0
+                // Set default zoneId
+                editedDevice?.zoneId = 255
                 zoneSelected = nil
-                break
             }
+            break
         case 3:
             if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
                 editedDevice?.categoryId = (id.integerValue)
                 category = categoryTemp
-                break
             }else{
-                editedDevice?.categoryId = 0
+                // Set default categoryId
+                editedDevice?.categoryId = 255
                 category = nil
-                break
             }
+            break
         case 4:
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)
@@ -244,8 +242,12 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
-        popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
+        if device.controlType == ControlType.Sensor{
+
+            popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
+        }
+//        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
+//        popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
         openPopover(sender, popOverList:popoverList)
     }
     
@@ -401,15 +403,18 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 
 extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device) {
+        let chn = Int(device.channel)
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device, point: point)
             self.presentViewController(cdp, animated: true, completion: nil)
-
-        }else if device.controlType == ControlType.HumanInterfaceSeries {
+        }else if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3){
             let cdp = DigitalInputPopup(device: device, point: point)
             self.presentViewController(cdp, animated: true, completion: nil)
         }else if device.controlType == ControlType.Climate {
             let cdp = HvacParametersCell(device: device, point: point)
+            self.presentViewController(cdp, animated: true, completion: nil)
+        }else if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10){
+            let cdp = DigitalInputPopup(device: device, point: point)
             self.presentViewController(cdp, animated: true, completion: nil)
         }else{
             let cdp = ChangeDeviceParametarsVC(device: device, point: point)

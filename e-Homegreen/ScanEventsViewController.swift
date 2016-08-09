@@ -209,8 +209,13 @@ class ScanEventsViewController: PopoverVC {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
+            if let level = level, let id = level.id {
+                btnZone.setTitle(level.name, forState: .Normal)
+                zoneSelected = nil
+            }else{
+                btnZone.setTitle("All", forState: .Normal)
+                zoneSelected = nil
+            }
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)

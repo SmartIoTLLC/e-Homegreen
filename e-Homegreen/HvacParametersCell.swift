@@ -247,17 +247,32 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.levelId = (level?.id?.integerValue)!
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
+            if let level = level{
+                editedDevice?.levelId = (level.id?.integerValue)!
+                btnZone.setTitle("All", forState: .Normal)
+                zoneSelected = nil
+            }else{
+                editedDevice?.levelId = 255
+                btnZone.setTitle("All", forState: .Normal)
+                zoneSelected = nil
+            }
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+            if let zoneSelected = zoneSelected {
+                editedDevice?.zoneId = (zoneSelected.id?.integerValue)!
+            }else{
+                editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+                editedDevice?.zoneId = 255
+            }
             break
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
-            editedDevice?.categoryId = (category?.id?.integerValue)!
+            if let category = category{
+                editedDevice?.categoryId = (category.id?.integerValue)!
+            }else{
+                editedDevice?.categoryId = 255
+            }
             break
         case 4:
             editedDevice?.controlType = name

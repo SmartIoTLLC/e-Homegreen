@@ -181,19 +181,19 @@ class EnergyViewController: PopoverVC  {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
-        if filterParametar.levelId != 0 {
+        if filterParametar.levelId != 0 && filterParametar.levelId != 255{
             let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId))
 //            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if filterParametar.zoneId != 0 {
+        if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
             let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
 //            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        if filterParametar.categoryId != 0 {
+        if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
             let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
 //            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])

@@ -88,6 +88,16 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
+        if let digInputMode = device.digitalInputMode?.integerValue{
+            let controlType = DigitalInput.modeInfo[digInputMode]
+            // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
+            if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description(){
+                changeControlMode.setTitle(controlType, forState: UIControlState.Normal)
+            }else{
+                changeControlMode.setTitle(DigitalInput.NormallyOpen.description(), forState: UIControlState.Normal)
+            }
+        }
+        
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
         
         txtFieldName.delegate = self
@@ -136,17 +146,31 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.levelId = (level?.id?.integerValue)!
+            if let level = level {
+                editedDevice?.levelId = (level.id?.integerValue)!
+            }else{
+                editedDevice?.levelId = 255
+            }
             btnZone.setTitle("All", forState: .Normal)
             zoneSelected = nil
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            editedDevice?.zoneId = (zoneSelected?.id?.integerValue)!
+            
+            if let zoneSelected = zoneSelected {
+               editedDevice?.zoneId = (zoneSelected.id?.integerValue)!
+            }else{
+                zoneSelected = nil
+                editedDevice?.zoneId = 255
+            }
             break
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
-            editedDevice?.categoryId = (category?.id?.integerValue)!
+            if let category = category{
+                editedDevice?.categoryId = (category.id?.integerValue)!
+            }else{
+                editedDevice?.categoryId = 255
+            }
             break
         case 4:
             editedDevice?.controlType = name

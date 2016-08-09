@@ -405,7 +405,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
                 // arrayOfNamesToBeSearched = [0, 2]
                 var from = 0
-                var to = 255
+                var to = 500
                 if rangeFrom.text != nil && rangeFrom.text != ""{
                     from = Int(rangeFrom.text!)!-1
                 }
@@ -622,7 +622,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
             // arrayOfSensorAdresses = [0, 2]
             var from = 1
-            var to = 255
+            var to = 500
             if rangeFrom.text != nil && rangeFrom.text != ""{
                 from = Int(rangeFrom.text!)!-1
             }
@@ -706,7 +706,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func sensorParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars) {
+        let parameter = NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars)
+        if parameter {
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["sensorIndexForFoundParametar"] {
                     if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
@@ -754,13 +755,16 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func progressBarDidPressedExit() {
+        findSensorParametar = false
         dismissScaningControls()
     }
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         //   For finding names
         deviceNameTimer?.invalidate()
+
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSensorParametars)
         pbFN?.dissmissProgressBar()
         
         //   For finding devices
@@ -847,16 +851,18 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             let description = devices[indexPath.row].name
             let deviceAddress = "Address: \(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address))), Channel: \(devices[indexPath.row].channel)"
             
-            
+            // Control Type
             var type = "Control Type: \(devices[indexPath.row].controlType)"
-            
             if devices[indexPath.row].controlType == ControlType.Curtain {
                 type = "Control Type: \(ControlType.Relay)"
             }
             
             let isEnabledSwitch = devices[indexPath.row].isEnabled.boolValue
-            let zone = "Zone: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)) Level: \(DatabaseHandler.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location))"
-            let category = "Category: \(DatabaseHandler.returnCategoryWithId(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location))"
+            let levelToDisplay = DatabaseHandler.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)
+            let zoneToDisplay = DatabaseHandler.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location)
+            let categoryToDisplay = DatabaseHandler.returnCategoryWithIdForScanDevicesCell(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location)
+            let zone = "Zone: \(levelToDisplay) Level: \(zoneToDisplay)"
+            let category = "Category: \(categoryToDisplay)"
             let isVisibleSwitch = devices[indexPath.row].isVisible.boolValue
             
             cell.setItemWithParameters(row: row, description: description, address: deviceAddress, type: type, isEnabledSwitch: isEnabledSwitch, zone: zone, category: category, isVisibleSwitch: isVisibleSwitch)
