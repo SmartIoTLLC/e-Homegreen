@@ -45,8 +45,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
-    @IBOutlet weak var indicatorGreen: UIView!
-    @IBOutlet weak var indicatorRed: UIView!
+//    @IBOutlet weak var indicatorGreen: UIView!
+//    @IBOutlet weak var indicatorRed: UIView!
     
     //Zone and category control
     @IBOutlet weak var bottomView: UIView!
@@ -85,8 +85,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         bottomView.addGestureRecognizer(panRecognizer)
         
         // Initialize Indicators
-        indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
-        indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
+//        indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
+//        indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -166,13 +166,13 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
     }
     
     func updateConstraints() {
@@ -207,26 +207,26 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
     }
-    func updateIndicator(notification:NSNotification){
-        if let info = notification.userInfo as? [String:String]{
-            if let lamp = info["lamp"]{
-                if lamp == "red" {
-                    self.indicatorRed.alpha = 1
-                    UIView.animateWithDuration(0.5, animations: { 
-                        self.indicatorRed.alpha = 0
-                    })
-                }else if lamp == "green" {
-                    self.indicatorGreen.alpha = 1
-                    UIView.animateWithDuration(0.5, animations: {
-                        self.indicatorGreen.alpha = 0
-                    })
-                }else{
-                    print("INDICATOR ERROR")
-                }
-            }
-        }
-        //indicatorGreen.backgroundColor = UIColor.greenColor()
-    }
+//    func updateIndicator(notification:NSNotification){
+//        if let info = notification.userInfo as? [String:String]{
+//            if let lamp = info["lamp"]{
+//                if lamp == "red" {
+//                    self.indicatorRed.alpha = 1
+//                    UIView.animateWithDuration(0.5, animations: { 
+//                        self.indicatorRed.alpha = 0
+//                    })
+//                }else if lamp == "green" {
+//                    self.indicatorGreen.alpha = 1
+//                    UIView.animateWithDuration(0.5, animations: {
+//                        self.indicatorGreen.alpha = 0
+//                    })
+//                }else{
+//                    print("INDICATOR ERROR")
+//                }
+//            }
+//        }
+//        //indicatorGreen.backgroundColor = UIColor.greenColor()
+//    }
     
     func fetchDevicesInBackground(){
         updateCells()
