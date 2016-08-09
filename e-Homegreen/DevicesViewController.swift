@@ -472,7 +472,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        let allDevices = CoreDataController.shahredInstance.fetchDevicesForGateway(devices[tag].gateway)
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
@@ -507,7 +507,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        let allDevices = CoreDataController.shahredInstance.fetchDevicesForGateway(devices[tag].gateway)
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
@@ -542,7 +542,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let allDevices = CoreDataController.shahredInstance.fetchDevices(devices[tag].gateway)
+        let allDevices = CoreDataController.shahredInstance.fetchDevicesForGateway(devices[tag].gateway)
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {

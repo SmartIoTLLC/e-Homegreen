@@ -38,19 +38,7 @@ class CoreDataController: NSObject {
         }
         return gateways
     }
-    func fetchDevices (gateway:Gateway) -> [Device] {
-        
-        let fetchRequest = fetchDevicesRequest(gateway)
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]
-            return fetResults
-        } catch let error as NSError {
-            print("Unresolved error \(error), \(error.userInfo)")
-            abort()
-        }
-        return []
-    }
-    func fetchDevicesRequest (gateway:Gateway) -> NSFetchRequest {
+    func fetchDevicesForGateway(gateway: Gateway) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -59,7 +47,14 @@ class CoreDataController: NSObject {
         let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         fetchRequest.predicate = predicate
-        return fetchRequest
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]
+            return fetResults
+        } catch let error as NSError {
+            print("Unresolved error \(error), \(error.userInfo)")
+            abort()
+        }
+        return []
     }
     func fetchSortedPCRequest (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
@@ -85,5 +80,14 @@ class CoreDataController: NSObject {
             abort()
         }
         return []
+    }
+    
+    func saveChanges() {
+        do {
+            try appDel.managedObjectContext!.save()
+        } catch let error1 as NSError {
+            let error = error1
+            print("Unresolved error \(error), \(error.userInfo)")
+        }
     }
 }

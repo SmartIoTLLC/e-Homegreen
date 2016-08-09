@@ -53,7 +53,7 @@ class CurtainCollectionCell: UICollectionViewCell {
     func setImageForDevice(device: Device){
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let devices = CoreDataController.shahredInstance.fetchDevices(device.gateway)
+        let devices = CoreDataController.shahredInstance.fetchDevicesForGateway(device.gateway)
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
