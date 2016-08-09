@@ -83,6 +83,7 @@
                                         <connections>
                                             <outlet property="pccontrolSlider" destination="9Ix-AL-mYP" id="AkW-CR-huK"/>
                                             <outlet property="pccontrolTitleLabel" destination="1aV-Id-Zwr" id="LYO-48-zEA"/>
+                                            <outlet property="pccontrollImage" destination="Dx8-aU-fBY" id="bsd-B4-B4l"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

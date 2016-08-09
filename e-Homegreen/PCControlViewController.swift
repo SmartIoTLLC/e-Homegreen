@@ -209,12 +209,21 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
         }
         
     }
+    
+    func openNotificationSettings(sender: UILongPressGestureRecognizer){
+        print("DUGO DRZANJE LABELE TAG: \(sender.view?.tag)")
+    }
 }
 
 extension PCControlViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pccontrolCell", forIndexPath: indexPath) as? PCControlCell{
             cell.setItem(pcs[indexPath.row], tag: indexPath.row, filterParametar: filterParametar)
+            cell.pccontrolTitleLabel.tag = indexPath.row
+
+            let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.openNotificationSettings(_:)))
+            cell.pccontrolTitleLabel.addGestureRecognizer(longGesture)
+            
             return cell
         }
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionCell", forIndexPath: indexPath)
