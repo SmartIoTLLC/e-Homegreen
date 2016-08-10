@@ -26,6 +26,7 @@ class SecurityViewController: PopoverVC{
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var lblAlarmState: UILabel!
     @IBOutlet weak var securityCollectionView: UICollectionView!
+    @IBOutlet weak var refreshBtn: UIButton!
     @IBAction func fullScreen(sender: AnyObject) {
         if UIApplication.sharedApplication().statusBarHidden {
             UIApplication.sharedApplication().statusBarHidden = false
@@ -39,7 +40,14 @@ class SecurityViewController: PopoverVC{
             }
         }
     }
-
+    @IBAction func refresh(sender: AnyObject) {
+        let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        rotateAnimation.fromValue = 1
+        rotateAnimation.toValue = CGFloat(M_PI)
+        refreshBtn.layer.addAnimation(rotateAnimation, forKey: nil)
+        refreshSecurityAlarmStateAndSecurityMode()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,11 +63,11 @@ class SecurityViewController: PopoverVC{
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All, All, All")
         
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-//        lblAlarmState.text = "Alarm state: \(alarmState!)"
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
+        lblAlarmState.text = "Alarm state: \(alarmState!)"
         
-//        refreshSecurityAlarmStateAndSecurityMode()
+        refreshSecurityAlarmStateAndSecurityMode()
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -172,21 +180,19 @@ class SecurityViewController: PopoverVC{
     
     func refreshSecurity() {
         updateSecurityList()
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-//        lblAlarmState.text = "Alarm state: \(alarmState!)"
         securityCollectionView.reloadData()
     }
     
     func refreshSecurityAlarmStateAndSecurityMode () {
-        let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
-        if let id = securities[0].gatewayId{
-            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id)  {
-                SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+        if securities.count > 0{
+            let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
+            if let id = securities[0].gatewayId{
+                if let gateway = DatabaseGatewayController.shared.getGatewayByid(id)  {
+                    SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+                }
             }
         }
-        
     }
     
     func updateSecurityList () {
@@ -420,7 +426,7 @@ extension SecurityViewController: UICollectionViewDataSource {
         }
         let defaults = NSUserDefaults.standardUserDefaults()
         if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
-            if securities[indexPath.row].securityName == securityMode {
+            if securities[indexPath.row].securityName!.containsString(securityMode) {
                 switch securityMode {
                 case "Away":
                     cell.setImageForSecuirity(UIImage(named: "away")!)

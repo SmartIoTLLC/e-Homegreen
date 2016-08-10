@@ -622,55 +622,52 @@ class IncomingHandler: NSObject {
     
     // Security
     func securityFeedbackHandler (byteArray:[Byte]) {
-        print(byteArray)
+        parseMessage(byteArray)
         fetchEntities("Security")
-        //FIXME: Pucalo je security zato sto nema u svim gatewayovima security
-        print(securities.count)
-        
-        if securities.count != 0 {
-            let address = [Byte(Int(securities[0].addressOne)), Byte(Int(securities[0].addressTwo)), Byte(Int(securities[0].addressThree))]
-            if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if byteArray[7] == 0x02 {
-                    switch byteArray[8] {
-                    case 0x00:
-                        defaults.setValue("Disarm", forKey: UserDefaults.Security.SecurityMode)
-                    case 0x01:
-                        defaults.setValue("Away", forKey: UserDefaults.Security.SecurityMode)
-                    case 0x02:
-                        defaults.setValue("Nigth", forKey: UserDefaults.Security.SecurityMode)
-                    case 0x03:
-                        defaults.setValue("Day", forKey: UserDefaults.Security.SecurityMode)
-                    case 0x04:
-                        defaults.setValue("Vacation", forKey: UserDefaults.Security.SecurityMode)
-                    default: break
-                    }
+        //FIXME: Pucalo je security zato sto nema u svim gatewayovima security        
+        let address = [Byte(Int(securities[0].addressOne)), Byte(Int(securities[0].addressTwo)), Byte(Int(securities[0].addressThree))]
+        if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if byteArray[7] == 0x02 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setValue("Disarm", forKey: UserDefaults.Security.SecurityMode)
+                case 0x01:
+                    defaults.setValue("Away", forKey: UserDefaults.Security.SecurityMode)
+                case 0x02:
+                    defaults.setValue("Night", forKey: UserDefaults.Security.SecurityMode)
+                case 0x03:
+                    defaults.setValue("Day", forKey: UserDefaults.Security.SecurityMode)
+                case 0x04:
+                    defaults.setValue("Vacation", forKey: UserDefaults.Security.SecurityMode)
+                default: break
                 }
-                if byteArray[7] == 0x03 {
-                    switch byteArray[8] {
-                    case 0x00:
-                        defaults.setValue("Idle", forKey: UserDefaults.Security.AlarmState)
-                    case 0x01:
-                        defaults.setValue("Trouble", forKey: UserDefaults.Security.AlarmState)
-                    case 0x02:
-                        defaults.setValue("Alert", forKey: UserDefaults.Security.AlarmState)
-                    case 0x03:
-                        defaults.setValue("Alarm", forKey: UserDefaults.Security.AlarmState)
-                    default: break
-                    }
-                }
-                if byteArray[7] == 0x04 {
-                    switch byteArray[8] {
-                    case 0x00:
-                        defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
-                    case 0x01:
-                        defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
-                    default: break
-                    }
-                }
-                print("EHGSecuritySeczurityMode - \(defaults.valueForKey(UserDefaults.Security.SecurityMode)) *** EHGSecurityAlarmState - \(defaults.valueForKey(UserDefaults.Security.AlarmState)) *** EHGSecurityPanic - \(defaults.boolForKey(UserDefaults.Security.IsPanic))")
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSecurity, object: self, userInfo: nil)
             }
+            if byteArray[7] == 0x03 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setValue("Idle", forKey: UserDefaults.Security.AlarmState)
+                case 0x01:
+                    defaults.setValue("Trouble", forKey: UserDefaults.Security.AlarmState)
+                case 0x02:
+                    defaults.setValue("Alert", forKey: UserDefaults.Security.AlarmState)
+                case 0x03:
+                    defaults.setValue("Alarm", forKey: UserDefaults.Security.AlarmState)
+                default: break
+                }
+            }
+            if byteArray[7] == 0x04 {
+                switch byteArray[8] {
+                case 0x00:
+                    defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
+                case 0x01:
+                    defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
+                default: break
+                }
+            }
+            print("EHGSecuritySeczurityMode - \(defaults.valueForKey(UserDefaults.Security.SecurityMode)) *** EHGSecurityAlarmState - \(defaults.valueForKey(UserDefaults.Security.AlarmState)) *** EHGSecurityPanic - \(defaults.boolForKey(UserDefaults.Security.IsPanic))")
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSecurity, object: self, userInfo: nil)
         }
     }
     
@@ -813,6 +810,30 @@ class IncomingHandler: NSObject {
             let data = ["categoryId":Int(id)]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
         }
+    }
+    
+    // Helper
+    func parseMessage(byteArray: [UInt8]){
+        let byteLength = byteArray.count
+        let SOI = byteArray[0]
+        let LEN = byteArray[1]
+        let ADDR = [byteArray[2], byteArray[3], byteArray[4]]
+        let CID1 = byteArray[5]
+        let CID2 = byteArray[6]
+        
+        var INFO: [UInt8] = []
+        for i in 7...byteLength-3{
+            INFO = INFO + [byteArray[i]]
+        }
+        
+        let CHK = byteArray[byteArray.count-2]
+        let EOI = byteArray[byteArray.count-1]
+        
+        print("SOI: \(SOI)")
+        print("ADDR: \(ADDR)")
+        print("CID1: \(CID1)")
+        print("CID2: \(CID2)")
+        print("INFO: \(INFO)")
     }
 }
 

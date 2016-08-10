@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
@@ -21,10 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7Aw-aS-dZc">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7Aw-aS-dZc">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
                                 <rect key="frame" x="0.0" y="97" width="320" height="471"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Izm-5s-CxM">
@@ -108,24 +109,39 @@
                             <constraint firstItem="7Aw-aS-dZc" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" id="wLm-E9-f3q"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Security" id="zKh-HL-GJY">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="m6K-LE-9yY"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="TyU-YO-x20">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HmC-vu-8Ug">
-                                <rect key="frame" x="269" y="7" width="35" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="full screen"/>
-                                <connections>
-                                    <action selector="fullScreen:" destination="Ypx-dJ-055" eventType="touchUpInside" id="mKd-j8-QFF"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" id="TyU-YO-x20">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HmC-vu-8Ug">
+                                    <rect key="frame" x="269" y="7" width="35" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="full screen"/>
+                                    <connections>
+                                        <action selector="fullScreen:" destination="Ypx-dJ-055" eventType="touchUpInside" id="mKd-j8-QFF"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem style="plain" id="FdR-YL-oPO">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0iq-uZ-Uij">
+                                    <rect key="frame" x="226" y="7" width="35" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="refesh screen"/>
+                                    <connections>
+                                        <action selector="refresh:" destination="Ypx-dJ-055" eventType="touchUpInside" id="rfk-4t-7N6"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="fullScreenButton" destination="HmC-vu-8Ug" id="fx5-ZX-f2X"/>
                         <outlet property="lblAlarmState" destination="hcL-5z-e2q" id="IGU-a2-79C"/>
                         <outlet property="menuButton" destination="m6K-LE-9yY" id="SXc-Ur-n4W"/>
+                        <outlet property="refreshBtn" destination="0iq-uZ-Uij" id="slF-Ox-pyA"/>
                         <outlet property="securityCollectionView" destination="zTE-Nb-Lqm" id="WPQ-NW-hL0"/>
                     </connections>
                 </viewController>
@@ -139,5 +155,6 @@
         <image name="Menu button" width="22" height="22"/>
         <image name="away" width="150" height="150"/>
         <image name="full screen" width="30" height="30"/>
+        <image name="refesh screen" width="30" height="30"/>
     </resources>
 </document>

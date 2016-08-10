@@ -1101,7 +1101,7 @@
 			isa = PBXGroup;
 			children = (
 				73EEEB451C3530570071DF53 /* Incoming Handler */,
-				73EEEB441C3530520071DF53 /* Function */,
+				73EEEB441C3530520071DF53 /* Sending Handler */,
 				738BFD001B9EF077005D183F /* Zone, Category and Security */,
 				73E485221B60D531007A35AD /* InOutSocket.swift */,
 				73B6D94D1B5B92FE00E783DD /* SendingHandler.swift */,
@@ -1321,13 +1321,13 @@
 			name = FlagXIB;
 			sourceTree = "<group>";
 		};
-		73EEEB441C3530520071DF53 /* Function */ = {
+		73EEEB441C3530520071DF53 /* Sending Handler */ = {
 			isa = PBXGroup;
 			children = (
 				736265E21B4A483E0078C11D /* Function.swift */,
 				22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */,
 			);
-			name = Function;
+			name = "Sending Handler";
 			sourceTree = "<group>";
 		};
 		73EEEB451C3530570071DF53 /* Incoming Handler */ = {
