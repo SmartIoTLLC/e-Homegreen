@@ -1,14 +1,14 @@
 //
-//  SecuirtyCommandVC.swift
+//  SecurityNeedDisarmInformation.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 9/30/15.
-//  Copyright © 2015 Teodor Stevic. All rights reserved.
+//  Created by Damir Djozic on 8/10/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
+class SecurityNeedDisarmInformation: UIViewController {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -17,7 +17,6 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var devices:[Device] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
-    var security:Security!
     var defaults = NSUserDefaults.standardUserDefaults()
     var isPresenting: Bool = true
     
@@ -26,30 +25,25 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var popUpTextView: UITextView!
     
     
-    init(point:CGPoint, security: Security){
-        super.init(nibName: "SecuirtyCommandVC", bundle: nil)
+    init(point:CGPoint){
+        super.init(nibName: "SecurityNeedDisarmInformation", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
-        self.security = security
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.popUpTextView.text = security.securityDescription
+        self.popUpTextView.text = Messages.Security.NeedToDisarmFirst
         sizeText()
         
-//        popUpTextView.delegate = self
+        //        popUpTextView.delegate = self
     }
     
     func sizeText(){
@@ -77,50 +71,11 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnOk(sender: AnyObject) {
-        
-        let address = [security.addressOne.unsignedCharValue, security.addressTwo.unsignedCharValue, security.addressThree.unsignedCharValue]
-        if let gatewayId = self.security.gatewayId {
-            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
-//                let notificationName = NotificationKey.Security.ControlModeCahnged
-                switch security.securityName! {
-                case "Away":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
-                    break
-                case "Night":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
-                    break
-                case "Day":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
-                    break
-                case "Vacation":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
-                    break
-                case "Panic":
-                    if defaults.boolForKey(UserDefaults.Security.IsPanic) {
-                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
-                        defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
-                    } else {
-                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
-                        defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
-                    }
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
-                default: break
-                }
-            }
-        }
-        
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
-extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
+extension SecurityNeedDisarmInformation : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
@@ -164,11 +119,11 @@ extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-        }        
+        }
     }
 }
 
-extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
+extension SecurityNeedDisarmInformation : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -183,14 +138,4 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
         }
     }
     
-}
-extension UIViewController {
-    func showSecurityCommand(point:CGPoint, text:String, security: Security) {
-        let sc = SecuirtyCommandVC(point: point, security: security)
-        self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
-    }
-    func showSecurityInformation(point:CGPoint){
-        let sc = SecurityNeedDisarmInformation(point: point)
-        self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
-    }
 }

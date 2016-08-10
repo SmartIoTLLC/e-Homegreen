@@ -52,7 +52,7 @@ class SecurityViewController: PopoverVC{
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-
+        
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
         updateConstraints()
@@ -74,6 +74,8 @@ class SecurityViewController: PopoverVC{
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.Security)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setBlinkingMode:", name: NotificationKey.Security.ControlModeCahnged, object: nil)
         
     }
     override func viewWillAppear(animated: Bool) {
@@ -133,7 +135,7 @@ class SecurityViewController: PopoverVC{
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-
+    
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: location + ", " + level + ", " + zone)
     }
@@ -198,51 +200,51 @@ class SecurityViewController: PopoverVC{
     func updateSecurityList () {
         
         securities = DatabaseSecurityController.shared.getSecurity(filterParametar)
-
+        
     }
     
     func openParametar (gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-        switch securities[tag].securityName! {
-        case "Away":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+            switch securities[tag].securityName! {
+            case "Away":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            case "Night":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            case "Day":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            case "Vacation":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            case "Disarm":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            case "Panic":
+                let location = gestureRecognizer.locationInView(securityCollectionView)
+                if let index = securityCollectionView.indexPathForItemAtPoint(location){
+                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                }
+            default: break
             }
-        case "Night":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-            }
-        case "Day":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-            }
-        case "Vacation":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-            }
-        case "Disarm":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-            }
-        case "Panic":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-            }
-        default: break
-        }
         }
     }
     
@@ -253,31 +255,63 @@ class SecurityViewController: PopoverVC{
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+                
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+                    if securityMode != SecurityControlMode.Disarm{
+                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+                    }else{
+                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+                    }
+                }
             }
         case "Night":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+                
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+                    if securityMode != SecurityControlMode.Disarm{
+                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+                    }else{
+                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+                    }
+                }
             }
         case "Day":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+                    if securityMode != SecurityControlMode.Disarm{
+                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+                    }else{
+                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+                    }
+                }
             }
         case "Vacation":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+                    if securityMode != SecurityControlMode.Disarm{
+                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+                    }else{
+                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+                    }
+                }
             }
         case "Disarm":
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                let defaults = NSUserDefaults.standardUserDefaults()
+                
+                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
             }
         case "Panic":
             let location = gestureRecognizer.locationInView(securityCollectionView)
@@ -289,6 +323,10 @@ class SecurityViewController: PopoverVC{
         }
     }
     
+    func setBlinkingMode(sender: NSNotification){
+        // Activate timer
+        
+    }
 }
 
 // Parametar from filter and relaod data

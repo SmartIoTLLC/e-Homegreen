@@ -89,6 +89,22 @@ struct CurtainControlMode {
     static let NCAndReset = 0x03
     static let NOAndReset = 0x04
 }
+struct SecurityControlMode {
+    static let Away = "Away"
+    static let Day = "Day"
+    static let Night = "Night"
+    static let Vacation = "Vacation"
+    static let Disarm = "Disarm"
+    static let Panic = "Panic"
+}
+
+struct Messages {
+    struct Security{
+        static let NeedToDisarmFirst = "You need to disarm first"
+    }
+    
+}
+
 struct CurtainControlModes {
 //    static let Close = 0x01
 //    static let Open = 0x02
@@ -205,6 +221,7 @@ struct DigitalInput {
 struct ReuseIdentifier {
 //    "settingsCell"
 }
+
 struct UserDefaults {
     static let IsScaningDevice = "PLCDidFindDevice"
     static let IsScaningDeviceName = "PLCdidFindNameForDevice"
@@ -509,6 +526,10 @@ struct NotificationKey {
         static let Refresh = "updateGatewayListNotification"
         static let DidReceiveData = "didReceiveMessageFromGateway"
         static let DidSendData = "didSendMessageToGateway"
+    }
+    
+    struct Security {
+       static let ControlModeCahnged = "controlModeChanged"
     }
     
     static let RefreshFilter = "kRefreshLocalParametarsNotification"
