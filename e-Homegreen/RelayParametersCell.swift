@@ -210,12 +210,9 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     @IBAction func changeControlMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-//        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
+//        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
+        popoverList.append(PopOverItem(name: "NC and Reset", id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {

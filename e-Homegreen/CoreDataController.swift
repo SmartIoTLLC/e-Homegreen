@@ -38,6 +38,22 @@ class CoreDataController: NSObject {
         }
         return gateways
     }
+    func fetchGatewayWithId(id: String) -> Gateway?{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+        let predicateTwo = NSPredicate(format: "gatewayId = %@", id)
+        fetchRequest.predicate = predicateTwo
+        do {
+            if let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]{
+                if fetResults.count > 0{
+                    return fetResults.first!
+                }
+            }
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return nil
+    }
     func fetchDevicesForGateway(gateway: Gateway) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)

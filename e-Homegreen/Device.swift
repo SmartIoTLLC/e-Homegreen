@@ -134,13 +134,16 @@ class Device: NSManagedObject {
             if result1.stateValue < result2.stateValue {return true}
             return false
         }
-        let result = sortedFilteredMapedResult[0]
-        if let image = result.imageData {
-            return image
+        if sortedFilteredMapedResult.count > 0{
+            let result = sortedFilteredMapedResult[0]
+            if let image = result.imageData {
+                return image
+            }
+            if let image = result.defaultImage {
+                return image
+            }
         }
-        if let image = result.defaultImage {
-            return image
-        }
-        return UIImage(named: "")!
+        
+        return UIImage(named: "optionsss")!
     }
 }
