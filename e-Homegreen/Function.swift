@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// Class for communication with PLC. Sending commands to PLC
+/// Incoming handler is responsible for reveiving commands and data.
 class Function {
     // Get Socket State Command:
     static func refreshGatewayConnection (address:[Byte]) -> [Byte] {
@@ -320,48 +322,6 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
-    //    static func refreshSecurityMode () -> [Byte]{
-    //        var messageInfo:[Byte] = []
-    //        var message:[Byte] = []
-    //        messageInfo = [0x02, 0x00]
-    //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-    //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count % 256)
-    //        message[2] = Byte(id1Address)
-    //        message[3] = Byte(id2Address)
-    //        message[4] = 0xFE
-    //        message[5] = 0x05
-    //        message[6] = 0x0C
-    //        var i = 0
-    //        for byte in messageInfo {
-    //            message[7+i] = byte
-    //            i = i + 1
-    //        }
-    //        message[message.count-2] = self.getChkByte(byteArray:message)
-    //        message[message.count-1] = 0x10
-    //        return message
-    //    }
-    //    static func sendKeySecurity (key:Byte) -> [Byte]{
-    //        var messageInfo:[Byte] = []
-    //        var message:[Byte] = []
-    //        messageInfo = [0x01, key]
-    //        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-    //        message[0] = 0xAA
-    //        message[1] = Byte(messageInfo.count % 256)
-    //        message[2] = Byte(id1Address)
-    //        message[3] = Byte(id2Address)
-    //        message[4] = 0xFE
-    //        message[5] = 0x05
-    //        message[6] = 0x11
-    //        var i = 0
-    //        for byte in messageInfo {
-    //            message[7+i] = byte
-    //            i = i + 1
-    //        }
-    //        message[message.count-2] = self.getChkByte(byteArray:message)
-    //        message[message.count-1] = 0x10
-    //        return message
-    //    }
     // MARK: - Get check byte
     static func getChkByte (byteArray byteArray:[Byte]) -> Byte {
         var chk:Int = 0
@@ -443,24 +403,6 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 06 00 00 00 01 15 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 06 00 00 00 01 23 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 06 00 00 00 01 24 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 02 10 10
-    //    //
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 FF 00 00 00 00 00 00 00 01 1D 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 00 00 00 00 00 00 00 00 01 1E 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 EF 00 00 00 00 00 00 00 01 0D 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 F1 00 00 00 00 00 00 00 01 0F 10
-    //    AA 0D 01 00 02 03 07 FF FF FF 06 4A 00 00 00 00 00 00 00 01 68 10
-    //    //
-    //    EF 00 00 00 00 00 00 00 01
 }
 //MARK:- CLIMATE
 extension Function {
@@ -996,26 +938,9 @@ extension Function {
     //   ************************************   SECURITY   ************************************
     //   **************************************************************************************
     
-    static func refreshSecurityMode (address:[Byte]) -> [Byte]{
-        let messageInfo:[Byte] = [0x02, 0x00]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count % 256)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x05
-        message[6] = 0x0C
-        var i = 0
-        for byte in messageInfo {
-            message[7+i] = byte
-            i = i + 1
-        }
-        message[message.count-2] = self.getChkByte(byteArray:message)
-        message[message.count-1] = 0x10
-        return message
-    }
     //   1, 2, 3, 4, 5, 6, 7, 8, 9, 0B (star), 1A (hash)
+    // Checked. OK.
+    // Send command (password) for disarm
     static func sendKeySecurity (address:[Byte], key:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x01, key]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1031,10 +956,19 @@ extension Function {
             message[7+i] = byte
             i = i + 1
         }
+        
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10
         return message
+        
+        // TODO:
+        //**** Change function to this code in future, it is shorter. 
+        // Define variables for bytes in message such as SOI, LEN, ADDR, CID1, CID2 etc. It will be more readable.
+//        let messageLength = 7 + messageInfo.count + 2
+//        var messageNew = [0xAA, Byte(messageInfo.count % 256)] + address + [0x05, 0x11] + messageInfo + [self.getChkByte(byteArray:message), 0x10]
     }
+    
+    // Checked. OK.
     static func getCurrentSecurityMode (address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0x02, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1054,6 +988,8 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
+    // Checked. OK.
+    // Message is created as protocol specifies. Look UCM_ehomeGrreen Command List.docx file
     static func changeSecurityMode (address:[Byte], mode:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x02, mode]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1073,6 +1009,8 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
+    // Checked. OK.
+    // Message is created as protocol specifies. Look UCM_ehomeGrreen Command List.docx file
     static func getCurrentAlarmState (address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0x03, 0x00]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1092,6 +1030,7 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
+    // Checked. OK.
     static func setPanic (address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)

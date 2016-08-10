@@ -77,7 +77,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func btnOk(sender: AnyObject) {
-        let address = [UInt8(defaults.integerForKey(UserDefaults.Security.AddressOne)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressTwo)), UInt8(defaults.integerForKey(UserDefaults.Security.AddressThree))]
+        let address = [security.addressOne.unsignedCharValue, security.addressTwo.unsignedCharValue, security.addressThree.unsignedCharValue]
         if let gatewayId = self.security.gatewayId {
             if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
                 switch security.securityName! {
