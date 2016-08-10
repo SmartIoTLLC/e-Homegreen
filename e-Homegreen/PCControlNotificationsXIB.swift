@@ -9,28 +9,71 @@
 import UIKit
 //import wol.h
 
+enum NotificationPosition : Int, CustomStringConvertible {
+    case TopLeft = 0, TopCenter, TopRight, CenterLeft, Center, CenterRight, BottomLeft, BottomCenter, BottomRight
+    var description : String {
+        get {
+            switch(self) {
+            case .TopLeft:
+                return "Top Left"
+            case .TopCenter:
+                return "Top Center"
+            case .TopRight:
+                return "Top Right"
+            case .CenterLeft:
+                return "Center Left"
+            case .Center:
+                return "Center"
+            case .CenterRight:
+                return "Settings"
+            case .BottomLeft:
+                return "Bottom Left"
+            case .BottomCenter:
+                return "Bottom Center"
+            case .BottomRight:
+                return "Bottom Right"
+            }
+        }
+    }
+    
+    static let allValues = [TopLeft, TopCenter, TopRight, CenterLeft, Center, CenterRight, BottomLeft, BottomCenter, BottomRight]
+    
+    static var count : Int {
+        get {
+            return NotificationPosition.BottomRight.rawValue + 1
+        }
+    }
+}
+
 class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
     
     var isPresenting: Bool = true
     
+    enum SwitchTag : Int {
+        case notificationSwitch
+        case ttsSwitch
+        case notificationTtsSwitch
+    }
     
-    @IBOutlet weak var fullScreenSwitch: UISwitch!
-    @IBOutlet weak var powerLabel: UILabel!
-    @IBOutlet weak var playLabel: UILabel!
-    @IBOutlet weak var runLabel: UILabel!
+    @IBOutlet weak var delayTextField: UITextField!
+    @IBOutlet weak var displayTimeTextField: UITextField!
     @IBOutlet weak var titleLabel: UILabel!
-    var fullScreenByte:Byte = 0x00
-    
     @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var notificationSwitch: UISwitch!
+    @IBOutlet weak var ttsSwitch: UISwitch!
+    @IBOutlet weak var notificationTtsSwitch: UISwitch!
+    @IBOutlet weak var notificationPositionLabel: UILabel!
     
-    @IBOutlet weak var commandTextField: UITextField!
+    var notificationCommandList = [PopOverItem]()
+    
+    var button : UIButton!
+    var fullScreenByte:Byte = 0x00
     
     var tagIndex = 0 // cuvam tag od dugmeta koje poziva popover
     var runCommand:String? // run komanda
     var pathForVideo:String? // putanja selektovanog videa
     
     var pc:Device
-    var button:UIButton!
     
     init(pc:Device){
         self.pc = pc
@@ -41,24 +84,44 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         
     }
     
-    required init?(coder aDecoder: NSCoder) {
+        required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        commandTextField.layer.borderWidth = 1
-        commandTextField.layer.cornerRadius = 2
-        commandTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
+        for item in NotificationPosition.allValues {
+            notificationCommandList.append(PopOverItem(name: item.description, id: String(item.rawValue)))
+        }
+        
+        notificationPositionLabel.text = notificationCommandList.first?.name
+        
+        notificationSwitch.tag = SwitchTag.notificationSwitch.rawValue
+        ttsSwitch.tag = SwitchTag.ttsSwitch.rawValue
+        notificationTtsSwitch.tag = SwitchTag.notificationTtsSwitch.rawValue
+        
+        delayTextField.keyboardType = .NumberPad
+        delayTextField.tintColor = UIColor.whiteColor()
+        delayTextField.layer.borderWidth = 1
+        delayTextField.layer.cornerRadius = 2
+        delayTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
+
+        delayTextField.attributedPlaceholder = NSAttributedString(string:"0",
                                                                     attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        commandTextField.delegate = self
+        delayTextField.delegate = self
         
-        titleLabel.text = "LAZNI KONTROLER"
-        
+        displayTimeTextField.keyboardType = .NumberPad
+        displayTimeTextField.tintColor = UIColor.whiteColor()
+        displayTimeTextField.layer.borderWidth = 1
+        displayTimeTextField.layer.cornerRadius = 2
+        displayTimeTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
+
+        displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0",
+                                                                  attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        displayTimeTextField.delegate = self
+        titleLabel.text = pc.name
         self.view.backgroundColor = UIColor.clearColor()
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlNotificationsXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
@@ -72,6 +135,7 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if let touchView = touch.view{
             if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
                 return false
             }
         }
@@ -88,154 +152,55 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func powerAction(sender: AnyObject) {
-        if let text = powerLabel.text{
-            switch text{
-            case PowerOption.ShutDown.description:
-                
-                break
-            case PowerOption.Restart.description:
-                
-                break
-            case PowerOption.Sleep.description:
-                
-                break
-            case PowerOption.Hibernate.description:
-                
-                break
-            case PowerOption.LogOff.description:
-                
-                break
-            default: print("")
-                
-            }
-        }
-    }
-    
-    @IBAction func playAction(sender: AnyObject) {
-        guard let videoName = playLabel.text where videoName != "-", let path =  pathForVideo  else {
-            return
-        }
-        if fullScreenSwitch.on {
-            fullScreenByte = 0x00
-        }else{
-            fullScreenByte = 0x01
-        }
-        SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: 0x01), gateway: pc.gateway)
-    }
-    
-    @IBAction func runAction(sender: AnyObject) {
-        guard let appName = runLabel.text where appName != "-", let command =  runCommand  else {
-            return
-        }
-        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
-        //        let s1 = "192.168.0.7"
-        //        let cs1 = (s1 as NSString).UTF8String
-        //        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
-        //        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
-        //
-        //        let s2 = convertByteArrayToMacAddress(byteArray)
-        //        let cs2 = (s2 as NSString).UTF8String
-        //        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
-        //        send_wol_packet(first_parametar, second_parametar)
-    }
-    
     var socketIO:InOutSocket
     
-    @IBAction func sendAction(sender: AnyObject) {
-        guard let text = commandTextField.text else {
-            return
-        }
-        SendingHandler.sendCommand(byteArray: Function.textToSpeech(pc.moduleAddress, text: text), gateway: pc.gateway)
-    }
-    
-    @IBAction func addPathForVideo(sender: AnyObject) {
-        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
-            if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
-                vc.typeOfFile = .Video
-                vc.device = pc
-                self.presentViewController(navVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    @IBAction func addPathForRunApp(sender: AnyObject) {
-        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
-            if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
-                vc.typeOfFile = .App
-                vc.device = pc
-                self.presentViewController(navVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    @IBAction func powerOption(sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        for option in PowerOption.allValues{
-            popoverList.append(PopOverItem(name: option.description, id: ""))
-        }
-        openPopover(sender, popOverList:popoverList)
+    @IBAction func switchChanged(sender: AnyObject) {
         
-    }
-    
-    @IBAction func playOption(sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        if let list = pc.pcCommands {
-            if let commandArray = Array(list) as? [PCCommand] {
-                for item in commandArray{
-                    if item.isRunCommand == false{
-                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-                    }
-                }
-            }
+        switch sender.tag {
+        case SwitchTag.notificationSwitch.rawValue:
+            notificationSwitch.setOn(true, animated: true)
+            ttsSwitch.setOn(false, animated: true)
+            notificationTtsSwitch.setOn(false, animated: true)
+            
+            //TODO: Notification funcionality
+            
+        case SwitchTag.ttsSwitch.rawValue:
+            ttsSwitch.setOn(true, animated: true)
+            notificationSwitch.setOn(false, animated: true)
+            notificationTtsSwitch.setOn(false, animated: true)
+            
+            //TODO: TTS funcionality
+            
+        case SwitchTag.notificationTtsSwitch.rawValue:
+            notificationTtsSwitch.setOn(true, animated: true)
+            notificationSwitch.setOn(false, animated: true)
+            ttsSwitch.setOn(false, animated: true)
+            
+            //TODO: Notification & TTS funcionality
+            
+        default:
+            notificationSwitch.setOn(true, animated: true)
+            ttsSwitch.setOn(false, animated: true)
+            notificationTtsSwitch.setOn(false, animated: true)
         }
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func runOption(sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        if let list = pc.pcCommands {
-            if let commandArray = Array(list) as? [PCCommand] {
-                for item in commandArray{
-                    if item.isRunCommand == true{
-                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-                    }
-                }
-            }
-        }
-        openPopover(sender, popOverList:popoverList)
     }
     
     override func nameAndId(name: String, id: String) {
-        if button.tag == 1{
-            powerLabel.text = name
-        }
-        if button.tag == 2{
-            playLabel.text = name
-            pathForVideo = id + name
-        }
-        if button.tag == 3{
-            runLabel.text = name
-            runCommand = id
-        }
+        notificationPositionLabel.text = name
     }
     
-    func returnNameAndPath(name: String, path: String?) {
-        if tagIndex == 1{
-            powerLabel.text = name
-        }else if tagIndex == 2{
-            playLabel.text = name
-            if let path = path{
-                pathForVideo = path + name
-            }
-        }else{
-            runLabel.text = name
-            runCommand = path
-        }
+    @IBAction func chooseNotificationPosition(sender: AnyObject) {
+        button = sender as! UIButton
+        openPopover(sender, popOverList:notificationCommandList)
     }
+
+    @IBAction func cancelAction(sender: AnyObject) {
+        self.dismissViewController()
+    }
+    @IBAction func saveAction(sender: AnyObject) {
+        self.dismissViewController()
+    }
+    
 }
 
 extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {

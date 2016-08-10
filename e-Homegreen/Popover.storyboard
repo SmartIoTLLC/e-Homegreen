@@ -44,6 +44,44 @@
                                             <outlet property="tableItem" destination="cdr-T5-eYa" id="PWB-JQ-a9b"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PullDownViewTwoRowsCell" id="rJn-kJ-GxQ" customClass="PullDownViewTwoRowsCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="310" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJn-kJ-GxQ" id="FfQ-qU-Ra0">
+                                            <rect key="frame" x="0.0" y="0.0" width="310" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvu-eS-oxI">
+                                                    <rect key="frame" x="8" y="29" width="294" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="4sb-Jz-uRl"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkt-jc-UvN">
+                                                    <rect key="frame" x="8" y="8" width="294" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Dvu-eS-oxI" firstAttribute="leading" secondItem="FfQ-qU-Ra0" secondAttribute="leading" constant="8" id="6gO-sP-bRK"/>
+                                                <constraint firstAttribute="trailing" secondItem="Dvu-eS-oxI" secondAttribute="trailing" constant="8" id="AcQ-6B-dDS"/>
+                                                <constraint firstAttribute="trailing" secondItem="Wkt-jc-UvN" secondAttribute="trailing" constant="8" id="DPF-s7-1my"/>
+                                                <constraint firstItem="Dvu-eS-oxI" firstAttribute="top" secondItem="Wkt-jc-UvN" secondAttribute="bottom" id="ir8-PU-Eli"/>
+                                                <constraint firstItem="Wkt-jc-UvN" firstAttribute="leading" secondItem="FfQ-qU-Ra0" secondAttribute="leading" constant="8" id="mDp-dz-oaR"/>
+                                                <constraint firstItem="Wkt-jc-UvN" firstAttribute="top" secondItem="FfQ-qU-Ra0" secondAttribute="top" constant="8" id="qlt-4I-1fy"/>
+                                                <constraint firstAttribute="bottom" secondItem="Dvu-eS-oxI" secondAttribute="bottom" id="z6x-PC-m64"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="tableItemDescription" destination="Dvu-eS-oxI" id="UAG-ab-Azs"/>
+                                            <outlet property="tableItemName" destination="Wkt-jc-UvN" id="Bas-uG-TBZ"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="yII-cN-RPF" id="zJQ-2J-yCL"/>

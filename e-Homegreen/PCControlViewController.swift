@@ -223,6 +223,9 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pccontrolCell", forIndexPath: indexPath) as? PCControlCell{
             cell.setItem(pcs[indexPath.row], tag: indexPath.row, filterParametar: filterParametar)
             cell.pccontrolTitleLabel.tag = indexPath.row
+            
+            let volume = Float(pcs[indexPath.row].pcVolume)
+            cell.pccontrolSlider.value = volume/100
 
             let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.openNotificationSettings(_:)))
             cell.pccontrolTitleLabel.addGestureRecognizer(longGesture)

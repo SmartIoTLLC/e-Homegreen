@@ -218,6 +218,25 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
             presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
+    
+    func openPopoverWithTwoRows(sender: AnyObject, popOverList:[PopOverItem]) {
+        let storyboard = UIStoryboard(name: "Popover", bundle: nil)
+        popoverVC = storyboard.instantiateViewControllerWithIdentifier("codePopover") as! PopOverViewController
+        popoverVC.modalPresentationStyle = .Popover
+        popoverVC.preferredContentSize = CGSizeMake(300, 200)
+        popoverVC.delegate = self
+        popoverVC.popOverList = popOverList
+        popoverVC.cellWithTwoTextRows = true
+        if let popoverController = popoverVC.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.permittedArrowDirections = .Any
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = sender.bounds
+            popoverController.backgroundColor = UIColor.lightGrayColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
+        }
+    }
+
 
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
