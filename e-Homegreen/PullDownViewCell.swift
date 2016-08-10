@@ -13,3 +13,10 @@ class PullDownViewCell: UITableViewCell {
     @IBOutlet weak var tableItem: UILabel!
     
 }
+
+
+class PullDownViewTwoRowsCell: UITableViewCell {
+    
+    @IBOutlet weak var tableItemName: UILabel!
+    @IBOutlet weak var tableItemDescription: UILabel!
+}

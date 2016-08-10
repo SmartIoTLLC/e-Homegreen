@@ -35,8 +35,8 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var table: UITableView!
     
     var delegate : PopOverIndexDelegate?
-    
     var popOverList:[PopOverItem] = []
+    var cellWithTwoTextRows : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,10 +52,22 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
 extension PopOverViewController: UITableViewDelegate{
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
-            cell.tableItem.text = popOverList[indexPath.row].name
-            return cell
+        
+        if cellWithTwoTextRows {
+            if let cell = tableView.dequeueReusableCellWithIdentifier(String(PullDownViewTwoRowsCell)) as? PullDownViewTwoRowsCell {
+                
+                cell.tableItemName.text = popOverList[indexPath.row].name
+                cell.tableItemDescription.text = popOverList[indexPath.row].id
+                return cell
+            }
+
+        }else{
+            if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
+                cell.tableItem.text = popOverList[indexPath.row].name
+                return cell
+            }
         }
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         return cell
     }

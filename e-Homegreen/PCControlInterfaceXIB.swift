@@ -15,7 +15,7 @@ enum FileType{
     
     var description:String{
         switch self {
-        case Video: return "Video"
+        case Video: return "Media"
         case App: return "Application"
         }
     }
@@ -45,6 +45,15 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     @IBOutlet weak var playLabel: UILabel!
     @IBOutlet weak var runLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var runSwitch: UISwitch!
+    @IBOutlet weak var mediaPathLabel: UILabel!
+    @IBOutlet weak var appPathLabel: UILabel!
+    @IBOutlet weak var voiceCommandButton: UIButton!
+    
+    var runCommandList = [PopOverItem]()
+    var playCommandList = [PopOverItem]()
+    var powerCommandList = [PopOverItem]()
+
     var fullScreenByte:Byte = 0x00
     
     @IBOutlet weak var backView: UIView!
@@ -73,6 +82,38 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        var popoverList:[PopOverItem] = []
+        if let list = pc.pcCommands {
+            if let commandArray = Array(list) as? [PCCommand] {
+                for item in commandArray{
+                    if item.isRunCommand == true{
+                        runCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
+                    }
+                    if item.isRunCommand == false {
+                        playCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
+                    }
+                }
+            }
+        }
+        
+        for option in PowerOption.allValues{
+            powerCommandList.append(PopOverItem(name: option.description, id: ""))
+        }
+        
+        if runCommandList.count != 0 {
+            runLabel.text = runCommandList.first?.name
+            appPathLabel.text = runCommandList.first?.id
+        }
+        if playCommandList.count != 0 {
+            playLabel.text = playCommandList.first?.name
+            mediaPathLabel.text = playCommandList.first?.id
+        }
+        if powerCommandList.count != 0 {
+            powerLabel.text = powerCommandList.first?.name
+        }
+
         
         commandTextField.layer.borderWidth = 1
         commandTextField.layer.cornerRadius = 2
@@ -197,42 +238,42 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     
     @IBAction func powerOption(sender: UIButton) {
         button = sender
-        var popoverList:[PopOverItem] = []
-        for option in PowerOption.allValues{
-            popoverList.append(PopOverItem(name: option.description, id: ""))
-        }
-        openPopover(sender, popOverList:popoverList)
+//        var popoverList:[PopOverItem] = []
+//        for option in PowerOption.allValues{
+//            popoverList.append(PopOverItem(name: option.description, id: ""))
+//        }
+        openPopover(sender, popOverList:powerCommandList)
 
     }
     
     @IBAction func playOption(sender: UIButton) {
         button = sender
-        var popoverList:[PopOverItem] = []
-        if let list = pc.pcCommands {
-            if let commandArray = Array(list) as? [PCCommand] {
-                for item in commandArray{
-                    if item.isRunCommand == false{
-                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-                    }
-                }
-            }
-        }
-        openPopover(sender, popOverList:popoverList)
+//        var popoverList:[PopOverItem] = []
+//        if let list = pc.pcCommands {
+//            if let commandArray = Array(list) as? [PCCommand] {
+//                for item in commandArray{
+//                    if item.isRunCommand == false{
+//                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
+//                    }
+//                }
+//            }
+//        }
+        openPopoverWithTwoRows(sender, popOverList: playCommandList)
     }
     
     @IBAction func runOption(sender: UIButton) {
         button = sender
-        var popoverList:[PopOverItem] = []
-        if let list = pc.pcCommands {
-            if let commandArray = Array(list) as? [PCCommand] {
-                for item in commandArray{
-                    if item.isRunCommand == true{
-                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-                    }
-                }
-            }
-        }
-        openPopover(sender, popOverList:popoverList)
+//        var popoverList:[PopOverItem] = []
+//        if let list = pc.pcCommands {
+//            if let commandArray = Array(list) as? [PCCommand] {
+//                for item in commandArray{
+//                    if item.isRunCommand == true{
+//                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
+//                    }
+//                }
+//            }
+//        }
+        openPopoverWithTwoRows(sender, popOverList:runCommandList)
     }
     
     override func nameAndId(name: String, id: String) {
@@ -242,10 +283,12 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         if button.tag == 2{
             playLabel.text = name
             pathForVideo = id + name
+            mediaPathLabel.text = id
         }
         if button.tag == 3{
             runLabel.text = name
             runCommand = id
+            appPathLabel.text = id
         }
     }
     
@@ -262,6 +305,11 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             runCommand = path
         }
     }
+    
+    @IBAction func voiceCommand(sender: AnyObject) {
+        print("Send voice command!")
+    }
+    
 }
 
 extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
