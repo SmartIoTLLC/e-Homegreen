@@ -529,7 +529,15 @@ struct NotificationKey {
     }
     
     struct Security {
-       static let ControlModeCahnged = "controlModeChanged"
+        // These two notifications are used for start and stop blinking of security control state. When command is sent to PLC (for example to arm "Day" state), blinking of (Day) state is started (notification is posted), and when new state arrives, ControlModeStopBlinking notification is posted.
+        // ControlModeStartBlinking is posted in SecurityCollectionCell.swift, when command is sent
+        // ControlModeStartBlinking is received in SecurityCollectionCell.swift, where timer is activated.
+        // ControlModeStartBlinking contains "controlMode" parameter in userInfo, which contains ControlMode that is being activated (String), that indicates which cell needs to be refreshed (in which cell should the timer, that toggles image, be activated
+        static let ControlModeStartBlinking = "controlModeStartBlinking"
+        // ControlModeStopBlinking is posted in IncommingHandler.swift, when command for Security is received.
+        // ControlModeStopBlinking is received in SecurityCollectionCell.swift, where timer is deactivated.
+        // ControlModeStopBlinking does not contain any information. When call receives this information, if state (Defaults.) is not Disarm (that means that new state is received) timer is removed.
+        static let ControlModeStopBlinking = "controlModeStopBlinking"
     }
     
     static let RefreshFilter = "kRefreshLocalParametarsNotification"

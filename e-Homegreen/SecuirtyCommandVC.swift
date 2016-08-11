@@ -81,23 +81,23 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         let address = [security.addressOne.unsignedCharValue, security.addressTwo.unsignedCharValue, security.addressThree.unsignedCharValue]
         if let gatewayId = self.security.gatewayId {
             if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
-//                let notificationName = NotificationKey.Security.ControlModeCahnged
+                let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 switch security.securityName! {
                 case "Away":
                     SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
                     break
                 case "Night":
                     SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
                     break
                 case "Day":
                     SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
                     break
                 case "Vacation":
                     SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
                     break
                 case "Panic":
                     if defaults.boolForKey(UserDefaults.Security.IsPanic) {
@@ -107,7 +107,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
                         SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
                         defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
                     }
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
                 default: break
                 }
             }

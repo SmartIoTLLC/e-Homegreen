@@ -667,7 +667,7 @@ class IncomingHandler: NSObject {
                     }
                 }
                 print("EHGSecuritySeczurityMode - \(defaults.valueForKey(UserDefaults.Security.SecurityMode)) *** EHGSecurityAlarmState - \(defaults.valueForKey(UserDefaults.Security.AlarmState)) *** EHGSecurityPanic - \(defaults.boolForKey(UserDefaults.Security.IsPanic))")
-                
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.Security.ControlModeStopBlinking, object: self, userInfo: nil)
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSecurity, object: self, userInfo: nil)
             }
         }

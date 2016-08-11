@@ -47,7 +47,7 @@
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
 		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
-		22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */; };
+		22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
 		2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */; };
@@ -390,7 +390,7 @@
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
 		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
-		22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCell.swift; sourceTree = "<group>"; };
+		22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCollectionCell.swift; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
 		2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterParametar+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1144,7 +1144,7 @@
 				22495D231CAA7C3E0034FC94 /* Security.storyboard */,
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
 				738DECB01BBBFC1100D6B834 /* Security.json */,
-				22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */,
+				22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -1775,7 +1775,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 2JR589G8SK;
+						DevelopmentTeam = 2VJ3RF77SN;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -2197,7 +2197,7 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
-				22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */,
+				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
 				49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */,
