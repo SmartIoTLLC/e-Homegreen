@@ -100,7 +100,7 @@ struct SecurityControlMode {
 
 struct Messages {
     struct Security{
-        static let NeedToDisarmFirst = "You need to disarm first"
+        static let NeedToDisarmFirst = "Attention! You need to disarm the security system before you can select the curent security mode."
     }
     
 }
