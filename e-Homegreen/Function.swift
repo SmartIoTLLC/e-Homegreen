@@ -1252,6 +1252,68 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
+    
+    
+    static func sendNotification (address:[Byte], text:String, notificationType: NotificationType, notificationPosition: NotificationPosition, delayTime: Int, displayTime: Int) -> [Byte]{
+        
+        let textByteArray = [Byte](text.utf8)
+        var message:[Byte] = [Byte](count: textByteArray.count+15, repeatedValue: 0)
+        
+        //Control bytes:
+        message[0] = 0xAA
+        message[1] = Byte((textByteArray.count+6) % 256)
+        
+        //Address:
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        
+        //Command:
+        message[5] = 0x0A
+        message[6] = 0x07
+        
+        //Type & Position:
+        message[7] = Byte(notificationType.rawValue)
+        message[8] = Byte(notificationPosition.rawValue)
+        
+        //Delay time:
+        if delayTime > 255 {
+            let firstByte = UInt8(UInt16(delayTime) >> 8)
+            let secondByte = UInt8(UInt16(delayTime) & 0x00ff)
+            
+            message[9] = firstByte
+            message[10] = secondByte
+        }else{
+            message[9] = 0x00
+            message[10] = Byte(delayTime)
+        }
+        
+        //Display time:
+        if displayTime > 255 {
+            let firstByte = UInt8(UInt16(displayTime) >> 8)
+            let secondByte = UInt8(UInt16(displayTime) & 0x00ff)
+            
+            message[11] = firstByte
+            message[12] = secondByte
+        }else{
+            message[11] = 0x00
+            message[12] = Byte(delayTime)
+        }
+        
+        //Text:
+        var i = 0
+        for byte in textByteArray {
+            message[13+i] = byte
+            i = i + 1
+        }
+        
+        //Control bytes:
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+
     //TODO:- Nije odradjeno budjenje iz lana
     static func wakeOnLan (address:[Byte], mac:[Byte], password:[Byte]) -> [Byte]{
         guard mac.count == 6 || password.count == 6 || address.count == 3 else {

@@ -43,6 +43,10 @@
         <attribute name="mode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modeState" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notificationDelay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="notificationDisplayTime" optional="YES" attributeType="Integer 16" defaultValueString="5" syncable="YES"/>
+        <attribute name="notificationPosition" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="9" defaultValueString="1" syncable="YES"/>
+        <attribute name="notificationType" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="numberOfDevices" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="overrideControl1" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="overrideControl2" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -167,7 +171,7 @@
     </entity>
     <entity name="PCCommand" representedClassName=".PCCommand" syncable="YES">
         <attribute name="comand" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isRunCommand" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="commandType" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="pcCommands" inverseEntity="Device" syncable="YES"/>
     </entity>
@@ -284,7 +288,7 @@
     </entity>
     <elements>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
-        <element name="Device" positionX="-677" positionY="-1989" width="128" height="840"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="900"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
@@ -294,7 +298,7 @@
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
-        <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="43"/>
+        <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="43"/>
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
         <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>

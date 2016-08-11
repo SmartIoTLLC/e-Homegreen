@@ -603,9 +603,9 @@ class CreateUserFromJSONController: NSObject {
                 if let comand =  pccommand["comand"] as? String {
                     newPCCommand.comand = comand
                 }
-                if let isRunCommand =  pccommand["is_run_command"] as? Bool {
-                    newPCCommand.isRunCommand = isRunCommand
-                }
+//                if let isRunCommand =  pccommand["is_run_command"] as? Bool {
+//                    newPCCommand.isRunCommand = isRunCommand
+//                }
                 newPCCommand.device = device
             }
         }

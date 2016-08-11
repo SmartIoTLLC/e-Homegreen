@@ -1,9 +1,9 @@
 //
 //  PCCommand.swift
-//  
+//  e-Homegreen
 //
-//  Created by Vladimir Zivanov on 3/14/16.
-//
+//  Created by Marko Stajic on 8/11/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import Foundation

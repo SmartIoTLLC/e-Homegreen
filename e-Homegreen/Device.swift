@@ -2,13 +2,12 @@
 //  Device.swift
 //  e-Homegreen
 //
-//  Created by Marko Stajic on 8/3/16.
+//  Created by Marko Stajic on 8/11/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import Foundation
 import CoreData
-
 
 enum EmployeeStatus: Int {
     case ReadyForHire, Hired, Retired, Resigned, Fired, Deceased
@@ -65,6 +64,10 @@ class Device: NSManagedObject {
             self.highSpeedVisible = true
             self.autoSpeedVisible = true
         }
+        self.notificationType = 0
+        self.notificationPosition = 1
+        self.notificationDelay = 0
+        self.notificationDisplayTime = 5
         let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
         for defaultDeviceImage in defaultDeviceImages {
             let deviceImage = DeviceImage(context: context)
@@ -97,11 +100,11 @@ class Device: NSManagedObject {
         // Convert device images to array
         let deviceValue: Double = {
             return Double(newDeviceValue)
-//                        if newDeviceValue <= 100 {
-//                            return Double(newDeviceValue)
-//                        } else {
-//                            return Double(newDeviceValue)/255 * 100
-//                        }
+            //                        if newDeviceValue <= 100 {
+            //                            return Double(newDeviceValue)
+            //                        } else {
+            //                            return Double(newDeviceValue)/255 * 100
+            //                        }
         }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!

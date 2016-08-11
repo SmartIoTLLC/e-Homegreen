@@ -2,7 +2,7 @@
 //  Device+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Marko Stajic on 8/3/16.
+//  Created by Marko Stajic on 8/11/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,7 +13,7 @@ import Foundation
 import CoreData
 
 extension Device {
-
+    
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
@@ -67,6 +67,9 @@ extension Device {
     @NSManaged var medSpeedVisible: NSNumber?
     @NSManaged var highSpeedVisible: NSNumber?
     @NSManaged var autoSpeedVisible: NSNumber?
-
-
+    @NSManaged var notificationType: NSNumber?
+    @NSManaged var notificationPosition: NSNumber?
+    @NSManaged var notificationDelay: NSNumber?
+    @NSManaged var notificationDisplayTime: NSNumber?
+    
 }

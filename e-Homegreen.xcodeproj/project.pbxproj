@@ -58,8 +58,6 @@
 		2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */; };
 		2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */; };
 		22453A9F1D391E33009DCB07 /* FilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22453A9E1D391E33009DCB07 /* FilterPullDown.swift */; };
-		2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */; };
-		2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2245843A1C96AA3700D2C372 /* PCCommand.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
 		22495D111CAA72020034FC94 /* Device.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D0F1CAA72020034FC94 /* Device.storyboard */; };
 		22495D131CAA74880034FC94 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D121CAA74880034FC94 /* Dashboard.storyboard */; };
@@ -112,13 +110,15 @@
 		49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4055A1D2D0A870031130B /* PullDownViewCell.swift */; };
 		49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */; };
 		49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */; };
+		4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BB3471D5C91020047688F /* PCCommand+CoreDataProperties.swift */; };
+		4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BB3481D5C91020047688F /* PCCommand.swift */; };
 		4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */; };
 		4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D14B0CF1D59E50B0004E10A /* PCControlNotificationsXIB.swift */; };
 		4D14B0D21D59E50B0004E10A /* PCControlNotificationsXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D14B0D01D59E50B0004E10A /* PCControlNotificationsXIB.xib */; };
 		4D16A1281D51CB8D00817477 /* HvacParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */; };
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
-		4D2E3F221D51FC730080A383 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2E3F201D51FC730080A383 /* Device+CoreDataProperties.swift */; };
-		4D2E3F231D51FC730080A383 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2E3F211D51FC730080A383 /* Device.swift */; };
+		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
+		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
 		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
 		730E90C31C6A1BF400B1D50D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90C01C6A1BF400B1D50D /* Image.swift */; };
 		73131ED31CA147C6008BC13E /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73131ED11CA147C6008BC13E /* User+CoreDataProperties.swift */; };
@@ -399,8 +399,6 @@
 		2241E46F1CC6389700BCD763 /* SurveillanceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceCell.swift; sourceTree = "<group>"; };
 		2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSurveillanceController.swift; sourceTree = "<group>"; };
 		22453A9E1D391E33009DCB07 /* FilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPullDown.swift; sourceTree = "<group>"; };
-		224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PCCommand+CoreDataProperties.swift"; path = "../PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		2245843A1C96AA3700D2C372 /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PCCommand.swift; path = ../PCCommand.swift; sourceTree = "<group>"; };
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		22495D101CAA72020034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Device.storyboard; sourceTree = "<group>"; };
@@ -455,13 +453,15 @@
 		49E4055A1D2D0A870031130B /* PullDownViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownViewCell.swift; sourceTree = "<group>"; };
 		49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInputPopup.swift; sourceTree = "<group>"; };
 		49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInputPopup.xib; sourceTree = "<group>"; };
+		4D0BB3471D5C91020047688F /* PCCommand+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PCCommand+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D0BB3481D5C91020047688F /* PCCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCCommand.swift; sourceTree = "<group>"; };
 		4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "HRToast+UIView.swift"; path = "SWRevealViewController/HRToast+UIView.swift"; sourceTree = "<group>"; };
 		4D14B0CF1D59E50B0004E10A /* PCControlNotificationsXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCControlNotificationsXIB.swift; sourceTree = "<group>"; };
 		4D14B0D01D59E50B0004E10A /* PCControlNotificationsXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCControlNotificationsXIB.xib; sourceTree = "<group>"; };
 		4D16A1261D51CB8D00817477 /* HvacParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HvacParametersCell.swift; sourceTree = "<group>"; };
 		4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacParametersCell.xib; sourceTree = "<group>"; };
-		4D2E3F201D51FC730080A383 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		4D2E3F211D51FC730080A383 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
 		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		730E90C01C6A1BF400B1D50D /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -1266,14 +1266,14 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4D2E3F201D51FC730080A383 /* Device+CoreDataProperties.swift */,
-				4D2E3F211D51FC730080A383 /* Device.swift */,
+				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
+				4D411C9A1D5C982F000A3598 /* Device.swift */,
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
+				4D0BB3471D5C91020047688F /* PCCommand+CoreDataProperties.swift */,
+				4D0BB3481D5C91020047688F /* PCCommand.swift */,
 				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
 				220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */,
 				220176381CD0FED400A1470A /* MenuItem.swift */,
-				224584391C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift */,
-				2245843A1C96AA3700D2C372 /* PCCommand.swift */,
 				223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */,
 				223687181CB51834005ACDE4 /* Category.swift */,
 				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
@@ -2011,7 +2011,6 @@
 				225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
-				4D2E3F231D51FC730080A383 /* Device.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
@@ -2080,7 +2079,6 @@
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,
-				2245843C1C96AA3700D2C372 /* PCCommand.swift in Sources */,
 				73131ED31CA147C6008BC13E /* User+CoreDataProperties.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
@@ -2132,7 +2130,6 @@
 				E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */,
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
-				4D2E3F221D51FC730080A383 /* Device+CoreDataProperties.swift in Sources */,
 				223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */,
 				223887121CB3F6A3003864B8 /* Zone.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
@@ -2146,6 +2143,8 @@
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */,
+				4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */,
+				4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
 				495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */,
@@ -2154,6 +2153,7 @@
 				73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */,
 				731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */,
 				73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */,
+				4D411C9C1D5C982F000A3598 /* Device.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */,
@@ -2163,6 +2163,7 @@
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */,
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
@@ -2175,7 +2176,6 @@
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				223E25DF1CC7B37900BC3905 /* DatabaseLocationController.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
-				2245843B1C96AA3700D2C372 /* PCCommand+CoreDataProperties.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,

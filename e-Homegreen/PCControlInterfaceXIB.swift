@@ -79,29 +79,22 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        var popoverList:[PopOverItem] = []
+    
+    func refreshLists(){
+        runCommandList.removeAll()
+        playCommandList.removeAll()
         if let list = pc.pcCommands {
             if let commandArray = Array(list) as? [PCCommand] {
                 for item in commandArray{
-                    if item.isRunCommand == true{
+                    if item.commandType == CommandType.Application.rawValue {
                         runCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
                     }
-                    if item.isRunCommand == false {
+                    if item.commandType == CommandType.Media.rawValue {
                         playCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
                     }
                 }
             }
         }
-        
-        for option in PowerOption.allValues{
-            powerCommandList.append(PopOverItem(name: option.description, id: ""))
-        }
-        
         if runCommandList.count != 0 {
             runLabel.text = runCommandList.first?.name
             appPathLabel.text = runCommandList.first?.id
@@ -110,6 +103,21 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             playLabel.text = playCommandList.first?.name
             mediaPathLabel.text = playCommandList.first?.id
         }
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        refreshLists()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        refreshLists()
+        
+        for option in PowerOption.allValues{
+            powerCommandList.append(PopOverItem(name: option.description, id: ""))
+        }
+        
         if powerCommandList.count != 0 {
             powerLabel.text = powerCommandList.first?.name
         }
@@ -195,6 +203,11 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         guard let appName = runLabel.text where appName != "-", let command =  runCommand  else {
             return
         }
+        if runSwitch.on {
+            fullScreenByte = 0x00
+        }else{
+            fullScreenByte = 0x01
+        }
         SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
 //        let s1 = "192.168.0.7"
 //        let cs1 = (s1 as NSString).UTF8String
@@ -213,7 +226,8 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         guard let text = commandTextField.text else {
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.textToSpeech(pc.moduleAddress, text: text), gateway: pc.gateway)
+        
+        SendingHandler.sendCommand(byteArray: Function.sendNotification(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
     }
     
     @IBAction func addPathForVideo(sender: AnyObject) {        
@@ -238,41 +252,17 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     
     @IBAction func powerOption(sender: UIButton) {
         button = sender
-//        var popoverList:[PopOverItem] = []
-//        for option in PowerOption.allValues{
-//            popoverList.append(PopOverItem(name: option.description, id: ""))
-//        }
         openPopover(sender, popOverList:powerCommandList)
 
     }
     
     @IBAction func playOption(sender: UIButton) {
         button = sender
-//        var popoverList:[PopOverItem] = []
-//        if let list = pc.pcCommands {
-//            if let commandArray = Array(list) as? [PCCommand] {
-//                for item in commandArray{
-//                    if item.isRunCommand == false{
-//                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-//                    }
-//                }
-//            }
-//        }
         openPopoverWithTwoRows(sender, popOverList: playCommandList)
     }
     
     @IBAction func runOption(sender: UIButton) {
         button = sender
-//        var popoverList:[PopOverItem] = []
-//        if let list = pc.pcCommands {
-//            if let commandArray = Array(list) as? [PCCommand] {
-//                for item in commandArray{
-//                    if item.isRunCommand == true{
-//                        popoverList.append(PopOverItem(name: item.name!, id: item.comand!))
-//                    }
-//                }
-//            }
-//        }
         openPopoverWithTwoRows(sender, popOverList:runCommandList)
     }
     

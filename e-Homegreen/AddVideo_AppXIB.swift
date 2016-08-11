@@ -13,6 +13,10 @@ protocol ImportPathDelegate{
     func importFinished()
 }
 
+enum CommandType:Int {
+    case Media=0, Application, Notification
+}
+
 class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var isPresenting: Bool = true
@@ -85,7 +89,7 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
         nameTextField.delegate = self
         pathTextField.delegate = self
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AddVideo_AppXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
@@ -123,9 +127,11 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
                 
                 path.comand = commandText
                 if typeOfFile == FileType.Video{
-                    path.isRunCommand = false
+                    print("Dodat video fajl")
+                    path.commandType = CommandType.Media.rawValue
                 }else{
-                    path.isRunCommand = true
+                    print("Dodata aplikacija")
+                    path.commandType = CommandType.Application.rawValue
                 }
                 path.name = name
                 path.device = device

@@ -10,7 +10,7 @@ import UIKit
 //import wol.h
 
 enum NotificationPosition : Int, CustomStringConvertible {
-    case TopLeft = 0, TopCenter, TopRight, CenterLeft, Center, CenterRight, BottomLeft, BottomCenter, BottomRight
+    case TopLeft = 1, TopCenter, TopRight, CenterLeft, Center, CenterRight, BottomLeft, BottomCenter, BottomRight
     var description : String {
         get {
             switch(self) {
@@ -25,7 +25,7 @@ enum NotificationPosition : Int, CustomStringConvertible {
             case .Center:
                 return "Center"
             case .CenterRight:
-                return "Settings"
+                return "CenterRight"
             case .BottomLeft:
                 return "Bottom Left"
             case .BottomCenter:
@@ -40,7 +40,16 @@ enum NotificationPosition : Int, CustomStringConvertible {
     
     static var count : Int {
         get {
-            return NotificationPosition.BottomRight.rawValue + 1
+            return NotificationPosition.BottomRight.rawValue
+        }
+    }
+}
+
+enum NotificationType : Int {
+    case Notification = 0, TTS, NotificationAndTTS
+    static var count : Int {
+        get {
+            return NotificationType.NotificationAndTTS.rawValue + 1
         }
     }
 }
@@ -64,14 +73,15 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
     @IBOutlet weak var notificationTtsSwitch: UISwitch!
     @IBOutlet weak var notificationPositionLabel: UILabel!
     
-    var notificationCommandList = [PopOverItem]()
+    var notificationPositionList = [PopOverItem]()
     
     var button : UIButton!
     var fullScreenByte:Byte = 0x00
     
     var tagIndex = 0 // cuvam tag od dugmeta koje poziva popover
-    var runCommand:String? // run komanda
-    var pathForVideo:String? // putanja selektovanog videa
+    
+    var notificationType : NotificationType = .Notification
+    var notificationPosition : NotificationPosition = .TopLeft
     
     var pc:Device
     
@@ -92,15 +102,37 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         super.viewDidLoad()
         
         for item in NotificationPosition.allValues {
-            notificationCommandList.append(PopOverItem(name: item.description, id: String(item.rawValue)))
+            notificationPositionList.append(PopOverItem(name: item.description, id: String(item.rawValue)))
         }
         
-        notificationPositionLabel.text = notificationCommandList.first?.name
+        if let tempPos = pc.notificationPosition {
+            notificationPositionLabel.text = NotificationPosition(rawValue: Int(tempPos.intValue))!.description
+        }else{
+            notificationPositionLabel.text = NotificationPosition(rawValue: 1)!.description
+        }
+        
         
         notificationSwitch.tag = SwitchTag.notificationSwitch.rawValue
         ttsSwitch.tag = SwitchTag.ttsSwitch.rawValue
         notificationTtsSwitch.tag = SwitchTag.notificationTtsSwitch.rawValue
         
+        if let tempType = pc.notificationType {
+            
+            switch Int(tempType.intValue) {
+            case SwitchTag.notificationSwitch.rawValue:
+                switchChanged(notificationSwitch)
+            case SwitchTag.ttsSwitch.rawValue:
+                switchChanged(ttsSwitch)
+            case SwitchTag.notificationTtsSwitch.rawValue:
+                switchChanged(notificationTtsSwitch)
+            default:
+                switchChanged(notificationSwitch)
+            }
+        }
+        
+        if let delay = pc.notificationDelay {
+            delayTextField.text = String(delay)
+        }
         delayTextField.keyboardType = .NumberPad
         delayTextField.tintColor = UIColor.whiteColor()
         delayTextField.layer.borderWidth = 1
@@ -111,6 +143,9 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
                                                                     attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         delayTextField.delegate = self
         
+        if let display = pc.notificationDisplayTime {
+            displayTimeTextField.text = String(display)
+        }
         displayTimeTextField.keyboardType = .NumberPad
         displayTimeTextField.tintColor = UIColor.whiteColor()
         displayTimeTextField.layer.borderWidth = 1
@@ -161,44 +196,66 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
             notificationSwitch.setOn(true, animated: true)
             ttsSwitch.setOn(false, animated: true)
             notificationTtsSwitch.setOn(false, animated: true)
-            
-            //TODO: Notification funcionality
+            notificationType = .Notification
             
         case SwitchTag.ttsSwitch.rawValue:
             ttsSwitch.setOn(true, animated: true)
             notificationSwitch.setOn(false, animated: true)
             notificationTtsSwitch.setOn(false, animated: true)
-            
-            //TODO: TTS funcionality
+            notificationType = .TTS
             
         case SwitchTag.notificationTtsSwitch.rawValue:
             notificationTtsSwitch.setOn(true, animated: true)
             notificationSwitch.setOn(false, animated: true)
             ttsSwitch.setOn(false, animated: true)
-            
-            //TODO: Notification & TTS funcionality
+            notificationType = .NotificationAndTTS
             
         default:
             notificationSwitch.setOn(true, animated: true)
             ttsSwitch.setOn(false, animated: true)
             notificationTtsSwitch.setOn(false, animated: true)
+            notificationType = .Notification
         }
     }
     
     override func nameAndId(name: String, id: String) {
         notificationPositionLabel.text = name
+        
+        let pos = Int(id)
+        
+        if let position = pos {
+            notificationPosition = NotificationPosition(rawValue: position)!
+        }
     }
     
     @IBAction func chooseNotificationPosition(sender: AnyObject) {
         button = sender as! UIButton
-        openPopover(sender, popOverList:notificationCommandList)
+        openPopover(sender, popOverList:notificationPositionList)
     }
 
     @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewController()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func saveAction(sender: AnyObject) {
-        self.dismissViewController()
+        
+        //TODO: Save notification settings, notificationPosition and notificationType already set, get delay and display time, here
+        
+        if let delay = delayTextField.text {
+            if let delayTime = Int(delay) {
+                pc.notificationDelay = delayTime
+            }
+        }
+        if let display = displayTimeTextField.text {
+            if let displayTime = Int(display) {
+                pc.notificationDisplayTime = displayTime
+            }
+        }
+        
+        pc.notificationType = notificationType.rawValue
+        pc.notificationPosition = notificationPosition.rawValue
+        CoreDataController.shahredInstance.saveChanges()
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
 }
