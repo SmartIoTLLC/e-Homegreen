@@ -89,6 +89,28 @@ struct CurtainControlMode {
     static let NCAndReset = 0x03
     static let NOAndReset = 0x04
 }
+struct SecurityControlMode {
+    static let Away = "Away"
+    static let Day = "Day"
+    static let Night = "Night"
+    static let Vacation = "Vacation"
+    static let Disarm = "Disarm"
+    static let Panic = "Panic"
+}
+struct AlarmState {
+    static let Idle = "Idle"
+    static let Trouble = "Trouble"
+    static let Alarm = "Alarm"
+    static let Alert = "Alert"
+}
+
+struct Messages {
+    struct Security{
+        static let NeedToDisarmFirst = "Attention! You need to disarm the security system before you can select the curent security mode."
+    }
+    
+}
+
 struct CurtainControlModes {
 //    static let Close = 0x01
 //    static let Open = 0x02
@@ -205,6 +227,7 @@ struct DigitalInput {
 struct ReuseIdentifier {
 //    "settingsCell"
 }
+
 struct UserDefaults {
     static let IsScaningDevice = "PLCDidFindDevice"
     static let IsScaningDeviceName = "PLCdidFindNameForDevice"
@@ -509,6 +532,18 @@ struct NotificationKey {
         static let Refresh = "updateGatewayListNotification"
         static let DidReceiveData = "didReceiveMessageFromGateway"
         static let DidSendData = "didSendMessageToGateway"
+    }
+    
+    struct Security {
+        // These two notifications are used for start and stop blinking of security control state. When command is sent to PLC (for example to arm "Day" state), blinking of (Day) state is started (notification is posted), and when new state arrives, ControlModeStopBlinking notification is posted.
+        // ControlModeStartBlinking is posted in SecurityCollectionCell.swift, when command is sent
+        // ControlModeStartBlinking is received in SecurityCollectionCell.swift, where timer is activated.
+        // ControlModeStartBlinking contains "controlMode" parameter in userInfo, which contains ControlMode that is being activated (String), that indicates which cell needs to be refreshed (in which cell should the timer, that toggles image, be activated
+        static let ControlModeStartBlinking = "controlModeStartBlinking"
+        // ControlModeStopBlinking is posted in IncommingHandler.swift, when command for Security is received.
+        // ControlModeStopBlinking is received in SecurityCollectionCell.swift, where timer is deactivated.
+        // ControlModeStopBlinking does not contain any information. When call receives this information, if state (Defaults.) is not Disarm (that means that new state is received) timer is removed.
+        static let ControlModeStopBlinking = "controlModeStopBlinking"
     }
     
     static let RefreshFilter = "kRefreshLocalParametarsNotification"

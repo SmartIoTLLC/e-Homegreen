@@ -47,7 +47,7 @@
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
 		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
-		22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */; };
+		22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */; };
 		2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCAF1CBB931800F1F886 /* AdminController.swift */; };
 		2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */; };
 		2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */; };
@@ -99,6 +99,8 @@
 		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
 		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
 		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
+		490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */; };
+		490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */; };
 		495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */; };
 		495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */; };
 		495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */; };
@@ -388,7 +390,7 @@
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
 		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
-		22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCell.swift; sourceTree = "<group>"; };
+		22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityCollectionCell.swift; sourceTree = "<group>"; };
 		2240DCAF1CBB931800F1F886 /* AdminController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		2240DCB11CBBC20400F1F886 /* DatabaseEventsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEventsController.swift; sourceTree = "<group>"; };
 		2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterParametar+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -442,6 +444,8 @@
 		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
 		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
+		490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityNeedDisarmInformation.swift; sourceTree = "<group>"; };
+		490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityNeedDisarmInformation.xib; sourceTree = "<group>"; };
 		495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionCell.swift; sourceTree = "<group>"; };
 		495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionCell.swift; sourceTree = "<group>"; };
 		495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainCollectionCell.swift; sourceTree = "<group>"; };
@@ -1140,7 +1144,7 @@
 				22495D231CAA7C3E0034FC94 /* Security.storyboard */,
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
 				738DECB01BBBFC1100D6B834 /* Security.json */,
-				22402A841CBFC54C00CBB6E4 /* SecurityCell.swift */,
+				22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -1591,6 +1595,8 @@
 				738DECA11BBBC39F00D6B834 /* SecuirtyCommandVC.xib */,
 				E7C9CDFE1BC2B2AD007D8FE8 /* SecParamatarVC.swift */,
 				E7C9CDFF1BC2B2AD007D8FE8 /* SecParamatarVC.xib */,
+				490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */,
+				490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */,
 			);
 			name = SecurityXIB;
 			sourceTree = "<group>";
@@ -1769,7 +1775,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 2JR589G8SK;
+						DevelopmentTeam = 2VJ3RF77SN;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1842,6 +1848,7 @@
 				2232922B1CABD6790001422B /* Settings.storyboard in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
 				E7DC67BC1B457C0E00EA6543 /* weather-mist.png in Resources */,
+				490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */,
 				22495D221CAA7B910034FC94 /* Chat.storyboard in Resources */,
 				49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */,
 				E7DC67C61B457C0E00EA6543 /* weather-shower.png in Resources */,
@@ -2030,6 +2037,7 @@
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
+				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
@@ -2189,7 +2197,7 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
-				22402A851CBFC54C00CBB6E4 /* SecurityCell.swift in Sources */,
+				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
 				49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */,
