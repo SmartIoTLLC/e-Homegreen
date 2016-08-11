@@ -97,6 +97,12 @@ struct SecurityControlMode {
     static let Disarm = "Disarm"
     static let Panic = "Panic"
 }
+struct AlarmState {
+    static let Idle = "Idle"
+    static let Trouble = "Trouble"
+    static let Alarm = "Alarm"
+    static let Alert = "Alert"
+}
 
 struct Messages {
     struct Security{
