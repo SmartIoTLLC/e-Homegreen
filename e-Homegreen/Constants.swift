@@ -584,10 +584,10 @@ struct Colors {
 // 0-255
 struct DeviceValue {
     struct MotionSensor {
-        static let Idle = Int(0x00)/255*100
-        static let Motion = (0x01)/255*100
-        static let IdleWarning = (0xFE)/255*100
-        static let ResetTimer = (0xEF)/255*100
+        static let Idle = Int(0x00)///255*100
+        static let Motion = (0x01)///255*100
+        static let IdleWarning = (0xFE)///255*100
+        static let ResetTimer = (0xEF)///255*100
     }
 //    enum MotionSensor:Int {
 //        case Idle = 0x00

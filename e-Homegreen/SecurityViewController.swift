@@ -64,8 +64,9 @@ class SecurityViewController: PopoverVC{
         headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All, All, All")
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState)
-        lblAlarmState.text = "Alarm state: \(alarmState!)"
+        if let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState){
+            lblAlarmState.text = "Alarm state: \(alarmState)"
+        }
         
         refreshSecurityAlarmStateAndSecurityMode()
         
