@@ -46,7 +46,7 @@ class CreateUserFromJSONController: NSObject {
     func createUserFromJSON(filePath:String){
         
         ///na drugoj strani
-        var data:NSData? = NSData(contentsOfFile: filePath)
+        let data:NSData? = NSData(contentsOfFile: filePath)
         if let data = data{
             if let jsonObject = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NSDictionary{
                 if let json = jsonObject as? JSONDictionary{
@@ -78,10 +78,38 @@ class CreateUserFromJSONController: NSObject {
                         if let locations = json["locations"] as? [JSONDictionary]{
                             createLocationFromJSON(locations, user: user)
                         }
-                        print(jsonObject)
+                        if let filters = json["filters"] as? [JSONDictionary]{
+                            createLocationFromJSON(filters, user: user)
+                        }
                     }
                 }
                 CoreDataController.shahredInstance.saveChanges()
+            }
+        }
+    }
+    
+    func createFiltersFromJSON(filters:[JSONDictionary], user:User){
+        for filter in filters{
+            if let filterItem = NSEntityDescription.insertNewObjectForEntityForName("FilterParametar", inManagedObjectContext: appDel.managedObjectContext!) as? FilterParametar{
+                if let id = filter["filter_id"] as? Int{
+                    filterItem.filterId = id
+                }
+                if let isDefault = filter["is_default"] as? Bool{
+                    filterItem.isDefault = isDefault
+                }
+                if let location = filter["location_id"] as? String{
+                    filterItem.locationId = location
+                }
+                if let level = filter["level_id"] as? String{
+                    filterItem.levelId = level
+                }
+                if let zone = filter["zone_id"] as? String{
+                    filterItem.zoneId = zone
+                }
+                if let category = filter["category_id"] as? String{
+                    filterItem.categoryId = category
+                }
+                filterItem.user = user
             }
         }
     }
@@ -141,6 +169,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let securities = location["security"] as? [JSONDictionary]{
                     createSecuritiesFromJSON(securities, location: newLocation)
+                }
+                if let filterOnLocation = location["filter_on_location"] as? Bool{
+                    newLocation.filterOnLocation = filterOnLocation
                 }
                 newLocation.user = user
             }
@@ -205,6 +236,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let remoteIpInUSe = gateway["remote_ip_in_use"] as? String{
                     newGateway.remoteIpInUse = remoteIpInUSe
+                }
+                if let type = gateway["type"] as? String{
+                    newGateway.gatewayType = type
                 }
                 if let turnedOn = gateway["turned_on"] as? Bool{
                     newGateway.turnedOn = turnedOn
@@ -455,6 +489,12 @@ class CreateUserFromJSONController: NSObject {
                 if let amp = device["amp"] as? String{
                     newDevice.amp = amp
                 }
+                if let amv = device["auto_mode_visible"] as? Bool{
+                    newDevice.autoModeVisible = amv
+                }
+                if let asv = device["auto_speed_visible"] as? Bool{
+                    newDevice.autoSpeedVisible = asv
+                }
                 if let catId = device["category_id"] as? Int{
                     newDevice.categoryId = catId
                 }
@@ -466,6 +506,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let controlType = device["control_type"] as? String{
                     newDevice.controlType = controlType
+                }
+                if let cmv = device["cool_mode_visible"] as? Bool{
+                    newDevice.coolModeVisible = cmv
                 }
                 if let coolTemperature = device["cool_temperature"] as? Int{
                     newDevice.coolTemperature = coolTemperature
@@ -488,11 +531,23 @@ class CreateUserFromJSONController: NSObject {
                 if let digitalInputMode = device["digital_input_mode"] as? Int{
                     newDevice.digitalInputMode = digitalInputMode
                 }
+                if let fmv = device["fan_mode_visible"] as? Bool{
+                    newDevice.fanModeVisible = fmv
+                }
+                if let hmv = device["heat_mode_visible"] as? Bool{
+                    newDevice.heatModeVisible = hmv
+                }
                 if let heatTemperature = device["heat_temperature"] as? Int{
                     newDevice.heatTemperature = heatTemperature
                 }
+                if let hsv = device["high_speed_visible"] as? Bool{
+                    newDevice.highSpeedVisible = hsv
+                }
                 if let humidity = device["humidity"] as? Int{
                     newDevice.humidity = humidity
+                }
+                if let hv = device["humidity_visible"] as? Bool{
+                    newDevice.humidityVisible = hv
                 }
                 if let isCurtainModeAllowed = device["is_curtain_mode_allowed"] as? Bool{
                     newDevice.isCurtainModeAllowed = isCurtainModeAllowed
@@ -506,8 +561,14 @@ class CreateUserFromJSONController: NSObject {
                 if let isVisible = device["is_visible"] as? Bool{
                     newDevice.isVisible = isVisible
                 }
+                if let lsv = device["low_speed_visible"] as? Bool{
+                    newDevice.lowSpeedVisible = lsv
+                }
                 if let mac = device["mac"] as? NSData{
                     newDevice.mac = mac
+                }
+                if let msv = device["med_speed_visible"] as? Bool{
+                    newDevice.medSpeedVisible = msv
                 }
                 if let mode = device["mode"] as? String{
                     newDevice.mode = mode
@@ -518,6 +579,20 @@ class CreateUserFromJSONController: NSObject {
                 if let name = device["name"] as? String{
                     newDevice.name = name
                 }
+                
+                if let nd = device["notification_delay"] as? Int{
+                    newDevice.notificationDelay = nd
+                }
+                if let ndt = device["notification_display_time"] as? Int{
+                    newDevice.notificationDisplayTime = ndt
+                }
+                if let np = device["notification_position"] as? Int{
+                    newDevice.notificationPosition = np
+                }
+                if let nt = device["notification_type"] as? Int{
+                    newDevice.notificationType = nt
+                }
+                
                 if let numberOfDevices = device["number_of_devices"] as? Int{
                     newDevice.numberOfDevices = numberOfDevices
                 }
@@ -557,6 +632,9 @@ class CreateUserFromJSONController: NSObject {
                 if let temperature = device["temperature"] as? Int{
                     newDevice.temperature = temperature
                 }
+                if let tv = device["temperature_visible"] as? Bool{
+                    newDevice.temperatureVisible = tv
+                }
                 if let type = device["type"] as? String{
                     newDevice.type = type
                 }
@@ -565,9 +643,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let zoneId = device["zone_id"] as? Int{
                     newDevice.zoneId = zoneId
-                }
-                if let deviceImages = device["device_images"] as? [JSONDictionary]{
-                    createDeviceImagesFromJSON(deviceImages, device: newDevice)
                 }
                 if let deviceImages = device["device_images"] as? [JSONDictionary]{
                     createDeviceImagesFromJSON(deviceImages, device: newDevice)
@@ -603,9 +678,9 @@ class CreateUserFromJSONController: NSObject {
                 if let comand =  pccommand["comand"] as? String {
                     newPCCommand.comand = comand
                 }
-//                if let isRunCommand =  pccommand["is_run_command"] as? Bool {
-//                    newPCCommand.isRunCommand = isRunCommand
-//                }
+                if let commandType =  pccommand["command_type"] as? Bool {
+                    newPCCommand.commandType = commandType
+                }
                 newPCCommand.device = device
             }
         }
@@ -715,6 +790,9 @@ class CreateUserFromJSONController: NSObject {
                 if let orderId = zone["order_id"] as? Int{
                     newZone.orderId = orderId
                 }
+                if let allowOption = zone["allow_option"] as? Int{
+                    newZone.allowOption = allowOption
+                }
                 newZone.allowOption = 1
                 newZone.location = location
             }
@@ -739,7 +817,9 @@ class CreateUserFromJSONController: NSObject {
                 if let orderId = category["order_id"] as? Int{
                     newCategory.orderId = orderId
                 }
-                newCategory.allowOption = 3
+                if let allowOption = category["allow_option"] as? Int{
+                    newCategory.allowOption = allowOption
+                }
                 newCategory.location = location
             }
         }
