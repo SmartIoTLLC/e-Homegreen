@@ -79,7 +79,7 @@ class CreateUserFromJSONController: NSObject {
                             createLocationFromJSON(locations, user: user)
                         }
                         if let filters = json["filters"] as? [JSONDictionary]{
-                            createLocationFromJSON(filters, user: user)
+                            createFiltersFromJSON(filters, user: user)
                         }
                     }
                 }
@@ -180,23 +180,24 @@ class CreateUserFromJSONController: NSObject {
     
     func createSecuritiesFromJSON(securities:[JSONDictionary], location:Location){
         for security in securities{
+            print(security)
             if let newSecurity = NSEntityDescription.insertNewObjectForEntityForName("Security", inManagedObjectContext: appDel.managedObjectContext!) as? Security{
-                if let addOne = security["addressOne"] as? Int{
+                if let addOne = security["address_one"] as? Int{
                     newSecurity.addressOne = addOne
                 }
-                if let addTwo = security["addressTwo"] as? Int{
+                if let addTwo = security["address_two"] as? Int{
                     newSecurity.addressTwo = addTwo
                 }
-                if let addThree = security["addressThree"] as? Int{
+                if let addThree = security["address_three"] as? Int{
                     newSecurity.addressThree = addThree
                 }
-                if let desc = security["securityDescription"] as? String{
+                if let desc = security["description"] as? String{
                     newSecurity.securityDescription = desc
                 }
-                if let id = security["gatewayId"] as? String{
+                if let id = security["gateway_id"] as? String{
                     newSecurity.gatewayId = id
                 }
-                if let name = security["securityName"] as? String{
+                if let name = security["security_name"] as? String{
                     newSecurity.securityName = name
                 }
                 newSecurity.location = location
