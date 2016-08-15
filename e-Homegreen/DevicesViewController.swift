@@ -599,7 +599,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)
             if devices[tag].opening == true{
-                if deviceValue < 100 {
+                if deviceValue < 250 {
                     deviceValue += 5
                 }
             } else {
@@ -611,8 +611,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                 //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
-                cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
-                cell.lightSlider.value = Float(deviceValue)
+                cell.picture.image = devices[tag].returnImage(Double(deviceValue))
+                cell.lightSlider.value = Float(deviceValue/255)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
@@ -625,7 +625,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         if let tag = timer.userInfo as? Int {
             var deviceValue = Double(devices[tag].currentValue)///100
             if devices[tag].opening == true{
-                if deviceValue < 100 {
+                if deviceValue < 235 {
                     deviceValue += 20
                 }
             } else {
@@ -637,8 +637,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
                 //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
-                cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
-                cell.lightSlider.value = Float(deviceValue)
+                cell.picture.image = devices[tag].returnImage(Double(deviceValue))
+                cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values from 0 to 1
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
@@ -718,11 +718,11 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             let pt = gesture.locationInView(slider)
             let percentage = pt.x/slider.bounds.size.width
             let delta = Float(percentage) * Float(slider.maximumValue - slider.minimumValue)
-            let value = round((slider.minimumValue + delta)*100)
-            if !((value/100) >= 0 && (value/100) <= 100) {
+            let value = round((slider.minimumValue + delta)*255)
+            if !((value/255) >= 0 && (value/255) <= 255) {
                 return
             }
-            slider.setValue(value/100, animated: true)
+            slider.setValue(value/255, animated: true)
             let tag = slider.tag
             devices[tag].currentValue = Int(value)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
@@ -770,10 +770,17 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let tag = sender.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         //   Dimmer
+//        let value = UInt8(Int(self.devices[tag].currentValue*100/255))
+        let v = self.devices[tag].currentValue.doubleValue
+        let v2 = v*100/255
+        let v3 = Int(v2)
+        let v4 = UInt8(v3)
+        
+        
         if devices[tag].controlType == ControlType.Dimmer {
             //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
             //            })
         }
@@ -790,7 +797,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
     func changeSliderValue(sender: UISlider){
         let tag = sender.tag
-        devices[tag].currentValue = Int(sender.value * 100)
+        devices[tag].currentValue = Int(sender.value * 255)
         if sender.value == 1{
             devices[tag].opening = false
         }
@@ -798,25 +805,25 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[tag].opening = true
         }
         
-        let deviceValue = sender.value
+        let deviceValue = sender.value*255  // device values is Int, 0 to 255 (0x00 to 0xFF)
         let indexPath = NSIndexPath(forItem: tag, inSection: 0)
         if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
             let deviceValue:Double = {
 //                return Double(devices[tag].currentValue)
 //                if Int(devices[tag].currentValue) > 100 {
-                    return Double(Double(devices[tag].currentValue)/255)
+                    return Double(Double(devices[tag].currentValue))
 //                } else {
 //                    return Double(devices[tag].currentValue)/100
 //                }
             }()
-            cell.picture.image = devices[tag].returnImage(Double(deviceValue*100))
-            cell.lightSlider.value = Float(deviceValue)
+            cell.picture.image = devices[tag].returnImage(Double(deviceValue))
+            cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
             let deviceValue:Double = {
 //                return Double(Int(devices[tag].currentValue))
 //                if Int(devices[tag].currentValue) > 100 {
-                    return Double(Double(devices[tag].currentValue)/255)
+                    return Double(Double(devices[tag].currentValue))
 //                } else {
 //                    return Double(devices[tag].currentValue)/100
 //                }

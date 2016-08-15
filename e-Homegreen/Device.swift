@@ -129,8 +129,9 @@ class Device: NSManagedObject {
             
             return Result(stateValue: stateValue, imageData: nil, defaultImage: UIImage(named: defaultImageNamed)!)
         }
+        // Compares state value (example: 20, 40, 60, 80, 100 for 5 images) with device value (which is in percent 0-100)
         let filteredMapedresult = mapedResult.filter { (let result) -> Bool in
-            if result.stateValue >= deviceValue {return true}
+            if result.stateValue >= (deviceValue/255*100) {return true} //
             return false
         }
         let sortedFilteredMapedResult = filteredMapedresult.sort { (let result1, let result2) -> Bool in

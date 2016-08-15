@@ -145,11 +145,11 @@ extension DevicesViewController: UICollectionViewDataSource {
 //                if Double(devices[indexPath.row].currentValue) > 100 {
 //                    return Double(Double(devices[indexPath.row].currentValue)/255)
 //                } else {
-                    return Double(devices[indexPath.row].currentValue)/255
+                    return Double(devices[indexPath.row].currentValue)///255
 //                }
             }()
             cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
-            cell.lightSlider.value = Float(deviceValue)
+            cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values 0-1
             cell.picture.userInteractionEnabled = true
             cell.picture.tag = indexPath.row
             cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
@@ -216,7 +216,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.openButton.tag = indexPath.row
             cell.closeButton.tag = indexPath.row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue) / 255
+                return Double(devices[indexPath.row].currentValue) /// 255
             }()
             cell.setImageForDevice(devices[indexPath.row])
 //            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
@@ -281,7 +281,7 @@ extension DevicesViewController: UICollectionViewDataSource {
 //                if Double(devices[indexPath.row].currentValue) <= 100 {
 //                    return Double(devices[indexPath.row].currentValue)/100
 //                } else {
-                    return Double(devices[indexPath.row].currentValue)/255
+                    return Double(devices[indexPath.row].currentValue)///255
 //                }
             }()
             cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))

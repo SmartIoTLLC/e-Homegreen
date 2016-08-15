@@ -20,7 +20,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
 //            if Double(device.currentValue) <= 100 {
 //                return Double(device.currentValue)/100
 //            } else {
-                return Double(device.currentValue)/255
+                return Double(device.currentValue)///255
 //            }
         }()
         image.image = device.returnImage(Double(device.currentValue))
