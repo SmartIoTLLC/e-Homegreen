@@ -305,6 +305,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 delegate?.addEditGatewayFinished()
             }
         }
+        appDel.establishAllConnections()
         
     }
 
