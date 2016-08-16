@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SceneGalleryDelegate {
     
@@ -69,10 +70,39 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         do {
             try appDel.managedObjectContext?.save()
-        } catch let error {
+        } catch _ {
             
         }
         tableView.reloadData()
+    }
+    
+    func backImageFromGallery(data: NSData, imageIndex: Int) {
+        if imageIndex == -1 {
+            // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
+            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
+            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.defaultImage = "12 Appliance - Power - 02"
+            deviceImage.device = device
+            
+            if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                image.imageData = data
+                deviceImage.image = image
+            }
+            
+            deviceImages.append(deviceImage)
+        } else {
+            if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                image.imageData = data
+                deviceImages[imageIndex].image = image
+            }
+        }
+        do {
+            try appDel.managedObjectContext?.save()
+        } catch _ {
+            
+        }
+        tableView.reloadData()
+
     }
     
     func backImage(image:Image, imageIndex:Int) {
@@ -117,7 +147,15 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
                 cell.deviceState.text = "\(state)"
             }
         }
-        cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+        
+        if let data =  deviceImages[indexPath.row].image?.imageData {
+            cell.deviceImage.image = UIImage(data: data)
+        }else{
+            cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+        }
+
+        
+//        cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
         return cell
         
         

@@ -351,7 +351,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UICollection
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let image = galleryImages[indexPath.row] as? Image {
             delegate?.backImage?(image, imageIndex: imageIndex)
-            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
+//            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
         }
         if let string = galleryImages[indexPath.row] as? String {
             delegate?.backString?(string, imageIndex: imageIndex)
