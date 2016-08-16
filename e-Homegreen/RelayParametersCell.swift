@@ -211,8 +211,8 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         button = sender
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-        popoverList.append(PopOverItem(name: "NC and Reset", id: ""))
+        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
+//        popoverList.append(PopOverItem(name: "NC and Reset", id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
@@ -291,7 +291,8 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             //                        }
             //                    }
             //                }
-            //            }
+            //   }
+            device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.dismissViewControllerAnimated(true, completion: nil)

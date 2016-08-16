@@ -662,8 +662,11 @@ class CreateUserFromJSONController: NSObject {
                 if let defaultImage =  deviceImage["default_image"] as? String {
                     newImage.defaultImage = defaultImage
                 }
-                if let state =  deviceImage["default_image"] as? Int {
+                if let state =  deviceImage["state"] as? Int {
                     newImage.state = state
+                }
+                if let text =  deviceImage["text"] as? String {
+                    newImage.text = text
                 }
                 newImage.device = device
             }

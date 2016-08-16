@@ -72,7 +72,8 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
                 
             self.appDel.managedObjectContext?.deleteObject(self.ssidList[indexPath.row])
                 CoreDataController.shahredInstance.saveChanges()
-                
+                self.updateSSID()
+
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
@@ -105,6 +106,8 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
                 ssid.name = name
                 ssid.location = location
             CoreDataController.shahredInstance.saveChanges()
+            self.updateSSID()
+            ssidNameTextfield.text = ""
             }
         }
     }
@@ -114,6 +117,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
             appDel.managedObjectContext?.deleteObject(item)
         }
         CoreDataController.shahredInstance.saveChanges()
+        self.updateSSID()
     }
     
 }

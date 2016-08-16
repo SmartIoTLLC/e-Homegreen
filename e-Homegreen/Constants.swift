@@ -145,7 +145,7 @@ struct DigitalInput {
             case 2:
                 return "Normally Open"
             case 4:
-                return "NO and Reset"
+                return "Normally Closed"
             default:
                 return ""
             }

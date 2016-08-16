@@ -16,16 +16,19 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 //    var appDel:AppDelegate!
     var isPresenting: Bool = true
     var appDel:AppDelegate
-    var imags = [DeviceImageState]()
+//    var imags = [DeviceImageState]()
     
     @IBAction func btnBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true) { () -> Void in
         }
     }
+    
     @IBAction func addNewImage(sender: AnyObject) {
         showGallery(-1).delegate = self
     }
+    
     @IBOutlet weak var tableView: UITableView!
+    
     var deviceImages:[DeviceImage]
 
     init(device:Device, point:CGPoint){
@@ -39,13 +42,15 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         modalPresentationStyle = UIModalPresentationStyle.Custom
 //        deviceImages = device.deviceImages
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
-        imags = DefaultDeviceImages().getNewImagesForDevice(device)
+//        imags = DefaultDeviceImages().getNewImagesForDevice(device)
         // Do any additional setup after loading the view.
         tableView.reloadData()
     }
@@ -69,6 +74,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         tableView.reloadData()
     }
+    
     func backImage(image:Image, imageIndex:Int) {
         if imageIndex == -1 {
             // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
@@ -90,9 +96,10 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return deviceImages.count
-        return imags.count
+        return deviceImages.count
+//        return imags.count
     }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deviceImageCell", forIndexPath: indexPath) as! DeviceImagePickerTVC
         
@@ -102,13 +109,15 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 //        if imags[indexPath.row].state == 1{
 //            cell.deviceState.text = "On"
 //        }
-        
-        if let stateText = imags[indexPath.row].text {
+        cell.deviceState.text = ""
+        if let stateText = deviceImages[indexPath.row].text {
             cell.deviceState.text = stateText
         }else{
-            cell.deviceState.text = "\(imags[indexPath.row].state)"
+            if let state = deviceImages[indexPath.row].state{
+                cell.deviceState.text = "\(state)"
+            }
         }
-        cell.deviceImage.image = UIImage(named: imags[indexPath.row].defaultImage)
+        cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
         return cell
         
         
@@ -195,9 +204,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 
         
     }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showGallery(indexPath.row).delegate = self
     }
+    
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -217,6 +228,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         button.backgroundColor = UIColor.redColor()
         return [button]
     }
+    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == .Delete {
@@ -224,6 +236,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
             deviceImages.removeAtIndex(indexPath.row)
             appDel.saveContext()
+//            tableView.reloadData()
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }

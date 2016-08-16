@@ -25,44 +25,60 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AddLocationXIB.swift"
-            timestampString = "492967778.45039"
+            filePath = "e-Homegreen/EventsViewController.swift"
+            timestampString = "493027679.031206"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "defaultFilter(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/FilterPullDown.swift"
+            timestampString = "493027690.874394"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
+            landmarkName = "setDefaultFilterItem(_:)"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.AddLocationXIB.viewDidLoad () -&gt; ()"
+                  symbolName = "e_Homegreen.FilterPullDown.setDefaultFilterItem (e_Homegreen.Menu) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/AddLocationXIB.swift"
-                  timestampString = "492968205.646162"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/FilterPullDown.swift"
+                  timestampString = "493038607.218049"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "121"
-                  endingLineNumber = "121"
-                  offsetFromSymbolStart = "5752">
+                  startingLineNumber = "633"
+                  endingLineNumber = "633"
+                  offsetFromSymbolStart = "28">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.AddLocationXIB.viewDidLoad () -&gt; ()"
+                  symbolName = "e_Homegreen.FilterPullDown.setDefaultFilterItem (e_Homegreen.Menu) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/AddLocationXIB.swift"
-                  timestampString = "492968205.646355"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/FilterPullDown.swift"
+                  timestampString = "493038607.21831"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "121"
-                  endingLineNumber = "121"
-                  offsetFromSymbolStart = "6028">
+                  startingLineNumber = "633"
+                  endingLineNumber = "633"
+                  offsetFromSymbolStart = "136">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -73,78 +89,62 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AddLocationXIB.swift"
-            timestampString = "492967783.298383"
+            filePath = "e-Homegreen/FilterPullDown.swift"
+            timestampString = "493027714.791613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AddLocationXIB.swift"
-            timestampString = "492967786.298215"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/AddLocationXIB.swift"
-            timestampString = "492967799.059"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "635"
+            endingLineNumber = "635"
+            landmarkName = "setDefaultFilterItem(_:)"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.AddLocationXIB.viewDidLoad () -&gt; ()"
+                  symbolName = "e_Homegreen.FilterPullDown.setDefaultFilterItem (e_Homegreen.Menu) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/AddLocationXIB.swift"
-                  timestampString = "492968205.648305"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/FilterPullDown.swift"
+                  timestampString = "493038607.219747"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "124"
-                  endingLineNumber = "124"
-                  offsetFromSymbolStart = "6352">
+                  startingLineNumber = "635"
+                  endingLineNumber = "635"
+                  offsetFromSymbolStart = "284">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.AddLocationXIB.viewDidLoad () -&gt; ()"
+                  symbolName = "e_Homegreen.FilterPullDown.setDefaultFilterItem (e_Homegreen.Menu) -&gt; ()"
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/AddLocationXIB.swift"
-                  timestampString = "492968205.648442"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/FilterPullDown.swift"
+                  timestampString = "493038607.219964"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "124"
-                  endingLineNumber = "124"
-                  offsetFromSymbolStart = "6480">
+                  startingLineNumber = "635"
+                  endingLineNumber = "635"
+                  offsetFromSymbolStart = "420">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/FilterPullDown.swift"
+            timestampString = "493027715.630506"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "636"
+            endingLineNumber = "636"
+            landmarkName = "setDefaultFilterItem(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G31" minimumToolsVersion="Automatic">
     <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
         <attribute name="allowOption" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -71,6 +71,7 @@
     <entity name="DeviceImage" representedClassName=".DeviceImage" syncable="YES">
         <attribute name="defaultImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="deviceImages" inverseEntity="Device" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="deviceImages" inverseEntity="Image" syncable="YES"/>
     </entity>
@@ -289,7 +290,7 @@
     <elements>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="900"/>
-        <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="43"/>
+        <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>

@@ -74,6 +74,7 @@ class Device: NSManagedObject {
             deviceImage.defaultImage = defaultDeviceImage.defaultImage
             deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
             deviceImage.device = self
+            deviceImage.text = defaultDeviceImage.text
         }
     }
     func resetImages(context:NSManagedObjectContext) {
@@ -88,6 +89,7 @@ class Device: NSManagedObject {
             deviceImage.defaultImage = defaultDeviceImage.defaultImage
             deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
             deviceImage.device = self
+            deviceImage.text = defaultDeviceImage.text
         }
     }
     struct Result {
