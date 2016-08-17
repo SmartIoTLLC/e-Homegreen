@@ -15,9 +15,9 @@ import CoreData
 extension DeviceImage {
     
     @NSManaged var defaultImage: String?
+    @NSManaged var customImageId: String?
     @NSManaged var text: String?
     @NSManaged var state: NSNumber?
     @NSManaged var device: Device?
-    @NSManaged var image: Image?
 
 }

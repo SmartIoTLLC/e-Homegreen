@@ -62,11 +62,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
             deviceImage.defaultImage = strText
             deviceImage.device = device
-            deviceImage.image = nil
+            deviceImage.customImageId = nil
             deviceImages.append(deviceImage)
         } else {
             deviceImages[imageIndex].defaultImage = strText
-            deviceImages[imageIndex].image = nil
+            deviceImages[imageIndex].customImageId = nil
         }
         do {
             try appDel.managedObjectContext?.save()
@@ -86,14 +86,16 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             
             if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
                 image.imageData = data
-                deviceImage.image = image
+                image.imageId = NSUUID().UUIDString
+                deviceImage.customImageId = image.imageId
             }
             
             deviceImages.append(deviceImage)
         } else {
             if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
                 image.imageData = data
-                deviceImages[imageIndex].image = image
+                image.imageId = NSUUID().UUIDString
+                deviceImages[imageIndex].customImageId = image.imageId
             }
         }
         do {
@@ -112,14 +114,14 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
             deviceImage.defaultImage = "12 Appliance - Power - 02"
             deviceImage.device = device
-            deviceImage.image = image
+            deviceImage.customImageId = image.imageId
             deviceImages.append(deviceImage)
         } else {
-            deviceImages[imageIndex].image = image
+            deviceImages[imageIndex].customImageId = image.imageId
         }
         do {
             try appDel.managedObjectContext?.save()
-        } catch let error {
+        } catch _ {
             
         }
         tableView.reloadData()
@@ -127,7 +129,6 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return deviceImages.count
-//        return imags.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -148,11 +149,22 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             }
         }
         
-        if let data =  deviceImages[indexPath.row].image?.imageData {
-            cell.deviceImage.image = UIImage(data: data)
+        if let id = deviceImages[indexPath.row].customImageId{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    cell.deviceImage.image = UIImage(data: data)
+                }else{
+                    cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+                }
+            }else{
+                cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+            }
         }else{
             cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
         }
+
+        
+        
 
         
 //        cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
@@ -349,10 +361,25 @@ extension UIViewController {
 }
 extension UIImage {
     func returnImage (forDeviceImage deviceImage:DeviceImage) -> UIImage {
-        if let deviceImageUnwrapped = deviceImage.image?.imageData {
-            return UIImage(data: deviceImageUnwrapped)!
-        } else {
+        
+        if let id = deviceImage.customImageId{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    return UIImage(data: data)!
+                }else{
+                    return UIImage(named:deviceImage.defaultImage!)!
+                }
+            }else{
+                return UIImage(named:deviceImage.defaultImage!)!
+            }
+        }else{
             return UIImage(named:deviceImage.defaultImage!)!
         }
+        
+//        if let deviceImageUnwrapped = deviceImage.image?.imageData {
+//            return UIImage(data: deviceImageUnwrapped)!
+//        } else {
+//            return UIImage(named:deviceImage.defaultImage!)!
+//        }
     }
 }

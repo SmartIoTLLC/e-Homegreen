@@ -69,11 +69,11 @@
         <relationship name="pcCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PCCommand" inverseName="device" inverseEntity="PCCommand" syncable="YES"/>
     </entity>
     <entity name="DeviceImage" representedClassName=".DeviceImage" syncable="YES">
+        <attribute name="customImageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="defaultImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="deviceImages" inverseEntity="Device" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="deviceImages" inverseEntity="Image" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -145,7 +145,7 @@
     </entity>
     <entity name="Image" representedClassName=".Image" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DeviceImage" inverseName="image" inverseEntity="DeviceImage" syncable="YES"/>
+        <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Location" representedClassName=".Location" syncable="YES">
         <attribute name="filterOnLocation" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -296,7 +296,7 @@
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
-        <element name="Image" positionX="-252" positionY="-2043" width="128" height="43"/>
+        <element name="Image" positionX="-252" positionY="-2043" width="128" height="75"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>

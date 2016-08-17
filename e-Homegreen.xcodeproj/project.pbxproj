@@ -44,6 +44,7 @@
 		223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */; };
 		223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DB1CC77DBB00BC3905 /* Surveillance.swift */; };
 		223E25DF1CC7B37900BC3905 /* DatabaseLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */; };
+		223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FB5901D64414600DC2627 /* DatabaseImageController.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
 		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
@@ -387,6 +388,7 @@
 		223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Surveillance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		223E25DB1CC77DBB00BC3905 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocationController.swift; sourceTree = "<group>"; };
+		223FB5901D64414600DC2627 /* DatabaseImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseImageController.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
 		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
@@ -1387,6 +1389,7 @@
 				2240EACA1D4609720062AC2F /* DatabaseFilterController.swift */,
 				223DC0C51CE2089A00C5E2F6 /* CreateUserFromJSONController.swift */,
 				223BAD461D3E5395003E9365 /* FilterController.swift */,
+				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2072,6 +2075,7 @@
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
+				223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,

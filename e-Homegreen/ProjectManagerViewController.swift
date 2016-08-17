@@ -139,8 +139,9 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @IBAction func shareUser(sender: UIButton) {
+        
         let user = self.users[sender.tag]
-        var user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
+        let user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
         
         write(user_value)
         
@@ -149,7 +150,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
         
-        var activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
         if let presentationController = activityViewController.popoverPresentationController {
             presentationController.sourceView = sender
             presentationController.sourceRect = sender.bounds
@@ -323,3 +324,4 @@ class UserCell: UITableViewCell{
     }
     
 }
+

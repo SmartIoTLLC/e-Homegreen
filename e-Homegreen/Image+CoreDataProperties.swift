@@ -15,6 +15,6 @@ import CoreData
 extension Image {
 
     @NSManaged var imageData: NSData?
-    @NSManaged var deviceImages: NSMutableSet?
+    @NSManaged var imageId:String!
 
 }

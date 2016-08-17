@@ -668,6 +668,9 @@ class CreateUserFromJSONController: NSObject {
                 if let text =  deviceImage["text"] as? String {
                     newImage.text = text
                 }
+                if let id =  deviceImage["custom_image_id"] as? String {
+                    newImage.customImageId = id
+                }
                 newImage.device = device
             }
         }

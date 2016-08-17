@@ -124,10 +124,20 @@ class Device: NSManagedObject {
         let mapedResult = preSort.enumerate().map { (let index, let deviceImage) -> Result in
             let defaultImageNamed = deviceImage.defaultImage!
             let stateValue = (Double(index) + 1) * dblSection
-            if let imageData = deviceImage.image?.imageData {
-                let image = UIImage(data: imageData)
-                return Result(stateValue: stateValue, imageData: image, defaultImage: UIImage(named: defaultImageNamed)!)
+            
+            if let id = deviceImage.customImageId{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        let image = UIImage(data: data)
+                        return Result(stateValue: stateValue, imageData: image, defaultImage: UIImage(named: defaultImageNamed)!)
+                    }
+                }
             }
+            
+//            if let imageData = deviceImage.image?.imageData {
+//                let image = UIImage(data: imageData)
+//                return Result(stateValue: stateValue, imageData: image, defaultImage: UIImage(named: defaultImageNamed)!)
+//            }
             
             return Result(stateValue: stateValue, imageData: nil, defaultImage: UIImage(named: defaultImageNamed)!)
         }
