@@ -16,8 +16,6 @@ extension Image {
 
     @NSManaged var imageData: NSData?
     @NSManaged var imageId: String?
-    @NSManaged var user: User?
-    
-//    @NSManaged func addUsersObject(value:User)
+    @NSManaged var user: NSSet?
 
 }

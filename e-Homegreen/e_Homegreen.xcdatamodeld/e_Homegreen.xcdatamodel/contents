@@ -146,6 +146,7 @@
     <entity name="Image" representedClassName=".Image" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="images" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Location" representedClassName=".Location" syncable="YES">
         <attribute name="filterOnLocation" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -273,6 +274,7 @@
         <attribute name="profilePicture" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="user" inverseEntity="Image" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="user" inverseEntity="Location" syncable="YES"/>
         <relationship name="menu" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="user" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
@@ -296,7 +298,7 @@
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="43"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
-        <element name="Image" positionX="-252" positionY="-2043" width="128" height="75"/>
+        <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
@@ -306,7 +308,7 @@
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="270"/>
-        <element name="User" positionX="-675" positionY="-1764" width="128" height="195"/>
+        <element name="User" positionX="-675" positionY="-1764" width="128" height="210"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
     </elements>
 </model>

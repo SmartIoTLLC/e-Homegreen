@@ -45,6 +45,8 @@
 		223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DB1CC77DBB00BC3905 /* Surveillance.swift */; };
 		223E25DF1CC7B37900BC3905 /* DatabaseLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */; };
 		223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FB5901D64414600DC2627 /* DatabaseImageController.swift */; };
+		223FB5941D645AB500DC2627 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FB5921D645AB500DC2627 /* Image+CoreDataProperties.swift */; };
+		223FB5951D645AB500DC2627 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FB5931D645AB500DC2627 /* Image.swift */; };
 		223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */; };
 		22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */; };
 		22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */; };
@@ -122,8 +124,6 @@
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
-		730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */; };
-		730E90C31C6A1BF400B1D50D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E90C01C6A1BF400B1D50D /* Image.swift */; };
 		73131ED31CA147C6008BC13E /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73131ED11CA147C6008BC13E /* User+CoreDataProperties.swift */; };
 		73131ED41CA147C6008BC13E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73131ED21CA147C6008BC13E /* User.swift */; };
 		731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */; };
@@ -389,6 +389,8 @@
 		223E25DB1CC77DBB00BC3905 /* Surveillance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surveillance.swift; sourceTree = "<group>"; };
 		223E25DE1CC7B37900BC3905 /* DatabaseLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocationController.swift; sourceTree = "<group>"; };
 		223FB5901D64414600DC2627 /* DatabaseImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseImageController.swift; sourceTree = "<group>"; };
+		223FB5921D645AB500DC2627 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		223FB5931D645AB500DC2627 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		22402A801CBF72A600CBB6E4 /* DatabaseGatewayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseGatewayController.swift; sourceTree = "<group>"; };
 		22402A821CBFACF400CBB6E4 /* DatabaseDeviceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseDeviceController.swift; sourceTree = "<group>"; };
@@ -469,8 +471,6 @@
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
-		730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		730E90C01C6A1BF400B1D50D /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		73131ED11CA147C6008BC13E /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73131ED21CA147C6008BC13E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultisensorParametarVC.swift; sourceTree = "<group>"; };
@@ -1300,12 +1300,12 @@
 				7372EB321BC410800097806D /* Sequence.swift */,
 				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
 				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
-				730E90BF1C6A1BF400B1D50D /* Image+CoreDataProperties.swift */,
-				730E90C01C6A1BF400B1D50D /* Image.swift */,
 				223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */,
 				223E25DB1CC77DBB00BC3905 /* Surveillance.swift */,
 				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
 				739D57151C809B30004CC50E /* DeviceImage.swift */,
+				223FB5921D645AB500DC2627 /* Image+CoreDataProperties.swift */,
+				223FB5931D645AB500DC2627 /* Image.swift */,
 				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
 				73F1ECA51C8978B2007CEEAA /* Location.swift */,
 				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
@@ -2111,7 +2111,7 @@
 				22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
-				730E90C31C6A1BF400B1D50D /* Image.swift in Sources */,
+				223FB5951D645AB500DC2627 /* Image.swift in Sources */,
 				736265E31B4A483E0078C11D /* Function.swift in Sources */,
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
@@ -2151,10 +2151,10 @@
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
 				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
+				223FB5941D645AB500DC2627 /* Image+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
-				730E90C21C6A1BF400B1D50D /* Image+CoreDataProperties.swift in Sources */,
 				4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */,
 				4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,

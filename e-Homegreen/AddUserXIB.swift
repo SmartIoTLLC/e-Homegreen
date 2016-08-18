@@ -78,7 +78,7 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     }
     
     @IBAction func changePicture(sender: AnyObject) {
-        showGallery(1).delegate = self
+        showGallery(1, user: user).delegate = self
     }
     
     func backImageFromGallery(data: NSData, imageIndex: Int) {

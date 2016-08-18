@@ -171,7 +171,7 @@ class ScanScenesViewController: PopoverVC {
     
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
-            showGallery(index).delegate = self
+            showGallery(index, user: gateway.location.user).delegate = self
         }
     }
     

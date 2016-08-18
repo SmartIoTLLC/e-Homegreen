@@ -24,5 +24,8 @@ extension User {
     @NSManaged var openLastScreen: NSNumber
     @NSManaged var lastScreenId: NSNumber?
     @NSManaged var filters: NSSet?
+    @NSManaged var images: NSSet?
+
+    @NSManaged func addImagesObject(value:Image)
 
 }

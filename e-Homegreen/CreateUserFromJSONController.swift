@@ -81,9 +81,27 @@ class CreateUserFromJSONController: NSObject {
                         if let filters = json["filters"] as? [JSONDictionary]{
                             createFiltersFromJSON(filters, user: user)
                         }
+                        if let images = json["images"] as? [JSONDictionary]{
+                            createImagesFromJSON(images, user: user)
+                        }
                     }
                 }
                 CoreDataController.shahredInstance.saveChanges()
+            }
+        }
+    }
+    
+    func createImagesFromJSON(images:[JSONDictionary], user:User){
+        for image in images{
+            if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let imageData = image["image_data"] as? NSData{
+                    newImage.imageData = imageData
+                }
+                if let id = image["image_id"] as? String{
+                    newImage.imageId = id
+                }
+                
+                newImage.user = user
             }
         }
     }

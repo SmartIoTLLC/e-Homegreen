@@ -25,7 +25,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func addNewImage(sender: AnyObject) {
-        showGallery(-1).delegate = self
+        showGallery(-1, user: device.gateway.location.user!).delegate = self
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -88,6 +88,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
                 image.imageData = data
                 image.imageId = NSUUID().UUIDString
                 deviceImage.customImageId = image.imageId
+                
+                
+                if let user  = deviceImage.device?.gateway.location.user{
+                    user.addImagesObject(image)
+                }
             }
             
             deviceImages.append(deviceImage)
@@ -96,6 +101,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
                 image.imageData = data
                 image.imageId = NSUUID().UUIDString
                 deviceImages[imageIndex].customImageId = image.imageId
+                
+                if let user  = deviceImages[imageIndex].device?.gateway.location.user{
+                    user.addImagesObject(image)
+                }
+//                image.user = deviceImages[imageIndex].device?.gateway.location.user
             }
         }
         do {
@@ -115,9 +125,16 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             deviceImage.defaultImage = "12 Appliance - Power - 02"
             deviceImage.device = device
             deviceImage.customImageId = image.imageId
+//            if let user  = deviceImage.device?.gateway.location.user{
+//                image.user = user
+//            }
             deviceImages.append(deviceImage)
         } else {
             deviceImages[imageIndex].customImageId = image.imageId
+            
+//            if let user  = deviceImages[imageIndex].device?.gateway.location.user{
+//                image.user = user
+//            }
         }
         do {
             try appDel.managedObjectContext?.save()
@@ -144,9 +161,20 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         if let stateText = deviceImages[indexPath.row].text {
             cell.deviceState.text = stateText
         }else{
-            if let state = deviceImages[indexPath.row].state{
-                cell.deviceState.text = "\(state)"
+            let av = Int(100/(deviceImages.count-1))
+            
+            if indexPath.row == 0 {
+                cell.deviceState.text = "0"
+            }else if indexPath.row == deviceImages.count-1{
+                cell.deviceState.text = "\((indexPath.row-1)*av+1) - 100"
+            }else{
+                cell.deviceState.text = "\((indexPath.row-1)*av+1) - \((indexPath.row-1)*av + av)"
             }
+            
+            
+//            if let state = deviceImages[indexPath.row].state{
+//                cell.deviceState.text = "\(state)"
+//            }
         }
         
         if let id = deviceImages[indexPath.row].customImageId{
@@ -256,7 +284,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showGallery(indexPath.row).delegate = self
+        showGallery(indexPath.row, user: device.gateway.location.user).delegate = self
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
@@ -286,9 +314,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
             deviceImages.removeAtIndex(indexPath.row)
             appDel.saveContext()
-//            tableView.reloadData()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+//            tableView.beginUpdates()
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+//            tableView.endUpdates()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            tableView.reloadData()
         }
         
     }
