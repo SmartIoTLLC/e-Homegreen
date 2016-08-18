@@ -209,6 +209,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
     var images:[Image] = []
     let defaults = NSUserDefaults.standardUserDefaults()
     
+    @IBOutlet weak var changeLibrarySC: UISegmentedControl!
     var user:User?
     
     @IBOutlet weak var gallery: UICollectionView!
@@ -241,9 +242,9 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
         for item in galleryList {
             galleryImages.append(item)
         }
-        for item in images {
-            galleryImages.append(item)
-        }
+//        for item in images {
+//            galleryImages.append(item)
+//        }
     }
     override func viewWillAppear(animated: Bool) {
 
@@ -254,26 +255,26 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeight.constant = 300
-                
-            }else if self.view.frame.size.height == 375{
-                backViewHeight.constant = 340
-            }else if self.view.frame.size.height == 414{
-                backViewHeight.constant = 390
-            }else{
-                backViewHeight.constant = 420
-            }
-        }else{
-            
-            self.backViewHeight.constant = 400
-            
-        }
+//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+//            if self.view.frame.size.height == 320{
+//                backViewHeight.constant = 300
+//                
+//            }else if self.view.frame.size.height == 375{
+//                backViewHeight.constant = 340
+//            }else if self.view.frame.size.height == 414{
+//                backViewHeight.constant = 390
+//            }else{
+//                backViewHeight.constant = 420
+//            }
+//        }else{
+//            
+//            self.backViewHeight.constant = 400
+//            
+//        }
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(gallery){
+        if touch.view!.isDescendantOfView(backview){
             return false
         }
         return true
@@ -357,6 +358,27 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
         }
         presentViewController(libraryViewController, animated: true, completion: nil)
     }
+    
+    @IBAction func changeGallery(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0{
+            galleryImages = []
+            for item in galleryList {
+                galleryImages.append(item)
+            }
+        }else{
+            galleryImages = []
+            images = returnImages()
+            for item in images {
+                galleryImages.append(item)
+            }
+        }
+        gallery.reloadData()
+    }
+    
+    @IBAction func closeGallery(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     
     @IBAction func takePhoto(sender: AnyObject) {
         let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in

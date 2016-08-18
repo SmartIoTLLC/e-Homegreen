@@ -7,13 +7,14 @@
         <mutableArray key="Tahoma.ttf">
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SceneGalleryVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
-                <outlet property="backViewHeight" destination="AdM-JM-5kF" id="FvI-r7-cGz"/>
                 <outlet property="backview" destination="Ro3-NP-QI0" id="e0e-S0-GfD"/>
+                <outlet property="changeLibrarySC" destination="X3t-20-v5N" id="mhP-dC-SkJ"/>
                 <outlet property="gallery" destination="rPm-x4-qhY" id="WBs-EM-gvA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,11 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ro3-NP-QI0" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="100" width="300" height="400"/>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ro3-NP-QI0" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="20" y="20" width="560" height="560"/>
                     <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="rPm-x4-qhY">
-                            <rect key="frame" x="0.0" y="42" width="300" height="358"/>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="rPm-x4-qhY">
+                            <rect key="frame" x="0.0" y="56" width="560" height="445"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fzr-nM-47u">
                                 <size key="itemSize" width="80" height="80"/>
@@ -40,19 +41,19 @@
                                 <outlet property="delegate" destination="-1" id="9Ar-Gd-7yX"/>
                             </connections>
                         </collectionView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajN-eN-eFj" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="20" y="8" width="120" height="31"/>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajN-eN-eFj" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="8" y="521" width="203" height="31"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                            <state key="normal" title="Open Gallery">
+                            <state key="normal" title="Phone Gallery">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="openGallery:" destination="-1" eventType="touchUpInside" id="sPj-eI-fW6"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4z-Nq-kaI" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="160" y="8" width="120" height="31"/>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4z-Nq-kaI" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="219" y="521" width="203" height="31"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <state key="normal" title="Take A Photo">
@@ -62,41 +63,146 @@
                                 <action selector="takePhoto:" destination="-1" eventType="touchUpInside" id="asZ-JT-f6X"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p7j-mF-KhL" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="452" y="521" width="100" height="31"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="Dn3-9g-yBE"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="closeGallery:" destination="-1" eventType="touchUpInside" id="eVj-Qb-szc"/>
+                            </connections>
+                        </button>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="X3t-20-v5N">
+                            <rect key="frame" x="8" y="8" width="544" height="29"/>
+                            <segments>
+                                <segment title="DEFAULT LIBRARY"/>
+                                <segment title="CUSTOM LIBRARY"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="changeGallery:" destination="-1" eventType="valueChanged" id="4Wa-w4-agb"/>
+                            </connections>
+                        </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="p7j-mF-KhL" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="0hX-E2-7lg"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="centerY" secondItem="ajN-eN-eFj" secondAttribute="centerY" id="3p6-Ez-3zM"/>
                         <constraint firstAttribute="trailing" secondItem="s4z-Nq-kaI" secondAttribute="trailing" constant="20" id="4LI-TW-HbH"/>
-                        <constraint firstAttribute="height" constant="400" id="AdM-JM-5kF"/>
-                        <constraint firstAttribute="trailing" secondItem="ajN-eN-eFj" secondAttribute="trailing" constant="20" id="AuW-le-Bjw"/>
+                        <constraint firstItem="ajN-eN-eFj" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" constant="8" id="FBr-TF-CIA"/>
                         <constraint firstItem="rPm-x4-qhY" firstAttribute="top" secondItem="ajN-eN-eFj" secondAttribute="bottom" constant="3" id="FLf-je-5gJ"/>
                         <constraint firstAttribute="bottom" secondItem="rPm-x4-qhY" secondAttribute="bottom" id="JCn-MW-d5o"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="500" id="M1N-b0-IFH"/>
+                        <constraint firstAttribute="width" constant="560" id="MUT-1e-G4u">
+                            <variation key="heightClass=compact" constant="400"/>
+                        </constraint>
                         <constraint firstItem="ajN-eN-eFj" firstAttribute="top" secondItem="Ro3-NP-QI0" secondAttribute="top" constant="8" id="RBg-Fb-j9A"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="leading" secondItem="ajN-eN-eFj" secondAttribute="trailing" constant="8" id="Rol-h0-rU6"/>
+                        <constraint firstItem="X3t-20-v5N" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" constant="8" id="Tgc-WW-fYe"/>
+                        <constraint firstAttribute="trailing" secondItem="p7j-mF-KhL" secondAttribute="trailing" constant="8" id="XBu-yg-KDE"/>
                         <constraint firstAttribute="trailing" secondItem="rPm-x4-qhY" secondAttribute="trailing" id="ZDS-1T-ecr"/>
                         <constraint firstItem="s4z-Nq-kaI" firstAttribute="centerY" secondItem="ajN-eN-eFj" secondAttribute="centerY" id="aE0-y8-LpS"/>
+                        <constraint firstItem="p7j-mF-KhL" firstAttribute="leading" secondItem="s4z-Nq-kaI" secondAttribute="trailing" constant="30" id="dt8-we-T42"/>
                         <constraint firstItem="ajN-eN-eFj" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" constant="20" id="i2S-jH-gKs"/>
                         <constraint firstItem="rPm-x4-qhY" firstAttribute="leading" secondItem="Ro3-NP-QI0" secondAttribute="leading" id="kgN-NX-Z7r"/>
                         <constraint firstItem="s4z-Nq-kaI" firstAttribute="leading" secondItem="ajN-eN-eFj" secondAttribute="trailing" constant="20" id="liL-9f-tve"/>
+                        <constraint firstAttribute="height" constant="760" id="lxL-VT-uWW">
+                            <variation key="heightClass=regular-widthClass=regular" constant="500"/>
+                        </constraint>
+                        <constraint firstAttribute="bottom" secondItem="p7j-mF-KhL" secondAttribute="bottom" constant="8" id="m2H-EA-LUw"/>
                         <constraint firstItem="s4z-Nq-kaI" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="ok0-aO-NEl"/>
-                        <constraint firstAttribute="width" constant="300" id="slC-bg-W2z"/>
+                        <constraint firstAttribute="width" constant="500" id="pCU-q2-UZg"/>
+                        <constraint firstItem="s4z-Nq-kaI" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="sI3-ao-LXC"/>
+                        <constraint firstItem="ajN-eN-eFj" firstAttribute="top" secondItem="rPm-x4-qhY" secondAttribute="bottom" constant="20" id="tZR-Go-v6B"/>
+                        <constraint firstAttribute="trailing" secondItem="X3t-20-v5N" secondAttribute="trailing" constant="8" id="tcL-80-bJK"/>
+                        <constraint firstItem="X3t-20-v5N" firstAttribute="top" secondItem="Ro3-NP-QI0" secondAttribute="top" constant="8" id="uYw-A3-lns"/>
+                        <constraint firstItem="rPm-x4-qhY" firstAttribute="top" secondItem="X3t-20-v5N" secondAttribute="bottom" constant="20" id="ufM-PU-4AK"/>
+                        <constraint firstAttribute="bottom" secondItem="ajN-eN-eFj" secondAttribute="bottom" constant="8" id="yN4-YO-PP2"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <variation key="default">
                         <mask key="constraints">
-                            <exclude reference="AuW-le-Bjw"/>
+                            <exclude reference="M1N-b0-IFH"/>
+                            <exclude reference="MUT-1e-G4u"/>
+                            <exclude reference="lxL-VT-uWW"/>
+                            <exclude reference="pCU-q2-UZg"/>
+                            <exclude reference="FLf-je-5gJ"/>
+                            <exclude reference="JCn-MW-d5o"/>
+                            <exclude reference="RBg-Fb-j9A"/>
+                            <exclude reference="i2S-jH-gKs"/>
+                            <exclude reference="4LI-TW-HbH"/>
+                            <exclude reference="aE0-y8-LpS"/>
+                            <exclude reference="liL-9f-tve"/>
+                            <exclude reference="ok0-aO-NEl"/>
+                            <exclude reference="0hX-E2-7lg"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
-                        <rect key="frame" x="50" y="50" width="300" height="400"/>
+                    <variation key="heightClass=compact">
+                        <mask key="constraints">
+                            <include reference="MUT-1e-G4u"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="lxL-VT-uWW"/>
+                            <include reference="pCU-q2-UZg"/>
+                        </mask>
                     </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="Ro3-NP-QI0" secondAttribute="centerX" id="cQY-EI-Tk4"/>
-                <constraint firstAttribute="centerY" secondItem="Ro3-NP-QI0" secondAttribute="centerY" id="ksG-74-zBu"/>
+                <constraint firstAttribute="bottom" secondItem="Ro3-NP-QI0" secondAttribute="bottom" constant="20" id="4vw-UI-g3L"/>
+                <constraint firstAttribute="trailing" secondItem="Ro3-NP-QI0" secondAttribute="trailing" constant="20" id="9mN-9J-8ox"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="PdF-ZB-ogo"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="T5j-k2-Dwa"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Z7X-GF-8AI"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="aFm-Xn-aNZ"/>
+                <constraint firstAttribute="bottom" secondItem="Ro3-NP-QI0" secondAttribute="bottom" constant="20" id="iga-xr-Nwn"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="l0o-om-Zc0"/>
+                <constraint firstItem="Ro3-NP-QI0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="l7N-E0-qPV"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="4vw-UI-g3L"/>
+                    <exclude reference="9mN-9J-8ox"/>
+                    <exclude reference="PdF-ZB-ogo"/>
+                    <exclude reference="T5j-k2-Dwa"/>
+                    <exclude reference="Z7X-GF-8AI"/>
+                    <exclude reference="aFm-Xn-aNZ"/>
+                    <exclude reference="iga-xr-Nwn"/>
+                    <exclude reference="l0o-om-Zc0"/>
+                    <exclude reference="l7N-E0-qPV"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact">
+                <mask key="constraints">
+                    <include reference="Z7X-GF-8AI"/>
+                    <include reference="aFm-Xn-aNZ"/>
+                    <include reference="iga-xr-Nwn"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="4vw-UI-g3L"/>
+                    <include reference="9mN-9J-8ox"/>
+                    <include reference="PdF-ZB-ogo"/>
+                    <include reference="l0o-om-Zc0"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="T5j-k2-Dwa"/>
+                    <include reference="l7N-E0-qPV"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>
