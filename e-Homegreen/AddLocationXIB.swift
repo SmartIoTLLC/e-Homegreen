@@ -21,6 +21,9 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
     
     var delegate:AddEditLocationDelegate?
     
+    @IBOutlet weak var zoneBtn: CustomGradientButton!
+    @IBOutlet weak var categoryBtn: CustomGradientButton!
+    @IBOutlet weak var ssidBtn: CustomGradientButton!
     
 //    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
 //    @IBOutlet weak var topConstraint: NSLayoutConstraint!
@@ -99,6 +102,9 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         if let location = location{
 //            topConstraint.constant = 150
 //            backViewHeight.constant = 540
+            zoneBtn.enabled = true
+            categoryBtn.enabled = true
+            ssidBtn.enabled = true
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -140,6 +146,9 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         }else{
 //            topConstraint.constant = 8
 //            backViewHeight.constant = 412
+            zoneBtn.enabled = false
+            categoryBtn.enabled = false
+            ssidBtn.enabled = false
             radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
