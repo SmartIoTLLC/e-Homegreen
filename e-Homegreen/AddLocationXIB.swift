@@ -22,8 +22,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
     var delegate:AddEditLocationDelegate?
     
     
-    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
+//    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
@@ -97,8 +97,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         locationMap.addGestureRecognizer(lpgr)
         
         if let location = location{
-            topConstraint.constant = 150
-            backViewHeight.constant = 540
+//            topConstraint.constant = 150
+//            backViewHeight.constant = 540
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -138,8 +138,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
                 self.locationMap.setRegion(region, animated: true)
             }
         }else{
-            topConstraint.constant = 8
-            backViewHeight.constant = 412
+//            topConstraint.constant = 8
+//            backViewHeight.constant = 412
             radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self

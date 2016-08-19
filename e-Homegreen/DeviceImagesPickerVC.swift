@@ -150,7 +150,7 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deviceImageCell", forIndexPath: indexPath) as! DeviceImagePickerTVC
-        
+        cell.backgroundColor = UIColor.clearColor()
 //        if imags[indexPath.row].state == 0{
 //            cell.deviceState.text = "Off"
 //        }

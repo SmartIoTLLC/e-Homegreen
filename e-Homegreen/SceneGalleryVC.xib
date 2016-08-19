@@ -118,10 +118,14 @@
                         <constraint firstItem="s4z-Nq-kaI" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="ok0-aO-NEl"/>
                         <constraint firstAttribute="width" constant="500" id="pCU-q2-UZg"/>
                         <constraint firstItem="s4z-Nq-kaI" firstAttribute="width" secondItem="ajN-eN-eFj" secondAttribute="width" id="sI3-ao-LXC"/>
-                        <constraint firstItem="ajN-eN-eFj" firstAttribute="top" secondItem="rPm-x4-qhY" secondAttribute="bottom" constant="20" id="tZR-Go-v6B"/>
+                        <constraint firstItem="ajN-eN-eFj" firstAttribute="top" secondItem="rPm-x4-qhY" secondAttribute="bottom" constant="3" id="tZR-Go-v6B">
+                            <variation key="heightClass=regular-widthClass=compact" constant="3"/>
+                        </constraint>
                         <constraint firstAttribute="trailing" secondItem="X3t-20-v5N" secondAttribute="trailing" constant="8" id="tcL-80-bJK"/>
                         <constraint firstItem="X3t-20-v5N" firstAttribute="top" secondItem="Ro3-NP-QI0" secondAttribute="top" constant="8" id="uYw-A3-lns"/>
-                        <constraint firstItem="rPm-x4-qhY" firstAttribute="top" secondItem="X3t-20-v5N" secondAttribute="bottom" constant="20" id="ufM-PU-4AK"/>
+                        <constraint firstItem="rPm-x4-qhY" firstAttribute="top" secondItem="X3t-20-v5N" secondAttribute="bottom" constant="3" id="ufM-PU-4AK">
+                            <variation key="heightClass=regular-widthClass=compact" constant="3"/>
+                        </constraint>
                         <constraint firstAttribute="bottom" secondItem="ajN-eN-eFj" secondAttribute="bottom" constant="8" id="yN4-YO-PP2"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

@@ -53,6 +53,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("ssidCell") as? SSIDCell {
             cell.setItem(ssidList[indexPath.row])
+            cell.backgroundColor = UIColor.clearColor()
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

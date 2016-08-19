@@ -70,7 +70,7 @@ class DatabaseHandler: NSObject {
         // 255: default
         // 0: when there is no zone defined
         if id == 255 || id == 0{
-            return "All"
+            return ""
         }else{
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -81,7 +81,9 @@ class DatabaseHandler: NSObject {
             do {
                 let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
                 if fetResults!.count != 0 {
-                    return "\(fetResults![0].name!)"
+                    if fetResults![0].name! != "All"{
+                        return "\(fetResults![0].name!)"
+                    }
                 } else {
                     return ""
                 }

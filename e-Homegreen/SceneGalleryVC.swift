@@ -242,35 +242,15 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
         for item in galleryList {
             galleryImages.append(item)
         }
-//        for item in images {
-//            galleryImages.append(item)
-//        }
+
     }
+    
     override func viewWillAppear(animated: Bool) {
 
         if let offset = defaults.valueForKey(UserDefaults.GalleryContentOffset) as? CGFloat  {
             self.gallery.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
         }
 
-    }
-    
-    override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.height == 320{
-//                backViewHeight.constant = 300
-//                
-//            }else if self.view.frame.size.height == 375{
-//                backViewHeight.constant = 340
-//            }else if self.view.frame.size.height == 414{
-//                backViewHeight.constant = 390
-//            }else{
-//                backViewHeight.constant = 420
-//            }
-//        }else{
-//            
-//            self.backViewHeight.constant = 400
-//            
-//        }
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -410,17 +390,15 @@ extension SceneGalleryVC : UICollectionViewDelegate, UICollectionViewDelegateFlo
         if let string = galleryImages[indexPath.row] as? String {
             cell.cellImage.image = UIImage(named:string)
         }
-//        cell.layer.borderColor = UIColor.lightGrayColor().CGColor
-//        cell.layer.borderWidth = 1
+
         cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 5
-        
+        cell.layer.cornerRadius = 5        
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        return UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {

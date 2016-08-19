@@ -867,7 +867,16 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
             }
         } else {
-            return "\(device.gateway.location.name!) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
+            var text = "\(device.gateway.location.name!)"
+            if DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location) != ""{
+                text += " " + DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+            }
+            if DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location) != ""{
+                text += " " + DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+            }
+            text += " " + device.name
+            return text
+//            return "\(device.gateway.location.name!) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
         }
     }
     
