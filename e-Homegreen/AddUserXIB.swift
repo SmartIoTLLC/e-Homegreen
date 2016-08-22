@@ -128,7 +128,7 @@ class AddUserXIB: UIViewController {
             user.username = username
             user.isLocked = false
             user.isSuperUser = superUserSwitch.on
-            user.openLastScreen = false
+            
             user.lastScreenId = 13
             
             if let customImage = customImage{
@@ -168,7 +168,7 @@ class AddUserXIB: UIViewController {
                 user.password = password
                 user.isLocked = false
                 user.isSuperUser = superUserSwitch.on
-                
+                user.openLastScreen = false
                 if let customImage = customImage{
                     user.customImageId = customImage
                 }

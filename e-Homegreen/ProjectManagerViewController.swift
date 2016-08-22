@@ -331,12 +331,7 @@ class UserCell: UITableViewCell{
                 userImage.image = UIImage(named: "User")
             }
         }
-        
-//        if let data = user.profilePicture{
-//            userImage.image = UIImage(data: data)
-//        }else{
-//            userImage.image = UIImage(named: "User")
-//        }
+
         if !AdminController.shared.isAdminLogged() {
             if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
                 chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
