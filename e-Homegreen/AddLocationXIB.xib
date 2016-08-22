@@ -52,9 +52,6 @@
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="85" y="82" width="112" height="31"/>
-                            </variation>
                             <connections>
                                 <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="aJR-GB-4pW"/>
                             </connections>
@@ -64,21 +61,15 @@
                             <state key="normal" title="SSID LIST">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="10" y="191" width="227" height="30"/>
-                            </variation>
                             <connections>
                                 <action selector="importSSID:" destination="-1" eventType="touchUpInside" id="BaZ-Dw-cMm"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mx5-Y3-22n">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mx5-Y3-22n">
                             <rect key="frame" x="10" y="54" width="65" height="19"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="10" y="54" width="65" height="19"/>
-                            </variation>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qut-Og-mMn" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="85" y="49" width="465" height="30"/>
@@ -86,9 +77,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="85" y="49" width="77" height="30"/>
-                            </variation>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dX-HD-hje" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="10" y="150" width="267" height="28"/>
@@ -96,9 +84,6 @@
                             <state key="normal" title="ZONE LIST">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="10" y="155" width="111" height="28"/>
-                            </variation>
                             <connections>
                                 <action selector="importZone:" destination="-1" eventType="touchUpInside" id="tK9-ZX-kwE"/>
                             </connections>
@@ -108,16 +93,10 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="10" y="88" width="65" height="19"/>
-                            </variation>
                         </label>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="One-80-5Lj">
                             <rect key="frame" x="520" y="112" width="30" height="30"/>
                             <state key="normal" image="down"/>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="207" y="117" width="30" height="30"/>
-                            </variation>
                             <connections>
                                 <action selector="chooseSecurity:" destination="-1" eventType="touchUpInside" id="uRj-3e-x3Q"/>
                             </connections>
@@ -127,11 +106,8 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="10" y="122" width="65" height="19"/>
-                            </variation>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Filter ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h38-KD-h3r">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Filter ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h38-KD-h3r">
                             <rect key="frame" x="10" y="15" width="65" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="65" id="x5V-iK-yj0"/>
@@ -139,11 +115,8 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="10" y="15" width="65" height="19"/>
-                            </variation>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NNZ-KM-b8S" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NNZ-KM-b8S" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="85" y="10" width="40" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -152,15 +125,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="85" y="10" width="40" height="30"/>
-                            </variation>
                         </textField>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ptk-zf-TZD">
                             <rect key="frame" x="501" y="9" width="51" height="31"/>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="188" y="10" width="51" height="31"/>
-                            </variation>
                         </switch>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Nn-Zs-nqI">
                             <rect key="frame" x="85" y="111" width="425" height="31"/>
@@ -168,9 +135,6 @@
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="85" y="116" width="112" height="31"/>
-                            </variation>
                             <connections>
                                 <action selector="chooseSecurity:" destination="-1" eventType="touchUpInside" id="WoL-Gw-5U9"/>
                             </connections>
@@ -183,9 +147,6 @@
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="290" y="323" width="100" height="31"/>
-                            </variation>
                             <connections>
                                 <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="yy9-4m-rZg"/>
                             </connections>
@@ -195,15 +156,9 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES">
-                                <rect key="frame" x="10" y="241" width="44" height="19"/>
-                            </variation>
                         </label>
                         <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="500" translatesAutoresizingMaskIntoConstraints="NO" id="Luh-dV-lER">
                             <rect key="frame" x="8" y="485" width="544" height="31"/>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="62" y="236" width="177" height="31"/>
-                            </variation>
                             <connections>
                                 <action selector="changeRadiusAction:" destination="-1" eventType="valueChanged" id="5hk-9E-lPp"/>
                             </connections>
@@ -213,9 +168,6 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="135" y="16" width="43" height="19"/>
-                            </variation>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBO-Fn-sEK" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="283" y="150" width="267" height="28"/>
@@ -223,9 +175,6 @@
                             <state key="normal" title="CATEGORY LIST">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="127" y="155" width="110" height="28"/>
-                            </variation>
                             <connections>
                                 <action selector="importCategory:" destination="-1" eventType="touchUpInside" id="ZYp-yI-Cs2"/>
                             </connections>
@@ -237,9 +186,6 @@
                                 <constraint firstAttribute="height" constant="30" id="O8u-VZ-OnA"/>
                             </constraints>
                             <state key="normal" image="down"/>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="207" y="83" width="30" height="30"/>
-                            </variation>
                             <connections>
                                 <action selector="chooseTimerAction:" destination="-1" eventType="touchUpInside" id="VAU-Q7-G2J"/>
                             </connections>
@@ -256,9 +202,6 @@
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="170" y="323" width="100" height="31"/>
-                            </variation>
                             <connections>
                                 <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="AEO-da-Z5y"/>
                             </connections>
@@ -275,8 +218,7 @@
                                     <exclude reference="w0u-B1-YhE"/>
                                 </mask>
                             </variation>
-                            <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                <rect key="frame" x="247" y="10" width="303" height="303"/>
+                            <variation key="heightClass=compact">
                                 <mask key="constraints">
                                     <include reference="w0u-B1-YhE"/>
                                 </mask>
@@ -371,7 +313,6 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="JcR-aC-kBR"/>
-                            <exclude reference="HAV-B9-rN3"/>
                             <exclude reference="wm0-vR-cL7"/>
                             <exclude reference="1F9-h5-qeh"/>
                             <exclude reference="3rK-7c-76B"/>
@@ -389,12 +330,12 @@
                             <exclude reference="U1W-wk-Cpa"/>
                             <exclude reference="fzj-9W-iLp"/>
                             <exclude reference="pfq-4e-0OT"/>
+                            <exclude reference="HAV-B9-rN3"/>
                             <exclude reference="jt1-Zv-fcf"/>
                             <exclude reference="hzh-ZF-stF"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                        <rect key="frame" x="20" y="20" width="560" height="360"/>
+                    <variation key="heightClass=compact">
                         <mask key="constraints">
                             <include reference="HzT-ET-3ci"/>
                             <include reference="RwH-1N-OOW"/>
@@ -412,7 +353,6 @@
                     </variation>
                     <variation key="heightClass=regular-widthClass=compact">
                         <mask key="constraints">
-                            <include reference="HAV-B9-rN3"/>
                             <include reference="1F9-h5-qeh"/>
                             <include reference="3rK-7c-76B"/>
                             <include reference="Bbk-bV-4Xd"/>
@@ -421,13 +361,13 @@
                             <include reference="1aK-8w-evH"/>
                             <include reference="E5J-HW-tc6"/>
                             <include reference="fzj-9W-iLp"/>
+                            <include reference="HAV-B9-rN3"/>
                             <include reference="jt1-Zv-fcf"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
                             <include reference="JcR-aC-kBR"/>
-                            <include reference="HAV-B9-rN3"/>
                             <include reference="1F9-h5-qeh"/>
                             <include reference="3rK-7c-76B"/>
                             <include reference="Bbk-bV-4Xd"/>
@@ -436,6 +376,7 @@
                             <include reference="1aK-8w-evH"/>
                             <include reference="E5J-HW-tc6"/>
                             <include reference="fzj-9W-iLp"/>
+                            <include reference="HAV-B9-rN3"/>
                             <include reference="jt1-Zv-fcf"/>
                         </mask>
                     </variation>
@@ -443,12 +384,20 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="5cj-Yu-cKO" secondAttribute="bottom" constant="20" id="Rbw-OU-4c8"/>
-                <constraint firstItem="5cj-Yu-cKO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="YCU-0Y-MgI"/>
-                <constraint firstAttribute="trailing" secondItem="5cj-Yu-cKO" secondAttribute="trailing" constant="20" id="aoa-ge-Azf"/>
+                <constraint firstAttribute="bottom" secondItem="5cj-Yu-cKO" secondAttribute="bottom" constant="20" id="Rbw-OU-4c8">
+                    <variation key="heightClass=compact" constant="5"/>
+                </constraint>
+                <constraint firstItem="5cj-Yu-cKO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="YCU-0Y-MgI">
+                    <variation key="heightClass=compact" constant="5"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="5cj-Yu-cKO" secondAttribute="trailing" constant="20" id="aoa-ge-Azf">
+                    <variation key="heightClass=compact" constant="10"/>
+                </constraint>
                 <constraint firstItem="5cj-Yu-cKO" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fKk-11-W2I"/>
                 <constraint firstItem="5cj-Yu-cKO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fXC-I5-CUk"/>
-                <constraint firstItem="5cj-Yu-cKO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="r8V-V5-JXA"/>
+                <constraint firstItem="5cj-Yu-cKO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="r8V-V5-JXA">
+                    <variation key="heightClass=compact" constant="10"/>
+                </constraint>
             </constraints>
             <variation key="default">
                 <mask key="constraints">

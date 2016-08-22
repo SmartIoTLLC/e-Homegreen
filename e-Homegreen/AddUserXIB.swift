@@ -13,15 +13,17 @@ protocol AddUserDelegate{
     func addUserFinished()
 }
 
-class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, SceneGalleryDelegate {
+class AddUserXIB: UIViewController {
     
     var isPresenting: Bool = true
     
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var userImageButton: UIButton!
+    
     @IBOutlet weak var usernameTextField: EditTextField!
     @IBOutlet weak var passwordTextView: EditTextField!
     @IBOutlet weak var confirmPasswordtextView: EditTextField!
+    
     @IBOutlet weak var superUserSwitch: UISwitch!
     
     @IBOutlet weak var btnCancel: UIButton!
@@ -81,23 +83,6 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
         showGallery(1, user: user).delegate = self
     }
     
-    func backImageFromGallery(data: NSData, imageIndex: Int) {
-        imageData = data
-        userImageButton.setImage(UIImage(data: data), forState: .Normal)
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            return false
-        }
-        return true
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -155,6 +140,50 @@ class AddUserXIB: UIViewController, UIGestureRecognizerDelegate, UITextFieldDele
     }
 
 
+}
+
+extension AddUserXIB : SceneGalleryDelegate {
+    
+    func backImageFromGallery(data: NSData, imageIndex: Int) {
+        imageData = data
+        userImageButton.setImage(UIImage(data: data), forState: .Normal)
+    }
+    
+    func backString(strText: String, imageIndex: Int) {
+        userImageButton.setImage(UIImage(named: strText), forState: .Normal)
+        imageData = UIImagePNGRepresentation(userImageButton.imageForState(.Normal)!)
+    }
+    
+    func backImage(image: Image, imageIndex: Int) {
+        imageData = image.imageData!
+        userImageButton.setImage(UIImage(data: image.imageData!), forState: .Normal)
+    }
+    
+}
+
+extension AddUserXIB : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if usernameTextField.isFirstResponder(){
+            passwordTextView.becomeFirstResponder()
+        }else if passwordTextView.isFirstResponder(){
+            confirmPasswordtextView.becomeFirstResponder()
+        }else{
+            textField.resignFirstResponder()
+        }
+        
+        return true
+    }
+}
+
+extension AddUserXIB : UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            return false
+        }
+        return true
+    }
 }
 
 extension AddUserXIB : UIViewControllerAnimatedTransitioning {
