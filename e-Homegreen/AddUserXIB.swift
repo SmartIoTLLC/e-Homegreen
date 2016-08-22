@@ -36,6 +36,8 @@ class AddUserXIB: UIViewController {
     var user:User?
     
     var imageData:NSData?
+    var customImage:String?
+    var defaultImage:String?
     
     init(user:User?){
         super.init(nibName: "AddUserXIB", bundle: nil)
@@ -72,15 +74,42 @@ class AddUserXIB: UIViewController {
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
             }
-            if let data = user.profilePicture{
-                userImageButton.setImage(UIImage(data: data), forState: .Normal)
+            if let id = user.customImageId{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        userImageButton.setImage(UIImage(data: data), forState: .Normal)
+                    }else{
+                        if let defaultImage = user.defaultImage{
+                            userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                        }else{
+                            userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                        }
+                    }
+                }else{
+                    if let defaultImage = user.defaultImage{
+                        userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                    }else{
+                        userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                    }
+                }
+            }else{
+                if let defaultImage = user.defaultImage{
+                    userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                }else{
+                   userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                }
             }
+
         }
         
     }
     
     @IBAction func changePicture(sender: AnyObject) {
         showGallery(1, user: user).delegate = self
+    }
+    
+    func dismissKeyboard(){
+        self.view.endEditing(true)
     }
     
     func dismissViewController () {
@@ -101,9 +130,26 @@ class AddUserXIB: UIViewController {
             user.isSuperUser = superUserSwitch.on
             user.openLastScreen = false
             user.lastScreenId = 13
-            if let image = imageData{
-                user.profilePicture = image
+            
+            if let customImage = customImage{
+                user.customImageId = customImage
+                user.defaultImage = nil
             }
+            if let def = defaultImage {
+                user.defaultImage = def
+                user.customImageId = nil
+            }
+            if let data = imageData{
+                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    image.imageData = data
+                    image.imageId = NSUUID().UUIDString
+                    user.customImageId = image.imageId
+                    user.defaultImage = nil
+                    user.addImagesObject(image)
+                    
+                }
+            }
+
             CoreDataController.shahredInstance.saveChanges()
             DatabaseMenuController.shared.createMenu(user)
         }else{
@@ -122,7 +168,24 @@ class AddUserXIB: UIViewController {
                 user.password = password
                 user.isLocked = false
                 user.isSuperUser = superUserSwitch.on
-                user.profilePicture = imageData
+                
+                if let customImage = customImage{
+                    user.customImageId = customImage
+                }
+                if let def = defaultImage {
+                    user.defaultImage = def
+                }
+                if let data = imageData{
+                    if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                        image.imageData = data
+                        image.imageId = NSUUID().UUIDString
+                        user.customImageId = image.imageId
+                        
+                        user.addImagesObject(image)
+                        
+                    }
+                }
+                
                 CoreDataController.shahredInstance.saveChanges()
                 DatabaseMenuController.shared.createMenu(user)
                 DatabaseFilterController.shared.createFilters(user)
@@ -145,17 +208,23 @@ class AddUserXIB: UIViewController {
 extension AddUserXIB : SceneGalleryDelegate {
     
     func backImageFromGallery(data: NSData, imageIndex: Int) {
+        defaultImage = nil
+        customImage = nil
         imageData = data
         userImageButton.setImage(UIImage(data: data), forState: .Normal)
     }
     
     func backString(strText: String, imageIndex: Int) {
         userImageButton.setImage(UIImage(named: strText), forState: .Normal)
-        imageData = UIImagePNGRepresentation(userImageButton.imageForState(.Normal)!)
+        defaultImage = strText
+        customImage = nil
+        imageData = nil
     }
     
     func backImage(image: Image, imageIndex: Int) {
-        imageData = image.imageData!
+        defaultImage = nil
+        customImage = image.imageId
+        imageData = nil
         userImageButton.setImage(UIImage(data: image.imageData!), forState: .Normal)
     }
     
@@ -180,6 +249,7 @@ extension AddUserXIB : UIGestureRecognizerDelegate {
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
+            dismissKeyboard()
             return false
         }
         return true

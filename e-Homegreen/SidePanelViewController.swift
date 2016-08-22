@@ -230,11 +230,38 @@
     
     func setItem(user:User?){
         if let user = user{
-            if let image  = user.profilePicture{
-                userImage.image = UIImage(data: image)
+            
+            if let id = user.customImageId{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        userImage.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = user.defaultImage{
+                            userImage.image = UIImage(named: defaultImage)
+                        }else{
+                            userImage.image = UIImage(named: "User")
+                        }
+                    }
+                }else{
+                    if let defaultImage = user.defaultImage{
+                        userImage.image = UIImage(named: defaultImage)
+                    }else{
+                        userImage.image = UIImage(named: "User")
+                    }
+                }
             }else{
-                userImage.image = UIImage(named: "User")
+                if let defaultImage = user.defaultImage{
+                    userImage.image = UIImage(named: defaultImage)
+                }else{
+                    userImage.image = UIImage(named: "User")
+                }
             }
+            
+//            if let image  = user.profilePicture{
+//                userImage.image = UIImage(data: image)
+//            }else{
+//                userImage.image = UIImage(named: "User")
+//            }
             userLabel.text = user.username
         }else{
             userLabel.text = (AdminController.shared.getAdmin())?.username

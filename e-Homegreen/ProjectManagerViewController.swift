@@ -305,11 +305,38 @@ class UserCell: UITableViewCell{
         self.backgroundColor = UIColor.clearColor()
         
         userNameLabel.text = user.username
-        if let data = user.profilePicture{
-            userImage.image = UIImage(data: data)
+        
+        if let id = user.customImageId{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    userImage.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = user.defaultImage{
+                        userImage.image = UIImage(named: defaultImage)
+                    }else{
+                       userImage.image = UIImage(named: "User")
+                    }
+                }
+            }else{
+                if let defaultImage = user.defaultImage{
+                    userImage.image = UIImage(named: defaultImage)
+                }else{
+                    userImage.image = UIImage(named: "User")
+                }
+            }
         }else{
-            userImage.image = UIImage(named: "User")
+            if let defaultImage = user.defaultImage{
+                userImage.image = UIImage(named: defaultImage)
+            }else{
+                userImage.image = UIImage(named: "User")
+            }
         }
+        
+//        if let data = user.profilePicture{
+//            userImage.image = UIImage(data: data)
+//        }else{
+//            userImage.image = UIImage(named: "User")
+//        }
         if !AdminController.shared.isAdminLogged() {
             if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
                 chooseDatabaseButton.enabled = !(user.isLocked as! Bool)

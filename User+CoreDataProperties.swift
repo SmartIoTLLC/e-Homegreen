@@ -17,7 +17,7 @@ extension User {
     @NSManaged var isLocked: NSNumber?
     @NSManaged var isSuperUser: NSNumber?
     @NSManaged var lastScreenId: NSNumber?
-    @NSManaged var openLastScreen: NSNumber!
+    @NSManaged var openLastScreen: NSNumber?
     @NSManaged var password: String?
     @NSManaged var username: String?
     @NSManaged var customImageId: String?
@@ -26,7 +26,5 @@ extension User {
     @NSManaged var images: NSSet?
     @NSManaged var locations: NSSet?
     @NSManaged var menu: NSSet?
-    
-    @NSManaged func addImagesObject(value:Image)
 
 }

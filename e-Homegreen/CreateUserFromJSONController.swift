@@ -69,8 +69,11 @@ class CreateUserFromJSONController: NSObject {
                         if let lastScreenId = json["last_screen_id"] as? Int{
                             user.lastScreenId = lastScreenId
                         }
-                        if let imageData = json["profile_picture"] as? NSData{
-                            user.profilePicture = imageData
+                        if let defaultImage = json["default_image"] as? String{
+                            user.defaultImage = defaultImage
+                        }
+                        if let customImage = json["custom_image_id"] as? String{
+                            user.customImageId = customImage
                         }
                         if let menus = json["menu"] as? [JSONDictionary] {
                             createMenuFromJSON(menus, user: user)
