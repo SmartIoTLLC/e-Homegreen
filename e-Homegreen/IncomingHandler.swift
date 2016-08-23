@@ -447,11 +447,11 @@ class IncomingHandler: NSObject {
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        print(byteArray)
         for var i = 0; i < self.devices.count; i++ {
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
                 let channel = Int(self.devices[i].channel)
-                self.devices[i].currentValue = Int(byteArray[7+channel])
+                self.devices[i].currentValue = Int(byteArray[7+channel]) * 255/100 // This calculation is added because app uses 0-255 range, and PLC is sending 0-100
+                print(Int(byteArray[7+channel]))
             }
             
         }
@@ -493,8 +493,10 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
+                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) * 255/100 // This calculation is added because app uses 0-255 range, and PLC is sending 0-100 //  lightning state 
+                print(Int(byteArray[8+5*(channelNumber-1)]))
                 devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
+                print(Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]))
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
                 devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
             } else {
@@ -510,7 +512,7 @@ class IncomingHandler: NSObject {
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) //  lightning state
+                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)])*255/100 //  lightning state
                 //                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
