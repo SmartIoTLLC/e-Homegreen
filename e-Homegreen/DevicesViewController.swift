@@ -447,22 +447,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: 0xF1, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
         }
-//        // Curtain?
-//        if devices[tag].controlType == ControlType.Curtain {
-//            var setDeviceValue:UInt8 = 0
-//            if Int(devices[tag].currentValue) > 0 {
-//                setDeviceValue = UInt8(0)
-//            } else {
-//                setDeviceValue = UInt8(100)
-//            }
-//            let deviceCurrentValue = Int(devices[tag].currentValue)
-//            devices[tag].currentValue = Int(setDeviceValue)
-//            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-//            let deviceGroupId = devices[tag].curtainGroupID.integerValue
-//            dispatch_async(dispatch_get_main_queue(), {
-//                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
-//            })
-//        }
         updateCells()
     }
     
@@ -745,9 +729,10 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         deviceInControlMode = false
         //   Dimmer
         if devices[tag].controlType == ControlType.Dimmer {
+            let setValue = UInt8(Int(self.devices[tag].currentValue.doubleValue*100/255))
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
