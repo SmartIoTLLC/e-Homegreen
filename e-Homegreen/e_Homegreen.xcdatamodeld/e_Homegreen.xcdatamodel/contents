@@ -48,6 +48,7 @@
         <attribute name="notificationPosition" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="9" defaultValueString="1" syncable="YES"/>
         <attribute name="notificationType" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="numberOfDevices" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="oldValue" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="overrideControl1" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="overrideControl2" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="overrideControl3" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -292,7 +293,7 @@
     </entity>
     <elements>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
-        <element name="Device" positionX="-677" positionY="-1989" width="128" height="900"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="915"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
