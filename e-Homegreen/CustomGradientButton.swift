@@ -21,12 +21,12 @@ class CustomGradientButton: UIButton {
             byRoundingCorners: UIRectCorner.AllCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
-        path.lineWidth = 1
+        path.lineWidth = 2
         
         UIColor.darkGrayColor().setStroke()
     
         let context = UIGraphicsGetCurrentContext()
-        let colors = [colorOne , colorTwo]
+        let colors = [colorTwo, colorOne]
         
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()

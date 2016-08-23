@@ -37,7 +37,7 @@ class CustomGradientBackground: UIView {
             UIColor.darkGrayColor().setStroke()
         }
         let context = UIGraphicsGetCurrentContext()
-        let colors = [colorOne , colorTwo]
+        let colors = [colorTwo, colorOne]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         let gradient = CGGradientCreateWithColors(colorSpace,

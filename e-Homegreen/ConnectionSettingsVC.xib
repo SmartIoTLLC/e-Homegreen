@@ -90,21 +90,21 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gCp-7R-Sth" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gCp-7R-Sth" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="93" y="265" width="479" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-KA-lDE" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-KA-lDE" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="93" y="306" width="479" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                         </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="3" borderStyle="roundedRect" placeholder="Heartbeat" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJD-01-Lu0" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="3" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJD-01-Lu0" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="93" y="347" width="76" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -138,7 +138,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP/Host" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cye-mf-HE1" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cye-mf-HE1" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="93" y="153" width="479" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -176,15 +176,15 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-TQ-Tc9" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-TQ-Tc9" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="203" y="389" width="75" height="31"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="75" id="dCM-Qc-aKI"/>
+                                                <constraint firstAttribute="height" constant="40" id="slY-Bp-Je6"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                             <state key="normal" title="CANCEL">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
@@ -197,12 +197,12 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-zJ-c39" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="303" y="389" width="75" height="31"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                             <state key="normal" title="SAVE">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
@@ -216,7 +216,7 @@
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alB-wq-NFj" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alB-wq-NFj" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="93" y="194" width="479" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -246,7 +246,7 @@
                                         <constraint firstItem="cE7-zJ-c39" firstAttribute="width" secondItem="Rk6-TQ-Tc9" secondAttribute="width" id="Ekm-hs-OPA"/>
                                         <constraint firstItem="9fx-hm-oT3" firstAttribute="width" secondItem="Ycg-Hi-70o" secondAttribute="width" id="Id4-Ey-huw"/>
                                         <constraint firstItem="fEC-hT-6Cs" firstAttribute="top" secondItem="Gyu-hS-ZdZ" secondAttribute="bottom" constant="8" id="Iys-Ye-bem"/>
-                                        <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="centerX" secondItem="CeP-Ox-PqS" secondAttribute="centerX" constant="-50" id="JfB-RR-Qbm"/>
+                                        <constraint firstItem="cE7-zJ-c39" firstAttribute="trailing" secondItem="LOs-KA-lDE" secondAttribute="trailing" id="KI5-CW-jrj"/>
                                         <constraint firstItem="Cye-mf-HE1" firstAttribute="centerY" secondItem="n97-xe-z3p" secondAttribute="centerY" id="KQn-Zh-HS0"/>
                                         <constraint firstAttribute="bottom" secondItem="Rk6-TQ-Tc9" secondAttribute="bottom" constant="8" id="LiL-HI-Z4E"/>
                                         <constraint firstItem="AAr-v3-npZ" firstAttribute="trailing" secondItem="5Td-rD-SFp" secondAttribute="trailing" id="MPm-al-VmH"/>
@@ -278,15 +278,17 @@
                                         <constraint firstItem="Cye-mf-HE1" firstAttribute="trailing" secondItem="Gyu-hS-ZdZ" secondAttribute="trailing" id="bhK-ZR-zgI"/>
                                         <constraint firstItem="9fx-hm-oT3" firstAttribute="leading" secondItem="Ycg-Hi-70o" secondAttribute="leading" id="cac-A3-Lwe"/>
                                         <constraint firstItem="5Td-rD-SFp" firstAttribute="top" secondItem="CeP-Ox-PqS" secondAttribute="top" constant="8" id="dnv-fS-Pvw"/>
-                                        <constraint firstItem="cE7-zJ-c39" firstAttribute="centerX" secondItem="CeP-Ox-PqS" secondAttribute="centerX" constant="50" id="eID-ur-6p3"/>
                                         <constraint firstItem="ewp-mr-Xce" firstAttribute="top" secondItem="alB-wq-NFj" secondAttribute="bottom" constant="8" id="eyn-YV-MHX"/>
                                         <constraint firstItem="cE7-zJ-c39" firstAttribute="centerY" secondItem="Rk6-TQ-Tc9" secondAttribute="centerY" id="f7H-dD-LBd"/>
                                         <constraint firstItem="Lqz-TY-rmJ" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="leading" id="fN8-es-s3s"/>
                                         <constraint firstItem="nEs-Qe-pwO" firstAttribute="centerY" secondItem="fJD-01-Lu0" secondAttribute="centerY" id="g53-ZS-Aln"/>
                                         <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="top" secondItem="fJD-01-Lu0" secondAttribute="bottom" constant="12" id="m1D-H3-2GU"/>
+                                        <constraint firstItem="cE7-zJ-c39" firstAttribute="height" secondItem="Rk6-TQ-Tc9" secondAttribute="height" id="mwr-Zh-PWr"/>
+                                        <constraint firstItem="cE7-zJ-c39" firstAttribute="leading" secondItem="Rk6-TQ-Tc9" secondAttribute="trailing" constant="5" id="s7z-zG-0qy"/>
                                         <constraint firstItem="ztT-sv-Ow3" firstAttribute="width" secondItem="9fx-hm-oT3" secondAttribute="width" id="sEl-3q-5c3"/>
                                         <constraint firstItem="avv-DG-9ck" firstAttribute="centerY" secondItem="BC5-EX-Snd" secondAttribute="centerY" id="utQ-rB-Q1R"/>
                                         <constraint firstItem="BC5-EX-Snd" firstAttribute="leading" secondItem="L04-Ng-IcQ" secondAttribute="trailing" constant="10" id="uw0-IB-WLg"/>
+                                        <constraint firstItem="Rk6-TQ-Tc9" firstAttribute="leading" secondItem="ztT-sv-Ow3" secondAttribute="leading" id="vgr-Ip-x02"/>
                                         <constraint firstItem="Cye-mf-HE1" firstAttribute="leading" secondItem="Gyu-hS-ZdZ" secondAttribute="leading" id="www-wk-wpT"/>
                                         <constraint firstAttribute="trailing" secondItem="5Td-rD-SFp" secondAttribute="trailing" constant="8" id="x1Q-SM-Z0S"/>
                                     </constraints>

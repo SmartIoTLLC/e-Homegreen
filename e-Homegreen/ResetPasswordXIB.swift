@@ -31,7 +31,7 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     
     var delegate:SettingsDelegate?
     
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     
     init(user:User){
         super.init(nibName: "ResetPasswordXIB", bundle: nil)
@@ -58,11 +58,11 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         self.view.addGestureRecognizer(tapGesture)
         
         if !AdminController.shared.isAdminLogged(){
-            topConstraint.constant = 73
+//            topConstraint.constant = 73
         }else{
-            topConstraint.constant = 8
-            oldPasswordLabel.hidden = true
-            oldPassswordTextField.hidden = true
+//            topConstraint.constant = 8
+//            oldPasswordLabel.hidden = true
+//            oldPassswordTextField.hidden = true
         }
 
         // Do any additional setup after loading the view.

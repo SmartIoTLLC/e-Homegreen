@@ -71,6 +71,9 @@ class AddUserXIB: UIViewController {
         if let user = user{
             usernameTextField.text = user.username
             
+            passwordTextView.enabled = false
+            confirmPasswordtextView.enabled = false
+            
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
             }

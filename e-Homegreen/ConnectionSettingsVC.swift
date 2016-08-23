@@ -71,12 +71,6 @@ class ConnectionSettingsVC: UIViewController {
 
         print(UIDevice.currentDevice().SSID)
         
-        if UIScreen.mainScreen().scale > 2.5{
-            txtDescription.layer.borderWidth = 1
-        }else{
-            txtDescription.layer.borderWidth = 0.5
-        }
-        txtDescription.layer.borderColor = UIColor.lightGrayColor().CGColor
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
@@ -185,7 +179,7 @@ class ConnectionSettingsVC: UIViewController {
     
     @IBAction func save(sender: AnyObject) {
         
-        guard let adrFirst = addressFirst.text where adrFirst != "", let adrSecond = addressSecond.text where  adrSecond != "", let adrThird = addressThird.text where adrThird != "", let heartbeat = txtAutoReconnectDelay.text where heartbeat != "", let port = port.text where port != "", let localport = localPort.text where localport != "", let ip = ipHost.text where ip != "", let localip = localIP.text where localip != "" else {
+        guard let adrFirst = addressFirst.text where adrFirst != "", let adrSecond = addressSecond.text where  adrSecond != "", let adrThird = addressThird.text where adrThird != "", let heartbeat = txtAutoReconnectDelay.text where heartbeat != "", let port = port.text where port != "", let localport = localPort.text where localport != "", let ip = ipHost.text where ip != "", let localip = localIP.text where localip != "", let gatewayName = txtDescription.text where gatewayName != "" else {
             UIView.hr_setToastThemeColor(color: UIColor.redColor())
             self.view.makeToast(message: "Please fill all text fields")
             return
@@ -217,7 +211,7 @@ class ConnectionSettingsVC: UIViewController {
             gateway.addressOne = aFirst
             gateway.addressTwo = aSecond
             gateway.addressThree = aThird
-            gateway.gatewayDescription = txtDescription.text!
+            gateway.gatewayDescription = gatewayName
             gateway.autoReconnectDelay = hb
             gateway.gatewayType = gatewayType
             CoreDataController.shahredInstance.saveChanges()
@@ -234,7 +228,7 @@ class ConnectionSettingsVC: UIViewController {
                 gateway.addressOne = aFirst
                 gateway.addressTwo = aSecond
                 gateway.addressThree = aThird
-                gateway.gatewayDescription = txtDescription.text!
+                gateway.gatewayDescription = gatewayName
                 gateway.turnedOn = true
                 gateway.location = location
                 gateway.gatewayId = NSUUID().UUIDString
