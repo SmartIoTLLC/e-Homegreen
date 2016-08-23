@@ -387,7 +387,7 @@ extension Function {
     static func setCurtainStatus (address:[Byte], value:Byte, groupId:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
-        messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, groupId]
+         messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, groupId]
         message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)

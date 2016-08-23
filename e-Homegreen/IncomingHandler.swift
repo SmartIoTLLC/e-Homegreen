@@ -102,14 +102,6 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xF0 { // OVO NE MOZE OVAKO DA BUDE
                     self.ackonowledgementAboutCurtainState(self.byteArray)
                 }
-                //                    if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 {
-                //                        self.ackonowledgementAboutChannelState(self.byteArray)
-                //                    }
-                
-                //            //  ACKNOWLEDGMENT ABOUT LIGHT RELAY STATUS (Get channel state (output) Lightning control action)
-                //            if byteArray[5] == 0xF3 && byteArray[6] == 0x07 {
-                //
-                //            }
                 
                 //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
                 if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
@@ -276,7 +268,6 @@ class IncomingHandler: NSObject {
                 devices[i].heatTemperature = Int(byteArray[14+13*(channel-1)])
                 devices[i].roomTemperature = Int(byteArray[15+13*(channel-1)])
                 devices[i].humidity = Int(byteArray[16+13*(channel-1)])
-                print(byteArray[17+13*(channel-1)] == 0x00 ? false : true)
                 devices[i].filterWarning = byteArray[17+13*(channel-1)] == 0x00 ? false : true
                 devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? NSNumber(bool:false) : NSNumber(bool:true)
                 devices[i].current = Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])
@@ -488,31 +479,19 @@ class IncomingHandler: NSObject {
         }
     }
     //  informacije o stanjima na uredjajima
-    func ackonowledgementAboutChannelState (byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
-            if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
-                let channelNumber = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) * 255/100 // This calculation is added because app uses 0-255 range, and PLC is sending 0-100 //  lightning state 
-                print(Int(byteArray[8+5*(channelNumber-1)]))
-                devices[i].current = Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]) // current
-                print(Int(byteArray[9+5*(channelNumber-1)]) + Int(byteArray[10+5*(channelNumber-1)]))
-                devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
-                devices[i].temperature = Int(byteArray[12+5*(channelNumber-1)]) // temperature
-            } else {
-                
-            }
-        }
-        CoreDataController.shahredInstance.saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-    }
-    //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
-                devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)])*255/100 //  lightning state
+                
+                // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
+                // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+                if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
+                    devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
+                }else{
+                    devices[i].currentValue = Int(byteArray[8+5*(channelNumber-1)])*255/100 // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                }
                 //                let data = NSData(bytes: [byteArray[9+5*(channelNumber-1)], byteArray[10+5*(channelNumber-1)]], length: 2)
                 devices[i].current = Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)])) // current
                 devices[i].voltage = Int(byteArray[11+5*(channelNumber-1)]) // voltage
