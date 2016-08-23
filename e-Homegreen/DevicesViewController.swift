@@ -416,15 +416,20 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             var setDeviceValue:UInt8 = 0
             var skipLevel:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
+                devices[tag].oldValue = devices[tag].currentValue
                 setDeviceValue = UInt8(0)
                 skipLevel = 0
             } else {
-                setDeviceValue = 0xFF
+                if let oldVal = devices[tag].oldValue{
+                    setDeviceValue = UInt8(oldVal.integerValue*100/255)
+                }else{
+                    setDeviceValue = 100
+                }
                 skipLevel = UInt8(Int(self.devices[tag].skipState))
             }
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = Int(setDeviceValue)//Int(setDeviceValue)/255*100
+            devices[tag].currentValue = Int(setDeviceValue)*255/100
 //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
@@ -440,7 +445,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 devices[tag].currentValue = 0
                 skipLevel = 0
             } else {
-                devices[tag].currentValue = 255
+                    devices[tag].currentValue = 0xFF
                 skipLevel = UInt8(Int(self.devices[tag].skipState))
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -708,6 +713,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
             slider.setValue(value/255, animated: true)
             let tag = slider.tag
+            devices[tag].oldValue = devices[tag].currentValue
             devices[tag].currentValue = Int(value)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {

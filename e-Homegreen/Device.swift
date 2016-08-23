@@ -34,6 +34,7 @@ class Device: NSManagedObject {
         self.numberOfDevices = information.numberOfDevices
         self.runningTime = "00:00:00,0s"
         self.currentValue = 0
+        self.oldValue = 0
         self.current = 0
         self.amp = ""
         self.type = information.type
@@ -102,11 +103,6 @@ class Device: NSManagedObject {
         // Convert device images to array
         let deviceValue: Double = {
             return Double(newDeviceValue)
-            //                        if newDeviceValue <= 100 {
-            //                            return Double(newDeviceValue)
-            //                        } else {
-            //                            return Double(newDeviceValue)/255 * 100
-            //                        }
         }()
         guard let checkDeviceImages = self.deviceImages else {
             return UIImage(named: "")!
