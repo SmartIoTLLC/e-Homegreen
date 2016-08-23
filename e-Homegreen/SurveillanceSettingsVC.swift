@@ -17,7 +17,7 @@ class SurveillanceSettingsVC: PopoverVC {
     
     @IBOutlet weak var scroll: UIScrollView!
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var editName: UITextField!
     @IBOutlet weak var levelButton: CustomGradientButton!
@@ -103,27 +103,9 @@ class SurveillanceSettingsVC: PopoverVC {
             
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
 
-    }
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeightConstraint.constant = 250
-            }else if self.view.frame.size.height == 375{
-                backViewHeightConstraint.constant = 300
-            }else if self.view.frame.size.height == 414{
-                backViewHeightConstraint.constant = 350
-            }else{
-                backViewHeightConstraint.constant = 480
-            }
-        }else{
-            if self.view.frame.size.height < 600{
-                backViewHeightConstraint.constant = 480
-            }else{
-                backViewHeightConstraint.constant = 526
-            }
-        }
     }
 
     func dismissViewController () {
@@ -194,6 +176,11 @@ class SurveillanceSettingsVC: PopoverVC {
         
         UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centarConstraint.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
@@ -384,14 +371,9 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension SurveillanceSettingsVC: UITextFieldDelegate{
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        self.centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3,
-                                   delay: 0,
-                                   options: UIViewAnimationOptions.CurveLinear,
-                                   animations: { self.view.layoutIfNeeded() },
-                                   completion: nil)
         return true
     }
 }

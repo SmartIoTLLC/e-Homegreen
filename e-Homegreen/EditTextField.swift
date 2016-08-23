@@ -22,29 +22,14 @@ class EditTextField: UITextField {
         updateTextField()
     }
     
-//    override var placeholder: String?{
-//        willSet(newValue) {
-//            self.attributedPlaceholder = NSAttributedString(string: newValue!,
-//                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-//           
-//        }
-//        
-//        didSet{
-//             setNeedsDisplay()
-//        }
-//
-//    }
-    
     func updateTextField(){
-        self.tintColor = UIColor.whiteColor()
+        self.tintColor = UIColor.blackColor()
+        self.textColor = UIColor.blackColor()
         self.font = UIFont(name: "Tahoma", size: 13)
-        self.layer.borderColor = UIColor.lightGrayColor().CGColor
+        self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1
-        self.layer.cornerRadius = 4
-//        if let place = self.placeholder{
-//            self.attributedPlaceholder = NSAttributedString(string: place,
-//                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-//        }
+        self.layer.cornerRadius = 5
+        self.backgroundColor = UIColor.whiteColor()
     }
     
     override func layoutSubviews() {

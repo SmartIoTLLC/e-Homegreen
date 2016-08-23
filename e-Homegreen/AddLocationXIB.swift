@@ -25,8 +25,6 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
     @IBOutlet weak var categoryBtn: CustomGradientButton!
     @IBOutlet weak var ssidBtn: CustomGradientButton!
     
-//    @IBOutlet weak var backViewHeight: NSLayoutConstraint!
-//    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     
@@ -39,6 +37,8 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
     
     @IBOutlet weak var timerButton: UIButton!
     @IBOutlet weak var securityButton: UIButton!
+    @IBOutlet weak var timerArrowButton: UIButton!
+    @IBOutlet weak var securityArrowButton: UIButton!
     
     var annotation = MKPointAnnotation()
     
@@ -100,11 +100,14 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         locationMap.addGestureRecognizer(lpgr)
         
         if let location = location{
-//            topConstraint.constant = 150
-//            backViewHeight.constant = 540
             zoneBtn.enabled = true
             categoryBtn.enabled = true
             ssidBtn.enabled = true
+            timerButton.enabled = true
+            securityButton.enabled = true
+            timerArrowButton.enabled = true
+            securityArrowButton.enabled = true
+            
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
                 
@@ -144,11 +147,14 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
                 self.locationMap.setRegion(region, animated: true)
             }
         }else{
-//            topConstraint.constant = 8
-//            backViewHeight.constant = 412
             zoneBtn.enabled = false
             categoryBtn.enabled = false
             ssidBtn.enabled = false
+            timerButton.enabled = false
+            securityButton.enabled = false
+            timerArrowButton.enabled = false
+            securityArrowButton.enabled = false
+            
             radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self

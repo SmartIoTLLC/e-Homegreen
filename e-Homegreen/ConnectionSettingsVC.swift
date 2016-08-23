@@ -13,7 +13,7 @@ protocol AddEditGatewayDelegate{
     func addEditGatewayFinished()
 }
 
-class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class ConnectionSettingsVC: UIViewController {
     
     var isPresenting: Bool = true
     
@@ -24,7 +24,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var addressFirst: EditTextField!
     @IBOutlet weak var addressSecond: EditTextField!
     @IBOutlet weak var addressThird: EditTextField!
-    @IBOutlet weak var txtDescription: UITextView!
+    @IBOutlet weak var txtDescription: EditTextField!
     
     @IBOutlet weak var ipHost: EditTextField!
     @IBOutlet weak var port: EditTextField!
@@ -37,7 +37,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     @IBOutlet weak var centarY: NSLayoutConstraint!
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewConnection: UIScrollView!
     
     var location:Location?
@@ -63,19 +62,12 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(ConnectionSettingsVC.endEditingNow) )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        port.inputAccessoryView = keyboardDoneButtonView
-        localPort.inputAccessoryView = keyboardDoneButtonView
-        txtAutoReconnectDelay.inputAccessoryView = keyboardDoneButtonView
-        addressFirst.inputAccessoryView = keyboardDoneButtonView
-        addressSecond.inputAccessoryView = keyboardDoneButtonView
-        addressThird.inputAccessoryView = keyboardDoneButtonView
+        port.inputAccessoryView = CustomToolBar()
+        localPort.inputAccessoryView = CustomToolBar()
+        txtAutoReconnectDelay.inputAccessoryView = CustomToolBar()
+        addressFirst.inputAccessoryView = CustomToolBar()
+        addressSecond.inputAccessoryView = CustomToolBar()
+        addressThird.inputAccessoryView = CustomToolBar()
 
         print(UIDevice.currentDevice().SSID)
         
@@ -102,6 +94,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         txtAutoReconnectDelay.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
 
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
 
@@ -131,65 +124,6 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
     }
     
-    override func viewWillLayoutSubviews() {
-        
-        self.view.layoutIfNeeded()
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                backViewHeightConstraint.constant = 250
-            }else if self.view.frame.size.height == 375{
-                backViewHeightConstraint.constant = 300
-            }else if self.view.frame.size.height == 414{
-                backViewHeightConstraint.constant = 350
-            }else{
-                backViewHeightConstraint.constant = 480
-            }
-        }else{
-            
-            backViewHeightConstraint.constant = 440
-            
-        }
-    }
-    
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
-        if textField == addressFirst || textField == addressSecond || textField == addressThird{
-            let maxLength = 3
-            let currentString: NSString = textField.text!
-            let newString: NSString =
-                currentString.stringByReplacingCharactersInRange(range, withString: string)
-            return newString.length <= maxLength
-        }
-        return true
-    }
-    
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n"{
-            textView.resignFirstResponder()
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.centarY.constant = 0
-            })
-            return false
-        }
-        return true
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        self.centarY.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        return true
-    }
-    
-    func endEditingNow(){
-        port.resignFirstResponder()
-        localPort.resignFirstResponder()
-        txtAutoReconnectDelay.resignFirstResponder()
-        addressFirst.resignFirstResponder()
-        addressSecond.resignFirstResponder()
-        addressThird.resignFirstResponder()
-        centarY.constant = 0
-    }
-    
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -197,28 +131,28 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         if txtDescription.isFirstResponder(){
             if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
         if ipHost.isFirstResponder(){
             if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
         if port.isFirstResponder(){
             if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
         if localIP.isFirstResponder(){
             if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
-                self.centarY.constant = 5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height))
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
@@ -240,9 +174,15 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
+    func keyboardWillHide(notification: NSNotification) {
+        self.centarY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
     @IBAction func cancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func save(sender: AnyObject) {
         
         guard let adrFirst = addressFirst.text where adrFirst != "", let adrSecond = addressSecond.text where  adrSecond != "", let adrThird = addressThird.text where adrThird != "", let heartbeat = txtAutoReconnectDelay.text where heartbeat != "", let port = port.text where port != "", let localport = localPort.text where localport != "", let ip = ipHost.text where ip != "", let localip = localIP.text where localip != "" else {
@@ -277,7 +217,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
             gateway.addressOne = aFirst
             gateway.addressTwo = aSecond
             gateway.addressThree = aThird
-            gateway.gatewayDescription = txtDescription.text
+            gateway.gatewayDescription = txtDescription.text!
             gateway.autoReconnectDelay = hb
             gateway.gatewayType = gatewayType
             CoreDataController.shahredInstance.saveChanges()
@@ -294,7 +234,7 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
                 gateway.addressOne = aFirst
                 gateway.addressTwo = aSecond
                 gateway.addressThree = aThird
-                gateway.gatewayDescription = txtDescription.text
+                gateway.gatewayDescription = txtDescription.text!
                 gateway.turnedOn = true
                 gateway.location = location
                 gateway.gatewayId = NSUUID().UUIDString
@@ -309,8 +249,39 @@ class ConnectionSettingsVC: UIViewController, UITextFieldDelegate, UITextViewDel
         
     }
 
-    
+}
 
+extension ConnectionSettingsVC: UITextFieldDelegate{
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+        if textField == addressFirst || textField == addressSecond || textField == addressThird{
+            let maxLength = 3
+            let currentString: NSString = textField.text!
+            let newString: NSString =
+                currentString.stringByReplacingCharactersInRange(range, withString: string)
+            return newString.length <= maxLength
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension ConnectionSettingsVC: UITextViewDelegate{
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.centarY.constant = 0
+            })
+            return false
+        }
+        return true
+    }
 }
 
 extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
