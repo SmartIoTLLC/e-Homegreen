@@ -268,30 +268,25 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
-            if editedDevice!.controlType == ControlType.Relay && device.isCurtainModeAllowed.boolValue {
-                device.controlType = ControlType.Curtain
+            if editedDevice!.controlType == ControlType.Relay {
+                if device.isCurtainModeAllowed.boolValue {
+                    device.controlType = ControlType.Curtain
+                }else{
+                    device.controlType = ControlType.Relay
+                }
             }else{
-                device.controlType = editedDevice!.controlType
+                if editedDevice!.controlType == ControlType.Curtain {
+                    if device.isCurtainModeAllowed.boolValue {
+                        device.controlType = ControlType.Curtain // Stay crtain
+                    }else{
+                        device.controlType = ControlType.Relay  // if isCurtainModeAllowed is disabbled, set it to relay
+                    }
+                }else{
+                    device.controlType = editedDevice!.controlType
+                }
             }
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
             
-            //            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-            //            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-            //            if let checkDeviceImages = device.deviceImages {
-            //                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-            //                    if devImages.count > 0 {
-            //                        for deviceImage in devImages {
-            //                            appDel.managedObjectContext!.deleteObject(deviceImage)
-            //                        }
-            //                        for defaultDeviceImage in defaultDeviceImages {
-            //                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            //                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-            //                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-            //                            deviceImage.device = device
-            //                        }
-            //                    }
-            //                }
-            //   }
             device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)

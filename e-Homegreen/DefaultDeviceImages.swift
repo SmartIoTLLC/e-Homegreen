@@ -71,6 +71,18 @@ class DefaultDeviceImages: NSObject {
             
         default:
             switch categoryId {
+            case CategoryId.GatewayControl:
+                guard let controlModeTemp = controlMode else{
+                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
+                }
+                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 1, text: "On"),
+                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 0, text: "Off")]
+                }else{
+                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
+                }
             case CategoryId.DimmingControl:
                 guard let controlModeTemp = controlMode else{
                     return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
@@ -123,8 +135,8 @@ class DefaultDeviceImages: NSObject {
 
             case CategoryId.Appliance:
                 guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: "On")]
+                    return [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
                 }
                 if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
                     return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 1, text: "On"),
