@@ -105,6 +105,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         addObservers()
     }
     
+    
+    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
@@ -859,6 +861,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
+    
+    
 }
 
 //MARK:- Table view dlegates and data source
