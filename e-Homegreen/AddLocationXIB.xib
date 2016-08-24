@@ -313,7 +313,6 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="JcR-aC-kBR"/>
-                            <exclude reference="HAV-B9-rN3"/>
                             <exclude reference="wm0-vR-cL7"/>
                             <exclude reference="1F9-h5-qeh"/>
                             <exclude reference="3rK-7c-76B"/>
@@ -331,6 +330,7 @@
                             <exclude reference="U1W-wk-Cpa"/>
                             <exclude reference="fzj-9W-iLp"/>
                             <exclude reference="pfq-4e-0OT"/>
+                            <exclude reference="HAV-B9-rN3"/>
                             <exclude reference="pgS-pl-9A8"/>
                             <exclude reference="cgw-aM-P5U"/>
                         </mask>
@@ -353,7 +353,6 @@
                     </variation>
                     <variation key="heightClass=regular-widthClass=compact">
                         <mask key="constraints">
-                            <include reference="HAV-B9-rN3"/>
                             <include reference="1F9-h5-qeh"/>
                             <include reference="3rK-7c-76B"/>
                             <include reference="Bbk-bV-4Xd"/>
@@ -362,13 +361,13 @@
                             <include reference="1aK-8w-evH"/>
                             <include reference="E5J-HW-tc6"/>
                             <include reference="fzj-9W-iLp"/>
+                            <include reference="HAV-B9-rN3"/>
                             <include reference="pgS-pl-9A8"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
                             <include reference="JcR-aC-kBR"/>
-                            <include reference="HAV-B9-rN3"/>
                             <include reference="1F9-h5-qeh"/>
                             <include reference="3rK-7c-76B"/>
                             <include reference="Bbk-bV-4Xd"/>
@@ -377,6 +376,7 @@
                             <include reference="1aK-8w-evH"/>
                             <include reference="E5J-HW-tc6"/>
                             <include reference="fzj-9W-iLp"/>
+                            <include reference="HAV-B9-rN3"/>
                             <include reference="pgS-pl-9A8"/>
                         </mask>
                     </variation>

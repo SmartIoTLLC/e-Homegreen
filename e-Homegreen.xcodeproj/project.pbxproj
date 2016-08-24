@@ -104,6 +104,8 @@
 		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
 		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
 		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
+		490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */; };
+		490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */; };
 		490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */; };
 		490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */; };
 		495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */; };
@@ -450,6 +452,8 @@
 		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
 		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
+		490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
+		490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeleteConfirmation.xib; sourceTree = "<group>"; };
 		490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityNeedDisarmInformation.swift; sourceTree = "<group>"; };
 		490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityNeedDisarmInformation.xib; sourceTree = "<group>"; };
 		495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionCell.swift; sourceTree = "<group>"; };
@@ -1719,6 +1723,8 @@
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 				734E35771C8239990096E043 /* ScanFunction.swift */,
+				490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */,
+				490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */,
 			);
 			name = ScanViewController;
 			sourceTree = "<group>";
@@ -1848,6 +1854,7 @@
 				223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
 				E7DC67BF1B457C0E00EA6543 /* weather-moon@2x.png in Resources */,
+				490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */,
 				2232922B1CABD6790001422B /* Settings.storyboard in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
 				E7DC67BC1B457C0E00EA6543 /* weather-mist.png in Resources */,
@@ -2040,6 +2047,7 @@
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
+				490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */,
 				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,

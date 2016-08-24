@@ -376,13 +376,42 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     @IBAction func deleteAll(sender: AnyObject) {
-        for var item = 0; item < devices.count; item += 1 {
-            if devices[item].gateway.objectID == gateway.objectID {
-                appDel.managedObjectContext!.deleteObject(devices[item])
+
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            for var item = 0; item < self.devices.count; item += 1 {
+                if self.devices[item].gateway.objectID == self.gateway.objectID {
+                    self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+                }
             }
+            CoreDataController.shahredInstance.saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender.view
+            popoverController.sourceRect = sender.bounds
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+        
+        //Delete popup with design same as in android. If khalifa wants design to be the same then uncomment this.
+//        let deleteVC = DeleteConfirmation()
+//        deleteVC.delegate = self
+//        self.presentViewController(deleteVC, animated: false, completion: nil)
+  
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
@@ -906,6 +935,18 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             updateDeviceList()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
+    }
+}
+
+extension ScanDevicesViewController: DeleteAllDelegate {
+    func deleteConfirmed() {
+        for var item = 0; item < self.devices.count; item += 1 {
+            if self.devices[item].gateway.objectID == self.gateway.objectID {
+                self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+            }
+        }
+        CoreDataController.shahredInstance.saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
 }
 

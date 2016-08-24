@@ -45,8 +45,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
     @IBOutlet weak var deviceCollectionView: UICollectionView!
-//    @IBOutlet weak var indicatorGreen: UIView!
-//    @IBOutlet weak var indicatorRed: UIView!
     
     //Zone and category control
     @IBOutlet weak var bottomView: UIView!
@@ -203,27 +201,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     func updateSubtitle(location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
     }
-//    func updateIndicator(notification:NSNotification){
-//        if let info = notification.userInfo as? [String:String]{
-//            if let lamp = info["lamp"]{
-//                if lamp == "red" {
-//                    self.indicatorRed.alpha = 1
-//                    UIView.animateWithDuration(0.5, animations: { 
-//                        self.indicatorRed.alpha = 0
-//                    })
-//                }else if lamp == "green" {
-//                    self.indicatorGreen.alpha = 1
-//                    UIView.animateWithDuration(0.5, animations: {
-//                        self.indicatorGreen.alpha = 0
-//                    })
-//                }else{
-//                    print("INDICATOR ERROR")
-//                }
-//            }
-//        }
-//        //indicatorGreen.backgroundColor = UIColor.greenColor()
-//    }
-    
     func fetchDevicesInBackground(){
         updateCells()
     }
