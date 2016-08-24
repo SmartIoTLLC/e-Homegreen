@@ -85,6 +85,8 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
     
     var pc:Device
     
+    @IBOutlet weak var centerY: NSLayoutConstraint!
+    
     init(pc:Device){
         self.pc = pc
         socketIO = InOutSocket(port: 5000)
@@ -134,10 +136,7 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
             delayTextField.text = String(delay)
         }
         delayTextField.keyboardType = .NumberPad
-        delayTextField.tintColor = UIColor.whiteColor()
-        delayTextField.layer.borderWidth = 1
-        delayTextField.layer.cornerRadius = 2
-        delayTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
+        delayTextField.inputAccessoryView = CustomToolBar()
 
         delayTextField.attributedPlaceholder = NSAttributedString(string:"0",
                                                                     attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
@@ -147,10 +146,7 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
             displayTimeTextField.text = String(display)
         }
         displayTimeTextField.keyboardType = .NumberPad
-        displayTimeTextField.tintColor = UIColor.whiteColor()
-        displayTimeTextField.layer.borderWidth = 1
-        displayTimeTextField.layer.cornerRadius = 2
-        displayTimeTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
+        displayTimeTextField.inputAccessoryView = CustomToolBar()
 
         displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0",
                                                                   attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
@@ -160,7 +156,9 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlNotificationsXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        // Do any additional setup after loading the view.
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlNotificationsXIB.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlNotificationsXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
     
     func dismissViewController () {
@@ -236,6 +234,7 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
     @IBAction func cancelAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func saveAction(sender: AnyObject) {
         
         //TODO: Save notification settings, notificationPosition and notificationType already set, get delay and display time, here
@@ -258,6 +257,35 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if delayTextField.isFirstResponder(){
+            if backView.frame.origin.y + delayTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.delayTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if displayTimeTextField.isFirstResponder(){
+            if backView.frame.origin.y + displayTimeTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.displayTimeTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
 }
 
 extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
@@ -276,14 +304,11 @@ extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
             containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -293,18 +318,17 @@ extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-            
         }
         
     }
 }
+
+
 
 extension PCControlNotificationsXIB : UIViewControllerTransitioningDelegate {
     

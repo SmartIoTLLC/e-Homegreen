@@ -18,13 +18,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e4t-t3-Qln" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="200" y="172" width="200" height="256"/>
+                    <rect key="frame" x="200" y="193" width="200" height="214"/>
                     <subviews>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fd-e7-cEP">
-                            <rect key="frame" x="76" y="59" width="51" height="31"/>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fd-e7-cEP">
+                            <rect key="frame" x="75" y="46" width="51" height="31"/>
                         </switch>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dX-QM-klE" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="56" y="204" width="89" height="38"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dX-QM-klE" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="10" y="169" width="180" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="MMA-Vp-OXI"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="SAVE">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,17 +36,17 @@
                                 <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="2uu-Pa-IBn"/>
                             </connections>
                         </button>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p75-B9-Q4g">
-                            <rect key="frame" x="76" y="148" width="51" height="31"/>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p75-B9-Q4g">
+                            <rect key="frame" x="75" y="123" width="51" height="31"/>
                         </switch>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnV-rG-c9B">
-                            <rect key="frame" x="51" y="25" width="97" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnV-rG-c9B">
+                            <rect key="frame" x="58" y="15" width="84" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Localcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkB-Q4-MV9">
-                            <rect key="frame" x="52" y="108" width="97" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Localcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkB-Q4-MV9">
+                            <rect key="frame" x="60" y="92" width="79" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -51,8 +54,19 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="256" id="haR-QP-wH0"/>
+                        <constraint firstItem="gkB-Q4-MV9" firstAttribute="centerX" secondItem="3fd-e7-cEP" secondAttribute="centerX" id="8Ee-Ml-J1q"/>
+                        <constraint firstItem="3fd-e7-cEP" firstAttribute="top" secondItem="mnV-rG-c9B" secondAttribute="bottom" constant="10" id="9BP-Oa-3RQ"/>
+                        <constraint firstItem="gkB-Q4-MV9" firstAttribute="top" secondItem="3fd-e7-cEP" secondAttribute="bottom" constant="15" id="DCA-GE-70R"/>
+                        <constraint firstItem="p75-B9-Q4g" firstAttribute="centerX" secondItem="gkB-Q4-MV9" secondAttribute="centerX" id="JHC-px-PS2"/>
+                        <constraint firstItem="mnV-rG-c9B" firstAttribute="top" secondItem="e4t-t3-Qln" secondAttribute="top" constant="15" id="NjC-nu-Qy5"/>
+                        <constraint firstAttribute="bottom" secondItem="8dX-QM-klE" secondAttribute="bottom" constant="5" id="XD6-3A-XjU"/>
+                        <constraint firstItem="mnV-rG-c9B" firstAttribute="centerX" secondItem="e4t-t3-Qln" secondAttribute="centerX" id="aMs-fG-imr"/>
+                        <constraint firstItem="p75-B9-Q4g" firstAttribute="top" secondItem="gkB-Q4-MV9" secondAttribute="bottom" constant="10" id="eTg-SE-cCn"/>
+                        <constraint firstItem="8dX-QM-klE" firstAttribute="leading" secondItem="e4t-t3-Qln" secondAttribute="leading" constant="10" id="fv3-v0-CzM"/>
+                        <constraint firstItem="3fd-e7-cEP" firstAttribute="centerX" secondItem="mnV-rG-c9B" secondAttribute="centerX" id="kzk-aD-n6r"/>
                         <constraint firstAttribute="width" constant="200" id="nEL-zZ-Ra0"/>
+                        <constraint firstAttribute="trailing" secondItem="8dX-QM-klE" secondAttribute="trailing" constant="10" id="t6l-TG-92A"/>
+                        <constraint firstItem="8dX-QM-klE" firstAttribute="top" secondItem="p75-B9-Q4g" secondAttribute="bottom" constant="15" id="vKA-8t-12x"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
@@ -64,6 +78,7 @@
                 <constraint firstItem="e4t-t3-Qln" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="p4O-hG-3et"/>
                 <constraint firstItem="e4t-t3-Qln" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uQY-sP-8r4"/>
             </constraints>
+            <point key="canvasLocation" x="420" y="362"/>
         </view>
     </objects>
 </document>

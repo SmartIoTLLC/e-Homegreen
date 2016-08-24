@@ -37,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcd-at-cut" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="160" width="300" height="280"/>
+                    <rect key="frame" x="150" y="157" width="300" height="287"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pan Step" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzn-PK-aZW">
                             <rect key="frame" x="10" y="10" width="51" height="16"/>
@@ -75,9 +75,12 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="15" maxValue="60" translatesAutoresizingMaskIntoConstraints="NO" id="hUE-1b-eBU">
                             <rect key="frame" x="21" y="206" width="260" height="31"/>
                         </slider>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCx-JZ-5oc" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="10" y="242" width="282" height="31"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCx-JZ-5oc" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="10" y="242" width="282" height="40"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="PsO-eh-t8J"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <state key="normal" title="SAVE">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -127,7 +130,6 @@
                         <constraint firstItem="gzn-PK-aZW" firstAttribute="leading" secondItem="rcd-at-cut" secondAttribute="leading" constant="10" id="9mG-Nn-x0N"/>
                         <constraint firstItem="6Up-7g-Akt" firstAttribute="trailing" secondItem="Pse-V5-TQn" secondAttribute="trailing" id="BLD-fN-RQA"/>
                         <constraint firstItem="XHe-fH-ReP" firstAttribute="top" secondItem="A1q-7G-30k" secondAttribute="bottom" constant="6" id="DPQ-VT-9kC"/>
-                        <constraint firstAttribute="height" constant="280" id="Ip1-VD-dAe"/>
                         <constraint firstItem="wWq-1L-Xsf" firstAttribute="trailing" secondItem="3gc-5k-P7i" secondAttribute="trailing" id="JJM-0g-Sd1"/>
                         <constraint firstAttribute="width" constant="300" id="MZM-Wg-shj"/>
                         <constraint firstAttribute="trailing" secondItem="Pse-V5-TQn" secondAttribute="trailing" constant="8" id="RHb-jt-bHj"/>
@@ -142,6 +144,7 @@
                         <constraint firstItem="XHe-fH-ReP" firstAttribute="width" secondItem="UsP-k0-VKJ" secondAttribute="width" id="hNu-TM-p8j"/>
                         <constraint firstItem="iCx-JZ-5oc" firstAttribute="leading" secondItem="vsn-eD-jB1" secondAttribute="leading" id="jVv-Gp-B0U"/>
                         <constraint firstItem="UsP-k0-VKJ" firstAttribute="top" secondItem="gzn-PK-aZW" secondAttribute="bottom" constant="6" id="jjl-L5-OH7"/>
+                        <constraint firstAttribute="bottom" secondItem="iCx-JZ-5oc" secondAttribute="bottom" constant="5" id="jlt-AU-33Q"/>
                         <constraint firstItem="t0u-jg-ZVN" firstAttribute="top" secondItem="XHe-fH-ReP" secondAttribute="bottom" constant="6" id="nGn-Wu-6xf"/>
                         <constraint firstItem="Pse-V5-TQn" firstAttribute="centerY" secondItem="gzn-PK-aZW" secondAttribute="centerY" id="nJT-eB-byU"/>
                         <constraint firstItem="3gc-5k-P7i" firstAttribute="centerY" secondItem="t0u-jg-ZVN" secondAttribute="centerY" id="pJE-b8-BJA"/>

@@ -798,7 +798,7 @@
                                                         <constraint firstAttribute="width" secondItem="nlE-av-N4d" secondAttribute="height" multiplier="1:1" id="Nzf-cZ-XuF"/>
                                                         <constraint firstAttribute="width" constant="35" id="UIE-Ok-vCM"/>
                                                     </constraints>
-                                                    <state key="normal" title="URLs" image="optionsss">
+                                                    <state key="normal" title="URLs" image="details_button">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -4231,7 +4231,6 @@
         <image name="full screen" width="30" height="30"/>
         <image name="left" width="120" height="120"/>
         <image name="lightBulb" width="200" height="200"/>
-        <image name="optionsss" width="200" height="200"/>
         <image name="right" width="120" height="120"/>
         <image name="share" width="96" height="96"/>
     </resources>

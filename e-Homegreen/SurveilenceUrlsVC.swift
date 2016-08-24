@@ -8,17 +8,7 @@
 
 import UIKit
 
-class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
-//    /dms?nowprofileid=2 -- getting images
-//    /cgi-bin/longcctvmove.cgi?action=move&amp;direction=down&amp;panstep=1&amp;tiltstep=15 -- move down
-//    /cgi-bin/longcctvmove.cgi?action=move&amp;direction=right&amp;panstep=1&amp;tiltstep=15 -- move right
-//    /cgi-bin/longcctvmove.cgi?action=move&amp;direction=up&amp;panstep=1&amp;tiltstep=15 -- move up
-//    /cgi-bin/longcctvmove.cgi?action=move&amp;direction=left&amp;panstep=1&amp;tiltstep=15 -- move left
-//    /cgi-bin/longcctvapn.cgi?action=go&speed=1 -- auto pan
-//    /cgi-bin/longcctvapn.cgi?action=stop -- auto pan stop
-//    /cgi-bin/longcctvseq.cgi?action=go -- preset sequence
-//    /cgi-bin/longcctvseq.cgi?action=stop  -- preset sequence stop
-//    /cgi-bin/longcctvhome.cgi?action=gohome -- home
+class SurveilenceUrlsVC: UIViewController {
     
     var getImage = "/dms?nowprofileid=2"
     var moveRight = "/cgi-bin/longcctvmove.cgi?action=move&amp;direction=right&amp;panstep=1&amp;tiltstep=15"
@@ -50,6 +40,11 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     @IBOutlet weak var txtPresetSequence: UITextField!
     @IBOutlet weak var txtStopPresetSequence: UITextField!
     @IBOutlet weak var txtHome: UITextField!
+    
+    @IBOutlet weak var backView: UIView!
+    
+    @IBOutlet weak var centerY: NSLayoutConstraint!
+    @IBOutlet weak var scroll: UIScrollView!
     
     init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "SurveilenceUrlsVC", bundle: nil)
@@ -101,54 +96,23 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         txtStopPresetSequence.text = surv!.urlPresetSequenceStop
         txtHome.text = surv!.urlHome
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SurveilenceUrlsVC.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        // Do any additional setup after loading the view.
-    }
-    func dismissViewController () {
-        resignFirstResponder()
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    override func viewWillDisappear(animated: Bool) {
-        resignFirstResponders()
-    }
-    func resignFirstResponders () {
-        txtGetImage.resignFirstResponder()
-        txtMoveLeft.resignFirstResponder()
-        txtMoveRight.resignFirstResponder()
-        txtMoveUp.resignFirstResponder()
-        txtMoveDown.resignFirstResponder()
-        txtAutoPan.resignFirstResponder()
-        txtStopAutoPan.resignFirstResponder()
-        txtPresetSequence.resignFirstResponder()
-        txtStopPresetSequence.resignFirstResponder()
-        txtHome.resignFirstResponder()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
     
-    func saveChanges() {
-        appDel.establishAllConnections()
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
-        resignFirstResponder()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func btnSave(sender: AnyObject) {
-        print(txtGetImage.text)
-        print(surv!.urlGetImage)
-        print(txtGetImage.text!)
-        print(surv!.urlGetImage!)
-        print(surv!.objectID)
-        print(surv!.name)
-        print(surv!.urlGetImage)
-        print(surv!.urlGetImage)
-        print(surv!.urlGetImage)
-        print(surv!.urlGetImage)
         if txtGetImage.text != "" {surv!.urlGetImage! = txtGetImage.text!}
         if txtMoveRight.text != "" {surv!.urlMoveRight! = txtMoveRight.text!}
         if txtMoveLeft.text != "" {surv!.urlMoveLeft! = txtMoveLeft.text!}
@@ -159,40 +123,135 @@ class SurveilenceUrlsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         if txtPresetSequence.text != "" {surv!.urlPresetSequence! = txtPresetSequence.text!}
         if txtStopPresetSequence.text != "" {surv!.urlPresetSequenceStop! = txtStopPresetSequence.text!}
         if txtHome.text != "" {surv!.urlHome! = txtHome.text!}
-//        txtGetImage.resignFirstResponder()
-//        txtMoveLeft.resignFirstResponder()
-//        txtMoveRight.resignFirstResponder()
-//        txtMoveUp.resignFirstResponder()
-//        txtMoveDown.resignFirstResponder()
-//        txtAutoPan.resignFirstResponder()
-//        txtStopAutoPan.resignFirstResponder()
-//        txtPresetSequence.resignFirstResponder()
-//        txtStopPresetSequence.resignFirstResponder()
-//        txtHome.resignFirstResponder()
-        print(surv!)
         CoreDataController.shahredInstance.saveChanges()
-        saveChanges()
         
         resignFirstResponder()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if txtMoveRight.isFirstResponder(){
+            if backView.frame.origin.y + txtMoveRight.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveRight.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtMoveUp.isFirstResponder(){
+            if backView.frame.origin.y + txtMoveUp.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveUp.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtMoveDown.isFirstResponder(){
+            if backView.frame.origin.y + txtMoveDown.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveDown.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtAutoPan.isFirstResponder(){
+            if backView.frame.origin.y + txtAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtStopAutoPan.isFirstResponder(){
+            if backView.frame.origin.y + txtStopAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtStopAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtPresetSequence.isFirstResponder(){
+            if backView.frame.origin.y + txtPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtStopPresetSequence.isFirstResponder(){
+            if backView.frame.origin.y + txtStopPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtStopPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if txtHome.isFirstResponder(){
+            if backView.frame.origin.y + txtHome.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtHome.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
-    */
+    
+    func dismissKeyboard(){
+        self.view.endEditing(true)
+    }
+
 
 }
+
+extension SurveilenceUrlsVC : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if txtGetImage.isFirstResponder(){
+            txtMoveLeft.becomeFirstResponder()
+        }else if txtMoveLeft.isFirstResponder(){
+            txtMoveRight.becomeFirstResponder()
+        }else if txtMoveRight.isFirstResponder(){
+            txtMoveUp.becomeFirstResponder()
+        }else if txtMoveUp.isFirstResponder(){
+            txtMoveDown.becomeFirstResponder()
+        }else if txtMoveDown.isFirstResponder(){
+            txtAutoPan.becomeFirstResponder()
+        }else if txtAutoPan.isFirstResponder(){
+            txtStopAutoPan.becomeFirstResponder()
+        }else if txtStopAutoPan.isFirstResponder(){
+            txtPresetSequence.becomeFirstResponder()
+        }else if txtPresetSequence.isFirstResponder(){
+            txtStopPresetSequence.becomeFirstResponder()
+        }else if txtStopPresetSequence.isFirstResponder(){
+            txtHome.becomeFirstResponder()
+        }else{
+            textField.resignFirstResponder()
+        }
+        return true
+    }
+}
+
+extension SurveilenceUrlsVC : UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            dismissKeyboard()
+            return false
+        }
+        return true
+    }
+}
+
 extension SurveilenceUrlsVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -257,10 +316,10 @@ extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
         }
     }
 }
+
 extension UIViewController {
     func showCameraUrls (point:CGPoint, surveillance:Surveillance) {
         let scu = SurveilenceUrlsVC(point: point, surv: surveillance)
-//        scu.surv = surveillance
         self.presentViewController(scu, animated: true, completion: nil)
     }
 }

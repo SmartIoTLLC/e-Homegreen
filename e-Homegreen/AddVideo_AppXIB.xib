@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -28,133 +28,144 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B2k-s9-7JY" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="150" y="180" width="300" height="180"/>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B2k-s9-7JY" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="150" y="206" width="300" height="128"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fv2-8f-sc9">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="180"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1jV-UH-e0u" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="163" y="141" width="75" height="31"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="75" id="HKm-fa-Xqr"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <state key="normal" title="SAVE">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="XkD-Mj-dal"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbh-NG-ock" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="63" y="141" width="75" height="31"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="75" id="Rtp-1r-ddh"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <state key="normal" title="CANCEL">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="3dU-L1-LYQ"/>
-                                    </connections>
-                                </button>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qq4-Ip-coY">
-                                    <rect key="frame" x="8" y="101" width="284" height="30"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Path" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GmN-Bh-xXc">
-                                    <rect key="frame" x="8" y="77" width="30" height="19"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NdH-ug-QsC">
-                                    <rect key="frame" x="8" y="39" width="284" height="30"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="284" id="7gE-vf-NfG"/>
-                                    </constraints>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7l6-IK-wXV">
-                                    <rect key="frame" x="8" y="15" width="39" height="19"/>
-                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1jV-UH-e0u" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="155" y="83" width="137" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="SAVE">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="XkD-Mj-dal"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NdH-ug-QsC" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="58" y="10" width="234" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7l6-IK-wXV">
+                            <rect key="frame" x="8" y="15" width="40" height="19"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="NdH-ug-QsC" secondAttribute="trailing" constant="8" id="1nL-fM-xb7"/>
-                                <constraint firstItem="GmN-Bh-xXc" firstAttribute="leading" secondItem="Fv2-8f-sc9" secondAttribute="leading" constant="8" id="4NJ-61-OAq"/>
-                                <constraint firstAttribute="trailing" secondItem="NdH-ug-QsC" secondAttribute="trailing" constant="8" id="5Fo-QD-NPW"/>
-                                <constraint firstAttribute="trailing" secondItem="qq4-Ip-coY" secondAttribute="trailing" constant="8" id="5vd-ze-7Y0"/>
-                                <constraint firstAttribute="trailing" secondItem="NdH-ug-QsC" secondAttribute="trailing" constant="8" id="8VY-pf-qrJ"/>
-                                <constraint firstAttribute="bottom" secondItem="Xbh-NG-ock" secondAttribute="bottom" constant="20" id="D7Q-XC-HqT"/>
-                                <constraint firstItem="NdH-ug-QsC" firstAttribute="top" secondItem="7l6-IK-wXV" secondAttribute="bottom" constant="5" id="FyD-hV-c3g"/>
-                                <constraint firstAttribute="bottom" secondItem="Xbh-NG-ock" secondAttribute="bottom" constant="98" id="Oon-8m-9EK"/>
-                                <constraint firstItem="GmN-Bh-xXc" firstAttribute="top" secondItem="NdH-ug-QsC" secondAttribute="bottom" constant="8" id="TDP-Vq-rIv"/>
-                                <constraint firstItem="7l6-IK-wXV" firstAttribute="leading" secondItem="Fv2-8f-sc9" secondAttribute="leading" constant="8" id="TmQ-zl-C90"/>
-                                <constraint firstAttribute="bottom" secondItem="Xbh-NG-ock" secondAttribute="bottom" constant="13" id="XmC-bp-hgj"/>
-                                <constraint firstItem="qq4-Ip-coY" firstAttribute="width" secondItem="NdH-ug-QsC" secondAttribute="width" id="Zlm-Q8-oi1"/>
-                                <constraint firstAttribute="centerX" secondItem="1jV-UH-e0u" secondAttribute="centerX" constant="-50" id="ZzM-4c-zI2"/>
-                                <constraint firstItem="qq4-Ip-coY" firstAttribute="top" secondItem="GmN-Bh-xXc" secondAttribute="bottom" constant="5" id="cA5-9S-Pag"/>
-                                <constraint firstAttribute="centerX" secondItem="Xbh-NG-ock" secondAttribute="centerX" constant="50" id="eEr-zn-Geo"/>
-                                <constraint firstItem="qq4-Ip-coY" firstAttribute="leading" secondItem="Fv2-8f-sc9" secondAttribute="leading" constant="8" id="gCE-jG-ywU"/>
-                                <constraint firstItem="NdH-ug-QsC" firstAttribute="leading" secondItem="Fv2-8f-sc9" secondAttribute="leading" constant="8" id="gow-d7-1sy"/>
-                                <constraint firstItem="Xbh-NG-ock" firstAttribute="top" secondItem="qq4-Ip-coY" secondAttribute="bottom" constant="10" id="lLl-AN-v8g"/>
-                                <constraint firstItem="7l6-IK-wXV" firstAttribute="top" secondItem="Fv2-8f-sc9" secondAttribute="top" constant="15" id="pYY-HG-5Ml"/>
-                                <constraint firstItem="Xbh-NG-ock" firstAttribute="centerY" secondItem="1jV-UH-e0u" secondAttribute="centerY" id="u8x-zf-dME"/>
+                                <constraint firstAttribute="width" constant="40" id="mGu-vO-fXW"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="1nL-fM-xb7"/>
-                                    <exclude reference="8VY-pf-qrJ"/>
-                                    <exclude reference="5vd-ze-7Y0"/>
-                                    <exclude reference="D7Q-XC-HqT"/>
-                                    <exclude reference="XmC-bp-hgj"/>
-                                </mask>
-                            </variation>
-                        </scrollView>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Path" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GmN-Bh-xXc">
+                            <rect key="frame" x="8" y="48" width="40" height="19"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qq4-Ip-coY" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="58" y="43" width="234" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbh-NG-ock" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="8" y="83" width="137" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="BdE-0y-xVM"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="CANCEL">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="3dU-L1-LYQ"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="300" id="8m6-wQ-6I8"/>
-                        <constraint firstAttribute="trailing" secondItem="Fv2-8f-sc9" secondAttribute="trailing" id="MZ3-2u-aQi"/>
-                        <constraint firstItem="Fv2-8f-sc9" firstAttribute="top" secondItem="B2k-s9-7JY" secondAttribute="top" id="XF5-2j-2Cl"/>
-                        <constraint firstAttribute="height" constant="180" id="cqi-WD-ckN"/>
-                        <constraint firstItem="Fv2-8f-sc9" firstAttribute="leading" secondItem="B2k-s9-7JY" secondAttribute="leading" id="eOR-Vy-a6w"/>
-                        <constraint firstAttribute="bottom" secondItem="Fv2-8f-sc9" secondAttribute="bottom" id="f11-l9-jgx"/>
-                        <constraint firstItem="Fv2-8f-sc9" firstAttribute="width" secondItem="B2k-s9-7JY" secondAttribute="width" id="qeU-3o-SJ0"/>
+                        <constraint firstItem="1jV-UH-e0u" firstAttribute="leading" secondItem="Xbh-NG-ock" secondAttribute="trailing" constant="10" id="4gt-xc-Fz2"/>
+                        <constraint firstItem="NdH-ug-QsC" firstAttribute="centerY" secondItem="7l6-IK-wXV" secondAttribute="centerY" id="7Cd-yO-cOn"/>
+                        <constraint firstItem="qq4-Ip-coY" firstAttribute="leading" secondItem="NdH-ug-QsC" secondAttribute="leading" id="86f-t3-OPc"/>
+                        <constraint firstAttribute="width" constant="350" id="8m6-wQ-6I8"/>
+                        <constraint firstItem="7l6-IK-wXV" firstAttribute="top" secondItem="B2k-s9-7JY" secondAttribute="top" constant="15" id="EFX-Gz-cgg"/>
+                        <constraint firstItem="NdH-ug-QsC" firstAttribute="leading" secondItem="7l6-IK-wXV" secondAttribute="trailing" constant="10" id="Fpw-zU-t2X"/>
+                        <constraint firstItem="Xbh-NG-ock" firstAttribute="leading" secondItem="GmN-Bh-xXc" secondAttribute="leading" id="Meg-aj-ELI"/>
+                        <constraint firstItem="1jV-UH-e0u" firstAttribute="height" secondItem="Xbh-NG-ock" secondAttribute="height" id="OQE-B8-ID6"/>
+                        <constraint firstItem="1jV-UH-e0u" firstAttribute="trailing" secondItem="qq4-Ip-coY" secondAttribute="trailing" id="QMc-Bd-UIJ"/>
+                        <constraint firstItem="GmN-Bh-xXc" firstAttribute="leading" secondItem="7l6-IK-wXV" secondAttribute="leading" id="U3Y-WS-24O"/>
+                        <constraint firstAttribute="bottom" secondItem="Xbh-NG-ock" secondAttribute="bottom" constant="5" id="UJo-Wa-t7e"/>
+                        <constraint firstItem="qq4-Ip-coY" firstAttribute="centerY" secondItem="GmN-Bh-xXc" secondAttribute="centerY" id="bHQ-92-F7R"/>
+                        <constraint firstAttribute="trailing" secondItem="NdH-ug-QsC" secondAttribute="trailing" constant="8" id="bhi-BP-h7b"/>
+                        <constraint firstItem="GmN-Bh-xXc" firstAttribute="width" secondItem="7l6-IK-wXV" secondAttribute="width" id="iTm-EH-1vq"/>
+                        <constraint firstItem="GmN-Bh-xXc" firstAttribute="top" secondItem="7l6-IK-wXV" secondAttribute="bottom" constant="14" id="j3s-MQ-b43"/>
+                        <constraint firstItem="Xbh-NG-ock" firstAttribute="top" secondItem="qq4-Ip-coY" secondAttribute="bottom" constant="10" id="lWe-CR-0N8"/>
+                        <constraint firstItem="qq4-Ip-coY" firstAttribute="trailing" secondItem="NdH-ug-QsC" secondAttribute="trailing" id="ucf-FV-CDQ"/>
+                        <constraint firstItem="7l6-IK-wXV" firstAttribute="leading" secondItem="B2k-s9-7JY" secondAttribute="leading" constant="8" id="viB-TP-bc2"/>
+                        <constraint firstItem="1jV-UH-e0u" firstAttribute="width" secondItem="Xbh-NG-ock" secondAttribute="width" id="wsa-I9-TaH"/>
+                        <constraint firstItem="1jV-UH-e0u" firstAttribute="centerY" secondItem="Xbh-NG-ock" secondAttribute="centerY" id="zLj-7G-jAO"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <variation key="default">
                         <mask key="constraints">
-                            <exclude reference="qeU-3o-SJ0"/>
+                            <exclude reference="8m6-wQ-6I8"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact">
+                        <mask key="constraints">
+                            <include reference="8m6-wQ-6I8"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
                         <rect key="frame" x="50" y="50" width="300" height="400"/>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="8m6-wQ-6I8"/>
+                        </mask>
                     </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="B2k-s9-7JY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="3eh-da-qEx"/>
-                <constraint firstItem="B2k-s9-7JY" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-30" id="WaH-p6-VSb"/>
+                <constraint firstItem="B2k-s9-7JY" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="WaH-p6-VSb">
+                    <variation key="heightClass=compact" constant="-40"/>
+                </constraint>
+                <constraint firstItem="B2k-s9-7JY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Win-ea-KWx"/>
+                <constraint firstAttribute="trailing" secondItem="B2k-s9-7JY" secondAttribute="trailing" constant="10" id="u6C-Dm-mch"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="3eh-da-qEx"/>
+                    <exclude reference="Win-ea-KWx"/>
+                    <exclude reference="u6C-Dm-mch"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact">
+                <mask key="constraints">
+                    <include reference="3eh-da-qEx"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="Win-ea-KWx"/>
+                    <include reference="u6C-Dm-mch"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="3eh-da-qEx"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>

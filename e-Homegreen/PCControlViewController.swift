@@ -210,10 +210,12 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
         
     }
     
-    func openNotificationSettings(sender: UILongPressGestureRecognizer){
-        if let index = sender.view?.tag {
-            print("DUGO DRZANJE LABELE TAG: \(index)")
-            self.showPCNotifications(self.pcs[index])
+    func openNotificationSettings(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            if let index = gestureRecognizer.view?.tag {
+                print("DUGO DRZANJE LABELE TAG: \(index)")
+                self.showPCNotifications(self.pcs[index])
+            }
         }
     }
 }
@@ -228,6 +230,7 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
             cell.pccontrolSlider.value = volume/100
 
             let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.openNotificationSettings(_:)))
+            longGesture.minimumPressDuration = 0.5
             cell.pccontrolTitleLabel.addGestureRecognizer(longGesture)
             
             return cell

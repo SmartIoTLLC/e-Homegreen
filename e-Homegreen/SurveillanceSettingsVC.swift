@@ -17,8 +17,9 @@ class SurveillanceSettingsVC: PopoverVC {
     
     @IBOutlet weak var scroll: UIScrollView!
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var backView: UIView!
+    
     @IBOutlet weak var editName: UITextField!
     @IBOutlet weak var levelButton: CustomGradientButton!
     @IBOutlet weak var zoneButton: CustomGradientButton!

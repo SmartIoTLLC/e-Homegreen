@@ -60,6 +60,9 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     
     @IBOutlet weak var commandTextField: UITextField!
     
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    
+    
     var tagIndex = 0 // cuvam tag od dugmeta koje poziva popover
     var runCommand:String? // run komanda
     var pathForVideo:String? // putanja selektovanog videa
@@ -122,10 +125,6 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             powerLabel.text = powerCommandList.first?.name
         }
 
-        
-        commandTextField.layer.borderWidth = 1
-        commandTextField.layer.cornerRadius = 2
-        commandTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
         commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
             attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         commandTextField.delegate = self
@@ -137,7 +136,9 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlInterfaceXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        // Do any additional setup after loading the view.
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
     
     func dismissViewController () {
@@ -153,14 +154,30 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         return true
     }
     
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if commandTextField.isFirstResponder(){
+            if backView.frame.origin.y + commandTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerX.constant = 0 - (5 + (self.backView.frame.origin.y + self.commandTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerX.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func powerAction(sender: AnyObject) {

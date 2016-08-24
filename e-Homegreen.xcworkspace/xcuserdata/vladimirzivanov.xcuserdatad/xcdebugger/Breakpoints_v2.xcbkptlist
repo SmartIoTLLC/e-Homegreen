@@ -25,84 +25,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DeviceCollectionCell.swift"
-            timestampString = "493285556.067221"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12"
-            landmarkName = "DeviceCollectionCell"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DeviceCollectionCell.backView.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;e_Homegreen.CustomGradientBackground&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DeviceCollectionCell.swift"
-                  timestampString = "493554225.402914"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DeviceCollectionCell.backView.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;e_Homegreen.CustomGradientBackground&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DeviceCollectionCell.swift"
-                  timestampString = "493554225.40312"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "52">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DeviceCollectionCell.init (frame : __C.CGRect) -&gt; e_Homegreen.DeviceCollectionCell"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DeviceCollectionCell.swift"
-                  timestampString = "493554225.403309"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DeviceCollectionCell.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;e_Homegreen.DeviceCollectionCell&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DeviceCollectionCell.swift"
-                  timestampString = "493554225.403498"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "e-Homegreen/DevicesViewController.swift"
             timestampString = "493286428.007533"
             startingColumnNumber = "9223372036854775807"
@@ -167,13 +89,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseHandler.swift"
-            timestampString = "493287226.068186"
+            filePath = "e-Homegreen/PCControlNotificationsXIB.swift"
+            timestampString = "493742525.218706"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "returnZoneWithId(_:location:)"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/PCControlInterfaceXIB.swift"
+            timestampString = "493742934.684728"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

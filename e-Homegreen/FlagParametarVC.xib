@@ -18,28 +18,31 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A03-yh-NHr" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="200" y="172" width="200" height="256"/>
+                    <rect key="frame" x="200" y="193" width="200" height="214"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZu-ih-hGJ">
-                            <rect key="frame" x="52" y="36" width="97" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZu-ih-hGJ">
+                            <rect key="frame" x="58" y="15" width="84" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QD4-O5-olz">
-                            <rect key="frame" x="76" y="65" width="51" height="31"/>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QD4-O5-olz">
+                            <rect key="frame" x="76" y="46" width="51" height="31"/>
                         </switch>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Localcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zpu-sp-ip6">
-                            <rect key="frame" x="52" y="104" width="97" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Localcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zpu-sp-ip6">
+                            <rect key="frame" x="61" y="92" width="79" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7K-Qb-QIK">
-                            <rect key="frame" x="76" y="133" width="51" height="31"/>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7K-Qb-QIK">
+                            <rect key="frame" x="76" y="123" width="51" height="31"/>
                         </switch>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8CP-zh-1bX" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                            <rect key="frame" x="56" y="196" width="89" height="38"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8CP-zh-1bX" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="10" y="169" width="180" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="nlQ-6I-oom"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="SAVE">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,8 +54,19 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="8CP-zh-1bX" secondAttribute="bottom" constant="5" id="1bl-Bi-JdG"/>
+                        <constraint firstItem="8CP-zh-1bX" firstAttribute="leading" secondItem="A03-yh-NHr" secondAttribute="leading" constant="10" id="CvA-dQ-VFA"/>
+                        <constraint firstItem="QD4-O5-olz" firstAttribute="top" secondItem="VZu-ih-hGJ" secondAttribute="bottom" constant="10" id="D1b-Ju-6pk"/>
                         <constraint firstAttribute="width" constant="200" id="DwD-ez-8AF"/>
-                        <constraint firstAttribute="height" constant="256" id="k9g-NP-iX4"/>
+                        <constraint firstItem="VZu-ih-hGJ" firstAttribute="top" secondItem="A03-yh-NHr" secondAttribute="top" constant="15" id="HEe-cB-Qhm"/>
+                        <constraint firstItem="VZu-ih-hGJ" firstAttribute="centerX" secondItem="A03-yh-NHr" secondAttribute="centerX" id="Jbb-f1-aCw"/>
+                        <constraint firstItem="O7K-Qb-QIK" firstAttribute="centerX" secondItem="Zpu-sp-ip6" secondAttribute="centerX" id="Lg3-8P-tPa"/>
+                        <constraint firstItem="O7K-Qb-QIK" firstAttribute="top" secondItem="Zpu-sp-ip6" secondAttribute="bottom" constant="10" id="hVw-yu-iA0"/>
+                        <constraint firstItem="QD4-O5-olz" firstAttribute="centerX" secondItem="VZu-ih-hGJ" secondAttribute="centerX" id="jKA-8a-J5e"/>
+                        <constraint firstAttribute="trailing" secondItem="8CP-zh-1bX" secondAttribute="trailing" constant="10" id="qiQ-uU-LNI"/>
+                        <constraint firstItem="Zpu-sp-ip6" firstAttribute="top" secondItem="QD4-O5-olz" secondAttribute="bottom" constant="15" id="xE7-kz-3jd"/>
+                        <constraint firstItem="8CP-zh-1bX" firstAttribute="top" secondItem="O7K-Qb-QIK" secondAttribute="bottom" constant="15" id="yoY-Bc-iKc"/>
+                        <constraint firstItem="Zpu-sp-ip6" firstAttribute="centerX" secondItem="QD4-O5-olz" secondAttribute="centerX" id="zt9-7m-JIE"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
