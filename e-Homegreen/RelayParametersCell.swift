@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol DevicePropertiesDelegate {
+    func saveClicked()
+}
+
 class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     
     @IBOutlet weak var txtFieldName: UITextField!
@@ -38,6 +42,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
     var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -67,16 +72,16 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        let level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
-        if level != ""{
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+        if let level = level {
+            btnLevel.setTitle(level.name, forState: UIControlState.Normal)
         }else{
             btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         
-        let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
-        if zone != ""{
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
+        zoneSelected = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+        if let zoneSelected = zoneSelected{
+            btnZone.setTitle(zoneSelected.name, forState: UIControlState.Normal)
         }else{
             btnZone.setTitle("All", forState: UIControlState.Normal)
         }
@@ -88,7 +93,11 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
-        if let digInputMode = device.digitalInputMode?.integerValue{
+        if var digInputMode = device.digitalInputMode?.integerValue{
+            if digInputMode == 1 || digInputMode == 2 {
+            }else{
+                digInputMode = 1
+            }
             let controlType = DigitalInput.modeInfo[digInputMode]
             // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
             if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description(){
@@ -105,35 +114,13 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         switchAllowCurtainControl.on = device.isCurtainModeAllowed.boolValue
         txtCurtainGroupId.text = "\(device.curtainGroupID.integerValue)"
         
-        let chn = Int(device.channel)
-        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
+        // Setting control mode.
+        // If device original type is Dimmer, then Control Type could change but control mode mustn't
+        if device.type == ControlType.Dimmer{
+            changeControlMode.enabled = false
+        }else{
+            changeControlMode.enabled = true
         }
-        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
-            hideImageButton(true)
-        }
-        if device.controlType == ControlType.Curtain && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        //TODO: Dodaj i za gateway
         
         btnLevel.tag = 1
         btnZone.tag = 2
@@ -290,7 +277,9 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            
             self.dismissViewControllerAnimated(true, completion: nil)
+            self.delegate?.saveClicked()
         }
     }
     

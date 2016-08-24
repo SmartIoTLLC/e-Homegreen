@@ -24,8 +24,16 @@ class CurtainCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         setImageForDevice(device)
-        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location))"
-        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location))"
+        if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
+            lblLevel.text = "\(name)"
+        }else{
+            lblLevel.text = ""
+        }
+        if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
+            lblZone.text = "\(name)"
+        }else{
+            lblZone.text = ""
+        }
         lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))"
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {

@@ -17,8 +17,9 @@ enum ChoosedTab:String {
 class ScanViewController: PopoverVC {
     
     @IBOutlet weak var topView: UIView!
-    
     @IBOutlet weak var container: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var senderButton:UIButton!
     
     var scanSceneViewController: ScanScenesViewController!
     var scanDeviceViewController: ScanDevicesViewController!
@@ -29,12 +30,8 @@ class ScanViewController: PopoverVC {
     
     var scrollView = ScanFilterPullDown()
     
-    @IBOutlet weak var searchBar: UISearchBar!
     
     var toViewController:UIViewController = UIViewController()
-
-    @IBOutlet weak var senderButton:UIButton!
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
     var isPresenting:Bool = true

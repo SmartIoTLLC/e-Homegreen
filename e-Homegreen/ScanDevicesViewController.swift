@@ -105,6 +105,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         addObservers()
     }
     
+    
+    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
@@ -376,13 +378,40 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     @IBAction func deleteAll(sender: AnyObject) {
-        for var item = 0; item < devices.count; item += 1 {
-            if devices[item].gateway.objectID == gateway.objectID {
-                appDel.managedObjectContext!.deleteObject(devices[item])
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            for var item = 0; item < self.devices.count; item += 1 {
+                if self.devices[item].gateway.objectID == self.gateway.objectID {
+                    self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+                }
             }
+            CoreDataController.shahredInstance.saveChanges()
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender.view
+            popoverController.sourceRect = sender.bounds
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+        
+        //Delete popup with design same as in android. If khalifa wants design to be the same then uncomment this.
+//        let deleteVC = DeleteConfirmation()
+//        deleteVC.delegate = self
+//        self.presentViewController(deleteVC, animated: false, completion: nil)
+  
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
@@ -832,6 +861,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
+    
+    
 }
 
 //MARK:- Table view dlegates and data source
@@ -871,7 +902,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         dispatch_async(dispatch_get_main_queue(),{
             let cell = self.deviceTableView.cellForRowAtIndexPath(indexPath)
-            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[indexPath.row])
+            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[indexPath.row], scanDevicesViewController: self)
         })
         
     }
@@ -909,6 +940,18 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
+extension ScanDevicesViewController: DeleteAllDelegate {
+    func deleteConfirmed() {
+        for var item = 0; item < self.devices.count; item += 1 {
+            if self.devices[item].gateway.objectID == self.gateway.objectID {
+                self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+            }
+        }
+        CoreDataController.shahredInstance.saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+    }
+}
+
 class ScanCell:UITableViewCell{
     @IBOutlet weak var lblRow: UILabel!
     @IBOutlet weak var lblDesc: UILabel!
@@ -929,5 +972,11 @@ class ScanCell:UITableViewCell{
         self.lblZone.text = zone
         self.lblCategory.text = category
         self.isVisibleSwitch.on = isVisibleSwitch
+    }
+}
+
+extension ScanDevicesViewController: DevicePropertiesDelegate{
+    func saveClicked() {
+        deviceTableView.reloadData()
     }
 }

@@ -69,6 +69,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     var editedDevice:EditedDevice?
     
     var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
     
     init(device: Device, point:CGPoint){
         self.device = device
@@ -98,16 +99,16 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        let level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
-        if level != ""{
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+        if level != nil{
+            btnLevel.setTitle(level!.name, forState: UIControlState.Normal)
         }else{
             btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         
-        let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
-        if zone != ""{
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
+        zoneSelected = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+        if zoneSelected != nil{
+            btnZone.setTitle(zoneSelected!.name, forState: UIControlState.Normal)
         }else{
             btnZone.setTitle("All", forState: UIControlState.Normal)
         }
@@ -204,10 +205,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     }
     
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
+    
     
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -292,31 +290,13 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
-            
             device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
             device.zoneId = NSNumber(integer: editedDevice!.zoneId)
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
-//            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-//            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-//            if let checkDeviceImages = device.deviceImages {
-//                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-//                    if devImages.count > 0 {
-//                        for deviceImage in devImages {
-//                            appDel.managedObjectContext!.deleteObject(deviceImage)
-//                        }
-//                        for defaultDeviceImage in defaultDeviceImages {
-//                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-//                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-//                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-//                            deviceImage.device = device
-//                        }
-//                    }
-//                }
-//            }
             CoreDataController.shahredInstance.saveChanges()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            self.delegate?.saveClicked()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -328,7 +308,10 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
 extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
@@ -394,22 +377,27 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showChangeDeviceParametar(point:CGPoint, device:Device) {
+    func showChangeDeviceParametar(point:CGPoint, device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
         let chn = Int(device.channel)
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device, point: point)
+            cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
         }else if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3){
             let cdp = DigitalInputPopup(device: device, point: point)
+            cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
         }else if device.controlType == ControlType.Climate {
             let cdp = HvacParametersCell(device: device, point: point)
+            cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
         }else if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10){
             let cdp = DigitalInputPopup(device: device, point: point)
+            cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
         }else{
             let cdp = ChangeDeviceParametarsVC(device: device, point: point)
+            cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
         }
     }

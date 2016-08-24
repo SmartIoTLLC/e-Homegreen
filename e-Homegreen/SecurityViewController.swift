@@ -106,6 +106,10 @@ class SecurityViewController: PopoverVC{
         scrollView.setContentOffset(bottomOffset, animated: false)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.startBlinking(_:)), name: NotificationKey.Security.ControlModeStartBlinking, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.stopBlinking(_:)), name: NotificationKey.Security.ControlModeStopBlinking, object: nil)
+        
         refreshSecurity()
     }
     override func viewWillLayoutSubviews() {
@@ -321,6 +325,13 @@ class SecurityViewController: PopoverVC{
             }
         default: break
         }
+    }
+    
+    func startBlinking(notification: NSNotification){
+        securityCollectionView.scrollEnabled = false
+    }
+    func stopBlinking(notification: NSNotification){
+        securityCollectionView.scrollEnabled = true
     }
 
 }

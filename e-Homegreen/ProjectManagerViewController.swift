@@ -16,13 +16,14 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
     
     var appDel:AppDelegate!
     var users:[User] = []
     var sidebarMenuOpen : Bool = false
     var tap : UITapGestureRecognizer!
     
-    @IBOutlet weak var addButton: UIButton!
+    
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -47,7 +48,6 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
         changeFullScreeenImage()
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
@@ -64,6 +64,15 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         users = DatabaseUserController.shared.getAllUsers()
         
         // Do any additional setup after loading the view.
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "settings"{
+            if let button = sender as? UIButton{
+                if let vc = segue.destinationViewController as? SettingsViewController{
+                    vc.user = users[button.tag]
+                }
+            }
+        }
     }
     
     @IBAction func fullScreen(sender: UIButton) {
@@ -205,15 +214,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "settings"{
-            if let button = sender as? UIButton{
-                if let vc = segue.destinationViewController as? SettingsViewController{
-                    vc.user = users[button.tag]
-                }
-            }
-        }
-    }
+    
     
     func addUserFinished() {
         reloadData()
