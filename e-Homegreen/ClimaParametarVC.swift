@@ -16,7 +16,7 @@ class ClimaParametarVC: UIViewController {
     var oldPoint:CGPoint?
     var indexPathRow: Int = -1
     var devices:[Device] = []
-    
+    var delegate: DevicePropertiesDelegate?
     var isPresenting: Bool = true
     
     
@@ -86,6 +86,7 @@ class ClimaParametarVC: UIViewController {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
+        delegate?.saveClicked()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

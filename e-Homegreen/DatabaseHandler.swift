@@ -66,11 +66,11 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    class func returnZoneWithId(id:Int, location:Location) -> String {
+    class func returnZoneWithId(id:Int, location:Location) -> Zone? {
         // 255: default
         // 0: when there is no zone defined
         if id == 255 || id == 0{
-            return ""
+            return nil
         }else{
             let fetchRequest = NSFetchRequest(entityName: "Zone")
             let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
@@ -81,17 +81,18 @@ class DatabaseHandler: NSObject {
             do {
                 let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
                 if fetResults!.count != 0 {
-                    if fetResults![0].name! != "All"{
-                        return "\(fetResults![0].name!)"
-                    }
+                    return fetResults?.first
+//                    if fetResults![0].name! != "All"{
+//                        return "\(fetResults![0].name!)"
+//                    }
                 } else {
-                    return ""
+                    return nil
                 }
             } catch _ as NSError {
                 print("Unresolved error")
                 abort()
             }
-            return ""
+            return nil
         }
     }
     class func returnZoneWithIdForScanDevicesCell(id:Int, location:Location) -> String {

@@ -19,8 +19,9 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     var devices:[Device] = []
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
+    var device:Device?
     var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
@@ -42,16 +43,9 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -73,8 +67,17 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         editDelay.text = "\(devices[indexPathRow].delay)"
 //        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location))"
-        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location))"
+        
+        if let zone = DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), name = zone.name{
+            lblLevel.text = "\(name)"
+        }else{
+            lblLevel.text = ""
+        }
+        if let zone = DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), name = zone.name{
+            lblZone.text = "\(name)"
+        }else{
+            lblZone.text = ""
+        }
         lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
@@ -87,35 +90,39 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
 
         // Do any additional setup after loading the view.
     }
-    
-    func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-    // Vec postoji u DatabaseController, treba izbrisati ako ne pravi problem
-//    func returnZoneWithId(id:Int) -> String {
-//        let fetchRequest = NSFetchRequest(entityName: "Zone")
-//        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-//        fetchRequest.predicate = predicate
-//        do {
-//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-//            if fetResults!.count != 0 {
-//                return "\(fetResults![0].name)"
-//            } else {
-//                return "\(id)"
-//            }
-//        } catch _ as NSError {
-//            print("Unresolved error")
-//            abort()
-//        }
-//        return ""
-//    }
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func btnSave(sender: AnyObject) {
+        if let numberOne = Int(editDelay.text!) {
+            if numberOne <= 65534 {
+                getDeviceAndSave(numberOne)
+                self.delegate?.saveClicked()
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
     
+    func getDeviceAndSave (numberOne:Int) {
+        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+            device = deviceObject
+            print(device)
+            device!.delay = numberOne
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    func dismissViewController () {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     func returnCategoryWithId(id:Int) -> String {
         if id == 0{
             return "All"
@@ -136,54 +143,6 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         }
         return ""
     }
-    
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
-    
-    var device:Device?
-    func getDeviceAndSave (numberOne:Int) {
-        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
-            device = deviceObject
-            print(device)
-            device!.delay = numberOne
-            CoreDataController.shahredInstance.saveChanges()
-        }
-    }
-    
-//    override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.height == 320{
-//                backViewHeightConstraint.constant = 250
-//            }else if self.view.frame.size.height == 375{
-//                backViewHeightConstraint.constant = 300
-//            }else if self.view.frame.size.height == 414{
-//                backViewHeightConstraint.constant = 350
-//            }else{
-//                backViewHeightConstraint.constant = 400
-//            }
-//        }else{
-//            
-//            backViewHeightConstraint.constant = 400
-//            
-//        }
-//    }
-    
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func btnSave(sender: AnyObject) {
-        if let numberOne = Int(editDelay.text!) {
-            if numberOne <= 65534 {
-                getDeviceAndSave(numberOne)
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
-    
-    
-
 }
 
 extension RelayParametarVC : UIViewControllerAnimatedTransitioning {

@@ -376,9 +376,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     @IBAction func deleteAll(sender: AnyObject) {
-
         let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
-        
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
             
@@ -900,7 +898,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         dispatch_async(dispatch_get_main_queue(),{
             let cell = self.deviceTableView.cellForRowAtIndexPath(indexPath)
-            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[indexPath.row])
+            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[indexPath.row], scanDevicesViewController: self)
         })
         
     }
@@ -970,5 +968,11 @@ class ScanCell:UITableViewCell{
         self.lblZone.text = zone
         self.lblCategory.text = category
         self.isVisibleSwitch.on = isVisibleSwitch
+    }
+}
+
+extension ScanDevicesViewController: DevicePropertiesDelegate{
+    func saveClicked() {
+        deviceTableView.reloadData()
     }
 }

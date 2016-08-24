@@ -22,7 +22,8 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     var error:NSError? = nil
     
     var isPresenting: Bool = true
-    
+    var delegate: DevicePropertiesDelegate?
+    var device:Device?
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
@@ -49,11 +50,6 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 
     override func viewDidLoad() {
@@ -83,8 +79,18 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
-        lblLevel.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location))"
-        lblZone.text = "\(DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location))"
+        
+        if let zone = DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
+            lblLevel.text = "\(name)"
+        }else{
+            lblLevel.text = ""
+        }
+        if let zone = DatabaseHandler.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
+            lblZone.text = "\(name)"
+        }else{
+            lblZone.text = ""
+        }
+        
         lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
@@ -98,91 +104,66 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
         // Do any additional setup after loading the view.
     }
+
+    @IBAction func btnCancel(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func btnSave(sender: AnyObject) {
+        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
+            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
+                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
+                self.delegate?.saveClicked()
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func returnZoneWithId(id:Int) -> String {
-        if id == 0{
-            return "All"
-        }
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return ""
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-    func returnCategoryWithId(id:Int) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
-        return ""
-    }
-    
-//    func returnThreeCharactersForByte (number:Int) -> String {
-//        return String(format: "%03d",number)
-//    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-//    override func viewWillLayoutSubviews() {
-//        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-//            if self.view.frame.size.height == 320{
-//                backViewHeightConstraint.constant = 250
-//            }else if self.view.frame.size.height == 375{
-//                backViewHeightConstraint.constant = 300
-//            }else if self.view.frame.size.height == 414{
-//                backViewHeightConstraint.constant = 350
-//            }else{
-//                backViewHeightConstraint.constant = 420
-//            }
-//        }else{
-//            
-//            backViewHeightConstraint.constant = 420
-//            
+//    func returnZoneWithId(id:Int) -> String {
+//        if id == 0{
+//            return "All"
 //        }
+//        let fetchRequest = NSFetchRequest(entityName: "Zone")
+//        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+//        fetchRequest.predicate = predicate
+//        do {
+//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+//            if fetResults!.count != 0 {
+//                return "\(fetResults![0].name)"
+//            } else {
+//                return ""
+//            }
+//        } catch _ as NSError {
+//            print("Unresolved error")
+//            abort()
+//        }
+//        return ""
 //    }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+//    func returnCategoryWithId(id:Int) -> String {
+//        let fetchRequest = NSFetchRequest(entityName: "Category")
+//        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+//        fetchRequest.predicate = predicate
+//        do {
+//            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+//            if fetResults!.count != 0 {
+//                return "\(fetResults![0].name)"
+//            } else {
+//                return "\(id)"
+//            }
+//        } catch _ as NSError {
+//            print("Unresolved error")
+//            abort()
+//        }
+//        return ""
+//    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-
-    @IBAction func btnSave(sender: AnyObject) {
-        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
-            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
-                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
-    var device:Device?
     func getDeviceAndSave (numberOne:Int, numberTwo:Int, numberThree:Int) {
         if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
             device = deviceObject

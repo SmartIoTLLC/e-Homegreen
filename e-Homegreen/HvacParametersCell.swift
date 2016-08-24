@@ -58,36 +58,14 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
-    
-    func hideDeviceInput(isHidden:Bool) {
-        if isHidden {
-            deviceInputHeight.constant = 0
-            deviceInputTopSpace.constant = 0
-        } else {
-            deviceInputHeight.constant = 30
-            deviceInputTopSpace.constant = 8
-        }
-        backView.layoutIfNeeded()
-    }
-    
-    func hideImageButton(isHidden:Bool) {
-        if isHidden {
-            deviceImageHeight.constant = 0
-            deviceImageLeading.constant = 0
-        } else {
-            deviceImageHeight.constant = 30
-            deviceImageLeading.constant = 7
-        }
-        backView.layoutIfNeeded()
-    }
-    
+
     var point:CGPoint?
     var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
-    
     var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
     
     init(device: Device, point:CGPoint){
         self.device = device
@@ -97,11 +75,9 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -130,16 +106,16 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        let level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
-        if level != ""{
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+        if let level = level {
+            btnLevel.setTitle(level.name, forState: UIControlState.Normal)
         }else{
             btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         
-        let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
-        if zone != ""{
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
+        zoneSelected = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+        if let zoneSelected = zoneSelected {
+            btnZone.setTitle(zoneSelected.name, forState: UIControlState.Normal)
         }else{
             btnZone.setTitle("All", forState: UIControlState.Normal)
         }
@@ -288,17 +264,10 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         
         button.setTitle(name, forState: .Normal)
     }
-    
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
+
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
         let touches = event.touchesForView(sender as! UIView)
         let touch:UITouch = touches!.first!
@@ -307,12 +276,8 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         //        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
         showDeviceImagesPicker(device, point: touchPoint)
     }
-    
     @IBAction func btnImages(sender: AnyObject) {
-        //        if let button = sender as? UIButton {
-        //            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-        //                showDeviceImagesPicker(device!, point: pointInView)
-        //        }
+
     }
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender
@@ -332,7 +297,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnLevel (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -343,7 +307,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnZone (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -357,7 +320,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnCategory (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -369,7 +331,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    
     @IBAction func btnSave(sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
@@ -378,23 +339,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             device.categoryId = NSNumber(integer: editedDevice!.categoryId)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
-            //            let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(device)
-            //            // Basicaly checking if it is climate, and if it isn't, then delete and populate with new images:
-            //            if let checkDeviceImages = device.deviceImages {
-            //                if let devImages = Array(checkDeviceImages) as? [DeviceImage] {
-            //                    if devImages.count > 0 {
-            //                        for deviceImage in devImages {
-            //                            appDel.managedObjectContext!.deleteObject(deviceImage)
-            //                        }
-            //                        for defaultDeviceImage in defaultDeviceImages {
-            //                            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            //                            deviceImage.defaultImage = defaultDeviceImage.defaultImage
-            //                            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
-            //                            deviceImage.device = device
-            //                        }
-            //                    }
-            //                }
-            //            }
             device.humidityVisible = switchHumidity.on
             device.temperatureVisible = switchTemperature.on
             device.coolModeVisible = switchCool.on
@@ -408,6 +352,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             
             CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            self.delegate?.saveClicked()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -419,7 +364,30 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
+    func hideDeviceInput(isHidden:Bool) {
+        if isHidden {
+            deviceInputHeight.constant = 0
+            deviceInputTopSpace.constant = 0
+        } else {
+            deviceInputHeight.constant = 30
+            deviceInputTopSpace.constant = 8
+        }
+        backView.layoutIfNeeded()
+    }
+    func hideImageButton(isHidden:Bool) {
+        if isHidden {
+            deviceImageHeight.constant = 0
+            deviceImageLeading.constant = 0
+        } else {
+            deviceImageHeight.constant = 30
+            deviceImageLeading.constant = 7
+        }
+        backView.layoutIfNeeded()
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
 extension HvacParametersCell : UIViewControllerAnimatedTransitioning {

@@ -37,9 +37,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     var devices:[Device] = []
     var error:NSError? = nil
     var inte = 0
-    
     var changeSliderValueOldValue = 0
-    
     var longTouchOldValue = 0
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
@@ -829,22 +827,33 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
                     return "\(device.name)"
                 } else {
-                    return "\(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
+                    if let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name{
+                        return "\(name) \(device.name)"
+                    }else{
+                        return "\(device.name)"
+                    }
                 }
             } else {
-                return "\(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
+                if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
+                    if let zone2 = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name2 = zone2.name {
+                        return "\(name) \(name2) \(device.name)"
+                    }else{
+                        return "\(name) \(device.name)"
+                    }
+                }else{
+                    return "\(device.name)"
+                }
             }
         } else {
             var text = "\(device.gateway.location.name!)"
-            if DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location) != ""{
-                text += " " + DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+            if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), name = zone.name {
+                text += " " + name
             }
-            if DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location) != ""{
-                text += " " + DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+            if let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name {
+                text += " " + name
             }
             text += " " + device.name
             return text
-//            return "\(device.gateway.location.name!) \(DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)) \(DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)) \(device.name)"
         }
     }
     

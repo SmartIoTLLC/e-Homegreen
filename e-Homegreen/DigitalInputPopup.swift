@@ -31,6 +31,7 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
     var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -60,16 +61,16 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        let level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
-        if level != ""{
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
+        level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+        if let level = level{
+            btnLevel.setTitle(level.name, forState: UIControlState.Normal)
         }else{
             btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         
-        let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
-        if zone != ""{
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
+        zoneSelected = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+        if let zoneSelected = zoneSelected {
+            btnZone.setTitle(zoneSelected.name, forState: UIControlState.Normal)
         }else{
             btnZone.setTitle("All", forState: UIControlState.Normal)
         }
@@ -235,6 +236,7 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
             }
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
             CoreDataController.shahredInstance.saveChanges()
+            self.delegate?.saveClicked()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
