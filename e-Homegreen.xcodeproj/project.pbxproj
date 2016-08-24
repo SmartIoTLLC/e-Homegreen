@@ -825,14 +825,14 @@
 			name = Energy;
 			sourceTree = "<group>";
 		};
-		2232922C1CABE48E0001422B /* Popover */ = {
+		2232922C1CABE48E0001422B /* PullDown */ = {
 			isa = PBXGroup;
 			children = (
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				49E4055A1D2D0A870031130B /* PullDownViewCell.swift */,
 				22495D301CAA83260034FC94 /* Popover.storyboard */,
 			);
-			name = Popover;
+			name = PullDown;
 			sourceTree = "<group>";
 		};
 		2232922D1CABE9400001422B /* Add User */ = {
@@ -1168,7 +1168,7 @@
 			isa = PBXGroup;
 			children = (
 				223690C51CAD00C00037B54A /* Login */,
-				2232922C1CABE48E0001422B /* Popover */,
+				2232922C1CABE48E0001422B /* PullDown */,
 				223292291CABD3280001422B /* Energy */,
 				223292281CABD1B60001422B /* Surveillance */,
 				223292261CABD0130001422B /* Flags */,

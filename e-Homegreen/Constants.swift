@@ -147,11 +147,12 @@ struct DigitalInput {
             case 4:
                 return "Normally Closed"
             default:
-                return ""
+                return "Normally Open"
             }
         }
     }
-    static let modeInfo: [Int:String] = [0x00:DigitalInput.Generic.description(),
+    static let modeInfo: [Int:String] = [
+        0x00:DigitalInput.Generic.description(),
         0x01:DigitalInput.NormallyOpen.description(),
         0x02:DigitalInput.NormallyClosed.description(),
         0x03:DigitalInput.ButtonNormallyOpen.description(),

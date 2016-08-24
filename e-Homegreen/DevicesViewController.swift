@@ -1053,7 +1053,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 if filterParametar.categoryObjectId != "All"{
                     if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
                         if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
-                            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
+                            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.categoryId, location: filterParametar.location, value: sliderValue)
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                             let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             

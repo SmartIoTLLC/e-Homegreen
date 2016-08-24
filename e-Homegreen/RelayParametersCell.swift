@@ -93,7 +93,11 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
-        if let digInputMode = device.digitalInputMode?.integerValue{
+        if var digInputMode = device.digitalInputMode?.integerValue{
+            if digInputMode == 1 || digInputMode == 2 {
+            }else{
+                digInputMode = 1
+            }
             let controlType = DigitalInput.modeInfo[digInputMode]
             // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
             if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description(){
@@ -110,35 +114,13 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         switchAllowCurtainControl.on = device.isCurtainModeAllowed.boolValue
         txtCurtainGroupId.text = "\(device.curtainGroupID.integerValue)"
         
-        let chn = Int(device.channel)
-        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
+        // Setting control mode.
+        // If device original type is Dimmer, then Control Type could change but control mode mustn't
+        if device.type == ControlType.Dimmer{
+            changeControlMode.enabled = false
+        }else{
+            changeControlMode.enabled = true
         }
-        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
-            hideImageButton(true)
-        }
-        if device.controlType == ControlType.Curtain && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeControlMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        //TODO: Dodaj i za gateway
         
         btnLevel.tag = 1
         btnZone.tag = 2
