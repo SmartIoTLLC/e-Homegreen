@@ -233,6 +233,6 @@ extension UIViewController {
     func showSecurityPad (point:CGPoint, security: Security) {
         let sp = SecurityPadVC(point: point)
         sp.security = security
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+        self.presentViewController(sp, animated: true, completion: nil)
     }
 }

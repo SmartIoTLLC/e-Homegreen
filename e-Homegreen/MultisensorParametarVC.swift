@@ -178,7 +178,6 @@ extension UIViewController {
     func showMultisensorParametar(point:CGPoint, device:Device) {
         let msp = MultisensorParametarVC(point: point)
         msp.device = device
-        //        self.view.window?.rootViewController?.presentViewController(cdp, animated: true, completion: nil)
         self.presentViewController(msp, animated: true, completion: nil)
     }
 }

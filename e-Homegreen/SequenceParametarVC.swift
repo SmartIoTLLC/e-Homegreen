@@ -204,6 +204,6 @@ extension UIViewController {
         let sp = SequenceParametarVC(point: point)
 //        ad.indexPathRow = indexPathRow
         sp.sequence = sequence
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+        self.presentViewController(sp, animated: true, completion: nil)
     }
 }

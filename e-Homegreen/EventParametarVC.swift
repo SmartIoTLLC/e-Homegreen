@@ -172,6 +172,6 @@ extension UIViewController {
         let ep = EventParametarVC(point: point)
 //        ad.indexPathRow = indexPathRow
         ep.event = event
-        self.view.window?.rootViewController?.presentViewController(ep, animated: true, completion: nil)
+        self.presentViewController(ep, animated: true, completion: nil)
     }
 }

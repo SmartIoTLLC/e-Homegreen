@@ -184,6 +184,6 @@ extension CameraParametarXIBViewController : UIViewControllerTransitioningDelega
 extension UIViewController {
     func showCameraParametar(point:CGPoint, surveillance:Surveillance) {
         let sp = CameraParametarXIBViewController(point: point, surv: surveillance)
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+        self.presentViewController(sp, animated: true, completion: nil)
     }
 }

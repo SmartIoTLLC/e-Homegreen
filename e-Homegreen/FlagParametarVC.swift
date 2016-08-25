@@ -181,6 +181,6 @@ extension UIViewController {
     func showFlagParametar(point:CGPoint, flag:Flag) {
         let fp = FlagParametarVC(point: point)
         fp.flag = flag
-        self.view.window?.rootViewController?.presentViewController(fp, animated: true, completion: nil)
+        self.presentViewController(fp, animated: true, completion: nil)
     }
 }

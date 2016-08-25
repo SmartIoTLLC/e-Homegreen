@@ -183,6 +183,6 @@ extension UIViewController {
         let sp = SceneParametarVC(point: point)
 //        ad.indexPathRow = indexPathRow
         sp.scene = scene
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+        self.presentViewController(sp, animated: true, completion: nil)
     }
 }

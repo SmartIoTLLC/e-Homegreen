@@ -176,6 +176,6 @@ extension SecParamatarVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showSecurityParametar (point:CGPoint, security: Security) {
         let sp = SecParamatarVC(point: point, security: security)
-        self.view.window?.rootViewController?.presentViewController(sp, animated: true, completion: nil)
+        self.presentViewController(sp, animated: true, completion: nil)
     }
 }

@@ -162,6 +162,6 @@ extension UIViewController {
         let st = TimerParametarVC(point: point)
         //        ad.indexPathRow = indexPathRow
         st.timer = timer
-        self.view.window?.rootViewController?.presentViewController(st, animated: true, completion: nil)
+        self.presentViewController(st, animated: true, completion: nil)
     }
 }

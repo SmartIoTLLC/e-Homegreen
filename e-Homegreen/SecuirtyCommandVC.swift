@@ -187,10 +187,10 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showSecurityCommand(point:CGPoint, text:String, security: Security) {
         let sc = SecuirtyCommandVC(point: point, security: security)
-        self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
+        self.presentViewController(sc, animated: true, completion: nil)
     }
     func showSecurityInformation(point:CGPoint){
         let sc = SecurityNeedDisarmInformation(point: point)
-        self.view.window?.rootViewController?.presentViewController(sc, animated: true, completion: nil)
+        self.presentViewController(sc, animated: true, completion: nil)
     }
 }
