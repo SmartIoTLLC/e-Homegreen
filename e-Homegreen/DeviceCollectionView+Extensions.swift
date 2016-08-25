@@ -450,6 +450,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateName.addGestureRecognizer(doublePress)
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             
+            let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            longPress.minimumPressDuration = 0.5
+            cell.climateName.addGestureRecognizer(longPress)
+            
             // If device is enabled add all interactions
             if devices[indexPath.row].isEnabled.boolValue {
                 cell.disabledCellView.hidden = true

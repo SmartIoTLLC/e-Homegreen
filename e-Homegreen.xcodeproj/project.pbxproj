@@ -108,6 +108,8 @@
 		490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */; };
 		490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */; };
 		490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */; };
+		4923279C1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */; };
+		4923279D1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */; };
 		495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */; };
 		495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */; };
 		495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */; };
@@ -454,6 +456,8 @@
 		490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeleteConfirmation.xib; sourceTree = "<group>"; };
 		490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityNeedDisarmInformation.swift; sourceTree = "<group>"; };
 		490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityNeedDisarmInformation.xib; sourceTree = "<group>"; };
+		4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntelligentSwitchParameter.swift; sourceTree = "<group>"; };
+		4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntelligentSwitchParameter.xib; sourceTree = "<group>"; };
 		495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionCell.swift; sourceTree = "<group>"; };
 		495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionCell.swift; sourceTree = "<group>"; };
 		495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainCollectionCell.swift; sourceTree = "<group>"; };
@@ -1054,6 +1058,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		4923279E1D6EEC7300B9BC05 /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */,
+				4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */,
+			);
+			name = Parameters;
+			sourceTree = "<group>";
+		};
 		4952C1301D589131006C29F2 /* HVAC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1526,6 +1539,7 @@
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
 			isa = PBXGroup;
 			children = (
+				4923279E1D6EEC7300B9BC05 /* Parameters */,
 				4952C1301D589131006C29F2 /* HVAC */,
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
@@ -1887,6 +1901,7 @@
 				73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */,
 				73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */,
 				22495D2C1CAA80F20034FC94 /* Users.storyboard in Resources */,
+				4923279D1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
@@ -2187,6 +2202,7 @@
 				4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
 				223E25DF1CC7B37900BC3905 /* DatabaseLocationController.swift in Sources */,
+				4923279C1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,

@@ -290,18 +290,15 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index)
                 if devices[index.row].controlType == ControlType.Dimmer {
                     showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-                }
-                if devices[index.row].controlType == ControlType.Climate {
+                }else if devices[index.row].controlType == ControlType.Climate {
                     showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
-                if devices[index.row].controlType == ControlType.Relay {
+                else if devices[index.row].controlType == ControlType.Relay {
                     showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-                }
-                if devices[index.row].controlType == ControlType.Curtain {
+                }else if devices[index.row].controlType == ControlType.Curtain {
                     showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
-                }
-                if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
-                    showMultisensorParametar(CGPoint(x: self.view.center.x, y: self.view.center.y), device: devices[index.row])
+                }else{ //if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
+                    showIntelligentSwitchParameter(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
                 }
             }
         }
