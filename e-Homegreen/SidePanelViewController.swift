@@ -127,7 +127,7 @@
             }
         }
         if let user = user{
-            user.lastScreenId = indexPath.row
+            user.lastScreenId = Int(menu[indexPath.row].id)
         }
     }
     
@@ -256,12 +256,6 @@
                     userImage.image = UIImage(named: "User")
                 }
             }
-            
-//            if let image  = user.profilePicture{
-//                userImage.image = UIImage(data: image)
-//            }else{
-//                userImage.image = UIImage(named: "User")
-//            }
             userLabel.text = user.username
         }else{
             userLabel.text = (AdminController.shared.getAdmin())?.username

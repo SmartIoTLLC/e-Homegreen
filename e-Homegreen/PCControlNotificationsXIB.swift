@@ -350,6 +350,6 @@ extension PCControlNotificationsXIB : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showPCNotifications(pc:Device) {
         let pci = PCControlNotificationsXIB(pc:pc)
-        self.view.window?.rootViewController?.presentViewController(pci, animated: true, completion: nil)
+        self.presentViewController(pci, animated: true, completion: nil)
     }
 }

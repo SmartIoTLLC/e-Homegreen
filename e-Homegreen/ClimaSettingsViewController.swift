@@ -778,6 +778,6 @@ extension UIViewController {
         let ad = ClimaSettingsViewController(device: devices[indexPathRow])
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }

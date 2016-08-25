@@ -385,6 +385,6 @@ extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showPCInterface(pc:Device) {
         let pci = PCControlInterfaceXIB(pc:pc)
-        self.view.window?.rootViewController?.presentViewController(pci, animated: true, completion: nil)
+        self.presentViewController(pci, animated: true, completion: nil)
     }
 }

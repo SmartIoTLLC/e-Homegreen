@@ -215,6 +215,6 @@ extension UIViewController {
         let ad = RelayParametarVC(point: point)
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }

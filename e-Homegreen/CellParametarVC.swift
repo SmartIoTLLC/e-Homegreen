@@ -125,6 +125,6 @@ extension CellParametarVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showCellParametar(point:CGPoint) {
         let ad = CellParametarVC(point: point)
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }

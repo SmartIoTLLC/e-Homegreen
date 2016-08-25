@@ -246,6 +246,6 @@ extension UIViewController {
         ad.indexPathRow = indexPathRow
         ad.devices = devices
 //        ad.device = device
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }

@@ -143,6 +143,6 @@ extension AccessParametarVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showAccessParametar(point:CGPoint) {
         let ad = AccessParametarVC(point: point)
-        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
+        self.presentViewController(ad, animated: true, completion: nil)
     }
 }
