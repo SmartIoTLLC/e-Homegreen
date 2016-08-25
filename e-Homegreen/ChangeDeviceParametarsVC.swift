@@ -27,40 +27,13 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
-    @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
-    
-    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
     
     var button:UIButton!
     
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
-    
-    func hideDeviceInput(isHidden:Bool) {
-        if isHidden {
-            deviceInputHeight.constant = 0
-            deviceInputTopSpace.constant = 0
-        } else {
-            deviceInputHeight.constant = 30
-            deviceInputTopSpace.constant = 8
-        }
-        backView.layoutIfNeeded()
-    }
-    
-    func hideImageButton(isHidden:Bool) {
-        if isHidden {
-            deviceImageHeight.constant = 0
-            deviceImageLeading.constant = 0
-        } else {
-            deviceImageHeight.constant = 30
-            deviceImageLeading.constant = 7
-        }
-        backView.layoutIfNeeded()
-    }
+
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -127,33 +100,30 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         let chn = Int(device.channel)
         // When DigitalInput, then DeviceInputMode should be presented
         // Digital input on Sensor can be on one of the following channels: 2, 3, 7 and 10
-        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
+//        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
+//            hideDeviceInput(false)
+//            if let diMode = device.digitalInputMode as? Int {
+//                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+//            }
+//        } else {
+//            hideDeviceInput(true)
+//        }
         // When DigitalInput, then DeviceInputMode should be presented
         // Digital input on Intelligent Switch can be on one of the following channels: 2, 3, 7 and 10
-        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode?.integerValue {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
-            hideImageButton(true)
-        }
+//        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
+//            hideDeviceInput(false)
+//            if let diMode = device.digitalInputMode?.integerValue {
+//                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
+//            }
+//        } else {
+//            hideDeviceInput(true)
+//        }
         //TODO: Add for gateway when it is defined
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
-        changeDeviceInputMode.tag = 5
+//        changeDeviceInputMode.tag = 5
     }
     override func nameAndId(name: String, id: String) {
         
@@ -192,10 +162,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         case 4:
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)
-            break
-        case 5:
-            editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
-            changeDeviceInputMode.setTitle(name,forState: UIControlState.Normal)
             break
         default:
             break

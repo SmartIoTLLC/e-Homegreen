@@ -27,11 +27,6 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var switchAllowCurtainControl: UISwitch!
     @IBOutlet weak var txtCurtainGroupId: UITextField!
     
-//    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
-//    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
-//    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
-//    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
-    
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -43,6 +38,11 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     var editedDevice:EditedDevice?
     var isPresenting: Bool = true
     var delegate: DevicePropertiesDelegate?
+    
+    @IBOutlet weak var centerY: NSLayoutConstraint!
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -68,6 +68,8 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         self.view.tag = 1
         
         self.view.backgroundColor = UIColor.clearColor()
+        
+        txtCurtainGroupId.inputAccessoryView = CustomToolBar()
         
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
@@ -127,6 +129,10 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         btnCategory.tag = 3
         btnControlType.tag = 4
         changeControlMode.tag = 5
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        
     }
     override func nameAndId(name: String, id: String) {
         
@@ -282,27 +288,6 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             self.delegate?.saveClicked()
         }
     }
-    
-    func hideDeviceInput(isHidden:Bool) {
-//        if isHidden {
-//            deviceInputHeight.constant = 0
-//            deviceInputTopSpace.constant = 0
-//        } else {
-//            deviceInputHeight.constant = 30
-//            deviceInputTopSpace.constant = 8
-//        }
-//        backView.layoutIfNeeded()
-    }
-    func hideImageButton(isHidden:Bool) {
-//        if isHidden {
-//            deviceImageHeight.constant = 0
-////            deviceImageLeading.constant = 0
-//        } else {
-//            deviceImageHeight.constant = 30
-////            deviceImageLeading.constant = 7
-//        }
-//        backView.layoutIfNeeded()
-    }
 
     func handleTap(gesture:UITapGestureRecognizer){
         let point:CGPoint = gesture.locationInView(self.view)
@@ -314,6 +299,26 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if txtCurtainGroupId.isFirstResponder(){
+            if backView.frame.origin.y + txtCurtainGroupId.frame.origin.y + 30 - self.scrollView.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtCurtainGroupId.frame.origin.y + 30 - self.scrollView.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 extension RelayParametersCell : UIViewControllerAnimatedTransitioning {

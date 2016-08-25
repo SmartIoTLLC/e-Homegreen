@@ -65,11 +65,8 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        for item in  Menu.allMenuItem {
-//            menuList.append(item.description)
-//        }
-        menu = DatabaseMenuController.shared.getMenuItemByUser(user)
+
+        menu = DatabaseMenuController.shared.getDefaultMenuItemByUser(user)
       
     }
     

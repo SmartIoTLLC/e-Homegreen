@@ -30,15 +30,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var btnControlType: CustomGradientButton!
     @IBOutlet weak var btnLevel: UIButton!
     @IBOutlet weak var btnZone: UIButton!
-    @IBOutlet weak var btnCategory: UIButton!
-    @IBOutlet weak var btnImages: UIButton!
-    @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
-    
-    @IBOutlet weak var deviceInputHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceInputTopSpace: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageHeight: NSLayoutConstraint!
-    @IBOutlet weak var deviceImageLeading: NSLayoutConstraint!
-    
+    @IBOutlet weak var btnCategory: UIButton!    
     
     @IBOutlet weak var switchHumidity: UISwitch!
     @IBOutlet weak var switchTemperature: UISwitch!
@@ -128,35 +120,10 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
-        //        if device.controlType != ControlType.Dimmer && device.controlType != ControlType.Relay || device.controlType != ControlType.Curtain{
-        //            btnControlType.enabled = false
-        //        }else{
-        //            btnControlType.enabled = true
-        //        }
         
         txtFieldName.delegate = self
         
         let chn = Int(device.channel)
-        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-            hideDeviceInput(false)
-            if let diMode = device.digitalInputMode as? Int {
-                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-            }
-        } else {
-            hideDeviceInput(true)
-        }
-        if device.controlType == ControlType.Climate || (device.controlType == ControlType.Sensor && chn == 6) {
-            hideImageButton(true)
-        }
-        //TODO: Dodaj i za gateway
         
         if device.humidityVisible == true {
             switchHumidity.setOn(true, animated: false)
@@ -216,7 +183,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
-        changeDeviceInputMode.tag = 5
     }
     override func nameAndId(name: String, id: String) {
         
@@ -254,10 +220,6 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             editedDevice?.controlType = name
             btnControlType.setTitle(name, forState: UIControlState.Normal)
             break
-        case 5:
-            editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
-            changeDeviceInputMode.setTitle(name,forState: UIControlState.Normal)
-            break
         default:
             break
         }
@@ -268,28 +230,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
-        let touches = event.touchesForView(sender as! UIView)
-        let touch:UITouch = touches!.first!
-        let touchPoint = touch.locationInView(self.view)
-        //        let touchPoint2 = touch.locationInView(sender as! UIView)
-        //        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
-        showDeviceImagesPicker(device, point: touchPoint)
-    }
-    @IBAction func btnImages(sender: AnyObject) {
 
-    }
-    @IBAction func changeDeviceInputMode(sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        //        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-        //        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-        //        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-        //        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
-        openPopover(sender, popOverList:popoverList)
-    }
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -364,26 +305,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    func hideDeviceInput(isHidden:Bool) {
-        if isHidden {
-            deviceInputHeight.constant = 0
-            deviceInputTopSpace.constant = 0
-        } else {
-            deviceInputHeight.constant = 30
-            deviceInputTopSpace.constant = 8
-        }
-        backView.layoutIfNeeded()
-    }
-    func hideImageButton(isHidden:Bool) {
-        if isHidden {
-            deviceImageHeight.constant = 0
-            deviceImageLeading.constant = 0
-        } else {
-            deviceImageHeight.constant = 30
-            deviceImageLeading.constant = 7
-        }
-        backView.layoutIfNeeded()
-    }
+
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

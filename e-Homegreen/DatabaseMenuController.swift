@@ -78,6 +78,22 @@ class DatabaseMenuController: NSObject {
             return []
     }
     
+    func getDefaultMenuItemByUser(user:User) -> [MenuItem]{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "MenuItem")
+        let sortDescriptorOne = NSSortDescriptor(key: "id", ascending: true)
+        let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.sortDescriptors = [sortDescriptorOne]
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [MenuItem]
+            return fetResults!
+        } catch _ as NSError {
+            abort()
+        }
+        return []
+    }
+    
     func getMenuItemByUser(user:User) -> [MenuItem]{
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "MenuItem")
         let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
@@ -111,13 +127,13 @@ class DatabaseMenuController: NSObject {
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    func changeItems(fromMenuItem:MenuItem, toMenuItem:MenuItem){
-        
-        let pom = fromMenuItem.orderId
-        fromMenuItem.orderId = toMenuItem.orderId
-        toMenuItem.orderId = pom
-        CoreDataController.shahredInstance.saveChanges()
-    }
+//    func changeItems(fromMenuItem:MenuItem, toMenuItem:MenuItem){
+//        
+//        let pom = fromMenuItem.orderId
+//        fromMenuItem.orderId = toMenuItem.orderId
+//        toMenuItem.orderId = pom
+//        CoreDataController.shahredInstance.saveChanges()
+//    }
     
     func changeState(menuItem:MenuItem){
         if menuItem.isVisible == true{
