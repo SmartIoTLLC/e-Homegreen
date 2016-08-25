@@ -71,8 +71,6 @@ class AccessParametarVC: UIViewController, UIGestureRecognizerDelegate {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
-
 }
 
 extension AccessParametarVC : UIViewControllerAnimatedTransitioning {

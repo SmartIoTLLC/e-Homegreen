@@ -1,16 +1,14 @@
 //
-//  DimmerParametarVC.swift
+//  IntelligentSwitchParameter.swift
 //  e-Homegreen
 //
-//  Created by Vladimir on 8/4/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Damir Djozic on 8/25/16.
+//  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
-    
+class IntelligentSwitchParameter: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     @IBOutlet weak var backView: UIView!
     
     var point:CGPoint?
@@ -27,11 +25,6 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var editDelay: UITextField!
-    @IBOutlet weak var editRunTime: UITextField!
-    @IBOutlet weak var editSkipState: UITextField!
-    @IBOutlet weak var enableSwitch: UISwitch!
-    @IBOutlet weak var overRideID: UILabel!
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
@@ -42,7 +35,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     
     
     init(point:CGPoint){
-        super.init(nibName: "DimmerParametarVC", bundle: nil)
+        super.init(nibName: "IntelligentSwitchParameter", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
         self.point = point
@@ -51,31 +44,12 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        editDelay.delegate = self
-        editRunTime.delegate = self
-        editSkipState.delegate = self
-        
-//        devices[indexPathRow].zoneId
-//        devices[indexPathRow].categoryId
-//        devices[indexPathRow].delay
-//        devices[indexPathRow].runtime
-//        devices[indexPathRow].isEnabled
-//        devices[indexPathRow].name
-//        devices[indexPathRow].skipState
-//        devices[indexPathRow].level
-//        devices[indexPathRow].overrideControl1
-//        devices[indexPathRow].overrideControl2
-        //        devices[indexPathRow].overrideControl3@IBOutlet weak var lblName: UILabel!
-        editDelay.text = "\(devices[indexPathRow].delay)"
-        editRunTime.text = "\(devices[indexPathRow].runtime)"
-        editSkipState.text = "\(devices[indexPathRow].skipState)"
-//        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
@@ -94,7 +68,6 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
-        enableSwitch.on = devices[indexPathRow].isEnabled.boolValue
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
@@ -102,18 +75,13 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         
         self.view.backgroundColor = UIColor.clearColor()
     }
-
+    
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnSave(sender: AnyObject) {
-        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
-            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
-                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
-                self.delegate?.saveClicked()
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
+        self.delegate?.saveClicked()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func dismissViewController () {
@@ -136,7 +104,7 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
 }
 
-extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
+extension IntelligentSwitchParameter : UIViewControllerAnimatedTransitioning {
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5 //Add your own duration here
     }
@@ -167,7 +135,7 @@ extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
+            //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
@@ -184,7 +152,7 @@ extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension DimmerParametarVC : UIViewControllerTransitioningDelegate {
+extension IntelligentSwitchParameter : UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
@@ -201,11 +169,11 @@ extension DimmerParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showDimmerParametar(point:CGPoint, indexPathRow: Int, devices:[Device]) {
-        let ad = DimmerParametarVC(point: point)
+    func showIntelligentSwitchParameter(point:CGPoint, indexPathRow: Int, devices:[Device]) {
+        let ad = IntelligentSwitchParameter(point: point)
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-//        ad.device = device
+        //        ad.device = device
         self.presentViewController(ad, animated: true, completion: nil)
     }
 }
