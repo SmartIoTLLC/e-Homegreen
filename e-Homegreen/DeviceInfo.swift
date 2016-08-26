@@ -47,7 +47,7 @@ struct ControlType {
     static let Gateway = "Gateway"
     static let Dimmer = "Dimmer"
     static let Relay = "Relay"
-    static let Climate = "Climate"
+    static let Climate = "hvac"
     static let IntelligentSwitch = "Intelligent Switch"
     static let AnalogOutput = "Analog Output"
     static let DigitalInput = "Digital Input"

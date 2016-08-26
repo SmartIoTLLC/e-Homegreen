@@ -219,8 +219,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 return Double(devices[indexPath.row].currentValue) /// 255
             }()
             cell.setImageForDevice(devices[indexPath.row])
-//            cell.curtainImage.image = devices[indexPath.row].returnImage(deviceValue)
-//            let img = cell.curtainImage.image
         
             cell.curtainName.userInteractionEnabled = true
             cell.curtainImage.userInteractionEnabled = true
@@ -246,9 +244,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 let curtainCloseTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "closeCurtain:")
                 let curtainStopTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "stopCurtain:")
                 
-//                let curtainImageLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
-//                curtainImageLongPress.minimumPressDuration = 0.5
-//                curtainImageLongPress.delegate = self
                 cell.openButton.addGestureRecognizer(curtainOpenTap)
                 cell.closeButton.addGestureRecognizer(curtainCloseTap)
                 cell.curtainImage.addGestureRecognizer(curtainStopTap)

@@ -71,30 +71,43 @@ class CurtainCollectionCell: UICollectionViewCell {
                 }
             }
         }
-        guard let _ = devicePair else{
-            print("Error, no pair device found for curtain relay control")
-            return
-        }
-        
-        guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
-            print("error")
-            return
-        }
-        let preSort = devImages.sort { (let result1, let result2) -> Bool in
-            if result1.state?.integerValue < result2.state?.integerValue {return true}
-            return false
-        }
-        
-        // Present adequate image depending on the states of channels
-        // Closing state:  Ch1 == on (255), Ch3 == off(0)
-        // Opening state:  Ch1 == on (255), Ch3 == on(255)
-        // Stop state:     Ch1 == off (0), Ch3 == on(255)
-        if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 0{
-            curtainImage.image = UIImage(named: preSort[0].defaultImage!)
-        }else if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 255{
-            curtainImage.image = UIImage(named: preSort[2].defaultImage!)
-        }else {//device.currentValue.integerValue == 0{
-            curtainImage.image = UIImage(named: preSort[1].defaultImage!)
+        if devicePair == nil { // new module
+            guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
+                print("error")
+                return
+            }
+            let preSort = devImages.sort { (let result1, let result2) -> Bool in
+                if result1.state?.integerValue < result2.state?.integerValue {return true}
+                return false
+            }
+            if device.currentValue.integerValue == 255{
+                curtainImage.image = UIImage(named: preSort[2].defaultImage!)
+            }else if device.currentValue.integerValue == 0{
+                curtainImage.image = UIImage(named: preSort[0].defaultImage!)
+            }else {//device.currentValue.integerValue == 0{
+                curtainImage.image = UIImage(named: preSort[1].defaultImage!)
+            }
+        }else{
+            guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
+                print("error")
+                return
+            }
+            let preSort = devImages.sort { (let result1, let result2) -> Bool in
+                if result1.state?.integerValue < result2.state?.integerValue {return true}
+                return false
+            }
+            
+            // Present adequate image depending on the states of channels
+            // Closing state:  Ch1 == on (255), Ch3 == off(0)
+            // Opening state:  Ch1 == on (255), Ch3 == on(255)
+            // Stop state:     Ch1 == off (0), Ch3 == on(255)
+            if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 0{
+                curtainImage.image = UIImage(named: preSort[0].defaultImage!)
+            }else if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 255{
+                curtainImage.image = UIImage(named: preSort[2].defaultImage!)
+            }else {//device.currentValue.integerValue == 0{
+                curtainImage.image = UIImage(named: preSort[1].defaultImage!)
+            }
         }
     }
 }

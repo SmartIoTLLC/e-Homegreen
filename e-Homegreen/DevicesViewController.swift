@@ -445,26 +445,34 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 }
             }
         }
-        guard let _ = devicePair else{
-            print("Error, no pair device found for curtain relay control")
-            return
-        }
         
-        if devices[tag].controlType == ControlType.Curtain {
-            var setDeviceValue:UInt8 = 0xFF
-            let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
-            devicePair!.currentValue = 0xFF
-            let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            CoreDataController.shahredInstance.saveChanges()
-            dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
-            })
+        if devicePair == nil { // then this is new module, which works alone
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0xFF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                })
+            }
+        }else{
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0xFF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
+                devicePair!.currentValue = 0xFF
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                })
+            }
         }
         updateCells()
     }
     func closeCurtain(gestureRecognizer:UITapGestureRecognizer){
-        // Light
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
@@ -480,22 +488,37 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 }
             }
         }
-        guard let _ = devicePair else{
-            print("Error, no pair device found for curtain relay control")
-            return
-        }
         
-        if devices[tag].controlType == ControlType.Curtain {
-            var setDeviceValue:UInt8 = 0x00
-            let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
-            devicePair?.currentValue = 0
-            let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            CoreDataController.shahredInstance.saveChanges()
-            updateCells()
-            dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
-            })
+        if devicePair == nil{
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0x00
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0x00
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                updateCells()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                })
+            }
+        }else{
+            guard let _ = devicePair else{
+                print("Error, no pair device found for curtain relay control")
+                return
+            }
+            
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0x00
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
+                devicePair?.currentValue = 0
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                updateCells()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                })
+            }
         }
         updateCells()
     }
@@ -515,27 +538,38 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 }
             }
         }
-        guard let _ = devicePair else{
-            print("Error, no pair device found for curtain relay control")
-            return
-        }
         
-        if devices[tag].controlType == ControlType.Curtain {
-            var setDeviceValue:UInt8 = 0xEF
-            let deviceCurrentValue = Int(devices[tag].currentValue)
-            devices[tag].currentValue = 0x00
-            devicePair?.currentValue = 0x00
-            let deviceGroupId = devices[tag].curtainGroupID.integerValue
-            CoreDataController.shahredInstance.saveChanges()
-            updateCells()
-            dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
-            })
+        if devicePair == nil {
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0xEF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xEF
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                updateCells()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                })
+            }
+        }else{
+            if devices[tag].controlType == ControlType.Curtain {
+                var setDeviceValue:UInt8 = 0xEF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0x00
+                devicePair?.currentValue = 0x00
+                let deviceGroupId = devices[tag].curtainGroupID.integerValue
+                CoreDataController.shahredInstance.saveChanges()
+                updateCells()
+                dispatch_async(dispatch_get_main_queue(), {
+                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                })
+            }
         }
+
         updateCells()
     }
     
-//    This has to be done, because we dont receive updates immmediately from gateway
+    //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
         if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
             for indexPath in indexPaths {
@@ -579,7 +613,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
-//                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
+                //                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.setNeedsDisplay()
             }
         }
