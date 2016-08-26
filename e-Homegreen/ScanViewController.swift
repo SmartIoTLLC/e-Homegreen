@@ -176,12 +176,10 @@ extension ScanViewController: UISearchBarDelegate{
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchBar.showsCancelButton = true  // show cancel buttton when search bar being active
     }
-    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBar.showsCancelButton = false // hide cancel buttton when search bar being inactive
     }
-    
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         toViewController.sendSearchBarText(searchText)
     }
@@ -233,8 +231,6 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
             presentViewController(popoverVC, animated: true, completion: nil)
         }
     }
-
-
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None

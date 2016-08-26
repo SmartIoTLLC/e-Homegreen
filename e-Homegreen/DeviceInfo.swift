@@ -43,35 +43,41 @@ struct Channel {
     static let Twelve = 12
 }
 struct ControlType {
-    // Dimmer
-    // Appliance, Relay i ChangeOverRelay
-    // HVAC
-    // Sensor
-    // Curtains
-    // DigitalInput
-    // DigitalOutput
-    // AnalogInput
-    // AnalogOutput
-    // SaltoAccess
-    static let CurtainsRS485 = "Curtains RS485"
+    // Reduced Control type
     static let Gateway = "Gateway"
-    static let CurtainsRelay = "Curtains Relay"
-    static let PC = "PC"
     static let Dimmer = "Dimmer"
     static let Relay = "Relay"
-    static let Appliance = "Appliance"
-    static let HVAC = "HVAC"
     static let Climate = "Climate"
-    static let Sensor = "Sensor"
-    static let Light = "Light"
-    static let HumanInterfaceSeries = "Intelligent Switch"
+    static let IntelligentSwitch = "Intelligent Switch"
     static let AnalogOutput = "Analog Output"
     static let DigitalInput = "Digital Input"
     static let DigitalOutput = "Digital Output"
     static let AnalogInput = "Analog Input"
+    static let Sensor = "Sensor"
     static let IRTransmitter = "IR Transmitter"
-    static let Access = "Access"
     static let Curtain = "Curtain"
+    static let Access = "Access"
+    static let PC = "PC"
+    
+//    static let CurtainsRS485 = "Curtains RS485"
+//    static let Gateway = "Gateway"
+//    static let CurtainsRelay = "Curtains Relay"
+//    static let PC = "PC"
+//    static let Dimmer = "Dimmer"
+//    static let Relay = "Relay"
+//    static let Appliance = "Appliance"
+//    static let HVAC = "HVAC"
+//    static let Climate = "Climate"
+//    static let Sensor = "Sensor"
+//    static let Light = "Light"
+//    static let HumanInterfaceSeries = "Intelligent Switch"
+//    static let AnalogOutput = "Analog Output"
+//    static let DigitalInput = "Digital Input"
+//    static let DigitalOutput = "Digital Output"
+//    static let AnalogInput = "Analog Input"
+//    static let IRTransmitter = "IR Transmitter"
+//    static let Access = "Access"
+//    static let Curtain = "Curtain"
 }
 struct Interface {
     static let TemperatureProbe = "CPU.Temp"
@@ -128,35 +134,42 @@ struct DeviceInfo {
     
     enum Multisensor10in1Old: Int {
         case TemperatureProbe = 1
-        case DigitalInputDryContact = 2
-        case DigitalInputDryContact2 = 3
+        case DigitalInput1 = 2
+        case DigitalInput2 = 3
         case AnalogInput = 4
         case TemperatureProbe2 = 5
         case BrightnessSensorLUX = 6
         case MotionSensorPIR = 7
         case IRReceiver = 8
-        case DigitalInput = 9
-        case DigitalInput2 = 10
+        case DigitalInput3 = 9
+        case DigitalInput4 = 10
     }
     enum Multisensor6in1: Int {
         case TemperatureProbe = 1
-        case DigitalInputDryContact = 2
-        case DigitalInputDryContact2 = 3
+        case DigitalInput1 = 2
+        case DigitalInput2 = 3
         case TemperatureProbe2 = 4
         case BrightnessSensorLUX = 5
         case MotionSensorPIR = 6
     }
     enum Multisensor10in1: Int {
         case TemperatureProbe = 1
-        case DigitalInputDryContact = 2
-        case DigitalInputDryContact2 = 3
+        case DigitalInput1 = 2
+        case DigitalInput2 = 3
         case TemperatureProbe2 = 4
         case BrightnessSensorLUX = 5
         case MotionSensorPIR = 6
-        case DigitalInput = 7
+        case DigitalInput3 = 7
         case IRReceiver = 8
         case AnalogInput = 9
-        case DigitalInput2 = 10
+        case DigitalInput4 = 10
+    }
+    enum IntelligentSwitchInputInterface: Int{
+        case TemperatureProbe = 1
+        case DigitalInput1 = 2
+        case DigitalInput2 = 3
+        case Temperature = 4
+        case IRReceiver = 5
     }
     
     static let inputInterface10in1:[Int:String] = [
@@ -273,9 +286,9 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x04, subId: 0x04):DeviceTypeCode(channel: Channel.Four, name:ControlType.Climate, MPN: "CM204CG"), // Climate Module, 4 Controllers Gateway
         
         // Human Interface Series
-        DeviceType(deviceId: 0x54, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS04xxx"), // Intelligent Switch, 4 Buttons
-        DeviceType(deviceId: 0x54, subId: 0x01):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS08xxx"), // Intelligent Switch, 8 Buttons
-        DeviceType(deviceId: 0x72, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.HumanInterfaceSeries, MPN: "HS12xxx"), // Intelligent LCD Switch, 12 Buttons
+        DeviceType(deviceId: 0x54, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.IntelligentSwitch, MPN: "HS04xxx"), // Intelligent Switch, 4 Buttons
+        DeviceType(deviceId: 0x54, subId: 0x01):DeviceTypeCode(channel: Channel.Five, name:ControlType.IntelligentSwitch, MPN: "HS08xxx"), // Intelligent Switch, 8 Buttons
+        DeviceType(deviceId: 0x72, subId: 0x00):DeviceTypeCode(channel: Channel.Five, name:ControlType.IntelligentSwitch, MPN: "HS12xxx"), // Intelligent LCD Switch, 12 Buttons
         
         // I/O Series
         DeviceType(deviceId: 0x42, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogOutput, MPN: "AO4010V"), // Analog Output Module, 4CH 0-10V
@@ -318,3 +331,94 @@ struct DeviceTypeCode {
         self.deviceType = ""
     }
 }
+
+let curtainImagesMultistate = [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: nil),
+                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1, text: nil),
+                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 2, text: nil),
+                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3, text: nil),
+                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 4, text: nil)]
+let blindImagesMultistate = [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 1, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 02", state: 2, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 03", state: 3, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 04", state: 4, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 05", state: 5, text: nil),
+                          DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 6, text: nil)]
+
+let lightningImagesMultistate = [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 01", state: 1, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 02", state: 2, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 03", state: 3, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 04", state: 4, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 05", state: 5, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 06", state: 6, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 07", state: 7, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 08", state: 8, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 09", state: 9, text: nil),
+                        DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 10, text: nil)]
+
+let blindImagesTwoStateNO = [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: "Off"),
+                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "On")]
+let blindImagesTwoStateNC = [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: "On"),
+                           DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "Off")]
+
+let curtainImagesTwoStateNO = [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
+                          DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
+                          DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]
+let curtainImagesTwoStateNC = [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Open"),
+                                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
+                                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Closed")]
+
+let lightningImagesTwoStateNO = [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
+let lightningImagesTwoStateNC = [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "On"),
+                               DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "Off")]
+
+let applianceImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
+let applianceImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "On"),
+                               DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "Off")]
+
+let climateImagesTwoStateNO = [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 0, text: "Off"),
+                          DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 1, text: "On")]
+let climateImagesTwoStateNC = [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 0, text: "On"),
+                             DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 1, text: "Off")]
+
+let securityImagesTwoStateNO = [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 0, text: "Locked"),
+                                DeviceImageState(defaultImage: "14 Security - Lock - 01", state: 1, text: "Unlocked")]
+let securityImagesTwoStateNC = [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 0, text: "Unlocked"),
+                                DeviceImageState(defaultImage: "14 Security - Lock - 01", state: 1, text: "Locked")]
+let timerImagesTwostateNO = [DeviceImageState(defaultImage: "15 Timer - CLock - 00", state: 0, text: "Off"),
+                             DeviceImageState(defaultImage: "15 Timer - CLock - 01", state: 1, text: "On")]
+let timerImagesTwostateNC = [DeviceImageState(defaultImage: "15 Timer - CLock - 00", state: 0, text: "On"),
+                             DeviceImageState(defaultImage: "15 Timer - CLock - 01", state: 1, text: "Off")]
+let flagImagesTwoStateNO = [DeviceImageState(defaultImage: "16 Flag - Flag - 00", state: 0, text: "Off"),
+                            DeviceImageState(defaultImage: "16 Flag - Flag - 01", state: 1, text: "On")]
+let flagImagesTwoStateNC = [DeviceImageState(defaultImage: "16 Flag - Flag - 00", state: 0, text: "On"),
+                            DeviceImageState(defaultImage: "16 Flag - Flag - 01", state: 1, text: "Off")]
+let eventImagesTwoStateNO = [DeviceImageState(defaultImage: "17 Event - Up Down - 00", state: 0, text: "Off"),
+                           DeviceImageState(defaultImage: "17 Event - Up Down - 01", state: 1, text: "On")]
+let eventImagesTwoStateNC = [DeviceImageState(defaultImage: "17 Event - Up Down - 00", state: 0, text: "On"),
+                           DeviceImageState(defaultImage: "17 Event - Up Down - 01", state: 1, text: "Off")]
+let mediaImagesTwoStateNO = [DeviceImageState(defaultImage: "18 Media - LCD TV - 00", state: 0, text: "Off"),
+                             DeviceImageState(defaultImage: "18 Media - LCD TV - 01", state: 1, text: "On")]
+let mediaImagesTwoStateNC = [DeviceImageState(defaultImage: "18 Media - LCD TV - 00", state: 0, text: "On"),
+                             DeviceImageState(defaultImage: "18 Media - LCD TV - 01", state: 1, text: "Off")]
+
+let motionImagesTwoStateNO = [DeviceImageState(defaultImage: "14 Security - Motion Sensor - 00", state: 0, text: "Off"),
+                                 DeviceImageState(defaultImage: "14 Security - Motion Sensor - 01", state: 1, text: "On")]
+let motionImagesTwoStateNC = [DeviceImageState(defaultImage: "14 Security - Motion Sensor - 00", state: 0, text: "On"),
+                                 DeviceImageState(defaultImage: "14 Security - Motion Sensor - 01", state: 1, text: "Off")]
+
+let temperatureImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance - Water Heater - 00", state: 0, text: "Off"),
+                                   DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "On")]
+let temperatureImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Water Heater - 00", state: 0, text: "On"),
+                                   DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "Off")]
+
+
+
+
+
+
+
+    

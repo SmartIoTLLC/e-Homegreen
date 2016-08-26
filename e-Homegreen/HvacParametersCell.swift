@@ -291,6 +291,7 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
             device.medSpeedVisible = switchMed.on
             device.autoSpeedVisible = switchAutoSpeed.on
             
+            device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
             //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             self.delegate?.saveClicked()

@@ -15,9 +15,6 @@ struct DeviceImageState {
     let text : String?
 }
 
-struct DeviceImages {
-    
-}
 
 class DefaultDeviceImages: NSObject {
     func getNewImagesForDevice (device:Device) -> [DeviceImageState] {
@@ -31,214 +28,165 @@ class DefaultDeviceImages: NSObject {
         case ControlType.Dimmer:
             switch categoryId {
             case CategoryId.Blind:
-                return [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 1, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 02", state: 2, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 03", state: 3, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 04", state: 4, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 05", state: 5, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 6, text: nil)]
+                return blindImagesMultistate
             case CategoryId.Curtain:
-                return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 01", state: 1, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 2, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 03", state: 3, text: nil),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 4, text: nil)]
+                return curtainImagesMultistate
             default:
-            return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 01", state: 1, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 02", state: 2, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 03", state: 3, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 04", state: 4, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 05", state: 5, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 06", state: 6, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 07", state: 7, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 08", state: 8, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 09", state: 9, text: nil),
-                    DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 10, text: nil)]
+                return lightningImagesMultistate
             }
         case ControlType.Curtain:
             switch categoryId {
             case CategoryId.Blind:
-                return [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: nil)]
+                return blindImagesTwoStateNO
             default:
-                return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
-                        DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]
-
+                return curtainImagesTwoStateNO
+            }
+        case ControlType.IntelligentSwitch:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.Climate:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.AnalogInput:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.AnalogOutput:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.DigitalInput:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.DigitalOutput:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.Sensor:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.IRTransmitter:
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        default: // ControlType == Relay
+            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        }
+    }
+    
+    func returnImagesArrayDependingOnCategoryId(categoryId: NSNumber, controlMode: Int?) -> [DeviceImageState]{
+        switch categoryId {
+        case CategoryId.GatewayControl:
+            guard let controlModeTemp = controlMode else{
+                return lightningImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return lightningImagesTwoStateNC
+            }else{
+                return lightningImagesTwoStateNO
+            }
+        case CategoryId.DimmingControl:
+            guard let controlModeTemp = controlMode else{
+                return lightningImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return lightningImagesTwoStateNC
+            }else{
+                return lightningImagesTwoStateNO
+            }
+        case CategoryId.RelayControl:
+            guard let controlModeTemp = controlMode else{
+                return applianceImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return applianceImagesTwoStateNC
+            }else{
+                return applianceImagesTwoStateNO
+            }
+        case CategoryId.ClimateControl:
+            guard let controlModeTemp = controlMode else{
+                return climateImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return climateImagesTwoStateNC
+            }else{
+                return climateImagesTwoStateNO
+            }
+            
+        case CategoryId.Lighting:
+            guard let controlModeTemp = controlMode else{
+                return lightningImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return lightningImagesTwoStateNC
+            }else{
+                return lightningImagesTwoStateNO
+            }
+            
+        case CategoryId.Appliance:
+            guard let controlModeTemp = controlMode else{
+                return applianceImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return applianceImagesTwoStateNC
+            }else{
+                return applianceImagesTwoStateNO
+            }
+            
+        case CategoryId.Curtain:
+            guard let controlModeTemp = controlMode else{
+                return curtainImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return curtainImagesTwoStateNC
+            }else{
+                return curtainImagesTwoStateNO
+            }
+        case CategoryId.Security:
+            guard let controlModeTemp = controlMode else{
+                return securityImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return securityImagesTwoStateNC
+            }else{
+                return securityImagesTwoStateNO
+            }
+        case CategoryId.Timer:
+            guard let controlModeTemp = controlMode else{
+                return timerImagesTwostateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return timerImagesTwostateNC
+            }else{
+                return timerImagesTwostateNO
+            }
+        case CategoryId.Flag:
+            guard let controlModeTemp = controlMode else{
+                return flagImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return flagImagesTwoStateNC
+            }else{
+                return flagImagesTwoStateNO
+            }
+        case CategoryId.Event:
+            guard let controlModeTemp = controlMode else{
+                return eventImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return eventImagesTwoStateNC
+            }else{
+                return eventImagesTwoStateNO
+            }
+        case CategoryId.Media:
+            guard let controlModeTemp = controlMode else{
+                return mediaImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return mediaImagesTwoStateNC
+            }else{
+                return mediaImagesTwoStateNO
+            }
+        case CategoryId.Blind:
+            guard let controlModeTemp = controlMode else{
+                return blindImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return blindImagesTwoStateNC
+            }else{
+                return blindImagesTwoStateNO
             }
             
         default:
-            switch categoryId {
-            case CategoryId.GatewayControl:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-            case CategoryId.DimmingControl:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-            case CategoryId.RelayControl:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
-                }
-            case CategoryId.ClimateControl:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 1, text: "On")]
-                }
-
-            case CategoryId.Lighting:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "11 Lighting - Bulb - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "11 Lighting - Bulb - 10", state: 1, text: "On")]
-                }
-
-            case CategoryId.Appliance:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: "On")]
-                }
-                
-            case CategoryId.Curtain:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]
-                }else{
-                    return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
-                            DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]
-                }
-            case CategoryId.Security:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 0, text: "Locked"),
-                            DeviceImageState(defaultImage: "14 Security - Lock - 01", state: 1, text: "Unlocked")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 1, text: "Unlocked"),
-                            DeviceImageState(defaultImage: "14 Security - Lock - 01", state: 0, text: "Locked")]
-                }else{
-                    return [DeviceImageState(defaultImage: "14 Security - Lock - 00", state: 0, text: "Locked"),
-                            DeviceImageState(defaultImage: "14 Security - Lock - 01", state: 1, text: "Unlocked")]
-                }
-            case CategoryId.Timer:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "15 Timer - CLock - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "15 Timer - CLock - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "15 Timer - CLock - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "15 Timer - CLock - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "15 Timer - CLock - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "15 Timer - CLock - 01", state: 1, text: "On")]
-                }
-            case CategoryId.Flag:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "16 Flag - Flag - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "16 Flag - Flag - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "16 Flag - Flag - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "16 Flag - Flag - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "16 Flag - Flag - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "16 Flag - Flag - 01", state: 1, text: "On")]
-                }
-            case CategoryId.Event:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "17 Event - Up Down - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "17 Event - Up Down - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "17 Event - Up Down - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "17 Event - Up Down - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "17 Event - Up Down - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "17 Event - Up Down - 01", state: 1, text: "On")]
-                }
-            case CategoryId.Media:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "18 Media - LCD TV - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "18 Media - LCD TV - 01", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "18 Media - LCD TV - 00", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "18 Media - LCD TV - 01", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "18 Media - LCD TV - 00", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "18 Media - LCD TV - 01", state: 1, text: "On")]
-                }
-            case CategoryId.Blind:
-                guard let controlModeTemp = controlMode else{
-                    return [DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "On")]
-                }
-                if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
-                    return [DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 1, text: "On"),
-                            DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 0, text: "Off")]
-                }else{
-                    return [DeviceImageState(defaultImage: "19 Blind - Blind - 01", state: 0, text: "Off"),
-                            DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "On")]
-                }
-
-            default:
-                return [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0, text: nil),
-                        DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: nil)]
-
-            }
+            return applianceImagesTwoStateNO
         }
     }
 }
