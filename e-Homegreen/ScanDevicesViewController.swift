@@ -445,7 +445,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     if i < devices.count{
                         arrayOfNamesToBeSearched.append(i)
                         if devices[i].controlType == ControlType.Sensor
-                            || devices[i].controlType == ControlType.HumanInterfaceSeries
+                            || devices[i].controlType == ControlType.IntelligentSwitch
                             || devices[i].controlType == ControlType.Gateway
                             || devices[i].controlType == ControlType.AnalogInput
                             || devices[i].controlType == ControlType.DigitalInput{
@@ -500,7 +500,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                                 arrayOfNamesToBeSearched.append(i)
                             }
                             if devices[i].controlType == ControlType.Sensor
-                                || devices[i].controlType == ControlType.HumanInterfaceSeries
+                                || devices[i].controlType == ControlType.IntelligentSwitch
                                 || devices[i].controlType == ControlType.Gateway
                                 || devices[i].controlType == ControlType.AnalogInput
                                 || devices[i].controlType == ControlType.DigitalInput{
@@ -609,7 +609,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.HumanInterfaceSeries || devices[index].type == ControlType.Gateway  {
+        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
@@ -626,7 +626,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int) {
         setProgressBarParametarsForFindingSensorParametar(deviceIndex)
-        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.HumanInterfaceSeries || devices[deviceIndex].controlType == ControlType.Gateway {
+        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway {
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
@@ -662,7 +662,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             for i in from...to{
                 if i < devices.count{
                     if devices[i].controlType == ControlType.Sensor
-                        || devices[i].controlType == ControlType.HumanInterfaceSeries
+                        || devices[i].controlType == ControlType.IntelligentSwitch
                         || devices[i].controlType == ControlType.Gateway
                         || devices[i].controlType == ControlType.AnalogInput
                         || devices[i].controlType == ControlType.DigitalInput{

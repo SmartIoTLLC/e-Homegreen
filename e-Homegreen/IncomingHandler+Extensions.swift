@@ -58,25 +58,25 @@ extension IncomingHandler {
                             isClimate = true
                         }
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
-                        if channel == 10 && controlType == ControlType.Sensor && i > 1 {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if channel == 6 && controlType == ControlType.Sensor && i > 1 {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if controlType == ControlType.Climate {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if controlType == ControlType.Access || controlType == ControlType.AnalogInput || controlType == ControlType.AnalogOutput || controlType == ControlType.DigitalInput || controlType == ControlType.DigitalOutput || controlType == ControlType.IRTransmitter {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if channel == 3 && controlType == ControlType.Gateway && i > 1 {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        }  else if channel == 5 && controlType == ControlType.HumanInterfaceSeries && i > 1 {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if controlType == ControlType.Curtain {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if controlType == ControlType.PC {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        } else if controlType != ControlType.Climate && controlType != ControlType.Sensor && controlType != ControlType.HumanInterfaceSeries && controlType != ControlType.Gateway {
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                        }
+//                        if channel == 10 && controlType == ControlType.Sensor && i > 1 {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if channel == 6 && controlType == ControlType.Sensor && i > 1 {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if controlType == ControlType.Climate {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if controlType == ControlType.Access || controlType == ControlType.AnalogInput || controlType == ControlType.AnalogOutput || controlType == ControlType.DigitalInput || controlType == ControlType.DigitalOutput || controlType == ControlType.IRTransmitter {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if channel == 3 && controlType == ControlType.Gateway && i > 1 {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        }  else if channel == 5 && controlType == ControlType.HumanInterfaceSeries && i > 1 {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if controlType == ControlType.Curtain {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if controlType == ControlType.PC {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        } else if controlType != ControlType.Climate && controlType != ControlType.Sensor && controlType != ControlType.HumanInterfaceSeries && controlType != ControlType.Gateway {
+//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+//                        }
                         CoreDataController.shahredInstance.saveChanges()
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
                     }

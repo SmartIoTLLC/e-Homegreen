@@ -262,6 +262,7 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
             CoreDataController.shahredInstance.saveChanges()
+            device.resetImages(appDel.managedObjectContext!)
             self.delegate?.saveClicked()
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -345,23 +346,31 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showChangeDeviceParametar(point:CGPoint, device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
         let chn = Int(device.channel)
+        // If any kind of relay
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device, point: point)
             cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
-        }else if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3){
+        }
+        // If any kind of Digital input. It can be:
+        // DigitalInput control type
+        // Digital input in Intelligent switch
+        // Digital input in sensor
+        else if (device.controlType == ControlType.DigitalInput) ||
+            (device.controlType == ControlType.IntelligentSwitch && (chn == DeviceInfo.IntelligentSwitchInputInterface.DigitalInput1.rawValue || chn == DeviceInfo.IntelligentSwitchInputInterface.DigitalInput2.rawValue)) ||
+            (device.controlType == ControlType.Sensor && (chn == DeviceInfo.Multisensor10in1.DigitalInput1.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput2.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput3.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput4.rawValue)){
             let cdp = DigitalInputPopup(device: device, point: point)
             cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
-        }else if device.controlType == ControlType.Climate {
+        }
+        // If any kind of clima
+        else if device.controlType == ControlType.Climate {
             let cdp = HvacParametersCell(device: device, point: point)
             cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)
-        }else if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10){
-            let cdp = DigitalInputPopup(device: device, point: point)
-            cdp.delegate = scanDevicesViewController
-            self.presentViewController(cdp, animated: true, completion: nil)
-        }else{
+        }
+        // If anything else
+        else{
             let cdp = ChangeDeviceParametarsVC(device: device, point: point)
             cdp.delegate = scanDevicesViewController
             self.presentViewController(cdp, animated: true, completion: nil)

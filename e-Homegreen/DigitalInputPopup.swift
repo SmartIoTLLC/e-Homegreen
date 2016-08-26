@@ -186,7 +186,7 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
     @IBAction func changeControlType(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.HumanInterfaceSeries, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func btnLevel (sender: UIButton) {
@@ -234,6 +234,7 @@ class DigitalInputPopup: PopoverVC, UITextFieldDelegate {
             }else{
                 device.controlType = editedDevice!.controlType
             }
+            device.resetImages(appDel.managedObjectContext!)
             device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
             CoreDataController.shahredInstance.saveChanges()
             self.delegate?.saveClicked()

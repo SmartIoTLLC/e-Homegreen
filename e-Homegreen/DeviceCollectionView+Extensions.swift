@@ -62,7 +62,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if devices[indexPathRow].controlType == ControlType.Climate {
             SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
-        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.HumanInterfaceSeries || devices[indexPathRow].controlType == ControlType.Gateway {
+        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.IntelligentSwitch || devices[indexPathRow].controlType == ControlType.Gateway {
             SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Curtain {
@@ -464,7 +464,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.HumanInterfaceSeries || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput{
+        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions

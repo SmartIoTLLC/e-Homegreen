@@ -244,7 +244,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             // filter Curtain devices that are, actually, one device
             
             // All curtains
-            let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain || $0.controlType == ControlType.CurtainsRelay})
+            let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
             if curtainDevices.count > 0{
                 for i in 0...curtainDevices.count-1{
                     if i+1 < curtainDevices.count{ // if next exist
@@ -631,7 +631,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
-            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
+            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.IntelligentSwitch || devices[index.row].controlType == ControlType.Gateway {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.backView, toView: cell.infoView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews] , completion: nil)
             } else if devices[index.row].controlType == ControlType.Climate {
@@ -655,7 +655,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             } else if devices[index.row].controlType == ControlType.Relay {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! ApplianceCollectionCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
-            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
+            } else if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.IntelligentSwitch || devices[index.row].controlType == ControlType.Gateway {
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index) as! MultiSensorCell
                 UIView.transitionFromView(cell.infoView, toView: cell.backView, duration: 0.5, options: [UIViewAnimationOptions.TransitionFlipFromBottom, UIViewAnimationOptions.ShowHideTransitionViews], completion: nil)
             } else if devices[index.row].controlType == ControlType.Climate {
