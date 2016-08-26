@@ -509,6 +509,7 @@ class IncomingHandler: NSObject {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             for var i = 0; i < devices.count; i++ {
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
+                    // Parse device name
                     var string:String = ""
                     for var j = 8+47; j < byteArray.count-2; j++ {
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
@@ -518,9 +519,12 @@ class IncomingHandler: NSObject {
                     } else {
                         devices[i].name = "Unknown"
                     }
+
                     devices[i].overrideControl1 = Int(byteArray[23])
                     devices[i].overrideControl2 = Int(byteArray[24])
                     devices[i].overrideControl3 = Int(byteArray[25])
+                    
+                    // Parse zone and parent zone
                     if Int(byteArray[10]) == 0 {
                         devices[i].zoneId = 0
                         devices[i].parentZoneId = Int(byteArray[9])
@@ -528,9 +532,12 @@ class IncomingHandler: NSObject {
                         devices[i].zoneId = Int(byteArray[9])
                         devices[i].parentZoneId = Int(byteArray[10])
                     }
+                    
+                    // Parse Category
                     devices[i].categoryId = Int(byteArray[8])
-                    // When we change category it will reset images
                     devices[i].resetImages(appDel.managedObjectContext!)
+                    
+                    // Enabled/Visible
                     if byteArray[22] == 0x01 {
                         devices[i].isEnabled = NSNumber(bool: true)
                         devices[i].isVisible = NSNumber(bool: true)
@@ -538,8 +545,7 @@ class IncomingHandler: NSObject {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
                     }
-                    //                    devices[i].allowCurtainMode = Int(byteArray[33])
-                    //                    This is for curatin COntrol Mode: 1 NC, 2 NO, 3 NC and Reset, 4 NO and Reset
+
                     if byteArray[28] == 0x01 {
                         devices[i].isDimmerModeAllowed = NSNumber(bool: true)
                         devices[i].controlType = ControlType.Dimmer

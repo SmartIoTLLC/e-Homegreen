@@ -146,7 +146,6 @@ class DefaultDeviceImages: NSObject {
                             DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: "On")]
                 }
                 
-
             case CategoryId.Curtain:
                 guard let controlModeTemp = controlMode else{
                     return [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),

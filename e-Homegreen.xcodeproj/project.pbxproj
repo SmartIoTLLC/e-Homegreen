@@ -266,8 +266,6 @@
 		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; };
 		E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */; };
 		E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */; };
-		E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAE1B70B77D00410E2D /* AccessParametarVC.swift */; };
-		E79AEBB11B70B77D00410E2D /* AccessParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBAF1B70B77D00410E2D /* AccessParametarVC.xib */; };
 		E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */; };
 		E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */; };
 		E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */; };
@@ -632,8 +630,6 @@
 		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
 		E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimaParametarVC.swift; sourceTree = "<group>"; };
 		E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClimaParametarVC.xib; sourceTree = "<group>"; };
-		E79AEBAE1B70B77D00410E2D /* AccessParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessParametarVC.swift; sourceTree = "<group>"; };
-		E79AEBAF1B70B77D00410E2D /* AccessParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccessParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimmerParametarVC.swift; sourceTree = "<group>"; };
 		E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DimmerParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametarVC.swift; sourceTree = "<group>"; };
@@ -1058,13 +1054,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		4923279E1D6EEC7300B9BC05 /* Parameters */ = {
+		4923279E1D6EEC7300B9BC05 /* Parameters in Devices screen */ = {
 			isa = PBXGroup;
 			children = (
+				E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */,
+				E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */,
 				4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */,
 				4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */,
 			);
-			name = Parameters;
+			name = "Parameters in Devices screen";
 			sourceTree = "<group>";
 		};
 		4952C1301D589131006C29F2 /* HVAC */ = {
@@ -1539,7 +1537,7 @@
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
 			isa = PBXGroup;
 			children = (
-				4923279E1D6EEC7300B9BC05 /* Parameters */,
+				4923279E1D6EEC7300B9BC05 /* Parameters in Devices screen */,
 				4952C1301D589131006C29F2 /* HVAC */,
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
@@ -1547,12 +1545,8 @@
 				E7E242121B68B35400CEAB9A /* CellParametarVC.xib */,
 				E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */,
 				E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */,
-				E79AEBAE1B70B77D00410E2D /* AccessParametarVC.swift */,
-				E79AEBAF1B70B77D00410E2D /* AccessParametarVC.xib */,
 				E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */,
 				E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */,
-				E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */,
-				E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */,
 				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
 				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
 				731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */,
@@ -1911,7 +1905,6 @@
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
 				22495D131CAA74880034FC94 /* Dashboard.storyboard in Resources */,
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
-				E79AEBB11B70B77D00410E2D /* AccessParametarVC.xib in Resources */,
 				22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
 				731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */,
@@ -2083,7 +2076,6 @@
 				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
 				73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */,
 				223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */,
-				E79AEBB01B70B77D00410E2D /* AccessParametarVC.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,

@@ -42,7 +42,9 @@ extension IncomingHandler {
         print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice))
          if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
-            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel, let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel,
+                let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+                
                 let MAC:[Byte] = Array(byteArray[9...14])
                 if devices != [] {
                     for device in devices {

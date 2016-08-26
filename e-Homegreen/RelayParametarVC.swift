@@ -27,7 +27,6 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     
     
     @IBOutlet weak var editDelay: UITextField!
-    @IBOutlet weak var enableSwitch: UISwitch!
     @IBOutlet weak var overRideID: UILabel!
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!

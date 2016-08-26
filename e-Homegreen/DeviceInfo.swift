@@ -107,18 +107,6 @@ struct CategoryId {
     static let Blind = 19
     static let Default = 255
 }
-//struct InterfaceNew {
-//    static let TemperatureProbe = "CPU.Temp"
-//    static let DigitalInputDryContact = "Dig Input 1"
-//    static let DigitalInputDryContact2 = "Dig. Input 2"
-//    static let TemperatureProbe2 = "Temperature"
-//    static let BrightnessSensorLUX = "Brt. Level"
-//    static let MotionSensorPIR = "Motion Sensor"
-//    static let DigitalInput = "Tamper Sensor"
-//    static let IRReceiver = "IR Receiver"
-//    static let AnalogInput = "Analog Input"
-//    static let DigitalInput2 = "Noise Sensor"
-//}
 struct DeviceInfo {
     
     static let setMode:[Int:String] = [0 : "Auto",
@@ -171,7 +159,8 @@ struct DeviceInfo {
         case DigitalInput2 = 10
     }
     
-    static let inputInterface10in1:[Int:String] = [1:Interface.TemperatureProbe,
+    static let inputInterface10in1:[Int:String] = [
+        1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
         4:Interface.AnalogInput,
@@ -182,7 +171,8 @@ struct DeviceInfo {
         9:Interface.DigitalInput,
         10:Interface.DigitalInput2]
     
-    static let inputInterface10in1new:[Int:String] = [1:Interface.TemperatureProbe,
+    static let inputInterface10in1new:[Int:String] = [
+        1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
         4:Interface.TemperatureProbe2,
@@ -193,14 +183,16 @@ struct DeviceInfo {
         9:Interface.AnalogInput,
         10:Interface.DigitalInput2]
     
-    static let inputInterface6in1:[Int:String] = [1:Interface.TemperatureProbe,
+    static let inputInterface6in1:[Int:String] = [
+        1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
         4:Interface.TemperatureProbe2,
         5:Interface.MotionSensorPIR,
         6:Interface.DigitalInput]
     
-    static let inteligentSwitch:[Int:String] = [1:Interface.TemperatureProbe,
+    static let inteligentSwitch:[Int:String] = [
+        1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
         4:Interface.TemperatureProbe2,

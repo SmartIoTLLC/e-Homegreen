@@ -111,22 +111,6 @@ struct Messages {
     
 }
 
-struct CurtainControlModes {
-//    static let Close = 0x01
-//    static let Open = 0x02
-//    static let Reverse = 0x03
-//    static let Stop = 0x04
-    static let Open = 0xFF
-    static let Close = 0x00
-    static let Toggle = 0xF1
-    static let Stop = 0xEF
-}
-struct SomethingSomethingSomething {
-    static let Waiting = 0x00
-    static let Started = 0x01
-    static let Elapsed = 0xF0
-    static let Suspend = 0xEE
-}
 //MARK:- Multisensor
 struct DigitalInput {
     // This is used to populate
@@ -225,9 +209,7 @@ struct DigitalInput {
 //        static let MultiSensorNormallyClosed = 0x84
     }
 }
-struct ReuseIdentifier {
-//    "settingsCell"
-}
+
 
 struct UserDefaults {
     static let IsScaningDevice = "PLCDidFindDevice"
@@ -585,10 +567,10 @@ struct Colors {
 // 0-255
 struct DeviceValue {
     struct MotionSensor {
-        static let Idle = Int(0x00)///255*100
-        static let Motion = (0x01)///255*100
-        static let IdleWarning = (0xFE)///255*100
-        static let ResetTimer = (0xEF)///255*100
+        static let Idle = Int(0x00)
+        static let Motion = (0x01)
+        static let IdleWarning = (0xFE)
+        static let ResetTimer = (0xEF)
     }
 //    enum MotionSensor:Int {
 //        case Idle = 0x00
@@ -597,13 +579,6 @@ struct DeviceValue {
 //        case ResetTimer = 0xEF
 //    }
 }
-//extension for UIColor
-
-//dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-//
-//}
-
-//UIApplication.sharedApplication().idleTimerDisabled = true
 
 extension NSDate {
     
@@ -624,6 +599,3 @@ extension NSDate {
         return yesterDayDate
     }
 }
-//if let path = NSBundle.mainBundle().pathForResource("Config", ofType: "plist"), dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
-//    // use swift dictionary as normal
-//}
