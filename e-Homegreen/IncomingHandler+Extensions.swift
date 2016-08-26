@@ -61,9 +61,7 @@ extension IncomingHandler {
                         
                         if (controlType == ControlType.Sensor ||
                             controlType == ControlType.Gateway ||
-                            controlType == ControlType.IntelligentSwitch ||
-                            controlType == ControlType.Relay ||
-                            controlType == ControlType.Dimmer) && i > 1{
+                            controlType == ControlType.IntelligentSwitch) && i > 1{
                             
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             
@@ -75,7 +73,9 @@ extension IncomingHandler {
                             controlType == ControlType.DigitalOutput ||
                             controlType == ControlType.IRTransmitter ||
                             controlType == ControlType.Curtain ||
-                            controlType == ControlType.PC {
+                            controlType == ControlType.PC ||
+                            controlType == ControlType.Relay ||
+                            controlType == ControlType.Dimmer{
                             
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                         }
