@@ -264,8 +264,6 @@
 		E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */; };
 		E79309BE1BC571770009EFB1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E79309BD1BC571770009EFB1 /* QuartzCore.framework */; };
 		E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */; };
-		E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */; };
-		E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */; };
 		E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */; };
 		E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */; };
 		E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */; };
@@ -317,8 +315,6 @@
 		E7E1A81E1B3804DA008D8713 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */; };
 		E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */; };
 		E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */; };
-		E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E242111B68B35400CEAB9A /* CellParametarVC.swift */; };
-		E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E242121B68B35400CEAB9A /* CellParametarVC.xib */; };
 		E7EBA7661B57B321003D023E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EBA7651B57B321003D023E /* SystemConfiguration.framework */; };
 		E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */; };
 		E7F15B041B8F27840025082D /* SceneGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F15B021B8F27840025082D /* SceneGalleryVC.swift */; };
@@ -628,8 +624,6 @@
 		E79309BB1BC5715D0009EFB1 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		E79309BD1BC571770009EFB1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanTimerViewController.swift; sourceTree = "<group>"; };
-		E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClimaParametarVC.swift; sourceTree = "<group>"; };
-		E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClimaParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimmerParametarVC.swift; sourceTree = "<group>"; };
 		E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DimmerParametarVC.xib; sourceTree = "<group>"; };
 		E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametarVC.swift; sourceTree = "<group>"; };
@@ -683,8 +677,6 @@
 		E7E1A81D1B3804DA008D8713 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
 		E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
-		E7E242111B68B35400CEAB9A /* CellParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellParametarVC.swift; sourceTree = "<group>"; };
-		E7E242121B68B35400CEAB9A /* CellParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellParametarVC.xib; sourceTree = "<group>"; };
 		E7EBA7651B57B321003D023E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E7F0A6051BBBF06000B6648F /* CustomGradientButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientButton.swift; sourceTree = "<group>"; };
 		E7F15B021B8F27840025082D /* SceneGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneGalleryVC.swift; sourceTree = "<group>"; };
@@ -1057,6 +1049,8 @@
 		4923279E1D6EEC7300B9BC05 /* Parameters in Devices screen */ = {
 			isa = PBXGroup;
 			children = (
+				E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */,
+				E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */,
 				E79AEBB61B70C43300410E2D /* RelayParametarVC.swift */,
 				E79AEBB71B70C43300410E2D /* RelayParametarVC.xib */,
 				4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */,
@@ -1541,12 +1535,6 @@
 				4952C1301D589131006C29F2 /* HVAC */,
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
-				E7E242111B68B35400CEAB9A /* CellParametarVC.swift */,
-				E7E242121B68B35400CEAB9A /* CellParametarVC.xib */,
-				E79AEBAA1B70AEC300410E2D /* ClimaParametarVC.swift */,
-				E79AEBAB1B70AEC300410E2D /* ClimaParametarVC.xib */,
-				E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */,
-				E79AEBB31B70BFD500410E2D /* DimmerParametarVC.xib */,
 				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
 				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
 				731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */,
@@ -1834,7 +1822,6 @@
 				223690C41CAD005E0037B54A /* Login.storyboard in Resources */,
 				22495D1B1CAA797C0034FC94 /* Sequences.storyboard in Resources */,
 				E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */,
-				E7E242141B68B35400CEAB9A /* CellParametarVC.xib in Resources */,
 				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
 				73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
@@ -1869,7 +1856,6 @@
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
-				E79AEBAD1B70AEC300410E2D /* ClimaParametarVC.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				22495D311CAA83260034FC94 /* Popover.storyboard in Resources */,
@@ -2044,7 +2030,6 @@
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
-				E7E242131B68B35400CEAB9A /* CellParametarVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
@@ -2142,7 +2127,6 @@
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
 				73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */,
 				E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */,
-				E79AEBAC1B70AEC300410E2D /* ClimaParametarVC.swift in Sources */,
 				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,
 				E7F5FC1F1BB9744200071982 /* TopButton.swift in Sources */,
 				7372EB3E1BC410800097806D /* Event.swift in Sources */,

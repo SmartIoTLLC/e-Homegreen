@@ -130,8 +130,8 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         btnControlType.tag = 4
         changeControlMode.tag = 5
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametersCell.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametersCell.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
         
     }
     override func nameAndId(name: String, id: String) {

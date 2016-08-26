@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class DimmerParametarVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     
@@ -25,13 +25,9 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     var delegate: DevicePropertiesDelegate?
     var device:Device?
     
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var editDelay: UITextField!
     @IBOutlet weak var editRunTime: UITextField!
     @IBOutlet weak var editSkipState: UITextField!
-    @IBOutlet weak var enableSwitch: UISwitch!
-    @IBOutlet weak var overRideID: UILabel!
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
@@ -40,6 +36,9 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     @IBOutlet weak var deviceAddress: UILabel!
     @IBOutlet weak var deviceChannel: UILabel!
     
+    @IBOutlet weak var centerY: NSLayoutConstraint!
+    
+    @IBOutlet weak var scroll: UIScrollView!
     
     init(point:CGPoint){
         super.init(nibName: "DimmerParametarVC", bundle: nil)
@@ -57,25 +56,16 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
+        editDelay.inputAccessoryView = CustomToolBar()
+        editRunTime.inputAccessoryView = CustomToolBar()
+        editSkipState.inputAccessoryView = CustomToolBar()
+        
         editDelay.delegate = self
         editRunTime.delegate = self
         editSkipState.delegate = self
-        
-//        devices[indexPathRow].zoneId
-//        devices[indexPathRow].categoryId
-//        devices[indexPathRow].delay
-//        devices[indexPathRow].runtime
-//        devices[indexPathRow].isEnabled
-//        devices[indexPathRow].name
-//        devices[indexPathRow].skipState
-//        devices[indexPathRow].level
-//        devices[indexPathRow].overrideControl1
-//        devices[indexPathRow].overrideControl2
-        //        devices[indexPathRow].overrideControl3@IBOutlet weak var lblName: UILabel!
         editDelay.text = "\(devices[indexPathRow].delay)"
         editRunTime.text = "\(devices[indexPathRow].runtime)"
         editSkipState.text = "\(devices[indexPathRow].skipState)"
-//        overRideID.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl1))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl2))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].overrideControl3)))"
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
@@ -94,13 +84,15 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         lblCategory.text = "\(DatabaseHandler.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
-        enableSwitch.on = devices[indexPathRow].isEnabled.boolValue
         
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
         self.view.backgroundColor = UIColor.clearColor()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
 
     @IBAction func btnCancel(sender: AnyObject) {
@@ -133,6 +125,41 @@ class DimmerParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             device!.skipState = numberThree
             CoreDataController.shahredInstance.saveChanges()
         }
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if editDelay.isFirstResponder(){
+            if backView.frame.origin.y + editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editRunTime.isFirstResponder(){
+            if backView.frame.origin.y + editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editSkipState.isFirstResponder(){
+            if backView.frame.origin.y + editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 
@@ -181,6 +208,16 @@ extension DimmerParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }
         
+    }
+}
+
+extension DimmerParametarVC : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            self.view.endEditing(true)
+            return false
+        }
+        return true
     }
 }
 
