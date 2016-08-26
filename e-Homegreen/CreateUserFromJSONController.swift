@@ -746,11 +746,20 @@ class CreateUserFromJSONController: NSObject {
                 if let level = survaillance["surveillance_level"] as? String{
                     newSurveillance.surveillanceLevel = level
                 }
+                if let levelId = survaillance["surveillance_level_id"] as? Int{
+                    newSurveillance.port = levelId
+                }
                 if let zone = survaillance["surveillance_zone"] as? String{
                     newSurveillance.surveillanceZone = zone
                 }
+                if let zoneId = survaillance["surveillance_zone_id"] as? Int{
+                    newSurveillance.port = zoneId
+                }
                 if let category = survaillance["surveillance_category"] as? String{
                     newSurveillance.surveillanceCategory = category
+                }
+                if let categoryId = survaillance["surveillance_category_id"] as? Int{
+                    newSurveillance.port = categoryId
                 }
                 if let ass = survaillance["aut_span_step"] as? Int{
                     newSurveillance.autSpanStep = ass

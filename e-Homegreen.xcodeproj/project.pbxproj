@@ -1374,6 +1374,7 @@
 		73F04ECC1C92CD95009696EF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
 				22506E8E1CB7DF25004EB47A /* DatabaseScenesController.swift */,
@@ -1670,7 +1671,6 @@
 				495726AF1D4F4827004F2A3D /* Cells */,
 				E76B576C1BBD24BB00A70F69 /* DeviceXIB */,
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
-				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,

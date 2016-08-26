@@ -91,9 +91,16 @@ class SurveillanceSettingsVC: PopoverVC {
             zoneButton.setTitle(surv.surveillanceZone, forState: .Normal)
             categoryButton.setTitle(surv.surveillanceCategory, forState: .Normal)
             
-            level = surv.cameraLevel
-            zoneSelected = surv.cameraZone
-            category = surv.cameraCategory
+            if let levelId = surv.surveillanceLevelId as? Int {
+                level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!)
+            }
+            if let zoneId = surv.surveillanceLevelId as? Int {
+                zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!)
+            }
+            if let categoryId = surv.surveillanceLevelId as? Int {
+                category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: surv.location!)
+            }
+            
 
             if let localIp = surv.localIp {
                 editIPLocal.text = localIp
@@ -276,9 +283,9 @@ class SurveillanceSettingsVC: PopoverVC {
                     surveillance.urlPresetSequenceStop = ""
                     surveillance.urlGetImage = ""
                     
-                    surveillance.cameraLevel = level
-                    surveillance.cameraZone = zoneSelected
-                    surveillance.cameraCategory = category
+                    surveillance.surveillanceLevelId = level?.id
+                    surveillance.surveillanceZoneId = zoneSelected?.id
+                    surveillance.surveillanceCategoryId = category?.id
                     
                     surveillance.tiltStep = 1
                     surveillance.panStep = 1
@@ -297,9 +304,9 @@ class SurveillanceSettingsVC: PopoverVC {
                 surv.surveillanceZone = zoneButton.titleLabel?.text
                 surv.surveillanceCategory = categoryButton.titleLabel?.text
                 
-                surv.cameraLevel = level
-                surv.cameraZone = zoneSelected
-                surv.cameraCategory = category
+                surv.surveillanceLevelId = level?.id
+                surv.surveillanceZoneId = zoneSelected?.id
+                surv.surveillanceCategoryId = category?.id
                 
                 surv.localIp = localIp
                 surv.localPort = localPort

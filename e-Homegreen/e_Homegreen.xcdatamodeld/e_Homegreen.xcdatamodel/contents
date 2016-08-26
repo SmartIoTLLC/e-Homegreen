@@ -230,8 +230,11 @@
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="surveillanceCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="surveillanceLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="surveillanceZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="surveillanceZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tiltStep" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="urlAutoPan" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlAutoPanStop" optional="YES" attributeType="String" syncable="YES"/>
@@ -244,9 +247,6 @@
         <attribute name="urlPresetSequence" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlPresetSequenceStop" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="cameraCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" syncable="YES"/>
-        <relationship name="cameraLevel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" syncable="YES"/>
-        <relationship name="cameraZone" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Zone" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="surveillances" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
