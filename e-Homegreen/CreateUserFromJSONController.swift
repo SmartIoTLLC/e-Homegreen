@@ -614,9 +614,11 @@ class CreateUserFromJSONController: NSObject {
                 if let nt = device["notification_type"] as? Int{
                     newDevice.notificationType = nt
                 }
-                
                 if let numberOfDevices = device["number_of_devices"] as? Int{
                     newDevice.numberOfDevices = numberOfDevices
+                }
+                if let oldValue = device["old_value"] as? Int{
+                    newDevice.oldValue = oldValue
                 }
                 if let overrideControl1 = device["override_control1"] as? Int{
                     newDevice.overrideControl1 = overrideControl1
