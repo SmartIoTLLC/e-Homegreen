@@ -31,8 +31,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "859"
             endingLineNumber = "859"
-            landmarkName = "returnNameForDeviceAccordingToFilter(_:)"
-            landmarkType = "5">
+            landmarkName = "DevicesViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -47,8 +47,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "860"
             endingLineNumber = "860"
-            landmarkName = "returnNameForDeviceAccordingToFilter(_:)"
-            landmarkType = "5">
+            landmarkName = "DevicesViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "861"
             endingLineNumber = "861"
-            landmarkName = "returnNameForDeviceAccordingToFilter(_:)"
+            landmarkName = "panView(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "879"
             endingLineNumber = "879"
-            landmarkName = "returnNameForDeviceAccordingToFilter(_:)"
+            landmarkName = "panView(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,7 +122,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/PCControlViewController.swift"
-                  timestampString = "493804347.939035"
+                  timestampString = "493828520.626278"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "215"
@@ -137,7 +137,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/PCControlViewController.swift"
-                  timestampString = "493804347.939337"
+                  timestampString = "493828520.626424"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "215"
@@ -202,7 +202,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/PCControlViewController.swift"
-                  timestampString = "493804570.053618"
+                  timestampString = "493828520.628349"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "255"
@@ -217,7 +217,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/PCControlViewController.swift"
-                  timestampString = "493804570.05384"
+                  timestampString = "493828520.628486"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "256"

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class RelayParametarVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     
@@ -25,6 +25,7 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var centerY: NSLayoutConstraint!
     
     @IBOutlet weak var editDelay: UITextField!
     @IBOutlet weak var overRideID: UILabel!
@@ -87,16 +88,14 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
         
         self.view.backgroundColor = UIColor.clearColor()
 
-        // Do any additional setup after loading the view.
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametarVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametarVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
 
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func btnSave(sender: AnyObject) {
         if let numberOne = Int(editDelay.text!) {
             if numberOne <= 65534 {
@@ -115,13 +114,16 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
             CoreDataController.shahredInstance.saveChanges()
         }
     }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     func returnCategoryWithId(id:Int) -> String {
         if id == 0{
             return "All"
@@ -141,6 +143,36 @@ class RelayParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecogniz
             abort()
         }
         return ""
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if editDelay.isFirstResponder(){
+            if backView.frame.origin.y + editDelay.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+}
+
+extension RelayParametarVC : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            editDelay.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }
 
