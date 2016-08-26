@@ -27,6 +27,9 @@ extension Surveillance {
     @NSManaged var surveillanceCategory: String?
     @NSManaged var surveillanceLevel: String?
     @NSManaged var surveillanceZone: String?
+    @NSManaged var surveillanceCategoryId: NSNumber?
+    @NSManaged var surveillanceLevelId: NSNumber?
+    @NSManaged var surveillanceZoneId: NSNumber?
     @NSManaged var tiltStep: NSNumber?
     @NSManaged var urlAutoPan: String?
     @NSManaged var urlAutoPanStop: String?
@@ -40,8 +43,5 @@ extension Surveillance {
     @NSManaged var urlPresetSequenceStop: String?
     @NSManaged var username: String?
     @NSManaged var location: Location?
-    @NSManaged var cameraZone: Zone?
-    @NSManaged var cameraLevel: Zone?
-    @NSManaged var cameraCategory: Category?
 
 }

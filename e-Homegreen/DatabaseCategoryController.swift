@@ -32,6 +32,26 @@ class DatabaseCategoryController: NSObject {
         return []
     }
     
+    func getCategoryById(id:Int, location:Location) -> Category? {
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(bool: true))]
+        predicateArray.append(NSPredicate(format: "location == %@", location))
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+            if results.count != 0{
+                return results[0]
+            }
+        } catch _ as NSError {
+            
+        }
+        return nil
+    }
+    
     func getCategory(objectId:NSManagedObjectID) -> Category?{
         if let category = appDel.managedObjectContext?.objectWithID(objectId) as? Category {
             return category
