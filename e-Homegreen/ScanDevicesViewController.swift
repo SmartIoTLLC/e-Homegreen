@@ -105,8 +105,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         addObservers()
     }
     
-    
-    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
@@ -530,24 +528,28 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     func nameReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
-            if let info = notification.userInfo! as? [String:Int] {
-                if let deviceIndex = info["deviceIndexForFoundName"] {
-                    if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                        devices[deviceIndex].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
-                        if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
-                            indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
-                            let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
-                            
-                            timesRepeatedCounter = 0
-                            deviceNameTimer?.invalidate()
-                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-                            NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
-                            sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
-                        }else{
-                            dismissScaningControls()
-                        }
-                    }
-                }
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let deviceIndex = info["deviceIndexForFoundName"] else{
+                return
+            }
+            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(deviceIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            devices[deviceIndex].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
+            if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
+                let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+                
+                timesRepeatedCounter = 0
+                deviceNameTimer?.invalidate()
+                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
+                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
+                sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
+            }else{
+                dismissScaningControls()
             }
         }
     }

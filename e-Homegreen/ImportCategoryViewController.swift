@@ -29,7 +29,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     var location:Location?
     
     @IBOutlet weak var importCategoryTableView: UITableView!
-    
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
     
@@ -59,24 +58,20 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         refreshCategoryList()
         
     }
-    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }
-    
     override func viewWillAppear(animated: Bool) {
         addObservers()
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
-                   replacementString string: String) -> Bool{
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
         let currentString: NSString = textField.text!
         let newString: NSString =
             currentString.stringByReplacingCharactersInRange(range, withString: string)
         return newString.length <= maxLength
     }
-    
     func endEditingNow(){
         txtFrom.resignFirstResponder()
         txtTo.resignFirstResponder()
@@ -179,7 +174,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             
         }
     }
-    
     func snapshopOfCell(inputView: UIView) -> UIView {
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
         
@@ -198,21 +192,42 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         return cellSnapshot
         
     }
-    
     func addObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceivedFromGateway:", name: NotificationKey.DidReceiveCategoryFromGateway, object: nil)
     }
-    
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForCategories)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "categoryReceivedFromGateway:", object: nil)
     }
     
+    @IBAction func brnDeleteAll(sender: AnyObject) {
+        for category in categories{
+            appDel.managedObjectContext!.deleteObject(category)
+        }
+        
+        createCategories()
+        CoreDataController.shahredInstance.saveChanges()
+        refreshCategoryList()
+    }
+    @IBAction func btnCleearFields(sender: AnyObject) {
+        txtFrom.text = ""
+        txtTo.text = ""
+    }
+    @IBAction func btnImportFile(sender: AnyObject) {
+        showImportFiles().delegate = self
+    }
+    @IBAction func addCategory(sender: AnyObject) {
+        showEditCategory(nil, location: location).delegate = self
+    }
+    @IBAction func doneAction(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     @IBAction func btnScanCategories(sender: AnyObject) {
         showAddAddress().delegate = self
 
     }
-    
     func addAddressFinished(address: Address) {
         do {
             
@@ -250,7 +265,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             
         }
     }
-    
     func categoryReceivedFromGateway (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
             if let zoneId = notification.userInfo as? [String:Int] {
@@ -279,12 +293,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 if zoneId["zoneId"] < idToSearch {
                     // nesto nije dobro
                     dismissScaningControls()
-                    
                 }
             }
         }
     }
-    
     func checkIfGatewayDidGetCategory (timer:NSTimer) {
         if let zoneId = timer.userInfo as? Int {
             if zoneId > idToSearch {
@@ -325,6 +337,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }
     }
     
+    
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         idToSearch = 0
@@ -333,7 +346,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         pbSZ?.dissmissProgressBar()
         UIApplication.sharedApplication().idleTimerDisabled = false
     }
-    
     func setProgressBarParametarsForScanningZones(id zoneId:Int) {
         var index:Int = zoneId
         index = index - scanZones!.from + 1
@@ -342,7 +354,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
         pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
-    
     func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
@@ -362,25 +373,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         let percent = Float(1)/Float(count)
         return SearchParametars(from: from, to: to, count: count, initialPercentage: percent)
     }
-    
     func progressBarDidPressedExit() {
         
     }
     
-    @IBAction func brnDeleteAll(sender: AnyObject) {
-        for category in categories{
-            appDel.managedObjectContext!.deleteObject(category)
-        }
-
-        createCategories()
-        CoreDataController.shahredInstance.saveChanges()
-        refreshCategoryList()
-    }
-    
-    @IBAction func btnCleearFields(sender: AnyObject) {
-        txtFrom.text = ""
-        txtTo.text = ""
-    }
     
     func backURL(strText: String) {
 //        First - Delete all categories
@@ -427,11 +423,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }
         refreshCategoryList()
     }
-
-    @IBAction func btnImportFile(sender: AnyObject) {
-        showImportFiles().delegate = self
-    }
-    
     func createCategories() {
         if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
             for categoryJSON in categoriesJSON {
@@ -445,18 +436,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             }
         }
     }
-    
     func refreshCategoryList () {
         updateCategoryList()
         importCategoryTableView.reloadData()
-    }
-    
-    @IBAction func addCategory(sender: AnyObject) {
-        showEditCategory(nil, location: location).delegate = self
-    }
-    
-    @IBAction func doneAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func editCategoryFInished() {
@@ -488,21 +470,18 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         CoreDataController.shahredInstance.saveChanges()
         importCategoryTableView.reloadData()
     }
-
 }
 
 extension ImportCategoryViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         showEditCategory(categories[indexPath.row], location: nil).delegate = self
     }
-    
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if ((categories[indexPath.row].id as! Int) >= 1 && (categories[indexPath.row].id as! Int) <= 19) || (categories[indexPath.row].id as! Int) == 255 {
             return false
         }
         return true
     }
-    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(categories[indexPath.row])
@@ -531,8 +510,8 @@ extension ImportCategoryViewController: UITableViewDataSource {
         return categories.count
     }
 }
+
 class ImportCategoryTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
