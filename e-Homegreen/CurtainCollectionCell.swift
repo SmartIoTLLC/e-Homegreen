@@ -65,7 +65,12 @@ class CurtainCollectionCell: UICollectionViewCell {
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
-                if ((device.channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (device.channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (device.channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (device.channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                if ((device.channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) ||
+                    (device.channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) ||
+                    (device.channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) ||
+                    (device.channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) &&
+                deviceTemp.isCurtainModeAllowed.boolValue == true &&
+                device.isCurtainModeAllowed.boolValue == true{
                     
                     devicePair = deviceTemp
                 }

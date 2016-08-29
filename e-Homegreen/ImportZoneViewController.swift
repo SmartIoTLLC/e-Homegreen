@@ -10,30 +10,24 @@ import UIKit
 import CoreData
 
 class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate, UITextFieldDelegate {
-
+    
+    @IBOutlet weak var txtFrom: UITextField!
+    @IBOutlet weak var txtTo: UITextField!
+    @IBOutlet weak var importZoneTableView: UITableView!
+    
     var appDel:AppDelegate!
     var error:NSError? = nil
     var zones:[Zone] = []
     var location:Location!
-    
-    @IBOutlet weak var txtFrom: UITextField!
-    @IBOutlet weak var txtTo: UITextField!
-    
-    @IBOutlet weak var importZoneTableView: UITableView!
-    
     var beacon:IBeacon?
-    
     var choosedIndex = -1
-    
     var scanZones:ScanFunction?
     var zoneScanTimer:NSTimer?
-    var idToSearch:Int?
-    var timesRepeatedCounter:Int = 0
     
+    var timesRepeatedCounter:Int = 0
     var currentIndex:Int = 0
     var from:Int = 0
     var to:Int = 0
-    
     var pbSZ:ProgressBarVC?
     
     override func viewDidLoad() {
@@ -64,14 +58,16 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         removeObservers()
     }
     
+    override func nameAndId(name: String, id: String) {
+        
+    }
+    
     func endEditingNow(){
         txtFrom.resignFirstResponder()
         txtTo.resignFirstResponder()
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
-                   replacementString string: String) -> Bool
-    {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
         let currentString: NSString = textField.text!
         let newString: NSString =
@@ -256,38 +252,39 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         refreshZoneList()
     }
     
-    //MARK: - ZONE SCANNING
     
-    func progressBarDidPressedExit () {
-        dismissScaningControls()
-    }
-    
+    // MARK: - ZONE SCANNING
     @IBAction func addZone(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue(),{
             self.showEditZone(nil, location: self.location).delegate = self
         })
     }
+    @IBAction func btnScanZones(sender: AnyObject) {
+        showAddAddress().delegate = self
+    }
+    @IBAction func btnClearFields(sender: AnyObject) {
+        txtFrom.text = ""
+        txtTo.text = ""
+    }
     
     func editZoneFInished() {
         refreshZoneList()
     }
-    
-    @IBAction func btnScanZones(sender: AnyObject) {
-//        showAddAddress().delegate = self
+    func progressBarDidPressedExit () {
+        dismissScaningControls()
     }
-    
     func addAddressFinished(address: Address) {
         do {
-            
             var gatewayForScan:Gateway?
-            
-            if let location = location{
-                if let gateways = location.gateways?.allObjects as? [Gateway]{
-                    for gate in gateways{
-                        if gate.addressOne == address.firstByte && gate.addressTwo == address.secondByte && gate.addressThree == address.thirdByte{
-                            gatewayForScan = gate
-                        }
-                    }
+            guard let location = location else{
+                return
+            }
+            guard let gateways = location.gateways?.allObjects as? [Gateway] else{
+                return
+            }
+            for gate in gateways{
+                if gate.addressOne == address.firstByte && gate.addressTwo == address.secondByte && gate.addressThree == address.thirdByte{
+                    gatewayForScan = gate
                 }
             }
             
@@ -295,14 +292,15 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 self.view.makeToast(message: "No gateway with address")
                 return
             }
+            
+            
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
             scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .Zone)
             pbSZ = ProgressBarVC(title: "Scanning Zones", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForZones)
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
-            idToSearch = sp.from
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: sp.from, repeats: false)
             timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
@@ -313,91 +311,53 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             alertController("Error", message: "Something went wrong.")
         }
     }
-
-    
-    @IBAction func btnClearFields(sender: AnyObject) {
-        txtFrom.text = ""
-        txtTo.text = ""
-    }
-    
-    // MARK: Service for scanning zone
     func checkIfGatewayDidGetZones (timer:NSTimer) {
-        if let zoneId = timer.userInfo as? Int {
-            if zoneId > idToSearch {
-                // nesto nije dobro
+        guard var zoneId = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounter += 1
+        if timesRepeatedCounter < 3 {  // sve dok ne pokusa tri puta, treba da pokusava
+            scanZones?.sendCommandForFinding(id:Byte(zoneId))
+            setProgressBarParametarsForScanningZones(id: zoneId)
+            zoneScanTimer!.invalidate()
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
+            timesRepeatedCounter += 1
+        }else{
+            if (zoneId+1) > scanZones?.to { // Ako je poslednji
                 dismissScaningControls()
-                alertController("Error", message: "Something went wrong!")
-                return
-            }
-            if zoneId == idToSearch {
-                // ako je proverio tri puta
-                if timesRepeatedCounter == 3 {
-                    // Proveriti da li je poslednji ili idemo dalje
-                    if (zoneId+1) > scanZones?.to {
-                        dismissScaningControls()
-                    } else {
-                        //ima jos
-                        idToSearch! += 1
-                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                        setProgressBarParametarsForScanningZones(id: idToSearch!)
-                        zoneScanTimer!.invalidate()
-                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
-                        timesRepeatedCounter = 1
-                    }
-                } else {
-                    scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                    setProgressBarParametarsForScanningZones(id: idToSearch!)
-                    zoneScanTimer!.invalidate()
-                    zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
-                    timesRepeatedCounter += 1
-                }
-                return
-            }
-            if zoneId < idToSearch {
-                // nesto nije dobro
-                dismissScaningControls()
-                alertController("Error", message: "Something went wrong!")
+            } else {
+                //ima jos
+                zoneId += 1
+                scanZones?.sendCommandForFinding(id:Byte(zoneId))
+                setProgressBarParametarsForScanningZones(id: zoneId)
+                zoneScanTimer!.invalidate()
+                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
+                timesRepeatedCounter = 1
             }
         }
     }
-    
-    //MARK: Zone received from gateway
     func zoneReceivedFromGateway (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
-            if let zoneId = notification.userInfo as? [String:Int] {
-                if zoneId["zoneId"] > idToSearch {
-                    // nesto nije dobro
-                    dismissScaningControls()
-                    alertController("Error", message: "Something went wrong!")
-                    return
-                }
-                if zoneId["zoneId"] == idToSearch {
-                    timesRepeatedCounter = 0
-                    if idToSearch >= scanZones?.to {
-                        //gotovo
-                        dismissScaningControls()
-                    } else {
-                        //ima jos
-                        idToSearch! += 1
-                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                        setProgressBarParametarsForScanningZones(id: idToSearch!)
-                        zoneScanTimer!.invalidate()
-                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
-                        timesRepeatedCounter = 1
-                    }
-                    refreshZoneList()
-                    return
-                }
-                if zoneId["zoneId"] < idToSearch {
-                    // nesto nije dobro
-                    dismissScaningControls()
-                    alertController("Error", message: "Something went wrong!")
-                }
+            guard var zoneId = notification.userInfo as? [String:Int] else {
+                return
             }
+            timesRepeatedCounter = 0
+            if zoneId["zoneId"] >= scanZones?.to{
+                //gotovo
+                dismissScaningControls()
+            } else {
+                //ima jos
+                let newZoneId = zoneId["zoneId"]! + 1
+                scanZones?.sendCommandForFinding(id:Byte(newZoneId))
+                setProgressBarParametarsForScanningZones(id: newZoneId)
+                zoneScanTimer!.invalidate()
+                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: newZoneId, repeats: false)
+                timesRepeatedCounter = 1
+            }
+            refreshZoneList()
+            return
         }
     }
-    
-    // MARK: Controlling progress bar
     func setProgressBarParametarsForScanningZones(id zoneId:Int) {
         var index:Int = zoneId
         index = index - scanZones!.from + 1
@@ -406,8 +366,6 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
         pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
-    
-    // MARK: Error handling for Zones
     func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
@@ -426,6 +384,14 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         let count = to - from + 1
         let percent = Float(1)/Float(count)
         return SearchParametars(from: from, to: to, count: count, initialPercentage: percent)
+    }
+    func dismissScaningControls() {
+        timesRepeatedCounter = 0
+        zoneScanTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
+        pbSZ?.dissmissProgressBar()
+        UIApplication.sharedApplication().idleTimerDisabled = false
+        refreshZoneList()
     }
     
     // MARK: Alert controller
@@ -447,18 +413,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }
     }
     
-    // MARK: Dismiss zone scanning
-    func dismissScaningControls() {
-        timesRepeatedCounter = 0
-        idToSearch = 0
-        zoneScanTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
-        pbSZ?.dissmissProgressBar()
-        UIApplication.sharedApplication().idleTimerDisabled = false
-    }
-    
     // MARK:- Delete zones and other
-    
     @IBAction func btnDeleteAll(sender: AnyObject) {
         for var item = 0; item < zones.count; item++ {
             if zones[item].location == location! {
@@ -469,11 +424,9 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         CoreDataController.shahredInstance.saveChanges()
         refreshZoneList()
     }
-
     @IBAction func btnImportFile(sender: AnyObject) {
         showImportFiles().delegate = self
     }
-    
     @IBAction func doneAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -537,23 +490,6 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             openPopover(gestureRecognizer.view!, popOverList:popoverList)
         }
     }
-    
-    override func nameAndId(name: String, id: String) {
-        
-    }
-    
-//    func saveText(text: String, id: Int) {
-//        if choosedIndex != -1 && text != "No iBeacon" {
-//            beacon = returniBeaconWithName(text)
-//            zones[choosedIndex].iBeacon = beacon
-//            saveChanges()
-//            importZoneTableView.reloadData()
-//        } else if text == "No iBeacon" {
-//            zones[choosedIndex].iBeacon = nil
-//            saveChanges()
-//            importZoneTableView.reloadData()
-//        }
-//    }
     
     func returniBeaconWithName(name:String) -> IBeacon? {
         let fetchRequest = NSFetchRequest(entityName: "IBeacon")

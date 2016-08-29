@@ -127,7 +127,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         
-        deviceCollectionView.reloadData()
+//        deviceCollectionView.reloadData()
         addObservers()
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
             self.refreshVisibleDevicesInScrollView()
@@ -336,31 +336,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
 //                return
 //            }
         }
-//        if devices[tag].controlType == ControlType.Curtain {
-//// TODO: MAKE (REVISE) FUNCTIONALITY
-//            if gestureRecognizer.state == UIGestureRecognizerState.Began {
-//                longTouchOldValue = Int(devices[tag].currentValue)
-//                deviceInControlMode = true
-//                timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(DevicesViewController.updateCurtain(_:)), userInfo: tag, repeats: true)
-//            }
-//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-//                longTouchOldValue = 0
-//                let deviceGroupId = devices[tag].curtainGroupID.integerValue
-//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
-//                    })
-//                })
-//                timer.invalidate()
-//                deviceInControlMode = false
-//                if devices[tag].opening == true {
-//                    devices[tag].opening = false
-//                }else {
-//                    devices[tag].opening = true
-//                }
-//                return
-//            }
-//        }
     }
     func refreshDevice(sender:AnyObject) {
         if let button = sender as? UIButton {
@@ -398,7 +373,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 skipLevel = 0
             } else {
                 if let oldVal = devices[tag].oldValue{
-                    setDeviceValue = UInt8(oldVal.integerValue*100/255)
+                    setDeviceValue = UInt8(round(oldVal.floatValue*100/255))
                 }else{
                     setDeviceValue = 100
                 }
@@ -407,6 +382,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             let deviceCurrentValue = Int(devices[tag].currentValue)
             devices[tag].currentValue = Int(setDeviceValue)*255/100
+            print("Device current value: \(deviceCurrentValue)%")
 //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
@@ -442,7 +418,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) ||
+                    (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) ||
+                    (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) ||
+                    (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) &&
+                    deviceTemp.isCurtainModeAllowed.boolValue &&
+                    devices[tag].isCurtainModeAllowed.boolValue{
                     
                     devicePair = deviceTemp
                 }
@@ -485,7 +466,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) ||
+                    (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) ||
+                    (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) ||
+                    (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) &&
+                    deviceTemp.isCurtainModeAllowed.boolValue &&
+                    devices[tag].isCurtainModeAllowed.boolValue{
                     
                     devicePair = deviceTemp
                 }
@@ -535,7 +521,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) || (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) || (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) || (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) {
+                if ((devices[tag].channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) ||
+                    (devices[tag].channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) ||
+                    (devices[tag].channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) ||
+                    (devices[tag].channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) &&
+                    deviceTemp.isCurtainModeAllowed.boolValue &&
+                    devices[tag].isCurtainModeAllowed.boolValue{
                     
                     devicePair = deviceTemp
                 }
