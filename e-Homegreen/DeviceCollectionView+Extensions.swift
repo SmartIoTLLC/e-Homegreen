@@ -132,7 +132,6 @@ extension DevicesViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].controlType == ControlType.Dimmer {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
-            
             // Set cell data
             cell.getDevice(devices[indexPath.row])
             cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row]) //devices[indexPath.row].cellTitle
@@ -250,6 +249,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
                 curtainNameTap.numberOfTapsRequired = 2
+                cell.curtainName.tag = indexPath.row
                 cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
                 let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
