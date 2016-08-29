@@ -88,6 +88,9 @@
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
+		225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */; };
+		225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225F59851D74427300156BCD /* BigSliderXIB.swift */; };
+		225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 225F59861D74427300156BCD /* BigSliderXIB.xib */; };
 		2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */; };
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */; };
@@ -429,6 +432,9 @@
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserTimerController.swift; sourceTree = "<group>"; };
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
+		225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonXIBTransitionVC.swift; sourceTree = "<group>"; };
+		225F59851D74427300156BCD /* BigSliderXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigSliderXIB.swift; sourceTree = "<group>"; };
+		225F59861D74427300156BCD /* BigSliderXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigSliderXIB.xib; sourceTree = "<group>"; };
 		2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomToolBar.swift; sourceTree = "<group>"; };
 		22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSecurityController.swift; sourceTree = "<group>"; };
 		22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFilterPullDown.swift; sourceTree = "<group>"; };
@@ -918,6 +924,16 @@
 				223878A61C91A6C9001357E0 /* Add Video/App */,
 			);
 			name = "PC Controll";
+			sourceTree = "<group>";
+		};
+		225F59821D743FE500156BCD /* Dimmer Slider */ = {
+			isa = PBXGroup;
+			children = (
+				225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */,
+				225F59851D74427300156BCD /* BigSliderXIB.swift */,
+				225F59861D74427300156BCD /* BigSliderXIB.xib */,
+			);
+			name = "Dimmer Slider";
 			sourceTree = "<group>";
 		};
 		2260FB9F1D2CF5C800576513 /* UIToolBar */ = {
@@ -1668,6 +1684,7 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
+				225F59821D743FE500156BCD /* Dimmer Slider */,
 				495726AF1D4F4827004F2A3D /* Cells */,
 				E76B576C1BBD24BB00A70F69 /* DeviceXIB */,
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
@@ -1897,6 +1914,7 @@
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
+				225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				22495D2F1CAA81490034FC94 /* PCControl.storyboard in Resources */,
@@ -2020,6 +2038,7 @@
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
+				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
@@ -2047,6 +2066,7 @@
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
+				225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */,

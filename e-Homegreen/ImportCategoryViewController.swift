@@ -209,7 +209,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     @IBAction func btnScanCategories(sender: AnyObject) {
-        showAddAddress().delegate = self
+//        showAddAddress().delegate = self
 
     }
     

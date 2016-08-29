@@ -14,6 +14,10 @@ struct Address {
     var thirdByte:Int
 }
 
+enum ScanType:Int {
+    case Zone=0, Categories
+}
+
 protocol AddAddressDelegate{
     func addAddressFinished(address:Address)
 }
@@ -24,6 +28,8 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
     
     var delegate:AddAddressDelegate?
     
+    @IBOutlet weak var titleLabel: UILabel!
+    
     @IBOutlet weak var addressOne: EditTextField!
     @IBOutlet weak var addressTwo: EditTextField!
     @IBOutlet weak var addressThree: EditTextField!
@@ -33,8 +39,11 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
     
     @IBOutlet weak var backView: CustomGradientBackground!
     
-    init(){
+    var whatToScan:ScanType!
+    
+    init(whatToScan:ScanType){
         super.init(nibName: "InsertGatewayAddressXIB", bundle: nil)
+        self.whatToScan = whatToScan
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
 
@@ -58,27 +67,21 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
-        let toolbarButtons = [item]
+        addressOne.inputAccessoryView = CustomToolBar()
+        addressTwo.inputAccessoryView = CustomToolBar()
+        addressThree.inputAccessoryView = CustomToolBar()
         
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        addressOne.inputAccessoryView = keyboardDoneButtonView
-        addressTwo.inputAccessoryView = keyboardDoneButtonView
-        addressThree.inputAccessoryView = keyboardDoneButtonView
+        if whatToScan == ScanType.Zone{
+            titleLabel.text = "Scan zones from address"
+        }else{
+            titleLabel.text = "Scan categories from address"
+        }
 
-    }
-    
-    func endEditingNow(){
-        addressOne.resignFirstResponder()
-        addressTwo.resignFirstResponder()
-        addressThree.resignFirstResponder()        
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
+            self.view.endEditing(true)
             return false
         }
         return true
@@ -102,8 +105,6 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
     
     @IBAction func cancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -188,8 +189,8 @@ extension InsertGatewayAddressXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddAddress() -> InsertGatewayAddressXIB {
-        let addAddress = InsertGatewayAddressXIB()
+    func showAddAddress(whatToScan:ScanType) -> InsertGatewayAddressXIB {
+        let addAddress = InsertGatewayAddressXIB(whatToScan: whatToScan)
         self.presentViewController(addAddress, animated: true, completion: nil)
         return addAddress
     }

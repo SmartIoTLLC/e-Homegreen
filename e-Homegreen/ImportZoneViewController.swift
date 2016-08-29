@@ -273,7 +273,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     @IBAction func btnScanZones(sender: AnyObject) {
-        showAddAddress().delegate = self
+//        showAddAddress().delegate = self
     }
     
     func addAddressFinished(address: Address) {
