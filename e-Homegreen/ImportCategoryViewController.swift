@@ -34,7 +34,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     var scanZones:ScanFunction?
     var zoneScanTimer:NSTimer?
-    var idToSearch:Int?
+//    var idToSearch:Int?
     var timesRepeatedCounter:Int = 0
     
     var pbSZ:ProgressBarVC?
@@ -254,8 +254,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             pbSZ?.delegate = self
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForCategories)
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
-            idToSearch = sp.from
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: idToSearch, repeats: false)
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: sp.from, repeats: false)
             timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
@@ -267,72 +266,48 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     func categoryReceivedFromGateway (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
-            if let zoneId = notification.userInfo as? [String:Int] {
-                if zoneId["zoneId"] > idToSearch {
-                    // nesto nije dobro
-                    dismissScaningControls()
-                    return
-                }
-                if zoneId["zoneId"] == idToSearch {
-                    timesRepeatedCounter = 0
-                    if idToSearch >= scanZones?.to {
-                        //gotovo
-                        dismissScaningControls()
-                    } else {
-                        //ima jos
-                        idToSearch! += 1
-                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                        setProgressBarParametarsForScanningZones(id: idToSearch!)
-                        zoneScanTimer!.invalidate()
-                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: idToSearch, repeats: false)
-                        timesRepeatedCounter = 1
-                    }
-                    refreshCategoryList()
-                    return
-                }
-                if zoneId["zoneId"] < idToSearch {
-                    // nesto nije dobro
-                    dismissScaningControls()
-                }
+            guard var categoryId = notification.userInfo as? [String:Int] else {
+                return
             }
+            timesRepeatedCounter = 0
+            if categoryId["categoryId"] >= scanZones?.to{
+                //gotovo
+                dismissScaningControls()
+            } else {
+                //ima jos
+                let newCategoryId = categoryId["zoneId"]! + 1
+                scanZones?.sendCommandForFinding(id:Byte(newCategoryId))
+                setProgressBarParametarsForScanningZones(id: newCategoryId)
+                zoneScanTimer!.invalidate()
+                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: newCategoryId, repeats: false)
+                timesRepeatedCounter = 1
+            }
+            refreshCategoryList()
+            return
         }
     }
     func checkIfGatewayDidGetCategory (timer:NSTimer) {
-        if let zoneId = timer.userInfo as? Int {
-            if zoneId > idToSearch {
-                // nesto nije dobro
+        guard var categoryId = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounter += 1
+        if timesRepeatedCounter < 3 {  // sve dok ne pokusa tri puta, treba da pokusava
+            scanZones?.sendCommandForFinding(id:Byte(categoryId))
+            setProgressBarParametarsForScanningZones(id: categoryId)
+            zoneScanTimer!.invalidate()
+            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
+            timesRepeatedCounter += 1
+        }else{
+            if (categoryId+1) > scanZones?.to { // Ako je poslednji
                 dismissScaningControls()
-                
-                return
-            }
-            if zoneId == idToSearch {
-                // ako je proverio tri puta
-                if timesRepeatedCounter == 3 {
-                    // Proveriti da li je poslednji ili idemo dalje
-                    if (zoneId+1) > scanZones?.to {
-                        dismissScaningControls()
-                    } else {
-                        //ima jos
-                        idToSearch! += 1
-                        scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                        setProgressBarParametarsForScanningZones(id: idToSearch!)
-                        zoneScanTimer!.invalidate()
-                        zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: idToSearch, repeats: false)
-                        timesRepeatedCounter = 1
-                    }
-                } else {
-                    scanZones?.sendCommandForFinding(id:Byte(idToSearch!))
-                    setProgressBarParametarsForScanningZones(id: idToSearch!)
-                    zoneScanTimer!.invalidate()
-                    zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: idToSearch, repeats: false)
-                    timesRepeatedCounter += 1
-                }
-                return
-            }
-            if zoneId < idToSearch {
-                // nesto nije dobro
-                dismissScaningControls()
-                
+            } else {
+                //ima jos
+                categoryId += 1
+                scanZones?.sendCommandForFinding(id:Byte(categoryId))
+                setProgressBarParametarsForScanningZones(id: categoryId)
+                zoneScanTimer!.invalidate()
+                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
+                timesRepeatedCounter = 1
             }
         }
     }
@@ -340,11 +315,11 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     func dismissScaningControls() {
         timesRepeatedCounter = 0
-        idToSearch = 0
         zoneScanTimer?.invalidate()
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
         pbSZ?.dissmissProgressBar()
         UIApplication.sharedApplication().idleTimerDisabled = false
+        refreshCategoryList()
     }
     func setProgressBarParametarsForScanningZones(id zoneId:Int) {
         var index:Int = zoneId
