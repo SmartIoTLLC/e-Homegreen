@@ -200,14 +200,36 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "categoryReceivedFromGateway:", object: nil)
     }
     
-    @IBAction func brnDeleteAll(sender: AnyObject) {
-        for category in categories{
-            appDel.managedObjectContext!.deleteObject(category)
+    @IBAction func brnDeleteAll(sender: UIButton) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            
+            for category in self.categories{
+                self.appDel.managedObjectContext!.deleteObject(category)
+            }
+            
+            self.createCategories()
+            CoreDataController.shahredInstance.saveChanges()
+            self.refreshCategoryList()
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
         }
         
-        createCategories()
-        CoreDataController.shahredInstance.saveChanges()
-        refreshCategoryList()
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     @IBAction func btnCleearFields(sender: AnyObject) {
         txtFrom.text = ""
@@ -225,7 +247,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     
     @IBAction func btnScanCategories(sender: AnyObject) {
-//        showAddAddress().delegate = self
+        showAddAddress(ScanType.Categories).delegate = self
 
     }
     func addAddressFinished(address: Address) {

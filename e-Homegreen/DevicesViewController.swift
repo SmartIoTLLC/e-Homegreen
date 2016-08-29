@@ -1352,11 +1352,7 @@ extension DevicesViewController: BigSliderDelegate{
                 setDeviceValue = UInt8(0)
                 skipLevel = 0
             } else {
-                if let oldVal = devices[index].oldValue{
-                    setDeviceValue = UInt8(oldVal.integerValue*100/255)
-                }else{
-                    setDeviceValue = 100
-                }
+                setDeviceValue = 100
                 skipLevel = UInt8(Int(self.devices[index].skipState))
             }
             let address = [UInt8(Int(devices[index].gateway.addressOne)),UInt8(Int(devices[index].gateway.addressTwo)),UInt8(Int(devices[index].address))]
