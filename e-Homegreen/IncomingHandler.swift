@@ -768,36 +768,40 @@ class IncomingHandler: NSObject {
     func getCategories(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
             var name:String = ""
-            for var j = 11; j < 11+Int(byteArray[10]); j++ {
-                name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+            
+            if 11+Int(byteArray[10]) < byteArray.count {
+                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
             }
             let id = byteArray[8]
             var description = ""
-            if byteArray[11+Int(byteArray[10])+2] != 0x00 {
-                let number = 11+Int(byteArray[10])+2
-                for var j = number; j < number+Int(byteArray[number-1]); j++ {
-                    description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
-                }
-            }
-            if id > 20 {
-                var doesIdExist = false
-                let categories = fetchCategories()
-                
-                for category in categories {
-                    if category.id == NSNumber(integer: Int(id)) {
-                        doesIdExist = true
-                        (category.name, category.categoryDescription) = (name, description)
-                        CoreDataController.shahredInstance.saveChanges()
-                        break
+            
+            if 11+Int(byteArray[10])+2 < byteArray.count {  //
+                if byteArray[11+Int(byteArray[10])+2] != 0x00 {
+                    let number = 11+Int(byteArray[10])+2
+                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                        description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
-                if !doesIdExist {
-                    let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                    (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)), 3)
-                    CoreDataController.shahredInstance.saveChanges()
-                }
-                
             }
+            var doesIdExist = false
+            let categories = fetchCategories()
+            
+            for category in categories {
+                if category.id == NSNumber(integer: Int(id)) {
+                    doesIdExist = true
+                    (category.name, category.categoryDescription) = (name, description)
+                    CoreDataController.shahredInstance.saveChanges()
+                    break
+                }
+            }
+            if !doesIdExist {
+                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)), 3)
+                CoreDataController.shahredInstance.saveChanges()
+            }
+            
             
             let data = ["categoryId":Int(id)]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCategoryFromGateway, object: self, userInfo: data)
