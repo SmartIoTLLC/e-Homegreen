@@ -184,10 +184,12 @@ extension DevicesViewController: UICollectionViewDataSource {
                 let oneTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
                 oneTap.numberOfTapsRequired = 2
                 cell.typeOfLight.addGestureRecognizer(oneTap)
+                
                 cell.lightSlider.addTarget(self, action: "changeSliderValue:", forControlEvents: .ValueChanged)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueEnded:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.lightSlider.addTarget(self, action: "changeSliderValueStarted:", forControlEvents: UIControlEvents.TouchDown)
                 cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "changeSliderValueOnOneTap:"))
+                
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "oneTap:")
                 let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "longTouch:")
                 lpgr.minimumPressDuration = 0.5

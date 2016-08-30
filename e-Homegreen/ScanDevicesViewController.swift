@@ -375,7 +375,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
-    @IBAction func deleteAll(sender: AnyObject) {
+    @IBAction func deleteAll(sender: UIButton) {
         let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -396,7 +396,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         })
         
         if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender.view
+            popoverController.sourceView = sender
             popoverController.sourceRect = sender.bounds
         }
         

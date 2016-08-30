@@ -83,14 +83,9 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         
         locationNameTextField.delegate = self
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(InsertGatewayAddressXIB.endEditingNow) )
-        let toolbarButtons = [item]
         
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
         
-        idTextField.inputAccessoryView = keyboardDoneButtonView
+        idTextField.inputAccessoryView = CustomToolBar()
         
         idTextField.placeholder = "aa"
 

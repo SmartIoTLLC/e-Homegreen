@@ -260,7 +260,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         })
     }
     @IBAction func btnScanZones(sender: AnyObject) {
-        showAddAddress().delegate = self
+        showAddAddress(ScanType.Zone).delegate = self
     }
     @IBAction func btnClearFields(sender: AnyObject) {
         txtFrom.text = ""
@@ -414,15 +414,36 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     // MARK:- Delete zones and other
-    @IBAction func btnDeleteAll(sender: AnyObject) {
-        for var item = 0; item < zones.count; item++ {
-            if zones[item].location == location! {
-                appDel.managedObjectContext!.deleteObject(zones[item])
+    @IBAction func btnDeleteAll(sender: UIButton) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            for var item = 0; item < self.zones.count; item++ {
+                if self.zones[item].location == self.location! {
+                    self.appDel.managedObjectContext!.deleteObject(self.zones[item])
+                }
             }
+            self.createZones(self.location!)
+            CoreDataController.shahredInstance.saveChanges()
+            self.refreshZoneList()
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
         }
-        createZones(location!)
-        CoreDataController.shahredInstance.saveChanges()
-        refreshZoneList()
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     @IBAction func btnImportFile(sender: AnyObject) {
         showImportFiles().delegate = self

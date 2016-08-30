@@ -310,28 +310,31 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
         let tag = gestureRecognizer.view!.tag
-        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+//        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
         if devices[tag].controlType == ControlType.Dimmer {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
-                longTouchOldValue = Int(devices[tag].currentValue)
-                deviceInControlMode = true
-                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(DevicesViewController.update(_:)), userInfo: tag, repeats: true)
+                
+                showBigSlider(devices[tag], index: tag).delegate = self
+                
+//                longTouchOldValue = Int(devices[tag].currentValue)
+//                deviceInControlMode = true
+//                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(DevicesViewController.update(_:)), userInfo: tag, repeats: true)
             }
-            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-                longTouchOldValue = 0
-                dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
-                })
-                timer.invalidate()
-                deviceInControlMode = false
-                if devices[tag].opening == true {
-                    devices[tag].opening = false
-                }else {
-                    devices[tag].opening = true
-                }
-                return
-            }
+//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+//                longTouchOldValue = 0
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
+//                })
+//                timer.invalidate()
+//                deviceInControlMode = false
+//                if devices[tag].opening == true {
+//                    devices[tag].opening = false
+//                }else {
+//                    devices[tag].opening = true
+//                }
+//                return
+//            }
         }
     }
     func refreshDevice(sender:AnyObject) {
@@ -768,18 +771,15 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         
         if devices[tag].controlType == ControlType.Dimmer {
-            //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
-            //            })
         }
         //  Curtain
         if devices[tag].controlType == ControlType.Curtain {
             dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
-            //            })
         }
         changeSliderValueOldValue = 0
         deviceInControlMode = false
@@ -799,30 +799,20 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         let indexPath = NSIndexPath(forItem: tag, inSection: 0)
         if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
             let deviceValue:Double = {
-//                return Double(devices[tag].currentValue)
-//                if Int(devices[tag].currentValue) > 100 {
-                    return Double(Double(devices[tag].currentValue))
-//                } else {
-//                    return Double(devices[tag].currentValue)/100
-//                }
+                return Double(Double(devices[tag].currentValue))
             }()
             cell.picture.image = devices[tag].returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
             let deviceValue:Double = {
-//                return Double(Int(devices[tag].currentValue))
-//                if Int(devices[tag].currentValue) > 100 {
                     return Double(Double(devices[tag].currentValue))
-//                } else {
-//                    return Double(devices[tag].currentValue)/100
-//                }
             }()
             cell.setImageForDevice(devices[tag])
-//            cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
             cell.setNeedsDisplay()
         }
     }
+    
     func buttonTapped(sender:UIButton){
         let tag = sender.tag
         // Appliance?
@@ -1341,5 +1331,36 @@ extension DevicesViewController: FilterPullDownDelegate{
             fetchDevicesInBackground()
         }
         
+    }
+}
+
+extension DevicesViewController: BigSliderDelegate{
+    func valueChanged(sender: UISlider) {
+        changeSliderValue(sender)
+    }
+    
+    func endValueChanged(sender: UISlider) {
+        changeSliderValueEnded(sender)
+    }
+    
+    func setONOFFDimmer(index:Int, turnOff:Bool){
+        if devices[index].controlType == ControlType.Dimmer {
+            var setDeviceValue:UInt8 = 0
+            var skipLevel:UInt8 = 0
+            if turnOff {
+                devices[index].oldValue = devices[index].currentValue
+                setDeviceValue = UInt8(0)
+                skipLevel = 0
+            } else {
+                setDeviceValue = 100
+                skipLevel = UInt8(Int(self.devices[index].skipState))
+            }
+            let address = [UInt8(Int(devices[index].gateway.addressOne)),UInt8(Int(devices[index].gateway.addressTwo)),UInt8(Int(devices[index].address))]
+            let deviceCurrentValue = Int(devices[index].currentValue)
+            devices[index].currentValue = Int(setDeviceValue)*255/100
+            dispatch_async(dispatch_get_main_queue(), {
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[index].channel)), value: setDeviceValue, delay: Int(self.devices[index].delay), runningTime: Int(self.devices[index].runtime), skipLevel: skipLevel), gateway: self.devices[index].gateway, device: self.devices[index], oldValue: deviceCurrentValue)
+            })
+        }
     }
 }
