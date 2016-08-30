@@ -15,7 +15,7 @@ import AudioToolbox
 
 class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
-    var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 0)
+    var sectionInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var scrollView = FilterPullDown()
