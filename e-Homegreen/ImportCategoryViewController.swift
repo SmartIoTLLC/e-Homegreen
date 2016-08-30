@@ -371,7 +371,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         return SearchParametars(from: from, to: to, count: count, initialPercentage: percent)
     }
     func progressBarDidPressedExit() {
-        
+        dismissScaningControls()
     }
     
     
