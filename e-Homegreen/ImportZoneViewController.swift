@@ -316,7 +316,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             return
         }
         timesRepeatedCounter += 1
-        if timesRepeatedCounter < 3 {  // sve dok ne pokusa tri puta, treba da pokusava
+        if timesRepeatedCounter < 4 {  // sve dok ne pokusa tri puta, treba da pokusava
             scanZones?.sendCommandForFinding(id:Byte(zoneId))
             setProgressBarParametarsForScanningZones(id: zoneId)
             zoneScanTimer!.invalidate()

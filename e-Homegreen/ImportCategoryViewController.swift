@@ -313,7 +313,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             return
         }
         timesRepeatedCounter += 1
-        if timesRepeatedCounter < 3 {  // sve dok ne pokusa tri puta, treba da pokusava
+        if timesRepeatedCounter < 4 {  // sve dok ne pokusa tri puta, treba da pokusava
             scanZones?.sendCommandForFinding(id:Byte(categoryId))
             setProgressBarParametarsForScanningZones(id: categoryId)
             zoneScanTimer!.invalidate()
