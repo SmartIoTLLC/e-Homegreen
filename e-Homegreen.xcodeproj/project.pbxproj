@@ -31,6 +31,7 @@
 		223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690C81CAD02530037B54A /* CreateAdminViewController.swift */; };
 		223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690CA1CAD04270037B54A /* LogInTextField.swift */; };
 		223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223690CC1CAD5A500037B54A /* DatabaseUserController.swift */; };
+		2237BC861D75AEC300E94D4B /* HVACButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237BC851D75AEC300E94D4B /* HVACButton.swift */; };
 		223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */; };
 		2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789A1C916748001357E0 /* Device_AppCell.swift */; };
 		223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */; };
@@ -374,6 +375,7 @@
 		223690C81CAD02530037B54A /* CreateAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAdminViewController.swift; sourceTree = "<group>"; };
 		223690CA1CAD04270037B54A /* LogInTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInTextField.swift; sourceTree = "<group>"; };
 		223690CC1CAD5A500037B54A /* DatabaseUserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserController.swift; sourceTree = "<group>"; };
+		2237BC851D75AEC300E94D4B /* HVACButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HVACButton.swift; sourceTree = "<group>"; };
 		223878981C916645001357E0 /* ListOfDevice_AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfDevice_AppViewController.swift; sourceTree = "<group>"; };
 		2238789A1C916748001357E0 /* Device_AppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device_AppCell.swift; sourceTree = "<group>"; };
 		2238789E1C917A96001357E0 /* AddVideo_AppXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVideo_AppXIB.swift; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 				E7F5FC1A1BB9744200071982 /* LeftCustomButtom.swift */,
 				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
 				E7F5FC1C1BB9744200071982 /* BottomButton.swift */,
+				2237BC851D75AEC300E94D4B /* HVACButton.swift */,
 			);
 			name = Button;
 			sourceTree = "<group>";
@@ -2158,6 +2161,7 @@
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
+				2237BC861D75AEC300E94D4B /* HVACButton.swift in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
 				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,

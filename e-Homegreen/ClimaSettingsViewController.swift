@@ -34,70 +34,162 @@ enum Fan {
     case AUTO
     case NoFan
 }
-class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate {
+class ClimaSettingsViewController: CommonXIBTransitionVC {
     
     var indexPathRow: Int = -1
     var devices:[Device] = []
-    var isPresenting: Bool = true
     
-//    @IBOutlet weak var lblConsumption: UILabel!
-    @IBOutlet weak var lblHumadity: UILabel!
-    @IBOutlet weak var lblTemperature: UILabel!
-    
-    @IBOutlet weak var settingsViewConstraint: NSLayoutConstraint!
-
-    @IBOutlet weak var titleLabel: UILabel!
-//    @IBOutlet weak var onOffButton: UIButton!
+    @IBOutlet weak var modeLbl: UILabel!
+    @IBOutlet weak var modeStackView: UIStackView!
     
     //Mode button
-    @IBOutlet weak var btnCool: UIButton!
-    @IBOutlet weak var btnHeat: UIButton!
-    @IBOutlet weak var btnFan: UIButton!
-    @IBOutlet weak var btnAuto: UIButton!
+    @IBOutlet weak var btnCool: HVACButton!
+    @IBOutlet weak var btnHeat: HVACButton!
+    @IBOutlet weak var btnFan: HVACButton!
+    @IBOutlet weak var btnAuto: HVACButton!
+    
+    @IBOutlet weak var fanLbl: UILabel!
+    @IBOutlet weak var fanStackView: UIStackView!
     
     //Fan button
-    @IBOutlet weak var btnLow: UIButton!
-    @IBOutlet weak var btnMed: UIButton!
-    @IBOutlet weak var btnHigh: UIButton!
-    @IBOutlet weak var btnAutoFan: UIButton!
+    @IBOutlet weak var btnLow: HVACButton!
+    @IBOutlet weak var btnMed: HVACButton!
+    @IBOutlet weak var btnHigh: HVACButton!
+    @IBOutlet weak var btnAutoFan: HVACButton!
+    
+    @IBOutlet weak var coolView: UIView!
+    @IBOutlet weak var heatView: UIView!
+    
+    
+    @IBOutlet weak var thresholdSTackView: UIStackView!
+    @IBOutlet weak var threshholdLbl: UILabel!
     
     @IBOutlet weak var lblCool: UILabel!
     @IBOutlet weak var lblHeat: UILabel!
     var coolTemperature = 28
     var heatTemperature = 18
     
-    @IBOutlet weak var modeView: UIView!
-    @IBOutlet weak var modeViewHeight: NSLayoutConstraint! //58
-    
-    @IBOutlet weak var speedView: UIView!
-    @IBOutlet weak var speedViewHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var thresholdView: UIView!
-    @IBOutlet weak var thresholdCoolView: UIView!
-    @IBOutlet weak var thresholdHeatView: UIView!
-    @IBOutlet weak var thresholdViewHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var temperatureHumidityView: UIView!
-    @IBOutlet weak var temperatureHumidityViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var humidityView: UIView!
-    @IBOutlet weak var temperatureView: UIView!
-    
-    @IBOutlet weak var coolWidth: NSLayoutConstraint!
-    @IBOutlet weak var heatWidth: NSLayoutConstraint!
-    @IBOutlet weak var fanWidth: NSLayoutConstraint!
-    @IBOutlet weak var autoModeWidth: NSLayoutConstraint!
-    @IBOutlet weak var thresholdCoolWidth: NSLayoutConstraint!
-    @IBOutlet weak var humidityWidth: NSLayoutConstraint!
-    @IBOutlet weak var lowWidth: NSLayoutConstraint!
-    @IBOutlet weak var medWidth: NSLayoutConstraint!
-    @IBOutlet weak var highWidth: NSLayoutConstraint!
-    @IBOutlet weak var autoSpeedWidth: NSLayoutConstraint!
-    
     @IBOutlet weak var lblClimateName: UILabel!
     @IBOutlet weak var settingsView: UIView!
+    
+    @IBOutlet weak var currentLbl: UILabel!
+    @IBOutlet weak var currentStackView: UIStackView!
+    
+    @IBOutlet weak var humidityLbl: UILabel!
+    @IBOutlet weak var tempLbl: UILabel!
+    
     var appDel:AppDelegate!
     var hvacCommand:HvacCommand = HvacCommand()
     var hvacCommandBefore:HvacCommand = HvacCommand()
+    
+    var timerForTemperatureSetPoint:NSTimer = NSTimer()
+    var temperatureNumber = 0
+    var heatNumber = 0
+    var coolNumber = 0
+    
+    var device:Device!
+    
+    init(device: Device){
+        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
+        self.device = device
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        hvacCommand.coolTemperature = Int(device.coolTemperature)
+        hvacCommand.heatTemperature = Int(device.heatTemperature)
+        
+        lblCool.text = "\(device.coolTemperature)"
+        lblHeat.text = "\(device.heatTemperature)"
+        coolNumber = Int(device.coolTemperature)
+        heatNumber = Int(device.heatTemperature)
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)        
+        
+        getACState()
+        
+        if device.coolModeVisible == false {
+        
+            btnCool.hidden = true
+            
+            coolView.hidden = true
+            
+            if device.heatModeVisible == false {
+                
+                btnHeat.hidden = true
+                
+                thresholdSTackView.hidden = true
+                threshholdLbl.hidden = true
+            }
+        }
+        
+        if device.heatModeVisible == false {
+            btnHeat.hidden = true
+            heatView.hidden = true
+        }
+        if device.fanModeVisible == false {
+            btnFan.hidden = true
+        }
+        if device.autoModeVisible == false {
+            btnAuto.hidden = true
+        }
+        
+        if device.coolModeVisible == false && device.heatModeVisible == false && device.fanModeVisible == false && device.autoModeVisible == false {
+            modeLbl.hidden = true
+            modeStackView.hidden = true
+        }
+
+        if device.lowSpeedVisible == false {
+            btnLow.hidden = true
+        }
+        if device.medSpeedVisible == false {
+            btnMed.hidden = true
+        }
+        if device.highSpeedVisible == false {
+            btnHigh.hidden = true
+        }
+        if device.autoSpeedVisible == false {
+            btnAutoFan.hidden = true
+        }
+        
+        if device.lowSpeedVisible == false && device.medSpeedVisible == false && device.highSpeedVisible == false && device.autoSpeedVisible == false {
+            fanLbl.hidden = true
+            fanStackView.hidden = true
+        }
+        
+        if device.temperatureVisible == false {
+            tempLbl.hidden = true
+        }
+        if device.humidityVisible == false {
+            humidityLbl.hidden = true
+        }
+        
+        if device.temperatureVisible == false && device.humidityVisible == false {
+            currentLbl.hidden = true
+            currentStackView.hidden = true
+        }
+
+        
+        print("Stanje klime - temperatura + humidity: \(device.temperatureVisible) \(device.humidityVisible)")
+        
+    }
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(settingsView){
+            return false
+        }
+        return true
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshClimate)
+    }
+    
     @IBAction func btnSet(sender: AnyObject) {
         print(hvacCommand)
         if hvacCommand != hvacCommandBefore {
@@ -107,10 +199,12 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     func setACSetPoint () {
-            let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(hvacCommand.coolTemperature), heatingSetPoint: UInt8(hvacCommand.heatTemperature)), gateway: device.gateway)
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(hvacCommand.coolTemperature), heatingSetPoint: UInt8(hvacCommand.heatTemperature)), gateway: device.gateway)
     }
+    
     func setACSpeed () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.fan {
@@ -125,6 +219,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         default :break
         }
     }
+    
     func setACmode () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.mode {
@@ -139,125 +234,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         default :break
         }
     }
-    init(device: Device){
-        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
-        self.device = device
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
-    }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
-        
-        btnModeSetUp()
-        btnFanSetUp()
-        
-        hvacCommand.coolTemperature = Int(device.coolTemperature)
-        hvacCommand.heatTemperature = Int(device.heatTemperature)
-        
-        lblCool.text = "\(device.coolTemperature)"
-        lblHeat.text = "\(device.heatTemperature)"
-        coolNumber = Int(device.coolTemperature)
-        heatNumber = Int(device.heatTemperature)
-        
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
-        
-//        onOffButton.layer.cornerRadius = 20
-//        onOffButton.clipsToBounds = true
-        
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getACState", name: NotificationKey.RefreshClimate, object: nil)
-        
-        
-        getACState()
-        
-        if device.coolModeVisible == false {
-            
-            btnCool.hidden = true
-            thresholdCoolView.hidden = true
-            thresholdCoolWidth.constant = 0
-            coolWidth.constant = 0
-            
-            if device.coolModeVisible == false && device.heatModeVisible == false {
-                
-                btnHeat.hidden = true
-                thresholdViewHeight.constant = 0
-                
-                if device.fanModeVisible == false && device.autoModeVisible == false {
-                    modeViewHeight.constant = 0
-                }
-            }
-        }
-        
-        if device.heatModeVisible == false {
-            
-            heatWidth.constant = 0
-            btnHeat.hidden = true
-            thresholdHeatView.hidden = true
-        }
-        if device.fanModeVisible == false {
-            
-            fanWidth.constant = 0
-            btnFan.hidden = true
-        }
-        if device.autoModeVisible == false {
-            
-            autoModeWidth.constant = 0
-            btnAuto.hidden = true
-        }
-
-        if device.lowSpeedVisible == false && device.medSpeedVisible == false && device.highSpeedVisible == false && device.autoSpeedVisible == false {
-            speedViewHeight.constant = 0
-        }else{
-            if device.lowSpeedVisible == false {
-                lowWidth.constant = 0
-                btnLow.hidden = true
-            }
-            if device.medSpeedVisible == false {
-                medWidth.constant = 0
-                btnMed.hidden = true
-            }
-            if device.highSpeedVisible == false {
-                highWidth.constant = 0
-                btnHigh.hidden = true
-            }
-            if device.autoSpeedVisible == false {
-                autoSpeedWidth.constant = 0
-                btnAutoFan.hidden = true
-            }
-
-        }
-        
-        if device.temperatureVisible == false && device.humidityVisible == false {
-            temperatureHumidityViewHeight.constant = 0
-        }else if device.temperatureVisible == false {
-            temperatureView.hidden = true
-        }else if device.humidityVisible == false {
-            humidityView.hidden = true
-            humidityWidth.constant = 0
-        }
-
-        
-        print("Stanje klime - temperatura + humidity: \(device.temperatureVisible) \(device.humidityVisible)")
-        
-        
-        
-        
-        // Do any additional setup after loading the view.
-    }
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshClimate)
-    }
-    var device:Device!
     func updateDevice () {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         let fetResults = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device
@@ -266,6 +243,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         } else {
         }
     }
+    
     func getACState () {
         updateDevice()
         let speedState = device.speed
@@ -298,293 +276,102 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             hvacCommand.mode = .AUTO
             pressedAuto()
         }
-        if device.currentValue == 255 {
-//            onOffButton.setImage(UIImage(named:"poweron"), forState: UIControlState.Normal)
-        } else {
-//            onOffButton.setImage(UIImage(named:"poweroff"), forState: UIControlState.Normal)
-        }
         
-//        lblCool.text = "\(device.coolTemperature)"
-//        lblHeat.text = "\(device.heatTemperature)"
+        lblCool.text = "\(device.coolTemperature)"
+        lblHeat.text = "\(device.heatTemperature)"
         
-//        lblConsumption.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
-//        lblConsumption.text = "\(Float(device.current) * 0.01)" + " W"
-        lblHumadity.text = "\(device.humidity) %"
-        lblTemperature.text = "\(device.roomTemperature) C"
+        humidityLbl.text = "Humidity\n \(device.humidity) %"
+        tempLbl.text = "Temperature\n \(device.roomTemperature) °C"
         
         lblClimateName.text = "\(device.name)"
         hvacCommandBefore = hvacCommand
     }
-    var gradientLayerForButon:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForButon1:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForButon2:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForButon3:CAGradientLayer = CAGradientLayer()
-    
-    func btnModeSetUp(){
-        
-//        var gradientLayerForButon:CAGradientLayer = CAGradientLayer()
-        gradientLayerForButon.frame = btnCool.bounds
-        gradientLayerForButon.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
-        btnCool.layer.cornerRadius = 5
-        btnCool.layer.borderWidth = 1
-        btnCool.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnCool.clipsToBounds = true
-        btnCool.setImage(UIImage(named: "cool"), forState: .Normal)
-        btnCool.imageEdgeInsets = UIEdgeInsetsMake(0, -1, 0, 1)
-        btnCool.setTitle("COOL", forState: .Normal)
-        btnCool.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnCool.bringSubviewToFront(btnCool.imageView!)
-        
-//        var gradientLayerForButon1:CAGradientLayer = CAGradientLayer()
-        gradientLayerForButon1.frame = btnCool.bounds
-        gradientLayerForButon1.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
-        btnHeat.layer.cornerRadius = 5
-        btnHeat.layer.borderWidth = 1
-        btnHeat.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnHeat.clipsToBounds = true
-        btnHeat.setImage(UIImage(named: "heat"), forState: .Normal)
-        btnHeat.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnHeat.setTitle("HEAT", forState: .Normal)
-        btnHeat.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnHeat.bringSubviewToFront(btnHeat.imageView!)
-        
-//        var gradientLayerForButon2:CAGradientLayer = CAGradientLayer()
-        gradientLayerForButon2.frame = btnCool.bounds
-        gradientLayerForButon2.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
-        btnFan.layer.cornerRadius = 5
-        btnFan.layer.borderWidth = 1
-        btnFan.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnFan.clipsToBounds = true
-        btnFan.setImage(UIImage(named: "fan"), forState: .Normal)
-        btnFan.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnFan.setTitle("FAN", forState: .Normal)
-        btnFan.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnFan.bringSubviewToFront(btnFan.imageView!)
-        
-        gradientLayerForButon3.frame = btnCool.bounds
-        gradientLayerForButon3.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
-        btnAuto.layer.cornerRadius = 5
-        btnAuto.layer.borderWidth = 1
-        btnAuto.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnAuto.clipsToBounds = true
-        btnAuto.setImage(UIImage(named: "fanauto"), forState: .Normal)
-        btnAuto.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnAuto.setTitle("AUTO", forState: .Normal)
-        btnAuto.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnAuto.bringSubviewToFront(btnAuto.imageView!)
-        
-    }
-    
-    var gradientLayerForFan:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForFan1:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForFan2:CAGradientLayer = CAGradientLayer()
-    var gradientLayerForFan3:CAGradientLayer = CAGradientLayer()
-    
-    func btnFanSetUp(){
-        
-        
-        gradientLayerForFan.frame = btnCool.bounds
-        gradientLayerForFan.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
-        btnLow.layer.cornerRadius = 5
-        btnLow.layer.borderWidth = 1
-        btnLow.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnLow.clipsToBounds = true
-        btnLow.setImage(UIImage(named: "lowfan"), forState: .Normal)
-        btnLow.imageEdgeInsets = UIEdgeInsetsMake(0, -1, 0, 1)
-        btnLow.setTitle("LOW", forState: .Normal)
-        btnLow.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnLow.bringSubviewToFront(btnLow.imageView!)
-        
-        
-        gradientLayerForFan1.frame = btnCool.bounds
-        gradientLayerForFan1.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
-        btnMed.layer.cornerRadius = 5
-        btnMed.layer.borderWidth = 1
-        btnMed.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnMed.clipsToBounds = true
-        btnMed.setImage(UIImage(named: "medfan"), forState: .Normal)
-        btnMed.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnMed.setTitle("MED", forState: .Normal)
-        btnMed.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnMed.bringSubviewToFront(btnMed.imageView!)
-        
-        
-        gradientLayerForFan2.frame = btnCool.bounds
-        gradientLayerForFan2.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
-        btnHigh.layer.cornerRadius = 5
-        btnHigh.layer.borderWidth = 1
-        btnHigh.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnHigh.clipsToBounds = true
-        btnHigh.setImage(UIImage(named: "fan"), forState: .Normal)
-        btnHigh.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnHigh.setTitle("HIGH", forState: .Normal)
-        btnHigh.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnHigh.bringSubviewToFront(btnHigh.imageView!)
-        
-        
-        gradientLayerForFan3.frame = btnCool.bounds
-        gradientLayerForFan3.colors = [UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor, UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor]
-        
-        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
-        btnAutoFan.layer.cornerRadius = 5
-        btnAutoFan.layer.borderWidth = 1
-        btnAutoFan.layer.borderColor = UIColor.lightGrayColor().CGColor
-        btnAutoFan.clipsToBounds = true
-        btnAutoFan.setImage(UIImage(named: "fanauto"), forState: .Normal)
-        btnAutoFan.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2)
-        btnAutoFan.setTitle("AUTO", forState: .Normal)
-        btnAutoFan.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        btnAutoFan.bringSubviewToFront(btnAutoFan.imageView!)
-        
-    }
-    
-    func removeLayers(){
-        gradientLayerForButon.removeFromSuperlayer()
-        gradientLayerForButon1.removeFromSuperlayer()
-        gradientLayerForButon2.removeFromSuperlayer()
-        gradientLayerForButon3.removeFromSuperlayer()
-        btnCool.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnFan.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnAuto.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnHeat.backgroundColor = UIColor.groupTableViewBackgroundColor()
-    }
 
     func pressedCool() {
-        removeLayers()
-        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
-        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
-        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
-        btnCool.backgroundColor = UIColor.lightTextColor()
+        btnCool.setSelectedColor()
+        btnHeat.setGradientColor()
+        btnFan.setGradientColor()
+        btnAuto.setGradientColor()
     }
     func pressedHeat() {
-        removeLayers()
-        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
-        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
-        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
-        btnHeat.backgroundColor = UIColor.lightTextColor()
+        btnCool.setGradientColor()
+        btnHeat.setSelectedColor()
+        btnFan.setGradientColor()
+        btnAuto.setGradientColor()
     }
     func pressedFan () {
-        removeLayers()
-        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
-        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
-        btnAuto.layer.insertSublayer(gradientLayerForButon3, atIndex: 0)
-        btnFan.backgroundColor = UIColor.lightTextColor()
+        btnCool.setGradientColor()
+        btnHeat.setGradientColor()
+        btnFan.setSelectedColor()
+        btnAuto.setGradientColor()
     }
     func pressedAuto() {
-        removeLayers()
-        btnCool.layer.insertSublayer(gradientLayerForButon, atIndex: 0)
-        btnHeat.layer.insertSublayer(gradientLayerForButon1, atIndex: 0)
-        btnFan.layer.insertSublayer(gradientLayerForButon2, atIndex: 0)
-        btnAuto.backgroundColor = UIColor.lightTextColor()
+        btnCool.setGradientColor()
+        btnHeat.setGradientColor()
+        btnFan.setGradientColor()
+        btnAuto.setSelectedColor()
     }
     @IBAction func btnCoolPressed(sender: UIButton) {
         hvacCommand.mode = .Cool
         pressedCool()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
     @IBAction func btnHeatPressed(sender: UIButton) {
         hvacCommand.mode = .Heat
         pressedHeat()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
     @IBAction func fan(sender: UIButton) {
         hvacCommand.mode = .Fan
         pressedFan()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
     @IBAction func auto(sender: UIButton) {
         hvacCommand.mode = .AUTO
         pressedAuto()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         
     }
-    func removeFanLayers(){
-        gradientLayerForFan.removeFromSuperlayer()
-        gradientLayerForFan1.removeFromSuperlayer()
-        gradientLayerForFan2.removeFromSuperlayer()
-        gradientLayerForFan3.removeFromSuperlayer()
-        btnLow.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnMed.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnHigh.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        btnAutoFan.backgroundColor = UIColor.groupTableViewBackgroundColor()
-    }
     func pressedLow () {
-        removeFanLayers()
-        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
-        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
-        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
-        btnLow.backgroundColor = UIColor.lightTextColor()
+        btnLow.setSelectedColor()
+        btnMed.setGradientColor()
+        btnHigh.setGradientColor()
+        btnAutoFan.setGradientColor()
     }
     func pressedMed () {
-        removeFanLayers()
-        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
-        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
-        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
-        btnMed.backgroundColor = UIColor.lightTextColor()
+        btnLow.setGradientColor()
+        btnMed.setSelectedColor()
+        btnHigh.setGradientColor()
+        btnAutoFan.setGradientColor()
+
     }
     func pressedHigh () {
-        removeFanLayers()
-        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
-        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
-        btnAutoFan.layer.insertSublayer(gradientLayerForFan3, atIndex: 0)
-        btnHigh.backgroundColor = UIColor.lightTextColor()
+        btnLow.setGradientColor()
+        btnMed.setGradientColor()
+        btnHigh.setSelectedColor()
+        btnAutoFan.setGradientColor()
     }
     func pressedAutoSecond () {
-        removeFanLayers()
-        btnLow.layer.insertSublayer(gradientLayerForFan, atIndex: 0)
-        btnMed.layer.insertSublayer(gradientLayerForFan1, atIndex: 0)
-        btnHigh.layer.insertSublayer(gradientLayerForFan2, atIndex: 0)
-        btnAutoFan.backgroundColor = UIColor.lightTextColor()
+        btnLow.setGradientColor()
+        btnMed.setGradientColor()
+        btnHigh.setGradientColor()
+        btnAutoFan.setSelectedColor()
     }
+    
     @IBAction func low(sender: AnyObject) {
         hvacCommand.fan = .Low
         pressedLow()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
     }
+    
     @IBAction func med(sender: AnyObject) {
         hvacCommand.fan = .Med
         pressedMed()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
     }
+    
     @IBAction func high(sender: AnyObject) {
         hvacCommand.fan = .High
         pressedHigh()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
     }
+    
     @IBAction func fanAuto(sender: AnyObject) {
         hvacCommand.fan = .AUTO
         pressedAutoSecond()
-//        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-//        SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
-    }
-    func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        print(tappedView.tag)
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
     }
     
     @IBAction func onOff(sender: AnyObject) {
@@ -598,31 +385,7 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
         }
     }
     
-//    init(){
-//        super.init(nibName: "ClimaSettingsViewController", bundle: nil)
-//        transitioningDelegate = self
-//        modalPresentationStyle = UIModalPresentationStyle.Custom
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    var timerForTemperatureSetPoint:NSTimer = NSTimer()
-    var temperatureNumber = 0
     @IBAction func lowCool(sender: AnyObject) {
-//        if Int(device.coolTemperature) >= 1 {
-//            temperatureNumber -= 1
-////            timerForTemperatureSetPoint.invalidate()
-////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-//            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
-//            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
-//        }
         if coolNumber >= 1 {
             coolNumber -= 1
             lblCool.text = "\(coolNumber)"
@@ -631,19 +394,13 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @IBAction func highCool(sender: AnyObject) {
-//        if Int(device.coolTemperature) <= 36 {
-//            temperatureNumber += 1
-////            timerForTemperatureSetPoint.invalidate()
-////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("coolTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-//            lblCool.text = "\(Int(device.coolTemperature)+temperatureNumber)"
-//            hvacCommand.coolTemperature = Int(device.coolTemperature)+temperatureNumber
-//        }
         if coolNumber <= 36 {
             coolNumber += 1
             lblCool.text = "\(coolNumber)"
             hvacCommand.coolTemperature = coolNumber
         }
     }
+    
     func coolTemeperatureUpdate (timer:NSTimer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
@@ -651,16 +408,8 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
-    var heatNumber = 0
-    var coolNumber = 0
+    
     @IBAction func lowHeat(sender: AnyObject) {
-//        if Int(device.heatTemperature) >= 1 {
-//            temperatureNumber -= 1
-////            timerForTemperatureSetPoint.invalidate()
-////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-//            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
-//            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
-//        }
         if heatNumber >= 1 {
             heatNumber -= 1
             lblHeat.text = "\(heatNumber)"
@@ -669,13 +418,6 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @IBAction func highHeat(sender: AnyObject) {
-//        if Int(device.heatTemperature) <= 36 {
-//            temperatureNumber += 1
-////            timerForTemperatureSetPoint.invalidate()
-////            timerForTemperatureSetPoint = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("heatTemeperatureUpdate:"), userInfo: temperatureNumber, repeats: false)
-//            lblHeat.text = "\(Int(device.heatTemperature)+temperatureNumber)"
-//            hvacCommand.heatTemperature = Int(device.heatTemperature)+temperatureNumber
-//        }
         if heatNumber <= 36 {
             heatNumber += 1
             lblHeat.text = "\(heatNumber)"
@@ -689,90 +431,9 @@ class ClimaSettingsViewController: UIViewController, UIGestureRecognizerDelegate
             SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+number)), gateway: device.gateway)
         }
     }
-    
-    
-//    func sendTemperatureSetPointCommand (timer:NSTimer) {
-//        if let temperatureInfo = timer.userInfo as? [String:Int] {
-//            
-//        }
-//    }
-//    
-    override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            if self.view.frame.size.height == 320{
-                settingsViewConstraint.constant = 300
-                
-            }else if self.view.frame.size.height == 375{
-                settingsViewConstraint.constant = 340
-            }else if self.view.frame.size.height == 414{
-                settingsViewConstraint.constant = 390
-            }else{
-                settingsViewConstraint.constant = 420
-            }
-        }else{
-            settingsViewConstraint.constant = 420
-        }
-    }
+
 }
 
-extension ClimaSettingsViewController : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            //        presentedControllerView.center.y -= containerView.bounds.size.height
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //            presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                //                presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-extension ClimaSettingsViewController : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
-}
 extension UIViewController {
     func showClimaSettings(indexPathRow: Int, devices:[Device]) {
         let ad = ClimaSettingsViewController(device: devices[indexPathRow])
