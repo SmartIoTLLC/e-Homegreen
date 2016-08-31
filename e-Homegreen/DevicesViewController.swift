@@ -289,18 +289,14 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
                 let cell = deviceCollectionView.cellForItemAtIndexPath(index)
                 if devices[index.row].controlType == ControlType.Dimmer {
-                    showDimmerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
+                    showDimmerParametar(tag, devices: devices)
                 }
-//                else if devices[index.row].controlType == ControlType.Climate {
-//                    showClimaParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-//                }
                 else if devices[index.row].controlType == ControlType.Relay {
-                    showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
+                    showRelayParametar(tag, devices: devices)
                 }else if devices[index.row].controlType == ControlType.Curtain {
-                    showRelayParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
-//                    showCellParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y))
-                }else{ //if devices[index.row].controlType == ControlType.Sensor || devices[index.row].controlType == ControlType.HumanInterfaceSeries || devices[index.row].controlType == ControlType.Gateway {
-                    showIntelligentSwitchParameter(CGPoint(x: cell!.center.x, y: cell!.center.y - deviceCollectionView.contentOffset.y), indexPathRow:tag, devices: devices)
+                    showRelayParametar(tag, devices: devices)
+                }else{
+                    showIntelligentSwitchParameter(tag, devices: devices)
                 }
             }
         }
@@ -310,36 +306,17 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
         let tag = gestureRecognizer.view!.tag
-//        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         
         if devices[tag].controlType == ControlType.Dimmer {
             if gestureRecognizer.state == UIGestureRecognizerState.Began {
                 
                 showBigSlider(devices[tag], index: tag).delegate = self
                 
-//                longTouchOldValue = Int(devices[tag].currentValue)
-//                deviceInControlMode = true
-//                timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(DevicesViewController.update(_:)), userInfo: tag, repeats: true)
             }
-//            if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-//                longTouchOldValue = 0
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(Int(self.devices[tag].currentValue)), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.longTouchOldValue)
-//                })
-//                timer.invalidate()
-//                deviceInControlMode = false
-//                if devices[tag].opening == true {
-//                    devices[tag].opening = false
-//                }else {
-//                    devices[tag].opening = true
-//                }
-//                return
-//            }
         }
     }
     func refreshDevice(sender:AnyObject) {
         if let button = sender as? UIButton {
-//            button.highlighted = !button.highlighted
             let tag = button.tag
             // Light
             if devices[tag].controlType == ControlType.Dimmer {
@@ -383,11 +360,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             let deviceCurrentValue = Int(devices[tag].currentValue)
             devices[tag].currentValue = Int(setDeviceValue)*255/100
             print("Device current value: \(deviceCurrentValue)%")
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
                 _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
-//            })
         }
         // Appliance?
         if devices[tag].controlType == ControlType.Relay {
@@ -432,7 +407,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         
         if devicePair == nil { // then this is new module, which works alone
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0xFF
+                let setDeviceValue:UInt8 = 0xFF
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
                 let deviceGroupId = devices[tag].curtainGroupID.integerValue
@@ -719,13 +694,11 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             devices[tag].currentValue = Int(value)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(slider.value), motionSensor: false)
                 cell.picture.image = devices[tag].returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
-//                cell.curtainImage.image = devices[tag].returnImage(Double(value))
                 cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -818,10 +791,8 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         // Appliance?
         if devices[tag].controlType == ControlType.Relay {
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            //            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, runningTime: 0x00), gateway: devices[tag].gateway)
             let oldValue = Int(devices[tag].currentValue)
             _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, device: devices[tag], oldValue: oldValue)
-//            SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway)
         }
     }
     func refreshDeviceList() {

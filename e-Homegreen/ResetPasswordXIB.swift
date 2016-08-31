@@ -12,7 +12,7 @@ protocol SettingsDelegate {
     func resetPasswordFinished()
 }
 
-class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class ResetPasswordXIB: CommonXIBTransitionVC {
     
     @IBOutlet weak var oldPasswordLabel: UILabel!
     
@@ -25,18 +25,14 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     
     @IBOutlet weak var backView: CustomGradientBackground!
     
-    var isPresenting: Bool = true
     
     var user:User!
     
     var delegate:SettingsDelegate?
     
-//    @IBOutlet weak var topConstraint: NSLayoutConstraint!
-    
     init(user:User){
         super.init(nibName: "ResetPasswordXIB", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        
         self.user = user
     }
     
@@ -47,15 +43,9 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
-        
         oldPassswordTextField.delegate = self
         newPasswordTextField.delegate = self
         confirmPasswordTextField.delegate = self
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ResetPasswordXIB.dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
         
         if !AdminController.shared.isAdminLogged(){
 //            topConstraint.constant = 73
@@ -65,18 +55,13 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
 //            oldPassswordTextField.hidden = true
         }
 
-        // Do any additional setup after loading the view.
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
+            self.view.endEditing(true)
             return false
         }
-        return true
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
         return true
     }
     
@@ -119,59 +104,11 @@ class ResetPasswordXIB: UIViewController, UITextFieldDelegate, UIGestureRecogniz
 
 }
 
-extension ResetPasswordXIB : UIViewControllerAnimatedTransitioning {
+extension ResetPasswordXIB : UITextFieldDelegate {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-extension ResetPasswordXIB : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }

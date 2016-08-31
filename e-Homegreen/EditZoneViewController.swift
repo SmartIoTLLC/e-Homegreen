@@ -51,11 +51,11 @@ class EditZoneViewController: PopoverVC {
         super.viewDidLoad()
         
         idTextField.inputAccessoryView = CustomToolBar()
-        levelTextField.inputAccessoryView = CustomToolBar()
+//        levelTextField.inputAccessoryView = CustomToolBar()
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         
         nameTextField.delegate = self
         levelTextField.delegate = self
@@ -83,6 +83,11 @@ class EditZoneViewController: PopoverVC {
 
     }
     
+    override func nameAndId(name: String, id: String) {
+        level = FilterController.shared.getZoneByObjectId(id)
+        levelButton.setTitle(name, forState: .Normal)
+    }
+    
     @IBAction func levelButton(sender: AnyObject) {
         var popoverList:[PopOverItem] = []
         
@@ -94,11 +99,6 @@ class EditZoneViewController: PopoverVC {
         popoverList.insert(PopOverItem(name: "", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
         
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        level = FilterController.shared.getZoneByObjectId(id)
-        levelButton.setTitle(name, forState: .Normal)
     }
     
     func dismissViewController () {
@@ -197,6 +197,7 @@ extension EditZoneViewController : UITextFieldDelegate{
 extension EditZoneViewController : UIGestureRecognizerDelegate{
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
+            self.view.endEditing(true)
             return false
         }
         return true
@@ -218,10 +219,12 @@ extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -233,6 +236,7 @@ extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in

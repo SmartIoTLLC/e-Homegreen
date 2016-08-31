@@ -54,9 +54,11 @@ enum NotificationType : Int {
     }
 }
 
-class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class PCControlNotificationsXIB: PopoverVC {
     
     var isPresenting: Bool = true
+
+    var socketIO:InOutSocket
     
     enum SwitchTag : Int {
         case notificationSwitch
@@ -96,7 +98,7 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         
     }
     
-        required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -152,7 +154,9 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
                                                                   attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         displayTimeTextField.delegate = self
         titleLabel.text = pc.name
-        self.view.backgroundColor = UIColor.clearColor()
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlNotificationsXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
@@ -161,31 +165,19 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlNotificationsXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
     
+    override func nameAndId(name: String, id: String) {
+        notificationPositionLabel.text = name
+        
+        let pos = Int(id)
+        
+        if let position = pos {
+            notificationPosition = NotificationPosition(rawValue: position)!
+        }
+    }
+    
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendantOfView(backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
-        return true
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    var socketIO:InOutSocket
     
     @IBAction func switchChanged(sender: AnyObject) {
         
@@ -213,16 +205,6 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
             ttsSwitch.setOn(false, animated: true)
             notificationTtsSwitch.setOn(false, animated: true)
             notificationType = .Notification
-        }
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        notificationPositionLabel.text = name
-        
-        let pos = Int(id)
-        
-        if let position = pos {
-            notificationPosition = NotificationPosition(rawValue: position)!
         }
     }
     
@@ -288,6 +270,25 @@ class PCControlNotificationsXIB: PopoverVC, UIGestureRecognizerDelegate, UITextF
     
 }
 
+extension PCControlNotificationsXIB : UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension PCControlNotificationsXIB : UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
+    }
+}
+
 extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -303,10 +304,12 @@ extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -318,6 +321,7 @@ extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in

@@ -134,8 +134,6 @@
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
-		731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */; };
-		731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB41C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
@@ -481,8 +479,6 @@
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
-		731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultisensorParametarVC.swift; sourceTree = "<group>"; };
-		731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultisensorParametarVC.xib; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; };
 		731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ConfigureStateForTheFirstTime.swift"; sourceTree = "<group>"; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
@@ -906,6 +902,34 @@
 			name = "PC Control Interface";
 			sourceTree = "<group>";
 		};
+		223F086E1D76CE43002EA80F /* Dimmer */ = {
+			isa = PBXGroup;
+			children = (
+				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
+				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
+			);
+			name = Dimmer;
+			sourceTree = "<group>";
+		};
+		223F086F1D76CECF002EA80F /* Change image on device XIB */ = {
+			isa = PBXGroup;
+			children = (
+				73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */,
+				73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */,
+				73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */,
+				73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */,
+			);
+			name = "Change image on device XIB";
+			sourceTree = "<group>";
+		};
+		223F08701D76CF3D002EA80F /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		22495D0B1CAA63EA0034FC94 /* SWRevealViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -928,14 +952,13 @@
 			name = "PC Controll";
 			sourceTree = "<group>";
 		};
-		225F59821D743FE500156BCD /* Dimmer Slider */ = {
+		225F59821D743FE500156BCD /* Big Dimmer Slider XIB */ = {
 			isa = PBXGroup;
 			children = (
-				225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */,
 				225F59851D74427300156BCD /* BigSliderXIB.swift */,
 				225F59861D74427300156BCD /* BigSliderXIB.xib */,
 			);
-			name = "Dimmer Slider";
+			name = "Big Dimmer Slider XIB";
 			sourceTree = "<group>";
 		};
 		2260FB9F1D2CF5C800576513 /* UIToolBar */ = {
@@ -1064,7 +1087,7 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		4923279E1D6EEC7300B9BC05 /* Parameters in Devices screen */ = {
+		4923279E1D6EEC7300B9BC05 /* Parameters XIB */ = {
 			isa = PBXGroup;
 			children = (
 				E79AEBB21B70BFD500410E2D /* DimmerParametarVC.swift */,
@@ -1074,7 +1097,7 @@
 				4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */,
 				4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */,
 			);
-			name = "Parameters in Devices screen";
+			name = "Parameters XIB";
 			sourceTree = "<group>";
 		};
 		4952C1301D589131006C29F2 /* HVAC */ = {
@@ -1089,6 +1112,7 @@
 		495726AF1D4F4827004F2A3D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
 				495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */,
 				495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */,
 				495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */,
@@ -1259,6 +1283,7 @@
 				73E2390E1B97145D00CB38ED /* Model */,
 				736265DD1B4A47FE0078C11D /* BL */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
+				223F08701D76CF3D002EA80F /* Shared */,
 				73BD1EBE1B4E655700AA5B28 /* Other */,
 				E7E1A81F1B3804F1008D8713 /* Framework */,
 				73E206A91B2EEFFE0008B002 /* Supporting Files */,
@@ -1530,15 +1555,6 @@
 			name = ScrollView;
 			sourceTree = "<group>";
 		};
-		E76B576C1BBD24BB00A70F69 /* DeviceXIB */ = {
-			isa = PBXGroup;
-			children = (
-				E7AAF7611BBE875100992A18 /* ClimaXIB */,
-				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
-			);
-			name = DeviceXIB;
-			sourceTree = "<group>";
-		};
 		E79309B91BC571470009EFB1 /* UILabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1551,18 +1567,11 @@
 		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
 			isa = PBXGroup;
 			children = (
-				4923279E1D6EEC7300B9BC05 /* Parameters in Devices screen */,
+				223F086F1D76CECF002EA80F /* Change image on device XIB */,
+				223F086E1D76CE43002EA80F /* Dimmer */,
 				4952C1301D589131006C29F2 /* HVAC */,
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
-				734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */,
-				734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */,
-				731B695B1C05C3CE004A614F /* MultisensorParametarVC.swift */,
-				731B695C1C05C3CE004A614F /* MultisensorParametarVC.xib */,
-				73F4D6B41C805DEF00FE0514 /* DeviceImagesPickerVC.swift */,
-				73F4D6B51C805DEF00FE0514 /* DeviceImagesPickerVC.xib */,
-				73F4D6B81C807A5900FE0514 /* DeviceImagePickerTVC.swift */,
-				73F4D6B91C807A5900FE0514 /* DeviceImagePickerTVC.xib */,
 			);
 			name = "Device Parametars";
 			sourceTree = "<group>";
@@ -1687,14 +1696,14 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				225F59821D743FE500156BCD /* Dimmer Slider */,
+				E7AAF7611BBE875100992A18 /* ClimaXIB */,
+				4923279E1D6EEC7300B9BC05 /* Parameters XIB */,
+				225F59821D743FE500156BCD /* Big Dimmer Slider XIB */,
 				495726AF1D4F4827004F2A3D /* Cells */,
-				E76B576C1BBD24BB00A70F69 /* DeviceXIB */,
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
 				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
-				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
 				73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */,
 			);
 			name = Devices;
@@ -1725,6 +1734,7 @@
 		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,
@@ -1913,7 +1923,6 @@
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
 				22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
-				731B695E1C05C3CE004A614F /* MultisensorParametarVC.xib in Resources */,
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
@@ -2143,7 +2152,6 @@
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */,
-				731B695D1C05C3CE004A614F /* MultisensorParametarVC.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
 				225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,

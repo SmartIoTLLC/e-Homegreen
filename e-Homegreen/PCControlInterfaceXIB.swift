@@ -35,10 +35,9 @@ enum PowerOption{
     static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
 }
 
-class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class PCControlInterfaceXIB: PopoverVC {
     
     var isPresenting: Bool = true
-    
     
     @IBOutlet weak var fullScreenSwitch: UISwitch!
     @IBOutlet weak var powerLabel: UILabel!
@@ -82,6 +81,54 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        refreshLists()
+        
+        for option in PowerOption.allValues{
+            powerCommandList.append(PopOverItem(name: option.description, id: ""))
+        }
+        
+        if powerCommandList.count != 0 {
+            powerLabel.text = powerCommandList.first?.name
+        }
+
+        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        commandTextField.delegate = self
+        
+        titleLabel.text = pc.name
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlInterfaceXIB.dismissViewController))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        refreshLists()
+    }
+    
+    override func nameAndId(name: String, id: String) {
+        if button.tag == 1{
+            powerLabel.text = name
+        }
+        if button.tag == 2{
+            playLabel.text = name
+            pathForVideo = id + name
+            mediaPathLabel.text = id
+        }
+        if button.tag == 3{
+            runLabel.text = name
+            runCommand = id
+            appPathLabel.text = id
+        }
+    }
     
     func refreshLists(){
         runCommandList.removeAll()
@@ -106,78 +153,11 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             playLabel.text = playCommandList.first?.name
             mediaPathLabel.text = playCommandList.first?.id
         }
-
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        refreshLists()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        refreshLists()
         
-        for option in PowerOption.allValues{
-            powerCommandList.append(PopOverItem(name: option.description, id: ""))
-        }
-        
-        if powerCommandList.count != 0 {
-            powerLabel.text = powerCommandList.first?.name
-        }
-
-        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        commandTextField.delegate = self
-        
-        titleLabel.text = pc.name
-        
-        self.view.backgroundColor = UIColor.clearColor()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlInterfaceXIB.dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
     }
     
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendantOfView(backView){
-                return false
-            }
-        }
-        return true
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        if commandTextField.isFirstResponder(){
-            if backView.frame.origin.y + commandTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerX.constant = 0 - (5 + (self.backView.frame.origin.y + self.commandTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        self.centerX.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
     @IBAction func powerAction(sender: AnyObject) {
@@ -226,15 +206,6 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
             fullScreenByte = 0x01
         }
         SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
-//        let s1 = "192.168.0.7"
-//        let cs1 = (s1 as NSString).UTF8String
-//        let first_parametar = UnsafeMutablePointer<UInt8>(cs1)
-//        let byteArray:[Byte] = [0x08, 0x9E, 0x01, 0x50, 0x83, 0xD1]
-//
-//        let s2 = convertByteArrayToMacAddress(byteArray)
-//        let cs2 = (s2 as NSString).UTF8String
-//        let second_parametar = UnsafeMutablePointer<UInt8>(cs2)
-//        send_wol_packet(first_parametar, second_parametar)
     }
     
     var socketIO:InOutSocket
@@ -283,38 +254,50 @@ class PCControlInterfaceXIB: PopoverVC, UIGestureRecognizerDelegate, UITextField
         openPopoverWithTwoRows(sender, popOverList:runCommandList)
     }
     
-    override func nameAndId(name: String, id: String) {
-        if button.tag == 1{
-            powerLabel.text = name
-        }
-        if button.tag == 2{
-            playLabel.text = name
-            pathForVideo = id + name
-            mediaPathLabel.text = id
-        }
-        if button.tag == 3{
-            runLabel.text = name
-            runCommand = id
-            appPathLabel.text = id
-        }
-    }
-    
-    func returnNameAndPath(name: String, path: String?) {
-        if tagIndex == 1{
-            powerLabel.text = name
-        }else if tagIndex == 2{
-            playLabel.text = name
-            if let path = path{
-                pathForVideo = path + name
-            }
-        }else{
-            runLabel.text = name
-            runCommand = path
-        }
-    }
-    
     @IBAction func voiceCommand(sender: AnyObject) {
         print("Send voice command!")
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if commandTextField.isFirstResponder(){
+            if backView.frame.origin.y + commandTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centerX.constant = 0 - (5 + (self.backView.frame.origin.y + self.commandTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centerX.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
+}
+
+extension PCControlInterfaceXIB : UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension PCControlInterfaceXIB : UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
     }
     
 }
@@ -334,15 +317,14 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -352,14 +334,12 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-            
         }
         
     }

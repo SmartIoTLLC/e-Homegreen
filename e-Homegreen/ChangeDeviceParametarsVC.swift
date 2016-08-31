@@ -17,7 +17,7 @@ struct EditedDevice {
     var digitalInputMode:Int
 }
 
-class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
+class ChangeDeviceParametarsVC: PopoverVC {
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -63,10 +63,10 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChangeDeviceParametarsVC.handleTap(_:)))
-        //        tapGesture.delegate = self
+        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
-        self.view.backgroundColor = UIColor.clearColor()
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         self.title = "Device Parameters"
         
         txtFieldName.text = device.name
@@ -97,33 +97,11 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         
         txtFieldName.delegate = self
         
-        let chn = Int(device.channel)
-        // When DigitalInput, then DeviceInputMode should be presented
-        // Digital input on Sensor can be on one of the following channels: 2, 3, 7 and 10
-//        if device.controlType == ControlType.Sensor && (chn == 2 || chn == 3 || chn == 7 || chn == 10) {
-//            hideDeviceInput(false)
-//            if let diMode = device.digitalInputMode as? Int {
-//                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-//            }
-//        } else {
-//            hideDeviceInput(true)
-//        }
-        // When DigitalInput, then DeviceInputMode should be presented
-        // Digital input on Intelligent Switch can be on one of the following channels: 2, 3, 7 and 10
-//        if device.controlType == ControlType.HumanInterfaceSeries && (chn == 2 || chn == 3) {
-//            hideDeviceInput(false)
-//            if let diMode = device.digitalInputMode?.integerValue {
-//                changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], forState: .Normal)
-//            }
-//        } else {
-//            hideDeviceInput(true)
-//        }
         //TODO: Add for gateway when it is defined
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
-//        changeDeviceInputMode.tag = 5
     }
     override func nameAndId(name: String, id: String) {
         
@@ -170,9 +148,6 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         button.setTitle(name, forState: .Normal)
     }
     
-    
-    
-    
     @IBAction func btnCancel(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -181,26 +156,16 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
         let touches = event.touchesForView(sender as! UIView)
         let touch:UITouch = touches!.first!
         let touchPoint = touch.locationInView(self.view)
-//        let touchPoint2 = touch.locationInView(sender as! UIView)
-//        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
         showDeviceImagesPicker(device, point: touchPoint)
     }
     
     @IBAction func btnImages(sender: AnyObject) {
-//        if let button = sender as? UIButton {
-//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-//                showDeviceImagesPicker(device!, point: pointInView)
-//        }
     }
     @IBAction func changeDeviceInputMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-//        popoverList.append(PopOverItem(name: DigitalInput.Generic.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
         popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
-//        popoverList.append(PopOverItem(name: DigitalInput.MotionSensor.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyOpen.description(), id: ""))
-//        popoverList.append(PopOverItem(name: DigitalInput.ButtonNormallyClosed.description(), id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
@@ -269,14 +234,25 @@ class ChangeDeviceParametarsVC: PopoverVC, UITextFieldDelegate {
     }
 
     func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
+}
+
+extension ChangeDeviceParametarsVC : UITextFieldDelegate{
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension ChangeDeviceParametarsVC : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
         return true
     }
 }
@@ -296,18 +272,14 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -317,15 +289,14 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }
+        
     }
 }
 

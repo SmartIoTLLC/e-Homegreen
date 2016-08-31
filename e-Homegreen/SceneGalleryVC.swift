@@ -19,7 +19,7 @@ import CoreData
     optional func backImage(image:Image, imageIndex:Int)
 }
 
-class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SceneGalleryVC: CommonXIBTransitionVC, UICollectionViewDataSource {
     
     var delegate : SceneGalleryDelegate?
     
@@ -204,7 +204,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
     var galleryImages:[AnyObject] = []
     var imageIndex:Int!
     var imagePicker = UIImagePickerController()
-    var isPresenting: Bool = true
     var appDel:AppDelegate
     var images:[Image] = []
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -219,8 +218,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
     init(){
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         super.init(nibName: "SceneGalleryVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -229,12 +226,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         self.gallery.registerNib(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
     
@@ -253,7 +244,7 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
 
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backview){
             return false
         }
@@ -289,15 +280,6 @@ class SceneGalleryVC: UIViewController, UICollectionViewDataSource, UIGestureRec
         newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
         galleryImages.append(newImage)
         gallery.reloadData()
-    }
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        let newImage = Image(context: appDel.managedObjectContext!)
-        newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
-        galleryImages.append(newImage)
-        gallery.reloadData()
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
@@ -415,62 +397,6 @@ extension SceneGalleryVC : UICollectionViewDelegate, UICollectionViewDelegateFlo
     func handleTap(gesture:UITapGestureRecognizer){
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-}
-
-extension SceneGalleryVC : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-//            let containerView = transitionContext.containerView()
-            
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-extension SceneGalleryVC :  UIViewControllerTransitioningDelegate{
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
 }
 
 extension UIViewController {

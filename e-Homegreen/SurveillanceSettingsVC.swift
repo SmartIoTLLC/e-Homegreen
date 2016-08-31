@@ -65,9 +65,12 @@ class SurveillanceSettingsVC: PopoverVC {
 
         editPortRemote.inputAccessoryView = CustomToolBar()
         editPortLocal.inputAccessoryView = CustomToolBar()
-
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SurveillanceSettingsVC.dismissViewController))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         
         editIPRemote.delegate = self
         editPortRemote.delegate = self
@@ -115,80 +118,30 @@ class SurveillanceSettingsVC: PopoverVC {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
 
     }
+    
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            zoneButton.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
 
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-
-        if editPortRemote.isFirstResponder(){
-            if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editIPRemote.isFirstResponder(){
-            if backView.frame.origin.y + editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPortLocal.isFirstResponder(){
-            if backView.frame.origin.y + editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editIPLocal.isFirstResponder(){
-            if backView.frame.origin.y + editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editUserName.isFirstResponder(){
-            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPassword.isFirstResponder(){
-            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-
-        if editUserName.isFirstResponder(){
-            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPassword.isFirstResponder(){
-            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        self.centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
     @IBAction func btnCancel(sender: AnyObject) {
@@ -230,27 +183,6 @@ class SurveillanceSettingsVC: PopoverVC {
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        
-        switch button.tag{
-        case 1:
-            level = FilterController.shared.getZoneByObjectId(id)
-            zoneButton.setTitle("All", forState: .Normal)
-            zoneSelected = nil
-            break
-        case 2:
-            zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            break
-        case 3:
-            category = FilterController.shared.getCategoryByObjectId(id)
-            break
-        default:
-            break
-        }
-        
-        button.setTitle(name, forState: .Normal)
     }
     
     @IBAction func btnSave(sender: AnyObject) {
@@ -320,6 +252,89 @@ class SurveillanceSettingsVC: PopoverVC {
             delegate?.addEditSurveillanceFinished()
         }
     }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if editPortRemote.isFirstResponder(){
+            if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editIPRemote.isFirstResponder(){
+            if backView.frame.origin.y + editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPortLocal.isFirstResponder(){
+            if backView.frame.origin.y + editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editIPLocal.isFirstResponder(){
+            if backView.frame.origin.y + editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editUserName.isFirstResponder(){
+            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPassword.isFirstResponder(){
+            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        if editUserName.isFirstResponder(){
+            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if editPassword.isFirstResponder(){
+            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centarConstraint.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+}
+
+extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
+    }
 }
 
 extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
@@ -337,10 +352,12 @@ extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -352,12 +369,14 @@ extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }
+        
     }
 }
 

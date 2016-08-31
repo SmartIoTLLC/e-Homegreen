@@ -13,6 +13,7 @@
             <string>Tahoma</string>
             <string>Tahoma</string>
             <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -50,23 +51,23 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blw-xL-DCl" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="145" y="153" width="310" height="294"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="blw-xL-DCl" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="145" y="151" width="310" height="299"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oql-To-g0u">
-                            <rect key="frame" x="0.0" y="0.0" width="310" height="294"/>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oql-To-g0u">
+                            <rect key="frame" x="0.0" y="0.0" width="310" height="299"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sIZ-R4-qiQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="310" height="294"/>
+                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sIZ-R4-qiQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="310" height="299"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back Office Climate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWb-de-Mc6">
-                                            <rect key="frame" x="8" y="15" width="241" height="23"/>
-                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="19"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Back Office Climate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWb-de-Mc6">
+                                            <rect key="frame" x="8" y="15" width="241" height="21"/>
+                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gvl-Pe-W5X" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="257" y="12" width="45" height="30"/>
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gvl-Pe-W5X" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="257" y="11" width="45" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="WTl-VC-rjd"/>
                                             </constraints>
@@ -77,23 +78,23 @@
                                                 <action selector="btnSet:" destination="-1" eventType="touchUpInside" id="E4y-yu-Bus"/>
                                             </connections>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-vE-JcF">
-                                            <rect key="frame" x="8" y="46" width="294" height="238"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-vE-JcF">
+                                            <rect key="frame" x="8" y="44" width="294" height="244"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mode" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32i-aX-vUJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="34" height="17"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="37" height="17"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AYi-nH-Lsl" userLabel="Stack View Mode">
-                                                    <rect key="frame" x="0.0" y="20" width="294" height="27"/>
+                                                    <rect key="frame" x="0.0" y="20" width="294" height="30"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-Bg-uyS" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="68" height="27"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="68" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="27" id="VSs-la-yEg"/>
+                                                                <constraint firstAttribute="height" constant="30" id="VSs-la-yEg"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="COOL" image="cool">
@@ -105,7 +106,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CUZ-pU-RE4" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="76" y="0.0" width="67" height="27"/>
+                                                            <rect key="frame" x="76" y="0.0" width="67" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="HEAT" image="heat">
@@ -117,7 +118,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAn-Ry-8Ap" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="151" y="0.0" width="68" height="27"/>
+                                                            <rect key="frame" x="151" y="0.0" width="68" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="FAN" image="fan">
@@ -129,7 +130,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nmE-Xh-83l" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="227" y="0.0" width="67" height="27"/>
+                                                            <rect key="frame" x="227" y="0.0" width="67" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="AUTO" image="fanauto">
@@ -143,19 +144,19 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mJj-mY-iba">
-                                                    <rect key="frame" x="0.0" y="50" width="22" height="17"/>
+                                                    <rect key="frame" x="0.0" y="53" width="24" height="17"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="GlU-rg-7oe" userLabel="Stack View Fan">
-                                                    <rect key="frame" x="0.0" y="70" width="294" height="27"/>
+                                                    <rect key="frame" x="0.0" y="73" width="294" height="30"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSv-Q3-65i" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="68" height="27"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="68" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="27" id="ibR-JM-igi"/>
+                                                                <constraint firstAttribute="height" constant="30" id="ibR-JM-igi"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="LOW" image="lowfan">
@@ -167,7 +168,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="41D-1M-c0S" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="76" y="0.0" width="67" height="27"/>
+                                                            <rect key="frame" x="76" y="0.0" width="67" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="MED" image="medfan">
@@ -179,7 +180,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDO-I8-vEE" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="151" y="0.0" width="68" height="27"/>
+                                                            <rect key="frame" x="151" y="0.0" width="68" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="HIGH" image="fan">
@@ -191,7 +192,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fcp-Sg-PJO" customClass="HVACButton" customModule="e_Homegreen" customModuleProvider="target">
-                                                            <rect key="frame" x="227" y="0.0" width="67" height="27"/>
+                                                            <rect key="frame" x="227" y="0.0" width="67" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <state key="normal" title="AUTO" image="fanauto">
@@ -205,18 +206,18 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Threshold" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTX-aE-lAe">
-                                                    <rect key="frame" x="0.0" y="100" width="61" height="17"/>
+                                                    <rect key="frame" x="0.0" y="106" width="62" height="17"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="MT8-jv-JDM" userLabel="Stack View Threshold">
-                                                    <rect key="frame" x="0.0" y="120" width="294" height="75"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="MT8-jv-JDM" userLabel="Stack View Threshold">
+                                                    <rect key="frame" x="0.0" y="126" width="294" height="75"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wO-6i-e2S">
+                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7wO-6i-e2S">
                                                             <rect key="frame" x="0.0" y="0.0" width="140" height="75"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnY-cy-sJM">
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnY-cy-sJM">
                                                                     <rect key="frame" x="91" y="39" width="30" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="30" id="7QB-Tj-ssB"/>
@@ -229,7 +230,7 @@
                                                                         <action selector="highCool:" destination="-1" eventType="touchUpInside" id="aNc-nP-WDS"/>
                                                                     </connections>
                                                                 </button>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86q-FE-we1">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="21" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86q-FE-we1">
                                                                     <rect key="frame" x="59" y="41" width="22" height="25"/>
                                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -242,7 +243,7 @@
                                                                         <constraint firstAttribute="width" secondItem="Swy-Y9-LQo" secondAttribute="height" multiplier="1:1" id="zS3-Hy-Cco"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vt-Bk-A8L">
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vt-Bk-A8L">
                                                                     <rect key="frame" x="19" y="39" width="30" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="7vt-Bk-A8L" secondAttribute="height" multiplier="1:1" id="2DJ-ju-LHr"/>
@@ -269,10 +270,10 @@
                                                                 <constraint firstItem="qnY-cy-sJM" firstAttribute="leading" secondItem="86q-FE-we1" secondAttribute="trailing" constant="10" id="lDm-T5-BEJ"/>
                                                             </constraints>
                                                         </view>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yU7-rp-1Xa">
+                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yU7-rp-1Xa">
                                                             <rect key="frame" x="155" y="0.0" width="139" height="75"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-Wx-cAt">
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-Wx-cAt">
                                                                     <rect key="frame" x="90" y="39" width="30" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="30" id="7xr-dl-xJV"/>
@@ -285,7 +286,7 @@
                                                                         <action selector="highHeat:" destination="-1" eventType="touchUpInside" id="Qtb-rw-ImN"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cW1-O4-UQk">
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cW1-O4-UQk">
                                                                     <rect key="frame" x="18" y="39" width="30" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="cW1-O4-UQk" secondAttribute="height" multiplier="1:1" id="0Th-gl-iz8"/>
@@ -305,7 +306,7 @@
                                                                         <constraint firstAttribute="width" constant="25" id="mpT-vJ-MF3"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zH1-nB-6s6">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="19" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zH1-nB-6s6">
                                                                     <rect key="frame" x="58" y="41" width="22" height="25"/>
                                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="20"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -326,35 +327,28 @@
                                                         </view>
                                                     </subviews>
                                                 </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-aD-Tc9">
-                                                    <rect key="frame" x="0.0" y="198" width="25" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-aD-Tc9">
+                                                    <rect key="frame" x="0.0" y="204" width="24" height="17"/>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xG4-LQ-vfi" userLabel="Stack View Current">
-                                                    <rect key="frame" x="0.0" y="218" width="294" height="20"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xG4-LQ-vfi" userLabel="Stack View Current">
+                                                    <rect key="frame" x="0.0" y="224" width="294" height="20"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yqb-t9-s75">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Humidity" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yqb-t9-s75">
                                                             <rect key="frame" x="0.0" y="0.0" width="142" height="20"/>
-                                                            <attributedString key="attributedText">
-                                                                <fragment content="Humidity">
-                                                                    <attributes>
-                                                                        <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <font key="NSFont" size="16" name="Tahoma"/>
-                                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" tighteningFactorForTruncation="0.0"/>
-                                                                    </attributes>
-                                                                </fragment>
-                                                            </attributedString>
+                                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYd-Ca-muK">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYd-Ca-muK">
                                                             <rect key="frame" x="152" y="0.0" width="142" height="20"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="Temperature">
                                                                     <attributes>
                                                                         <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <font key="NSFont" size="16" name="Tahoma"/>
+                                                                        <font key="NSFont" size="17" name="Tahoma"/>
                                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" tighteningFactorForTruncation="0.0"/>
                                                                     </attributes>
                                                                 </fragment>

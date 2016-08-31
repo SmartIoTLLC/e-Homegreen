@@ -13,9 +13,7 @@ protocol AddEditGatewayDelegate{
     func addEditGatewayFinished()
 }
 
-class ConnectionSettingsVC: UIViewController {
-    
-    var isPresenting: Bool = true
+class ConnectionSettingsVC: CommonXIBTransitionVC {
     
     var delegate:AddEditGatewayDelegate?
     
@@ -48,8 +46,7 @@ class ConnectionSettingsVC: UIViewController {
     
     init(gateway:Gateway?, location:Location?,gatewayType:String){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        
         self.location = location
         self.gateway = gateway
         self.gatewayType = gatewayType
@@ -68,14 +65,6 @@ class ConnectionSettingsVC: UIViewController {
         addressFirst.inputAccessoryView = CustomToolBar()
         addressSecond.inputAccessoryView = CustomToolBar()
         addressThird.inputAccessoryView = CustomToolBar()
-
-        print(UIDevice.currentDevice().SSID)
-        
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
-        
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         ipHost.delegate = self
         port.delegate = self
@@ -87,9 +76,6 @@ class ConnectionSettingsVC: UIViewController {
         txtDescription.delegate = self
         txtAutoReconnectDelay.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
-
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
 
 
@@ -116,61 +102,19 @@ class ConnectionSettingsVC: UIViewController {
             txtAutoReconnectDelay.text = "3"
         }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        if txtDescription.isFirstResponder(){
-            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
             }
         }
-        if ipHost.isFirstResponder(){
-            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if port.isFirstResponder(){
-            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if localIP.isFirstResponder(){
-            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if localPort.isFirstResponder(){
-            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if txtAutoReconnectDelay.isFirstResponder(){
-            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        self.centarY.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        return true
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -242,6 +186,61 @@ class ConnectionSettingsVC: UIViewController {
         appDel.establishAllConnections()
         
     }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        if txtDescription.isFirstResponder(){
+            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if ipHost.isFirstResponder(){
+            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if port.isFirstResponder(){
+            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if localIP.isFirstResponder(){
+            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if localPort.isFirstResponder(){
+            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        if txtAutoReconnectDelay.isFirstResponder(){
+            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
+                
+                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
+                
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.centarY.constant = 0
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
 
 }
 
@@ -262,76 +261,6 @@ extension ConnectionSettingsVC: UITextFieldDelegate{
         textField.resignFirstResponder()
         return true
     }
-}
-
-extension ConnectionSettingsVC: UITextViewDelegate{
-    
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n"{
-            textView.resignFirstResponder()
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.centarY.constant = 0
-            })
-            return false
-        }
-        return true
-    }
-}
-
-extension ConnectionSettingsVC : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }        
-    }
-}
-
-
-
-extension ConnectionSettingsVC : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
 }
 
 extension UIViewController {

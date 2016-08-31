@@ -15,7 +15,7 @@ protocol AddEditLocationDelegate{
     func editAddLocationFinished()
 }
 
-class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
+class AddLocationXIB: PopoverVC {
     
     var isPresenting: Bool = true
     
@@ -74,7 +74,11 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         super.viewDidLoad()
         
         UIView.hr_setToastThemeColor(color: UIColor.redColor())
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AddLocationXIB.dismissViewController))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -83,12 +87,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         
         locationNameTextField.delegate = self
         
-        
-        
         idTextField.inputAccessoryView = CustomToolBar()
-        
-        idTextField.placeholder = "aa"
-
         
         let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(AddLocationXIB.handleLongPress(_:)))
         lpgr.minimumPressDuration = 0.5
@@ -161,6 +160,27 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
 
     }
     
+    override func nameAndId(name: String, id: String) {
+        if button.tag == 2{
+            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id){
+                DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
+                securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
+            }else{
+                DatabaseSecurityController.shared.removeSecurityForLocation(location!)
+                securityButton.setTitle("", forState: .Normal)
+            }
+        }
+        if button.tag == 1{
+            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id){
+                location!.timerId = timer.id
+                timerButton.setTitle(timer.timerName, forState: .Normal)
+            }else{
+                location!.timerId = nil
+                timerButton.setTitle("", forState: .Normal)
+            }
+        }
+    }
+    
     func endEditingNow(){
         idTextField.resignFirstResponder()
     }
@@ -181,6 +201,7 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         }
 
     }
+    
     func createZonesAndCategories(location:Location) {
         if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
             for zoneJSON in zonesJSON {
@@ -206,17 +227,6 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
             }
         }
     }
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
-    {
-        let location = locations.last! as CLLocation
-        
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        
-        self.locationMap.setRegion(region, animated: true)
-        locationManager.stopUpdatingLocation()
-        
-    }
     
     //add circle with radius around tap location
     func addRadiusCircle(location: CLLocation){
@@ -225,22 +235,6 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
         let overlays = locationMap.overlays
         locationMap.removeOverlays(overlays)
         self.locationMap.addOverlay(circle)
-    }
-    
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKCircle {
-            let circle = MKCircleRenderer(overlay: overlay)
-            circle.strokeColor = UIColor.greenColor()
-            circle.fillColor = UIColor.greenColor().colorWithAlphaComponent(0.25)
-            circle.lineWidth = 1
-            return circle
-        }
-        return MKPolylineRenderer()
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
     func dismissViewController () {
@@ -331,27 +325,6 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
 
     }
     
-    override func nameAndId(name: String, id: String) {
-        if button.tag == 2{
-            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id){
-                DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
-                securityButton.setTitle(gateway.gatewayDescription, forState: .Normal)
-            }else{
-                DatabaseSecurityController.shared.removeSecurityForLocation(location!)
-                securityButton.setTitle("", forState: .Normal)
-            }
-        }
-        if button.tag == 1{
-            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id){
-                location!.timerId = timer.id
-                timerButton.setTitle(timer.timerName, forState: .Normal)
-            }else{
-                location!.timerId = nil
-                timerButton.setTitle("", forState: .Normal)
-            }
-        }
-    }
-    
     @IBAction func changeRadiusAction(sender: UISlider) {
         radius = Double(sender.value)
         radiusLabel.text = "Radius: \(Int(radius))m"
@@ -389,6 +362,51 @@ class AddLocationXIB: PopoverVC, UITextFieldDelegate, UIGestureRecognizerDelegat
 
 }
 
+extension AddLocationXIB : UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension AddLocationXIB : UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
+    }
+}
+
+extension AddLocationXIB : MKMapViewDelegate {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circle = MKCircleRenderer(overlay: overlay)
+            circle.strokeColor = UIColor.greenColor()
+            circle.fillColor = UIColor.greenColor().colorWithAlphaComponent(0.25)
+            circle.lineWidth = 1
+            return circle
+        }
+        return MKPolylineRenderer()
+    }
+}
+
+extension AddLocationXIB : CLLocationManagerDelegate {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        let location = locations.last! as CLLocation
+        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        
+        self.locationMap.setRegion(region, animated: true)
+        locationManager.stopUpdatingLocation()
+        
+    }
+}
+
 extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -396,7 +414,7 @@ extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        
+        //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
             let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
@@ -404,10 +422,12 @@ extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(completed: Bool) -> Void in
@@ -415,8 +435,11 @@ extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            //            let containerView = transitionContext.containerView()
             
+            // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
@@ -426,8 +449,6 @@ extension AddLocationXIB : UIViewControllerAnimatedTransitioning {
         
     }
 }
-
-
 
 extension AddLocationXIB : UIViewControllerTransitioningDelegate {
     

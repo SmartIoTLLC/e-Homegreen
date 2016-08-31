@@ -13,9 +13,7 @@ protocol EditCategoryDelegate{
     func editCategoryFInished()
 }
 
-class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
-
-    var isPresenting: Bool = true
+class EditCategoryViewController: CommonXIBTransitionVC {
     
     var category:Category?
     var delegate:EditCategoryDelegate?
@@ -34,46 +32,22 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
     
     init(category:Category?, location:Location?){
         super.init(nibName: "EditCategoryViewController", bundle: nil)
-        transitioningDelegate = self
+        
         self.category = category
         self.location = location
-        modalPresentationStyle = UIModalPresentationStyle.Custom
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            return false
-        }
-        return true
-    }
-    
-    func endEditingNow(){
-        idTextField.resignFirstResponder()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        idTextField.inputAccessoryView = keyboardDoneButtonView
+        idTextField.inputAccessoryView = CustomToolBar()
 
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
-
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
         
         nameTextField.delegate = self
         descriptionTextField.delegate = self
@@ -85,16 +59,12 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
             descriptionTextField.text = category.categoryDescription
             idTextField.enabled = false
         }
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        // Do any additional setup after loading the view.
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            return false
+        }
         return true
     }
     
@@ -169,63 +139,11 @@ class EditCategoryViewController: UIViewController, UITextFieldDelegate, UIGestu
 
 }
 
-extension EditCategoryViewController : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
+extension EditCategoryViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-
-
-extension EditCategoryViewController : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
 }
 
 extension UIViewController {

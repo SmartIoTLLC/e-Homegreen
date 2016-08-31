@@ -12,7 +12,7 @@ protocol DevicePropertiesDelegate {
     func saveClicked()
 }
 
-class RelayParametersCell: PopoverVC, UITextFieldDelegate {
+class RelayParametersCell: PopoverVC {
     
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
@@ -42,11 +42,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     @IBOutlet weak var centerY: NSLayoutConstraint!
     
     @IBOutlet weak var scrollView: UIScrollView!
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+        
     init(device: Device, point:CGPoint){
         self.device = device
         self.point = point
@@ -56,6 +52,9 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,11 +62,10 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RelayParametersCell.handleTap(_:)))
-        //        tapGesture.delegate = self
+        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
         
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         
         txtCurtainGroupId.inputAccessoryView = CustomToolBar()
         
@@ -190,22 +188,13 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         let touches = event.touchesForView(sender as! UIView)
         let touch:UITouch = touches!.first!
         let touchPoint = touch.locationInView(self.view)
-        //        let touchPoint2 = touch.locationInView(sender as! UIView)
-        //        let touchPoint3 = touch.locationInView(self.view.parentViewController?.view)
         showDeviceImagesPicker(device, point: touchPoint)
-    }
-    @IBAction func btnImages(sender: AnyObject) {
-//        if let button = sender as? UIButton {
-//            let pointInView = button.convertPoint(button.frame.origin, fromView: self.view)
-//            showDeviceImagesPicker(device!, point: pointInView)
-//        }
     }
     @IBAction func changeControlMode(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
         popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: ""))
-//        popoverList.append(PopOverItem(name: "NC and Reset", id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func changeControlType(sender: UIButton) {
@@ -282,7 +271,6 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
             
             device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
-            //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             
             self.dismissViewControllerAnimated(true, completion: nil)
             self.delegate?.saveClicked()
@@ -290,15 +278,7 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
     }
 
     func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -321,6 +301,26 @@ class RelayParametersCell: PopoverVC, UITextFieldDelegate {
         UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
+
+extension RelayParametersCell : UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension RelayParametersCell : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
+    }
+}
+
 extension RelayParametersCell : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -336,18 +336,14 @@ extension RelayParametersCell : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -357,15 +353,14 @@ extension RelayParametersCell : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }
+        
     }
 }
 

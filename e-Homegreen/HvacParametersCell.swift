@@ -22,7 +22,7 @@ enum SwitchTag : Int {
     case AutoSpeed
 }
 
-class HvacParametersCell: PopoverVC, UITextFieldDelegate {
+class HvacParametersCell: PopoverVC {
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -67,9 +67,11 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.Custom
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -89,10 +91,10 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(HvacParametersCell.handleTap(_:)))
-        //        tapGesture.delegate = self
+        tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        self.view.tag = 1
-        self.view.backgroundColor = UIColor.clearColor()
+        
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         self.title = "Device Parameters"
         
         txtFieldName.text = device.name
@@ -300,15 +302,26 @@ class HvacParametersCell: PopoverVC, UITextFieldDelegate {
     }
     
     func handleTap(gesture:UITapGestureRecognizer){
-        let point:CGPoint = gesture.locationInView(self.view)
-        let tappedView:UIView = self.view.hitTest(point, withEvent: nil)!
-        if tappedView.tag == 1{
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
+}
+
+extension HvacParametersCell : UITextFieldDelegate{
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension HvacParametersCell : UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendantOfView(backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
         return true
     }
 }
@@ -328,18 +341,14 @@ extension HvacParametersCell : UIViewControllerAnimatedTransitioning {
             let containerView = transitionContext.containerView()
             
             presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
+            //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
             containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+                //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
                 presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -349,15 +358,14 @@ extension HvacParametersCell : UIViewControllerAnimatedTransitioning {
             
             // Animate the presented view off the bottom of the view
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
+                //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
+                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }
+        
     }
 }
 

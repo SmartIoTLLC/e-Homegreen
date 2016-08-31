@@ -13,9 +13,7 @@ protocol AddUserDelegate{
     func addUserFinished()
 }
 
-class AddUserXIB: UIViewController {
-    
-    var isPresenting: Bool = true
+class AddUserXIB: CommonXIBTransitionVC {
     
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var userImageButton: UIButton!
@@ -41,8 +39,6 @@ class AddUserXIB: UIViewController {
     
     init(user:User?){
         super.init(nibName: "AddUserXIB", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
         self.user = user
     }
     
@@ -57,16 +53,9 @@ class AddUserXIB: UIViewController {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
-        
         usernameTextField.delegate = self
         passwordTextView.delegate = self
         confirmPasswordtextView.delegate = self
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AddUserXIB.dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
         
         if let user = user{
             usernameTextField.text = user.username
@@ -107,16 +96,20 @@ class AddUserXIB: UIViewController {
         
     }
     
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            dismissKeyboard()
+            return false
+        }
+        return true
+    }
+    
     @IBAction func changePicture(sender: AnyObject) {
         showGallery(1, user: user).delegate = self
     }
     
     func dismissKeyboard(){
         self.view.endEditing(true)
-    }
-    
-    func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func saveAction(sender: AnyObject) {
@@ -246,76 +239,6 @@ extension AddUserXIB : UITextFieldDelegate {
         
         return true
     }
-}
-
-extension AddUserXIB : UIGestureRecognizerDelegate {
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            dismissKeyboard()
-            return false
-        }
-        return true
-    }
-}
-
-extension AddUserXIB : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-
-
-extension AddUserXIB : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
 }
 
 extension UIViewController {

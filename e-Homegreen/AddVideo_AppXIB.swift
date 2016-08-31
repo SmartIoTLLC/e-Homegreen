@@ -17,9 +17,7 @@ enum CommandType:Int {
     case Media=0, Application, Notification
 }
 
-class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
-    
-    var isPresenting: Bool = true
+class AddVideo_AppXIB: CommonXIBTransitionVC{
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var pathTextField: UITextField!
@@ -42,8 +40,6 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
     
     init(typeOfFile:FileType, device:Device, command:PCCommand?){
         super.init(nibName: "AddVideo_AppXIB", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
         self.typeOfFile = typeOfFile
         self.device = device
         self.command = command
@@ -101,15 +97,10 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
         // Do any additional setup after loading the view.
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
             return false
         }
-        return true
-    }
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
         return true
     }
     
@@ -154,63 +145,11 @@ class AddVideo_AppXIB: UIViewController, UITextFieldDelegate, UIGestureRecognize
 
 }
 
-extension AddVideo_AppXIB : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
+extension AddVideo_AppXIB : UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-
-
-extension AddVideo_AppXIB : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
 }
 
 extension UIViewController {

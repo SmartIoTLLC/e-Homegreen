@@ -22,9 +22,7 @@ protocol AddAddressDelegate{
     func addAddressFinished(address:Address)
 }
 
-class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRecognizerDelegate {
-    
-    var isPresenting: Bool = true
+class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     
     var delegate:AddAddressDelegate?
     
@@ -44,8 +42,6 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
     init(whatToScan:ScanType){
         super.init(nibName: "InsertGatewayAddressXIB", bundle: nil)
         self.whatToScan = whatToScan
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
 
     }
     
@@ -57,15 +53,10 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
         super.viewDidLoad()
         
         UIView.hr_setToastThemeColor(color: UIColor.redColor())
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         
         addressOne.delegate = self
         addressTwo.delegate = self
         addressThree.delegate = self
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(InsertGatewayAddressXIB.dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
         
         addressOne.inputAccessoryView = CustomToolBar()
         addressTwo.inputAccessoryView = CustomToolBar()
@@ -79,26 +70,11 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
 
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isDescendantOfView(backView){
             self.view.endEditing(true)
             return false
         }
-        return true
-    }
-    
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
-                   replacementString string: String) -> Bool
-    {
-        let maxLength = 3
-        let currentString: NSString = textField.text!
-        let newString: NSString =
-            currentString.stringByReplacingCharactersInRange(range, withString: string)
-        return newString.length <= maxLength
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
         return true
     }
     
@@ -124,66 +100,21 @@ class InsertGatewayAddressXIB: UIViewController,UITextFieldDelegate, UIGestureRe
         }
         
     }
-    
-    
 
 }
 
-extension InsertGatewayAddressXIB : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
+extension InsertGatewayAddressXIB : UITextFieldDelegate {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+        let maxLength = 3
+        let currentString: NSString = textField.text!
+        let newString: NSString =
+            currentString.stringByReplacingCharactersInRange(range, withString: string)
+        return newString.length <= maxLength
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-            containerView!.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-
-
-extension InsertGatewayAddressXIB : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
