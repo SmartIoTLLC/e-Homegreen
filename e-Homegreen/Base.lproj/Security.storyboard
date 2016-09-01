@@ -7,6 +7,8 @@
     <customFonts key="customFonts">
         <mutableArray key="Tahoma.ttf">
             <string>Tahoma</string>
+            <string>Tahoma</string>
+            <string>Tahoma</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -19,14 +21,14 @@
                         <viewControllerLayoutGuide type="bottom" id="eMG-Cc-kb4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Oqg-TI-CP4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7Aw-aS-dZc">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7Aw-aS-dZc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                             </imageView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
-                                <rect key="frame" x="0.0" y="97" width="320" height="471"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zTE-Nb-Lqm">
+                                <rect key="frame" x="0.0" y="33" width="320" height="427"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Izm-5s-CxM">
                                     <size key="itemSize" width="150" height="183"/>
@@ -82,6 +84,52 @@
                                             <outlet property="securityTitle" destination="3RI-OW-fEN" id="ng2-lz-EME"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SecurityLocationCell" id="clP-aE-Aw3" customClass="SecurityLocationCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="170" y="0.0" width="150" height="183"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="183"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Away" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgt-t5-NGi">
+                                                    <rect key="frame" x="2" y="5" width="146" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="away" translatesAutoresizingMaskIntoConstraints="NO" id="SAV-wp-qAo">
+                                                    <rect key="frame" x="10" y="30" width="130" height="114"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Away" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMQ-F8-Bf3">
+                                                    <rect key="frame" x="5" y="149" width="143" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="29" id="Mbs-yB-45r"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="bMQ-F8-Bf3" firstAttribute="top" secondItem="SAV-wp-qAo" secondAttribute="bottom" constant="5" id="30F-ci-8gW"/>
+                                            <constraint firstItem="cgt-t5-NGi" firstAttribute="leading" secondItem="clP-aE-Aw3" secondAttribute="leading" constant="2" id="6QE-nu-hUN"/>
+                                            <constraint firstItem="SAV-wp-qAo" firstAttribute="top" secondItem="cgt-t5-NGi" secondAttribute="bottom" constant="8" id="PNw-k8-7RS"/>
+                                            <constraint firstAttribute="bottom" secondItem="bMQ-F8-Bf3" secondAttribute="bottom" constant="5" id="Rrh-jm-9Yq"/>
+                                            <constraint firstAttribute="trailing" secondItem="SAV-wp-qAo" secondAttribute="trailing" constant="10" id="brU-Ef-384"/>
+                                            <constraint firstItem="bMQ-F8-Bf3" firstAttribute="leading" secondItem="clP-aE-Aw3" secondAttribute="leading" constant="5" id="cga-ed-N9O"/>
+                                            <constraint firstAttribute="trailing" secondItem="bMQ-F8-Bf3" secondAttribute="trailing" constant="2" id="eLL-Wm-vTz"/>
+                                            <constraint firstItem="SAV-wp-qAo" firstAttribute="leading" secondItem="clP-aE-Aw3" secondAttribute="leading" constant="10" id="kTc-TQ-ZIa"/>
+                                            <constraint firstItem="cgt-t5-NGi" firstAttribute="top" secondItem="clP-aE-Aw3" secondAttribute="top" constant="5" id="wdh-J0-5d6"/>
+                                            <constraint firstAttribute="trailing" secondItem="cgt-t5-NGi" secondAttribute="trailing" constant="2" id="wwr-BC-9Rt"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="loactionTitleLabel" destination="cgt-t5-NGi" id="wIH-oC-rH6"/>
+                                            <outlet property="locationBottomLabel" destination="bMQ-F8-Bf3" id="TD7-V1-Wlg"/>
+                                            <outlet property="locationImageLabel" destination="SAV-wp-qAo" id="uij-ti-vA4"/>
+                                        </connections>
+                                    </collectionViewCell>
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="Ypx-dJ-055" id="HAB-zh-PSY"/>
@@ -89,7 +137,7 @@
                                 </connections>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alarm state:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcL-5z-e2q">
-                                <rect key="frame" x="8" y="68" width="92" height="21"/>
+                                <rect key="frame" x="8" y="4" width="92" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -109,6 +157,7 @@
                             <constraint firstItem="7Aw-aS-dZc" firstAttribute="leading" secondItem="Oqg-TI-CP4" secondAttribute="leading" id="wLm-E9-f3q"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Security" id="zKh-HL-GJY">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="m6K-LE-9yY"/>

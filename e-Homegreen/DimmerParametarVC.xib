@@ -74,18 +74,27 @@
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="228" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Running time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adc-e2-Phf">
                                             <rect key="frame" x="8" y="294" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="288" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLm-2L-qp2">
                                             <rect key="frame" x="8" y="138" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="137" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG2-v4-n51">
                                             <rect key="frame" x="8" y="15" width="100" height="21"/>
@@ -95,12 +104,18 @@
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="15" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYW-zj-XV5">
                                             <rect key="frame" x="8" y="167" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="165" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z6c-Yp-0zU" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="116" y="228" width="186" height="30"/>
@@ -123,18 +138,27 @@
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="165" width="226" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kv6-Zm-I9c" customClass="MarqueeLabel">
                                             <rect key="frame" x="116" y="138" width="186" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="137" width="226" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvP-qk-BrT" customClass="MarqueeLabel">
                                             <rect key="frame" x="116" y="15" width="186" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="15" width="226" height="20"/>
+                                            </variation>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0fP-bf-0PB" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="116" y="259" width="186" height="30"/>
@@ -149,54 +173,81 @@
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="193" width="226" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqi-4E-QhC">
                                             <rect key="frame" x="8" y="44" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="43" width="100" height="21"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Channel:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nh4-ug-iV5">
                                             <rect key="frame" x="8" y="73" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="72" width="100" height="21"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2P8-io-Kub">
                                             <rect key="frame" x="116" y="73" width="186" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="72" width="226" height="21"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="000:000:000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyD-5Y-6pr">
                                             <rect key="frame" x="116" y="44" width="186" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="43" width="226" height="21"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Skip level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vxm-Z8-2fY">
                                             <rect key="frame" x="8" y="263" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="258" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46a-ob-erc">
                                             <rect key="frame" x="116" y="109" width="186" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="116" y="108" width="226" height="21"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFv-Ip-4Bc">
                                             <rect key="frame" x="8" y="196" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="193" width="100" height="20"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Location:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tt5-No-L5k">
                                             <rect key="frame" x="8" y="109" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="8" y="108" width="100" height="21"/>
+                                            </variation>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTT-DK-0Td" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                                             <rect key="frame" x="8" y="330" width="145" height="40"/>

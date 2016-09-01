@@ -96,6 +96,9 @@
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
+		22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D7EB9D1D780FB600853051 /* SecurityLocationCell.swift */; };
+		22D7EBA11D78418F00853051 /* SecurityLocationXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */; };
+		22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
 		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
 		22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */; };
@@ -440,6 +443,9 @@
 		22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFilterPullDown.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		22D7EB9D1D780FB600853051 /* SecurityLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityLocationCell.swift; sourceTree = "<group>"; };
+		22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityLocationXIB.swift; sourceTree = "<group>"; };
+		22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityLocationXIB.xib; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; };
 		22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryFunction.swift; sourceTree = "<group>"; };
 		22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordXIB.swift; sourceTree = "<group>"; };
@@ -1194,6 +1200,9 @@
 				73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */,
 				738DECB01BBBFC1100D6B834 /* Security.json */,
 				22402A841CBFC54C00CBB6E4 /* SecurityCollectionCell.swift */,
+				22D7EB9D1D780FB600853051 /* SecurityLocationCell.swift */,
+				22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */,
+				22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -1883,6 +1892,7 @@
 				E7DC67C31B457C0E00EA6543 /* weather-rain@2x.png in Resources */,
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
 				4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */,
+				22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */,
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
@@ -2023,6 +2033,7 @@
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
+				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
@@ -2116,6 +2127,7 @@
 				223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
+				22D7EBA11D78418F00853051 /* SecurityLocationXIB.swift in Sources */,
 				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */,

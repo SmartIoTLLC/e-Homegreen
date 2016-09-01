@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecurityLocationXIB" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="yQR-gB-gg6" id="7TB-Y1-viZ"/>
+                <outlet property="textView" destination="ivq-Z8-Ufj" id="YMw-JB-r95"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yQR-gB-gg6" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="150" y="225" width="300" height="150"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xuh-Bz-nqE" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <rect key="frame" x="8" y="100" width="284" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="zMh-vH-RB6"/>
+                            </constraints>
+                            <state key="normal" title="UPDATE">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="update:" destination="-1" eventType="touchUpInside" id="7ms-Dt-f8J"/>
+                            </connections>
+                        </button>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ivq-Z8-Ufj">
+                            <rect key="frame" x="8" y="8" width="284" height="84"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="ivq-Z8-Ufj" firstAttribute="top" secondItem="yQR-gB-gg6" secondAttribute="top" constant="8" id="8qw-Pi-kb7"/>
+                        <constraint firstItem="xuh-Bz-nqE" firstAttribute="top" secondItem="ivq-Z8-Ufj" secondAttribute="bottom" constant="8" id="95w-Hz-yVd"/>
+                        <constraint firstAttribute="height" constant="150" id="Azw-7V-sBn"/>
+                        <constraint firstAttribute="width" constant="300" id="Js4-AZ-mGA"/>
+                        <constraint firstItem="xuh-Bz-nqE" firstAttribute="leading" secondItem="ivq-Z8-Ufj" secondAttribute="leading" id="QKw-XK-nwx"/>
+                        <constraint firstAttribute="trailing" secondItem="ivq-Z8-Ufj" secondAttribute="trailing" constant="8" id="Qva-RG-GW4"/>
+                        <constraint firstItem="ivq-Z8-Ufj" firstAttribute="leading" secondItem="yQR-gB-gg6" secondAttribute="leading" constant="8" id="Vqk-nb-3Oq"/>
+                        <constraint firstAttribute="bottom" secondItem="xuh-Bz-nqE" secondAttribute="bottom" constant="10" id="WZv-9E-Wzs"/>
+                        <constraint firstItem="xuh-Bz-nqE" firstAttribute="trailing" secondItem="ivq-Z8-Ufj" secondAttribute="trailing" id="fNs-TA-tA7"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="yQR-gB-gg6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fEL-50-3Lz"/>
+                <constraint firstItem="yQR-gB-gg6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="zCf-YJ-Eop"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

@@ -25,9 +25,6 @@ class SecurityCollectionCell: UICollectionViewCell {
         self.securityImageView.image = UIImage(named: "maaa")
         self.securityButton.setTitle(securityBtnTitle, forState: UIControlState.Normal)
         
-        self.layer.cornerRadius = 5
-        self.layer.borderColor = UIColor.grayColor().CGColor
-        self.layer.borderWidth = 0.5
         
         switch securityName {
         case "Away":
