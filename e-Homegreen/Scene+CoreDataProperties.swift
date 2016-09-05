@@ -18,8 +18,10 @@ extension Scene {
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber
     @NSManaged var sceneId: NSNumber
-    @NSManaged var sceneImageOne: NSData
-    @NSManaged var sceneImageTwo: NSData
+    @NSManaged var sceneImageOneCustom: String?
+    @NSManaged var sceneImageOneDefault: String?
+    @NSManaged var sceneImageTwoCustom: String?
+    @NSManaged var sceneImageTwoDefault: String?
     @NSManaged var sceneName: String
     @NSManaged var entityLevel: String?
     @NSManaged var sceneZone: String?

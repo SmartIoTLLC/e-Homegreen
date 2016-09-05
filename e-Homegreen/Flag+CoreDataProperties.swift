@@ -17,8 +17,10 @@ extension Flag {
     @NSManaged var flagId: NSNumber
     @NSManaged var flagName: String
     @NSManaged var setState: NSNumber
-    @NSManaged var flagImageOne: NSData
-    @NSManaged var flagImageTwo: NSData
+    @NSManaged var flagImageOneCustom: String?
+    @NSManaged var flagImageOneDefault: String?
+    @NSManaged var flagImageTwoCustom: String?
+    @NSManaged var flagImageTwoDefault: String?
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber
     @NSManaged var entityLevel: String?

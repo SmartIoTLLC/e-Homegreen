@@ -35,11 +35,57 @@ class FlagCollectionViewCell: UICollectionViewCell {
     }
     
     func getImagesFrom(flag:Flag) {
-        if let flagImage = UIImage(data: flag.flagImageOne) {
-            imageOne = flagImage
+        
+        if let id = flag.flagImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageOne = UIImage(data: data)
+                }else{
+                    if let defaultImage = flag.flagImageOneDefault{
+                        imageOne = UIImage(named: defaultImage)
+                    }else{
+                        imageOne = UIImage(named: "16 Flag - Flag - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = flag.flagImageOneDefault{
+                    imageOne = UIImage(named: defaultImage)
+                }else{
+                    imageOne = UIImage(named: "16 Flag - Flag - 00")
+                }
+            }
+        }else{
+            if let defaultImage = flag.flagImageOneDefault{
+                imageOne = UIImage(named: defaultImage)
+            }else{
+                imageOne = UIImage(named: "16 Flag - Flag - 00")
+            }
         }
-        if let flagImage = UIImage(data: flag.flagImageTwo) {
-            imageTwo = flagImage
+        
+        if let id = flag.flagImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTwo = UIImage(data: data)
+                }else{
+                    if let defaultImage = flag.flagImageTwoDefault{
+                        imageTwo = UIImage(named: defaultImage)
+                    }else{
+                        imageTwo = UIImage(named: "16 Flag - Flag - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = flag.flagImageTwoDefault{
+                    imageTwo = UIImage(named: defaultImage)
+                }else{
+                    imageTwo = UIImage(named: "16 Flag - Flag - 01")
+                }
+            }
+        }else{
+            if let defaultImage = flag.flagImageTwoDefault{
+                imageTwo = UIImage(named: defaultImage)
+            }else{
+                imageTwo = UIImage(named: "16 Flag - Flag - 01")
+            }
         }
         if flag.setState.boolValue {
             flagImageView.image = imageTwo

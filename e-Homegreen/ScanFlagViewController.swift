@@ -40,6 +40,14 @@ class ScanFlagViewController: PopoverVC {
     
     var button:UIButton!
     
+    var imageDataOne:NSData?
+    var customImageOne:String?
+    var defaultImageOne:String?
+    
+    var imageDataTwo:NSData?
+    var customImageTwo:String?
+    var defaultImageTwo:String?
+    
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
@@ -233,8 +241,45 @@ class ScanFlagViewController: PopoverVC {
                     flag.flagId = flagId
                     flag.flagName = flagName
                     flag.address = address
-                    flag.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    flag.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        flag.flagImageOneCustom = customImageOne
+                        flag.flagImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        flag.flagImageOneDefault = def
+                        flag.flagImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            flag.flagImageOneCustom = image.imageId
+                            flag.flagImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        flag.flagImageTwoCustom = customImageTwo
+                        flag.flagImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        flag.flagImageTwoDefault = def
+                        flag.flagImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            flag.flagImageTwoCustom = image.imageId
+                            flag.flagImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
                     flag.isBroadcast = broadcastSwitch.on
                     flag.isLocalcast = localcastSwitch.on
                     flag.entityLevel = btnLevel.titleLabel!.text!
@@ -247,8 +292,45 @@ class ScanFlagViewController: PopoverVC {
                     existingFlag!.flagId = flagId
                     existingFlag!.flagName = flagName
                     existingFlag!.address = address
-                    existingFlag!.flagImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    existingFlag!.flagImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        existingFlag!.flagImageOneCustom = customImageOne
+                        existingFlag!.flagImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        existingFlag!.flagImageOneDefault = def
+                        existingFlag!.flagImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingFlag!.flagImageOneCustom = image.imageId
+                            existingFlag!.flagImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        existingFlag!.flagImageOneCustom = customImageTwo
+                        existingFlag!.flagImageOneDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        existingFlag!.flagImageTwoDefault = def
+                        existingFlag!.flagImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingFlag!.flagImageTwoCustom = image.imageId
+                            existingFlag!.flagImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
                     existingFlag!.isBroadcast = broadcastSwitch.on
                     existingFlag!.isLocalcast = localcastSwitch.on
                     existingFlag!.entityLevel = btnLevel.titleLabel!.text!
@@ -280,20 +362,47 @@ class ScanFlagViewController: PopoverVC {
 
 extension ScanFlagViewController: SceneGalleryDelegate{
     
+    func backImage(image: Image, imageIndex: Int) {
+        if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = image.imageId
+            imageDataOne = nil
+            self.imageSceneOne.image = UIImage(data: image.imageData!)
+        }
+        if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = image.imageId
+            imageDataTwo = nil
+            self.imageSceneTwo.image = UIImage(data: image.imageData!)
+        }
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == 1 {
+            defaultImageOne = strText
+            customImageOne = nil
+            imageDataOne = nil
             self.imageSceneOne.image = UIImage(named: strText)
         }
         if imageIndex == 2 {
+            defaultImageTwo = strText
+            customImageTwo = nil
+            imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(named: strText)
         }
     }
     
     func backImageFromGallery(data: NSData, imageIndex:Int ) {
         if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = nil
+            imageDataOne = data
             self.imageSceneOne.image = UIImage(data: data)
         }
         if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = nil
+            imageDataTwo = data
             self.imageSceneTwo.image = UIImage(data: data)
         }
     }
@@ -314,12 +423,59 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
             cell.labelID.text = "\(flags[indexPath.row].flagId)"
             cell.labelName.text = "\(flags[indexPath.row].flagName)"
             cell.address.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(flags[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
-            if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
-                cell.imageOne.image = flagImage
+            
+            if let id = flags[indexPath.row].flagImageOneCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageOne.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                            cell.imageOne.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageOne.image = UIImage(named: "User")
+                        }
+                    }
+                }else{
+                    if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                        cell.imageOne.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageOne.image = UIImage(named: "User")
+                    }
+                }
+            }else{
+                if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                    cell.imageOne.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageOne.image = UIImage(named: "User")
+                }
             }
-            if let flagImage = UIImage(data: flags[indexPath.row].flagImageTwo) {
-                cell.imageTwo.image = flagImage
+            
+            if let id = flags[indexPath.row].flagImageTwoCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageTwo.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                            cell.imageTwo.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageTwo.image = UIImage(named: "User")
+                        }
+                    }
+                }else{
+                    if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                        cell.imageTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageTwo.image = UIImage(named: "User")
+                    }
+                }
+            }else{
+                if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                    cell.imageTwo.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageTwo.image = UIImage(named: "User")
+                }
             }
+            
             return cell
         }
         
@@ -344,11 +500,57 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         if let category = flags[indexPath.row].flagCategory {
             btnCategory.setTitle(category, forState: .Normal)
         }
-        if let flagImage = UIImage(data: flags[indexPath.row].flagImageOne) {
-            imageSceneOne.image = flagImage
+        
+        if let id = flags[indexPath.row].flagImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneOne.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                        imageSceneOne.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneOne.image = UIImage(named: "16 Flag - Flag - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                    imageSceneOne.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneOne.image = UIImage(named: "16 Flag - Flag - 00")
+                }
+            }
+        }else{
+            if let defaultImage = flags[indexPath.row].flagImageOneDefault{
+                imageSceneOne.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneOne.image = UIImage(named: "16 Flag - Flag - 00")
+            }
         }
-        if let flagImage = UIImage(data: flags[indexPath.row].flagImageTwo) {
-            imageSceneTwo.image = flagImage
+        
+        if let id = flags[indexPath.row].flagImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneTwo.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                        imageSceneTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneTwo.image = UIImage(named: "16 Flag - Flag - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                    imageSceneTwo.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneTwo.image = UIImage(named: "16 Flag - Flag - 01")
+                }
+            }
+        }else{
+            if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
+                imageSceneTwo.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneTwo.image = UIImage(named: "16 Flag - Flag - 01")
+            }
         }
     }
     

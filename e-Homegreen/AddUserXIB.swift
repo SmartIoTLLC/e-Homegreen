@@ -66,6 +66,7 @@ class AddUserXIB: CommonXIBTransitionVC {
             if let issuperuser = user.isSuperUser as? Bool{
                 superUserSwitch.on = issuperuser
             }
+            
             if let id = user.customImageId{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {

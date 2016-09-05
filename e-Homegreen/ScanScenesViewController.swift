@@ -40,6 +40,14 @@ class ScanScenesViewController: PopoverVC {
     
     var button:UIButton!
     
+    var imageDataOne:NSData?
+    var customImageOne:String?
+    var defaultImageOne:String?
+    
+    var imageDataTwo:NSData?
+    var customImageTwo:String?
+    var defaultImageTwo:String?
+    
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
@@ -228,8 +236,45 @@ class ScanScenesViewController: PopoverVC {
                     scene.sceneId = sceneId
                     scene.sceneName = sceneName
                     scene.address = address
-                    scene.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    scene.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        scene.sceneImageOneCustom = customImageOne
+                        scene.sceneImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        scene.sceneImageOneDefault = def
+                        scene.sceneImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            scene.sceneImageOneCustom = image.imageId
+                            scene.sceneImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        scene.sceneImageTwoCustom = customImageTwo
+                        scene.sceneImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        scene.sceneImageTwoDefault = def
+                        scene.sceneImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            scene.sceneImageTwoCustom = image.imageId
+                            scene.sceneImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+
                     scene.isBroadcast = broadcastSwitch.on
                     scene.isLocalcast = localcastSwitch.on
                     scene.entityLevel = btnLevel.titleLabel!.text!
@@ -242,8 +287,43 @@ class ScanScenesViewController: PopoverVC {
                     existingScene!.sceneId = sceneId
                     existingScene!.sceneName = sceneName
                     existingScene!.address = address
-                    existingScene!.sceneImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    existingScene!.sceneImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    if let customImageOne = customImageOne{
+                        existingScene!.sceneImageOneCustom = customImageOne
+                        existingScene!.sceneImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        existingScene!.sceneImageOneDefault = def
+                        existingScene!.sceneImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingScene!.sceneImageOneCustom = image.imageId
+                            existingScene!.sceneImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        existingScene!.sceneImageTwoCustom = customImageTwo
+                        existingScene!.sceneImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        existingScene!.sceneImageTwoDefault = def
+                        existingScene!.sceneImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingScene!.sceneImageTwoCustom = image.imageId
+                            existingScene!.sceneImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
                     existingScene!.isBroadcast = broadcastSwitch.on
                     existingScene!.isLocalcast = localcastSwitch.on
                     existingScene!.entityLevel = btnLevel.titleLabel!.text!
@@ -273,20 +353,47 @@ class ScanScenesViewController: PopoverVC {
 
 extension ScanScenesViewController: SceneGalleryDelegate{
     
+    func backImage(image: Image, imageIndex: Int) {
+        if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = image.imageId
+            imageDataOne = nil
+            self.imageSceneOne.image = UIImage(data: image.imageData!)
+        }
+        if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = image.imageId
+            imageDataTwo = nil
+            self.imageSceneTwo.image = UIImage(data: image.imageData!)
+        }
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == 1 {
+            defaultImageOne = strText
+            customImageOne = nil
+            imageDataOne = nil
             self.imageSceneOne.image = UIImage(named: strText)
         }
         if imageIndex == 2 {
+            defaultImageTwo = strText
+            customImageTwo = nil
+            imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(named: strText)
         }
     }
     
     func backImageFromGallery(data: NSData, imageIndex:Int ) {
         if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = nil
+            imageDataOne = data
             self.imageSceneOne.image = UIImage(data: data)
         }
         if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = nil
+            imageDataTwo = data
             self.imageSceneTwo.image = UIImage(data: data)
         }
     }
@@ -307,12 +414,59 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
             cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
             cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
             cell.address.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
-            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-                cell.imageOne.image = sceneImage
+            
+            if let id = scenes[indexPath.row].sceneImageOneCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageOne.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                            cell.imageOne.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageOne.image = UIImage(named: "Scene - All On - 00")
+                        }
+                    }
+                }else{
+                    if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                        cell.imageOne.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageOne.image = UIImage(named: "Scene - All On - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                    cell.imageOne.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageOne.image = UIImage(named: "Scene - All On - 00")
+                }
             }
-            if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
-                cell.imageTwo.image = sceneImage
+            
+            if let id = scenes[indexPath.row].sceneImageTwoCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageTwo.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                            cell.imageTwo.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
+                        }
+                    }
+                }else{
+                    if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                        cell.imageTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                    cell.imageTwo.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
+                }
             }
+            
             return cell
         }
         
@@ -338,11 +492,56 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         if let category = scenes[indexPath.row].sceneCategory {
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }
-        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageOne) {
-            imageSceneOne.image = sceneImage
+        if let id = scenes[indexPath.row].sceneImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneOne.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                        imageSceneOne.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneOne.image = UIImage(named: "Scene - All On - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                    imageSceneOne.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneOne.image = UIImage(named: "Scene - All On - 00")
+                }
+            }
+        }else{
+            if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
+                imageSceneOne.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneOne.image = UIImage(named: "Scene - All On - 00")
+            }
         }
-        if let sceneImage = UIImage(data: scenes[indexPath.row].sceneImageTwo) {
-            imageSceneTwo.image = sceneImage
+        
+        if let id = scenes[indexPath.row].sceneImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneTwo.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                        imageSceneTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                    imageSceneTwo.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
+                }
+            }
+        }else{
+            if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
+                imageSceneTwo.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
+            }
         }
     }
     

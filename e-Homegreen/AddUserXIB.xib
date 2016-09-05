@@ -89,30 +89,30 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                <rect key="frame" x="8" y="254" width="180" height="40"/>
+                            </variation>
                             <connections>
                                 <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="nWS-XI-xeN"/>
                             </connections>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DMh-3a-rWs">
                             <rect key="frame" x="8" y="195" width="51" height="31"/>
+                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                <rect key="frame" x="8" y="215" width="51" height="31"/>
+                            </variation>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Super User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vl-FB-7tQ">
                             <rect key="frame" x="67" y="203" width="64" height="16"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                <rect key="frame" x="67" y="223" width="68" height="17"/>
-                            </variation>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Confirm Password:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cp9-1j-F1Y">
                             <rect key="frame" x="8" y="148" width="70" height="32"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="167" width="70" height="34"/>
-                            </variation>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="khL-HU-HXb" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="88" y="111" width="214" height="30"/>
@@ -129,6 +129,9 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                <rect key="frame" x="193" y="254" width="179" height="40"/>
+                            </variation>
                             <connections>
                                 <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="IQe-6K-8Oy"/>
                             </connections>
@@ -190,6 +193,9 @@
                         <mask key="constraints">
                             <include reference="eSV-U8-alE"/>
                         </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                        <rect key="frame" x="10" y="249" width="380" height="302"/>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">

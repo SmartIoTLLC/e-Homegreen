@@ -403,11 +403,17 @@ class CreateUserFromJSONController: NSObject {
                 if let flagId = flag["flag_id"] as? Int{
                     newFlag.flagId = flagId
                 }
-                if let flagImageOne = flag["flag_image_one"] as? NSData{
-                    newFlag.flagImageOne = flagImageOne
+                if let flagImageOneCustom = flag["flag_image_one_custom"] as? String{
+                    newFlag.flagImageOneCustom = flagImageOneCustom
                 }
-                if let flagImageTwo = flag["scene_image_two"] as? NSData{
-                    newFlag.flagImageTwo = flagImageTwo
+                if let flagImageOneDefault = flag["flag_image_one_default"] as? String{
+                    newFlag.flagImageOneDefault = flagImageOneDefault
+                }
+                if let flagImageTwoCustom = flag["flag_image_two_custom"] as? String{
+                    newFlag.flagImageTwoCustom = flagImageTwoCustom
+                }
+                if let flagImageTwoDefault = flag["flag_image_two_default"] as? String{
+                    newFlag.flagImageTwoDefault = flagImageTwoDefault
                 }
                 if let flagName = flag["flag_name"] as? String{
                     newFlag.flagName = flagName
@@ -444,11 +450,17 @@ class CreateUserFromJSONController: NSObject {
                 if let sceneId = scene["scene_id"] as? Int{
                     newScene.sceneId = sceneId
                 }
-                if let sceneImageOne = scene["scene_image_one"] as? NSData{
-                    newScene.sceneImageOne = sceneImageOne
+                if let sceneImageOneCustom = scene["scene_image_one_custom"] as? String{
+                    newScene.sceneImageOneCustom = sceneImageOneCustom
                 }
-                if let sceneImageTwo = scene["scene_image_two"] as? NSData{
-                    newScene.sceneImageTwo = sceneImageTwo
+                if let sceneImageOneDefault = scene["scene_image_one_default"] as? String{
+                    newScene.sceneImageOneDefault = sceneImageOneDefault
+                }
+                if let sceneImageTwoCustom = scene["scene_image_two_custom"] as? String{
+                    newScene.sceneImageTwoCustom = sceneImageTwoCustom
+                }
+                if let sceneImageTwoDefault = scene["scene_image_two_default"] as? String{
+                    newScene.sceneImageTwoDefault = sceneImageTwoDefault
                 }
                 if let sceneName = scene["scene_name"] as? String{
                     newScene.sceneName = sceneName
