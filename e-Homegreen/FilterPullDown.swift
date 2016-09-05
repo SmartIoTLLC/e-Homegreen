@@ -28,11 +28,11 @@ class FilterPullDown: UIScrollView {
     //default value element
     let resetTimeButton:UIButton = UIButton()
     let secundsLabel:UILabel = UILabel()
-    let secundsTextField:UITextField = UITextField()
+    let secundsTextField:EditTextField = EditTextField()
     let minLabel:UILabel = UILabel()
-    let minTextField:UITextField = UITextField()
+    let minTextField:EditTextField = EditTextField()
     let hoursLabel:UILabel = UILabel()
-    let hoursTextField:UITextField = UITextField()
+    let hoursTextField:EditTextField = EditTextField()
     var setAsDefaultButton:CustomGradientButton = CustomGradientButton()
     
     //location
@@ -310,27 +310,27 @@ class FilterPullDown: UIScrollView {
         
         self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 37))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 60))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 120))
         
         //setGreenIndicator
         self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: -8))
+        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: -15))
         
         greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
         
-        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 18))
+        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
         
         //setRedIndicator
         self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 15))
         
         redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
         
-        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 18))
+        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
 
 
     }
@@ -353,7 +353,7 @@ class FilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: secundsTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
         contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: secundsLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
         secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 40))
         
         //minutes label
         contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: minLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
@@ -365,7 +365,7 @@ class FilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: minLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: minTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
         contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: minLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
         minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 40))
         
         //hours lebel
         contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: hoursLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
@@ -377,10 +377,10 @@ class FilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: hoursTextField, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 3))
         contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: hoursLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
         hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 40))
         
         //set as default button
-        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
         contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: setAsDefaultButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 5))
         contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: hoursTextField, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
     }
@@ -787,7 +787,10 @@ class FilterPullDown: UIScrollView {
 extension FilterPullDown: UIScrollViewDelegate{
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if point.y > contentView.frame.size.height + 30 {
+        if point.y > contentView.frame.size.height + 37{
+            return nil
+        }
+        if point.y > contentView.frame.size.height && (point.x < contentView.frame.size.width/2 - 60 || point.x > contentView.frame.size.width/2 + 60) {
             return nil
         }
         return super.hitTest(point, withEvent: event)

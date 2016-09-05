@@ -15,7 +15,7 @@ import AudioToolbox
 
 class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
-    var sectionInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+    var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var scrollView = FilterPullDown()
@@ -30,7 +30,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     var userLogged:User?
     
     var panRecognizer:UIPanGestureRecognizer!
-    var panStartPoint:CGPoint?
+    var panStartPoint:CGPoint!
     var startingBottomConstraint:CGFloat?
     
     var appDel:AppDelegate!
@@ -843,18 +843,19 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
     
     //MARK: Zone and category controll
+    
     //gesture delegate function
     func panView(gesture:UIPanGestureRecognizer){
         switch (gesture.state) {
         case .Began:
-            self.panStartPoint = gesture.translationInView(self.bottomView)
+            self.panStartPoint = gesture.locationInView(self.bottomView)
             self.startingBottomConstraint = self.bottomConstraint.constant
             break
         case .Changed:
             let currentPoint = gesture.translationInView(self.bottomView)
-            let deltaX = currentPoint.y - self.panStartPoint!.y
+            let deltaX = currentPoint.y - self.panStartPoint.y
             var panningUp = false
-            if currentPoint.y < self.panStartPoint!.y {
+            if currentPoint.y < self.panStartPoint.y {
                 panningUp = true
             }
 
@@ -866,11 +867,12 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                     }
                     
                 }else{
-                    let constant = deltaX
-                    if constant < -130 {
-                        self.setConstraintsToShowBottomView(true, notifyDelegate: true)
-                    }else{
-                       self.bottomConstraint.constant = -130 - deltaX
+                    if panStartPoint.x > self.bottomView.center.x - 60 && panStartPoint.x < self.bottomView.center.x + 60{
+                        if deltaX < -130 {
+                            self.setConstraintsToShowBottomView(true, notifyDelegate: true)
+                        }else{
+                            self.bottomConstraint.constant = -130 - deltaX
+                        }
                     }
                 }
             }else{
@@ -919,6 +921,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         }
         
     }
+    
     func resetConstraintContstants(animated:Bool, endEditing:Bool){
         if self.startingBottomConstraint == -130 &&
             self.bottomConstraint.constant == -130 {
@@ -934,6 +937,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             })
         })
     }
+    
     func setConstraintsToShowBottomView(animated:Bool, notifyDelegate:Bool){
         if self.startingBottomConstraint == 0 &&
             self.bottomConstraint.constant == 0 {
@@ -1280,6 +1284,7 @@ extension DevicesViewController: SWRevealViewControllerDelegate{
         }
         
     }
+    
 }
 
 // Parametar from filter and relaod data
