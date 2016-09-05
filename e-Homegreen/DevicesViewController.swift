@@ -56,6 +56,9 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
@@ -79,10 +82,6 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
         panRecognizer.delegate = self
         bottomView.addGestureRecognizer(panRecognizer)
-        
-        // Initialize Indicators
-//        indicatorRed.layer.cornerRadius = indicatorRed.frame.size.width/2
-//        indicatorGreen.layer.cornerRadius = indicatorRed.frame.size.width/2
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -1307,6 +1306,10 @@ extension DevicesViewController: FilterPullDownDelegate{
             fetchDevicesInBackground()
         }
         
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

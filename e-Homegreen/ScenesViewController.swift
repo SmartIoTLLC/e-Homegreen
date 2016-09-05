@@ -59,6 +59,8 @@ class ScenesViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         scrollView.filterDelegate = self
@@ -168,6 +170,10 @@ extension ScenesViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Scenes)
         updateSceneList()
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

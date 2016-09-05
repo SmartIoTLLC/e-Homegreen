@@ -10,6 +10,7 @@ import UIKit
 
 protocol FilterPullDownDelegate{
     func filterParametars (filterItem: FilterItem)
+    func saveDefaultFilter()
 }
 
 class FilterPullDown: UIScrollView {
@@ -695,6 +696,8 @@ class FilterPullDown: UIScrollView {
         }
 
         DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
+        
+        filterDelegate?.saveDefaultFilter()
     }
     
     func go(){
@@ -770,7 +773,6 @@ class FilterPullDown: UIScrollView {
             
             
         }
-        //indicatorGreen.backgroundColor = UIColor.greenColor()
     }
     
     func addObservers(){

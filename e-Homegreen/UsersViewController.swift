@@ -31,6 +31,9 @@ class UsersViewController: PopoverVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
@@ -252,6 +255,10 @@ extension UsersViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Users)
         refreshTimerList()
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

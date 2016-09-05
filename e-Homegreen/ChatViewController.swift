@@ -55,8 +55,9 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
         
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         chatTextView.delegate = self
         chatTextView.layer.borderWidth = 1
@@ -796,6 +797,10 @@ extension ChatViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Chat)
         chatTableView.reloadData()
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

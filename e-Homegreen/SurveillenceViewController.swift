@@ -36,6 +36,8 @@ class SurveillenceViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
         updateConstraints()
@@ -201,6 +203,10 @@ extension SurveillenceViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Surveillance)
         fetchSurveillance()
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

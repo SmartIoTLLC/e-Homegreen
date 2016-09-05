@@ -60,14 +60,14 @@ class SecurityViewController: PopoverVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
         updateConstraints()
         scrollView.setItem(self.view)
-//        
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Security)
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All, All, All")
@@ -370,6 +370,10 @@ extension SecurityViewController: FilterPullDownDelegate{
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Security)
         updateSubtitle()
         refreshSecurity()
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 
