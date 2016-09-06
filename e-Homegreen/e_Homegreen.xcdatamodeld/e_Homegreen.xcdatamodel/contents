@@ -79,12 +79,17 @@
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="eventImageOne" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="eventImageTwo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="eventImageOneCustom" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="eventImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventImageTwoCustom" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="eventImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="report" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -102,7 +107,9 @@
     <entity name="Flag" representedClassName=".Flag" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
@@ -110,6 +117,7 @@
         <attribute name="flagImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="setState" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -183,9 +191,11 @@
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sceneCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sceneCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sceneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sceneImageOneCustom" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="sceneImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
@@ -193,6 +203,7 @@
         <attribute name="sceneImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sceneName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sceneZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sceneZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="scenes" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="Security" representedClassName=".Security" syncable="YES">
@@ -207,15 +218,20 @@
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sequenceCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceCycles" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="sequenceImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="sequenceImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="sequenceImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceImageTwoCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequenceZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="sequences" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="SSID" representedClassName=".SSID" syncable="YES">
@@ -257,16 +273,21 @@
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timerCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timerCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timerId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="timerImageOne" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="timerImageTwo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="timerImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timerImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timerImageTwoCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timerImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerState" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="timers" inverseEntity="Gateway" syncable="YES"/>
     </entity>
@@ -299,21 +320,21 @@
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="915"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
-        <element name="Event" positionX="-587" positionY="-1717" width="128" height="225"/>
+        <element name="Event" positionX="-587" positionY="-1717" width="128" height="300"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
-        <element name="Flag" positionX="-578" positionY="-1663" width="128" height="255"/>
+        <element name="Flag" positionX="-578" positionY="-1663" width="128" height="300"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
-        <element name="Scene" positionX="-639" positionY="-1879" width="128" height="240"/>
+        <element name="Scene" positionX="-639" positionY="-1879" width="128" height="285"/>
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
-        <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="43"/>
+        <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="300"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
-        <element name="Timer" positionX="-621" positionY="-1827" width="128" height="270"/>
+        <element name="Timer" positionX="-621" positionY="-1827" width="128" height="345"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
     </elements>

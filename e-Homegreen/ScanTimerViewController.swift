@@ -51,6 +51,14 @@ class ScanTimerViewController: PopoverVC {
     var zoneSelected:Zone?
     var category:Category?
     
+    var imageDataOne:NSData?
+    var customImageOne:String?
+    var defaultImageOne:String?
+    
+    var imageDataTwo:NSData?
+    var customImageTwo:String?
+    var defaultImageTwo:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -179,8 +187,49 @@ class ScanTimerViewController: PopoverVC {
                     timer.timerId = timerId
                     timer.timerName = timerName
                     timer.address = address
-                    timer.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
-                    timer.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        timer.timerImageOneCustom = customImageOne
+                        timer.timerImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        timer.timerImageOneDefault = def
+                        timer.timerImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            timer.timerImageOneCustom = image.imageId
+                            timer.timerImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        timer.timerImageTwoCustom = customImageTwo
+                        timer.timerImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        timer.timerImageTwoDefault = def
+                        timer.timerImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            timer.timerImageTwoCustom = image.imageId
+                            timer.timerImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    timer.entityLevelId = level?.id
+                    timer.timeZoneId = zoneSelected?.id
+                    timer.timerCategoryId = category?.id
+                    
                     timer.isBroadcast = broadcastSwitch.on
                     timer.isLocalcast = localcastSwitch.on
                     timer.type = type
@@ -196,8 +245,49 @@ class ScanTimerViewController: PopoverVC {
                     existingTimer!.timerId = timerId
                     existingTimer!.timerName = timerName
                     existingTimer!.address = address
-                    existingTimer!.timerImageOne = UIImagePNGRepresentation(imageTimerOne.image!)!
-                    existingTimer!.timerImageTwo = UIImagePNGRepresentation(imageTimerTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        existingTimer!.timerImageOneCustom = customImageOne
+                        existingTimer!.timerImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        existingTimer!.timerImageOneDefault = def
+                        existingTimer!.timerImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingTimer!.timerImageOneCustom = image.imageId
+                            existingTimer!.timerImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        existingTimer!.timerImageTwoCustom = customImageTwo
+                        existingTimer!.timerImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        existingTimer!.timerImageTwoDefault = def
+                        existingTimer!.timerImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingTimer!.timerImageTwoCustom = image.imageId
+                            existingTimer!.timerImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    existingTimer!.entityLevelId = level?.id
+                    existingTimer!.timeZoneId = zoneSelected?.id
+                    existingTimer!.timerCategoryId = category?.id
+                    
                     existingTimer!.isBroadcast = broadcastSwitch.on
                     existingTimer!.isLocalcast = localcastSwitch.on
                     existingTimer!.type = type
@@ -302,20 +392,48 @@ extension ScanTimerViewController: UITextFieldDelegate{
 
 extension ScanTimerViewController: SceneGalleryDelegate{
     
+    
+    func backImage(image: Image, imageIndex: Int) {
+        if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = image.imageId
+            imageDataOne = nil
+            self.imageTimerOne.image = UIImage(data: image.imageData!)
+        }
+        if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = image.imageId
+            imageDataTwo = nil
+            self.imageTimerTwo.image = UIImage(data: image.imageData!)
+        }
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == 1 {
+            defaultImageOne = strText
+            customImageOne = nil
+            imageDataOne = nil
             self.imageTimerOne.image = UIImage(named: strText)
         }
         if imageIndex == 2 {
+            defaultImageTwo = strText
+            customImageTwo = nil
+            imageDataTwo = nil
             self.imageTimerTwo.image = UIImage(named: strText)
         }
     }
     
     func backImageFromGallery(data: NSData, imageIndex:Int ) {
         if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = nil
+            imageDataOne = data
             self.imageTimerOne.image = UIImage(data: data)
         }
         if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = nil
+            imageDataTwo = data
             self.imageTimerTwo.image = UIImage(data: data)
         }
     }
@@ -330,12 +448,59 @@ extension ScanTimerViewController: UITableViewDataSource {
             cell.labelID.text = "\(timers[indexPath.row].timerId)"
             cell.labelName.text = timers[indexPath.row].timerName
             cell.address.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
-            if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
-                cell.imageOne.image = timerImage
+            
+            if let id = timers[indexPath.row].timerImageOneCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageOne.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                            cell.imageOne.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageOne.image = UIImage(named: "15 Timer - CLock - 00")
+                        }
+                    }
+                }else{
+                    if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                        cell.imageOne.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageOne.image = UIImage(named: "15 Timer - CLock - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                    cell.imageOne.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageOne.image = UIImage(named: "15 Timer - CLock - 00")
+                }
             }
-            if let timerImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
-                cell.imageTwo.image = timerImage
+            
+            if let id = timers[indexPath.row].timerImageTwoCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageTwo.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                            cell.imageTwo.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageTwo.image = UIImage(named: "15 Timer - CLock - 01")
+                        }
+                    }
+                }else{
+                    if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                        cell.imageTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageTwo.image = UIImage(named: "15 Timer - CLock - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                    cell.imageTwo.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageTwo.image = UIImage(named: "15 Timer - CLock - 01")
+                }
             }
+            
             return cell
         }
         
@@ -352,6 +517,17 @@ extension ScanTimerViewController: UITableViewDataSource {
         btnType.setTitle("\(timers[indexPath.row].type)", forState: UIControlState.Normal)
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = timers[indexPath.row].isLocalcast.boolValue
+        
+        if let levelId = timers[indexPath.row].entityLevelId as? Int {
+            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+        }
+        if let zoneId = timers[indexPath.row].timeZoneId as? Int {
+            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+        }
+        if let categoryId = timers[indexPath.row].timerCategoryId as? Int {
+            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+        }
+        
         if let level = timers[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         }
@@ -361,11 +537,57 @@ extension ScanTimerViewController: UITableViewDataSource {
         if let category = timers[indexPath.row].timerCategory {
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }
-        if let timerImage = UIImage(data: timers[indexPath.row].timerImageOne) {
-            imageTimerOne.image = timerImage
+        
+        if let id = timers[indexPath.row].timerImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTimerOne.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                        imageTimerOne.image = UIImage(named: defaultImage)
+                    }else{
+                        imageTimerOne.image = UIImage(named: "15 Timer - CLock - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                    imageTimerOne.image = UIImage(named: defaultImage)
+                }else{
+                    imageTimerOne.image = UIImage(named: "15 Timer - CLock - 00")
+                }
+            }
+        }else{
+            if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                imageTimerOne.image = UIImage(named: defaultImage)
+            }else{
+                imageTimerOne.image = UIImage(named: "15 Timer - CLock - 00")
+            }
         }
-        if let timerImage = UIImage(data: timers[indexPath.row].timerImageTwo) {
-            imageTimerTwo.image = timerImage
+        
+        if let id = timers[indexPath.row].timerImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTimerTwo.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                        imageTimerTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        imageTimerTwo.image = UIImage(named: "15 Timer - CLock - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                    imageTimerTwo.image = UIImage(named: defaultImage)
+                }else{
+                    imageTimerTwo.image = UIImage(named: "15 Timer - CLock - 01")
+                }
+            }
+        }else{
+            if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                imageTimerTwo.image = UIImage(named: defaultImage)
+            }else{
+                imageTimerTwo.image = UIImage(named: "15 Timer - CLock - 01")
+            }
         }
     }
     

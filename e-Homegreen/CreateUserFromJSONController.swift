@@ -318,12 +318,12 @@ class CreateUserFromJSONController: NSObject {
                 if let id = timer["id"] as? String{
                     newTimer.id = id
                 }
-                if let timerImageOne = timer["timer_image_one"] as? NSData{
-                    newTimer.timerImageOne = timerImageOne
-                }
-                if let timerImageTwo = timer["timer_image_two"] as? NSData{
-                    newTimer.timerImageTwo = timerImageTwo
-                }
+//                if let timerImageOne = timer["timer_image_one"] as? NSData{
+//                    newTimer.timerImageOne = timerImageOne
+//                }
+//                if let timerImageTwo = timer["timer_image_two"] as? NSData{
+//                    newTimer.timerImageTwo = timerImageTwo
+//                }
                 if let timerName = timer["timer_name"] as? String{
                     newTimer.timerName = timerName
                 }
@@ -365,12 +365,12 @@ class CreateUserFromJSONController: NSObject {
                 if let sequenceId = sequence["sequence_id"] as? Int{
                     newSecuence.sequenceId = sequenceId
                 }
-                if let sequenceImageOne = sequence["sequence_image_one"] as? NSData{
-                    newSecuence.sequenceImageOne = sequenceImageOne
-                }
-                if let sequenceImageTwo = sequence["sequence_image_two"] as? NSData{
-                    newSecuence.sequenceImageTwo = sequenceImageTwo
-                }
+//                if let sequenceImageOne = sequence["sequence_image_one"] as? NSData{
+//                    newSecuence.sequenceImageOne = sequenceImageOne
+//                }
+//                if let sequenceImageTwo = sequence["sequence_image_two"] as? NSData{
+//                    newSecuence.sequenceImageTwo = sequenceImageTwo
+//                }
                 if let sequenceName = sequence["sequence_name"] as? String{
                     newSecuence.sequenceName = sequenceName
                 }
@@ -488,12 +488,12 @@ class CreateUserFromJSONController: NSObject {
                 if let eventId = event["event_id"] as? Int{
                     newEvent.eventId = eventId
                 }
-                if let eventImageOne = event["event_image_one"] as? NSData{
-                    newEvent.eventImageOne = eventImageOne
-                }
-                if let eventImageTwo = event["event_image_two"] as? NSData{
-                    newEvent.eventImageTwo = eventImageTwo
-                }
+//                if let eventImageOne = event["event_image_one"] as? NSData{
+//                    newEvent.eventImageOne = eventImageOne
+//                }
+//                if let eventImageTwo = event["event_image_two"] as? NSData{
+//                    newEvent.eventImageTwo = eventImageTwo
+//                }
                 if let eventName = event["event_name"] as? String{
                     newEvent.eventName = eventName
                 }

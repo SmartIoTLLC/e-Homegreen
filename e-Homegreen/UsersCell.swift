@@ -76,11 +76,56 @@ class TimerUserCell:UICollectionViewCell{
     }
     
     func getImagesFrom(timer:Timer) {
-        if let timerImage = UIImage(data: timer.timerImageOne) {
-            imageOne = timerImage
+        if let id = timer.timerImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageOne = UIImage(data: data)
+                }else{
+                    if let defaultImage = timer.timerImageOneDefault{
+                        imageOne = UIImage(named: defaultImage)
+                    }else{
+                        imageOne = UIImage(named: "15 Timer - CLock - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = timer.timerImageOneDefault{
+                    imageOne = UIImage(named: defaultImage)
+                }else{
+                    imageOne = UIImage(named: "15 Timer - CLock - 00")
+                }
+            }
+        }else{
+            if let defaultImage = timer.timerImageOneDefault{
+                imageOne = UIImage(named: defaultImage)
+            }else{
+                imageOne = UIImage(named: "15 Timer - CLock - 00")
+            }
         }
-        if let timerImage = UIImage(data: timer.timerImageTwo) {
-            imageTwo = timerImage
+        
+        if let id = timer.timerImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTwo = UIImage(data: data)
+                }else{
+                    if let defaultImage = timer.timerImageTwoDefault{
+                        imageTwo = UIImage(named: defaultImage)
+                    }else{
+                        imageTwo = UIImage(named: "15 Timer - CLock - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = timer.timerImageTwoDefault{
+                    imageTwo = UIImage(named: defaultImage)
+                }else{
+                    imageTwo = UIImage(named: "15 Timer - CLock - 01")
+                }
+            }
+        }else{
+            if let defaultImage = timer.timerImageTwoDefault{
+                imageTwo = UIImage(named: defaultImage)
+            }else{
+                imageTwo = UIImage(named: "15 Timer - CLock - 01")
+            }
         }
         imageTimer.image = imageOne
         setNeedsDisplay()

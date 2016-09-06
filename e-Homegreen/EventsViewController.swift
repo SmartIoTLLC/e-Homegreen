@@ -250,9 +250,33 @@ extension EventsViewController: UICollectionViewDataSource {
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EventsViewController.setEvent(_:)))
         cell.eventImageView.userInteractionEnabled = true
         cell.eventImageView.addGestureRecognizer(set)
-        if let eventImage = UIImage(data: events[indexPath.row].eventImageOne) {
-            cell.eventImageView.image = eventImage
+        
+        if let id = events[indexPath.row].eventImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    cell.eventImageView.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                        cell.eventImageView.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.eventImageView.image = UIImage(named: "17 Event - Up Down - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                    cell.eventImageView.image = UIImage(named: defaultImage)
+                }else{
+                    cell.eventImageView.image = UIImage(named: "17 Event - Up Down - 00")
+                }
+            }
+        }else{
+            if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                cell.eventImageView.image = UIImage(named: defaultImage)
+            }else{
+                cell.eventImageView.image = UIImage(named: "17 Event - Up Down - 00")
+            }
         }
+        
         cell.eventImageView.layer.cornerRadius = 5
         cell.eventImageView.clipsToBounds = true
         

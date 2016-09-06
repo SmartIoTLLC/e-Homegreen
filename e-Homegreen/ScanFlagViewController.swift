@@ -280,6 +280,10 @@ class ScanFlagViewController: PopoverVC {
                         }
                     }
                     
+                    flag.entityLevelId = level?.id
+                    flag.flagZoneId = zoneSelected?.id
+                    flag.flagCategoryId = category?.id
+                    
                     flag.isBroadcast = broadcastSwitch.on
                     flag.isLocalcast = localcastSwitch.on
                     flag.entityLevel = btnLevel.titleLabel!.text!
@@ -330,6 +334,11 @@ class ScanFlagViewController: PopoverVC {
                             
                         }
                     }
+                    
+                    existingFlag!.entityLevelId = level?.id
+                    existingFlag!.flagZoneId = zoneSelected?.id
+                    existingFlag!.flagCategoryId = category?.id
+
                     
                     existingFlag!.isBroadcast = broadcastSwitch.on
                     existingFlag!.isLocalcast = localcastSwitch.on
@@ -491,12 +500,27 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
         broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = flags[indexPath.row].isLocalcast.boolValue
+        print(flags[indexPath.row].entityLevelId)
+        print(flags[indexPath.row].flagZoneId)
+        print(flags[indexPath.row].flagCategoryId)
+        if let levelId = flags[indexPath.row].entityLevelId as? Int {
+            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+        }
+        if let zoneId = flags[indexPath.row].flagZoneId as? Int {
+            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+        }
+        if let categoryId = flags[indexPath.row].flagCategoryId as? Int {
+            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+        }
+        
         if let level = flags[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         }
+        
         if let zone = flags[indexPath.row].flagZone {
             btnZone.setTitle(zone, forState: .Normal)
         }
+        
         if let category = flags[indexPath.row].flagCategory {
             btnCategory.setTitle(category, forState: .Normal)
         }

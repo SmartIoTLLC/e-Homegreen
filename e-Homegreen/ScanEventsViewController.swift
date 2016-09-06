@@ -44,6 +44,14 @@ class ScanEventsViewController: PopoverVC {
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
+    
+    var imageDataOne:NSData?
+    var customImageOne:String?
+    var defaultImageOne:String?
+    
+    var imageDataTwo:NSData?
+    var customImageTwo:String?
+    var defaultImageTwo:String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -199,13 +207,9 @@ class ScanEventsViewController: PopoverVC {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            if let level = level, let id = level.id {
-                btnZone.setTitle(level.name, forState: .Normal)
-                zoneSelected = nil
-            }else{
-                btnZone.setTitle("All", forState: .Normal)
-                zoneSelected = nil
-            }
+            
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
@@ -236,8 +240,48 @@ class ScanEventsViewController: PopoverVC {
                     event.eventId = sceneId
                     event.eventName = sceneName
                     event.address = address
-                    event.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    event.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    if let customImageOne = customImageOne{
+                        event.eventImageOneCustom = customImageOne
+                        event.eventImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        event.eventImageOneDefault = def
+                        event.eventImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            event.eventImageOneCustom = image.imageId
+                            event.eventImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        event.eventImageTwoCustom = customImageTwo
+                        event.eventImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        event.eventImageTwoDefault = def
+                        event.eventImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            event.eventImageTwoCustom = image.imageId
+                            event.eventImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    event.entityLevelId = level?.id
+                    event.eventZoneId = zoneSelected?.id
+                    event.eventCategoryId = category?.id
+                    
                     event.isBroadcast = broadcastSwitch.on
                     event.isLocalcast = localcastSwitch.on
                     event.report = reportSwitch.on
@@ -251,8 +295,49 @@ class ScanEventsViewController: PopoverVC {
                     existingEvent!.eventId = sceneId
                     existingEvent!.eventName = sceneName
                     existingEvent!.address = address
-                    existingEvent!.eventImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    existingEvent!.eventImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        existingEvent!.eventImageOneCustom = customImageOne
+                        existingEvent!.eventImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        existingEvent!.eventImageOneDefault = def
+                        existingEvent!.eventImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingEvent!.eventImageOneCustom = image.imageId
+                            existingEvent!.eventImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        existingEvent!.eventImageTwoCustom = customImageTwo
+                        existingEvent!.eventImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        existingEvent!.eventImageTwoDefault = def
+                        existingEvent!.eventImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingEvent!.eventImageTwoCustom = image.imageId
+                            existingEvent!.eventImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    existingEvent!.entityLevelId = level?.id
+                    existingEvent!.eventZoneId = zoneSelected?.id
+                    existingEvent!.eventCategoryId = category?.id
+                    
                     existingEvent!.isBroadcast = broadcastSwitch.on
                     existingEvent!.isLocalcast = localcastSwitch.on
                     existingEvent!.report = reportSwitch.on
@@ -281,20 +366,47 @@ class ScanEventsViewController: PopoverVC {
 
 extension ScanEventsViewController: SceneGalleryDelegate{
     
+    func backImage(image: Image, imageIndex: Int) {
+        if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = image.imageId
+            imageDataOne = nil
+            self.imageSceneOne.image = UIImage(data: image.imageData!)
+        }
+        if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = image.imageId
+            imageDataTwo = nil
+            self.imageSceneTwo.image = UIImage(data: image.imageData!)
+        }
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == 1 {
+            defaultImageOne = strText
+            customImageOne = nil
+            imageDataOne = nil
             self.imageSceneOne.image = UIImage(named: strText)
         }
         if imageIndex == 2 {
+            defaultImageTwo = strText
+            customImageTwo = nil
+            imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(named: strText)
         }
     }
     
     func backImageFromGallery(data: NSData, imageIndex:Int ) {
         if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = nil
+            imageDataOne = data
             self.imageSceneOne.image = UIImage(data: data)
         }
         if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = nil
+            imageDataTwo = data
             self.imageSceneTwo.image = UIImage(data: data)
         }
     }
@@ -319,12 +431,59 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
             print("\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo)))")
             print("\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))")
             cell.address.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
-            if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
-                cell.imageOne.image = sceneImage
+            
+            if let id = events[indexPath.row].eventImageOneCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageOne.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                            cell.imageOne.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
+                        }
+                    }
+                }else{
+                    if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                        cell.imageOne.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                    cell.imageOne.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
+                }
             }
-            if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
-                cell.imageTwo.image = sceneImage
+            
+            if let id = events[indexPath.row].eventImageTwoCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageTwo.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                            cell.imageTwo.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
+                        }
+                    }
+                }else{
+                    if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                        cell.imageTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                    cell.imageTwo.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
+                }
             }
+            
             return cell
         }
         
@@ -342,6 +501,17 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = events[indexPath.row].isLocalcast.boolValue
         reportSwitch.on = events[indexPath.row].report.boolValue
+        
+        if let levelId = events[indexPath.row].entityLevelId as? Int {
+            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+        }
+        if let zoneId = events[indexPath.row].eventZoneId as? Int {
+            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+        }
+        if let categoryId = events[indexPath.row].eventCategoryId as? Int {
+            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+        }
+        
         if let level = events[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         }
@@ -351,11 +521,57 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         if let category = events[indexPath.row].eventCategory {
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }
-        if let sceneImage = UIImage(data: events[indexPath.row].eventImageOne) {
-            imageSceneOne.image = sceneImage
+        
+        if let id = events[indexPath.row].eventImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneOne.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                        imageSceneOne.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                    imageSceneOne.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
+                }
+            }
+        }else{
+            if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                imageSceneOne.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
+            }
         }
-        if let sceneImage = UIImage(data: events[indexPath.row].eventImageTwo) {
-            imageSceneTwo.image = sceneImage
+        
+        if let id = events[indexPath.row].eventImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneTwo.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                        imageSceneTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                    imageSceneTwo.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
+                }
+            }
+        }else{
+            if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                imageSceneTwo.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
+            }
         }
     }
     

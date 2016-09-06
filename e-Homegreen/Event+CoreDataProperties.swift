@@ -16,15 +16,20 @@ extension Event {
 
     @NSManaged var address: NSNumber
     @NSManaged var eventId: NSNumber
-    @NSManaged var eventImageOne: NSData
-    @NSManaged var eventImageTwo: NSData
+    @NSManaged var eventImageOneCustom: String?
+    @NSManaged var eventImageOneDefault: String?
+    @NSManaged var eventImageTwoCustom: String?
+    @NSManaged var eventImageTwoDefault: String?
     @NSManaged var eventName: String
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber    
     @NSManaged var report: NSNumber
     @NSManaged var entityLevel: String?
+    @NSManaged var entityLevelId: NSNumber?
     @NSManaged var eventZone: String?
+    @NSManaged var eventZoneId: NSNumber?
     @NSManaged var eventCategory: String?
+    @NSManaged var eventCategoryId: NSNumber?
     @NSManaged var gateway: Gateway
 
 }

@@ -24,8 +24,11 @@ extension Flag {
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber
     @NSManaged var entityLevel: String?
+    @NSManaged var entityLevelId: NSNumber?
     @NSManaged var flagZone: String?
+    @NSManaged var flagZoneId: NSNumber?
     @NSManaged var flagCategory: String?
+    @NSManaged var flagCategoryId: NSNumber?
     @NSManaged var address: NSNumber
     @NSManaged var gateway: Gateway
 

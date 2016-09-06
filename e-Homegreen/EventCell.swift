@@ -39,13 +39,59 @@ class EventsCollectionViewCell: UICollectionViewCell {
     func getImagesFrom(event:Event) {
         self.reportEvent = event.report.boolValue
         self.eventId = event.eventId as Int
-        if let eventImage = UIImage(data: event.eventImageOne) {
-            imageOne = eventImage
+        
+        if let id = event.eventImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageOne = UIImage(data: data)
+                }else{
+                    if let defaultImage = event.eventImageOneDefault{
+                        imageOne = UIImage(named: defaultImage)
+                    }else{
+                        imageOne = UIImage(named: "17 Event - Up Down - 00")
+                    }
+                }
+            }else{
+                if let defaultImage = event.eventImageOneDefault{
+                    imageOne = UIImage(named: defaultImage)
+                }else{
+                    imageOne = UIImage(named: "17 Event - Up Down - 00")
+                }
+            }
+        }else{
+            if let defaultImage = event.eventImageOneDefault{
+                imageOne = UIImage(named: defaultImage)
+            }else{
+                imageOne = UIImage(named: "17 Event - Up Down - 00")
+            }
         }
         
-        if let eventImage = UIImage(data: event.eventImageTwo) {
-            imageTwo = eventImage
+        if let id = event.eventImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTwo = UIImage(data: data)
+                }else{
+                    if let defaultImage = event.eventImageTwoDefault{
+                        imageTwo = UIImage(named: defaultImage)
+                    }else{
+                        imageTwo = UIImage(named: "17 Event - Up Down - 01")
+                    }
+                }
+            }else{
+                if let defaultImage = event.eventImageTwoDefault{
+                    imageTwo = UIImage(named: defaultImage)
+                }else{
+                    imageTwo = UIImage(named: "17 Event - Up Down - 01")
+                }
+            }
+        }else{
+            if let defaultImage = event.eventImageTwoDefault{
+                imageTwo = UIImage(named: defaultImage)
+            }else{
+                imageTwo = UIImage(named: "17 Event - Up Down - 01")
+            }
         }
+        
         eventImageView.image = imageOne
         setNeedsDisplay()
     }

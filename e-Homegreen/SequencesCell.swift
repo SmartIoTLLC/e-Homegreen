@@ -36,13 +36,59 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     }
     
     func getImagesFrom(sequence:Sequence) {
-        if let sequenceImage = UIImage(data: sequence.sequenceImageOne) {
-            imageOne = sequenceImage
+        
+        if let id = sequence.sequenceImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageOne = UIImage(data: data)
+                }else{
+                    if let defaultImage = sequence.sequenceImageOneDefault{
+                        imageOne = UIImage(named: defaultImage)
+                    }else{
+                        imageOne = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequence.sequenceImageOneDefault{
+                    imageOne = UIImage(named: defaultImage)
+                }else{
+                    imageOne = UIImage(named: "lightBulb")
+                }
+            }
+        }else{
+            if let defaultImage = sequence.sequenceImageOneDefault{
+                imageOne = UIImage(named: defaultImage)
+            }else{
+                imageOne = UIImage(named: "lightBulb")
+            }
         }
         
-        if let sequenceImage = UIImage(data: sequence.sequenceImageTwo) {
-            imageTwo = sequenceImage
+        if let id = sequence.sequenceImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageTwo = UIImage(data: data)
+                }else{
+                    if let defaultImage = sequence.sequenceImageTwoDefault{
+                        imageTwo = UIImage(named: defaultImage)
+                    }else{
+                        imageTwo = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequence.sequenceImageTwoDefault{
+                    imageTwo = UIImage(named: defaultImage)
+                }else{
+                    imageTwo = UIImage(named: "lightBulb")
+                }
+            }
+        }else{
+            if let defaultImage = sequence.sequenceImageTwoDefault{
+                imageTwo = UIImage(named: defaultImage)
+            }else{
+                imageTwo = UIImage(named: "lightBulb")
+            }
         }
+        
         sequenceImageView.image = imageOne
         setNeedsDisplay()
     }

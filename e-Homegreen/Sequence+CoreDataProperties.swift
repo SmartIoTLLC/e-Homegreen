@@ -19,12 +19,17 @@ extension Sequence {
     @NSManaged var isLocalcast: NSNumber
     @NSManaged var sequenceCycles: NSNumber
     @NSManaged var sequenceId: NSNumber
-    @NSManaged var sequenceImageOne: NSData
-    @NSManaged var sequenceImageTwo: NSData
+    @NSManaged var sequenceImageOneCustom: String?
+    @NSManaged var sequenceImageOneDefault: String?
+    @NSManaged var sequenceImageTwoCustom: String?
+    @NSManaged var sequenceImageTwoDefault: String?
     @NSManaged var sequenceName: String
     @NSManaged var entityLevel: String?
+    @NSManaged var entityLevelId: NSNumber?
     @NSManaged var sequenceZone: String?
+    @NSManaged var sequenceZoneId: NSNumber?
     @NSManaged var sequenceCategory: String?
+    @NSManaged var sequenceCategoryId: NSNumber?
     @NSManaged var gateway: Gateway
 
 }

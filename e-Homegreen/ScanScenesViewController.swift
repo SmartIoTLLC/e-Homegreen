@@ -274,6 +274,10 @@ class ScanScenesViewController: PopoverVC {
                             
                         }
                     }
+                    
+                    scene.entityLevelId = level?.id
+                    scene.sceneZoneId = zoneSelected?.id
+                    scene.sceneCategoryId = category?.id
 
                     scene.isBroadcast = broadcastSwitch.on
                     scene.isLocalcast = localcastSwitch.on
@@ -324,6 +328,11 @@ class ScanScenesViewController: PopoverVC {
                             
                         }
                     }
+                    
+                    existingScene!.entityLevelId = level?.id
+                    existingScene!.sceneZoneId = zoneSelected?.id
+                    existingScene!.sceneCategoryId = category?.id
+                    
                     existingScene!.isBroadcast = broadcastSwitch.on
                     existingScene!.isLocalcast = localcastSwitch.on
                     existingScene!.entityLevel = btnLevel.titleLabel!.text!
@@ -483,6 +492,17 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
         broadcastSwitch.on = scenes[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = scenes[indexPath.row].isLocalcast.boolValue
+        
+        if let levelId = scenes[indexPath.row].entityLevelId as? Int {
+            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+        }
+        if let zoneId = scenes[indexPath.row].sceneZoneId as? Int {
+            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+        }
+        if let categoryId = scenes[indexPath.row].sceneCategoryId as? Int {
+            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+        }
+        
         if let level = scenes[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         }

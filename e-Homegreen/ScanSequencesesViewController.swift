@@ -44,6 +44,14 @@ class ScanSequencesesViewController: PopoverVC {
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
+    
+    var imageDataOne:NSData?
+    var customImageOne:String?
+    var defaultImageOne:String?
+    
+    var imageDataTwo:NSData?
+    var customImageTwo:String?
+    var defaultImageTwo:String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -232,8 +240,49 @@ class ScanSequencesesViewController: PopoverVC {
                     sequence.sequenceId = sceneId
                     sequence.sequenceName = sceneName
                     sequence.address = address
-                    sequence.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    sequence.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        sequence.sequenceImageOneCustom = customImageOne
+                        sequence.sequenceImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        sequence.sequenceImageOneDefault = def
+                        sequence.sequenceImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            sequence.sequenceImageOneCustom = image.imageId
+                            sequence.sequenceImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        sequence.sequenceImageTwoCustom = customImageTwo
+                        sequence.sequenceImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        sequence.sequenceImageTwoDefault = def
+                        sequence.sequenceImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            sequence.sequenceImageTwoCustom = image.imageId
+                            sequence.sequenceImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    sequence.entityLevelId = level?.id
+                    sequence.sequenceZoneId = zoneSelected?.id
+                    sequence.sequenceCategoryId = category?.id
+                    
                     sequence.isBroadcast = broadcastSwitch.on
                     sequence.isLocalcast = localcastSwitch.on
                     sequence.sequenceCycles = cycles
@@ -246,8 +295,49 @@ class ScanSequencesesViewController: PopoverVC {
                     existingSequence!.sequenceId = sceneId
                     existingSequence!.sequenceName = sceneName
                     existingSequence!.address = address
-                    existingSequence!.sequenceImageOne = UIImagePNGRepresentation(imageSceneOne.image!)!
-                    existingSequence!.sequenceImageTwo = UIImagePNGRepresentation(imageSceneTwo.image!)!
+                    
+                    if let customImageOne = customImageOne{
+                        existingSequence!.sequenceImageOneCustom = customImageOne
+                        existingSequence!.sequenceImageOneDefault = nil
+                    }
+                    if let def = defaultImageOne {
+                        existingSequence!.sequenceImageOneDefault = def
+                        existingSequence!.sequenceImageOneCustom = nil
+                    }
+                    if let data = imageDataOne{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingSequence!.sequenceImageOneCustom = image.imageId
+                            existingSequence!.sequenceImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    if let customImageTwo = customImageTwo{
+                        existingSequence!.sequenceImageTwoCustom = customImageTwo
+                        existingSequence!.sequenceImageTwoDefault = nil
+                    }
+                    if let def = defaultImageTwo {
+                        existingSequence!.sequenceImageTwoDefault = def
+                        existingSequence!.sequenceImageTwoCustom = nil
+                    }
+                    if let data = imageDataTwo{
+                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                            image.imageData = data
+                            image.imageId = NSUUID().UUIDString
+                            existingSequence!.sequenceImageTwoCustom = image.imageId
+                            existingSequence!.sequenceImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    }
+                    
+                    existingSequence!.entityLevelId = level?.id
+                    existingSequence!.sequenceZoneId = zoneSelected?.id
+                    existingSequence!.sequenceCategoryId = category?.id
+                    
                     existingSequence!.isBroadcast = broadcastSwitch.on
                     existingSequence!.isLocalcast = localcastSwitch.on
                     existingSequence!.sequenceCycles = cycles
@@ -277,20 +367,47 @@ class ScanSequencesesViewController: PopoverVC {
 
 extension ScanSequencesesViewController: SceneGalleryDelegate{
     
+    func backImage(image: Image, imageIndex: Int) {
+        if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = image.imageId
+            imageDataOne = nil
+            self.imageSceneOne.image = UIImage(data: image.imageData!)
+        }
+        if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = image.imageId
+            imageDataTwo = nil
+            self.imageSceneTwo.image = UIImage(data: image.imageData!)
+        }
+    }
+    
     func backString(strText: String, imageIndex:Int) {
         if imageIndex == 1 {
+            defaultImageOne = strText
+            customImageOne = nil
+            imageDataOne = nil
             self.imageSceneOne.image = UIImage(named: strText)
         }
         if imageIndex == 2 {
+            defaultImageTwo = strText
+            customImageTwo = nil
+            imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(named: strText)
         }
     }
     
     func backImageFromGallery(data: NSData, imageIndex:Int ) {
         if imageIndex == 1 {
+            defaultImageOne = nil
+            customImageOne = nil
+            imageDataOne = data
             self.imageSceneOne.image = UIImage(data: data)
         }
         if imageIndex == 2 {
+            defaultImageTwo = nil
+            customImageTwo = nil
+            imageDataTwo = data
             self.imageSceneTwo.image = UIImage(data: data)
         }
     }
@@ -311,11 +428,56 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
             cell.labelID.text = "\(sequences[indexPath.row].sequenceId)"
             cell.labelName.text = "\(sequences[indexPath.row].sequenceName)"
             cell.address.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequences[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
-            if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
-                cell.imageOne.image = sceneImage
+            if let id = sequences[indexPath.row].sequenceImageOneCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageOne.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                            cell.imageOne.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageOne.image = UIImage(named: "lightBulb")
+                        }
+                    }
+                }else{
+                    if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                        cell.imageOne.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageOne.image = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                    cell.imageOne.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageOne.image = UIImage(named: "lightBulb")
+                }
             }
-            if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
-                cell.imageTwo.image = sceneImage
+            
+            if let id = sequences[indexPath.row].sequenceImageTwoCustom{
+                if let image = DatabaseImageController.shared.getImageById(id){
+                    if let data =  image.imageData {
+                        cell.imageTwo.image = UIImage(data: data)
+                    }else{
+                        if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                            cell.imageTwo.image = UIImage(named: defaultImage)
+                        }else{
+                            cell.imageTwo.image = UIImage(named: "lightBulb")
+                        }
+                    }
+                }else{
+                    if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                        cell.imageTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        cell.imageTwo.image = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                    cell.imageTwo.image = UIImage(named: defaultImage)
+                }else{
+                    cell.imageTwo.image = UIImage(named: "lightBulb")
+                }
             }
             return cell
         }
@@ -334,6 +496,17 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
         editCycle.text = "\(sequences[indexPath.row].sequenceCycles)"
         broadcastSwitch.on = sequences[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = sequences[indexPath.row].isLocalcast.boolValue
+        
+        if let levelId = sequences[indexPath.row].entityLevelId as? Int {
+            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+        }
+        if let zoneId = sequences[indexPath.row].sequenceZoneId as? Int {
+            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+        }
+        if let categoryId = sequences[indexPath.row].sequenceCategoryId as? Int {
+            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+        }
+        
         if let level = sequences[indexPath.row].entityLevel {
             btnLevel.setTitle(level, forState: UIControlState.Normal)
         }
@@ -343,11 +516,57 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
         if let category = sequences[indexPath.row].sequenceCategory {
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }
-        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageOne) {
-            imageSceneOne.image = sceneImage
+        
+        if let id = sequences[indexPath.row].sequenceImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneOne.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                        imageSceneOne.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneOne.image = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                    imageSceneOne.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneOne.image = UIImage(named: "lightBulb")
+                }
+            }
+        }else{
+            if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
+                imageSceneOne.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneOne.image = UIImage(named: "lightBulb")
+            }
         }
-        if let sceneImage = UIImage(data: sequences[indexPath.row].sequenceImageTwo) {
-            imageSceneTwo.image = sceneImage
+        
+        if let id = sequences[indexPath.row].sequenceImageTwoCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                if let data =  image.imageData {
+                    imageSceneTwo.image = UIImage(data: data)
+                }else{
+                    if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                        imageSceneTwo.image = UIImage(named: defaultImage)
+                    }else{
+                        imageSceneTwo.image = UIImage(named: "lightBulb")
+                    }
+                }
+            }else{
+                if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                    imageSceneTwo.image = UIImage(named: defaultImage)
+                }else{
+                    imageSceneTwo.image = UIImage(named: "lightBulb")
+                }
+            }
+        }else{
+            if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
+                imageSceneTwo.image = UIImage(named: defaultImage)
+            }else{
+                imageSceneTwo.image = UIImage(named: "lightBulb")
+            }
         }
     }
     
