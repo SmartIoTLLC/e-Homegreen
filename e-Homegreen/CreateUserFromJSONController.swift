@@ -303,6 +303,9 @@ class CreateUserFromJSONController: NSObject {
                 if let level = timer["entity_level"] as? String{
                     newTimer.entityLevel = level
                 }
+                if let levelId = timer["entity_level_id"] as? Int{
+                    newTimer.entityLevelId = levelId
+                }
                 if let isBroadcast = timer["is_broadcast"] as? Bool{
                     newTimer.isBroadcast = isBroadcast
                 }
@@ -312,18 +315,27 @@ class CreateUserFromJSONController: NSObject {
                 if let timerCategory = timer["timer_category"] as? String{
                     newTimer.timerCategory = timerCategory
                 }
+                if let timerCategoryId = timer["timer_category_id"] as? Int{
+                    newTimer.timerCategoryId = timerCategoryId
+                }
                 if let timerId = timer["timer_id"] as? Int{
                     newTimer.timerId = timerId
                 }
                 if let id = timer["id"] as? String{
                     newTimer.id = id
                 }
-//                if let timerImageOne = timer["timer_image_one"] as? NSData{
-//                    newTimer.timerImageOne = timerImageOne
-//                }
-//                if let timerImageTwo = timer["timer_image_two"] as? NSData{
-//                    newTimer.timerImageTwo = timerImageTwo
-//                }
+                if let timerImageOneCustom = timer["timer_image_one_custom"] as? String{
+                    newTimer.timerImageOneCustom = timerImageOneCustom
+                }
+                if let timerImageOneDefault = timer["timer_image_one_default"] as? String{
+                    newTimer.timerImageOneDefault = timerImageOneDefault
+                }
+                if let timerImageTwoCustom = timer["timer_image_two_custom"] as? String{
+                    newTimer.timerImageTwoCustom = timerImageTwoCustom
+                }
+                if let timerImageTwoDefault = timer["timer_image_two_default"] as? String{
+                    newTimer.timerImageTwoDefault = timerImageTwoDefault
+                }
                 if let timerName = timer["timer_name"] as? String{
                     newTimer.timerName = timerName
                 }
@@ -335,6 +347,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let timeZone = timer["time_zone"] as? String{
                     newTimer.timeZone = timeZone
+                }
+                if let timeZoneId = timer["time_zone_id"] as? Int{
+                    newTimer.timeZoneId = timeZoneId
                 }
                 newTimer.gateway = gateway
             }
@@ -350,6 +365,9 @@ class CreateUserFromJSONController: NSObject {
                 if let level = sequence["entity_level"] as? String{
                     newSecuence.entityLevel = level
                 }
+                if let levelId = sequence["entity_level_id"] as? Int{
+                    newSecuence.entityLevelId = levelId
+                }
                 if let isBroadcast = sequence["is_broadcast"] as? Bool{
                     newSecuence.isBroadcast = isBroadcast
                 }
@@ -359,23 +377,35 @@ class CreateUserFromJSONController: NSObject {
                 if let sequenceCategory = sequence["sequence_category"] as? String{
                     newSecuence.sequenceCategory = sequenceCategory
                 }
+                if let sequenceCategoryId = sequence["sequence_category_id"] as? Int{
+                    newSecuence.sequenceCategoryId = sequenceCategoryId
+                }
                 if let sequenceCycles = sequence["sequence_cycles"] as? Int{
                     newSecuence.sequenceCycles = sequenceCycles
                 }
                 if let sequenceId = sequence["sequence_id"] as? Int{
                     newSecuence.sequenceId = sequenceId
                 }
-//                if let sequenceImageOne = sequence["sequence_image_one"] as? NSData{
-//                    newSecuence.sequenceImageOne = sequenceImageOne
-//                }
-//                if let sequenceImageTwo = sequence["sequence_image_two"] as? NSData{
-//                    newSecuence.sequenceImageTwo = sequenceImageTwo
-//                }
+                if let sequenceImageOneCustom = sequence["sequence_image_one_custom"] as? String{
+                    newSecuence.sequenceImageOneCustom = sequenceImageOneCustom
+                }
+                if let sequenceImageOneDefault = sequence["sequence_image_one_default"] as? String{
+                    newSecuence.sequenceImageOneDefault = sequenceImageOneDefault
+                }
+                if let sequenceImageTwoCustom = sequence["sequence_image_two_custom"] as? String{
+                    newSecuence.sequenceImageTwoCustom = sequenceImageTwoCustom
+                }
+                if let sequenceImageTwoDefault = sequence["sequence_image_two_default"] as? String{
+                    newSecuence.sequenceImageTwoDefault = sequenceImageTwoDefault
+                }
                 if let sequenceName = sequence["sequence_name"] as? String{
                     newSecuence.sequenceName = sequenceName
                 }
                 if let sequenceZone = sequence["sequence_zone"] as? String{
                     newSecuence.sequenceZone = sequenceZone
+                }
+                if let sequenceZoneId = sequence["sequence_zone_id"] as? Int{
+                    newSecuence.sequenceZoneId = sequenceZoneId
                 }
                 newSecuence.gateway = gateway
             }
@@ -391,6 +421,9 @@ class CreateUserFromJSONController: NSObject {
                 if let level = flag["entity_level"] as? String{
                     newFlag.entityLevel = level
                 }
+                if let levelId = flag["entity_level_id"] as? Int{
+                    newFlag.entityLevelId = levelId
+                }
                 if let isBroadcast = flag["is_broadcast"] as? Bool{
                     newFlag.isBroadcast = isBroadcast
                 }
@@ -399,6 +432,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let flagCategory = flag["flag_category"] as? String{
                     newFlag.flagCategory = flagCategory
+                }
+                if let flagCategoryId = flag["flag_category_id"] as? Int{
+                    newFlag.flagCategoryId = flagCategoryId
                 }
                 if let flagId = flag["flag_id"] as? Int{
                     newFlag.flagId = flagId
@@ -421,6 +457,9 @@ class CreateUserFromJSONController: NSObject {
                 if let flagZone = flag["flag_zone"] as? String{
                     newFlag.flagZone = flagZone
                 }
+                if let flagZoneId = flag["flag_zone_id"] as? Int{
+                    newFlag.flagZoneId = flagZoneId
+                }
                 if let setState = flag["set_state"] as? Int{
                     newFlag.setState = setState
                 }
@@ -438,6 +477,9 @@ class CreateUserFromJSONController: NSObject {
                 if let level = scene["entity_level"] as? String{
                     newScene.entityLevel = level
                 }
+                if let levelId = scene["entity_level_id"] as? Int{
+                    newScene.entityLevelId = levelId
+                }
                 if let isBroadcast = scene["is_broadcast"] as? Bool{
                     newScene.isBroadcast = isBroadcast
                 }
@@ -446,6 +488,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let sceneCategory = scene["scene_category"] as? String{
                     newScene.sceneCategory = sceneCategory
+                }
+                if let sceneCategoryId = scene["scene_category_id"] as? Int{
+                    newScene.sceneCategoryId = sceneCategoryId
                 }
                 if let sceneId = scene["scene_id"] as? Int{
                     newScene.sceneId = sceneId
@@ -468,6 +513,9 @@ class CreateUserFromJSONController: NSObject {
                 if let sceneZone = scene["scene_zone"] as? String{
                     newScene.sceneZone = sceneZone
                 }
+                if let sceneZoneId = scene["scene_zone_id"] as? Int{
+                    newScene.sceneZoneId = sceneZoneId
+                }
                 newScene.gateway = gateway
             }
         }
@@ -482,18 +530,30 @@ class CreateUserFromJSONController: NSObject {
                 if let level = event["entity_level"] as? String{
                     newEvent.entityLevel = level
                 }
+                if let levelId = event["entity_level_id"] as? Int{
+                    newEvent.entityLevelId = levelId
+                }
                 if let eventCategory = event["event_category"] as? String{
                     newEvent.eventCategory = eventCategory
+                }
+                if let eventCategoryId = event["event_category_id"] as? Int{
+                    newEvent.eventCategoryId = eventCategoryId
                 }
                 if let eventId = event["event_id"] as? Int{
                     newEvent.eventId = eventId
                 }
-//                if let eventImageOne = event["event_image_one"] as? NSData{
-//                    newEvent.eventImageOne = eventImageOne
-//                }
-//                if let eventImageTwo = event["event_image_two"] as? NSData{
-//                    newEvent.eventImageTwo = eventImageTwo
-//                }
+                if let eventImageOneCustom = event["event_image_one_custom"] as? String{
+                    newEvent.eventImageOneCustom = eventImageOneCustom
+                }
+                if let eventImageOneDefault = event["event_image_one_default"] as? String{
+                    newEvent.eventImageOneDefault = eventImageOneDefault
+                }
+                if let eventImageTwoCustom = event["event_image_two_custom"] as? String{
+                    newEvent.eventImageTwoCustom = eventImageTwoCustom
+                }
+                if let eventImageTwoDefault = event["event_image_two_default"] as? String{
+                    newEvent.eventImageTwoDefault = eventImageTwoDefault
+                }
                 if let eventName = event["event_name"] as? String{
                     newEvent.eventName = eventName
                 }

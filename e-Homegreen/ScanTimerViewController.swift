@@ -31,6 +31,10 @@ class ScanTimerViewController: PopoverVC {
     @IBOutlet weak var btnType: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
     
+    @IBOutlet weak var fromTextField: UITextField!
+    @IBOutlet weak var toTextField: UITextField!
+    
+    
     @IBOutlet weak var timerTableView: UITableView!
     
     var appDel:AppDelegate!
@@ -65,6 +69,9 @@ class ScanTimerViewController: PopoverVC {
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         updateTimerList()
+        
+        fromTextField.inputAccessoryView = CustomToolBar()
+        toTextField.inputAccessoryView = CustomToolBar()
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
@@ -301,6 +308,10 @@ class ScanTimerViewController: PopoverVC {
                 }
             }
         }
+    }
+    
+    @IBAction func scanTimers(sender: AnyObject) {
+        
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
