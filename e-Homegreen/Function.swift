@@ -374,6 +374,7 @@ class Function {
         message[message.count-1] = 0x10
         return message
     }
+
 }
 
 //MARK:- CURTAIN
@@ -542,9 +543,6 @@ extension Function {
 }
 //MARK:- FLAG
 extension Function {
-    //   **************************************************************************************
-    //   **************************************   FLAG   **************************************
-    //   **************************************************************************************
     static func setFlag (address:[Byte], id:Byte, command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -586,9 +584,6 @@ extension Function {
 }
 //MARK:- EVENT
 extension Function {
-    //   **************************************************************************************
-    //   **************************************   EVENT   *************************************
-    //   **************************************************************************************
     static func runEvent (address:[Byte], id:Byte) -> [Byte]{
         var messageInfo:[Byte] = [id, 0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -626,9 +621,6 @@ extension Function {
 }
 //MARK:- SEQUENCE
 extension Function {
-    //   **************************************************************************************
-    //   *************************************   SEQUENCE   ***********************************
-    //   **************************************************************************************
     static func setSequence (address:[Byte], id:Int, cycle:Byte) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
@@ -651,9 +643,6 @@ extension Function {
 }
 //MARK:- SCENE
 extension Function {
-    //   **************************************************************************************
-    //   **************************************   SCENE   *************************************
-    //   **************************************************************************************
     static func setScene (address:[Byte], id:Int) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
@@ -676,9 +665,28 @@ extension Function {
 }
 //MARK:- TIMER
 extension Function {
-    //   **************************************************************************************
-    //   **************************************   TIMER   *************************************
-    //   **************************************************************************************
+    static func getTimerName(address:[Byte], timerId: Byte) -> [Byte]{
+        var messageInfo:[Byte] = []
+        var message:[Byte] = []
+        messageInfo = [timerId]
+        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count % 256)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x15
+        
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
     static func getTimerParametar (address:[Byte], id:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -698,6 +706,7 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
+    
     // 01 is Start, EF is Cancel, EE is Pause, ED is Resume
     static func getCancelTimerStatus(address:[Byte], id:Byte, command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id, command]
@@ -759,10 +768,6 @@ extension Function {
 }
 //MARK:- ANALOG/ DIGITAL INPUT
 extension Function {
-    //   **************************************************************************************
-    //   ****************************   ANALOG/ DIGITAL INPUT   *******************************
-    //   **************************************************************************************
-    
     static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -782,7 +787,6 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-    
     // Set interface parametar
     static func setInterfaceParametar (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel, isEnabled]
@@ -803,7 +807,6 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-    
     // Set interface parametar
     static func getInterfaceStatus (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel, isEnabled]
@@ -934,10 +937,6 @@ extension Function {
 }
 //MARK:- SECURITY
 extension Function {
-    //   **************************************************************************************
-    //   ************************************   SECURITY   ************************************
-    //   **************************************************************************************
-    
     //   1, 2, 3, 4, 5, 6, 7, 8, 9, 0B (star), 1A (hash)
     // Checked. OK.
     // Send command (password) for disarm
@@ -967,7 +966,6 @@ extension Function {
 //        let messageLength = 7 + messageInfo.count + 2
 //        var messageNew = [0xAA, Byte(messageInfo.count % 256)] + address + [0x05, 0x11] + messageInfo + [self.getChkByte(byteArray:message), 0x10]
     }
-    
     // Checked. OK.
     static func getCurrentSecurityMode (address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0x02, 0x00]
@@ -1052,12 +1050,8 @@ extension Function {
     }
     
 }
-
+//MARK:- ANALOG/DIGITAL OUTPUT
 extension Function {
-    //   **************************************************************************************
-    //   ****************************   ANALOG/ DIGITAL OUPUT   *******************************
-    //   **************************************************************************************
-    
     //    static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
     //        let messageInfo:[Byte] = [0x04, panic]
     //        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1119,9 +1113,6 @@ extension Function {
 }
 //MARK:- PC Control
 extension Function {
-    //   **************************************************************************************
-    //   **********************************   PC Control   ************************************
-    //   **************************************************************************************
     //TODO:- Nije uradjeno report PC state
     static func reportPCState (address:[Byte], text:String) -> [Byte]{
         let textByteArray = [Byte](text.utf8)
@@ -1252,8 +1243,7 @@ extension Function {
         message[message.count-1] = 0x10
         return message
     }
-    
-    
+
     static func sendNotification (address:[Byte], text:String, notificationType: NotificationType, notificationPosition: NotificationPosition, delayTime: Int, displayTime: Int) -> [Byte]{
         
         let textByteArray = [Byte](text.utf8)

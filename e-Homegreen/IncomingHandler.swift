@@ -18,24 +18,7 @@ class IncomingHandler: NSObject {
     var error:NSError? = nil
     var host:String = ""
     var port:UInt16 = 0
-    deinit {
-        print("UPRAVO SE GASIM - class IncomingHandler: NSObject")
-    }
-    func commonCommand(dataFrame:DataFrame) {
-        
-    }
-    func gatewayControllerCommand(dataFrame:DataFrame) {
-        
-    }
-    func lightingControlCommandDimmerRelayModule(dataFrame:DataFrame) {
-        
-    }
-    func climateControlCommand(dataFrame:DataFrame) {
-        
-    }
-    func analogDigitalInputCommand(dataFrame:DataFrame) {
-        
-    }
+    
     init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
         CLSLogv("Log awesomeness %@", getVaList(["\(byteArrayToHandle)"]))
@@ -48,23 +31,6 @@ class IncomingHandler: NSObject {
         // NEW
         guard let dataFrame = DataFrame(byteArray: byteArrayToHandle) else {
             return
-        }
-        switch dataFrame.CID1 {
-        case .CommonComand:
-            commonCommand(dataFrame)
-        case .GatewayControllerCommand:
-            gatewayControllerCommand(dataFrame)
-        case .LightingControlCommandDimmerRelayModule:
-            lightingControlCommandDimmerRelayModule(dataFrame)
-        case .ClimateControlCommand:
-            climateControlCommand(dataFrame)
-        case .AnalogDigitalInputCommand:
-            analogDigitalInputCommand(dataFrame)
-        case .AnalogDigitalOutputCommand: return
-        case .SwitchPanelCommand: return
-        case .LCDPanelCommands: return
-        case .IRCommand: return
-        case .PCControllerCommand: return
         }
         //  Checks if there are any gateways
         if gateways != [] {
@@ -121,9 +87,6 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
                     self.ackACstatus(self.byteArray)
                 }
-                //                if byteArray[5] == 0xF4 && byteArray[6] == 0x {
-                //
-                //                }
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
                     self.ackADICmdGetInterfaceParametar(self.byteArray)
                 }
@@ -131,12 +94,6 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
                     self.ackADICmdGetInterfaceStatus(self.byteArray)
                 }
-                //                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 { // OVO NE MOZE OVAKO DA BUDE
-                //                        self.ackADICmdGetInterfaceStatus(self.byteArray)
-                //                    }
-                //                    if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
-                //
-                //                    }
                 
                 // - Ovo je izgleda u redu
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
@@ -172,21 +129,49 @@ class IncomingHandler: NSObject {
                     //FIXME: Popravi me
 //                    self.ackTimerStatus(self.byteArray)
                 }
+                
+                // Timer name
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x15 {
+                    self.getTimerName(self.byteArray)
+                }
+                
             }
         }
     }
     
-    func refreshEvent(byteArray:[Byte]){
-        let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
-        NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
+    // MARK - Timers
+    func getTimerName(byteArray: [Byte]) {
+//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
+            // Miminum is 12b
+            if byteArray.count > 12 {
+                var name:String = ""
+                for var j = 9; j < 9+Int(byteArray[8]); j++ {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                }
+                let timerId = byteArray[7]
+                let timerCategoryId = 0//byteArray[9]
+                let timerZoneId = 0 //byteArray[10]
+                let timerLevelId = 0 //byteArray[11]
+                let timerType = 0 //byteArray[13]
+                
+                
+                if gateways.count > 0 {
+                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                }else{
+                    return
+                }
+                
+                let data = ["timerId":Int(timerId)]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
+            }
+//        }
     }
-    
     func parseTimerStatus(dataFrame:DataFrame) {
         fetchEntities("Timer")
         // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
-//        guard dataFrame.INFO.count == 74 else {
-//            return
-//        }
+        //        guard dataFrame.INFO.count == 74 else {
+        //            return
+        //        }
         // For loop in data frame INFO block
         for var i = 1; i <= 16; i++ {
             for item in timers {
@@ -202,6 +187,15 @@ class IncomingHandler: NSObject {
         }
         CoreDataController.shahredInstance.saveChanges()
     }
+    
+    
+    
+    
+    func refreshEvent(byteArray:[Byte]){
+        let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
+        NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
+    }
+    
     func refreshSecurityStatus (byteArray:[Byte]) {
         
     }
@@ -217,36 +211,8 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func fetchZones() -> [Zone] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicate = NSPredicate(format: "location == %@", gateways[0].location)
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
-            return fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        return []
-    }
-    func fetchCategories() -> [Category] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "location == %@", gateways[0].location)
-        fetchRequest.predicate = predicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
-            return fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        return []
-    }
     
-    
+
     func ackACstatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
@@ -721,6 +687,7 @@ class IncomingHandler: NSObject {
             }
         }
     }
+    
     // MARK: - Get zones and categories
     func getZone(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
@@ -741,7 +708,7 @@ class IncomingHandler: NSObject {
                 }
 
                 var doesIdExist = false
-                let zones = fetchZones()
+                let zones = DatabaseHandler.sharedInstance.fetchZonesWithLocationId(gateways[0].location)
                 
                 for zone in zones {
                     if zone.id == NSNumber(integer: Int(id)) {
@@ -764,7 +731,6 @@ class IncomingHandler: NSObject {
             }
         }
     }
-    
     func getCategories(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
             var name:String = ""
@@ -786,7 +752,7 @@ class IncomingHandler: NSObject {
                 }
             }
             var doesIdExist = false
-            let categories = fetchCategories()
+            let categories = DatabaseHandler.sharedInstance.fetchCategoriesWithLocationId(self.gateways[0].location)
             
             for category in categories {
                 if category.id == NSNumber(integer: Int(id)) {
@@ -831,5 +797,71 @@ class IncomingHandler: NSObject {
         print("CID2: \(CID2)")
         print("INFO: \(INFO)")
     }
+    func addTimer(timerId: Int, timerName: String, address: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
+        var itExists = false
+        var existingTimer:Timer?
+        var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway)
+        if timerArray.count > 0 {
+            existingTimer = timerArray.first
+            itExists = true
+        }
+        if !itExists {
+            let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
+            timer.timerId = timerId
+            timer.timerName = timerName
+            timer.address = address
+            
+            timer.timerImageOneCustom = nil
+            timer.timerImageTwoCustom = nil
+            
+            timer.timerImageOneDefault = "15 Timer - CLock - 00"
+            timer.timerImageTwoDefault = "15 Timer - CLock - 01"
+            
+            timer.entityLevelId = levelId
+            timer.timeZoneId = selectedZoneId
+            timer.timerCategoryId = categoryId
+            
+            timer.isBroadcast = true
+            timer.isLocalcast = true
+            if let type = type, let timerType = TimerType(rawValue: type){
+                timer.type = timerType.description
+            }else{
+                timer.type = "Once"
+            }
+            timer.id = NSUUID().UUIDString
+            timer.entityLevel = ""
+            timer.timeZone = ""
+            timer.timerCategory = ""
+            timer.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+            
+        } else {
+            existingTimer!.timerId = timerId
+            existingTimer!.timerName = timerName
+            existingTimer!.address = address
+            
+            existingTimer!.timerImageOneCustom = nil
+            existingTimer!.timerImageTwoCustom = nil
+            
+            existingTimer!.timerImageOneDefault = "15 Timer - CLock - 00"
+            existingTimer!.timerImageTwoDefault = "15 Timer - CLock - 01"
+ 
+            existingTimer!.entityLevelId = levelId
+            existingTimer!.timeZoneId = selectedZoneId
+            existingTimer!.timerCategoryId = categoryId
+            
+            existingTimer!.isBroadcast = true
+            existingTimer!.isLocalcast = true
+            if let type = type, let timerType = TimerType(rawValue: type){
+                existingTimer!.type = timerType.description
+            }else{
+                existingTimer!.type = "Once"
+            }
+            existingTimer!.entityLevel = ""
+            existingTimer!.timeZone = ""
+            existingTimer!.timerCategory = ""
+            existingTimer!.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
 }
-

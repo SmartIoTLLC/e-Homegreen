@@ -215,6 +215,8 @@ struct UserDefaults {
     static let IsScaningDevice = "PLCDidFindDevice"
     static let IsScaningDeviceName = "PLCdidFindNameForDevice"
     static let IsScaningSensorParametars = "PLCDidFindSensorParametar"
+    static let IsScaningTimerNames = "PLCDidFindTimerName"
+    static let IsScaningTimerParameters = "PLCDidFindTimerParameters"
     static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
@@ -492,6 +494,7 @@ struct NotificationKey {
     static let DidReceiveDataForRepeatSendingHandler = "repeatSendingHandlerNotification"
     static let DidReceiveCategoryFromGateway = "kPLCDidFoundCategory"
     static let DidReceiveZoneFromGateway = "kPLCDidFoundCategory"
+    static let DidReceiveTimerFromGateway = "kPLCDidFoundTimer"
     
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"

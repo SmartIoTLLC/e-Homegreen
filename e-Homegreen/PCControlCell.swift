@@ -30,12 +30,12 @@ class PCControlCell: UICollectionViewCell {
             name += pc.gateway.location.name! + " "
         }
         if pc.parentZoneId != filterParametar.levelId{
-            if let zone = DatabaseHandler.returnZoneWithId(Int(pc.parentZoneId), location: pc.gateway.location), let nameOfZone = zone.name{
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.parentZoneId), location: pc.gateway.location), let nameOfZone = zone.name{
                 name +=  nameOfZone + " "
             }
         }
         if pc.zoneId != filterParametar.zoneId{
-            if let zone = DatabaseHandler.returnZoneWithId(Int(pc.zoneId), location: pc.gateway.location), let nameOfZone = zone.name {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.zoneId), location: pc.gateway.location), let nameOfZone = zone.name {
                 name +=  nameOfZone + " "
             }
         }

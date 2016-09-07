@@ -883,9 +883,9 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             }
             
             let isEnabledSwitch = devices[indexPath.row].isEnabled.boolValue
-            let levelToDisplay = DatabaseHandler.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)
-            let zoneToDisplay = DatabaseHandler.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location)
-            let categoryToDisplay = DatabaseHandler.returnCategoryWithIdForScanDevicesCell(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location)
+            let levelToDisplay = DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)
+            let zoneToDisplay = DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location)
+            let categoryToDisplay = DatabaseHandler.sharedInstance.returnCategoryWithIdForScanDevicesCell(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location)
             let zone = "Zone: \(levelToDisplay) Level: \(zoneToDisplay)"
             let category = "Category: \(categoryToDisplay)"
             let isVisibleSwitch = devices[indexPath.row].isVisible.boolValue
@@ -915,6 +915,10 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
+                
+                
+                
+                
                 self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
             }
             let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)

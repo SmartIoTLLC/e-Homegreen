@@ -40,7 +40,19 @@ class RepeatSendingHandler: NSObject {
         
         sendCommand()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetResponseNotification:", name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
+    }
+    
+    init(byteArray:[UInt8], gateway: Gateway) {
+        super.init()
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        self.byteArray = byteArray
+        self.gateway = gateway
+        
+        sendCommandForTimer()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
     }
     
     //   Did get response from gateway
@@ -85,8 +97,33 @@ class RepeatSendingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
         }
     }
-
-    deinit {
-        print("UPRAVO SE GASIM - class RepeatSendingHandler: NSObject")
+    
+    func sendCommandForTimer () {
+        if !didGetResponse {
+            if repeatCounter <= 4 {
+                if repeatCounter > 1 {
+                    self.delay = 1
+                }
+                SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
+                if let timer = didGetResponseTimer{
+                    didGetResponseTimer.invalidate()
+                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "sendCommand", userInfo: nil, repeats: false)
+                }else{
+                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "sendCommand", userInfo: nil, repeats: false)
+                }
+                repeatCounter += 1
+            } else {
+                didGetResponseTimer!.invalidate()
+                CoreDataController.shahredInstance.saveChanges()
+                NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
+            }
+        }else{
+            didGetResponseTimer!.invalidate()
+            CoreDataController.shahredInstance.saveChanges()
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveDataForRepeatSendingHandler, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self)
+        }
     }
+
 }

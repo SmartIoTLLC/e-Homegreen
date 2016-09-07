@@ -811,15 +811,15 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
                     return "\(device.name)"
                 } else {
-                    if let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name{
+                    if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name{
                         return "\(name) \(device.name)"
                     }else{
                         return "\(device.name)"
                     }
                 }
             } else {
-                if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
-                    if let zone2 = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name2 = zone2.name {
+                if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
+                    if let zone2 = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name2 = zone2.name {
                         return "\(name) \(name2) \(device.name)"
                     }else{
                         return "\(name) \(device.name)"
@@ -830,10 +830,10 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
             }
         } else {
             var text = "\(device.gateway.location.name!)"
-            if let zone = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), name = zone.name {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), name = zone.name {
                 text += " " + name
             }
-            if let zone = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name {
                 text += " " + name
             }
             text += " " + device.name

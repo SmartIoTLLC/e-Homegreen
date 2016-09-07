@@ -330,7 +330,7 @@ class ChatHandler {
             predicateArray.append(copmpoundPredicate)
         } else {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
-            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: DatabaseHandler.returnZoneIdWithName(onlyZoneName)))
+            let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: DatabaseHandler.sharedInstance.returnZoneIdWithName(onlyZoneName)))
 //            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", onlyZoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)

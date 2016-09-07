@@ -72,21 +72,21 @@ class ChangeDeviceParametarsVC: PopoverVC {
         txtFieldName.text = device.name
         lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
         lblChannel.text = "\(device.channel)"
-        level = DatabaseHandler.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
+        level = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location)
         if level != nil{
             btnLevel.setTitle(level!.name, forState: UIControlState.Normal)
         }else{
             btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         
-        zoneSelected = DatabaseHandler.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
+        zoneSelected = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location)
         if zoneSelected != nil{
             btnZone.setTitle(zoneSelected!.name, forState: UIControlState.Normal)
         }else{
             btnZone.setTitle("All", forState: UIControlState.Normal)
         }
         
-        let category = DatabaseHandler.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location)
+        let category = DatabaseHandler.sharedInstance.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location)
         if category != ""{
             btnCategory.setTitle(category, forState: UIControlState.Normal)
         }else{

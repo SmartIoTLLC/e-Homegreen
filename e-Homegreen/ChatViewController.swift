@@ -521,7 +521,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                 }
             } else if command == .SetZone {
                 if let zone = helper.getZone(message, isLevel: false) {
-                    if let level = DatabaseHandler.returnLevelWithId(Int(zone.level!), location: zone.location!) {
+                    if let level = DatabaseHandler.sharedInstance.returnLevelWithId(Int(zone.level!), location: zone.location!) {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
                         refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)

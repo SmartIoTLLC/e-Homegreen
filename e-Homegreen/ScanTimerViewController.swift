@@ -9,11 +9,36 @@
 import UIKit
 import CoreData
 
-enum TimerType:String{
-    case Once = "Once", Daily = "Daily", Monthly = "Monthly", Yearly = "Yearly", Hourly = "Hourly", Minutely = "Minutely", Timer = "Timer", Stopwatch = "Stopwatch/User"
+enum TimerType:Int{
+    case Once = 0, Daily, Monthly, Yearly, Hourly, Minutely , Timer , Stopwatch
     
+    var description: String {
+        switch self{
+        case Once:
+            return "Once"
+        case Daily:
+           return "Daily"
+        case Monthly:
+            return "Monthly"
+        case Yearly:
+            return "Yearly"
+        case Hourly:
+            return "Hourly"
+        case Minutely:
+            return "Minutely"
+        case Timer:
+            return "Timer"
+        case Stopwatch:
+            return "Stopwatch/User"
+        }
+    }
+    
+    static let timerInfoWithStringKey: [String:Int] = ["Once":0, "Daily":1, "Monthly":2, "Yearly":3, "Hourly":4, "Minutely":5, "Timer":6, "Stopwatch/User":7]
+    static let timerInfoWithIntKey: [Int:String] = [0:"Once", 1:"Daily", 2:"Monthly", 3:"Yearly", 4:"Hourly", 5:"Minutely", 6:"Timer", 7:"Stopwatch/User"]
     static let allItem:[TimerType] = [Once, Daily, Monthly, Yearly, Hourly, Minutely, Timer, Stopwatch]
 }
+
+
 
 class ScanTimerViewController: PopoverVC {
     
@@ -387,7 +412,7 @@ class ScanTimerViewController: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         for item in TimerType.allItem{
-            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
+            popoverList.append(PopOverItem(name: item.description, id: ""))
         }
         openPopover(sender, popOverList:popoverList)
     }
