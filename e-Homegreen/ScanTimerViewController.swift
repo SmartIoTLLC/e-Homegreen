@@ -314,6 +314,10 @@ class ScanTimerViewController: PopoverVC {
         
     }
     
+    @IBAction func clearRangeFields(sender: AnyObject) {
+        
+    }
+    
     @IBAction func btnRemove(sender: AnyObject) {
         if timers.count != 0 {
             for timer in timers {
