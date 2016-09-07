@@ -24,6 +24,9 @@ class ScanFlagViewController: PopoverVC {
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
     
+    @IBOutlet weak var fromTextField: UITextField!
+    @IBOutlet weak var toTextField: UITextField!
+    
     @IBOutlet weak var flagTableView: UITableView!
     
     var appDel:AppDelegate!
@@ -352,6 +355,14 @@ class ScanFlagViewController: PopoverVC {
             }
         }
         self.view.endEditing(true)
+    }
+    
+    @IBAction func scanFlag(sender: AnyObject) {
+        
+    }
+    
+    @IBAction func clearRangeFields(sender: AnyObject) {
+        
     }
     
     @IBAction func btnRemove(sender: AnyObject) {

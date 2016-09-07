@@ -25,6 +25,9 @@ class ScanEventsViewController: PopoverVC {
     @IBOutlet weak var btnLevel: CustomGradientButton!
     @IBOutlet weak var reportSwitch: UISwitch!
     
+    @IBOutlet weak var fromTextField: UITextField!
+    @IBOutlet weak var toTextField: UITextField!
+    
     @IBOutlet weak var eventTableView: UITableView!
     
     var appDel:AppDelegate!
@@ -350,6 +353,14 @@ class ScanEventsViewController: PopoverVC {
                 }
             }
         }
+    }
+    
+    @IBAction func scanEvents(sender: AnyObject) {
+        
+    }
+    
+    @IBAction func clearRangeFields(sender: AnyObject) {
+        
     }
 
     @IBAction func btnRemove(sender: AnyObject) {

@@ -24,6 +24,9 @@ class ScanScenesViewController: PopoverVC {
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
     
+    @IBOutlet weak var fromTextField: UITextField!
+    @IBOutlet weak var toTextField: UITextField!
+    
     @IBOutlet weak var sceneTableView: UITableView!
     
     var appDel:AppDelegate!
@@ -345,6 +348,14 @@ class ScanScenesViewController: PopoverVC {
             }
         }
         self.view.endEditing(true)
+    }
+    
+    @IBAction func scanScenes(sender: AnyObject) {
+        
+    }
+    
+    @IBAction func clearRangeFields(sender: AnyObject) {
+        
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
