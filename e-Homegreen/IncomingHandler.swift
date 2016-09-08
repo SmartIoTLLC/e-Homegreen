@@ -149,13 +149,30 @@ class IncomingHandler: NSObject {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 let timerId = byteArray[7]
-                let timerCategoryId = 0     //byteArray[9]
-                let timerZoneId = 0         //byteArray[10]
-                let timerLevelId = 0        //byteArray[11]
-                let timerType = 0           //byteArray[13]
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                }else{
+                    return
+                }
+                
+                let data = ["timerId":Int(timerId)]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
+            }
+        }
+    }
+    func getTimerParameters(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
+            // Miminum is 14b
+            if byteArray.count > 14 {
+                let timerId = byteArray[7]
+                let timerCategoryId = byteArray[8]
+                let timerZoneId = byteArray[9]
+                let timerLevelId = byteArray[10]
+                let timerType = byteArray[12]
+                
+                if gateways.count > 0 {
+                    self.addTimer(Int(timerId), timerName: nil, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
                 }else{
                     return
                 }
@@ -790,7 +807,7 @@ class IncomingHandler: NSObject {
         print("CID2: \(CID2)")
         print("INFO: \(INFO)")
     }
-    func addTimer(timerId: Int, timerName: String, address: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
+    func addTimer(timerId: Int, timerName: String?, address: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
         var itExists = false
         var existingTimer:Timer?
         var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway)
@@ -801,7 +818,10 @@ class IncomingHandler: NSObject {
         if !itExists {
             let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
             timer.timerId = timerId
-            timer.timerName = timerName
+            if let timerName = timerName {
+                timer.timerName = timerName
+            }
+            timer.timerName = ""
             timer.address = address
             
             timer.timerImageOneCustom = nil
@@ -829,31 +849,30 @@ class IncomingHandler: NSObject {
             CoreDataController.shahredInstance.saveChanges()
             
         } else {
-            existingTimer!.timerId = timerId
-            existingTimer!.timerName = timerName
-            existingTimer!.address = address
+            // existingTimer!.timerId = timerId
+            // existingTimer!.address = address
             
-            existingTimer!.timerImageOneCustom = nil
-            existingTimer!.timerImageTwoCustom = nil
+            // existingTimer!.timerImageOneCustom = nil
+            // existingTimer!.timerImageTwoCustom = nil
             
-            existingTimer!.timerImageOneDefault = "15 Timer - CLock - 00"
-            existingTimer!.timerImageTwoDefault = "15 Timer - CLock - 01"
+            // existingTimer!.timerImageOneDefault = "15 Timer - CLock - 00"
+            // existingTimer!.timerImageTwoDefault = "15 Timer - CLock - 01"
  
             existingTimer!.entityLevelId = levelId
             existingTimer!.timeZoneId = selectedZoneId
             existingTimer!.timerCategoryId = categoryId
             
-            existingTimer!.isBroadcast = true
-            existingTimer!.isLocalcast = true
+            // existingTimer!.isBroadcast = true
+            // existingTimer!.isLocalcast = true
             if let type = type, let timerType = TimerType(rawValue: type){
                 existingTimer!.type = timerType.description
             }else{
                 existingTimer!.type = "Once"
             }
-            existingTimer!.entityLevel = ""
-            existingTimer!.timeZone = ""
-            existingTimer!.timerCategory = ""
-            existingTimer!.gateway = gateway
+            // existingTimer!.entityLevel = ""
+            // existingTimer!.timeZone = ""
+            // existingTimer!.timerCategory = ""
+            // existingTimer!.gateway = gateway
             CoreDataController.shahredInstance.saveChanges()
         }
     }
