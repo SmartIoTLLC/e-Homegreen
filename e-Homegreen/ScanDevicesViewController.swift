@@ -38,12 +38,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var pbFD:ProgressBarVC?     // Device
     var pbFN:ProgressBarVC?     // Names
     
-    deinit {
-        print("deinit - ScanDevicesViewController.swift")
-//        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
-//        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDevice)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,12 +72,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         findNamesBtn.addGestureRecognizer(tapGestureFindNames)
         findNamesBtn.addGestureRecognizer(longGestureFindNames)
     }
-    
     override func sendFilterParametar(filterParametar: FilterItem) {
         self.filterParametar = filterParametar
         refreshDeviceList()
     }
-    
     override func sendSearchBarText(text: String) {
         refreshDeviceList()
         if !text.isEmpty{
@@ -99,12 +91,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
         
     }
-    
     override func viewDidAppear(animated: Bool) {
         removeObservers()
         addObservers()
     }
-    
     override func viewWillDisappear(animated: Bool) {
         removeObservers()
     }

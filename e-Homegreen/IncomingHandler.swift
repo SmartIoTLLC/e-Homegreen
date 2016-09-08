@@ -141,7 +141,7 @@ class IncomingHandler: NSObject {
     
     // MARK - Timers
     func getTimerName(byteArray: [Byte]) {
-//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
             // Miminum is 12b
             if byteArray.count > 12 {
                 var name:String = ""
@@ -149,11 +149,10 @@ class IncomingHandler: NSObject {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 let timerId = byteArray[7]
-                let timerCategoryId = 0//byteArray[9]
-                let timerZoneId = 0 //byteArray[10]
-                let timerLevelId = 0 //byteArray[11]
-                let timerType = 0 //byteArray[13]
-                
+                let timerCategoryId = 0     //byteArray[9]
+                let timerZoneId = 0         //byteArray[10]
+                let timerLevelId = 0        //byteArray[11]
+                let timerType = 0           //byteArray[13]
                 
                 if gateways.count > 0 {
                     self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
@@ -164,7 +163,7 @@ class IncomingHandler: NSObject {
                 let data = ["timerId":Int(timerId)]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
             }
-//        }
+        }
     }
     func parseTimerStatus(dataFrame:DataFrame) {
         fetchEntities("Timer")
@@ -188,14 +187,10 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    
-    
-    
     func refreshEvent(byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
     }
-    
     func refreshSecurityStatus (byteArray:[Byte]) {
         
     }
@@ -211,8 +206,6 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    
-
     func ackACstatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for var i = 0; i < devices.count; i++ {
