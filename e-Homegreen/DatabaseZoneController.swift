@@ -14,14 +14,13 @@ class DatabaseZoneController: NSObject {
     static let shared = DatabaseZoneController()
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    func getLevels(location:Location) -> [Zone]{
+    func getLevelsByLocation(location:Location) -> [Zone]{
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "level == %@", NSNumber(integer: 0))]
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
-        predicateArray.append(NSPredicate(format: "location.name == %@", location.name!))
-        predicateArray.append(NSPredicate(format: "location.user == %@", location.user!))
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "location == %@", location))
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
@@ -29,38 +28,38 @@ class DatabaseZoneController: NSObject {
         do {
             let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
             return results
-        } catch _ as NSError {
+        } catch {
             
         }
-        return []
+        return[]
     }
     
-    func getZonesOnLevel(location:Location, levelId:Int) -> [Zone]{
+    func getZoneByLevel(location:Location, parentZone:Zone) -> [Zone]{
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(bool: true))]
+        
+        var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
         predicateArray.append(NSPredicate(format: "level != %@", NSNumber(integer: 0)))
-        predicateArray.append(NSPredicate(format: "location.user == %@", location.user!))
-
-        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(integer: levelId)))
-
+        predicateArray.append(NSPredicate(format: "level == %@", parentZone.id!))
+        
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
             return results
-        } catch _ as NSError {
+        } catch{
             
         }
         return []
+        
     }
     
     func getZoneById(id:Int, location:Location) -> Zone? {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        //NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
         predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))        
@@ -74,13 +73,6 @@ class DatabaseZoneController: NSObject {
             }
         } catch _ as NSError {
             
-        }
-        return nil
-    }
-    
-    func getZone(objectId:NSManagedObjectID) -> Zone?{
-        if let zone = appDel.managedObjectContext?.objectWithID(objectId) as? Zone {
-            return zone
         }
         return nil
     }
