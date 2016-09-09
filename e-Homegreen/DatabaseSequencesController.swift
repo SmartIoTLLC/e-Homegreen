@@ -61,7 +61,7 @@ class DatabaseSequencesController: NSObject {
             itExists = true
         }
         if !itExists {
-            let sequence = NSEntityDescription.insertNewObjectForEntityForName("Secuence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
+            let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
             sequence.sequenceId = sequenceId
             sequence.sequenceName = sequenceName
             sequence.address = moduleAddress
