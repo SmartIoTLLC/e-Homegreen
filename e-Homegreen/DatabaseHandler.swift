@@ -257,11 +257,12 @@ class DatabaseHandler: NSObject {
         return []
     }
     
-    func fetchTimerWithId(timerId: Int, gateway: Gateway) -> [Timer]{
+    func fetchTimerWithId(timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer]{
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Timer")
         let predicateLocation = NSPredicate(format: "timerId == %@", NSNumber(integer: timerId))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway])
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
         do {

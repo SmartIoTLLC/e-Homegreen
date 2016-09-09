@@ -135,6 +135,36 @@ class IncomingHandler: NSObject {
                     self.getTimerName(self.byteArray)
                 }
                 
+                // Timer parametar
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 {
+                    
+                }
+                
+                // Scene name and parametar
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x08 {
+                    self.getSceneNameAndParametar(self.byteArray)
+                }
+                
+                // Sequences name and parametar
+                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0A {
+                    self.getSequencesNameAndParametar(self.byteArray)
+                }
+                
+                // Events name and parametar
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x08 {
+                    self.getEventNameAndParametar(self.byteArray)
+                }
+                
+                // Flags name
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
+                    self.getTimerName(self.byteArray)
+                }
+                
+                // Flags parametar
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
+                    
+                }
+                
             }
         }
     }
@@ -145,13 +175,14 @@ class IncomingHandler: NSObject {
             // Miminum is 12b
             if byteArray.count > 12 {
                 var name:String = ""
-                for var j = 9; j < 9+Int(byteArray[8]); j++ {
-                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
+                for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
                 }
                 let timerId = byteArray[7]
+                let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                    self.addTimer(Int(timerId), timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
                 }else{
                     return
                 }
@@ -171,8 +202,10 @@ class IncomingHandler: NSObject {
                 let timerLevelId = byteArray[10]
                 let timerType = byteArray[12]
                 
+                let moduleAddress = Int(byteArray[4])
+                
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: nil, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                    self.addTimer(Int(timerId), timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
                 }else{
                     return
                 }
@@ -202,6 +235,99 @@ class IncomingHandler: NSObject {
             }
         }
         CoreDataController.shahredInstance.saveChanges()
+    }
+    
+    // MARK - Scenes
+    func getSceneNameAndParametar(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
+            // Miminum is 80b
+            if byteArray.count > 80 {
+                
+                let sceneId = Int(byteArray[7])
+                let sceneZoneId = Int(byteArray[74])
+                let sceneLevelId = Int(byteArray[75])
+                let sceneCategoryId = Int(byteArray[76])
+                
+                var name:String = ""
+                for j in 78 ..< 78+Int(byteArray[77]) {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  scene name
+                }
+                
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseScenesController.shared.createScene(sceneId, sceneName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: sceneLevelId, zoneId: sceneZoneId, categoryId: sceneCategoryId)
+                }else{
+                    return
+                }
+                
+                let data = ["sceneId":sceneId]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSceneFromGateway, object: self, userInfo: data)
+            }
+        }
+    }
+    
+    // MARK - Sequences
+    func getSequencesNameAndParametar(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSequencesNameAndParameters) {
+            // Miminum is 82b
+            if byteArray.count > 82 {
+                
+                let bytes:[UInt8] = [byteArray[9], byteArray[8]]
+                let id = UnsafePointer<Int>(bytes).memory
+                
+                let sequenceId = Int(byteArray[7])
+                let sequenceZoneId = Int(byteArray[76])
+                let sequenceLevelId = Int(byteArray[77])
+                let sequenceCategoryId = Int(byteArray[78])
+                
+                var name:String = ""
+                for j in 80 ..< 80+Int(byteArray[79]) {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  sequences name
+                }
+                
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseSequencesController.shared.createSequence(id, sequenceName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: sequenceLevelId, zoneId: sequenceZoneId, categoryId: sequenceCategoryId)
+                }else{
+                    return
+                }
+                
+                let data = ["sequenceId":sequenceId]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSequenceFromGateway, object: self, userInfo: data)
+            }
+        }
+    }
+    
+    // MARK - Event
+    func getEventNameAndParametar(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningEventsNameAndParameters) {
+            // Miminum is 14b
+            if byteArray.count > 14 {
+                
+                let eventId = Int(byteArray[7])
+                let eventZoneId = Int(byteArray[10])
+                let eventLevelId = Int(byteArray[11])
+                let eventCategoryId = Int(byteArray[9])
+                
+                var name:String = ""
+                for j in 13 ..< 13+Int(byteArray[12]) {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  event name
+                }
+                
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseEventsController.shared.createEvent(eventId, eventName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: eventLevelId, zoneId: eventZoneId, categoryId: eventCategoryId)
+                }else{
+                    return
+                }
+                
+                let data = ["eventId":eventId]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveEventFromGateway, object: self, userInfo: data)
+            }
+        }
     }
     
     func refreshEvent(byteArray:[Byte]){
@@ -702,7 +828,7 @@ class IncomingHandler: NSObject {
     func getZone(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
             // Miminum is 12, but that is also doubtful...
-            if byteArray.count > 12 {
+            if byteArray.count >= 12 {
                 var name:String = ""
                 for var j = 11; j < 11+Int(byteArray[10]); j++ {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
@@ -732,7 +858,7 @@ class IncomingHandler: NSObject {
                 if doesIdExist {
                 } else {
                     let zone = Zone(context: appDel.managedObjectContext!)
-                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)), 1)
+                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption, zone.isVisible) = (NSNumber(integer: Int(id)), name, NSNumber(integer:Int(level)), description, gateways[0].location, NSNumber(integer: Int(id)), 1, true)
                     CoreDataController.shahredInstance.saveChanges()
                 }
                 
@@ -774,7 +900,7 @@ class IncomingHandler: NSObject {
             }
             if !doesIdExist {
                 let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)), 3)
+                (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption, category.isVisible) = (NSNumber(integer: Int(id)), name, description, gateways[0].location, NSNumber(integer: Int(id)), 3, true)
                 CoreDataController.shahredInstance.saveChanges()
             }
             
@@ -807,10 +933,10 @@ class IncomingHandler: NSObject {
         print("CID2: \(CID2)")
         print("INFO: \(INFO)")
     }
-    func addTimer(timerId: Int, timerName: String?, address: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
+    func addTimer(timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
         var itExists = false
         var existingTimer:Timer?
-        var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway)
+        var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway, moduleAddress: moduleAddress)
         if timerArray.count > 0 {
             existingTimer = timerArray.first
             itExists = true
@@ -822,7 +948,7 @@ class IncomingHandler: NSObject {
                 timer.timerName = timerName
             }
             timer.timerName = ""
-            timer.address = address
+            timer.address = moduleAddress
             
             timer.timerImageOneCustom = nil
             timer.timerImageTwoCustom = nil

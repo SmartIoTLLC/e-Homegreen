@@ -110,6 +110,7 @@ class EditCategoryViewController: CommonXIBTransitionVC {
                             categoryNew.location = location
                             categoryNew.orderId = idValid
                             categoryNew.allowOption = 3
+                            categoryNew.isVisible = true
                         }
                     }
                 }else if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
