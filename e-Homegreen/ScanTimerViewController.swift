@@ -38,8 +38,6 @@ enum TimerType:Int{
     static let allItem:[TimerType] = [Once, Daily, Monthly, Yearly, Hourly, Minutely, Timer, Stopwatch]
 }
 
-
-
 class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
@@ -128,7 +126,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         btnType.tag = 4
         
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidFindDeviceName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.timerParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -415,11 +414,16 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
     var timerNameTimer:NSTimer?
-    var timesRepeatedCounter:Int = 0
+    var timerParameterTimer: NSTimer?
+    var timesRepeatedCounterNames:Int = 0
+    var timesRepeatedCounterParameters: Int = 0
     var arrayOfNamesToBeSearched = [Int]()
     var indexOfNamesToBeSearched = 0
+    var arrayOfParametersToBeSearched = [Int]()
+    var indexOfParametersToBeSearched = 0
     var alertController:UIAlertController?
     var progressBarScreenTimerNames: ProgressBarVC?
+//    var progressBarScreenTimerParameters: ProgressBarVC?
     var shouldFindTimerParameters = false
     var addressOne = 0x00
     var addressTwo = 0x00
@@ -444,10 +448,10 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             var from = 0
             var to = 250
             if fromTextField.text != nil && fromTextField.text != ""{
-                from = Int(fromTextField.text!)!-1
+                from = Int(fromTextField.text!)!
             }
             if toTextField.text != nil && toTextField.text != ""{
-                to = Int(toTextField.text!)!-1
+                to = Int(toTextField.text!)!
             }
             for i in from...to{
                 arrayOfNamesToBeSearched.append(i)
@@ -457,8 +461,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             UIApplication.sharedApplication().idleTimerDisabled = true
             if arrayOfNamesToBeSearched.count != 0{
                 let firstTimerIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
-                timesRepeatedCounter = 0
-                progressBarScreenTimerNames = ProgressBarVC(title: "Finding names", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
+                timesRepeatedCounterNames = 0
+                progressBarScreenTimerNames = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
                 self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
                 timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
@@ -482,8 +486,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         guard let timerIndex = timer.userInfo as? Int else{
             return
         }
-        timesRepeatedCounter += 1
-        if timesRepeatedCounter < 3 {
+        timesRepeatedCounterNames += 1
+        if timesRepeatedCounterNames < 3 {
             timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: timerIndex, repeats: false)
             NSLog("func checkIfDeviceDidGetName \(timerIndex)")
             sendCommandForFindingNameWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
@@ -492,17 +496,18 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 if indexOfTimerIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                     indexOfNamesToBeSearched = indexOfTimerIndexInArrayOfNamesToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfTimerIndexInArrayOfNamesToBeSearched+1]
-                    timesRepeatedCounter = 0
+                    timesRepeatedCounterNames = 0
                     timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetName \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 }else{
                     dismissScaningControls()
                 }
+            }else{
+                dismissScaningControls()
             }
         }
     }
-    
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (notification:NSNotification) {
@@ -521,7 +526,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
                 let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
                 
-                timesRepeatedCounter = 0
+                timesRepeatedCounterNames = 0
                 timerNameTimer?.invalidate()
                 timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
@@ -531,20 +536,18 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
         }
     }
-    
     func sendCommandForFindingNameWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: Function.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
     }
-//    func sendComandForSensorZone(deviceIndex deviceIndex:Int) {
-//        setProgressBarParametarsForFindingSensorParametar(deviceIndex)
-//        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway {
-//            let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
-//            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
-//        }
-//    }
+    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametarsForFindingParameters(timerId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
+    }
     func setProgressBarParametarsForFindingNames (timerId:Int) {
+        print("Progresbar for Names: \(timerId)")
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = progressBarScreenTimerNames?.lblHowMuchOf, let _ = progressBarScreenTimerNames?.lblPercentage, let _ = progressBarScreenTimerNames?.progressView{
                 progressBarScreenTimerNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
@@ -554,133 +557,126 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     
-//    // MARK: - Sensor parametar
-//    func findParametarsForSensor() {
-//        do {
-//            arrayOfSensorAdresses = []
-//            // Go through all devices and store only those which are in defined range and which ar of type:HumanInterfaceSeries, Gateway, AnalogInput or DigitalInput
-//            // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
-//            // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
-//            // arrayOfSensorAdresses = [0, 2]
-//            var from = 1
-//            var to = 500
-//            if rangeFrom.text != nil && rangeFrom.text != ""{
-//                from = Int(rangeFrom.text!)!-1
-//            }
-//            if rangeTo.text != nil && rangeTo.text != ""{
-//                to = Int(rangeTo.text!)!-1
-//            }
-//            
-//            for i in from...to{
-//                if i < devices.count{
-//                    if devices[i].controlType == ControlType.Sensor
-//                        || devices[i].controlType == ControlType.IntelligentSwitch
-//                        || devices[i].controlType == ControlType.Gateway
-//                        || devices[i].controlType == ControlType.AnalogInput
-//                        || devices[i].controlType == ControlType.DigitalInput{
-//                        
-//                        arrayOfSensorAdresses.append(i)
-//                    }
-//                }
-//            }
-//            
-//            UIApplication.sharedApplication().idleTimerDisabled = true
-//            if arrayOfSensorAdresses.count != 0{
-//                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSensorParametars)
-//                let index = 0
-//                let deviceIndex = arrayOfSensorAdresses[index]
-//                timesRepeatedCounter = 0
-//                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
-//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-//                    self.pbFN = ProgressBarVC(title: "Finding sensor parametars", percentage: Float(1)/Float(self.arrayOfSensorAdresses.count), howMuchOf: "1 / \(self.arrayOfSensorAdresses.count)")
-//                    self.pbFN?.delegate = self
-//                    self.presentViewController(self.pbFN!, animated: true, completion: nil)
-//                    self.sendComandForSensorZone(deviceIndex: deviceIndex)
-//                }
-//            }
-//        } catch let error as InputError {
-//            alertController("Error", message: error.description)
-//        } catch {
-//            alertController("Error", message: "Something went wrong.")
-//        }
-//    }
-//    func checkIfSensorDidGotParametar (timer:NSTimer) {
-//        if let deviceIndex = timer.userInfo as? Int {
-//            // if name not found search again
-//            if devices[deviceIndex].zoneId == 0 {
-//                timesRepeatedCounter += 1
-//                if timesRepeatedCounter < 3 { // Try again
-//                    deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
-//                    sendComandForSensorZone(deviceIndex: deviceIndex)
-//                }else{
-//                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){
-//                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
-//                            indexOfSensorAddresses = indexOfDeviceIndexInArrayOfSensorAdresses+1
-//                            let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfDeviceIndexInArrayOfSensorAdresses+1]
-//                            timesRepeatedCounter = 0
-//                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-//                            NSLog("func checkIfSensorDidGotParametar \(nextDeviceIndexToBeSearched)")
-//                            sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
-//                        }else{
-//                            dismissScaningControls()
-//                        }
-//                    }else{
-//                        dismissScaningControls()
-//                    }
-//                }
-//            }else{
-//                if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){
-//                    if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
-//                        indexOfSensorAddresses = indexOfDeviceIndexInArrayOfSensorAdresses+1
-//                        let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfDeviceIndexInArrayOfSensorAdresses+1]
-//                        timesRepeatedCounter = 0
-//                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-//                        NSLog("func checkIfSensorDidGotParametar \(nextDeviceIndexToBeSearched)")
-//                        sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
-//                    }else{
-//                        dismissScaningControls()
-//                    }
-//                }else{
-//                    dismissScaningControls()
-//                }
-//            }
-//        }
-//    }
-//    func sensorParametarReceivedFromPLC (notification:NSNotification) {
-//        let parameter = NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSensorParametars)
-//        if parameter {
-//            if let info = notification.userInfo! as? [String:Int] {
-//                if let deviceIndex = info["sensorIndexForFoundParametar"] {
-//                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-//                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
-//                            indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfSensorAdresses+1
-//                            let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfNamesToBeSearched]
-//                            
-//                            timesRepeatedCounter = 0
-//                            deviceNameTimer?.invalidate()
-//                            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-//                            NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
-//                            sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
-//                        }else{
-//                            findSensorParametar = false
-//                            dismissScaningControls()
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
-//        var counterOfAttempts = 0
-//        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-//            if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
-//                pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
-//                pbFN?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)*100) + " %"
-//                pbFN?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSensorAdresses.count)
-//            }
-//        }
-//    }
-    
+    // MARK: - Timer parameters
+    func findParametarsForTimer() {
+        progressBarScreenTimerNames?.dissmissProgressBar()
+        progressBarScreenTimerNames = nil
+        do {
+            arrayOfParametersToBeSearched = [Int]()
+            indexOfParametersToBeSearched = 0
+            
+            let timers = DatabaseHandler.sharedInstance.fetchTimers()
+            
+            var from = 0
+            var to = 250
+            if fromTextField.text != nil && fromTextField.text != ""{
+                from = Int(fromTextField.text!)!
+            }
+            if toTextField.text != nil && toTextField.text != ""{
+                to = Int(toTextField.text!)!
+            }
+            
+            for i in from...to{
+                if i <= timers.count{
+                        arrayOfParametersToBeSearched.append(i)
+                }
+            }
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerParameters)
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfParametersToBeSearched.count != 0{
+                let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                progressBarScreenTimerNames = nil
+                progressBarScreenTimerNames = ProgressBarVC(title: "Finding timer parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
+                progressBarScreenTimerNames?.delegate = self
+                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
+                timerParameterTimer?.invalidate()
+                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                NSLog("func findNames \(parameterIndex)")
+                sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from FindParameter")
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    func checkIfTimerDidGetParametar (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let timerIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounterParameters += 1
+        if timesRepeatedCounterParameters < 3 {
+            timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: timerIndex, repeats: false)
+            NSLog("func checkIfDeviceDidGetParameter \(timerIndex)")
+            sendCommandForFindingParameterWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            print("Command sent for parameter from CheckIfTimerDidGetParameter (repeat \(timesRepeatedCounterParameters))")
+        }else{
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfTimerIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                    indexOfParametersToBeSearched = indexOfTimerIndexInArrayOfParametersToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfTimerIndexInArrayOfParametersToBeSearched+1]
+                    timesRepeatedCounterParameters = 0
+                    timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfDeviceDidGetParameter \(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
+                }else{
+                    shouldFindTimerParameters = false
+                    dismissScaningControls()
+                }
+            }
+        }
+    }
+    func timerParametarReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let timerIndex = info["timerId"] else{
+                return
+            }
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
+                let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                timerParameterTimer?.invalidate()
+                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
+            }else{
+                shouldFindTimerParameters = false
+                dismissScaningControls()
+            }
+        }
+    }
+    func setProgressBarParametarsForFindingParameters (timerId:Int) {
+        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+            if let _ = progressBarScreenTimerNames?.lblHowMuchOf {
+                if let _ = progressBarScreenTimerNames?.lblPercentage{
+                    if let _ = progressBarScreenTimerNames?.progressView{
+                            print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+                            progressBarScreenTimerNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1) / \(arrayOfParametersToBeSearched.count)"
+                            progressBarScreenTimerNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)*100) + " %"
+                            progressBarScreenTimerNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)
+                    }
+                }
+            }
+        }
+    }
     
     // Helpers
     func progressBarDidPressedExit() {
@@ -688,25 +684,24 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         dismissScaningControls()
     }
     func dismissScaningControls() {
-        timesRepeatedCounter = 0
-        //   For finding names
+        timesRepeatedCounterNames = 0
+        timesRepeatedCounterParameters = 0
         timerNameTimer?.invalidate()
-        
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningDeviceName)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSensorParametars)
-        progressBarScreenTimerNames?.dissmissProgressBar()
-        
-        //   For finding devices
-        
+        timerParameterTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        progressBarScreenTimerNames!.dissmissProgressBar()
+
         arrayOfNamesToBeSearched = [Int]()
         indexOfNamesToBeSearched = 0
-        
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
-//        if !findSensorParametar {
-//            UIApplication.sharedApplication().idleTimerDisabled = false
-//        } else {
-//            findParametarsForSensor()
-//        }
+        arrayOfParametersToBeSearched = [Int]()
+        indexOfParametersToBeSearched = 0
+        if !shouldFindTimerParameters {
+            UIApplication.sharedApplication().idleTimerDisabled = false
+            refreshTimerList()
+        } else {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanTimerViewController.findParametarsForTimer), userInfo: nil, repeats: false)
+        }
     }
     func alertController (title:String, message:String) {
         alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -885,7 +880,6 @@ extension ScanTimerViewController: UITableViewDataSource {
         return [button]
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(timers[indexPath.row])

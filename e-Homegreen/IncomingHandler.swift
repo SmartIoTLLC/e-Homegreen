@@ -134,6 +134,10 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x15 {
                     self.getTimerName(self.byteArray)
                 }
+                // Timer parameters
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 {
+                    self.getTimerParameters(self.byteArray)
+                }
                 
             }
         }
@@ -151,7 +155,7 @@ class IncomingHandler: NSObject {
                 let timerId = byteArray[7]
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[5]), gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                    self.addTimer(Int(timerId), timerName: name, address:Int(byteArray[4]), gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
                 }else{
                     return
                 }
@@ -162,7 +166,7 @@ class IncomingHandler: NSObject {
         }
     }
     func getTimerParameters(byteArray: [Byte]) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
             // Miminum is 14b
             if byteArray.count > 14 {
                 let timerId = byteArray[7]
@@ -172,13 +176,13 @@ class IncomingHandler: NSObject {
                 let timerType = byteArray[12]
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: nil, address:Int(byteArray[5]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                    self.addTimer(Int(timerId), timerName: nil, address:Int(byteArray[4]), gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
                 }else{
                     return
                 }
                 
                 let data = ["timerId":Int(timerId)]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerParameterFromGateway, object: self, userInfo: data)
             }
         }
     }
@@ -820,8 +824,9 @@ class IncomingHandler: NSObject {
             timer.timerId = timerId
             if let timerName = timerName {
                 timer.timerName = timerName
+            }else{
+                timer.timerName = ""
             }
-            timer.timerName = ""
             timer.address = address
             
             timer.timerImageOneCustom = nil

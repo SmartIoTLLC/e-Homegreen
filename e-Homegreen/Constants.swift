@@ -495,6 +495,7 @@ struct NotificationKey {
     static let DidReceiveCategoryFromGateway = "kPLCDidFoundCategory"
     static let DidReceiveZoneFromGateway = "kPLCDidFoundCategory"
     static let DidReceiveTimerFromGateway = "kPLCDidFoundTimer"
+    static let DidReceiveTimerParameterFromGateway = "kPLCDidFoundTimerParameter"
     
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"
