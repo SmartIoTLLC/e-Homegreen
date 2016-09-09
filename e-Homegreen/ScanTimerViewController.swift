@@ -429,6 +429,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     var addressTwo = 0x00
     var addressThree = 0x00
     
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findNames() {
         do {
             arrayOfNamesToBeSearched = [Int]()
@@ -475,7 +476,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             alertController("Error", message: "Something went wrong.")
         }
     }
-    
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
     func checkIfTimerDidGetName (timer:NSTimer) {
@@ -536,15 +536,11 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
         }
     }
+    // Sends byteArray to PLC
     func sendCommandForFindingNameWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: Function.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
-    }
-    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
-        setProgressBarParametarsForFindingParameters(timerId)
-        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingNames (timerId:Int) {
         print("Progresbar for Names: \(timerId)")
@@ -558,6 +554,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     }
     
     // MARK: - Timer parameters
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
@@ -604,6 +601,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             alertController("Error", message: "Something went wrong.")
         }
     }
+    // Called from findParametarsForTimer or from it self.
+    // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
     func checkIfTimerDidGetParametar (timer:NSTimer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
@@ -635,6 +634,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
         }
     }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func timerParametarReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
             guard let info = notification.userInfo! as? [String:Int] else{
@@ -661,6 +662,12 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 dismissScaningControls()
             }
         }
+    }
+    // Sends byteArray to PLC
+    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametarsForFindingParameters(timerId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingParameters (timerId:Int) {
         if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name

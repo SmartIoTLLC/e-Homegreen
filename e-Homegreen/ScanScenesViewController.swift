@@ -375,7 +375,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     
-    // MARK: - FINDING NAMES FOR DEVICE
+    // MARK: - FINDING SCENES
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
     var scenesTimer:NSTimer?
     var timesRepeatedCounter:Int = 0
@@ -387,6 +387,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     var addressTwo = 0x00
     var addressThree = 0x00
     
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findScenes() {
         do {
             arrayOfScenesToBeSearched = [Int]()
@@ -432,9 +433,8 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             alertController("Error", message: "Something went wrong.")
         }
     }
-    
-    // Called from findNames or from it self.
-    // Checks which scene ID should be searched for and calls sendCommandForFindingNames for that specific scene id.
+    // Called from findScenes or from it self.
+    // Checks which scene ID should be searched for and calls sendCommandWithSceneAddress for that specific scene id.
     func checkIfSceneDidGetName (timer:NSTimer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
@@ -466,7 +466,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     // If message is received from PLC, notification is sent and notification calls this function.
-    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
+    // Checks whether there is next scene ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (notification:NSNotification) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else{
@@ -493,6 +493,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             }
         }
     }
+    // Sends byteArray to PLC
     func sendCommandWithSceneAddress(sceneId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametars(sceneId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
