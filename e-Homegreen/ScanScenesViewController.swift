@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanScenesViewController: PopoverVC {
+class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -64,6 +64,8 @@ class ScanScenesViewController: PopoverVC {
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
+        fromTextField.inputAccessoryView = CustomToolBar()
+        toTextField.inputAccessoryView = CustomToolBar()
         
         nameEdit.delegate = self
         
@@ -87,6 +89,9 @@ class ScanScenesViewController: PopoverVC {
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
+        
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanScenesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveSceneFromGateway, object: nil)
         
     }
     
@@ -351,7 +356,7 @@ class ScanScenesViewController: PopoverVC {
     }
     
     @IBAction func scanScenes(sender: AnyObject) {
-        
+        findScenes()
     }
     
     @IBAction func clearRangeFields(sender: AnyObject) {
@@ -369,6 +374,171 @@ class ScanScenesViewController: PopoverVC {
         self.view.endEditing(true)
     }
     
+    
+    // MARK: - FINDING NAMES FOR DEVICE
+    // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
+    var scenesTimer:NSTimer?
+    var timesRepeatedCounter:Int = 0
+    var arrayOfScenesToBeSearched = [Int]()
+    var indexOfScenesToBeSearched = 0
+    var alertController:UIAlertController?
+    var progressBarScreenScenes: ProgressBarVC?
+    var addressOne = 0x00
+    var addressTwo = 0x00
+    var addressThree = 0x00
+    
+    func findScenes() {
+        do {
+            arrayOfScenesToBeSearched = [Int]()
+            indexOfScenesToBeSearched = 0
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
+            
+            if devAddressOne.text != nil && devAddressOne.text != ""{
+                addressOne = Int(devAddressOne.text!)!
+            }
+            if devAddressTwo.text != nil && devAddressTwo.text != ""{
+                addressTwo = Int(devAddressTwo.text!)!
+            }
+            if devAddressThree.text != nil && devAddressThree.text != ""{
+                addressThree = Int(devAddressThree.text!)!
+            }
+            var from = 0
+            var to = 250
+            if fromTextField.text != nil && fromTextField.text != ""{
+                from = Int(fromTextField.text!)!
+            }
+            if toTextField.text != nil && toTextField.text != ""{
+                to = Int(toTextField.text!)!
+            }
+            for i in from...to{
+                arrayOfScenesToBeSearched.append(i)
+            }
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfScenesToBeSearched.count != 0{
+                let firstSceneIndexThatDontHaveName = arrayOfScenesToBeSearched[indexOfScenesToBeSearched]
+                timesRepeatedCounter = 0
+                progressBarScreenScenes = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfScenesToBeSearched.count), howMuchOf: "1 / \(arrayOfScenesToBeSearched.count)")
+                progressBarScreenScenes?.delegate = self
+                self.presentViewController(progressBarScreenScenes!, animated: true, completion: nil)
+                scenesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: firstSceneIndexThatDontHaveName, repeats: false)
+                NSLog("func findNames \(firstSceneIndexThatDontHaveName)")
+                sendCommandWithSceneAddress(firstSceneIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    
+    // Called from findNames or from it self.
+    // Checks which scene ID should be searched for and calls sendCommandForFindingNames for that specific scene id.
+    func checkIfSceneDidGetName (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let sceneIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounter += 1
+        if timesRepeatedCounter < 3 {
+            scenesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: sceneIndex, repeats: false)
+            NSLog("func checkIfSceneDidGetName \(sceneIndex)")
+            sendCommandWithSceneAddress(sceneIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+        }else{
+            if let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(sceneIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfScenesToBeSearched+1 < arrayOfScenesToBeSearched.count{ // if next exists
+                    indexOfScenesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
+                    let nextSceneIndexToBeSearched = arrayOfScenesToBeSearched[indexOfScenesToBeSearched]
+                    timesRepeatedCounter = 0
+                    scenesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfSceneDidGetName \(nextSceneIndexToBeSearched)")
+                    sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
+    func nameReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let timerIndex = info["sceneId"] else{
+                return
+            }
+            guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            if indexOfSceneIndexInArrayOfNamesToBeSearched+1 < arrayOfScenesToBeSearched.count{ // if next exists
+                indexOfScenesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
+                let nextSceneIndexToBeSearched = arrayOfScenesToBeSearched[indexOfScenesToBeSearched]
+                
+                timesRepeatedCounter = 0
+                scenesTimer?.invalidate()
+                scenesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
+                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSceneIndexToBeSearched)")
+                sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    func sendCommandWithSceneAddress(sceneId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametars(sceneId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getSceneNameAndParametar(address, sceneId: UInt8(sceneId)) , gateway: self.gateway)
+    }
+    func setProgressBarParametars (sceneId:Int) {
+        if let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(sceneId){
+            if let _ = progressBarScreenScenes?.lblHowMuchOf, let _ = progressBarScreenScenes?.lblPercentage, let _ = progressBarScreenScenes?.progressView{
+                progressBarScreenScenes?.lblHowMuchOf.text = "\(indexOfSceneIndexInArrayOfNamesToBeSearched+1) / \(arrayOfScenesToBeSearched.count)"
+                progressBarScreenScenes?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfSceneIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfScenesToBeSearched.count)*100) + " %"
+                progressBarScreenScenes?.progressView.progress = Float(indexOfSceneIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfScenesToBeSearched.count)
+            }
+        }
+    }
+    
+    // Helpers
+    func progressBarDidPressedExit() {
+        dismissScaningControls()
+    }
+    func dismissScaningControls() {
+        timesRepeatedCounter = 0
+        scenesTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSceneNameAndParameters)
+        progressBarScreenScenes!.dissmissProgressBar()
+        
+        arrayOfScenesToBeSearched = [Int]()
+        indexOfScenesToBeSearched = 0
+        UIApplication.sharedApplication().idleTimerDisabled = false
+        refreshSceneList()
+    }
+    func alertController (title:String, message:String) {
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        alertController!.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            // ...
+        }
+        alertController!.addAction(OKAction)
+        
+        self.presentViewController(alertController!, animated: true) {
+            // ...
+        }
+    }
 }
 
 extension ScanScenesViewController: SceneGalleryDelegate{
@@ -580,7 +750,7 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         return scenes.count
     }
     
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in

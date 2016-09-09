@@ -832,7 +832,7 @@ class IncomingHandler: NSObject {
     func getZone(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
             // Miminum is 12, but that is also doubtful...
-            if byteArray.count >= 12 {
+            if byteArray.count > 12 {
                 var name:String = ""
                 for var j = 11; j < 11+Int(byteArray[10]); j++ {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
