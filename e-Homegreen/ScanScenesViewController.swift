@@ -472,10 +472,10 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             guard let info = notification.userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["sceneId"] else{
+            guard let sceneIndex = info["sceneId"] else{
                 return
             }
-            guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(sceneIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             

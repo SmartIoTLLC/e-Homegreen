@@ -320,12 +320,14 @@ class IncomingHandler: NSObject {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  event name
                 }
                 
-                let moduleAddress = Int(byteArray[4])
-                
-                if gateways.count > 0 {
-                    DatabaseEventsController.shared.createEvent(eventId, eventName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: eventLevelId, zoneId: eventZoneId, categoryId: eventCategoryId)
-                }else{
-                    return
+                if name.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "")) != "" {
+                    let moduleAddress = Int(byteArray[4])
+                    
+                    if gateways.count > 0 {
+                        DatabaseEventsController.shared.createEvent(eventId, eventName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: eventLevelId, zoneId: eventZoneId, categoryId: eventCategoryId)
+                    }else{
+                        return
+                    }
                 }
                 
                 let data = ["eventId":eventId]

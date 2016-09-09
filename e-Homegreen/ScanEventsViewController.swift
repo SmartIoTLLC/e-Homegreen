@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanEventsViewController: PopoverVC {
+class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -65,7 +65,8 @@ class ScanEventsViewController: PopoverVC {
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
-        
+        fromTextField.inputAccessoryView = CustomToolBar()
+        toTextField.inputAccessoryView = CustomToolBar()
         nameEdit.delegate = self
         
         imageSceneOne.userInteractionEnabled = true
@@ -89,7 +90,8 @@ class ScanEventsViewController: PopoverVC {
         btnZone.tag = 2
         btnCategory.tag = 3
         
-        // Do any additional setup after loading the view.
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveEventFromGateway, object: nil)
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -356,7 +358,7 @@ class ScanEventsViewController: PopoverVC {
     }
     
     @IBAction func scanEvents(sender: AnyObject) {
-        
+        findEvents()
     }
     
     @IBAction func clearRangeFields(sender: AnyObject) {
@@ -371,6 +373,170 @@ class ScanEventsViewController: PopoverVC {
             CoreDataController.shahredInstance.saveChanges()
             refreshEventList()
             self.view.endEditing(true)
+        }
+    }
+    
+    // MARK: - FINDING EVENTS
+    // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
+    var eventsTimer:NSTimer?
+    var timesRepeatedCounter:Int = 0
+    var arrayOfEventsToBeSearched = [Int]()
+    var indexOfEventsToBeSearched = 0
+    var alertController:UIAlertController?
+    var progressBarScreenEvents: ProgressBarVC?
+    var addressOne = 0x00
+    var addressTwo = 0x00
+    var addressThree = 0x00
+    
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
+    func findEvents() {
+        do {
+            arrayOfEventsToBeSearched = [Int]()
+            indexOfEventsToBeSearched = 0
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+            
+            if devAddressOne.text != nil && devAddressOne.text != ""{
+                addressOne = Int(devAddressOne.text!)!
+            }
+            if devAddressTwo.text != nil && devAddressTwo.text != ""{
+                addressTwo = Int(devAddressTwo.text!)!
+            }
+            if devAddressThree.text != nil && devAddressThree.text != ""{
+                addressThree = Int(devAddressThree.text!)!
+            }
+            var from = 0
+            var to = 250
+            if fromTextField.text != nil && fromTextField.text != ""{
+                from = Int(fromTextField.text!)!
+            }
+            if toTextField.text != nil && toTextField.text != ""{
+                to = Int(toTextField.text!)!
+            }
+            for i in from...to{
+                arrayOfEventsToBeSearched.append(i)
+            }
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfEventsToBeSearched.count != 0{
+                let firstEventIndexThatDontHaveName = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
+                timesRepeatedCounter = 0
+                progressBarScreenEvents = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfEventsToBeSearched.count), howMuchOf: "1 / \(arrayOfEventsToBeSearched.count)")
+                progressBarScreenEvents?.delegate = self
+                self.presentViewController(progressBarScreenEvents!, animated: true, completion: nil)
+                eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: firstEventIndexThatDontHaveName, repeats: false)
+                NSLog("func findNames \(firstEventIndexThatDontHaveName)")
+                sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    // Called from findEvents or from it self.
+    // Checks which sequence ID should be searched for and calls sendCommandWithEventAddress for that specific sequence id.
+    func checkIfEventDidGetName (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let eventIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounter += 1
+        if timesRepeatedCounter < 3 {
+            eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: eventIndex, repeats: false)
+            NSLog("func checkIfEventDidGetName \(eventIndex)")
+            sendCommandWithEventAddress(eventIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+        }else{
+            if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(eventIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfEventsToBeSearched+1 < arrayOfEventsToBeSearched.count{ // if next exists
+                    indexOfEventsToBeSearched = indexOfEventIndexInArrayOfNamesToBeSearched+1
+                    let nextEventIndexToBeSearched = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
+                    timesRepeatedCounter = 0
+                    eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfEventDidGetName \(nextEventIndexToBeSearched)")
+                    sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
+    func nameReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningEventsNameAndParameters) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let timerIndex = info["eventId"] else{
+                return
+            }
+            guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(timerIndex) else{
+                return
+            }
+            
+            if indexOfEventIndexInArrayOfNamesToBeSearched+1 < arrayOfEventsToBeSearched.count{ // if next exists
+                indexOfEventsToBeSearched = indexOfEventIndexInArrayOfNamesToBeSearched+1
+                let nextEventIndexToBeSearched = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
+                
+                timesRepeatedCounter = 0
+                eventsTimer?.invalidate()
+                eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
+                sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    func sendCommandWithEventAddress(eventId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametars(eventId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getEventNameAndParametar(address, eventId: UInt8(eventId)), gateway: self.gateway)
+    }
+    func setProgressBarParametars (eventId:Int) {
+        if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(eventId){
+            if let _ = progressBarScreenEvents?.lblHowMuchOf, let _ = progressBarScreenEvents?.lblPercentage, let _ = progressBarScreenEvents?.progressView{
+                progressBarScreenEvents?.lblHowMuchOf.text = "\(indexOfEventIndexInArrayOfNamesToBeSearched+1) / \(arrayOfEventsToBeSearched.count)"
+                progressBarScreenEvents?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfEventIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfEventsToBeSearched.count)*100) + " %"
+                progressBarScreenEvents?.progressView.progress = Float(indexOfEventIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfEventsToBeSearched.count)
+            }
+        }
+    }
+    
+    // Helpers
+    func progressBarDidPressedExit() {
+        dismissScaningControls()
+    }
+    func dismissScaningControls() {
+        timesRepeatedCounter = 0
+        eventsTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        progressBarScreenEvents!.dissmissProgressBar()
+        
+        arrayOfEventsToBeSearched = [Int]()
+        indexOfEventsToBeSearched = 0
+        UIApplication.sharedApplication().idleTimerDisabled = false
+        refreshEventList()
+    }
+    func alertController (title:String, message:String) {
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        alertController!.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            // ...
+        }
+        alertController!.addAction(OKAction)
+        
+        self.presentViewController(alertController!, animated: true) {
+            // ...
         }
     }
 }

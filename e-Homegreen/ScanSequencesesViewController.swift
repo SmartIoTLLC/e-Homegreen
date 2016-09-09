@@ -428,7 +428,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenSequences!, animated: true, completion: nil)
                 sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: firstSequenceIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstSequenceIndexThatDontHaveName)")
-                sendCommandWithSceneAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
             alertController("Error", message: error.description)
@@ -437,29 +437,29 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     // Called from findSequences or from it self.
-    // Checks which sequence ID should be searched for and calls sendCommandWithSceneAddress for that specific sequence id.
+    // Checks which sequence ID should be searched for and calls sendCommandWithSequenceAddress for that specific sequence id.
     func checkIfSequenceDidGetName (timer:NSTimer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
         // If three times reached, search for next timer ID if it exists
-        guard let sceneIndex = timer.userInfo as? Int else{
+        guard let sequenceIndex = timer.userInfo as? Int else{
             return
         }
         timesRepeatedCounter += 1
         if timesRepeatedCounter < 3 {
-            sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: sceneIndex, repeats: false)
-            NSLog("func checkIfSceneDidGetName \(sceneIndex)")
-            sendCommandWithSceneAddress(sceneIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: sequenceIndex, repeats: false)
+            NSLog("func checkIfSceneDidGetName \(sequenceIndex)")
+            sendCommandWithSequenceAddress(sequenceIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
         }else{
-            if let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(sceneIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(sequenceIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfSequencesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
-                    indexOfSequencesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
+                    indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
                     let nextSceneIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
                     timesRepeatedCounter = 0
                     sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
                     NSLog("func checkIfSceneDidGetName \(nextSceneIndexToBeSearched)")
-                    sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    sendCommandWithSequenceAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 }else{
                     dismissScaningControls()
                 }
@@ -471,42 +471,42 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSequencesNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["sceneId"] else{
+            guard let timerIndex = info["sequenceId"] else{
                 return
             }
-            guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
-            if indexOfSceneIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
-                indexOfSequencesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
-                let nextSceneIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
+            if indexOfSequenceIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
+                indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
+                let nextSequenceIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
                 
                 timesRepeatedCounter = 0
                 sequencesTimer?.invalidate()
-                sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
-                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSceneIndexToBeSearched)")
-                sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSequenceIndexToBeSearched, repeats: false)
+                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSequenceIndexToBeSearched)")
+                sendCommandWithSequenceAddress(nextSequenceIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }else{
                 dismissScaningControls()
             }
         }
     }
-    func sendCommandWithSceneAddress(sceneId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
-        setProgressBarParametars(sceneId)
+    func sendCommandWithSequenceAddress(sequenceId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametars(sequenceId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getSequenceNameAndParametar(address, sequenceId: UInt8(sceneId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: Function.getSequenceNameAndParametar(address, sequenceId: UInt8(sequenceId)) , gateway: self.gateway)
     }
-    func setProgressBarParametars (sceneId:Int) {
-        if let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(sceneId){
+    func setProgressBarParametars (sequenceId:Int) {
+        if let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(sequenceId){
             if let _ = progressBarScreenSequences?.lblHowMuchOf, let _ = progressBarScreenSequences?.lblPercentage, let _ = progressBarScreenSequences?.progressView{
-                progressBarScreenSequences?.lblHowMuchOf.text = "\(indexOfSceneIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSequencesToBeSearched.count)"
-                progressBarScreenSequences?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfSceneIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSequencesToBeSearched.count)*100) + " %"
-                progressBarScreenSequences?.progressView.progress = Float(indexOfSceneIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSequencesToBeSearched.count)
+                progressBarScreenSequences?.lblHowMuchOf.text = "\(indexOfSequenceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSequencesToBeSearched.count)"
+                progressBarScreenSequences?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfSequenceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSequencesToBeSearched.count)*100) + " %"
+                progressBarScreenSequences?.progressView.progress = Float(indexOfSequenceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfSequencesToBeSearched.count)
             }
         }
     }
@@ -518,7 +518,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         sequencesTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSceneNameAndParameters)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
         progressBarScreenSequences!.dissmissProgressBar()
         
         arrayOfSequencesToBeSearched = [Int]()
