@@ -161,12 +161,12 @@ class IncomingHandler: NSObject {
                 
                 // Flags name
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
-                    self.getTimerName(self.byteArray)
+                    self.getFlagName(self.byteArray)
                 }
                 
                 // Flags parametar
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
-                    
+                    self.getFlagParameters(self.byteArray)
                 }
                 
             }

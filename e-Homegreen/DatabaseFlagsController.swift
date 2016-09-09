@@ -103,7 +103,7 @@ class DatabaseFlagsController: NSObject {
     }
     
     func fetchFlagWithIdAndAddress(flagId: Int, gateway: Gateway, moduleAddress:Int) -> [Flag]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Flag))
         let predicateLocation = NSPredicate(format: "flagId == %@", NSNumber(integer: flagId))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
         let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
