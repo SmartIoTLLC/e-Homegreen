@@ -980,30 +980,20 @@ class IncomingHandler: NSObject {
             CoreDataController.shahredInstance.saveChanges()
             
         } else {
-            // existingTimer!.timerId = timerId
-            // existingTimer!.address = address
             
-            // existingTimer!.timerImageOneCustom = nil
-            // existingTimer!.timerImageTwoCustom = nil
-            
-            // existingTimer!.timerImageOneDefault = "15 Timer - CLock - 00"
-            // existingTimer!.timerImageTwoDefault = "15 Timer - CLock - 01"
+            if let timerName = timerName {
+                existingTimer!.timerName = timerName
+            }
  
             existingTimer!.entityLevelId = levelId
             existingTimer!.timeZoneId = selectedZoneId
             existingTimer!.timerCategoryId = categoryId
             
-            // existingTimer!.isBroadcast = true
-            // existingTimer!.isLocalcast = true
             if let type = type, let timerType = TimerType(rawValue: type){
                 existingTimer!.type = timerType.description
             }else{
                 existingTimer!.type = "Once"
             }
-            // existingTimer!.entityLevel = ""
-            // existingTimer!.timeZone = ""
-            // existingTimer!.timerCategory = ""
-            // existingTimer!.gateway = gateway
             CoreDataController.shahredInstance.saveChanges()
         }
     }

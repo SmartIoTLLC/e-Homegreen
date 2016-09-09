@@ -34,8 +34,8 @@ class DatabaseCategoryController: NSObject {
     
     func getCategoryById(id:Int, location:Location) -> Category? {
         let fetchRequest = NSFetchRequest(entityName: "Category")
-        
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(bool: true))]
+        //NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
         predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))
         
