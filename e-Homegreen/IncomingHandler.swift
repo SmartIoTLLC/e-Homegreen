@@ -336,6 +336,52 @@ class IncomingHandler: NSObject {
         }
     }
     
+    // MARK - Flags
+    func getFlagName(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagNames) {
+            // Miminum is 12b
+            if byteArray.count > 12 {
+                var name:String = ""
+                for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
+                }
+                let flagId = Int(byteArray[7]) - 100
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseFlagsController.shared.createFlag(flagId, flagName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                }else{
+                    return
+                }
+                
+                let data = ["flagId":flagId]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagFromGateway, object: self, userInfo: data)
+            }
+        }
+    }
+    func getFlagParameters(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
+            // Miminum is 14b
+            if byteArray.count > 14 {
+                let flagId = Int(byteArray[7]) - 100
+                let flagCategoryId = Int(byteArray[8])
+                let flagZoneId = Int(byteArray[9])
+                let flagLevelId = Int(byteArray[10])
+                
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseFlagsController.shared.createFlag(flagId, flagName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: flagLevelId, selectedZoneId: flagZoneId, categoryId: flagCategoryId)
+                }else{
+                    return
+                }
+                
+                let data = ["timerId":flagId]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagParameterFromGateway, object: self, userInfo: data)
+            }
+        }
+    }
+    
     func refreshEvent(byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
@@ -996,6 +1042,7 @@ class IncomingHandler: NSObject {
             }else{
                 existingTimer!.type = "Once"
             }
+            
             CoreDataController.shahredInstance.saveChanges()
         }
     }

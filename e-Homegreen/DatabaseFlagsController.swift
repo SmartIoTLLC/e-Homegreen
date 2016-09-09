@@ -53,5 +53,71 @@ class DatabaseFlagsController: NSObject {
         }
         return []
     }
+    
+    func createFlag(flagId: Int, flagName: String?, moduleAddress: Int, gateway: Gateway, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
+        var itExists = false
+        var existingFlag:Flag?
+        var flagArray = fetchFlagWithIdAndAddress(flagId, gateway: gateway, moduleAddress: moduleAddress)
+        if flagArray.count > 0 {
+            existingFlag = flagArray.first
+            itExists = true
+        }
+        if !itExists {
+            let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
+            flag.flagId = flagId
+            if let flagName = flagName {
+                flag.flagName = flagName
+            }else{
+                flag.flagName = ""
+            }
+            flag.address = moduleAddress
+            
+            flag.flagImageOneCustom = nil
+            flag.flagImageTwoCustom = nil
+            
+            flag.flagImageOneDefault = "16 Flag - Flag - 00"
+            flag.flagImageTwoDefault = "16 Flag - Flag - 01"
+            
+            flag.entityLevelId = levelId
+            flag.flagZoneId = selectedZoneId
+            flag.flagCategoryId = categoryId
+            
+            flag.isBroadcast = true
+            flag.isLocalcast = true
+            
+            flag.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+            
+        } else {
+            
+            if let flagName = flagName {
+                existingFlag!.flagName = flagName
+            }
+            
+            existingFlag!.entityLevelId = levelId
+            existingFlag!.flagZoneId = selectedZoneId
+            existingFlag!.flagCategoryId = categoryId
+            
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    
+    func fetchFlagWithIdAndAddress(flagId: Int, gateway: Gateway, moduleAddress:Int) -> [Flag]{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
+        let predicateLocation = NSPredicate(format: "flagId == %@", NSNumber(integer: flagId))
+        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
+        
+        fetchRequest.predicate = combinedPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
+            return fetResults!
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return []
+    }
 
 }

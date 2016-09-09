@@ -677,23 +677,23 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         
         if let levelId = scenes[indexPath.row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+        }else{
+            btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         if let zoneId = scenes[indexPath.row].sceneZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+            btnZone.setTitle(zoneSelected?.name, forState: UIControlState.Normal)
+        }else{
+            btnZone.setTitle("All", forState: UIControlState.Normal)
         }
         if let categoryId = scenes[indexPath.row].sceneCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
+            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+        }else{
+            btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
-        if let level = scenes[indexPath.row].entityLevel {
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
-        }
-        if let zone = scenes[indexPath.row].sceneZone {
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
-        }
-        if let category = scenes[indexPath.row].sceneCategory {
-            btnCategory.setTitle(category, forState: UIControlState.Normal)
-        }
         if let id = scenes[indexPath.row].sceneImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
