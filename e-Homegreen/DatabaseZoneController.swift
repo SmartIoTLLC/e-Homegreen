@@ -60,8 +60,8 @@ class DatabaseZoneController: NSObject {
     
     func getZoneById(id:Int, location:Location) -> Zone? {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(bool: true))]
+        //NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
         predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))        
         
