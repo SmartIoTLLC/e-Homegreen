@@ -678,22 +678,21 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
         
         if let levelId = sequences[indexPath.row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+        }else{
+            btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         if let zoneId = sequences[indexPath.row].sequenceZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+            btnZone.setTitle(zoneSelected?.name, forState: UIControlState.Normal)
+        }else{
+            btnZone.setTitle("All", forState: UIControlState.Normal)
         }
         if let categoryId = sequences[indexPath.row].sequenceCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-        }
-        
-        if let level = sequences[indexPath.row].entityLevel {
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
-        }
-        if let zone = sequences[indexPath.row].sequenceZone {
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
-        }
-        if let category = sequences[indexPath.row].sequenceCategory {
-            btnCategory.setTitle(category, forState: UIControlState.Normal)
+            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+        }else{
+            btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
         if let id = sequences[indexPath.row].sequenceImageOneCustom{
