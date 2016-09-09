@@ -150,6 +150,7 @@ class EditZoneViewController: PopoverVC {
                         zoneInsert.location = location
                         zoneInsert.orderId = id
                         zoneInsert.allowOption = 1
+                        zoneInsert.isVisible = true
                         zoneInsert.zoneDescription = levelTextField.text
                         if let level = level{
                             zoneInsert.level = level.id

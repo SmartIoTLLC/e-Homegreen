@@ -92,13 +92,12 @@ class FilterController: NSObject {
     func getLevelsByLocation(location:Location) -> [Zone]{
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
+        
         var predicateArray:[NSPredicate] = []
-        let predicateOne = NSPredicate(format: "level == %@", NSNumber(integer: 0))
-        predicateArray.append(predicateOne)
-        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        predicateArray.append(predicateTwo)
-        let predicateThree = NSPredicate(format: "location == %@", location)
-        predicateArray.append(predicateThree)
+        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+        predicateArray.append(NSPredicate(format: "location == %@", location))
+        
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
@@ -114,19 +113,17 @@ class FilterController: NSObject {
     func getZoneByLevel(location:Location, parentZone:Zone) -> [Zone]{
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
-        let predicateOne = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "location == %@", location)
-        let predicateThree = NSPredicate(format: "level != %@", NSNumber(integer: 0))
+        
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(predicateOne)
-        predicateArray.append(predicateTwo)
-        predicateArray.append(predicateThree)
-        let predicate = NSPredicate(format: "level == %@", parentZone.id!)
-        predicateArray.append(predicate)
+        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+        predicateArray.append(NSPredicate(format: "location == %@", location))
+        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "level == %@", parentZone.id!))
 
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
             return results
@@ -140,9 +137,11 @@ class FilterController: NSObject {
     func getCategoriesByLocation(location:Location) -> [Category]{
             let fetchRequest = NSFetchRequest(entityName: "Category")
             let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
+        
             var predicateArray:[NSPredicate] = []
-            let predicateTwo = NSPredicate(format: "location == %@", location)
-            predicateArray.append(predicateTwo)
+            predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+            predicateArray.append(NSPredicate(format: "location == %@", location))
+        
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate

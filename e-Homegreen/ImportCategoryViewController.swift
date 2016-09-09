@@ -497,7 +497,8 @@ extension ImportCategoryViewController: UITableViewDataSource {
             cell.lblDescription.text = categories[indexPath.row].categoryDescription
             cell.setItem(categories[indexPath.row])
             cell.switchVisible.tag = indexPath.row
-            cell.switchVisible.addTarget(self, action: "isVisibleValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.switchVisible.on = Bool(categories[indexPath.row].isVisible)
+            cell.switchVisible.addTarget(self, action: #selector(ImportCategoryViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
             return cell
         }
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")

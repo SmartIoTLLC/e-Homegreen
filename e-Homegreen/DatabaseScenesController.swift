@@ -55,4 +55,65 @@ class DatabaseScenesController: NSObject {
         
     }
     
+    func createScene(sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?){
+        var itExists = false
+        var existingScene:Scene?
+        let sceneArray = fetchSceneWithIdAndAddress(sceneId, gateway: gateway, moduleAddress: moduleAddress)
+        if sceneArray.count > 0 {
+            existingScene = sceneArray.first
+            itExists = true
+        }
+        if !itExists {
+            let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
+            scene.sceneId = sceneId
+            scene.sceneName = sceneName
+            scene.address = moduleAddress
+            
+            scene.sceneImageOneCustom = nil
+            scene.sceneImageTwoCustom = nil
+            
+            scene.sceneImageOneDefault = "Scene - All On - 00"
+            scene.sceneImageTwoDefault = "Scene - All On - 01"
+            
+            scene.entityLevelId = levelId
+            scene.sceneZoneId = zoneId
+            scene.sceneCategoryId = categoryId
+            
+            scene.isBroadcast = true
+            scene.isLocalcast = true
+            
+            scene.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+            
+        } else {
+            
+            existingScene!.sceneName = sceneName
+            
+            existingScene!.entityLevelId = levelId
+            existingScene!.sceneZoneId = zoneId
+            existingScene!.sceneCategoryId = categoryId
+            
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    
+    func fetchSceneWithIdAndAddress(sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Scene]{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
+        let predicateLocation = NSPredicate(format: "sceneId == %@", NSNumber(integer: sceneId))
+        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
+        
+        fetchRequest.predicate = combinedPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            return fetResults!
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return []
+    }
+
+    
 }

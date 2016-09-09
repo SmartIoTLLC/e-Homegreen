@@ -566,6 +566,7 @@ extension ImportZoneViewController: UITableViewDataSource {
             cell.lblName.text = name + "\(zones[indexPath.row].name!)"
             cell.lblLevel.text = zones[indexPath.row].zoneDescription
             cell.lblNo.text = "\(zones[indexPath.row].id!)"
+            cell.switchVisible.on = Bool(zones[indexPath.row].isVisible)
             cell.switchVisible.tag = indexPath.row
             cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
             cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)

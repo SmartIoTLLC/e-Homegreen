@@ -51,4 +51,66 @@ class DatabaseEventsController: NSObject {
         }
         return []
     }
+    
+    func createEvent(eventId: Int, eventName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?){
+        var itExists = false
+        var existingEvent:Event?
+        let eventsArray = fetchEventWithIdAndAddress(eventId, gateway: gateway, moduleAddress: moduleAddress)
+        if eventsArray.count > 0 {
+            existingEvent = eventsArray.first
+            itExists = true
+        }
+        if !itExists {
+            let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
+            event.eventId = eventId
+            event.eventName = eventName
+            event.address = moduleAddress
+            
+            event.eventImageOneCustom = nil
+            event.eventImageTwoCustom = nil
+            
+            event.eventImageOneDefault = "17 Event - Up Down - 00"
+            event.eventImageTwoDefault = "17 Event - Up Down - 01"
+            
+            event.entityLevelId = levelId
+            event.eventZoneId = zoneId
+            event.eventCategoryId = categoryId
+            
+            event.isBroadcast = true
+            event.isLocalcast = true
+            
+            event.report = false
+            
+            event.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+            
+        } else {
+            
+            existingEvent!.eventName = eventName
+            
+            existingEvent!.entityLevelId = levelId
+            existingEvent!.eventZoneId = zoneId
+            existingEvent!.eventCategoryId = categoryId
+            
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    
+    func fetchEventWithIdAndAddress(eventId: Int, gateway: Gateway, moduleAddress:Int) -> [Event]{
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
+        let predicateLocation = NSPredicate(format: "eventId == %@", NSNumber(integer: eventId))
+        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
+        
+        fetchRequest.predicate = combinedPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+            return fetResults!
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return []
+    }
 }

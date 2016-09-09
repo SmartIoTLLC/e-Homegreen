@@ -15,7 +15,7 @@ import CoreData
 extension Zone {
 
     @NSManaged var id: NSNumber?
-    @NSManaged var isVisible: NSNumber?
+    @NSManaged var isVisible: NSNumber
     @NSManaged var level: NSNumber?
     @NSManaged var name: String?
     @NSManaged var zoneDescription: String?

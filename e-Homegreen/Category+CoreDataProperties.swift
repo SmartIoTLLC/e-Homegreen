@@ -16,7 +16,7 @@ extension Category {
 
     @NSManaged var categoryDescription: String?
     @NSManaged var id: NSNumber?
-    @NSManaged var isVisible: NSNumber?
+    @NSManaged var isVisible: NSNumber
     @NSManaged var name: String?
     @NSManaged var orderId: NSNumber?
     @NSManaged var location: Location?
