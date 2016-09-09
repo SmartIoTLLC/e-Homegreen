@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScanFlagViewController: PopoverVC {
+class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var IDedit: UITextField!
     @IBOutlet weak var nameEdit: UITextField!
@@ -89,7 +89,10 @@ class ScanFlagViewController: PopoverVC {
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
-
+        
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagParameterFromGateway, object: nil)
     }
 
     
@@ -358,7 +361,7 @@ class ScanFlagViewController: PopoverVC {
     }
     
     @IBAction func scanFlag(sender: AnyObject) {
-        
+        findNames()
     }
     
     @IBAction func clearRangeFields(sender: AnyObject) {
@@ -377,7 +380,321 @@ class ScanFlagViewController: PopoverVC {
         self.view.endEditing(true)
     }
 
-
+    // MARK: - FINDING NAMES FOR DEVICE
+    // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
+    var flagNameTimer:NSTimer?
+    var flagParameterTimer: NSTimer?
+    var timesRepeatedCounterNames:Int = 0
+    var timesRepeatedCounterParameters: Int = 0
+    var arrayOfNamesToBeSearched = [Int]()
+    var indexOfNamesToBeSearched = 0
+    var arrayOfParametersToBeSearched = [Int]()
+    var indexOfParametersToBeSearched = 0
+    var alertController:UIAlertController?
+    var progressBarScreenFlagNames: ProgressBarVC?
+    var shouldFindFlagParameters = false
+    var addressOne = 0x00
+    var addressTwo = 0x00
+    var addressThree = 0x00
+    
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
+    func findNames() {
+        do {
+            arrayOfNamesToBeSearched = [Int]()
+            indexOfNamesToBeSearched = 0
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagNames)
+            
+            if devAddressOne.text != nil && devAddressOne.text != ""{
+                addressOne = Int(devAddressOne.text!)!
+            }
+            if devAddressTwo.text != nil && devAddressTwo.text != ""{
+                addressTwo = Int(devAddressTwo.text!)!
+            }
+            if devAddressThree.text != nil && devAddressThree.text != ""{
+                addressThree = Int(devAddressThree.text!)!
+            }
+            var from = 0
+            var to = 250
+            if fromTextField.text != nil && fromTextField.text != ""{
+                from = Int(fromTextField.text!)!
+            }
+            if toTextField.text != nil && toTextField.text != ""{
+                to = Int(toTextField.text!)!
+            }
+            for i in from...to{
+                arrayOfNamesToBeSearched.append(i)
+            }
+            shouldFindFlagParameters = true
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfNamesToBeSearched.count != 0{
+                let firstFlagIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
+                timesRepeatedCounterNames = 0
+                progressBarScreenFlagNames = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
+                progressBarScreenFlagNames?.delegate = self
+                self.presentViewController(progressBarScreenFlagNames!, animated: true, completion: nil)
+                flagNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: firstFlagIndexThatDontHaveName, repeats: false)
+                NSLog("func findNames \(firstFlagIndexThatDontHaveName)")
+                sendCommandForFindingNameWithFlagAddress(firstFlagIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    // Called from findNames or from it self.
+    // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
+    func checkIfFlagDidGetName (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let flagIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounterNames += 1
+        if timesRepeatedCounterNames < 3 {
+            flagNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: flagIndex, repeats: false)
+            NSLog("func checkIfFlagDidGetName \(flagIndex)")
+            sendCommandForFindingNameWithFlagAddress(flagIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+        }else{
+            if let indexOfFlagIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(flagIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfFlagIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                    indexOfNamesToBeSearched = indexOfFlagIndexInArrayOfNamesToBeSearched+1
+                    let nextFlagIndexToBeSearched = arrayOfNamesToBeSearched[indexOfFlagIndexInArrayOfNamesToBeSearched+1]
+                    timesRepeatedCounterNames = 0
+                    flagNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfDeviceDidGetName \(nextFlagIndexToBeSearched)")
+                    sendCommandForFindingNameWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
+    func nameReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagNames) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let flagIndex = info["flagId"] else{
+                return
+            }
+            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(flagIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
+                let nextFlagIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+                
+                timesRepeatedCounterNames = 0
+                flagNameTimer?.invalidate()
+                flagNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
+                NSLog("func nameReceivedFromPLC index:\(index) :flagIndex\(nextFlagIndexToBeSearched)")
+                sendCommandForFindingNameWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            }else{
+                dismissScaningControls()
+            }
+        }
+    }
+    // Sends byteArray to PLC
+    func sendCommandForFindingNameWithFlagAddress(flagId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametarsForFindingNames(flagId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getFlagName(address, flagId: UInt8(flagId + 100)) , gateway: self.gateway)
+    }
+    func setProgressBarParametarsForFindingNames (flagId:Int) {
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(flagId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let _ = progressBarScreenFlagNames?.lblHowMuchOf, let _ = progressBarScreenFlagNames?.lblPercentage, let _ = progressBarScreenFlagNames?.progressView{
+                progressBarScreenFlagNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
+                progressBarScreenFlagNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
+                progressBarScreenFlagNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
+            }
+        }
+    }
+    
+    // MARK: - Timer parameters
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
+    func findParametarsForFlag() {
+        progressBarScreenFlagNames?.dissmissProgressBar()
+        progressBarScreenFlagNames = nil
+        do {
+            arrayOfParametersToBeSearched = [Int]()
+            indexOfParametersToBeSearched = 0
+            
+            let flags = DatabaseHandler.sharedInstance.fetchFlags()
+            
+            var from = 0
+            var to = 250
+            if fromTextField.text != nil && fromTextField.text != ""{
+                from = Int(fromTextField.text!)!
+            }
+            if toTextField.text != nil && toTextField.text != ""{
+                to = Int(toTextField.text!)!
+            }
+            
+            for i in from...to{
+                if i <= flags.count{
+                    arrayOfParametersToBeSearched.append(i)
+                }
+            }
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagParameters)
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfParametersToBeSearched.count != 0{
+                let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                progressBarScreenFlagNames = nil
+                progressBarScreenFlagNames = ProgressBarVC(title: "Finding flag parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
+                progressBarScreenFlagNames?.delegate = self
+                self.presentViewController(progressBarScreenFlagNames!, animated: true, completion: nil)
+                flagParameterTimer?.invalidate()
+                flagParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                NSLog("func findNames \(parameterIndex)")
+                sendCommandForFindingParameterWithFlagAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from FindParameter")
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    // Called from findParametarsForTimer or from it self.
+    // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
+    func checkIfFlagDidGetParametar (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let flagIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounterParameters += 1
+        if timesRepeatedCounterParameters < 3 {
+            flagParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: flagIndex, repeats: false)
+            NSLog("func checkIfDeviceDidGetParameter \(flagIndex)")
+            sendCommandForFindingParameterWithFlagAddress(flagIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+        }else{
+            if let indexOfFlagIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(flagIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfFlagIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                    indexOfParametersToBeSearched = indexOfFlagIndexInArrayOfParametersToBeSearched+1
+                    let nextFlagIndexToBeSearched = arrayOfParametersToBeSearched[indexOfFlagIndexInArrayOfParametersToBeSearched+1]
+                    timesRepeatedCounterParameters = 0
+                    flagParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfDeviceDidGetParameter \(nextFlagIndexToBeSearched)")
+                    sendCommandForFindingParameterWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
+                }else{
+                    shouldFindFlagParameters = false
+                    dismissScaningControls()
+                }
+            }
+        }
+    }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
+    func flagParametarReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let flagIndex = info["flagId"] else{
+                return
+            }
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(flagIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
+                let nextFlagIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                flagParameterTimer?.invalidate()
+                flagParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
+                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextFlagIndexToBeSearched)")
+                sendCommandForFindingParameterWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from flagParametarReceivedFromPLC: next parameter")
+            }else{
+                shouldFindFlagParameters = false
+                dismissScaningControls()
+            }
+        }
+    }
+    // Sends byteArray to PLC
+    func sendCommandForFindingParameterWithFlagAddress(flagId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametarsForFindingParameters(flagId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getFlagParametar(address, flagId: UInt8(flagId+100)) , gateway: self.gateway)
+    }
+    func setProgressBarParametarsForFindingParameters (flagId:Int) {
+        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(flagId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+            if let _ = progressBarScreenFlagNames?.lblHowMuchOf {
+                if let _ = progressBarScreenFlagNames?.lblPercentage{
+                    if let _ = progressBarScreenFlagNames?.progressView{
+                        print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+                        progressBarScreenFlagNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1) / \(arrayOfParametersToBeSearched.count)"
+                        progressBarScreenFlagNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)*100) + " %"
+                        progressBarScreenFlagNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)
+                    }
+                }
+            }
+        }
+    }
+    
+    // Helpers
+    func progressBarDidPressedExit() {
+        shouldFindFlagParameters = false
+        dismissScaningControls()
+    }
+    func dismissScaningControls() {
+        timesRepeatedCounterNames = 0
+        timesRepeatedCounterParameters = 0
+        flagNameTimer?.invalidate()
+        flagParameterTimer?.invalidate()
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningFlagNames)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningFlagParameters)
+        progressBarScreenFlagNames!.dissmissProgressBar()
+        
+        arrayOfNamesToBeSearched = [Int]()
+        indexOfNamesToBeSearched = 0
+        arrayOfParametersToBeSearched = [Int]()
+        indexOfParametersToBeSearched = 0
+        if !shouldFindFlagParameters {
+            UIApplication.sharedApplication().idleTimerDisabled = false
+            refreshFlagList()
+        } else {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanFlagViewController.findParametarsForFlag), userInfo: nil, repeats: false)
+        }
+    }
+    func alertController (title:String, message:String) {
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        alertController!.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            // ...
+        }
+        alertController!.addAction(OKAction)
+        
+        self.presentViewController(alertController!, animated: true) {
+            // ...
+        }
+    }
+    
+    
+    
 }
 
 extension ScanFlagViewController: SceneGalleryDelegate{
