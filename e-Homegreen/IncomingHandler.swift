@@ -186,7 +186,7 @@ class IncomingHandler: NSObject {
                 let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                    DatabaseTimersController.shared.addTimer(Int(timerId), timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
                 }else{
                     return
                 }
@@ -209,7 +209,7 @@ class IncomingHandler: NSObject {
                 let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
-                    self.addTimer(Int(timerId), timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                    DatabaseTimersController.shared.addTimer(Int(timerId), timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
                 }else{
                     return
                 }
@@ -220,13 +220,13 @@ class IncomingHandler: NSObject {
         }
     }
     func parseTimerStatus(dataFrame:DataFrame) {
-        fetchEntities("Timer")
+        fetchEntities(String(Timer))
         // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
         //        guard dataFrame.INFO.count == 74 else {
         //            return
         //        }
         // For loop in data frame INFO block
-        for var i = 1; i <= 16; i++ {
+        for i in 1...16 {
             for item in timers {
                 if  item.gateway.addressOne == Int(dataFrame.ADR1) && item.gateway.addressTwo == Int(dataFrame.ADR2) && item.address == Int(dataFrame.ADR3) && item.timerId == Int(i) {
                     let position = (i - 1)*4
@@ -264,7 +264,6 @@ class IncomingHandler: NSObject {
                 }else{
                     return
                 }
-                
                 let data = ["sceneId":sceneId]
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSceneFromGateway, object: self, userInfo: data)
             }
@@ -984,66 +983,5 @@ class IncomingHandler: NSObject {
         print("CID1: \(CID1)")
         print("CID2: \(CID2)")
         print("INFO: \(INFO)")
-    }
-    func addTimer(timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
-        var itExists = false
-        var existingTimer:Timer?
-        var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway, moduleAddress: moduleAddress)
-        if timerArray.count > 0 {
-            existingTimer = timerArray.first
-            itExists = true
-        }
-        if !itExists {
-            let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
-            timer.timerId = timerId
-            if let timerName = timerName {
-                timer.timerName = timerName
-            }else{
-                timer.timerName = ""
-            }
-            timer.address = moduleAddress
-            
-            timer.timerImageOneCustom = nil
-            timer.timerImageTwoCustom = nil
-            
-            timer.timerImageOneDefault = "15 Timer - CLock - 00"
-            timer.timerImageTwoDefault = "15 Timer - CLock - 01"
-            
-            timer.entityLevelId = levelId
-            timer.timeZoneId = selectedZoneId
-            timer.timerCategoryId = categoryId
-            
-            timer.isBroadcast = true
-            timer.isLocalcast = true
-            if let type = type, let timerType = TimerType(rawValue: type){
-                timer.type = timerType.description
-            }else{
-                timer.type = "Once"
-            }
-            timer.id = NSUUID().UUIDString
-            timer.entityLevel = ""
-            timer.timeZone = ""
-            timer.timerCategory = ""
-            timer.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
-            
-        } else {
-            
-            if let timerName = timerName {
-                existingTimer!.timerName = timerName
-            }
- 
-            existingTimer!.entityLevelId = levelId
-            existingTimer!.timeZoneId = selectedZoneId
-            existingTimer!.timerCategoryId = categoryId
-            
-            if let type = type, let timerType = TimerType(rawValue: type){
-                existingTimer!.type = timerType.description
-            }else{
-                existingTimer!.type = "Once"
-            }
-            
-            CoreDataController.shahredInstance.saveChanges()
-        }
     }
 }

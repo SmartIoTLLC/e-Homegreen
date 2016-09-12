@@ -129,4 +129,66 @@ class DatabaseTimersController: NSObject {
         SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timer.timerId)), command: 0x01), gateway: timer.gateway)
     }
 
+    func addTimer(timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
+        var itExists = false
+        var existingTimer:Timer?
+        var timerArray = DatabaseHandler.sharedInstance.fetchTimerWithId(timerId, gateway: gateway, moduleAddress: moduleAddress)
+        if timerArray.count > 0 {
+            existingTimer = timerArray.first
+            itExists = true
+        }
+        if !itExists {
+            let timer = NSEntityDescription.insertNewObjectForEntityForName("Timer", inManagedObjectContext: appDel.managedObjectContext!) as! Timer
+            timer.timerId = timerId
+            if let timerName = timerName {
+                timer.timerName = timerName
+            }else{
+                timer.timerName = ""
+            }
+            timer.address = moduleAddress
+            
+            timer.timerImageOneCustom = nil
+            timer.timerImageTwoCustom = nil
+            
+            timer.timerImageOneDefault = "15 Timer - CLock - 00"
+            timer.timerImageTwoDefault = "15 Timer - CLock - 01"
+            
+            timer.entityLevelId = levelId
+            timer.timeZoneId = selectedZoneId
+            timer.timerCategoryId = categoryId
+            
+            timer.isBroadcast = true
+            timer.isLocalcast = true
+            if let type = type, let timerType = TimerType(rawValue: type){
+                timer.type = timerType.description
+            }else{
+                timer.type = "Once"
+            }
+            timer.id = NSUUID().UUIDString
+            timer.entityLevel = ""
+            timer.timeZone = ""
+            timer.timerCategory = ""
+            timer.gateway = gateway
+            CoreDataController.shahredInstance.saveChanges()
+            
+        } else {
+            
+            if let timerName = timerName {
+                existingTimer!.timerName = timerName
+            }
+            
+            existingTimer!.entityLevelId = levelId
+            existingTimer!.timeZoneId = selectedZoneId
+            existingTimer!.timerCategoryId = categoryId
+            
+            if let type = type, let timerType = TimerType(rawValue: type){
+                existingTimer!.type = timerType.description
+            }else{
+                existingTimer!.type = "Once"
+            }
+            
+            CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    
 }
