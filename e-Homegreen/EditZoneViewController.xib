@@ -43,9 +43,6 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="178" y="164" width="164" height="40"/>
-                            </variation>
                             <connections>
                                 <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="2x9-Vl-LZO"/>
                             </connections>
@@ -61,9 +58,6 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="164" width="165" height="40"/>
-                            </variation>
                             <connections>
                                 <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="3lS-wN-6dZ"/>
                             </connections>
@@ -73,9 +67,6 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="93" width="75" height="19"/>
-                            </variation>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fAg-TQ-f0Z" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="93" y="100" width="219" height="30"/>
@@ -83,28 +74,19 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="93" y="87" width="249" height="30"/>
-                            </variation>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3P-sa-XM3">
                             <rect key="frame" x="8" y="56" width="75" height="19"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="54" width="75" height="19"/>
-                            </variation>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z80-6L-YyJ" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="93" y="51" width="219" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="93" y="48" width="249" height="30"/>
-                            </variation>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imj-Zk-ANT">
                             <rect key="frame" x="8" y="15" width="75" height="19"/>
@@ -114,27 +96,18 @@
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="15" width="75" height="19"/>
-                            </variation>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5L2-Wn-qwb">
                             <rect key="frame" x="8" y="146" width="75" height="19"/>
                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="8" y="132" width="75" height="19"/>
-                            </variation>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mSc-ux-lp1" userLabel="Level" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="93" y="141" width="219" height="30"/>
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="93" y="126" width="249" height="30"/>
-                            </variation>
                             <connections>
                                 <action selector="levelButton:" destination="-1" eventType="touchUpInside" id="1p9-uI-YBk"/>
                             </connections>
@@ -145,9 +118,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="93" y="9" width="249" height="30"/>
-                            </variation>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -193,8 +163,7 @@
                             <exclude reference="XEY-qs-CT3"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=compact" misplaced="YES">
-                        <rect key="frame" x="125" y="54" width="350" height="212"/>
+                    <variation key="heightClass=compact">
                         <mask key="constraints">
                             <include reference="XEY-qs-CT3"/>
                         </mask>

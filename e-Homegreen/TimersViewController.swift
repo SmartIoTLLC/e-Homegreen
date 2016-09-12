@@ -250,7 +250,6 @@ class TimersViewController: PopoverVC {
 // Parametar from filter and relaod data
 extension TimersViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Timers)

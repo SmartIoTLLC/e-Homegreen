@@ -27,7 +27,7 @@ class FlagsViewController: PopoverVC {
     
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Flags)
+    var filterParametar:FilterItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,8 +43,6 @@ class FlagsViewController: PopoverVC {
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: "All, All, All")
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -195,8 +193,7 @@ extension FlagsViewController: SWRevealViewControllerDelegate {
 // Parametar from filter and relaod data
 extension FlagsViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Flags)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Flags)
         reloadFlagsList()

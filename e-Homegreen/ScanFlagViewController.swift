@@ -198,7 +198,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBAction func btnLevel(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Zone] = FilterController.shared.getLevelsByLocation(gateway.location)
+        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
@@ -209,7 +209,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBAction func btnCategoryAction(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Category] = FilterController.shared.getCategoriesByLocation(gateway.location)
+        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
@@ -222,7 +222,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
-            let list:[Zone] = FilterController.shared.getZoneByLevel(gateway.location, parentZone: level)
+            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
             for item in list {
                 popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
             }
@@ -835,26 +835,24 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         print(flags[indexPath.row].entityLevelId)
         print(flags[indexPath.row].flagZoneId)
         print(flags[indexPath.row].flagCategoryId)
+        
         if let levelId = flags[indexPath.row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+        }else{
+            btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         if let zoneId = flags[indexPath.row].flagZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+            btnZone.setTitle(zoneSelected?.name, forState: .Normal)
+        }else{
+            btnZone.setTitle("All", forState: .Normal)
         }
         if let categoryId = flags[indexPath.row].flagCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-        }
-        
-        if let level = flags[indexPath.row].entityLevel {
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
-        }
-        
-        if let zone = flags[indexPath.row].flagZone {
-            btnZone.setTitle(zone, forState: .Normal)
-        }
-        
-        if let category = flags[indexPath.row].flagCategory {
-            btnCategory.setTitle(category, forState: .Normal)
+            btnCategory.setTitle(category?.name, forState: .Normal)
+        }else{
+            btnCategory.setTitle("All", forState: .Normal)
         }
         
         if let id = flags[indexPath.row].flagImageOneCustom{

@@ -24,11 +24,19 @@ class FlagCollectionViewCell: UICollectionViewCell {
         if flag.gateway.location.name != filterParametar.location{
             name += flag.gateway.location.name! + " "
         }
-        if flag.entityLevel != filterParametar.levelName{
-            name += flag.entityLevel! + " "
+        if let id = flag.entityLevelId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location){
+                if zone.name != filterParametar.levelName{
+                    name += zone.name! + " "
+                }
+            }
         }
-        if flag.flagZone != filterParametar.zoneName{
-            name += flag.flagZone! + " "
+        if let id = flag.flagZoneId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location){
+                if zone.name != filterParametar.zoneName{
+                    name += zone.name! + " "
+                }
+            }
         }
         name += flag.flagName
         return name
