@@ -681,22 +681,21 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let levelId = events[indexPath.row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
+            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+        }else{
+            btnLevel.setTitle("All", forState: UIControlState.Normal)
         }
         if let zoneId = events[indexPath.row].eventZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
+            btnZone.setTitle(zoneSelected?.name, forState: UIControlState.Normal)
+        }else{
+            btnZone.setTitle("All", forState: UIControlState.Normal)
         }
         if let categoryId = events[indexPath.row].eventCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-        }
-        
-        if let level = events[indexPath.row].entityLevel {
-            btnLevel.setTitle(level, forState: UIControlState.Normal)
-        }
-        if let zone = events[indexPath.row].eventZone {
-            btnZone.setTitle(zone, forState: UIControlState.Normal)
-        }
-        if let category = events[indexPath.row].eventCategory {
-            btnCategory.setTitle(category, forState: UIControlState.Normal)
+            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+        }else{
+            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
         }
         
         if let id = events[indexPath.row].eventImageOneCustom{

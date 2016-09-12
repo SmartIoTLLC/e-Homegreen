@@ -192,7 +192,7 @@ class DigitalInputPopup: PopoverVC {
     @IBAction func btnLevel (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Zone] = FilterController.shared.getLevelsByLocation(device.gateway.location)
+        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
@@ -203,7 +203,7 @@ class DigitalInputPopup: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
-            let list:[Zone] = FilterController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
+            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
             for item in list {
                 popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
             }
@@ -215,7 +215,7 @@ class DigitalInputPopup: PopoverVC {
     @IBAction func btnCategory (sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Category] = FilterController.shared.getCategoriesByLocation(device.gateway.location)
+        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }

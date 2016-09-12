@@ -151,7 +151,7 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBAction func btnLevel(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Zone] = FilterController.shared.getLevelsByLocation(parentLocation)
+        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(parentLocation)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
@@ -162,7 +162,7 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBAction func btnCategoryAction(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        let list:[Category] = FilterController.shared.getCategoriesByLocation(parentLocation)
+        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(parentLocation)
         for item in list {
             popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
         }
@@ -175,7 +175,7 @@ class SurveillanceSettingsVC: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
-            let list:[Zone] = FilterController.shared.getZoneByLevel(parentLocation, parentZone: level)
+            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(parentLocation, parentZone: level)
             for item in list {
                 popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
             }
