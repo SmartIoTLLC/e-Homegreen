@@ -182,7 +182,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 alertController("Error", message: "Range can be only number")
                 return
             }
-            from = rangeFrom-1
+            from = rangeFrom
             
             guard let rangeToText = rangeTo.text else{
                 alertController("Error", message: "Range can't be empty")
@@ -193,10 +193,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 alertController("Error", message: "Range can be only number")
                 return
             }
-            to = rangeTo-1
+            to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range can be only number")
+                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
 
@@ -445,28 +445,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 var from = 0
                 var to = 500
                 
-                guard let rangeFromText = rangeFrom.text else{
-                    alertController("Error", message: "Range can't be empty")
-                    return
+                if rangeFrom.text != nil && rangeFrom.text! != ""{
+                    from = Int(rangeFrom.text!)!-1
+                }
+                if rangeTo.text != nil && rangeTo.text! != ""{
+                    to = Int(rangeTo.text!)!-1
                 }
                 
-                guard let rangeFrom = Int(rangeFromText) else{
-                    alertController("Error", message: "Range can be only number")
-                    return
-                }
-                from = rangeFrom-1
-                
-                guard let rangeToText = rangeTo.text else{
-                    alertController("Error", message: "Range can't be empty")
-                    return
-                }
-                
-                guard let rangeTo = Int(rangeToText) else{
-                    alertController("Error", message: "Range can be only number")
-                    return
-                }
-                to = rangeTo-1
-                if rangeTo < rangeFrom {
+                if to < from {
                     alertController("Error", message: "Range can be only number")
                     return
                 }
@@ -687,10 +673,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             var from = 1
             var to = 500
             if rangeFrom.text != nil && rangeFrom.text != ""{
-                from = Int(rangeFrom.text!)!-1
+                from = Int(rangeFrom.text!)!
             }
             if rangeTo.text != nil && rangeTo.text != ""{
-                to = Int(rangeTo.text!)!-1
+                to = Int(rangeTo.text!)!
             }
             
             for i in from...to{
