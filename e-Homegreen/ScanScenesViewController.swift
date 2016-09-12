@@ -416,22 +416,60 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
             
-            if devAddressOne.text != nil && devAddressOne.text != ""{
-                addressOne = Int(devAddressOne.text!)!
+            guard let address1Text = devAddressOne.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
             }
-            if devAddressTwo.text != nil && devAddressTwo.text != ""{
-                addressTwo = Int(devAddressTwo.text!)!
+            guard let address1 = Int(address1Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
             }
-            if devAddressThree.text != nil && devAddressThree.text != ""{
-                addressThree = Int(devAddressThree.text!)!
+            addressOne = address1
+            
+            guard let address2Text = devAddressTwo.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
             }
-            var from = 0
-            var to = 250
-            if fromTextField.text != nil && fromTextField.text != ""{
-                from = Int(fromTextField.text!)!
+            guard let address2 = Int(address2Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
             }
-            if toTextField.text != nil && toTextField.text != ""{
-                to = Int(toTextField.text!)!
+            addressTwo = address2
+            
+            guard let address3Text = devAddressThree.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
+            }
+            guard let address3 = Int(address3Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
+            }
+            addressThree = address3
+            guard let rangeFromText = fromTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeFrom = Int(rangeFromText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let from = rangeFrom
+            
+            guard let rangeToText = toTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeTo = Int(rangeToText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let to = rangeTo
+            
+            if rangeTo < rangeFrom {
+                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                return
             }
             for i in from...to{
                 arrayOfScenesToBeSearched.append(i)

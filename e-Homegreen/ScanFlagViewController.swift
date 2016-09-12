@@ -370,16 +370,34 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         toTextField.text = ""
     }
     
-    @IBAction func btnRemove(sender: AnyObject) {
-        if flags.count != 0 {
-            for flag in flags {
-                appDel.managedObjectContext!.deleteObject(flag)
+    @IBAction func btnRemove(sender: UIButton) {
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            if self.flags.count != 0 {
+                for flag in self.flags {
+                    self.appDel.managedObjectContext!.deleteObject(flag)
+                }
             }
             CoreDataController.shahredInstance.saveChanges()
-            refreshFlagList()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFlag, object: self, userInfo: nil)
+            self.refreshFlagList()
+            self.view.endEditing(true)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
         }
-        self.view.endEditing(true)
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
 
     // MARK: - FINDING NAMES FOR DEVICE
@@ -407,22 +425,62 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagNames)
             
-            if devAddressOne.text != nil && devAddressOne.text != ""{
-                addressOne = Int(devAddressOne.text!)!
+            guard let address1Text = devAddressOne.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
             }
-            if devAddressTwo.text != nil && devAddressTwo.text != ""{
-                addressTwo = Int(devAddressTwo.text!)!
+            guard let address1 = Int(address1Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
             }
-            if devAddressThree.text != nil && devAddressThree.text != ""{
-                addressThree = Int(devAddressThree.text!)!
+            addressOne = address1
+
+            guard let address2Text = devAddressTwo.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
             }
-            var from = 0
-            var to = 250
-            if fromTextField.text != nil && fromTextField.text != ""{
-                from = Int(fromTextField.text!)!
+            guard let address2 = Int(address2Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
             }
-            if toTextField.text != nil && toTextField.text != ""{
-                to = Int(toTextField.text!)!
+            addressTwo = address2
+            
+            guard let address3Text = devAddressThree.text else{
+                alertController("Error", message: "Address can't be empty")
+                return
+            }
+            guard let address3 = Int(address3Text) else{
+                alertController("Error", message: "Address can be only number")
+                return
+            }
+            addressThree = address3
+            
+            
+            guard let rangeFromText = fromTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeFrom = Int(rangeFromText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let from = rangeFrom
+            
+            guard let rangeToText = toTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeTo = Int(rangeToText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let to = rangeTo
+            
+            if rangeTo < rangeFrom {
+                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                return
             }
             for i in from...to{
                 arrayOfNamesToBeSearched.append(i)
@@ -533,13 +591,31 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             
             let flags = DatabaseHandler.sharedInstance.fetchFlags()
             
-            var from = 0
-            var to = 250
-            if fromTextField.text != nil && fromTextField.text != ""{
-                from = Int(fromTextField.text!)!
+            guard let rangeFromText = fromTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
             }
-            if toTextField.text != nil && toTextField.text != ""{
-                to = Int(toTextField.text!)!
+            
+            guard let rangeFrom = Int(rangeFromText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let from = rangeFrom
+            
+            guard let rangeToText = toTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeTo = Int(rangeToText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let to = rangeTo
+            
+            if rangeTo < rangeFrom {
+                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                return
             }
             
             for i in from...to{
