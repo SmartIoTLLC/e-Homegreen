@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G31" minimumToolsVersion="Automatic">
+    <entity name="Card" representedClassName=".Card" syncable="YES">
+        <attribute name="address" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="cardId" attributeType="String" syncable="YES"/>
+        <attribute name="cardName" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="cards" inverseEntity="Gateway" syncable="YES"/>
+    </entity>
     <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
         <attribute name="allowOption" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -139,6 +147,7 @@
         <attribute name="remoteIpInUse" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remotePort" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="turnedOn" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="cards" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="gateway" inverseEntity="Card" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Device" inverseName="gateway" inverseEntity="Device" syncable="YES"/>
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
         <relationship name="flags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
@@ -323,7 +332,7 @@
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="300"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="300"/>
-        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="375"/>
+        <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="390"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
@@ -337,5 +346,6 @@
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="345"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
+        <element name="Card" positionX="-981" positionY="-1962" width="128" height="135"/>
     </elements>
 </model>

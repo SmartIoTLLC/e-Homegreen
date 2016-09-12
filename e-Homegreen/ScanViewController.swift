@@ -9,9 +9,9 @@
 import UIKit
 
 enum ChoosedTab:String {
-    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags"
+    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags", Cards = "Cards"
     
-    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags]
+    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags, Cards]
 }
 
 class ScanViewController: PopoverVC {
@@ -27,6 +27,7 @@ class ScanViewController: PopoverVC {
     var scanEventsViewController: ScanEventsViewController!
     var scanTimersViewController: ScanTimerViewController!
     var scanFlagsViewController: ScanFlagViewController!
+    var scanCardsViewController: ScanCardsViewController!
     
     var scrollView = ScanFilterPullDown()
     
@@ -62,6 +63,7 @@ class ScanViewController: PopoverVC {
         scanEventsViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanEventsViewController)) as! ScanEventsViewController
         scanTimersViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanTimerViewController)) as! ScanTimerViewController
         scanFlagsViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanFlagViewController)) as! ScanFlagViewController
+        scanCardsViewController = storyboard.instantiateViewControllerWithIdentifier(String(ScanCardsViewController)) as! ScanCardsViewController
         
         toViewController = scanDeviceViewController
         
@@ -143,6 +145,8 @@ class ScanViewController: PopoverVC {
                 toViewController = scanTimersViewController
             case .Flags:
                 toViewController = scanFlagsViewController
+            case .Cards:
+                toViewController = scanCardsViewController
             }
             
             let fromViewController = childViewControllers.last!

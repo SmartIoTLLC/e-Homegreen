@@ -111,6 +111,10 @@
 		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
 		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
 		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
+		22FF1E5F1D86BF5700ECB86E /* ScanCardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */; };
+		22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */; };
+		22FF1E631D86D86F00ECB86E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E611D86D86F00ECB86E /* Card.swift */; };
+		22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */; };
 		490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */; };
 		490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */; };
 		490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */; };
@@ -458,6 +462,10 @@
 		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
 		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
+		22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCardsViewController.swift; sourceTree = "<group>"; };
+		22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Card+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		22FF1E611D86D86F00ECB86E /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCardsController.swift; sourceTree = "<group>"; };
 		490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeleteConfirmation.xib; sourceTree = "<group>"; };
 		490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityNeedDisarmInformation.swift; sourceTree = "<group>"; };
@@ -1329,6 +1337,8 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
+				22FF1E611D86D86F00ECB86E /* Card.swift */,
 				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
 				4D411C9A1D5C982F000A3598 /* Device.swift */,
 				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
@@ -1448,6 +1458,7 @@
 				223DC0C51CE2089A00C5E2F6 /* CreateUserFromJSONController.swift */,
 				223BAD461D3E5395003E9365 /* FilterController.swift */,
 				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
+				22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1751,6 +1762,7 @@
 				E7F57B0E1BA847F8006B0D71 /* ScanEventsViewController.swift */,
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
+				22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */,
 				734E35771C8239990096E043 /* ScanFunction.swift */,
 				490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */,
 				490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */,
@@ -2046,6 +2058,7 @@
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
+				22FF1E631D86D86F00ECB86E /* Card.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
@@ -2062,6 +2075,7 @@
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
+				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
@@ -2120,6 +2134,7 @@
 				2240EAC91D46084E0062AC2F /* FilterParametar.swift in Sources */,
 				2240EACB1D4609720062AC2F /* DatabaseFilterController.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
+				22FF1E5F1D86BF5700ECB86E /* ScanCardsViewController.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */,
@@ -2247,6 +2262,7 @@
 				2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
+				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
