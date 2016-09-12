@@ -21,27 +21,32 @@ class DatabaseEventsController: NSObject {
             let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-            var predicateArray:[NSPredicate] = [predicateOne]
+            
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+            
             if filterParametar.location != "All" {
-                let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-                predicateArray.append(locationPredicate)
+                predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
             }
-            if filterParametar.levelName != "All" {
-                let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-                predicateArray.append(levelPredicate)
+            
+            if filterParametar.levelObjectId != "All" {
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
+                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
+                }
             }
-            if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "eventZone == %@", filterParametar.zoneName)
-                predicateArray.append(zonePredicate)
+            if filterParametar.zoneObjectId != "All" {
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                    predicateArray.append(NSPredicate(format: "eventZoneId == %@", zone.id!))
+                }
             }
-            if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "eventCategory == %@", filterParametar.categoryName)
-                predicateArray.append(categoryPredicate)
+            if filterParametar.categoryObjectId != "All" {
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                    predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!))
+                }
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
                 return fetResults!

@@ -17,29 +17,32 @@ class DatabaseScenesController: NSObject {
     func getScene(filterParametar:FilterItem) -> [Scene] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest = NSFetchRequest(entityName: "Scene")
+            
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-            var predicateArray:[NSPredicate] = [predicateOne]
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+            
             if filterParametar.location != "All" {
-                let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
-                predicateArray.append(locationPredicate)
+                predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
             }
-            if filterParametar.levelName != "All" {
-                let levelPredicate = NSPredicate(format: "entityLevel == %@", filterParametar.levelName)
-                predicateArray.append(levelPredicate)
+            if filterParametar.levelObjectId != "All" {
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
+                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
+                }
             }
-            if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "sceneZone == %@", filterParametar.zoneName)
-                predicateArray.append(zonePredicate)
+            if filterParametar.zoneObjectId != "All" {
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                    predicateArray.append(NSPredicate(format: "sceneZoneId == %@", zone.id!))
+                }
             }
-            if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "sceneCategory == %@", filterParametar.categoryName)
-                predicateArray.append(categoryPredicate)
+            if filterParametar.categoryObjectId != "All" {
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                    predicateArray.append(NSPredicate(format: "sceneCategoryId == %@", category.id!))
+                }
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
             

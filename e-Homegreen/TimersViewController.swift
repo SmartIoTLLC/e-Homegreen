@@ -28,7 +28,7 @@ class TimersViewController: PopoverVC {
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Timers)
+    var filterParametar:FilterItem!
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -59,8 +59,6 @@ class TimersViewController: PopoverVC {
         UIView.hr_setToastThemeColor(color: UIColor.redColor())
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -253,7 +251,7 @@ class TimersViewController: PopoverVC {
 extension TimersViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Timers)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Timers)
+        filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Timers)
         refreshTimerList()

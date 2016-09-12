@@ -26,11 +26,20 @@ class EventsCollectionViewCell: UICollectionViewCell {
         if event.gateway.location.name != filterParametar.location{
             name += event.gateway.location.name! + " "
         }
-        if event.entityLevel != filterParametar.levelName{
-            name += event.entityLevel! + " "
+        if let id = event.entityLevelId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: event.gateway.location){
+                if zone.name != filterParametar.levelName{
+                    name += zone.name! + " "
+                }
+            }
         }
-        if event.eventZone != filterParametar.zoneName{
-            name += event.eventZone! + " "
+        
+        if let id = event.eventZoneId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: event.gateway.location){
+                if zone.name != filterParametar.zoneName{
+                    name += zone.name! + " "
+                }
+            }
         }
         name += event.eventName
         return name

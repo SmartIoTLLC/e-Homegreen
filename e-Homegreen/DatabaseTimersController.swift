@@ -32,16 +32,24 @@ class DatabaseTimersController: NSObject {
             if filterParametar.location != "All" {
                 predicateArrayAnd.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
             }
-            if filterParametar.levelName != "All" {
-                predicateArrayAnd.append(NSPredicate(format: "entityLevel == %@", filterParametar.levelName))
+            
+            if filterParametar.levelObjectId != "All" {
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
+                    predicateArrayAnd.append(NSPredicate(format: "entityLevelId == %@", level.id!))
+                }
             }
-            if filterParametar.zoneName != "All" {
-                predicateArrayAnd.append(NSPredicate(format: "timeZone == %@", filterParametar.zoneName))
+            if filterParametar.zoneObjectId != "All" {
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                    predicateArrayAnd.append(NSPredicate(format: "timeZoneId == %@", zone.id!))
+                }
             }
-            if filterParametar.categoryName != "All" {
-                predicateArrayAnd.append(NSPredicate(format: "timerCategory == %@", filterParametar.categoryName))
+            if filterParametar.categoryObjectId != "All" {
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                    predicateArrayAnd.append(NSPredicate(format: "timerCategoryId == %@", category.id!))
+                }
             }
             let compoundPredicate2 = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArrayAnd)
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [compoundPredicate1, compoundPredicate2])
             fetchRequest.predicate = compoundPredicate
             

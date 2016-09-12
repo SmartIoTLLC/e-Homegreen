@@ -25,11 +25,20 @@ class SequenceCollectionViewCell: UICollectionViewCell {
         if sequence.gateway.location.name != filterParametar.location{
             name += sequence.gateway.location.name! + " "
         }
-        if sequence.entityLevel != filterParametar.levelName{
-            name += sequence.entityLevel! + " "
+        if let id = sequence.entityLevelId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: sequence.gateway.location){
+                if zone.name != filterParametar.levelName{
+                    name += zone.name! + " "
+                }
+            }
         }
-        if sequence.sequenceZone != filterParametar.zoneName{
-            name += sequence.sequenceZone! + " "
+        
+        if let id = sequence.sequenceZoneId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: sequence.gateway.location){
+                if zone.name != filterParametar.zoneName{
+                    name += zone.name! + " "
+                }
+            }
         }
         name += sequence.sequenceName
         return name
