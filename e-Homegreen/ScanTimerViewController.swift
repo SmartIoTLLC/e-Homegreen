@@ -355,7 +355,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         findNames()
     }
     @IBAction func clearRangeFields(sender: AnyObject) {
-        
+        fromTextField.text = ""
+        toTextField.text = ""
     }
     @IBAction func btnRemove(sender: AnyObject) {
         if timers.count != 0 {
@@ -574,7 +575,11 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
             
             for i in from...to{
-                arrayOfParametersToBeSearched.append(i)
+                for timerTemp in timers {
+                    if timerTemp.timerId.integerValue == i{
+                        arrayOfParametersToBeSearched.append(i)
+                    }
+                }
             }
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerParameters)

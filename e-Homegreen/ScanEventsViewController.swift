@@ -362,7 +362,8 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func clearRangeFields(sender: AnyObject) {
-        
+        fromTextField.text = ""
+        toTextField.text = ""
     }
 
     @IBAction func btnRemove(sender: AnyObject) {

@@ -366,7 +366,8 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func clearRangeFields(sender: AnyObject) {
-        
+        fromTextField.text = ""
+        toTextField.text = ""
     }
     
     @IBAction func btnRemove(sender: AnyObject) {
@@ -542,7 +543,11 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             }
             
             for i in from...to{
-                arrayOfParametersToBeSearched.append(i)
+                for flagTemp in flags {
+                    if flagTemp.flagId.integerValue == i{
+                        arrayOfParametersToBeSearched.append(i)
+                    }
+                }
             }
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagParameters)
@@ -602,7 +607,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func flagParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
             guard let info = notification.userInfo! as? [String:Int] else{
                 return
             }

@@ -176,31 +176,32 @@ class IncomingHandler: NSObject {
     // MARK - Timers
     func getTimerName(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
+            var timerId = Int(byteArray[7])
             // Miminum is 12b
-            if byteArray.count > 12 {
+            if Int(byteArray[8]) != 0 {
                 var name:String = ""
                 for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
                 }
-                let timerId = byteArray[7]
+                timerId = Int(byteArray[7])
                 let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
-                    DatabaseTimersController.shared.addTimer(Int(timerId), timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
+                    DatabaseTimersController.shared.addTimer(timerId, timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
                 }else{
                     return
                 }
-                
-                let data = ["timerId":Int(timerId)]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
             }
+            let data = ["timerId":timerId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
         }
     }
     func getTimerParameters(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
+            var timerId = Int(byteArray[7])
             // Miminum is 14b
             if byteArray.count > 14 {
-                let timerId = byteArray[7]
+                timerId = Int(byteArray[7])
                 let timerCategoryId = byteArray[8]
                 let timerZoneId = byteArray[9]
                 let timerLevelId = byteArray[10]
@@ -209,14 +210,13 @@ class IncomingHandler: NSObject {
                 let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
-                    DatabaseTimersController.shared.addTimer(Int(timerId), timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
+                    DatabaseTimersController.shared.addTimer(timerId, timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
                 }else{
                     return
                 }
-                
-                let data = ["timerId":Int(timerId)]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerParameterFromGateway, object: self, userInfo: data)
             }
+            let data = ["timerId":timerId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerParameterFromGateway, object: self, userInfo: data)
         }
     }
     func parseTimerStatus(dataFrame:DataFrame) {
@@ -244,10 +244,10 @@ class IncomingHandler: NSObject {
     // MARK - Scenes
     func getSceneNameAndParametar(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
+            var sceneId = Int(byteArray[7])
             // Miminum is 80b
             if byteArray.count > 80 {
-                
-                let sceneId = Int(byteArray[7])
+                sceneId = Int(byteArray[7])
                 let sceneZoneId = Int(byteArray[74])
                 let sceneLevelId = Int(byteArray[75])
                 let sceneCategoryId = Int(byteArray[76])
@@ -264,22 +264,23 @@ class IncomingHandler: NSObject {
                 }else{
                     return
                 }
-                let data = ["sceneId":sceneId]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSceneFromGateway, object: self, userInfo: data)
             }
+            let data = ["sceneId":sceneId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSceneFromGateway, object: self, userInfo: data)
         }
     }
     
     // MARK - Sequences
     func getSequencesNameAndParametar(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSequencesNameAndParameters) {
+            var sequenceId = Int(byteArray[7])
             // Miminum is 82b
             if byteArray.count > 82 {
                 
                 let bytes:[UInt8] = [byteArray[9], byteArray[8]]
                 let id = UnsafePointer<Int>(bytes).memory
                 
-                let sequenceId = Int(byteArray[7])
+                sequenceId = Int(byteArray[7])
                 let sequenceZoneId = Int(byteArray[76])
                 let sequenceLevelId = Int(byteArray[77])
                 let sequenceCategoryId = Int(byteArray[78])
@@ -297,19 +298,20 @@ class IncomingHandler: NSObject {
                     return
                 }
                 
-                let data = ["sequenceId":sequenceId]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSequenceFromGateway, object: self, userInfo: data)
+                
             }
+            let data = ["sequenceId":sequenceId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveSequenceFromGateway, object: self, userInfo: data)
         }
     }
     
     // MARK - Event
     func getEventNameAndParametar(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningEventsNameAndParameters) {
+            var eventId = Int(byteArray[7])
             // Miminum is 14b
             if byteArray.count > 14 {
-                
-                let eventId = Int(byteArray[7])
+                eventId = Int(byteArray[7])
                 let eventZoneId = Int(byteArray[10])
                 let eventLevelId = Int(byteArray[11])
                 let eventCategoryId = Int(byteArray[9])
@@ -328,23 +330,23 @@ class IncomingHandler: NSObject {
                         return
                     }
                 }
-                
-                let data = ["eventId":eventId]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveEventFromGateway, object: self, userInfo: data)
             }
+            let data = ["eventId":eventId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveEventFromGateway, object: self, userInfo: data)
         }
     }
     
     // MARK - Flags
     func getFlagName(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagNames) {
+            var flagId = Int(byteArray[7]) - 100
             // Miminum is 12b
-            if byteArray.count > 12 {
+            if Int(byteArray[8]) != 0 {
                 var name:String = ""
                 for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
                 }
-                let flagId = Int(byteArray[7]) - 100
+                flagId = Int(byteArray[7]) - 100
                 let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
@@ -352,17 +354,17 @@ class IncomingHandler: NSObject {
                 }else{
                     return
                 }
-                
-                let data = ["flagId":flagId]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagFromGateway, object: self, userInfo: data)
             }
+            let data = ["flagId":flagId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagFromGateway, object: self, userInfo: data)
         }
     }
     func getFlagParameters(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
+            var flagId = Int(byteArray[7]) - 100
             // Miminum is 14b
             if byteArray.count > 14 {
-                let flagId = Int(byteArray[7]) - 100
+                flagId = Int(byteArray[7]) - 100
                 let flagCategoryId = Int(byteArray[8])
                 let flagZoneId = Int(byteArray[9])
                 let flagLevelId = Int(byteArray[10])
@@ -374,10 +376,9 @@ class IncomingHandler: NSObject {
                 }else{
                     return
                 }
-                
-                let data = ["timerId":flagId]
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagParameterFromGateway, object: self, userInfo: data)
             }
+            let data = ["flagId":flagId]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagParameterFromGateway, object: self, userInfo: data)
         }
     }
     
