@@ -82,11 +82,19 @@ class TimerCollectionViewCell: UICollectionViewCell {
         if timer.gateway.location.name != filterParametar.location{
             name += timer.gateway.location.name! + " "
         }
-        if timer.entityLevel != filterParametar.levelName{
-            name += timer.entityLevel! + " "
-        }
-        if timer.timeZone != filterParametar.zoneName{
-            name += timer.timeZone! + " "
+        if let id = timer.entityLevelId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: timer.gateway.location){
+                if zone.name != filterParametar.levelName{
+                    name += zone.name! + " "
+                }
+            }
+        }        
+        if let id = timer.timeZoneId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: timer.gateway.location){
+                if zone.name != filterParametar.zoneName{
+                    name += zone.name! + " "
+                }
+            }
         }
         name += timer.timerName
         return name

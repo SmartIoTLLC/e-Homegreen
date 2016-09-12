@@ -29,7 +29,7 @@ class SequencesViewController: PopoverVC {
     private let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+    var filterParametar:FilterItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +45,6 @@ class SequencesViewController: PopoverVC {
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All, All, All")
-
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -152,7 +150,7 @@ class SequencesViewController: PopoverVC {
     }
     
     func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
 //        pullDown.drawMenu(filterParametar)
 //        updateSequencesList()
         sequenceCollectionView.reloadData()
@@ -164,7 +162,7 @@ class SequencesViewController: PopoverVC {
 extension SequencesViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Sequences)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+        filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Sequences)
         updateSequencesList()

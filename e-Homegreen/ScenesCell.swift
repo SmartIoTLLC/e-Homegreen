@@ -25,12 +25,22 @@ class SceneCollectionCell: UICollectionViewCell {
         if scene.gateway.location.name != filterParametar.location{
             name += scene.gateway.location.name! + " "
         }
-        if scene.entityLevel != filterParametar.levelName{
-            name += scene.entityLevel! + " "
+        if let id = scene.entityLevelId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: scene.gateway.location){
+                if zone.name != filterParametar.levelName{
+                    name += zone.name! + " "
+                }                
+            }
         }
-        if scene.sceneZone != filterParametar.zoneName{
-            name += scene.sceneZone! + " "
+        
+        if let id = scene.sceneZoneId as? Int{
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: scene.gateway.location){
+                if zone.name != filterParametar.zoneName{
+                    name += zone.name! + " "
+                }
+            }
         }
+        
         name += scene.sceneName
         return name
     }

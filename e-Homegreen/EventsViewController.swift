@@ -28,7 +28,7 @@ class EventsViewController: PopoverVC{
     private let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Events)
+    var filterParametar:FilterItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +44,6 @@ class EventsViewController: PopoverVC{
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All, All, All")
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EventsViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -152,7 +150,7 @@ class EventsViewController: PopoverVC{
         eventCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
 //        pullDown.drawMenu(filterParametar)
 //        updateEventsList()
         eventCollectionView.reloadData()
@@ -164,8 +162,7 @@ class EventsViewController: PopoverVC{
 // Parametar from filter and relaod data
 extension EventsViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Events)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Events)
+        filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Events)
         updateEventsList()

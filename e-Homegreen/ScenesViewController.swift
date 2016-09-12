@@ -29,8 +29,7 @@ class ScenesViewController: PopoverVC {
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var scenesCollectionView: UICollectionView!
 
-    
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+    var filterParametar:FilterItem!
     
     override func viewWillAppear(animated: Bool) {
         self.revealViewController().delegate = self
@@ -70,8 +69,6 @@ class ScenesViewController: PopoverVC {
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: "All, All, All")
-
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -154,7 +151,7 @@ class ScenesViewController: PopoverVC {
     }
     
     func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
 //        pullDown.drawMenu(filterParametar)
 //        updateSceneList()
         scenesCollectionView.reloadData()
@@ -165,8 +162,7 @@ class ScenesViewController: PopoverVC {
 // Parametar from filter and relaod data
 extension ScenesViewController: FilterPullDownDelegate{
     func filterParametars(filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Scenes)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
+        filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Scenes)
         updateSceneList()
