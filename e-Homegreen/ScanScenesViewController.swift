@@ -373,9 +373,10 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
                 for scene in self.scenes {
                     self.appDel.managedObjectContext!.deleteObject(scene)
                 }
-                CoreDataController.shahredInstance.saveChanges()
-                self.refreshSceneList()
+                
             }
+            CoreDataController.shahredInstance.saveChanges()
+            self.refreshSceneList()
             self.view.endEditing(true)
         })
         

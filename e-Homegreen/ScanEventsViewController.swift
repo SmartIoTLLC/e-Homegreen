@@ -366,15 +366,37 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         toTextField.text = ""
     }
 
-    @IBAction func btnRemove(sender: AnyObject) {
-        if events.count != 0 {
-            for event in events {
-                appDel.managedObjectContext!.deleteObject(event)
+    @IBAction func btnRemove(sender: UIButton) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            if self.events.count != 0 {
+                for event in self.events {
+                    self.appDel.managedObjectContext!.deleteObject(event)
+                }
+                
             }
             CoreDataController.shahredInstance.saveChanges()
-            refreshEventList()
+            self.refreshEventList()
             self.view.endEditing(true)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
         }
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+
     }
     
     // MARK: - FINDING EVENTS
