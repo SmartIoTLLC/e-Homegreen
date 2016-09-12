@@ -542,9 +542,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             }
             
             for i in from...to{
-                if i <= flags.count{
-                    arrayOfParametersToBeSearched.append(i)
-                }
+                arrayOfParametersToBeSearched.append(i)
             }
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagParameters)

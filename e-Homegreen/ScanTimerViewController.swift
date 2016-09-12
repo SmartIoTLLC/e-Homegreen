@@ -574,9 +574,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
             
             for i in from...to{
-                if i <= timers.count{
-                        arrayOfParametersToBeSearched.append(i)
-                }
+                arrayOfParametersToBeSearched.append(i)
             }
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerParameters)
