@@ -64,6 +64,8 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
+        fromTextField.inputAccessoryView = CustomToolBar()
+        toTextField.inputAccessoryView = CustomToolBar()
         
         nameEdit.delegate = self
         
@@ -95,7 +97,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagParameterFromGateway, object: nil)
     }
 
-    
     override func sendFilterParametar(filterParametar: FilterItem) {
         levelFromFilter = filterParametar.levelName
         zoneFromFilter = filterParametar.zoneName
