@@ -367,15 +367,34 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         toTextField.text = ""
     }
     
-    @IBAction func btnRemove(sender: AnyObject) {
-        if sequences.count != 0 {
-            for sequence in sequences {
-                appDel.managedObjectContext!.deleteObject(sequence)
+    @IBAction func btnRemove(sender: UIButton) {
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            if self.sequences.count != 0 {
+                for sequence in self.sequences {
+                    self.appDel.managedObjectContext!.deleteObject(sequence)
+                }
             }
             CoreDataController.shahredInstance.saveChanges()
-            refreshSequenceList()
+            self.refreshSequenceList()
             self.view.endEditing(true)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
         }
+        
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
 
     
