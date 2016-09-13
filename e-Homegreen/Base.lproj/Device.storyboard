@@ -441,11 +441,10 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48R-sb-ZFa">
-                                                            <rect key="frame" x="20" y="142" width="55" height="28"/>
+                                                            <rect key="frame" x="8" y="142" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="28" id="38i-df-9Fb"/>
-                                                                <constraint firstAttribute="width" constant="55" id="XIt-Pj-Rqi"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                             <state key="normal" title="CLOSE">
@@ -453,10 +452,9 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yrc-ew-iUX">
-                                                            <rect key="frame" x="75" y="142" width="55" height="28"/>
+                                                            <rect key="frame" x="79" y="142" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="55" id="fbj-Oh-Ud0"/>
                                                                 <constraint firstAttribute="height" constant="28" id="rr4-za-FyT"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -468,13 +466,15 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="6yc-Lk-PX4" secondAttribute="trailing" constant="20" id="00m-oZ-M2R"/>
-                                                        <constraint firstItem="48R-sb-ZFa" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="20" id="6lR-hJ-p8d"/>
+                                                        <constraint firstItem="48R-sb-ZFa" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="8" id="6lR-hJ-p8d"/>
                                                         <constraint firstAttribute="trailing" secondItem="tbk-5J-of7" secondAttribute="trailing" constant="2" id="8Gg-nE-ouQ"/>
+                                                        <constraint firstItem="Yrc-ew-iUX" firstAttribute="leading" secondItem="48R-sb-ZFa" secondAttribute="trailing" constant="8" id="C4S-mn-wD5"/>
                                                         <constraint firstItem="6yc-Lk-PX4" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="20" id="JHd-SH-gMM"/>
                                                         <constraint firstItem="tbk-5J-of7" firstAttribute="top" secondItem="K02-Ib-2gO" secondAttribute="top" constant="8" id="Kes-Zq-9fq"/>
                                                         <constraint firstItem="6yc-Lk-PX4" firstAttribute="centerY" secondItem="K02-Ib-2gO" secondAttribute="centerY" id="cGG-5F-pvq"/>
                                                         <constraint firstAttribute="bottom" secondItem="48R-sb-ZFa" secondAttribute="bottom" constant="10" id="kfb-6b-DH8"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Yrc-ew-iUX" secondAttribute="trailing" constant="20" id="lsh-0F-CIG"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Yrc-ew-iUX" secondAttribute="trailing" constant="8" id="lsh-0F-CIG"/>
+                                                        <constraint firstItem="Yrc-ew-iUX" firstAttribute="width" secondItem="48R-sb-ZFa" secondAttribute="width" id="qZm-4J-Rhw"/>
                                                         <constraint firstAttribute="bottom" secondItem="Yrc-ew-iUX" secondAttribute="bottom" constant="10" id="uEm-hk-MpB"/>
                                                         <constraint firstItem="tbk-5J-of7" firstAttribute="leading" secondItem="K02-Ib-2gO" secondAttribute="leading" constant="2" id="y67-hX-Zh2"/>
                                                     </constraints>
@@ -1545,7 +1545,7 @@
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="mkr-Hy-meR"/>
                         <rightBarButtonItems>
                             <barButtonItem style="plain" id="gdx-Fo-YqH">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="usE-1q-giC">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="usE-1q-giC" userLabel="Full screen">
                                     <rect key="frame" x="269" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="full screen"/>
@@ -1555,7 +1555,7 @@
                                 </button>
                             </barButtonItem>
                             <barButtonItem style="plain" id="EbQ-lT-RIa">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FkU-iB-1BX">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FkU-iB-1BX" userLabel="Reload">
                                     <rect key="frame" x="226" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="refesh screen"/>
@@ -1565,7 +1565,7 @@
                                 </button>
                             </barButtonItem>
                             <barButtonItem style="plain" id="y9w-yv-KYl">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pob-z5-wEG">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pob-z5-wEG" userLabel="iBeacon">
                                     <rect key="frame" x="183" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="search iBeacon"/>
