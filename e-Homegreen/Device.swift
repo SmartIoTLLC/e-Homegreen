@@ -78,6 +78,63 @@ class Device: NSManagedObject {
             deviceImage.text = defaultDeviceImage.text
         }
     }
+    
+    // Used only for creating SaltoAccess Device
+    // the name must be different
+    convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation, channelName: String) {
+        let name = self.dynamicType.entityName()
+        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
+        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.name = channelName
+        self.address = information.address
+        self.channel = information.channel
+        self.numberOfDevices = information.numberOfDevices
+        self.runningTime = "00:00:00,0s"
+        self.currentValue = 0
+        self.oldValue = 0
+        self.current = 0
+        self.amp = ""
+        self.type = information.type
+        self.controlType = information.type
+        self.voltage = 0
+        self.temperature = 0
+        self.gateway = information.gateway
+        self.isVisible = false
+        self.isEnabled = false
+        self.mac = information.mac
+        if information.isClimate {
+            self.mode = "AUTO"
+            self.modeState = "Off"
+            self.speed = "AUTO"
+            self.speedState = "Off"
+            self.coolTemperature = 0
+            self.heatTemperature = 0
+            self.roomTemperature = 0
+            self.humidity = 0
+            self.humidityVisible = true
+            self.temperatureVisible = true
+            self.coolModeVisible = true
+            self.heatModeVisible = true
+            self.fanModeVisible = true
+            self.autoModeVisible = true
+            self.lowSpeedVisible = true
+            self.medSpeedVisible = true
+            self.highSpeedVisible = true
+            self.autoSpeedVisible = true
+        }
+        self.notificationType = 0
+        self.notificationPosition = 1
+        self.notificationDelay = 0
+        self.notificationDisplayTime = 5
+        let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
+        for defaultDeviceImage in defaultDeviceImages {
+            let deviceImage = DeviceImage(context: context)
+            deviceImage.defaultImage = defaultDeviceImage.defaultImage
+            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            deviceImage.device = self
+            deviceImage.text = defaultDeviceImage.text
+        }
+    }
     func resetImages(context:NSManagedObjectContext) {
         if self.deviceImages?.count > 0 {
             for image in self.deviceImages! {

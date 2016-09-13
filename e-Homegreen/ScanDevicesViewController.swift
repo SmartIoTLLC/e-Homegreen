@@ -638,6 +638,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
         }
+        if devices[index].type == ControlType.SaltoAccess {
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler.sendCommand(byteArray: Function.getSaltoAccessInfoWithAddress(address), gateway: devices[index].gateway)
+        }
 //        if devices[index].type == ControlType.HumanInterfaceSeries {
 //            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
 //            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
