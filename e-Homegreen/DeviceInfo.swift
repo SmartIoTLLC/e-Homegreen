@@ -58,6 +58,7 @@ struct ControlType {
     static let Curtain = "Curtain"
     static let Access = "Access"
     static let PC = "PC"
+    static let SaltoAccess = "saltoAccess"
     
 //    static let CurtainsRS485 = "Curtains RS485"
 //    static let Gateway = "Gateway"
@@ -238,7 +239,7 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x03, subId: 0x00):DeviceTypeCode(channel: Channel.Three, name:ControlType.Gateway, MPN: "RSGW2SP"), // RS232/RS485 Gateway
         DeviceType(deviceId: 0x03, subId: 0x01):DeviceTypeCode(channel:Channel.Three, name:ControlType.Gateway, MPN: "RSGW2SD"), // RS232/RS485 Gateway, DIN rail
         DeviceType(deviceId: 0x03, subId: 0x02):DeviceTypeCode(channel:Channel.One, name:ControlType.Curtain, MPN: "ICM05XX"), // Intelligent Curtain Module
-        DeviceType(deviceId: 0x03, subId: 0x03):DeviceTypeCode(channel: Channel.One, name:ControlType.Access, MPN: "S04HOST"), // RS232/RS485 Gateway
+        DeviceType(deviceId: 0x03, subId: 0x03):DeviceTypeCode(channel: Channel.One, name:ControlType.SaltoAccess, MPN: "S04HOST"), // RS232/RS485 Gateway
         DeviceType(deviceId: 0x03, subId: 0x04):DeviceTypeCode(channel:Channel.One, name:ControlType.Access, MPN: "S08HOST"), // RS232/RS485 Gateway, DIN rail
         DeviceType(deviceId: 0x03, subId: 0x05):DeviceTypeCode(channel: Channel.One, name:ControlType.Access, MPN: "S16HOST"), // RS232/RS485 Gateway
         

@@ -47,9 +47,20 @@ class IncomingHandler: NSObject {
                 print("Uslo je u incoming handler.")
                 
                 //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
-                    self.acknowledgementAboutNewDevices(self.byteArray)
+                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0x03 && self.byteArray[8] == 0x03{
+                    self.acknowledgementAboutNewDeviceSalto(self.byteArray)
+                }else{ //  ACKNOWLEDGMENT ABOUT NEW DEVICES
+                    if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
+                        self.acknowledgementAboutNewDevices(self.byteArray)
+                    }
                 }
+                
+                
+                //  ACKNOWLEDGMENT ABOUT NEW DEVICE - SALTO
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
+                    self.acknowledgementAboutNewDeviceSalto(self.byteArray)
+                }
+                
                 // Get device (module not by channel) Main ACK, Category, Zone, Name
                 // It was named curtain in beginning, but it is standard for all modules.
                 if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x0D {
@@ -127,7 +138,7 @@ class IncomingHandler: NSObject {
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
                     self.parseTimerStatus(dataFrame)
                     //FIXME: Popravi me
-//                    self.ackTimerStatus(self.byteArray)
+                    //                    self.ackTimerStatus(self.byteArray)
                 }
                 
                 // Timer name
@@ -731,7 +742,7 @@ class IncomingHandler: NSObject {
                     } else {
                         devices[i].name = "Unknown"
                     }
-
+                    
                     devices[i].overrideControl1 = Int(byteArray[23])
                     devices[i].overrideControl2 = Int(byteArray[24])
                     devices[i].overrideControl3 = Int(byteArray[25])
@@ -757,7 +768,7 @@ class IncomingHandler: NSObject {
                         devices[i].isEnabled = NSNumber(bool: false)
                         devices[i].isVisible = NSNumber(bool: false)
                     }
-
+                    
                     if byteArray[28] == 0x01 {
                         devices[i].isDimmerModeAllowed = NSNumber(bool: true)
                         devices[i].controlType = ControlType.Dimmer
@@ -829,11 +840,11 @@ class IncomingHandler: NSObject {
             let address = [Byte(Int(securities[0].addressOne)), Byte(Int(securities[0].addressTwo)), Byte(Int(securities[0].addressThree))]
             if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
                 let defaults = NSUserDefaults.standardUserDefaults()
-            
+                
                 if byteArray[7] == 0x02 {
                     switch byteArray[8] {
                     case 0x00:
-                    
+                        
                         defaults.setValue(SecurityControlMode.Disarm, forKey: UserDefaults.Security.SecurityMode)
                     case 0x01:
                         defaults.setValue(SecurityControlMode.Away, forKey: UserDefaults.Security.SecurityMode)
@@ -952,7 +963,7 @@ class IncomingHandler: NSObject {
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
-
+                
                 var doesIdExist = false
                 let zones = DatabaseHandler.sharedInstance.fetchZonesWithLocationId(gateways[0].location)
                 
