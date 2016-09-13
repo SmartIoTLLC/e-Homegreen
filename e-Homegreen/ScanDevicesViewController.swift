@@ -38,6 +38,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var pbFD:ProgressBarVC?     // Device
     var pbFN:ProgressBarVC?     // Names
     
+    var searchBarText:String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -77,6 +79,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         refreshDeviceList()
     }
     override func sendSearchBarText(text: String) {
+        searchBarText = text
         refreshDeviceList()
         if !text.isEmpty{
             devices = self.devices.filter() {
@@ -799,6 +802,16 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     // MARK: - Other
     func refreshDeviceList() {
         updateDeviceList()
+        if !searchBarText.isEmpty{
+            devices = self.devices.filter() {
+                device in
+                if device.name.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
         deviceTableView.reloadData()
     }
 
